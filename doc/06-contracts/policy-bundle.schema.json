@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.koa.example/linux/policy-bundle.schema.json",
+  "title": "kOA Governance Policy Bundle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "policy_bundle_id", "scope", "engine", "modules", "tests", "governance", "signatures"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "policy_bundle_id": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "version": {"type": "string"},
+    "scope": {
+      "type": "object",
+      "required": ["tenant_id", "environment"],
+      "properties": {
+        "tenant_id": {"type": "string"},
+        "environment": {"type": "string"},
+        "node_profiles": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "engine": {
+      "type": "object",
+      "required": ["name", "minimum_version"],
+      "properties": {
+        "name": {"type": "string"},
+        "minimum_version": {"type": "string"},
+        "maximum_version": {"type": "string"}
+      }
+    },
+    "modules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "digest", "domain"],
+        "properties": {
+          "id": {"type": "string"},
+          "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+          "domain": {"enum": ["authorization", "activation", "disclosure", "rights", "ai", "retention", "emergency", "export", "compatibility"]}
+        }
+      }
+    },
+    "tests": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "object", "required": ["id", "input", "expected"]}
+    },
+    "governance": {
+      "type": "object",
+      "required": ["proposed_by", "approved_by", "recourse_uri"],
+      "properties": {
+        "proposed_by": {"type": "string"},
+        "approved_by": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "separation_of_duties": {"type": "array", "items": {"type": "string"}},
+        "recourse_uri": {"type": "string"},
+        "supersedes": {"type": "string"},
+        "revokes": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "signatures": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["kid", "value"]}}
+  }
+}

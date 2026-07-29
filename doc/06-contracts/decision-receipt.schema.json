@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.koa.example/linux/decision-receipt.schema.json",
+  "title": "kOA Decision Receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "receipt_id", "timestamp", "decision", "policy", "request", "reason_codes", "correlation_id"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "receipt_id": {"type": "string"},
+    "timestamp": {"type": "string", "format": "date-time"},
+    "decision": {"enum": ["allow", "deny", "require_review", "completed", "failed", "degraded"]},
+    "policy": {
+      "type": "object",
+      "required": ["id", "version"],
+      "properties": {
+        "id": {"type": "string"},
+        "version": {"type": "string"},
+        "module": {"type": "string"}
+      }
+    },
+    "request": {
+      "type": "object",
+      "required": ["subject", "action", "resource"],
+      "properties": {
+        "subject": {"type": "string"},
+        "action": {"type": "string"},
+        "resource": {"type": "string"},
+        "tenant_id": {"type": "string"},
+        "node_id": {"type": "string"},
+        "operation_id": {"type": "string"}
+      }
+    },
+    "reason_codes": {"type": "array", "items": {"type": "string"}},
+    "obligations": {"type": "array", "items": {"type": "string"}},
+    "redactions": {"type": "array", "items": {"type": "string"}},
+    "valid_until": {"type": "string", "format": "date-time"},
+    "correlation_id": {"type": "string"},
+    "previous_receipt_hash": {"type": "string"},
+    "signature": {"type": "object", "required": ["kid", "value"]}
+  }
+}

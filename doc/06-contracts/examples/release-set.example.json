@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "release_set_id": "koa-release-set:2026.07-stable",
+  "created_at": "2026-07-29T15:00:00Z",
+  "target_profiles": ["koa-endpoint", "koa-sovereign-hub"],
+  "channels": {
+    "os": {"id": "oci:koa-os", "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "version": "2026.07", "channel": "stable"},
+    "services": {"id": "koa-services", "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "version": "2026.07"},
+    "governance": {"id": "koa-policy", "digest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc", "version": "2026.07"},
+    "kristal_defaults": []
+  },
+  "compatibility": {
+    "kristal_contracts": ["5.0"],
+    "query_contracts": ["kristal.query.v5"],
+    "minimum_schemas": {"konnaxion": 42, "orgo": 17},
+    "required_hardware": ["x86_64-or-aarch64"],
+    "minimum_disk_bytes": 68719476736
+  },
+  "migrations": [],
+  "conformance_profiles": ["koa-linux-foundation-0.1"],
+  "signatures": [{"kid": "release-root:example", "algorithm": "ed25519", "value": "BASE64"}]
+}

@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "receipt_id": "receipt:01JEXAMPLE",
+  "timestamp": "2026-07-29T15:01:00Z",
+  "decision": "allow",
+  "policy": {"id": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc", "version": "2026.07", "module": "activation"},
+  "request": {
+    "subject": "service:konnaxion",
+    "action": "kristal.activate",
+    "resource": "runtime-pack:sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "tenant_id": "tenant:example",
+    "node_id": "node:example",
+    "operation_id": "op:example"
+  },
+  "reason_codes": ["SIGNATURE_VALID", "CHANNEL_ALLOWED", "QUERY_CONTRACT_SUPPORTED"],
+  "obligations": ["RUN_POST_ACTIVATION_HEALTHCHECK"],
+  "redactions": [],
+  "correlation_id": "corr:example",
+  "signature": {"kid": "node:example", "value": "BASE64"}
+}

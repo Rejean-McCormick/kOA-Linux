@@ -1,0 +1,4 @@
+[Unit]
+Description=kOA application services
+Requires=koa-node.target
+After=koa-node.target network.target

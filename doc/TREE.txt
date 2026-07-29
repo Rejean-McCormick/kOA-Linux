@@ -1,0 +1,97 @@
+koa-linux-foundation-en
+├── 00-foundation
+│   ├── 00-charter.md
+│   ├── 01-normative-invariants.md
+│   ├── 02-scope-and-non-goals.md
+│   └── 03-glossary.md
+├── 01-architecture
+│   ├── 00-system-context.md
+│   ├── 01-logical-architecture.md
+│   ├── 02-physical-architecture.md
+│   ├── 03-node-profiles.md
+│   ├── 04-process-and-trust-boundaries.md
+│   ├── 05-storage-and-filesystem-layout.md
+│   ├── 06-network-topology.md
+│   └── 07-boot-session-and-recovery.md
+├── 02-components
+│   ├── 00-koa-session-shell.md
+│   ├── 01-koa-node-agent.md
+│   ├── 02-koa-policy-runtime.md
+│   ├── 03-konnaxion.md
+│   ├── 04-orgo.md
+│   ├── 05-kristal-runtime-plane.md
+│   ├── 06-publication-gateway.md
+│   ├── 07-audit-broker.md
+│   └── 08-identity-and-trust.md
+├── 03-lifecycle
+│   ├── 00-release-model.md
+│   ├── 01-os-updates.md
+│   ├── 02-service-updates.md
+│   ├── 03-governance-policy-bundles.md
+│   ├── 04-kristal-artifacts.md
+│   ├── 05-offline-bundles.md
+│   ├── 06-rollback-and-recovery.md
+│   └── 07-data-migrations.md
+├── 04-security
+│   ├── 00-threat-model.md
+│   ├── 01-security-baseline.md
+│   ├── 02-privacy-and-disclosure.md
+│   ├── 03-secrets-and-keys.md
+│   ├── 04-ai-boundaries.md
+│   ├── 05-integration-without-contamination.md
+│   └── 06-cultural-rights-and-consent.md
+├── 05-operations
+│   ├── 00-observability.md
+│   ├── 01-backup-restore-and-exit.md
+│   ├── 02-capability-degradation.md
+│   ├── 03-slos-and-health.md
+│   ├── 04-conformance-tests.md
+│   └── 05-incident-response.md
+├── 06-contracts
+│   ├── examples
+│   │   ├── decision-receipt.example.json
+│   │   ├── integration-manifest.example.yaml
+│   │   └── release-set.example.json
+│   ├── cultural-rights-policy.schema.json
+│   ├── decision-receipt.schema.json
+│   ├── integration-manifest.schema.json
+│   ├── node-profile.schema.json
+│   ├── offline-bundle.schema.json
+│   ├── policy-bundle.schema.json
+│   └── release-set.schema.json
+├── 07-systemd
+│   ├── koa-audit-broker.service
+│   ├── koa-graphical.target
+│   ├── koa-node-agent.service
+│   ├── koa-node.target
+│   ├── koa-policy-runtime.service
+│   ├── koa-private.network
+│   ├── koa-public.network
+│   ├── koa-recovery.target
+│   ├── koa-services.target
+│   ├── koa-session-shell.service
+│   ├── koa-sysusers.conf
+│   ├── koa-tmpfiles.conf
+│   ├── konnaxion-static.volume
+│   ├── konnaxion-web.container
+│   ├── orgo-api.container
+│   ├── orgo-state.volume
+│   └── README.md
+├── 08-adrs
+│   ├── ADR-001-standard-maintained-linux-kernel.md
+│   ├── ADR-002-immutable-os-image.md
+│   ├── ADR-003-no-gnome-product-shell.md
+│   ├── ADR-004-minimal-wayland-and-embedded-web-engine.md
+│   ├── ADR-005-rootless-podman-and-quadlet.md
+│   ├── ADR-006-konnaxion-and-orgo-co-principal.md
+│   ├── ADR-007-kristal-transversal-epistemic-foundation.md
+│   ├── ADR-008-four-release-channels.md
+│   ├── ADR-009-governance-policy-runtime.md
+│   ├── ADR-010-selective-audit.md
+│   ├── ADR-011-no-kubernetes-on-endpoints.md
+│   └── ADR-012-single-narrow-privileged-broker.md
+├── CHANGELOG.md
+├── KOA-LINUX-FOUNDATION.md
+├── README.md
+├── REQUIREMENTS-MATRIX.md
+└── SOURCES.md

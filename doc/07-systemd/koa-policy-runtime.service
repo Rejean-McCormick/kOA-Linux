@@ -1,0 +1,33 @@
+[Unit]
+Description=kOA deterministic governance policy runtime
+After=local-fs.target
+Before=koa-node.target koa-services.target
+RequiresMountsFor=/var/lib/koa/policies
+
+[Service]
+Type=notify
+User=koa-policy
+Group=koa-policy
+ExecStart=/usr/libexec/koa/koa-policy-runtime --bundle-root /var/lib/koa/policies
+RuntimeDirectory=koa/policy
+StateDirectory=koa/policies
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+RestrictRealtime=yes
+RestrictAddressFamilies=AF_UNIX
+ReadWritePaths=/var/lib/koa/policies /run/koa/policy
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=koa-node.target
