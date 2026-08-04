@@ -1,0 +1,916 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.koa.local/artifact-contracts/workspace-port-allocation.schema.json",
+  "title": "kOA Workspace Port Allocation",
+  "description": "Validates one workspace-scoped set of development host-port reservations and bindings. The artifact records the stable workspace identity, host and network context, allocation strategy, permitted port pools, deterministic collision keys, service ownership, exposure scope, lifecycle, and cleanup behavior. Cross-artifact collision checks remain part of repository and runtime validation.",
+  "$comment": "This schema owns the observable allocation artifact format. It does not prescribe one allocator implementation, container runtime, network namespace technology, or operating-system port-reservation mechanism.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "artifact_class",
+    "allocation_set_id",
+    "workspace_id",
+    "profile_id",
+    "status",
+    "created_at",
+    "host_context",
+    "allocation_strategy",
+    "port_pools",
+    "bindings",
+    "collision_keys",
+    "lifecycle_policy",
+    "validation_policy"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "artifact_class": {
+      "type": "string",
+      "const": "workspace_port_allocation"
+    },
+    "allocation_set_id": {
+      "$ref": "#/$defs/allocation_set_id"
+    },
+    "workspace_id": {
+      "$ref": "#/$defs/workspace_id"
+    },
+    "profile_id": {
+      "type": "string",
+      "enum": [
+        "developer_linux_workstation",
+        "developer_windows_wsl"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "reserved",
+        "active",
+        "released",
+        "superseded"
+      ]
+    },
+    "created_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "updated_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "activated_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "released_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "superseded_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "superseded_by": {
+      "$ref": "#/$defs/allocation_set_id"
+    },
+    "host_context": {
+      "$ref": "#/$defs/host_context"
+    },
+    "allocation_strategy": {
+      "$ref": "#/$defs/allocation_strategy"
+    },
+    "port_pools": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/port_pool"
+      }
+    },
+    "bindings": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/port_binding"
+      }
+    },
+    "collision_keys": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/collision_key"
+      },
+      "description": "Unique deterministic keys for every binding. Validation confirms one-to-one equality with bindings[*].collision_key and checks uniqueness across active workspaces on the same host and network scope."
+    },
+    "reserved_host_ports": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/reserved_host_port"
+      }
+    },
+    "shared_service_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/shared_service_ref"
+      }
+    },
+    "lifecycle_policy": {
+      "$ref": "#/$defs/lifecycle_policy"
+    },
+    "validation_policy": {
+      "$ref": "#/$defs/validation_policy"
+    },
+    "annotations": {
+      "$ref": "#/$defs/annotations"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "active"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "required": [
+          "activated_at"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "released"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "required": [
+          "released_at"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "superseded"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "required": [
+          "superseded_at",
+          "superseded_by"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "profile_id": {
+            "const": "developer_windows_wsl"
+          }
+        },
+        "required": [
+          "profile_id"
+        ]
+      },
+      "then": {
+        "properties": {
+          "host_context": {
+            "required": [
+              "wsl_distribution_id"
+            ],
+            "properties": {
+              "platform": {
+                "const": "windows_wsl"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "profile_id": {
+            "const": "developer_linux_workstation"
+          }
+        },
+        "required": [
+          "profile_id"
+        ]
+      },
+      "then": {
+        "properties": {
+          "host_context": {
+            "properties": {
+              "platform": {
+                "const": "native_linux"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "snake_identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
+    },
+    "canonical_identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/@+-]*$"
+    },
+    "workspace_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128,
+      "pattern": "^[a-z0-9][a-z0-9-]*(?:-[a-z0-9][a-z0-9-]*)?$"
+    },
+    "allocation_set_id": {
+      "type": "string",
+      "minLength": 27,
+      "maxLength": 256,
+      "pattern": "^workspace-port-allocation:[a-z0-9][a-z0-9-]*$"
+    },
+    "canonical_reference": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 1024,
+      "pattern": "^(?!(?:/|.*(?:^|/)\\.\\.(?:/|$)))(?:[^#\\s]+(?:#(?:/.*)?)?|(?:DOC|DEC|REQ|LOCK|ADR|TEST|EVID|EXC)-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3})$"
+    },
+    "port_number": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 65535
+    },
+    "unprivileged_port_number": {
+      "type": "integer",
+      "minimum": 1024,
+      "maximum": 65535
+    },
+    "ip_or_hostname": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "ipv4"
+        },
+        {
+          "type": "string",
+          "format": "ipv6"
+        },
+        {
+          "type": "string",
+          "format": "hostname",
+          "maxLength": 253
+        }
+      ]
+    },
+    "collision_key": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 1024,
+      "pattern": "^[A-Za-z0-9._:/@+\\[\\]-]+\\|(?:tcp|udp|sctp)\\|(?:ipv4|ipv6)\\|[A-Za-z0-9._:/@+\\[\\]-]+\\|[1-9][0-9]{0,4}$"
+    },
+    "host_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "host_id",
+        "platform",
+        "network_mode",
+        "network_scope_id"
+      ],
+      "properties": {
+        "host_id": {
+          "$ref": "#/$defs/canonical_identifier"
+        },
+        "platform": {
+          "type": "string",
+          "enum": [
+            "native_linux",
+            "windows_wsl"
+          ]
+        },
+        "wsl_distribution_id": {
+          "$ref": "#/$defs/canonical_identifier"
+        },
+        "network_mode": {
+          "type": "string",
+          "enum": [
+            "host",
+            "network_namespace",
+            "rootless_container_network",
+            "bridged",
+            "nat"
+          ]
+        },
+        "network_scope_id": {
+          "$ref": "#/$defs/canonical_identifier"
+        },
+        "network_namespace_id": {
+          "$ref": "#/$defs/canonical_identifier"
+        },
+        "allocator_instance_id": {
+          "$ref": "#/$defs/canonical_identifier"
+        }
+      }
+    },
+    "allocation_strategy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method",
+        "owner",
+        "collision_scope",
+        "stable_reallocation_preferred"
+      ],
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": [
+            "deterministic_pool",
+            "central_lease",
+            "static_declared",
+            "profile_defined"
+          ]
+        },
+        "owner": {
+          "$ref": "#/$defs/canonical_identifier"
+        },
+        "contract_ref": {
+          "$ref": "#/$defs/canonical_reference"
+        },
+        "collision_scope": {
+          "type": "string",
+          "const": "host_id_network_scope_address_family_bind_address_protocol_port"
+        },
+        "stable_reallocation_preferred": {
+          "type": "boolean",
+          "const": true
+        },
+        "automatic_fallback_allowed": {
+          "type": "boolean",
+          "default": false
+        },
+        "lease_duration_seconds": {
+          "type": "integer",
+          "minimum": 60,
+          "maximum": 31536000
+        }
+      }
+    },
+    "port_pool": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pool_id",
+        "protocols",
+        "address_families",
+        "start_port",
+        "end_port",
+        "exposure_scopes"
+      ],
+      "properties": {
+        "pool_id": {
+          "$ref": "#/$defs/snake_identifier"
+        },
+        "protocols": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "tcp",
+              "udp",
+              "sctp"
+            ]
+          }
+        },
+        "address_families": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "ipv4",
+              "ipv6"
+            ]
+          }
+        },
+        "start_port": {
+          "$ref": "#/$defs/unprivileged_port_number"
+        },
+        "end_port": {
+          "$ref": "#/$defs/unprivileged_port_number"
+        },
+        "exposure_scopes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "loopback",
+              "workspace_network",
+              "host_lan",
+              "all_interfaces"
+            ]
+          }
+        },
+        "excluded_ports": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/port_number"
+          }
+        },
+        "reservation_ref": {
+          "$ref": "#/$defs/canonical_reference"
+        }
+      }
+    },
+    "binding_owner": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "component_id",
+        "service_id",
+        "purpose"
+      ],
+      "properties": {
+        "component_id": {
+          "$ref": "#/$defs/snake_identifier"
+        },
+        "service_id": {
+          "$ref": "#/$defs/snake_identifier"
+        },
+        "service_instance_id": {
+          "$ref": "#/$defs/canonical_identifier"
+        },
+        "purpose": {
+          "$ref": "#/$defs/snake_identifier"
+        },
+        "component_contract_ref": {
+          "$ref": "#/$defs/canonical_reference"
+        }
+      }
+    },
+    "port_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "binding_id",
+        "collision_key",
+        "owner",
+        "state",
+        "protocol",
+        "address_family",
+        "bind_address",
+        "host_port",
+        "exposure_scope",
+        "pool_id",
+        "requested_at"
+      ],
+      "properties": {
+        "binding_id": {
+          "type": "string",
+          "minLength": 9,
+          "maxLength": 256,
+          "pattern": "^binding:[A-Za-z0-9][A-Za-z0-9._:/@+-]*$"
+        },
+        "collision_key": {
+          "$ref": "#/$defs/collision_key"
+        },
+        "owner": {
+          "$ref": "#/$defs/binding_owner"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "requested",
+            "reserved",
+            "active",
+            "released",
+            "blocked"
+          ]
+        },
+        "protocol": {
+          "type": "string",
+          "enum": [
+            "tcp",
+            "udp",
+            "sctp"
+          ]
+        },
+        "address_family": {
+          "type": "string",
+          "enum": [
+            "ipv4",
+            "ipv6"
+          ]
+        },
+        "bind_address": {
+          "$ref": "#/$defs/ip_or_hostname"
+        },
+        "host_port": {
+          "$ref": "#/$defs/port_number"
+        },
+        "target_port": {
+          "$ref": "#/$defs/port_number"
+        },
+        "target_host": {
+          "$ref": "#/$defs/ip_or_hostname"
+        },
+        "endpoint_name": {
+          "$ref": "#/$defs/snake_identifier"
+        },
+        "exposure_scope": {
+          "type": "string",
+          "enum": [
+            "loopback",
+            "workspace_network",
+            "host_lan",
+            "all_interfaces"
+          ]
+        },
+        "pool_id": {
+          "$ref": "#/$defs/snake_identifier"
+        },
+        "privileged_port_authorization_ref": {
+          "$ref": "#/$defs/canonical_reference"
+        },
+        "exposure_authorization_ref": {
+          "$ref": "#/$defs/canonical_reference"
+        },
+        "shared_service_ref": {
+          "$ref": "#/$defs/canonical_reference"
+        },
+        "requested_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "reserved_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "activated_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "released_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "lease_expires_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "blocked_reason_code": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 128,
+          "pattern": "^[A-Z][A-Z0-9_:-]*$"
+        },
+        "healthcheck_ref": {
+          "$ref": "#/$defs/canonical_reference"
+        },
+        "annotations": {
+          "$ref": "#/$defs/annotations"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "host_port": {
+                "maximum": 1023
+              }
+            },
+            "required": [
+              "host_port"
+            ]
+          },
+          "then": {
+            "required": [
+              "privileged_port_authorization_ref"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "exposure_scope": {
+                "enum": [
+                  "host_lan",
+                  "all_interfaces"
+                ]
+              }
+            },
+            "required": [
+              "exposure_scope"
+            ]
+          },
+          "then": {
+            "required": [
+              "exposure_authorization_ref"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "reserved"
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "required": [
+              "reserved_at"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "active"
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "required": [
+              "reserved_at",
+              "activated_at"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "released"
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "required": [
+              "released_at"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "blocked"
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "required": [
+              "blocked_reason_code"
+            ]
+          }
+        }
+      ]
+    },
+    "reserved_host_port": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "address_family",
+        "bind_address",
+        "port",
+        "reason"
+      ],
+      "properties": {
+        "protocol": {
+          "type": "string",
+          "enum": [
+            "tcp",
+            "udp",
+            "sctp"
+          ]
+        },
+        "address_family": {
+          "type": "string",
+          "enum": [
+            "ipv4",
+            "ipv6"
+          ]
+        },
+        "bind_address": {
+          "$ref": "#/$defs/ip_or_hostname"
+        },
+        "port": {
+          "$ref": "#/$defs/port_number"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "owner_ref": {
+          "$ref": "#/$defs/canonical_reference"
+        }
+      }
+    },
+    "shared_service_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "service_ref",
+        "sharing_contract_ref",
+        "allowed_consumers"
+      ],
+      "properties": {
+        "service_ref": {
+          "$ref": "#/$defs/canonical_reference"
+        },
+        "sharing_contract_ref": {
+          "$ref": "#/$defs/canonical_reference"
+        },
+        "allowed_consumers": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/canonical_identifier"
+          }
+        }
+      }
+    },
+    "lifecycle_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "release_on_workspace_removal",
+        "release_on_binding_removal",
+        "reuse_after_release",
+        "another_workspace_mutation_allowed",
+        "cleanup_evidence_required"
+      ],
+      "properties": {
+        "release_on_workspace_removal": {
+          "type": "boolean",
+          "const": true
+        },
+        "release_on_binding_removal": {
+          "type": "boolean",
+          "const": true
+        },
+        "reuse_after_release": {
+          "type": "string",
+          "enum": [
+            "after_verified_release",
+            "after_lease_expiry_and_verified_release",
+            "never"
+          ]
+        },
+        "another_workspace_mutation_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "cleanup_evidence_required": {
+          "type": "boolean",
+          "const": true
+        },
+        "cleanup_receipt_schema_ref": {
+          "$ref": "#/$defs/canonical_reference"
+        }
+      }
+    },
+    "validation_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entry_point",
+        "required_checks",
+        "collision_result",
+        "unresolved_allocation_result",
+        "automatic_port_substitution_allowed"
+      ],
+      "properties": {
+        "entry_point": {
+          "type": "string",
+          "const": "tools/validate_docs.py"
+        },
+        "required_checks": {
+          "type": "array",
+          "const": [
+            "schema_validation",
+            "workspace_identity_resolution",
+            "profile_scope_validation",
+            "host_context_resolution",
+            "pool_range_validation",
+            "binding_pool_membership",
+            "binding_collision_key_recalculation",
+            "collision_key_set_equality",
+            "intra_workspace_collision_detection",
+            "cross_workspace_collision_detection",
+            "reserved_port_conflict_detection",
+            "privileged_port_authorization",
+            "exposure_authorization",
+            "owner_reference_resolution",
+            "shared_service_contract_resolution",
+            "binding_lifecycle_validation",
+            "workspace_cleanup_validation",
+            "no_secret_values"
+          ]
+        },
+        "collision_result": {
+          "type": "string",
+          "const": "blocked"
+        },
+        "unresolved_allocation_result": {
+          "type": "string",
+          "const": "blocked"
+        },
+        "automatic_port_substitution_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "test_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/canonical_reference"
+          }
+        },
+        "evidence_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/canonical_reference"
+          }
+        }
+      }
+    },
+    "annotations": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128,
+        "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"
+      },
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "type": "string",
+            "maxLength": 2048
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "integer"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,897 @@
+{
+  "$schema": "../../schemas/deployment-profile.schema.json",
+  "profile_id": "sovereign_hub",
+  "profile_type": "deployment_profile",
+  "version": "1.0.0",
+  "status": "active",
+  "language": "en",
+  "effective_at": "2026-08-03T16:13:00-04:00",
+  "display_name": "Sovereign Hub",
+  "classification": {
+    "kind": "primary_profile",
+    "environment_class": "institutional_or_community_infrastructure",
+    "host_family": "linux",
+    "deployment_form": [
+      "single_node",
+      "small_cluster"
+    ],
+    "production_profile": true,
+    "sovereign_conformance_profile": true,
+    "sovereign_linux_node_conformance_implied": false,
+    "high_assurance_claim": false,
+    "default_user_profile": false
+  },
+  "purpose": "Provide local institutional or community infrastructure for governed multi-tenant kOA services, local web delivery, workflow execution, identity and trust, knowledge distribution, controlled publication, resilient local operations, backup and restore, and explicitly authorized federation without making an upstream cloud, external AI service, or central control plane necessary for minimum local operation.",
+  "authority": {
+    "canonical_owner_of": [
+      "profile_membership",
+      "profile_topology",
+      "profile_component_selection",
+      "profile_network_zones",
+      "profile_multi_tenant_controls",
+      "profile_storage_and_backup_requirements",
+      "profile_resource_policy",
+      "profile_offline_claims",
+      "profile_federation_policy",
+      "profile_security_claims",
+      "profile_lifecycle_claims",
+      "profile_conformance_claims"
+    ],
+    "does_not_own": [
+      "global_system_behavior",
+      "component_responsibility",
+      "component_data_schema",
+      "tenant_data",
+      "normative_requirement_text",
+      "interfile_lock_statement",
+      "release_channel_membership",
+      "artifact_payload_schema",
+      "trust_root_content",
+      "federation_peer_authority"
+    ]
+  },
+  "canonical_refs": {
+    "authority": "generated/authority-manifest.json",
+    "decisions": "generated/decision-index.json",
+    "documentation": "generated/document-index.json",
+    "system": "contracts/system.contract.json",
+    "components": "generated/component-catalog.json",
+    "requirements": "generated/requirements-index.json",
+    "locks": "generated/assertion-index.json",
+    "traceability": "generated/traceability.json",
+    "exceptions": "generated/exception-index.json",
+    "release_channels": "contracts/release-channels.contract.json",
+    "artifact_classes": "contracts/artifact-classes.contract.json",
+    "integrations": "contracts/integration-types.contract.json",
+    "test_catalog": "generated/test-catalog.json",
+    "evidence": "generated/evidence-catalog.json",
+    "profile_index": "generated/profile-catalog.json"
+  },
+  "decision_ids": [
+    "DEC-PROFILE-001",
+    "DEC-HUB-001",
+    "DEC-DATA-001",
+    "DEC-GOV-001",
+    "DEC-GATE-001",
+    "DEC-AI-001",
+    "DEC-SENT-001",
+    "DEC-UCKK-001",
+    "DEC-ARI-001",
+    "DEC-CONTAINER-001",
+    "DEC-K8S-001",
+    "DEC-HW-001",
+    "DEC-REL-001",
+    "DEC-AUDIT-001",
+    "DEC-OFFLINE-001",
+    "DEC-SEC-001"
+  ],
+  "requirement_ids": [
+    "REQ-PROFILE-001",
+    "REQ-PROFILE-002",
+    "REQ-HUB-001",
+    "REQ-HUB-002",
+    "REQ-HUB-003",
+    "REQ-HUB-004",
+    "REQ-HUB-005",
+    "REQ-HUB-006",
+    "REQ-HUB-007",
+    "REQ-HUB-008",
+    "REQ-HUB-009",
+    "REQ-HUB-010",
+    "REQ-HUB-011",
+    "REQ-HUB-012",
+    "REQ-HUB-013",
+    "REQ-HUB-014",
+    "REQ-HUB-015",
+    "REQ-HUB-016",
+    "REQ-DATA-001",
+    "REQ-GOV-001",
+    "REQ-GATE-001",
+    "REQ-AI-001",
+    "REQ-SENT-001",
+    "REQ-UCKK-001",
+    "REQ-OFFLINE-001",
+    "REQ-SEC-001",
+    "REQ-LIFE-001",
+    "REQ-AUDIT-001"
+  ],
+  "lock_ids": [
+    "LOCK-PROFILE-001",
+    "LOCK-PROFILE-002",
+    "LOCK-HUB-001",
+    "LOCK-HUB-002",
+    "LOCK-HUB-003",
+    "LOCK-HUB-004",
+    "LOCK-HUB-005",
+    "LOCK-HUB-006",
+    "LOCK-HUB-007",
+    "LOCK-HUB-008",
+    "LOCK-DATA-001",
+    "LOCK-GOV-001",
+    "LOCK-GATE-001",
+    "LOCK-COMP-001",
+    "LOCK-COMP-002",
+    "LOCK-AI-001",
+    "LOCK-AI-002",
+    "LOCK-SENT-001",
+    "LOCK-UCKK-001",
+    "LOCK-AUDIT-001",
+    "LOCK-OFFLINE-001",
+    "LOCK-SEC-001",
+    "LOCK-LIFE-001",
+    "LOCK-LIFE-002",
+    "LOCK-LIFE-003",
+    "LOCK-LIFE-004"
+  ],
+  "exception_ids": [],
+  "scope": {
+    "kind": "profile",
+    "selector": "profile:sovereign_hub",
+    "applies_to": [
+      "local institutional infrastructure",
+      "local community infrastructure",
+      "multi-tenant or multi-domain service hosting",
+      "LAN-first service delivery",
+      "controlled federation",
+      "local knowledge and artifact distribution",
+      "governed publication",
+      "local backup, restore, and exit"
+    ],
+    "excluded_claims": [
+      "sovereign_linux_node conformance for each physical node",
+      "high_assurance conformance",
+      "control_plane conformance",
+      "build_farm conformance",
+      "public cloud service conformance",
+      "unrestricted Internet service exposure"
+    ]
+  },
+  "inheritance": {
+    "inherits_profile_ids": [],
+    "implicit_inheritance_allowed": false,
+    "base_system_ref": "contracts/system.contract.json",
+    "node_profile_relationship": {
+      "node_profile_id": "sovereign_linux_node",
+      "relationship": "independent_optional_node_conformance",
+      "statement": "A hub deployment may be hosted on one or more nodes that independently conform to sovereign_linux_node, but this profile does not silently inherit that profile and does not by itself prove node-level conformance."
+    },
+    "unresolved_parent_result": "blocked"
+  },
+  "overlay_composition": {
+    "mode": "explicit_only",
+    "eligible_overlay_ids": [
+      "high_assurance",
+      "sovereign_offline"
+    ],
+    "adopted_overlay_ids": [],
+    "implicit_overlay_application_allowed": false,
+    "composition_requires": [
+      "active overlay contract",
+      "accepted owner decision",
+      "profile contract version update",
+      "impact analysis",
+      "lock validation",
+      "threat model update",
+      "conformance test update"
+    ],
+    "undeclared_overlay_result": "blocked"
+  },
+  "operating_modes": {
+    "required": [
+      "production_service",
+      "administration",
+      "recovery"
+    ],
+    "permitted": [
+      "maintenance",
+      "offline_operation",
+      "federation"
+    ],
+    "forbidden_as_implicit_modes": [
+      "build_farm",
+      "control_plane",
+      "developer_workstation",
+      "public_unrestricted_service"
+    ]
+  },
+  "topology": {
+    "supported_forms": [
+      "single_node",
+      "small_cluster"
+    ],
+    "default_form": "single_node",
+    "cluster_membership_must_be_explicit": true,
+    "public_and_private_interfaces_separated": true,
+    "administration_interface_separated": true,
+    "federation_interface_separated": true,
+    "shared_failure_domain_allowed": true,
+    "shared_failure_domain_must_be_disclosed": true,
+    "multi_site_required": false,
+    "control_plane_required_for_local_operation": false
+  },
+  "host": {
+    "operating_system_family": "linux",
+    "native_linux_required": true,
+    "maintained_distribution_required": true,
+    "standard_maintained_kernel_required": true,
+    "encrypted_durable_storage_required": true,
+    "mandatory_access_control_required": true,
+    "immutable_signed_system_image_required": false,
+    "immutable_signed_system_image_recommended": true,
+    "measured_boot_required": false,
+    "desktop_environment_required": false,
+    "appliance_shell_adopted": false,
+    "privileged_host_mutation": {
+      "allowed_by_default": false,
+      "narrow_broker_required_when_used": true
+    }
+  },
+  "hardware_envelope": {
+    "sizing_model": "measured_capacity_plan",
+    "fixed_universal_minimums_declared": false,
+    "capacity_plan_required": true,
+    "capacity_plan_must_cover": [
+      "active_tenants",
+      "concurrent_users",
+      "request_rate",
+      "workflow_queue_depth",
+      "database_working_set",
+      "message_broker_working_set",
+      "knowledge_repository_size",
+      "artifact_distribution_cache",
+      "backup window",
+      "restore target",
+      "federation bandwidth",
+      "offline operating duration",
+      "growth reserve",
+      "failure reserve"
+    ],
+    "reserved_capacity_required_for": [
+      "identity_and_trust",
+      "governance_policy_runtime",
+      "audit_broker",
+      "publication_gateway",
+      "resource_governor",
+      "critical_orgo_workflows",
+      "recovery"
+    ],
+    "resource_exhaustion_must_not_starve_constitutional_services": true,
+    "load_test_required_before_conformance_claim": true,
+    "kubernetes": {
+      "required": false,
+      "permitted": true,
+      "condition": "measured scale justifies orchestration complexity",
+      "single_node_default_requires_kubernetes": false
+    }
+  },
+  "container_policy": {
+    "containers_required_for_every_component": false,
+    "rootless_execution_required_when_feasible": true,
+    "preferred_runtime": "rootless_podman",
+    "quadlet_preferred_for_single_node_services": true,
+    "oci_compatible_runtime_permitted": true,
+    "runtime_specific_application_contracts_allowed": false,
+    "privileged_containers_allowed_by_default": false,
+    "read_only_root_filesystems_preferred": true,
+    "explicit_writable_mounts_required": true
+  },
+  "required_components": [
+    {
+      "component_id": "koa_node_agent",
+      "contract_ref": "contracts/components/koa-node-agent.component.json",
+      "role": "node_lifecycle_and_allowlisted_host_operations",
+      "activation": "always_on"
+    },
+    {
+      "component_id": "identity_and_trust",
+      "contract_ref": "contracts/components/identity-and-trust.component.json",
+      "role": "tenant_identity_trust_and_revocation",
+      "activation": "always_on"
+    },
+    {
+      "component_id": "governance_policy_runtime",
+      "contract_ref": "contracts/components/governance-policy-runtime.component.json",
+      "role": "authorization_disclosure_and_privilege_policy",
+      "activation": "always_on"
+    },
+    {
+      "component_id": "audit_broker",
+      "contract_ref": "contracts/components/audit-broker.component.json",
+      "role": "selective_audit_and_evidence_brokerage",
+      "activation": "always_on"
+    },
+    {
+      "component_id": "resource_governor",
+      "contract_ref": "contracts/components/resource-governor.component.json",
+      "role": "deterministic_resource_management",
+      "activation": "always_on"
+    },
+    {
+      "component_id": "konnaxion",
+      "contract_ref": "contracts/components/konnaxion.component.json",
+      "role": "controlled_local_web_and_public_domain_services",
+      "activation": "always_on"
+    },
+    {
+      "component_id": "orgo",
+      "contract_ref": "contracts/components/orgo.component.json",
+      "role": "private_workflow_and_operational_services",
+      "activation": "always_on"
+    },
+    {
+      "component_id": "kristal_runtime",
+      "contract_ref": "contracts/components/kristal-runtime.component.json",
+      "role": "knowledge_repository_runtime_and_distribution_cache",
+      "activation": "always_on"
+    },
+    {
+      "component_id": "publication_gateway",
+      "contract_ref": "contracts/components/publication-gateway.component.json",
+      "role": "governed_cross_domain_publication",
+      "activation": "always_on"
+    }
+  ],
+  "optional_components": [
+    {
+      "component_id": "uckk_platform",
+      "contract_ref": "contracts/components/uckk-platform.component.json",
+      "activation": "declared_capability"
+    },
+    {
+      "component_id": "uckk_dimension_gateway",
+      "contract_ref": "contracts/components/uckk-dimension-gateway.component.json",
+      "activation": "declared_capability"
+    },
+    {
+      "component_id": "ariane_runtime",
+      "contract_ref": "contracts/components/ariane-runtime.component.json",
+      "activation": "declared_local_interface"
+    },
+    {
+      "component_id": "sentient",
+      "contract_ref": "contracts/components/sentient.component.json",
+      "activation": "explicit_task",
+      "non_authoritative": true
+    }
+  ],
+  "infrastructure_services": {
+    "required_service_classes": [
+      "transactional_database",
+      "message_broker",
+      "local_artifact_or_container_registry",
+      "backup_repository",
+      "restore_environment"
+    ],
+    "implementation_selection_owned_by": "deployment_contract",
+    "database": {
+      "preferred_engine": "PostgreSQL",
+      "single_universal_schema_allowed": false,
+      "component_database_or_schema_identity_required": true,
+      "tenant_isolation_required": true
+    },
+    "message_broker": {
+      "required": true,
+      "tenant_and_component_namespaces_required": true,
+      "replay_safe_consumers_required": true,
+      "unbounded_queue_allowed": false
+    },
+    "local_registry": {
+      "required": true,
+      "content_identity_required": true,
+      "unverified_artifact_activation_allowed": false
+    }
+  },
+  "network_zones": [
+    {
+      "zone_id": "public",
+      "purpose": "Controlled Konnaxion-facing local or approved public delivery.",
+      "default_inbound": "deny_except_declared_services",
+      "default_outbound": "deny_except_declared_dependencies",
+      "may_access_private_databases_directly": false
+    },
+    {
+      "zone_id": "private",
+      "purpose": "Orgo, protected tenant workflows, and private operational state.",
+      "default_inbound": "deny",
+      "default_outbound": "deny_except_declared_dependencies",
+      "public_endpoint_allowed_by_default": false
+    },
+    {
+      "zone_id": "governance",
+      "purpose": "Policy evaluation, audit, identity, trust, and publication decisions.",
+      "default_inbound": "authenticated_internal_only",
+      "default_outbound": "deny_except_declared_dependencies",
+      "application_database_access_allowed": false
+    },
+    {
+      "zone_id": "administration",
+      "purpose": "Operator access, maintenance, health, recovery, and controlled node operations.",
+      "default_inbound": "strongly_authenticated_allowlist",
+      "default_outbound": "deny_except_declared_dependencies",
+      "shared_with_public_zone_allowed": false
+    },
+    {
+      "zone_id": "federation",
+      "purpose": "Explicitly configured synchronization and artifact exchange with trusted peers.",
+      "default_inbound": "deny_except_configured_peers",
+      "default_outbound": "deny_except_configured_peers",
+      "peer_signature_implies_trust": false
+    },
+    {
+      "zone_id": "backup",
+      "purpose": "Encrypted backup transfer and restore verification.",
+      "default_inbound": "deny",
+      "default_outbound": "declared_backup_targets_only",
+      "interactive_user_access_allowed": false
+    }
+  ],
+  "network_policy": {
+    "default_deny": true,
+    "internal_location_implies_trust": false,
+    "public_and_private_addressable_database_sharing_allowed": false,
+    "cross_zone_request_requires": [
+      "authenticated_identity",
+      "tenant_context",
+      "declared_action_scope",
+      "correlation_identifier",
+      "policy_decision"
+    ],
+    "node_local_privileged_apis_prefer_unix_sockets": true,
+    "public_dns_required_for_local_correctness": false,
+    "online_time_required_for_local_correctness": false,
+    "uncertain_time_behavior": "fail_safe_and_visible",
+    "retry_storm_prevention_required": true
+  },
+  "multi_tenant_model": {
+    "multi_tenant_capable": true,
+    "tenant_identity_required_on_every_request": true,
+    "tenant_data_isolation_required": true,
+    "tenant_policy_scope_required": true,
+    "tenant_keys_or_equivalent_purpose_scoping_required": true,
+    "cross_tenant_reads_allowed_by_default": false,
+    "cross_tenant_writes_allowed_by_default": false,
+    "cross_tenant_publication_requires_gateway": true,
+    "shared_cache_allowed": true,
+    "shared_cache_conditions": [
+      "content addressed or otherwise non-authoritative",
+      "no tenant-private mutable state",
+      "access policy preserved",
+      "eviction does not delete authoritative source"
+    ]
+  },
+  "data_authority": {
+    "logical_ownership_required": true,
+    "component_database_identity_required": true,
+    "direct_cross_component_authoritative_writes_allowed": false,
+    "universal_operational_database_allowed": false,
+    "cross_component_exchange": [
+      "authenticated component API",
+      "declared event contract",
+      "publication gateway",
+      "UCKK dimension gateway when applicable",
+      "governed import or synchronization contract",
+      "signed or verified artifact"
+    ],
+    "kristal_identity_excludes": [
+      "tenant workflow state",
+      "assignments",
+      "approvals",
+      "access control lists",
+      "distribution status",
+      "operational audit state"
+    ],
+    "caches_and_reproducible_derivatives_are_authoritative": false
+  },
+  "federation": {
+    "enabled_by_default": false,
+    "peer_configuration_required": true,
+    "trust_scopes": [
+      "tenant",
+      "environment",
+      "release_channel",
+      "authority",
+      "artifact_class",
+      "capability"
+    ],
+    "valid_peer_signature_automatically_authorizes_import": false,
+    "manifest_first": true,
+    "resumable": true,
+    "idempotent": true,
+    "bandwidth_aware": true,
+    "priority_order": [
+      "revocations_and_trust_updates",
+      "security_and_governance_policy",
+      "critical_orgo_operational_state",
+      "knowledge_manifests_and_indexes",
+      "essential_content",
+      "large_media",
+      "optional_caches"
+    ],
+    "reconnection_requires_revalidation": true
+  },
+  "offline_behavior": {
+    "minimum_local_operation_without_internet": true,
+    "upstream_service_required_for_minimum_local_operation": false,
+    "control_plane_required_for_minimum_local_operation": false,
+    "external_ai_required_for_minimum_local_operation": false,
+    "local_capabilities": [
+      "tenant authentication under active cached authority",
+      "Konnaxion local web delivery",
+      "Orgo critical workflows",
+      "Kristal repository access",
+      "governed local publication between local domains",
+      "local artifact distribution",
+      "local audit capture",
+      "local backup and restore",
+      "local administration and recovery"
+    ],
+    "remote_capabilities_unavailable_offline": [
+      "remote federation",
+      "remote publication",
+      "remote registry synchronization",
+      "external AI surfaces",
+      "remote trust status requiring fresh validation"
+    ],
+    "queued_remote_work": {
+      "automatic_release_on_reconnection": false,
+      "revalidation_required": true,
+      "dimensions": [
+        "authority",
+        "tenant",
+        "consent",
+        "trust",
+        "revocation",
+        "credentials",
+        "target",
+        "release_compatibility",
+        "conflict_state",
+        "time_validity"
+      ]
+    },
+    "local_name_resolution_required": true,
+    "clock_uncertainty_recorded": true,
+    "unrelated_local_capabilities_continue": true
+  },
+  "ai_boundary": {
+    "native_ai_in_profile_baseline": false,
+    "approved_external_surfaces_optional": [
+      "chatgpt",
+      "suno",
+      "gamma",
+      "ariane_external_voice"
+    ],
+    "automatic_external_invocation_allowed": false,
+    "external_output_authoritative_by_default": false,
+    "external_output_direct_authoritative_mutation_allowed": false,
+    "external_processing_requires": [
+      "explicit capability",
+      "data minimization",
+      "authority and consent",
+      "provenance",
+      "controlled re-import",
+      "component-level acceptance"
+    ],
+    "external_ai_unavailable_result": "external_assistance_unavailable_only"
+  },
+  "sentient": {
+    "available": true,
+    "installed_by_default": false,
+    "started_by_default": false,
+    "activation": "explicit_task",
+    "authority": "non_authoritative",
+    "required_for_profile_conformance": false,
+    "required_for_offline_core_operation": false,
+    "isolated_resources": [
+      "dependencies",
+      "storage",
+      "service_identity",
+      "temporary_data",
+      "network_access",
+      "cpu",
+      "memory"
+    ],
+    "may_write_component_authoritative_data_directly": false
+  },
+  "resource_governance": {
+    "resource_governor_required": true,
+    "governance_policy_runtime_required": true,
+    "authorities_are_separate": true,
+    "protected_services": [
+      "identity_and_trust",
+      "governance_policy_runtime",
+      "audit_broker",
+      "publication_gateway",
+      "koa_node_agent",
+      "critical_orgo_workflows",
+      "recovery"
+    ],
+    "per_service_controls": [
+      "cpu",
+      "memory",
+      "process_count",
+      "storage",
+      "io_priority",
+      "network_egress",
+      "queue_depth"
+    ],
+    "heavy_optional_services_task_activated": true,
+    "resource_exhaustion_behavior": [
+      "preserve constitutional services",
+      "deny or queue new heavy work",
+      "throttle non-critical work",
+      "preserve active authoritative state",
+      "make degraded state visible"
+    ]
+  },
+  "security": {
+    "least_privilege_required": true,
+    "dedicated_service_identities_required": true,
+    "mandatory_access_control_required": true,
+    "default_deny_network_required": true,
+    "encrypted_sensitive_state_required": true,
+    "secrets_by_reference_required": true,
+    "privileged_containers_allowed": false,
+    "arbitrary_privileged_broker_arguments_allowed": false,
+    "release_signing_keys_available_to_application_services": false,
+    "recovery_boundary_separate": true,
+    "restricted_evidence_access_is_audited": true,
+    "unknown_data_class_defaults_to": "restricted",
+    "production_credentials_allowed": true,
+    "production_credentials_must_be_scoped": true
+  },
+  "storage": {
+    "separate_authority_domains_required": [
+      "node_identity",
+      "release_sets",
+      "governance_policy",
+      "kristal_repository",
+      "konnaxion_state",
+      "orgo_state",
+      "publication_staging",
+      "audit_and_evidence",
+      "exports",
+      "quarantine",
+      "backups"
+    ],
+    "authoritative_and_reproducible_data_must_be_separate": true,
+    "artifact_immutability_required": true,
+    "append_oriented_records": [
+      "activation_history",
+      "revocations",
+      "critical_audit_events",
+      "publication_receipts"
+    ],
+    "untrusted_imports_enter_quarantine": true,
+    "quarantine_validation_required": [
+      "media policy",
+      "manifest",
+      "signature or applicable integrity proof",
+      "compatibility",
+      "audience",
+      "revocation state"
+    ]
+  },
+  "backup_restore_and_exit": {
+    "local_backup_required": true,
+    "independent_backup_target_required": true,
+    "encrypted": true,
+    "tenant_scoped": true,
+    "integrity_protected": true,
+    "versioned": true,
+    "retention_governed": true,
+    "restore_testing_required": true,
+    "backup_scope": [
+      "identity and delegation",
+      "governance policy",
+      "trust references",
+      "Konnaxion authoritative state",
+      "Orgo authoritative state",
+      "Kristal artifacts or guaranteed references",
+      "rights and consent records",
+      "audit and evidence by authorized class",
+      "release and restore metadata"
+    ],
+    "restore_requires": [
+      "clean compatible environment",
+      "bundle identity verification",
+      "tenant and audience verification",
+      "key availability",
+      "schema and migration compatibility",
+      "trust continuity",
+      "artifact inventory verification",
+      "policy compatibility",
+      "post_restore_health_validation"
+    ],
+    "sovereignty_bundle_supported": true,
+    "credible_exit_test_required": true,
+    "rpo_and_rto_declared_by_data_class": true
+  },
+  "observability_and_audit": {
+    "local_health_available_offline": true,
+    "degraded_state_visible": true,
+    "active_release_identities_visible": true,
+    "last_successful_synchronization_visible": true,
+    "selective_audit_required": true,
+    "unrestricted_raw_data_collection_allowed": false,
+    "audit_forwarding_failure_behavior": "continue_local_capture",
+    "critical_events": [
+      "trust change",
+      "policy activation",
+      "publication decision",
+      "release activation",
+      "privileged operation",
+      "backup completion",
+      "restore",
+      "federation peer change",
+      "break glass operation"
+    ]
+  },
+  "lifecycle": {
+    "four_release_channels_required": [
+      "system",
+      "services",
+      "governance",
+      "knowledge"
+    ],
+    "signed_release_set_required": true,
+    "partial_authoritative_activation_allowed": false,
+    "independent_channel_update_requires_compatibility": true,
+    "last_known_good_state_required": true,
+    "rollback_or_forward_repair_required": true,
+    "offline_bundle_import_supported": true,
+    "candidate_activation_requires": [
+      "integrity verification",
+      "trust and revocation validation",
+      "profile compatibility",
+      "component contract compatibility",
+      "migration validation",
+      "test evidence",
+      "release set validation"
+    ],
+    "failed_activation_preserves_current_active_state": true
+  },
+  "conformance": {
+    "claimable": true,
+    "current_claim": "not_asserted",
+    "claim_requires": [
+      "profile schema validation",
+      "canonical reference resolution",
+      "component contract validation",
+      "network zone validation",
+      "tenant isolation tests",
+      "component data ownership tests",
+      "offline continuity tests",
+      "federation trust tests",
+      "publication boundary tests",
+      "resource reserve tests",
+      "backup and restore test",
+      "credible exit test",
+      "release and rollback tests",
+      "security baseline tests",
+      "capacity and load evidence",
+      "traceability completeness",
+      "active evidence"
+    ],
+    "test_ids": [
+      "TEST-PROFILE-HUB-001",
+      "TEST-HUB-TOPOLOGY-001",
+      "TEST-HUB-NETWORK-001",
+      "TEST-HUB-TENANT-001",
+      "TEST-HUB-DATA-001",
+      "TEST-HUB-GOV-001",
+      "TEST-HUB-PUBLICATION-001",
+      "TEST-HUB-OFFLINE-001",
+      "TEST-HUB-FEDERATION-001",
+      "TEST-HUB-RESOURCE-001",
+      "TEST-HUB-BACKUP-001",
+      "TEST-HUB-RESTORE-001",
+      "TEST-HUB-EXIT-001",
+      "TEST-HUB-RELEASE-001",
+      "TEST-HUB-SECURITY-001",
+      "TEST-HUB-CAPACITY-001"
+    ],
+    "evidence_required": true,
+    "evidence_ids": [],
+    "failure_result": "non_conformant",
+    "missing_evidence_result": "blocked"
+  },
+  "failure_behavior": {
+    "internet_unavailable": "continue_local_operation",
+    "control_plane_unavailable": "continue_local_operation",
+    "federation_peer_unavailable": "queue_eligible_work_without_auto_release",
+    "external_ai_unavailable": "disable_external_assistance_only",
+    "governance_policy_runtime_unavailable": "deny_sensitive_new_decisions",
+    "audit_forwarding_unavailable": "capture_locally",
+    "identity_upstream_unavailable": "apply_declared_cached_authority_expiry_policy",
+    "publication_gateway_unavailable": "block_new_cross_domain_publication",
+    "resource_pressure": "preserve_constitutional_services_and_throttle_optional_work",
+    "database_unavailable": "degrade_affected_component_without_cross_component_failover_writes",
+    "message_broker_unavailable": "preserve_durable_state_and_replay_safe_queues",
+    "backup_target_unavailable": "report_degraded_protection_and_preserve_active_state",
+    "candidate_release_invalid": "retain_current_active_release_set",
+    "time_uncertain": "block_time_sensitive_expiry_and_authority_decisions",
+    "trust_ambiguous": "block_affected_import_federation_or_activation",
+    "single_component_failure": "preserve_unrelated_component_capabilities"
+  },
+  "prohibited_assumptions": [
+    "The sovereign hub is a universal database for all component state.",
+    "Konnaxion may read Orgo private data directly.",
+    "Orgo may publish through direct writes into Konnaxion.",
+    "A public interface and a private workflow interface may share unrestricted network and disclosure policy.",
+    "A peer signature alone establishes federation trust.",
+    "Internet or a central control plane is required for minimum local operation.",
+    "Kubernetes is required for a sovereign hub.",
+    "Kubernetes is permitted without measured scale and operational justification.",
+    "The hub profile silently inherits sovereign_linux_node or a high-assurance overlay.",
+    "A hub conformance claim proves each physical node conforms to sovereign_linux_node.",
+    "Governance Policy Runtime and Resource Governor are one authority.",
+    "Publication Gateway and UCKK Dimension Gateway are interchangeable.",
+    "External AI is a native or authoritative hub capability.",
+    "SenTient is required, authoritative, installed by default, or always active.",
+    "A valid artifact can activate without Release Set compatibility.",
+    "Queued federation or publication work may be released automatically after reconnection.",
+    "Internal network location implies trust.",
+    "A shared cache may contain tenant-private mutable authority.",
+    "Backup possession authorizes plaintext export.",
+    "Auditability requires unrestricted disclosure of protected evidence."
+  ],
+  "validation": {
+    "entry_point": "tools/validate_docs.py",
+    "required_checks": [
+      "schema_validation",
+      "profile_identity_uniqueness",
+      "canonical_reference_resolution",
+      "accepted_decision_resolution",
+      "requirement_resolution",
+      "lock_resolution",
+      "explicit_inheritance",
+      "explicit_overlay_composition",
+      "component_contract_resolution",
+      "required_component_presence",
+      "network_zone_separation",
+      "default_deny_network",
+      "tenant_isolation",
+      "component_data_ownership",
+      "publication_gateway_boundary",
+      "federation_trust_scoping",
+      "offline_continuity",
+      "queued_work_revalidation",
+      "resource_reserve_enforcement",
+      "governance_and_resource_authority_separation",
+      "native_ai_absence",
+      "sentient_isolation",
+      "backup_restore_and_exit",
+      "release_set_compatibility",
+      "load_and_capacity_evidence",
+      "traceability_completeness",
+      "evidence_validity"
+    ],
+    "validation_outcomes": [
+      "pass",
+      "fail",
+      "blocked"
+    ],
+    "activation_requires_outcome": "pass",
+    "ordinary_file_hashes_required": false
+  }
+}

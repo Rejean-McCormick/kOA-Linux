@@ -1,249 +1,256 @@
 # kOA Linux Foundation
 
-> Foundational specification and reference architecture for a sovereign, immutable, offline-capable, and governable Linux environment supporting Konnaxion, Orgo, Kristal, and the kOA Governance Plane.
+> Sovereign, immutable, offline-capable, and governable Linux operating environment for the kOA ecosystem.
 
-**Specification version:** `0.2-foundation-english`
-**Status:** Normative target architecture; implementation validation required
-**Published:** July 29, 2026
+**Specification version:** `0.2-foundation-english`  
+**Documentation architecture:** contract-first  
+**Status:** normative target architecture; implementation validation required  
+**Last documentation validation:** August 4, 2026
 
 ## Overview
 
-kOA Linux is the sovereign appliance runtime of the kOA Digital Ecosystem. It is not a general-purpose desktop distribution and it is not a conventional application stack placed on top of Linux.
+kOA Linux is the governed operating environment of the kOA ecosystem. It is not a general-purpose desktop distribution and it is not the product specification of every subsystem it hosts.
 
-The system is designed as a governed execution environment in which:
+The repository defines:
 
-* Linux provides isolation, process control, storage, networking, device access, and recovery mechanisms;
-* Konnaxion provides the public and commons-facing coordination plane;
-* Orgo provides the private and organizational execution plane;
-* Kristal provides portable epistemic contracts, validated artifacts, constrained queries, and reader-policy semantics;
-* the kOA Governance Plane converts explicit sociotechnical rules into signed, inspectable, contestable, and reversible decisions;
-* a narrow privileged node agent performs only the host operations that cannot safely occur inside unprivileged services.
+- system invariants and operating boundaries;
+- deployable profiles and resource envelopes;
+- internal kOA components;
+- trust, identity, storage, network, lifecycle, security, and operational rules;
+- integration contracts for independently documented subsystems;
+- release, recovery, conformance, and validation requirements.
 
-This repository defines the architecture, invariants, trust boundaries, contracts, node profiles, release model, security controls, operational requirements, and conformance expectations for that environment.
+Each integrated subsystem remains authoritative for its own internal domain model, workflows, state machines, complete APIs, user interfaces, and product behavior. kOA documents only the operating environment and the interfaces that cross the kOA boundary.
 
 ## Core statement
 
-> Linux provides the security and isolation mechanisms. Kristal provides the epistemic contracts. Konnaxion and Orgo provide the principal coordination and execution planes. The kOA Governance Plane turns sociotechnical rules into signed, inspectable, contestable, and reversible decisions.
+> Linux provides isolation and host mechanisms. kOA provides the governed operating environment. Source contracts and accepted decisions define authority. Integrated subsystems retain authority over their internal behavior.
+
+## Authority model
+
+The active documentation corpus follows these rules:
+
+1. Source contracts and normative source documents define current facts.
+2. Accepted ADRs close architectural decisions.
+3. Executable validators enforce structural and semantic constraints.
+4. Generated indexes support discovery but have no independent authority.
+5. Subsystem documentation is referenced through reserved mount points rather than copied into kOA.
+6. Missing information is not inferred from obsolete documents or undeclared compatibility behavior.
+
+AI-assisted work starts at [`docs/AI_CONTEXT.md`](docs/AI_CONTEXT.md).
 
 ## Architecture
 
 ```text
-┌──────────────────────────────────────────────────────────────┐
-│                    koa-session-shell                         │
-│ Konnaxion workspace • Orgo workspace • Kristal Library      │
-├──────────────────────────────────────────────────────────────┤
-│                    Application Plane                         │
-│ Konnaxion Core • Orgo Core • Kristal Runtime • adapters     │
-├──────────────────────────────────────────────────────────────┤
-│                    Governance Plane                          │
-│ policy runtime • audit broker • publication gateway         │
-├──────────────────────────────────────────────────────────────┤
-│                    Node Plane                                │
-│ node agent • trust • releases • sync • export • recovery    │
-├──────────────────────────────────────────────────────────────┤
-│ rootless containers • systemd • LSM • cgroups • namespaces  │
-├──────────────────────────────────────────────────────────────┤
-│                 immutable maintained Linux                   │
-└──────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────┐
+│                       kOA user surfaces                          │
+│ session shell • profile-specific interfaces • local operations  │
+├──────────────────────────────────────────────────────────────────┤
+│              profile-selected integrated subsystems              │
+│ Ariane • Konnaxion • Orgo • SenTient • SemantiK Architect • UCKK│
+├──────────────────────────────────────────────────────────────────┤
+│                    internal kOA components                       │
+│ node agent • governance • trust • audit • publication • resources│
+│ Kristal runtime • UCKK dimension gateway                        │
+├──────────────────────────────────────────────────────────────────┤
+│ rootless services • systemd • LSM • cgroups • namespaces        │
+├──────────────────────────────────────────────────────────────────┤
+│                  immutable maintained Linux                      │
+└──────────────────────────────────────────────────────────────────┘
 ```
 
-### Product and security domains
+## Integrated subsystems
 
-Konnaxion and Orgo are co-principal platforms. Neither is subordinate to the other.
+| Subsystem | Role at the kOA boundary | Authoritative internal documentation |
+| --- | --- | --- |
+| **Ariane** | Local navigation and interaction orchestration | `docs/subsystems/ariane/` |
+| **Konnaxion** | Public, community, and civic coordination | `docs/subsystems/konnaxion/` |
+| **Orgo** | Private and organizational execution | `docs/subsystems/orgo/` |
+| **SenTient** | Optional isolated research and enrichment workbench | `docs/subsystems/sentient/` |
+| **SemantiK Architect** | Language construction and verified artifact production | `docs/subsystems/semantik-architect/` |
+| **UCKK** | Native media, file classification, managed storage, provenance, rights, and lifecycle | `docs/subsystems/uckk/` |
 
-| Domain               | Primary responsibility                                                                                                 | Default exposure               |
-| -------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
-| **Konnaxion**        | Public knowledge, learning, discovery, deliberation, collaboration, cultural access, and distribution                  | Public or community-facing     |
-| **Orgo**             | Signals, cases, tasks, workflows, approvals, escalation, execution, audit, and operational continuity                  | Private and organizational     |
-| **Kristal**          | Structured epistemic state, provenance, validation, authority, query contracts, runtime packs, and semantic policy     | Transversal shared foundation  |
-| **Governance Plane** | Policy evaluation, disclosure decisions, activation authorization, rights enforcement, recourse, and decision receipts | Internal trusted service plane |
-| **Node Plane**       | Host activation, trust roots, update application, export, recovery, and narrowly privileged operations                 | Local privileged boundary      |
+kOA boundary summaries live in [`docs/04-components/subsystems/`](docs/04-components/subsystems/). Machine-readable boundary contracts live in [`docs/contracts/subsystems/`](docs/contracts/subsystems/).
 
-Konnaxion and Orgo must remain isolated in execution through separate identities, data stores, volumes, keys, and network boundaries. Controlled exchange occurs through explicit gateways and signed or receipted contracts rather than direct database access.
+### UCKK Mediatheque
+
+The Mediatheque is native to UCKK. UCKK owns its complete object, version, classification, rights, restriction, provenance, rendition, duplicate-handling, import, export, audit, backup, and restore models.
+
+kOA documents only deployment, resources, trust, storage exposure, gateways, publication, health, backup coordination, and degradation behavior.
+
+The local baseline uses SQLite and managed local storage. XLSX and approved AI surfaces are interfaces; they are not authorities.
+
+The mounted UCKK documentation is expected to expose the Mediatheque at:
+
+```text
+docs/subsystems/uckk/mediatheque/
+```
+
+## Internal kOA components
+
+The internal components documented completely by kOA include:
+
+- `koa-node-agent`;
+- `governance-policy-runtime`;
+- `identity-and-trust`;
+- `audit-broker`;
+- `publication-gateway`;
+- `resource-governor`;
+- `kristal-runtime`;
+- `uckk-dimension-gateway`.
+
+Their machine-readable contracts live in [`docs/contracts/components/`](docs/contracts/components/).
 
 ## Foundational principles
 
 A conforming implementation preserves the following properties:
 
-1. **Offline capability** — core consultation, verification, execution, and recovery functions remain available without permanent cloud connectivity.
-2. **Verified activation** — artifacts, policies, services, and OS releases are activated only after declared integrity, compatibility, trust, and authorization checks succeed.
-3. **Safe degradation** — failures block unsafe actions while preserving context, status, auditability, and rollback where policy permits.
+1. **Offline capability** — core consultation, verification, execution, and recovery remain available without permanent cloud connectivity.
+2. **Verified activation** — artifacts, policies, services, and releases activate only after declared integrity, compatibility, trust, and authorization checks succeed.
+3. **Safe degradation** — failures block unsafe actions while preserving context, status, evidence, and recoverability.
 4. **Deterministic-first execution** — core transformations are reproducible; AI remains optional, bounded, attributable, and unable to create invisible authority.
-5. **Least privilege** — Konnaxion, Orgo, Kristal services, and optional integrations do not receive root access or unrestricted host capabilities.
-6. **Explicit governance** — governance rules are versioned policy artifacts, not undocumented operator behavior or hidden application logic.
-7. **Selective audit** — the system remains auditable without turning all operational or personal data into public surveillance.
-8. **Semantic sovereignty** — definitions, ontologies, authority channels, contested terms, and multilingual mappings remain governed and portable.
-9. **Cultural rights enforcement** — consent, community authority, access conditions, withdrawal, and AI restrictions are enforced throughout the data lifecycle.
-10. **Credible exit** — export, transfer, restore, self-hosting, trust handover, and operator independence are product capabilities tested before release.
+5. **Least privilege** — integrated subsystems and optional services do not receive unrestricted host capabilities.
+6. **Explicit governance** — governance rules are versioned policy artifacts rather than undocumented operator behavior.
+7. **Selective audit** — the system remains auditable without indiscriminate disclosure of personal or operational data.
+8. **Semantic sovereignty** — terminology, authority channels, contested concepts, and multilingual mappings remain governed and portable.
+9. **Cultural rights enforcement** — consent, community authority, access conditions, withdrawal, and AI restrictions are enforced across the data lifecycle.
+10. **Credible exit** — export, transfer, restore, self-hosting, trust handover, and operator independence are tested product capabilities.
 
-The complete normative set is defined in [`00-foundation/01-normative-invariants.md`](00-foundation/01-normative-invariants.md).
+## Documentation structure
 
-## Node profiles
+| Path | Purpose |
+| --- | --- |
+| [`docs/00-governance/`](docs/00-governance/) | Documentation authority, change rules, ownership, validation, and lifecycle |
+| [`docs/01-constitution/`](docs/01-constitution/) | Charter, scope, invariants, principles, and glossary |
+| [`docs/02-system/`](docs/02-system/) | System context, logical architecture, boundaries, capabilities, and operating behavior |
+| [`docs/03-profiles/`](docs/03-profiles/) | Deployable profiles, composition, activation, resources, connectivity, and degradation |
+| [`docs/04-components/`](docs/04-components/) | Internal components and subsystem integration boundaries |
+| [`docs/05-development/`](docs/05-development/) | Development environments, isolation, builds, tests, and publication |
+| [`docs/06-lifecycle/`](docs/06-lifecycle/) | Artifacts, releases, activation, verification, recovery, and contract evolution |
+| [`docs/07-security/`](docs/07-security/) | Threats, trust, privileges, storage, network, privacy, rights, and supply chain |
+| [`docs/08-operations/`](docs/08-operations/) | Health, observability, capacity, backup, restore, incidents, and maintenance |
+| [`docs/09-conformance/`](docs/09-conformance/) | Requirements, evidence, traceability, release gates, and executable controls |
+| [`docs/10-adrs/`](docs/10-adrs/) | Accepted architecture decisions |
+| [`docs/11-recipes/`](docs/11-recipes/) | Profile-specific operational recipes |
+| [`docs/contracts/`](docs/contracts/) | Canonical machine-readable contracts |
+| [`docs/schemas/`](docs/schemas/) | JSON Schemas for source contracts and exchanged artifacts |
+| [`docs/tools/`](docs/tools/) | Generators and validators |
+| [`docs/generated/`](docs/generated/) | Rebuildable indexes, catalogs, traceability, and AI context |
+| [`docs/subsystems/`](docs/subsystems/) | Reserved mount points for authoritative subsystem documentation |
 
-The architecture defines four deployable profiles:
-
-| Profile                  | Purpose                                                                                                                                                    |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Endpoint**             | Local user appliance with the session shell, constrained Kristal runtime, active packs, local cache, verification, rollback, and limited offline operation |
-| **Sovereign / Edge Hub** | Locally autonomous Konnaxion and Orgo services, databases, queues, identity, trust, publication gateway, registry, and synchronization services            |
-| **Build Farm**           | Heavy Kristal compilation, validation, SenTient resolution, Architect builds, indexing, artifact production, and content-addressed caching                 |
-| **Control Plane**        | Release coordination, governance distribution, fleet policy, signing workflows, compatibility metadata, and controlled operational oversight               |
-
-Signing authority should be separated from general build execution. Endpoint nodes do not carry the full compiler, heavy reconciliation services, or unrestricted signing keys.
-
-## Release model
-
-kOA Linux uses four independently versioned and signed release channels:
-
-1. **OS Image** — immutable host image, kernel, system services, recovery environment, and security baseline.
-2. **Service Bundle** — Konnaxion, Orgo, Kristal runtime, governance services, and supporting OCI images.
-3. **Governance Policy Bundle** — executable policy rules, decision contracts, disclosure rules, rights controls, and activation constraints.
-4. **Kristal Artifact Channels** — exchanges, runtime packs, semantic policy packs, indexes, revocations, and audience-scoped artifacts.
-
-A signed `koa-release-set` pins compatible versions across all four channels. Cross-channel compatibility must be verified before activation. Rollback is deterministic, authorization-gated, and preserves last-known-good state.
-
-## Governance as runtime
-
-Governance does not belong in the Linux kernel. It is compiled into signed and versioned policy bundles evaluated by a deterministic user-space runtime.
-
-The Governance Plane includes:
-
-* policy bundle loading and verification;
-* authorization decisions;
-* disclosure and publication policy;
-* activation policy;
-* AI capability policy;
-* export, withdrawal, and transfer policy;
-* cultural rights and consent policy;
-* emergency and recovery policy;
-* machine-readable decision receipts;
-* recourse and review hooks.
-
-A governance decision must not directly become host privilege. Democratic outcomes, SmartVote readings, expertise signals, and epistemic authority remain separate from Unix identities, signing keys, trust roots, and root-level execution.
-
-## Repository structure
-
-| Path                                                 | Contents                                                                                                                         |
-| ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| [`00-foundation/`](00-foundation/)                   | Charter, normative invariants, scope, non-goals, and glossary                                                                    |
-| [`01-architecture/`](01-architecture/)               | System context, logical and physical architecture, profiles, trust boundaries, storage, network, boot, and recovery              |
-| [`02-components/`](02-components/)                   | Specifications for the session shell, node agent, policy runtime, Konnaxion, Orgo, Kristal, gateways, audit, identity, and trust |
-| [`03-lifecycle/`](03-lifecycle/)                     | Release channels, updates, policy bundles, Kristal artifacts, offline bundles, rollback, recovery, and migrations                |
-| [`04-security/`](04-security/)                       | Threat model, security baseline, privacy, keys, AI boundaries, integrations, cultural rights, and consent                        |
-| [`05-operations/`](05-operations/)                   | Observability, backup, restore, exit, degradation, SLOs, conformance testing, and incident response                              |
-| [`06-contracts/`](06-contracts/)                     | JSON Schemas for release, policy, node, audit, integration, cultural-rights, and offline-bundle contracts                        |
-| [`07-systemd/`](07-systemd/)                         | Illustrative systemd, sysusers, tmpfiles, network, volume, and Podman Quadlet definitions                                        |
-| [`08-adrs/`](08-adrs/)                               | Founding Architecture Decision Records                                                                                           |
-| [`REQUIREMENTS-MATRIX.md`](REQUIREMENTS-MATRIX.md)   | Requirement ownership, verification method, and conformance mapping                                                              |
-| [`KOA-LINUX-FOUNDATION.md`](KOA-LINUX-FOUNDATION.md) | Consolidated edition of the specification                                                                                        |
-| [`SOURCES.md`](SOURCES.md)                           | Documentary basis and provenance                                                                                                 |
-
-A complete generated file listing is available in [`TREE.txt`](TREE.txt).
+Do not edit files under `docs/generated/` manually.
 
 ## Recommended reading paths
 
-### Executive and governance review
+### First reading
 
-1. [`00-foundation/00-charter.md`](00-foundation/00-charter.md)
-2. [`00-foundation/01-normative-invariants.md`](00-foundation/01-normative-invariants.md)
-3. [`01-architecture/00-system-context.md`](01-architecture/00-system-context.md)
-4. [`02-components/02-koa-policy-runtime.md`](02-components/02-koa-policy-runtime.md)
-5. [`04-security/02-privacy-and-disclosure.md`](04-security/02-privacy-and-disclosure.md)
-6. [`05-operations/01-backup-restore-and-exit.md`](05-operations/01-backup-restore-and-exit.md)
+1. [`docs/README.md`](docs/README.md)
+2. [`docs/01-constitution/00-charter.md`](docs/01-constitution/00-charter.md)
+3. [`docs/02-system/00-system-overview.md`](docs/02-system/00-system-overview.md)
+4. [`docs/04-components/04-subsystem-documentation-boundaries.md`](docs/04-components/04-subsystem-documentation-boundaries.md)
+5. [`docs/09-conformance/00-conformance-model.md`](docs/09-conformance/00-conformance-model.md)
 
-### Platform architecture review
+### AI and automation
 
-1. [`01-architecture/01-logical-architecture.md`](01-architecture/01-logical-architecture.md)
-2. [`01-architecture/02-physical-architecture.md`](01-architecture/02-physical-architecture.md)
-3. [`01-architecture/03-node-profiles.md`](01-architecture/03-node-profiles.md)
-4. [`01-architecture/04-process-and-trust-boundaries.md`](01-architecture/04-process-and-trust-boundaries.md)
-5. [`03-lifecycle/00-release-model.md`](03-lifecycle/00-release-model.md)
-6. [`04-security/00-threat-model.md`](04-security/00-threat-model.md)
+1. [`docs/AI_CONTEXT.md`](docs/AI_CONTEXT.md)
+2. [`docs/contracts/ai-navigation.contract.json`](docs/contracts/ai-navigation.contract.json)
+3. Applicable source contract
+4. Applicable subsystem boundary contract
+5. Mounted authoritative subsystem documentation
+6. Generated indexes for discovery only
 
-### Implementation and conformance review
+## Mounting subsystem documentation
 
-1. [`02-components/01-koa-node-agent.md`](02-components/01-koa-node-agent.md)
-2. [`02-components/05-kristal-runtime-plane.md`](02-components/05-kristal-runtime-plane.md)
-3. [`03-lifecycle/05-offline-bundles.md`](03-lifecycle/05-offline-bundles.md)
-4. [`03-lifecycle/06-rollback-and-recovery.md`](03-lifecycle/06-rollback-and-recovery.md)
-5. [`05-operations/04-conformance-tests.md`](05-operations/04-conformance-tests.md)
-6. [`REQUIREMENTS-MATRIX.md`](REQUIREMENTS-MATRIX.md)
-7. [`06-contracts/`](06-contracts/)
+The six subsystem paths are intentionally reserved. Until a subsystem repository is available, an unmounted-path warning is expected and does not invalidate the kOA corpus.
 
-## Normative language
+Use directory junctions on Windows or symbolic links on Linux. Do not use `.lnk` shortcut files.
 
-The terms **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, and **MAY** are normative:
+### Windows junction example
 
-* **MUST / MUST NOT** — required for conformance;
-* **SHOULD / SHOULD NOT** — expected unless a documented ADR explains and bounds the exception;
-* **MAY** — optional behavior that must preserve all foundational invariants.
+```bat
+mklink /J docs\subsystems\ariane C:\path\to\ariane\docs
+```
+
+### Linux symbolic-link example
+
+```bash
+ln -s /path/to/ariane/docs docs/subsystems/ariane
+```
+
+Repeat with the appropriate target for each subsystem.
+
+## Release and recovery model
+
+kOA activates only verified and compatible release sets. An activation failure leaves the current verified release active. Recovery restores the latest verified release as one unit; it does not reactivate an undeclared operating mode.
+
+Release identity, artifact identity, trust, compatibility, authorization, and evidence must agree before activation.
 
 ## Validation
 
-The repository includes a SHA-256 manifest for integrity verification:
+Run the complete documentation validation pipeline from the repository root:
 
 ```bash
-sha256sum -c MANIFEST.sha256
+python docs/tools/validate_docs.py
 ```
 
-JSON contracts are located in `06-contracts/`. Implementations should validate generated documents against the applicable schema and execute the conformance scenarios defined in `05-operations/04-conformance-tests.md`.
+The pipeline executes the specialized documentation controls, including contract, authority, graph, generated-content, subsystem-boundary, language, profile, release, and traceability checks.
 
-A conforming product must provide evidence for requirements in `REQUIREMENTS-MATRIX.md`. Architectural claims without test evidence, operational receipts, recovery exercises, or reproducible release artifacts are not sufficient for conformance.
+Rebuild generated navigation after changing source contracts or source documents:
 
-## Implementation status
+```bash
+python docs/tools/build_indexes.py
+python docs/tools/build_ai_context.py
+python docs/tools/check_generated_content.py
+```
 
-This repository is a founding specification and reference architecture. It does not claim that every implementation choice has been proven across the complete target hardware and regulatory matrix.
+Check subsystem mounts without requiring all of them to be present:
 
-The following decisions require prototypes, benchmarks, security review, and deployment evidence:
+```bash
+python docs/tools/check_subsystem_alignment.py
+```
 
-* final base Linux distribution;
-* immutable-image implementation;
-* compositor and embedded web engine;
-* TPM and hardware-backed key requirements by assurance level;
-* production key-custody and signing topology;
-* final SLOs, resource envelopes, and capacity limits;
-* database topology and tenant partitioning at scale;
-* regulatory deployment profiles;
-* production implementations of the specified node and governance services.
+After all six official documentation trees are mounted, enforce their presence:
 
-The architecture is considered optimal relative to the documented constraints, not universally optimal independent of hardware, scale, threat model, law, network conditions, and support lifecycle.
+```bash
+python docs/tools/check_subsystem_alignment.py --require-mounted
+```
 
 ## Contributing
 
-Contributions should improve precision, testability, security, portability, or implementability without weakening the founding invariants.
+A documentation change should follow this sequence:
 
-A significant architectural change should include:
+1. Update the authoritative source contract or normative source document.
+2. Update only the kOA boundary when the change belongs to an external subsystem.
+3. Add or update an ADR when an architectural decision changes.
+4. Rebuild generated indexes and AI context.
+5. Run the complete validation pipeline.
+6. Commit source changes and regenerated outputs together.
 
-1. the problem and affected requirement;
-2. the proposed change;
-3. security and governance consequences;
-4. offline and failure-mode behavior;
-5. migration and rollback implications;
-6. compatibility impact across the four release channels;
-7. a new or updated ADR;
-8. corresponding conformance tests.
+Do not:
 
-Changes that silently merge Konnaxion and Orgo security domains, bypass policy evaluation, grant broad host privilege, weaken artifact verification, introduce mandatory cloud dependence, conceal algorithmic authority, or remove credible exit are incompatible with this foundation.
+- recreate hand-maintained registries or file catalogs;
+- duplicate a subsystem's internal model, complete API, workflow, or user interface;
+- edit generated outputs as if they were sources;
+- infer missing authority from historical documents;
+- introduce undeclared substitution or compatibility behavior;
+- use Windows `.lnk` files for subsystem documentation mounts.
 
-## Founding decisions
+## Implementation status
 
-The initial ADR set establishes:
+This repository defines a normative target architecture and validated documentation corpus. It does not claim that every implementation choice has been proven across all hardware, scale, threat, legal, and operational environments.
 
-* a standard maintained Linux kernel;
-* an immutable OS image;
-* no GNOME dependency for the product shell;
-* minimal Wayland with a tested embedded web engine;
-* rootless Podman and Quadlet for application services;
-* Konnaxion and Orgo as co-principal domains;
-* Kristal as the transversal epistemic foundation;
-* four independent release channels;
-* a dedicated governance policy runtime;
-* selective audit rather than indiscriminate transparency;
-* no mandatory Kubernetes on endpoints;
-* one narrow privileged broker for host operations.
+Implementation evidence is still required for areas such as:
 
-See [`08-adrs/`](08-adrs/) for the complete rationale and consequences.
+- final host distribution and immutable-image mechanism;
+- production key custody and signing topology;
+- hardware-backed trust requirements by assurance level;
+- capacity limits and service-level objectives;
+- database and tenant isolation at scale;
+- regulatory deployment profiles;
+- production implementations of internal kOA components.
 
 ## Project boundary
 
-This repository specifies the kOA Linux foundation. It does not replace the complete product specifications for Konnaxion, Orgo, Kristal, SenTient, Architect, SmartVote, EkoH, or their application modules. Those systems integrate through the boundaries and contracts defined here.
+This repository specifies kOA Linux, its internal components, profiles, operating rules, and subsystem integration boundaries.
+
+It does not replace the complete product documentation of Ariane, Konnaxion, Orgo, SenTient, SemantiK Architect, UCKK, or future independently documented subsystems. Those systems integrate through the contracts and reserved documentation mounts defined here.

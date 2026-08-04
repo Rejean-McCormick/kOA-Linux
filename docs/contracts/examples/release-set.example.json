@@ -1,0 +1,75 @@
+{
+  "$schema": "../artifact-contracts/release-set.schema.json",
+  "release_set_id": "RELSET-KOA-002",
+  "version": "1.1.0",
+  "status": "active",
+  "created_at": "2026-08-03T18:00:00-04:00",
+  "activated_at": "2026-08-03T18:05:00-04:00",
+  "channel_versions": [
+    {
+      "channel_id": "system",
+      "channel_version": "1.4.0",
+      "manifest_ref": "contracts/releases/manifests/system-1.4.0.manifest.json",
+      "artifact_refs": [
+        "contracts/releases/artifacts/system/koa-node-foundation-1.4.0.json",
+        "contracts/releases/artifacts/system/koa-recovery-environment-1.4.0.json"
+      ]
+    },
+    {
+      "channel_id": "services",
+      "channel_version": "2.3.1",
+      "manifest_ref": "contracts/releases/manifests/services-2.3.1.manifest.json",
+      "artifact_refs": [
+        "contracts/releases/artifacts/services/koa-node-agent-2.3.1.json",
+        "contracts/releases/artifacts/services/publication-gateway-2.3.1.json",
+        "contracts/releases/artifacts/services/uckk-dimension-gateway-2.3.1.json"
+      ]
+    },
+    {
+      "channel_id": "governance",
+      "channel_version": "3.2.0",
+      "manifest_ref": "contracts/releases/manifests/governance-3.2.0.manifest.json",
+      "artifact_refs": [
+        "generated/authority-manifest.json",
+        "generated/decision-index.json",
+        "contracts/release-channels.contract.json",
+        "generated/component-catalog.json",
+        "generated/requirements-index.json",
+        "generated/assertion-index.json"
+      ]
+    },
+    {
+      "channel_id": "knowledge",
+      "channel_version": "5.1.0",
+      "manifest_ref": "contracts/releases/manifests/knowledge-5.1.0.manifest.json",
+      "artifact_refs": [
+        "contracts/releases/artifacts/knowledge/uckk-runtime-pack-5.1.0.json",
+        "contracts/releases/artifacts/knowledge/terminology-pack-5.1.0.json"
+      ]
+    }
+  ],
+  "compatibility_result": "pass",
+  "test_refs": [
+    "TEST-REL-CHANNELS-001",
+    "TEST-REL-COMPAT-001",
+    "TEST-REL-ACTIVATION-001",
+    "TEST-REL-ROLLBACK-001",
+    "TEST-REL-OFFLINE-001"
+  ],
+  "evidence_refs": [
+    "EVID-REL-COMPAT-001",
+    "EVID-REL-SIGNATURE-001",
+    "EVID-REL-ACTIVATION-001",
+    "EVID-REL-ROLLBACK-001",
+    "EVID-REL-OFFLINE-001"
+  ],
+  "signature": {
+    "signature_ref": "contracts/releases/signatures/release-set-koa-1.1.0.signature.json",
+    "signing_identity_ref": "contracts/identities/signers.json#/signers/koa-release-authority-001",
+    "signed_at": "2026-08-03T18:03:00-04:00",
+    "verification_status": "verified"
+  },
+  "replaces_release_set_id": "RELSET-KOA-001",
+  "example": true,
+  "authority": "non_authoritative_example"
+}

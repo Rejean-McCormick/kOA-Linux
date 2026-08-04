@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:koa:docs:schema:ai-navigation:1",
+  "type": "object",
+  "required": [
+    "contract_id",
+    "version",
+    "status",
+    "entrypoint",
+    "discovery",
+    "authority_rules"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "ai-navigation"
+    },
+    "status": {
+      "const": "active"
+    }
+  },
+  "additionalProperties": true
+}

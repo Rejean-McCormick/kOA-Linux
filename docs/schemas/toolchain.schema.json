@@ -1,0 +1,1261 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "toolchain.schema.json",
+  "title": "kOA Toolchain Contract",
+  "description": "Validates one canonical toolchain contract under contracts/toolchains/. A toolchain contract defines supported platforms and profiles, required tools, version selection, workspace isolation, dependency resolution, command execution, reproducibility, security boundaries, produced artifacts, and validation gates.",
+  "$comment": "Cross-file checks are performed by docs/tools/validate_docs.py: canonical references must resolve; the toolchain must be registered by generated/toolchain-catalog.json; decision, requirement, lock, ADR, profile, and artifact references must exist; command identifiers must be unique; and every active release build must satisfy the declared reproducibility policy.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "toolchain_id",
+    "toolchain_type",
+    "version",
+    "status",
+    "language",
+    "display_name",
+    "description",
+    "effective_at",
+    "canonical_owner",
+    "index_ref",
+    "scope",
+    "platform_support",
+    "tools",
+    "workspace",
+    "environment_isolation",
+    "dependency_management",
+    "commands",
+    "reproducibility",
+    "security",
+    "artifacts",
+    "decision_ids",
+    "requirement_ids",
+    "lock_ids",
+    "adr_ids",
+    "validation"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "const": "../../schemas/toolchain.schema.json"
+    },
+    "toolchain_id": {
+      "$ref": "#/$defs/toolchainId"
+    },
+    "toolchain_type": {
+      "$ref": "#/$defs/toolchainType"
+    },
+    "version": {
+      "$ref": "#/$defs/semanticVersion"
+    },
+    "status": {
+      "$ref": "#/$defs/lifecycleStatus"
+    },
+    "language": {
+      "type": "string",
+      "const": "en"
+    },
+    "display_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": ".*\\S.*"
+    },
+    "description": {
+      "$ref": "#/$defs/nonEmptyText"
+    },
+    "effective_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "canonical_owner": {
+      "allOf": [
+        {
+          "$ref": "canonical-reference.schema.json#/$defs/repositoryRelativePathReference"
+        },
+        {
+          "pattern": "^contracts/toolchains/[a-z0-9]+(?:-[a-z0-9]+)*\\.toolchain\\.json$"
+        }
+      ]
+    },
+    "index_ref": {
+      "type": "string",
+      "const": "generated/toolchain-catalog.json"
+    },
+    "superseded_by": {
+      "$ref": "#/$defs/toolchainId"
+    },
+    "scope": {
+      "$ref": "#/$defs/scope"
+    },
+    "platform_support": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/platformSupport"
+      },
+      "uniqueItems": true
+    },
+    "tools": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/tool"
+      }
+    },
+    "workspace": {
+      "$ref": "#/$defs/workspacePolicy"
+    },
+    "environment_isolation": {
+      "$ref": "#/$defs/environmentIsolationPolicy"
+    },
+    "dependency_management": {
+      "$ref": "#/$defs/dependencyManagementPolicy"
+    },
+    "commands": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "$ref": "#/$defs/commandId"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/command"
+      }
+    },
+    "reproducibility": {
+      "$ref": "#/$defs/reproducibilityPolicy"
+    },
+    "security": {
+      "$ref": "#/$defs/securityPolicy"
+    },
+    "artifacts": {
+      "$ref": "#/$defs/artifactPolicy"
+    },
+    "canonical_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "canonical-reference.schema.json#/$defs/canonicalReference"
+      },
+      "uniqueItems": true
+    },
+    "decision_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "canonical-reference.schema.json#/$defs/decisionId"
+      },
+      "uniqueItems": true
+    },
+    "requirement_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "canonical-reference.schema.json#/$defs/requirementId"
+      },
+      "uniqueItems": true
+    },
+    "lock_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "canonical-reference.schema.json#/$defs/lockId"
+      },
+      "uniqueItems": true
+    },
+    "adr_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "canonical-reference.schema.json#/$defs/adrId"
+      },
+      "uniqueItems": true
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/tag"
+      },
+      "uniqueItems": true
+    },
+    "validation": {
+      "$ref": "#/$defs/validationPolicy"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "superseded"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "required": [
+          "superseded_by"
+        ]
+      },
+      "else": {
+        "not": {
+          "required": [
+            "superseded_by"
+          ]
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "semanticVersion": {
+      "title": "Semantic version",
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+    },
+    "nonEmptyText": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "pattern": ".*\\S.*"
+    },
+    "shortText": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": ".*\\S.*"
+    },
+    "toolchainId": {
+      "title": "Toolchain identifier",
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 96,
+      "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
+    },
+    "toolchainType": {
+      "title": "Toolchain type",
+      "type": "string",
+      "enum": [
+        "language_package",
+        "build",
+        "container",
+        "documentation",
+        "release",
+        "multi_tool"
+      ]
+    },
+    "lifecycleStatus": {
+      "title": "Toolchain lifecycle status",
+      "type": "string",
+      "enum": [
+        "active",
+        "deprecated",
+        "superseded",
+        "retired"
+      ]
+    },
+    "scopeKind": {
+      "type": "string",
+      "const": "development_toolchain"
+    },
+    "profileId": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 96,
+      "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
+    },
+    "workspaceTypeId": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 96,
+      "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "profiles",
+        "workspace_types"
+      ],
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/scopeKind"
+        },
+        "profiles": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/profileId"
+          },
+          "uniqueItems": true
+        },
+        "workspace_types": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/workspaceTypeId"
+          },
+          "uniqueItems": true
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 96,
+            "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "operatingSystem": {
+      "type": "string",
+      "enum": [
+        "linux",
+        "windows",
+        "macos"
+      ]
+    },
+    "executionEnvironment": {
+      "type": "string",
+      "enum": [
+        "native",
+        "wsl2",
+        "container",
+        "virtual_machine"
+      ]
+    },
+    "architecture": {
+      "type": "string",
+      "enum": [
+        "x86_64",
+        "aarch64",
+        "arm64"
+      ]
+    },
+    "platformSupport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operating_system",
+        "execution_environment",
+        "architectures",
+        "support_level"
+      ],
+      "properties": {
+        "operating_system": {
+          "$ref": "#/$defs/operatingSystem"
+        },
+        "execution_environment": {
+          "$ref": "#/$defs/executionEnvironment"
+        },
+        "architectures": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/architecture"
+          },
+          "uniqueItems": true
+        },
+        "support_level": {
+          "type": "string",
+          "enum": [
+            "required",
+            "supported",
+            "permitted"
+          ]
+        },
+        "profile_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/profileId"
+          },
+          "uniqueItems": true
+        },
+        "notes": {
+          "$ref": "#/$defs/shortText"
+        }
+      }
+    },
+    "toolRole": {
+      "type": "string",
+      "enum": [
+        "runtime",
+        "package_manager",
+        "dependency_resolver",
+        "build_frontend",
+        "test_runner",
+        "linter",
+        "formatter",
+        "type_checker",
+        "publisher",
+        "container_engine",
+        "documentation_generator",
+        "support"
+      ]
+    },
+    "versionSelection": {
+      "type": "string",
+      "enum": [
+        "exact",
+        "constraint",
+        "manifest",
+        "profile"
+      ]
+    },
+    "versionPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "selection",
+        "release_recording_required"
+      ],
+      "properties": {
+        "selection": {
+          "$ref": "#/$defs/versionSelection"
+        },
+        "exact_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": ".*\\S.*"
+        },
+        "constraint": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": ".*\\S.*"
+        },
+        "source_file": {
+          "$ref": "#/$defs/relativeWorkspacePath"
+        },
+        "source_ref": {
+          "$ref": "canonical-reference.schema.json#/$defs/canonicalReference"
+        },
+        "release_recording_required": {
+          "type": "boolean"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "selection": {
+                "const": "exact"
+              }
+            },
+            "required": [
+              "selection"
+            ]
+          },
+          "then": {
+            "required": [
+              "exact_version"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "selection": {
+                "const": "constraint"
+              }
+            },
+            "required": [
+              "selection"
+            ]
+          },
+          "then": {
+            "required": [
+              "constraint"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "selection": {
+                "const": "manifest"
+              }
+            },
+            "required": [
+              "selection"
+            ]
+          },
+          "then": {
+            "required": [
+              "source_file"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "selection": {
+                "const": "profile"
+              }
+            },
+            "required": [
+              "selection"
+            ]
+          },
+          "then": {
+            "required": [
+              "source_ref"
+            ]
+          }
+        }
+      ]
+    },
+    "tool": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tool_id",
+        "name",
+        "role",
+        "executable",
+        "required",
+        "version_policy"
+      ],
+      "properties": {
+        "tool_id": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 64,
+          "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": ".*\\S.*"
+        },
+        "role": {
+          "$ref": "#/$defs/toolRole"
+        },
+        "executable": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9._+-]+$"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "version_policy": {
+          "$ref": "#/$defs/versionPolicy"
+        },
+        "install_source": {
+          "type": "string",
+          "enum": [
+            "profile",
+            "system_package",
+            "official_installer",
+            "container_image",
+            "workspace_bootstrap"
+          ]
+        },
+        "documentation_uri": {
+          "type": "string",
+          "format": "uri",
+          "maxLength": 2048
+        }
+      }
+    },
+    "relativeWorkspacePath": {
+      "title": "Workspace-relative path",
+      "description": "A path relative to a workspace root. Absolute paths, drive letters, parent traversal, backslashes, duplicate separators, and wildcards are prohibited.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^(?!/)(?![A-Za-z]:)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//)(?!.*[*?])(?:\\.?[A-Za-z0-9][A-Za-z0-9._-]*)(?:/[A-Za-z0-9][A-Za-z0-9._-]*)*$"
+    },
+    "workspaceIdentitySource": {
+      "type": "string",
+      "enum": [
+        "workspace_contract",
+        "manifest",
+        "profile_contract"
+      ]
+    },
+    "workspacePolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "identity_source",
+        "root_markers",
+        "parallel_workspaces_allowed",
+        "path_dependencies",
+        "editable_installs"
+      ],
+      "properties": {
+        "identity_source": {
+          "$ref": "#/$defs/workspaceIdentitySource"
+        },
+        "root_markers": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/relativeWorkspacePath"
+          },
+          "uniqueItems": true
+        },
+        "parallel_workspaces_allowed": {
+          "type": "boolean"
+        },
+        "path_dependencies": {
+          "type": "string",
+          "enum": [
+            "prohibited",
+            "declared_only",
+            "workspace_only"
+          ]
+        },
+        "editable_installs": {
+          "type": "string",
+          "enum": [
+            "prohibited",
+            "workspace_only",
+            "declared_only"
+          ]
+        },
+        "workspace_contract_ref": {
+          "$ref": "canonical-reference.schema.json#/$defs/repositoryRelativePathReference"
+        }
+      }
+    },
+    "isolationModel": {
+      "type": "string",
+      "enum": [
+        "per_workspace",
+        "per_component",
+        "ephemeral",
+        "profile_managed"
+      ]
+    },
+    "mutableEnvironmentSharing": {
+      "type": "string",
+      "enum": [
+        "prohibited",
+        "read_only_cache_only",
+        "profile_controlled"
+      ]
+    },
+    "cachePolicy": {
+      "type": "string",
+      "enum": [
+        "disabled",
+        "private",
+        "shared_non_authoritative",
+        "profile_managed"
+      ]
+    },
+    "environmentIsolationPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "model",
+        "shared_mutable_environment",
+        "global_installation",
+        "cache_policy",
+        "environment_cleanup"
+      ],
+      "properties": {
+        "model": {
+          "$ref": "#/$defs/isolationModel"
+        },
+        "environment_path": {
+          "$ref": "#/$defs/relativeWorkspacePath"
+        },
+        "shared_mutable_environment": {
+          "$ref": "#/$defs/mutableEnvironmentSharing"
+        },
+        "global_installation": {
+          "type": "string",
+          "enum": [
+            "prohibited",
+            "read_only_tools_only",
+            "profile_controlled"
+          ]
+        },
+        "cache_policy": {
+          "$ref": "#/$defs/cachePolicy"
+        },
+        "environment_cleanup": {
+          "type": "string",
+          "enum": [
+            "manual",
+            "commanded",
+            "automatic_on_workspace_removal",
+            "ephemeral"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "model": {
+                "enum": [
+                  "per_workspace",
+                  "per_component"
+                ]
+              }
+            },
+            "required": [
+              "model"
+            ]
+          },
+          "then": {
+            "required": [
+              "environment_path"
+            ]
+          }
+        }
+      ]
+    },
+    "dependencyGroupId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[a-z][a-z0-9]*(?:[_-][a-z0-9]+)*$"
+    },
+    "dependencySource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "source_type",
+        "trust"
+      ],
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[a-z][a-z0-9]*(?:[_-][a-z0-9]+)*$"
+        },
+        "source_type": {
+          "type": "string",
+          "enum": [
+            "package_index",
+            "source_repository",
+            "local_workspace",
+            "offline_bundle",
+            "profile_managed"
+          ]
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri",
+          "maxLength": 2048
+        },
+        "trust": {
+          "type": "string",
+          "enum": [
+            "approved",
+            "profile_controlled",
+            "offline_verified"
+          ]
+        },
+        "credential_policy": {
+          "type": "string",
+          "enum": [
+            "none",
+            "injected",
+            "profile_managed"
+          ]
+        }
+      }
+    },
+    "dependencyManagementPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "manifest_files",
+        "lockfile_required",
+        "lock_files",
+        "resolution_mode",
+        "undeclared_dependencies",
+        "dependency_groups",
+        "sources"
+      ],
+      "properties": {
+        "manifest_files": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/relativeWorkspacePath"
+          },
+          "uniqueItems": true
+        },
+        "lockfile_required": {
+          "type": "boolean"
+        },
+        "lock_files": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/relativeWorkspacePath"
+          },
+          "uniqueItems": true
+        },
+        "resolution_mode": {
+          "type": "string",
+          "enum": [
+            "frozen",
+            "locked",
+            "controlled"
+          ]
+        },
+        "undeclared_dependencies": {
+          "type": "string",
+          "const": "prohibited"
+        },
+        "dependency_groups": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/dependencyGroupId"
+          },
+          "uniqueItems": true
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/dependencySource"
+          }
+        },
+        "offline_resolution_supported": {
+          "type": "boolean"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "lockfile_required": {
+                "const": true
+              }
+            },
+            "required": [
+              "lockfile_required"
+            ]
+          },
+          "then": {
+            "properties": {
+              "lock_files": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "commandId": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 64,
+      "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
+    },
+    "commandPurpose": {
+      "type": "string",
+      "enum": [
+        "bootstrap",
+        "synchronize",
+        "run",
+        "test",
+        "lint",
+        "format",
+        "type_check",
+        "build",
+        "publish",
+        "clean",
+        "verify"
+      ]
+    },
+    "workingDirectoryPolicy": {
+      "type": "string",
+      "enum": [
+        "workspace_root",
+        "component_root",
+        "declared_path"
+      ]
+    },
+    "networkPolicy": {
+      "type": "string",
+      "enum": [
+        "forbidden",
+        "declared_sources_only",
+        "profile_controlled"
+      ]
+    },
+    "secretPolicy": {
+      "type": "string",
+      "enum": [
+        "none",
+        "injected_only",
+        "profile_controlled"
+      ]
+    },
+    "command": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "purpose",
+        "argv",
+        "working_directory",
+        "network_policy",
+        "secret_policy",
+        "mutates_workspace",
+        "produces_artifacts"
+      ],
+      "properties": {
+        "purpose": {
+          "$ref": "#/$defs/commandPurpose"
+        },
+        "description": {
+          "$ref": "#/$defs/shortText"
+        },
+        "argv": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        },
+        "working_directory": {
+          "$ref": "#/$defs/workingDirectoryPolicy"
+        },
+        "declared_path": {
+          "$ref": "#/$defs/relativeWorkspacePath"
+        },
+        "network_policy": {
+          "$ref": "#/$defs/networkPolicy"
+        },
+        "secret_policy": {
+          "$ref": "#/$defs/secretPolicy"
+        },
+        "mutates_workspace": {
+          "type": "boolean"
+        },
+        "produces_artifacts": {
+          "type": "boolean"
+        },
+        "allowed_profiles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/profileId"
+          },
+          "uniqueItems": true
+        },
+        "environment_variables": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "required": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/environmentVariableName"
+              },
+              "uniqueItems": true
+            },
+            "optional": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/environmentVariableName"
+              },
+              "uniqueItems": true
+            },
+            "forbidden": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/environmentVariableName"
+              },
+              "uniqueItems": true
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "working_directory": {
+                "const": "declared_path"
+              }
+            },
+            "required": [
+              "working_directory"
+            ]
+          },
+          "then": {
+            "required": [
+              "declared_path"
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "declared_path"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "environmentVariableName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Z_][A-Z0-9_]*$"
+    },
+    "buildNetworkPolicy": {
+      "type": "string",
+      "enum": [
+        "forbidden",
+        "declared_sources_only",
+        "profile_controlled"
+      ]
+    },
+    "reproducibilityPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "clean_workspace_required_for_release",
+        "frozen_resolution_required_for_release",
+        "exact_tool_versions_recorded",
+        "manifest_and_lockfile_recorded",
+        "build_network_policy",
+        "deterministic_output_expected",
+        "required_build_metadata"
+      ],
+      "properties": {
+        "clean_workspace_required_for_release": {
+          "type": "boolean"
+        },
+        "frozen_resolution_required_for_release": {
+          "type": "boolean"
+        },
+        "exact_tool_versions_recorded": {
+          "type": "boolean"
+        },
+        "manifest_and_lockfile_recorded": {
+          "type": "boolean"
+        },
+        "build_network_policy": {
+          "$ref": "#/$defs/buildNetworkPolicy"
+        },
+        "deterministic_output_expected": {
+          "type": "boolean"
+        },
+        "required_build_metadata": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": [
+              "toolchain_id",
+              "toolchain_version",
+              "runtime_versions",
+              "tool_versions",
+              "manifest_identity",
+              "lockfile_identity",
+              "source_revision",
+              "target_platform",
+              "build_command_id",
+              "artifact_class"
+            ]
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "securityPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "secrets_in_manifests",
+        "credentials",
+        "arbitrary_remote_scripts",
+        "unapproved_dependency_sources",
+        "privileged_execution"
+      ],
+      "properties": {
+        "secrets_in_manifests": {
+          "type": "string",
+          "const": "prohibited"
+        },
+        "credentials": {
+          "type": "string",
+          "enum": [
+            "injected_only",
+            "profile_managed",
+            "not_applicable"
+          ]
+        },
+        "arbitrary_remote_scripts": {
+          "type": "string",
+          "enum": [
+            "prohibited",
+            "profile_controlled"
+          ]
+        },
+        "unapproved_dependency_sources": {
+          "type": "string",
+          "const": "prohibited"
+        },
+        "privileged_execution": {
+          "type": "string",
+          "enum": [
+            "prohibited",
+            "profile_controlled"
+          ]
+        }
+      }
+    },
+    "artifactOutput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "output_id",
+        "artifact_class_ref",
+        "output_directory",
+        "publication"
+      ],
+      "properties": {
+        "output_id": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 64,
+          "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
+        },
+        "artifact_class_ref": {
+          "$ref": "canonical-reference.schema.json#/$defs/canonicalReference"
+        },
+        "output_directory": {
+          "$ref": "#/$defs/relativeWorkspacePath"
+        },
+        "publication": {
+          "type": "string",
+          "enum": [
+            "prohibited",
+            "local_only",
+            "release_pipeline_only",
+            "declared_target"
+          ]
+        },
+        "publication_target_ref": {
+          "$ref": "canonical-reference.schema.json#/$defs/canonicalReference"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "publication": {
+                "const": "declared_target"
+              }
+            },
+            "required": [
+              "publication"
+            ]
+          },
+          "then": {
+            "required": [
+              "publication_target_ref"
+            ]
+          }
+        }
+      ]
+    },
+    "artifactPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "outputs",
+        "undeclared_outputs",
+        "release_outputs_require_provenance"
+      ],
+      "properties": {
+        "outputs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/artifactOutput"
+          }
+        },
+        "undeclared_outputs": {
+          "type": "string",
+          "const": "prohibited"
+        },
+        "release_outputs_require_provenance": {
+          "type": "boolean"
+        },
+        "release_outputs_require_sbom": {
+          "type": "boolean"
+        }
+      }
+    },
+    "tag": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "validationCheck": {
+      "type": "string",
+      "enum": [
+        "schema_validation",
+        "canonical_reference_resolution",
+        "accepted_decisions",
+        "scope_alignment",
+        "tool_versions_resolvable",
+        "manifest_files_present",
+        "lock_files_present",
+        "isolated_environment",
+        "command_catalog_complete",
+        "frozen_release_resolution",
+        "clean_release_workspace",
+        "security_policy",
+        "artifact_declarations",
+        "requirement_traceability",
+        "lock_conformance"
+      ]
+    },
+    "validationPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required_checks",
+        "activation_requires",
+        "missing_required_check_result",
+        "automatic_semantic_fixes_allowed"
+      ],
+      "properties": {
+        "required_checks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/validationCheck"
+          },
+          "uniqueItems": true,
+          "contains": {
+            "const": "schema_validation"
+          }
+        },
+        "activation_requires": {
+          "type": "string",
+          "const": "pass"
+        },
+        "missing_required_check_result": {
+          "type": "string",
+          "const": "blocked"
+        },
+        "automatic_semantic_fixes_allowed": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "$schema": "../../schemas/subsystem.schema.json",
+  "subsystem_id": "semantik_architect",
+  "title": "SemantiK Architect",
+  "status": "active",
+  "version": "1.0.0",
+  "relationship_to_koa": "integrated_subsystem",
+  "koa_role": "Language subsystem whose build environment produces verified compiled artifacts.",
+  "official_documentation": {
+    "mount_path": "subsystems/semantik-architect",
+    "mount_kind": "directory_junction_or_symbolic_link",
+    "required_for_final_alignment": true,
+    "authority": "subsystem_internal_documentation"
+  },
+  "koa_owns": [
+    "deployment profile membership",
+    "process lifecycle and activation",
+    "resource envelope",
+    "identity and trust boundary",
+    "network and storage exposure",
+    "artifact admission",
+    "cross-subsystem interactions",
+    "health integration",
+    "backup coordination",
+    "safe degradation"
+  ],
+  "koa_does_not_own": [
+    "internal domain model",
+    "internal workflow",
+    "internal state machine",
+    "complete subsystem API",
+    "internal user interface",
+    "subsystem-specific validation logic"
+  ],
+  "boundary_rules": {
+    "direct_cross_subsystem_writes": "prohibited",
+    "undeclared_substitution": "prohibited",
+    "internal_behavior_duplication": "prohibited",
+    "official_documentation_mount": "subsystems/semantik-architect"
+  },
+  "documentation": {
+    "koa_boundary_document": "04-components/subsystems/semantik-architect.md"
+  }
+}

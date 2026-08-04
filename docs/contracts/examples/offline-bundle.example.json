@@ -1,0 +1,1321 @@
+{
+  "$schema": "../artifact-contracts/offline-bundle.schema.json",
+  "bundle_id": "offline-bundle.sovereign-linux-node.release-2026-08-03",
+  "bundle_type": "offline_bundle",
+  "bundle_class": "release_and_recovery",
+  "version": "1.0.0",
+  "status": "validated",
+  "language": "en",
+  "created_at": "2026-08-03T18:03:00-04:00",
+  "valid_from": "2026-08-03T18:03:00-04:00",
+  "expires_at": "2026-11-01T23:59:59-04:00",
+  "authority_ref": "generated/authority-manifest.json",
+  "decisions_ref": "generated/decision-index.json",
+  "system_ref": "contracts/system.contract.json",
+  "profiles_ref": "generated/profile-catalog.json",
+  "components_ref": "generated/component-catalog.json",
+  "integrations_ref": "contracts/integration-types.contract.json",
+  "artifact_classes_ref": "contracts/artifact-classes.contract.json",
+  "release_channels_ref": "contracts/release-channels.contract.json",
+  "requirements_ref": "generated/requirements-index.json",
+  "locks_ref": "generated/assertion-index.json",
+  "traceability_ref": "generated/traceability.json",
+  "exceptions_ref": "generated/exception-index.json",
+  "test_catalog_ref": "generated/test-catalog.json",
+  "evidence_ref": "generated/evidence-catalog.json",
+  "decision_ids": [
+    "DEC-REL-001",
+    "DEC-LIFE-001",
+    "DEC-IMAGE-001",
+    "DEC-OS-001",
+    "DEC-SEC-001",
+    "DEC-PRIV-001",
+    "DEC-OFFLINE-001",
+    "DEC-RECEIPT-001",
+    "DEC-AUDIT-001",
+    "DEC-PORT-001",
+    "DEC-PROFILE-001",
+    "DEC-COMP-001",
+    "DEC-DATA-001",
+    "DEC-GOV-001",
+    "DEC-GATE-001",
+    "DEC-INTEGRATION-001",
+    "DEC-AI-001",
+    "DEC-KRISTAL-001",
+    "DEC-LANG-001",
+    "DEC-ARI-001",
+    "DEC-UCKK-001"
+  ],
+  "requirement_ids": [
+    "REQ-ART-OFFLINE-001",
+    "REQ-ART-OFFLINE-002",
+    "REQ-ART-OFFLINE-003",
+    "REQ-ART-OFFLINE-004",
+    "REQ-ART-OFFLINE-005",
+    "REQ-ART-OFFLINE-006",
+    "REQ-ART-OFFLINE-007",
+    "REQ-ART-OFFLINE-008",
+    "REQ-ART-OFFLINE-009",
+    "REQ-ART-OFFLINE-010",
+    "REQ-ART-OFFLINE-011",
+    "REQ-ART-OFFLINE-012",
+    "REQ-ART-OFFLINE-013",
+    "REQ-ART-OFFLINE-014",
+    "REQ-ART-OFFLINE-015",
+    "REQ-ART-OFFLINE-016",
+    "REQ-ART-OFFLINE-017",
+    "REQ-ART-OFFLINE-018",
+    "REQ-ART-OFFLINE-019",
+    "REQ-ART-OFFLINE-020",
+    "REQ-ART-OFFLINE-021",
+    "REQ-ART-OFFLINE-022",
+    "REQ-ART-OFFLINE-023",
+    "REQ-ART-OFFLINE-024",
+    "REQ-ART-OFFLINE-025",
+    "REQ-ART-OFFLINE-026",
+    "REQ-ART-OFFLINE-027",
+    "REQ-ART-OFFLINE-028",
+    "REQ-ART-OFFLINE-029",
+    "REQ-ART-OFFLINE-030",
+    "REQ-ART-OFFLINE-031",
+    "REQ-ART-OFFLINE-032"
+  ],
+  "lock_ids": [
+    "LOCK-LIFE-001",
+    "LOCK-LIFE-002",
+    "LOCK-LIFE-003",
+    "LOCK-LIFE-004",
+    "LOCK-REL-001",
+    "LOCK-REL-002",
+    "LOCK-PROFILE-001",
+    "LOCK-PROFILE-002",
+    "LOCK-COMP-001",
+    "LOCK-COMP-002",
+    "LOCK-DATA-001",
+    "LOCK-GOV-001",
+    "LOCK-GATE-001",
+    "LOCK-AI-001",
+    "LOCK-AI-002",
+    "LOCK-SEC-001",
+    "LOCK-SEC-002",
+    "LOCK-OFFLINE-001",
+    "LOCK-PORT-001",
+    "LOCK-IMPL-001",
+    "LOCK-IMPL-002"
+  ],
+  "exception_ids": [],
+  "manifest": {
+    "name": "Sovereign Linux Node Offline Release and Recovery Bundle",
+    "description": "A complete verified offline transport for staging, validating, activating, rolling back, and recovering a sovereign_linux_node without Internet access.",
+    "issuer": {
+      "identity_ref": "urn:koa:identity:release-publisher",
+      "role": "offline-bundle-publisher",
+      "organization_ref": "urn:koa:organization:koa-release-authority"
+    },
+    "purpose": [
+      "offline_release_staging",
+      "offline_release_activation",
+      "offline_recovery",
+      "rollback_readiness",
+      "component_restore_validation"
+    ],
+    "intended_audience": [
+      {
+        "audience_type": "profile",
+        "audience_id": "sovereign_linux_node"
+      },
+      {
+        "audience_type": "node_group",
+        "audience_id": "sovereign-nodes-production"
+      }
+    ],
+    "target_environment_classes": [
+      "production",
+      "offline",
+      "recovery"
+    ],
+    "release_set_ref": "contracts/examples/release-set.example.json#/release_sets/sovereign-linux-node-2026-08-03",
+    "source_release_set_id": "release-set.sovereign-linux-node.2026-07-15",
+    "target_release_set_id": "release-set.sovereign-linux-node.2026-08-03",
+    "sequence": {
+      "series_id": "sovereign-linux-node-production",
+      "sequence_number": 24,
+      "previous_sequence_number": 23,
+      "replay_policy": "reject_equal_or_lower_sequence_after_successful_import",
+      "duplicate_import_behavior": "return_prior_import_receipt"
+    },
+    "clock_assumptions": {
+      "trusted_clock_required": false,
+      "trusted_clock_preferred": true,
+      "maximum_clock_uncertainty_seconds": 86400,
+      "untrusted_clock_behavior": "Require explicit authorized review and validate sequence, revocation, and validity using retained local authority state."
+    }
+  },
+  "scope": {
+    "profile": {
+      "primary_profile_id": "sovereign_linux_node",
+      "primary_profile_version": "1.0.0",
+      "overlays": [],
+      "allowed_overlay_compositions": [
+        [
+          "sovereign_offline"
+        ],
+        [
+          "high_assurance"
+        ],
+        [
+          "appliance_shell"
+        ],
+        [
+          "sovereign_offline",
+          "high_assurance"
+        ],
+        [
+          "sovereign_offline",
+          "appliance_shell"
+        ],
+        [
+          "high_assurance",
+          "appliance_shell"
+        ],
+        [
+          "sovereign_offline",
+          "high_assurance",
+          "appliance_shell"
+        ]
+      ]
+    },
+    "architectures": [
+      "x86_64"
+    ],
+    "operating_system_family": "linux",
+    "node_targets": [
+      {
+        "target_selector": "profile_and_release_authority",
+        "required_node_profile": "sovereign_linux_node",
+        "required_trust_domain": "koa-sovereign-production",
+        "specific_node_ids": []
+      }
+    ],
+    "tenant_scope": {
+      "mode": "organization_controlled",
+      "tenant_ids": [
+        "koa-sovereign-production"
+      ]
+    },
+    "channel_scope": [
+      "system",
+      "services",
+      "governance",
+      "knowledge"
+    ],
+    "component_scope": [
+      "identity-and-trust",
+      "governance-policy-runtime",
+      "resource-governor",
+      "koa-node-agent",
+      "audit-broker",
+      "ariane-runtime",
+      "konnaxion",
+      "orgo",
+      "kristal-runtime",
+      "semantik-architect-runtime",
+      "uckk-platform",
+      "uckk-dimension-gateway",
+      "publication-gateway"
+    ],
+    "outside_scope_behavior": "reject"
+  },
+  "release_set": {
+    "release_set_id": "release-set.sovereign-linux-node.2026-08-03",
+    "release_set_version": "1.0.0",
+    "status": "validated",
+    "manifest_ref": "payload/manifests/release-set.sovereign-linux-node.2026-08-03.json",
+    "authority_release_id": "authority-release.2026-08-03",
+    "channels": {
+      "system": {
+        "release_id": "system-release.2026-08-03",
+        "version": "2026.8.3",
+        "manifest_ref": "payload/manifests/system-release.2026-08-03.json"
+      },
+      "services": {
+        "release_id": "services-release.2026-08-03",
+        "version": "2026.8.3",
+        "manifest_ref": "payload/manifests/services-release.2026-08-03.json"
+      },
+      "governance": {
+        "release_id": "governance-release.2026-08-03",
+        "version": "2026.8.3",
+        "manifest_ref": "payload/manifests/governance-release.2026-08-03.json"
+      },
+      "knowledge": {
+        "release_id": "knowledge-release.2026-08-03",
+        "version": "2026.8.3",
+        "manifest_ref": "payload/manifests/knowledge-release.2026-08-03.json"
+      }
+    },
+    "profile_compatibility": {
+      "primary_profile_id": "sovereign_linux_node",
+      "result": "pass",
+      "required_test_refs": [
+        "TEST-PROFILE-SOV-001",
+        "TEST-PROFILE-SOV-002",
+        "TEST-PROFILE-SOV-003",
+        "TEST-PROFILE-SOV-004",
+        "TEST-PROFILE-SOV-008",
+        "TEST-PROFILE-SOV-009",
+        "TEST-PROFILE-SOV-011",
+        "TEST-PROFILE-SOV-015"
+      ],
+      "evidence_refs": [
+        "EVID-OFFLINE-PROFILE-001",
+        "EVID-OFFLINE-PROFILE-002"
+      ]
+    },
+    "compatibility_result": "pass",
+    "compatibility_evidence_refs": [
+      "EVID-OFFLINE-RSET-001",
+      "EVID-OFFLINE-RSET-002",
+      "EVID-OFFLINE-RSET-003"
+    ]
+  },
+  "media_and_transport": {
+    "supported_transport_classes": [
+      "removable_storage",
+      "local_read_only_volume",
+      "controlled_sneakernet_transfer"
+    ],
+    "media_identity_required": true,
+    "media_identity": "media.sovereign-release-2026-08-03.01",
+    "read_only_source_preferred": true,
+    "quarantine_copy_required": true,
+    "quarantine_root": "var/lib/koa/offline-quarantine",
+    "shared_temporary_paths_permitted": false,
+    "encrypted_payloads": true,
+    "recipient_encryption": {
+      "mode": "node_or_trust_domain_recipient",
+      "recipient_refs": [
+        "urn:koa:trust-domain:koa-sovereign-production"
+      ],
+      "decryption_authority": "identity-and-trust",
+      "decrypted_material_retention": "remove_after_import_or_failure_review"
+    }
+  },
+  "parser_and_extraction_limits": {
+    "maximum_manifest_bytes": 1048576,
+    "maximum_inventory_entries": 256,
+    "maximum_total_payload_bytes": 68719476736,
+    "maximum_single_payload_bytes": 34359738368,
+    "maximum_directory_depth": 12,
+    "maximum_filename_bytes": 180,
+    "maximum_compression_ratio": 40,
+    "maximum_nested_archive_depth": 0,
+    "duplicate_paths_permitted": false,
+    "symbolic_links_permitted": false,
+    "hard_links_permitted": false,
+    "absolute_paths_permitted": false,
+    "parent_path_segments_permitted": false,
+    "device_files_permitted": false,
+    "fifo_or_socket_entries_permitted": false,
+    "unknown_required_fields_behavior": "reject",
+    "unknown_optional_metadata_behavior": "ignore_without_execution"
+  },
+  "integrity_and_trust": {
+    "bundle_identity_method": "signed_manifest_identity",
+    "per_artifact_identity_method": "signed_artifact_manifest_reference",
+    "per_file_digest_inventory_required": false,
+    "manifest_signature_required": true,
+    "artifact_signatures_required": true,
+    "signer_revocation_checked": true,
+    "issuer_scope_checked": true,
+    "audience_scope_checked": true,
+    "sequence_checked": true,
+    "expiry_checked": true,
+    "release_withdrawal_checked": true,
+    "trust_material_sources": [
+      "payload/trust/trust-bundle.koa-sovereign-production.json",
+      "installed_trust_state"
+    ],
+    "failure_behavior": "reject_and_retain_quarantine_evidence"
+  },
+  "inventory": [
+    {
+      "entry_id": "entry.release-set-manifest",
+      "path": "payload/manifests/release-set.sovereign-linux-node.2026-08-03.json",
+      "artifact_id": "release-set.sovereign-linux-node.2026-08-03",
+      "artifact_class": "release_set",
+      "release_channel": "governance",
+      "version": "1.0.0",
+      "size_bytes": 28672,
+      "required": true,
+      "activation_role": "composition_authority",
+      "signature_ref": "signature.release-set",
+      "dependencies": [
+        "entry.system-release-manifest",
+        "entry.services-release-manifest",
+        "entry.governance-release-manifest",
+        "entry.knowledge-release-manifest"
+      ]
+    },
+    {
+      "entry_id": "entry.system-release-manifest",
+      "path": "payload/manifests/system-release.2026-08-03.json",
+      "artifact_id": "system-release.2026-08-03",
+      "artifact_class": "release_channel_manifest",
+      "release_channel": "system",
+      "version": "2026.8.3",
+      "size_bytes": 16384,
+      "required": true,
+      "activation_role": "system_channel_identity",
+      "signature_ref": "signature.system-release",
+      "dependencies": [
+        "entry.system-image"
+      ]
+    },
+    {
+      "entry_id": "entry.services-release-manifest",
+      "path": "payload/manifests/services-release.2026-08-03.json",
+      "artifact_id": "services-release.2026-08-03",
+      "artifact_class": "release_channel_manifest",
+      "release_channel": "services",
+      "version": "2026.8.3",
+      "size_bytes": 24576,
+      "required": true,
+      "activation_role": "services_channel_identity",
+      "signature_ref": "signature.services-release",
+      "dependencies": [
+        "entry.services-runtime-pack",
+        "entry.orgo-migration",
+        "entry.konnaxion-migration",
+        "entry.uckk-migration"
+      ]
+    },
+    {
+      "entry_id": "entry.governance-release-manifest",
+      "path": "payload/manifests/governance-release.2026-08-03.json",
+      "artifact_id": "governance-release.2026-08-03",
+      "artifact_class": "release_channel_manifest",
+      "release_channel": "governance",
+      "version": "2026.8.3",
+      "size_bytes": 18432,
+      "required": true,
+      "activation_role": "governance_channel_identity",
+      "signature_ref": "signature.governance-release",
+      "dependencies": [
+        "entry.policy-bundle",
+        "entry.cultural-rights-policy"
+      ]
+    },
+    {
+      "entry_id": "entry.knowledge-release-manifest",
+      "path": "payload/manifests/knowledge-release.2026-08-03.json",
+      "artifact_id": "knowledge-release.2026-08-03",
+      "artifact_class": "release_channel_manifest",
+      "release_channel": "knowledge",
+      "version": "2026.8.3",
+      "size_bytes": 18432,
+      "required": true,
+      "activation_role": "knowledge_channel_identity",
+      "signature_ref": "signature.knowledge-release",
+      "dependencies": [
+        "entry.kristal-core",
+        "entry.language-pack",
+        "entry.ariane-routes"
+      ]
+    },
+    {
+      "entry_id": "entry.system-image",
+      "path": "payload/system/koa-sovereign-linux-x86_64-2026.08.03.img",
+      "artifact_id": "system-image.koa-sovereign-linux-x86-64.2026-08-03",
+      "artifact_class": "system_image",
+      "release_channel": "system",
+      "version": "2026.8.3",
+      "size_bytes": 21474836480,
+      "required": true,
+      "activation_role": "inactive_system_slot_candidate",
+      "signature_ref": "signature.system-image",
+      "dependencies": []
+    },
+    {
+      "entry_id": "entry.services-runtime-pack",
+      "path": "payload/services/koa-services-sovereign-linux-node-2026.08.03.tar.zst",
+      "artifact_id": "runtime-pack.services.sovereign-linux-node.2026-08-03",
+      "artifact_class": "runtime_pack",
+      "release_channel": "services",
+      "version": "2026.8.3",
+      "size_bytes": 4294967296,
+      "required": true,
+      "activation_role": "staged_service_artifacts",
+      "signature_ref": "signature.services-runtime-pack",
+      "dependencies": []
+    },
+    {
+      "entry_id": "entry.policy-bundle",
+      "path": "payload/governance/policy-bundle.core-governance-2026.08.03.json",
+      "artifact_id": "policy-bundle.core-governance",
+      "artifact_class": "policy_bundle",
+      "release_channel": "governance",
+      "version": "2026.8.3",
+      "size_bytes": 131072,
+      "required": true,
+      "activation_role": "inactive_governance_candidate",
+      "schema_ref": "contracts/artifact-contracts/policy-bundle.schema.json",
+      "signature_ref": "signature.policy-bundle",
+      "dependencies": []
+    },
+    {
+      "entry_id": "entry.cultural-rights-policy",
+      "path": "payload/governance/cultural-rights-policy.sovereign-production-2026.08.03.json",
+      "artifact_id": "cultural-rights-policy.sovereign-production",
+      "artifact_class": "cultural_rights_policy",
+      "release_channel": "governance",
+      "version": "2026.8.3",
+      "size_bytes": 98304,
+      "required": true,
+      "activation_role": "inactive_governance_candidate",
+      "schema_ref": "contracts/artifact-contracts/cultural-rights-policy.schema.json",
+      "signature_ref": "signature.cultural-rights-policy",
+      "dependencies": []
+    },
+    {
+      "entry_id": "entry.kristal-core",
+      "path": "payload/knowledge/kristal-core-2026.08.03.tar.zst",
+      "artifact_id": "kristal-artifact.core.2026-08-03",
+      "artifact_class": "kristal_artifact",
+      "release_channel": "knowledge",
+      "version": "2026.8.3",
+      "size_bytes": 536870912,
+      "required": true,
+      "activation_role": "inactive_knowledge_candidate",
+      "signature_ref": "signature.kristal-core",
+      "dependencies": []
+    },
+    {
+      "entry_id": "entry.language-pack",
+      "path": "payload/knowledge/language-pack.en-core-2026.08.03.json",
+      "artifact_id": "language-pack.en-core.2026-08-03",
+      "artifact_class": "language_pack",
+      "release_channel": "knowledge",
+      "version": "2026.8.3",
+      "size_bytes": 67108864,
+      "required": true,
+      "activation_role": "inactive_language_candidate",
+      "schema_ref": "contracts/artifact-contracts/language-pack.schema.json",
+      "signature_ref": "signature.language-pack",
+      "dependencies": []
+    },
+    {
+      "entry_id": "entry.ariane-routes",
+      "path": "payload/knowledge/ariane-routes.sovereign-linux-node-2026.08.03.json",
+      "artifact_id": "ariane-artifact.routes.sovereign-linux-node.2026-08-03",
+      "artifact_class": "ariane_artifact",
+      "release_channel": "knowledge",
+      "version": "2026.8.3",
+      "size_bytes": 8388608,
+      "required": true,
+      "activation_role": "inactive_navigation_candidate",
+      "signature_ref": "signature.ariane-routes",
+      "dependencies": [
+        "entry.language-pack"
+      ]
+    },
+    {
+      "entry_id": "entry.orgo-migration",
+      "path": "payload/migrations/orgo-services-2026.08.03.json",
+      "artifact_id": "migration.orgo.2026-08-03",
+      "artifact_class": "migration",
+      "release_channel": "services",
+      "version": "2026.8.3",
+      "size_bytes": 262144,
+      "required": true,
+      "activation_role": "component_owned_migration",
+      "owner_component_id": "orgo",
+      "signature_ref": "signature.orgo-migration",
+      "dependencies": []
+    },
+    {
+      "entry_id": "entry.konnaxion-migration",
+      "path": "payload/migrations/konnaxion-services-2026.08.03.json",
+      "artifact_id": "migration.konnaxion.2026-08-03",
+      "artifact_class": "migration",
+      "release_channel": "services",
+      "version": "2026.8.3",
+      "size_bytes": 262144,
+      "required": true,
+      "activation_role": "component_owned_migration",
+      "owner_component_id": "konnaxion",
+      "signature_ref": "signature.konnaxion-migration",
+      "dependencies": []
+    },
+    {
+      "entry_id": "entry.uckk-migration",
+      "path": "payload/migrations/uckk-platform-services-2026.08.03.json",
+      "artifact_id": "migration.uckk-platform.2026-08-03",
+      "artifact_class": "migration",
+      "release_channel": "services",
+      "version": "2026.8.3",
+      "size_bytes": 393216,
+      "required": true,
+      "activation_role": "component_owned_migration",
+      "owner_component_id": "uckk-platform",
+      "signature_ref": "signature.uckk-migration",
+      "dependencies": []
+    },
+    {
+      "entry_id": "entry.trust-update",
+      "path": "payload/trust/trust-bundle.koa-sovereign-production.json",
+      "artifact_id": "trust-bundle.koa-sovereign-production.2026-08-03",
+      "artifact_class": "trust_update",
+      "release_channel": "governance",
+      "version": "2026.8.3",
+      "size_bytes": 65536,
+      "required": true,
+      "activation_role": "staged_trust_update",
+      "signature_ref": "signature.trust-update",
+      "dependencies": []
+    },
+    {
+      "entry_id": "entry.revocation-update",
+      "path": "payload/trust/revocation-update.2026-08-03.json",
+      "artifact_id": "revocation-update.2026-08-03",
+      "artifact_class": "revocation_update",
+      "release_channel": "governance",
+      "version": "2026.8.3",
+      "size_bytes": 32768,
+      "required": true,
+      "activation_role": "pre_activation_revocation_input",
+      "signature_ref": "signature.revocation-update",
+      "dependencies": [
+        "entry.trust-update"
+      ]
+    },
+    {
+      "entry_id": "entry.validation-pack",
+      "path": "payload/validation/offline-release-validation-2026.08.03.tar.zst",
+      "artifact_id": "test-pack.offline-release.2026-08-03",
+      "artifact_class": "test_pack",
+      "release_channel": "services",
+      "version": "2026.8.3",
+      "size_bytes": 134217728,
+      "required": true,
+      "activation_role": "local_preflight_and_conformance",
+      "signature_ref": "signature.validation-pack",
+      "dependencies": []
+    },
+    {
+      "entry_id": "entry.operator-instructions",
+      "path": "payload/instructions/sovereign-offline-update-and-recovery.en.json",
+      "artifact_id": "operator-instructions.sovereign-offline-update-and-recovery.en",
+      "artifact_class": "operator_instruction",
+      "release_channel": "governance",
+      "version": "2026.8.3",
+      "size_bytes": 131072,
+      "required": true,
+      "activation_role": "operator_guidance",
+      "signature_ref": "signature.operator-instructions",
+      "dependencies": []
+    },
+    {
+      "entry_id": "entry.recovery-runtime-pack",
+      "path": "payload/recovery/recovery-runtime.sovereign-linux-node-2026.08.03.tar.zst",
+      "artifact_id": "runtime-pack.recovery.sovereign-linux-node.2026-08-03",
+      "artifact_class": "recovery_runtime_pack",
+      "release_channel": "system",
+      "version": "2026.8.3",
+      "size_bytes": 1073741824,
+      "required": true,
+      "activation_role": "recovery_environment_support",
+      "signature_ref": "signature.recovery-runtime-pack",
+      "dependencies": [
+        "entry.operator-instructions",
+        "entry.validation-pack"
+      ]
+    },
+    {
+      "entry_id": "entry.provenance-receipts",
+      "path": "payload/evidence/provenance-receipts-2026.08.03.json",
+      "artifact_id": "provenance-receipt-set.offline-release.2026-08-03",
+      "artifact_class": "provenance_receipt_set",
+      "release_channel": "governance",
+      "version": "2026.8.3",
+      "size_bytes": 524288,
+      "required": true,
+      "activation_role": "artifact_provenance_evidence",
+      "schema_ref": "contracts/artifact-contracts/provenance-receipt.schema.json",
+      "signature_ref": "signature.provenance-receipts",
+      "dependencies": []
+    }
+  ],
+  "migration_plan": {
+    "coordination_mode": "ordered_component_owned_migrations",
+    "coordinator_writes_component_data": false,
+    "source_release_set_id": "release-set.sovereign-linux-node.2026-07-15",
+    "target_release_set_id": "release-set.sovereign-linux-node.2026-08-03",
+    "preconditions": [
+      "target identity verified",
+      "current Release Set confirmed",
+      "component backups completed",
+      "recovery environment available",
+      "evidence buffer available",
+      "storage reserve available"
+    ],
+    "ordered_steps": [
+      {
+        "order": 10,
+        "component_id": "orgo",
+        "migration_artifact_id": "migration.orgo.2026-08-03",
+        "phase": "expand_migrate_verify",
+        "rollback_eligibility": "eligible_with_validation",
+        "failure_behavior": "retain_source_authority_and_run_forward_repair_or_restore"
+      },
+      {
+        "order": 20,
+        "component_id": "konnaxion",
+        "migration_artifact_id": "migration.konnaxion.2026-08-03",
+        "phase": "expand_migrate_verify",
+        "rollback_eligibility": "eligible_with_validation",
+        "failure_behavior": "retain_source_authority_and_run_forward_repair_or_restore"
+      },
+      {
+        "order": 30,
+        "component_id": "uckk-platform",
+        "migration_artifact_id": "migration.uckk-platform.2026-08-03",
+        "phase": "expand_migrate_verify",
+        "rollback_eligibility": "not_eligible_use_forward_repair",
+        "failure_behavior": "retain_staged_state_inactive_and_enter_recovery_review"
+      }
+    ],
+    "partial_release_activation_permitted": false,
+    "mixed_schema_operation_permitted_only_when_declared": true,
+    "completion_evidence_refs": [
+      "EVID-OFFLINE-MIGRATION-001",
+      "EVID-OFFLINE-MIGRATION-002",
+      "EVID-OFFLINE-MIGRATION-003"
+    ]
+  },
+  "import_plan": {
+    "mode": "quarantine_validate_stage",
+    "import_is_activation": false,
+    "steps": [
+      "detect and identify transport media",
+      "mount or read source without ordinary execution",
+      "copy bundle to isolated quarantine",
+      "parse bounded manifest",
+      "verify bundle signature and issuer scope",
+      "validate intended audience and target profile",
+      "validate sequence, validity, withdrawal, and revocation",
+      "validate inventory paths, sizes, classes, and dependencies",
+      "decrypt recipient-scoped payloads into isolated temporary storage",
+      "verify artifact identities and signatures",
+      "validate all four release-channel manifests",
+      "validate complete Release Set compatibility",
+      "run artifact-class scans and schema validation",
+      "run local offline preflight and conformance tests",
+      "produce import receipt",
+      "stage eligible artifacts without changing active authority"
+    ],
+    "required_policy_decision": true,
+    "policy_decision_action": "offline_bundle.import",
+    "import_receipt_schema_ref": "contracts/artifact-contracts/decision-receipt.schema.json",
+    "failure_behavior": {
+      "retain_quarantine": true,
+      "retain_failure_evidence": true,
+      "remove_decrypted_temporary_material": true,
+      "active_release_set_unchanged": true,
+      "retry_requires_same_or_newer_sequence": true
+    }
+  },
+  "activation_plan": {
+    "activation_mode": "atomic_release_set_authority_switch",
+    "partial_activation_permitted": false,
+    "required_authority_roles": [
+      "sovereign-node-release-operator",
+      "governance-release-approver"
+    ],
+    "separation_of_duties_required": true,
+    "pre_activation_checks": [
+      "target identity",
+      "profile composition",
+      "release authority",
+      "bundle and artifact signatures",
+      "complete four-channel compatibility",
+      "component migration readiness",
+      "component backups",
+      "inactive system slot",
+      "policy runtime availability",
+      "knowledge runtime compatibility",
+      "storage and resource reserve",
+      "evidence buffering",
+      "last-known-good availability",
+      "recovery environment readiness"
+    ],
+    "staging_order": [
+      "trust and revocation inputs",
+      "inactive system image",
+      "inactive service artifacts",
+      "inactive governance bundle",
+      "inactive knowledge artifacts",
+      "component migration preparation",
+      "validation pack"
+    ],
+    "activation_order": [
+      "execute component-owned compatible migration phases",
+      "activate system image through privileged lifecycle path",
+      "activate services release",
+      "activate governance release",
+      "activate knowledge release",
+      "atomically switch active Release Set identity",
+      "run post-activation health gates",
+      "record activation receipt"
+    ],
+    "post_activation_health_gates": [
+      "active Release Set identity",
+      "system image boot health",
+      "required component health",
+      "schema and migration completion",
+      "Governance Policy Runtime decision test",
+      "Ariane local non-voice navigation",
+      "UCKK deterministic local operation",
+      "offline capability envelope",
+      "critical receipt durability",
+      "last-known-good and recovery readiness"
+    ],
+    "activation_receipt_schema_ref": "contracts/artifact-contracts/decision-receipt.schema.json",
+    "success_result": "active_release_set_confirmed"
+  },
+  "rollback_and_recovery": {
+    "last_known_good_release_set_id": "release-set.sovereign-linux-node.2026-07-15",
+    "last_known_good_required": true,
+    "rollback_requires_compatibility_validation": true,
+    "rollback_not_inferred_from_prior_artifact_presence": true,
+    "system_image_recovery": {
+      "recovery_slot_required": true,
+      "candidate_image_id": "system-image.koa-sovereign-linux-x86-64.2026-07-15",
+      "activation_path": "narrow_privileged_broker_or_recovery_environment"
+    },
+    "component_restore_support": [
+      {
+        "component_id": "identity-and-trust",
+        "restore_contract_ref": "contracts/components/identity-and-trust.component.json#/backup_restore_and_exit"
+      },
+      {
+        "component_id": "orgo",
+        "restore_contract_ref": "contracts/components/orgo.component.json#/backup_restore_and_exit"
+      },
+      {
+        "component_id": "uckk-platform",
+        "restore_contract_ref": "contracts/components/uckk-platform.component.json#/backup_restore_and_exit"
+      }
+    ],
+    "forward_repair": {
+      "supported": true,
+      "selected_when": [
+        "reverse migration is unsafe",
+        "restored state requires a newer compatible service",
+        "rollback would reintroduce a withdrawn or revoked artifact"
+      ],
+      "repair_artifact_source": "new_verified_offline_bundle_or_prevalidated_local_repair_pack"
+    },
+    "recovery_environment": {
+      "required": true,
+      "runtime_artifact_id": "runtime-pack.recovery.sovereign-linux-node.2026-08-03",
+      "ordinary_user_sessions_available": false,
+      "ordinary_external_integrations_available": false,
+      "temporary_authority_time_bounded": true,
+      "post_event_review_required": true
+    },
+    "terminal_failure_behavior": "Remain in recovery-locked or recovered-restricted state, preserve evidence, block unsupported writes, and expose protected export or decommissioning when normal recovery is not credible."
+  },
+  "offline_capability_validation": {
+    "internet_required": false,
+    "remote_provider_required": false,
+    "undeclared_provider_substitution_permitted": false,
+    "local_capabilities_tested": [
+      "identity and trust validation",
+      "Governance Policy Runtime decisions",
+      "Resource Governor admission",
+      "Audit Broker local receipt buffering",
+      "Ariane non-voice navigation",
+      "Konnaxion local operation",
+      "Orgo local operation",
+      "Kristal runtime artifact loading",
+      "SemantiK runtime artifact loading",
+      "UCKK deterministic ingestion and processing",
+      "Publication Gateway local or offline destinations",
+      "backup",
+      "restore",
+      "rollback",
+      "recovery",
+      "controlled export"
+    ],
+    "remote_capabilities_expected_unavailable": [
+      "ChatGPT",
+      "Suno",
+      "Gamma",
+      "external Ariane voice",
+      "remote synchronization",
+      "remote publication destinations"
+    ],
+    "result": "pass",
+    "evidence_refs": [
+      "EVID-OFFLINE-CAPABILITY-001",
+      "EVID-OFFLINE-CAPABILITY-002"
+    ]
+  },
+  "security": {
+    "default_classification": "restricted",
+    "private_key_material_embedded": false,
+    "ordinary_secret_material_embedded": false,
+    "recipient_encrypted": true,
+    "default_network_posture_during_import": "deny",
+    "external_execution_during_parse_permitted": false,
+    "payload_execution_before_validation_permitted": false,
+    "application_components_run_as_root": false,
+    "privileged_actions_use_narrow_broker": true,
+    "governed_payloads_in_general_logs_permitted": false,
+    "required_threat_controls": [
+      "path traversal rejection",
+      "symlink and hard-link rejection",
+      "archive nesting rejection",
+      "decompression ratio limit",
+      "manifest size limit",
+      "inventory count limit",
+      "single-file and total-size limits",
+      "duplicate path rejection",
+      "device and socket entry rejection",
+      "issuer and audience validation",
+      "sequence and replay protection",
+      "expiry and revocation validation",
+      "schema and artifact-class validation",
+      "quarantine before staging",
+      "decrypted temporary-material cleanup"
+    ]
+  },
+  "ai_boundary": {
+    "native_ai_required": false,
+    "external_ai_required_for_import": false,
+    "external_ai_required_for_validation": false,
+    "external_ai_required_for_activation": false,
+    "external_ai_required_for_recovery": false,
+    "ai_output_authoritative": false,
+    "direct_authoritative_mutation_permitted": false,
+    "direct_publication_permitted": false,
+    "privilege_grant_permitted": false,
+    "silent_provider_substitution_permitted": false
+  },
+  "evidence_and_receipts": {
+    "import_receipt_required": true,
+    "staging_receipt_required": true,
+    "activation_receipt_required": true,
+    "rollback_receipt_required": true,
+    "recovery_receipt_required": true,
+    "forward_repair_receipt_required": true,
+    "receipt_minimum_fields": [
+      "receipt_id",
+      "bundle_id",
+      "bundle_version",
+      "target_id",
+      "target_profile",
+      "source_release_set_id",
+      "target_release_set_id",
+      "action",
+      "actor_reference",
+      "authority_reference",
+      "sequence_number",
+      "result",
+      "reason_codes",
+      "occurred_at",
+      "evidence_references"
+    ],
+    "evidence_refs": [
+      "EVID-OFFLINE-BUNDLE-001",
+      "EVID-OFFLINE-BUNDLE-002",
+      "EVID-OFFLINE-BUNDLE-003",
+      "EVID-OFFLINE-BUNDLE-004"
+    ],
+    "selective_disclosure_required": true,
+    "local_durable_buffer_required": true,
+    "missing_critical_evidence_behavior": "block_transition"
+  },
+  "validation": {
+    "overall_result": "pass",
+    "validated_at": "2026-08-03T18:00:00-04:00",
+    "validator_identity_ref": "urn:koa:identity:offline-bundle-validator",
+    "required_test_refs": [
+      "TEST-OFFLINE-BUNDLE-001",
+      "TEST-OFFLINE-BUNDLE-002",
+      "TEST-OFFLINE-BUNDLE-003",
+      "TEST-OFFLINE-BUNDLE-004",
+      "TEST-OFFLINE-BUNDLE-005",
+      "TEST-OFFLINE-BUNDLE-006",
+      "TEST-OFFLINE-BUNDLE-007",
+      "TEST-OFFLINE-BUNDLE-008",
+      "TEST-OFFLINE-BUNDLE-009",
+      "TEST-OFFLINE-BUNDLE-010",
+      "TEST-OFFLINE-BUNDLE-011",
+      "TEST-OFFLINE-BUNDLE-012",
+      "TEST-OFFLINE-BUNDLE-013",
+      "TEST-OFFLINE-BUNDLE-014",
+      "TEST-OFFLINE-BUNDLE-015",
+      "TEST-OFFLINE-BUNDLE-016"
+    ],
+    "test_results": [
+      {
+        "test_id": "TEST-OFFLINE-BUNDLE-001",
+        "intent": "Validate bounded manifest parsing and required fields.",
+        "result": "pass",
+        "evidence_ref": "EVID-OFFLINE-TEST-001"
+      },
+      {
+        "test_id": "TEST-OFFLINE-BUNDLE-002",
+        "intent": "Validate path, link, archive, and device-entry defenses.",
+        "result": "pass",
+        "evidence_ref": "EVID-OFFLINE-TEST-002"
+      },
+      {
+        "test_id": "TEST-OFFLINE-BUNDLE-003",
+        "intent": "Validate issuer, audience, signature, trust, and revocation.",
+        "result": "pass",
+        "evidence_ref": "EVID-OFFLINE-TEST-003"
+      },
+      {
+        "test_id": "TEST-OFFLINE-BUNDLE-004",
+        "intent": "Validate sequence, replay, expiry, and clock-degraded behavior.",
+        "result": "pass",
+        "evidence_ref": "EVID-OFFLINE-TEST-004"
+      },
+      {
+        "test_id": "TEST-OFFLINE-BUNDLE-005",
+        "intent": "Validate all four channel identities and Release Set compatibility.",
+        "result": "pass",
+        "evidence_ref": "EVID-OFFLINE-TEST-005"
+      },
+      {
+        "test_id": "TEST-OFFLINE-BUNDLE-006",
+        "intent": "Validate profile and architecture applicability.",
+        "result": "pass",
+        "evidence_ref": "EVID-OFFLINE-TEST-006"
+      },
+      {
+        "test_id": "TEST-OFFLINE-BUNDLE-007",
+        "intent": "Validate artifact inventory, dependencies, classes, and signatures.",
+        "result": "pass",
+        "evidence_ref": "EVID-OFFLINE-TEST-007"
+      },
+      {
+        "test_id": "TEST-OFFLINE-BUNDLE-008",
+        "intent": "Validate encrypted recipient handling and temporary-material cleanup.",
+        "result": "pass",
+        "evidence_ref": "EVID-OFFLINE-TEST-008"
+      },
+      {
+        "test_id": "TEST-OFFLINE-BUNDLE-009",
+        "intent": "Validate component-owned migration order and failure containment.",
+        "result": "pass",
+        "evidence_ref": "EVID-OFFLINE-TEST-009"
+      },
+      {
+        "test_id": "TEST-OFFLINE-BUNDLE-010",
+        "intent": "Validate import and activation separation.",
+        "result": "pass",
+        "evidence_ref": "EVID-OFFLINE-TEST-010"
+      },
+      {
+        "test_id": "TEST-OFFLINE-BUNDLE-011",
+        "intent": "Validate atomic Release Set activation and mixed-state rejection.",
+        "result": "pass",
+        "evidence_ref": "EVID-OFFLINE-TEST-011"
+      },
+      {
+        "test_id": "TEST-OFFLINE-BUNDLE-012",
+        "intent": "Validate last-known-good, rollback, restore, and forward repair.",
+        "result": "pass",
+        "evidence_ref": "EVID-OFFLINE-TEST-012"
+      },
+      {
+        "test_id": "TEST-OFFLINE-BUNDLE-013",
+        "intent": "Validate complete offline capability envelope without provider substitution.",
+        "result": "pass",
+        "evidence_ref": "EVID-OFFLINE-TEST-013"
+      },
+      {
+        "test_id": "TEST-OFFLINE-BUNDLE-014",
+        "intent": "Validate critical receipts and durable local evidence buffering.",
+        "result": "pass",
+        "evidence_ref": "EVID-OFFLINE-TEST-014"
+      },
+      {
+        "test_id": "TEST-OFFLINE-BUNDLE-015",
+        "intent": "Validate recovery environment isolation and bounded authority.",
+        "result": "pass",
+        "evidence_ref": "EVID-OFFLINE-TEST-015"
+      },
+      {
+        "test_id": "TEST-OFFLINE-BUNDLE-016",
+        "intent": "Validate no native or external AI dependency.",
+        "result": "pass",
+        "evidence_ref": "EVID-OFFLINE-TEST-016"
+      }
+    ],
+    "all_required_tests_passed": true,
+    "missing_required_evidence": false
+  },
+  "provenance": {
+    "producer": {
+      "identity_ref": "urn:koa:identity:offline-bundle-builder",
+      "role": "offline-bundle-producer"
+    },
+    "build_profile": "build_farm",
+    "source_revision": "release-inputs-2026-08-03",
+    "toolchain_ref": "contracts/toolchains/offline-bundle.toolchain.json",
+    "source_refs": [
+      "contracts/examples/release-set.example.json",
+      "contracts/artifact-contracts/offline-bundle.schema.json",
+      "contracts/artifact-contracts/release-set.schema.json",
+      "contracts/artifact-contracts/policy-bundle.schema.json"
+    ],
+    "produced_at": "2026-08-03T17:45:00-04:00",
+    "test_evidence_refs": [
+      "EVID-OFFLINE-BUNDLE-001",
+      "EVID-OFFLINE-BUNDLE-002"
+    ],
+    "approval_evidence_refs": [
+      "EVID-OFFLINE-APPROVAL-001",
+      "EVID-OFFLINE-APPROVAL-002"
+    ],
+    "reproducibility": "fully_attributable"
+  },
+  "approvals": [
+    {
+      "approval_id": "approval.offline-bundle.release",
+      "approver_identity_ref": "urn:koa:identity:release-approver",
+      "approver_role": "release-approver",
+      "decision": "approve",
+      "approved_at": "2026-08-03T17:55:00-04:00",
+      "scope": [
+        "complete_bundle",
+        "release_set",
+        "offline_activation"
+      ],
+      "evidence_ref": "EVID-OFFLINE-APPROVAL-001"
+    },
+    {
+      "approval_id": "approval.offline-bundle.governance",
+      "approver_identity_ref": "urn:koa:identity:governance-approver",
+      "approver_role": "governance-approver",
+      "decision": "approve",
+      "approved_at": "2026-08-03T17:56:00-04:00",
+      "scope": [
+        "governance_channel",
+        "policy_bundle",
+        "offline_behavior"
+      ],
+      "evidence_ref": "EVID-OFFLINE-APPROVAL-002"
+    }
+  ],
+  "signatures": [
+    {
+      "signature_id": "signature.bundle-manifest",
+      "key_id": "urn:koa:key:offline-bundle-publisher-1",
+      "signer_identity_ref": "urn:koa:identity:release-publisher",
+      "signer_role": "offline-bundle-publisher",
+      "algorithm": "Ed25519",
+      "canonicalization": "JCS",
+      "purpose": "bundle_manifest",
+      "covered_sections": [
+        "manifest",
+        "scope",
+        "release_set",
+        "media_and_transport",
+        "parser_and_extraction_limits",
+        "integrity_and_trust",
+        "inventory",
+        "migration_plan",
+        "import_plan",
+        "activation_plan",
+        "rollback_and_recovery",
+        "offline_capability_validation",
+        "security",
+        "ai_boundary",
+        "evidence_and_receipts",
+        "validation",
+        "provenance",
+        "approvals"
+      ],
+      "signed_at": "2026-08-03T18:01:00-04:00",
+      "signature_value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    }
+  ],
+  "artifact_signatures": [
+    {
+      "signature_id": "signature.release-set",
+      "artifact_id": "release-set.sovereign-linux-node.2026-08-03",
+      "signer_role": "release-set-publisher",
+      "algorithm": "Ed25519",
+      "signature_value": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
+    },
+    {
+      "signature_id": "signature.system-release",
+      "artifact_id": "system-release.2026-08-03",
+      "signer_role": "system-release-publisher",
+      "algorithm": "Ed25519",
+      "signature_value": "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
+    },
+    {
+      "signature_id": "signature.services-release",
+      "artifact_id": "services-release.2026-08-03",
+      "signer_role": "services-release-publisher",
+      "algorithm": "Ed25519",
+      "signature_value": "DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD"
+    },
+    {
+      "signature_id": "signature.governance-release",
+      "artifact_id": "governance-release.2026-08-03",
+      "signer_role": "governance-release-publisher",
+      "algorithm": "Ed25519",
+      "signature_value": "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"
+    },
+    {
+      "signature_id": "signature.knowledge-release",
+      "artifact_id": "knowledge-release.2026-08-03",
+      "signer_role": "knowledge-release-publisher",
+      "algorithm": "Ed25519",
+      "signature_value": "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+    },
+    {
+      "signature_id": "signature.system-image",
+      "artifact_id": "system-image.koa-sovereign-linux-x86-64.2026-08-03",
+      "signer_role": "system-image-publisher",
+      "algorithm": "Ed25519",
+      "signature_value": "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"
+    },
+    {
+      "signature_id": "signature.services-runtime-pack",
+      "artifact_id": "runtime-pack.services.sovereign-linux-node.2026-08-03",
+      "signer_role": "services-artifact-publisher",
+      "algorithm": "Ed25519",
+      "signature_value": "HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH"
+    },
+    {
+      "signature_id": "signature.policy-bundle",
+      "artifact_id": "policy-bundle.core-governance",
+      "signer_role": "governance-artifact-publisher",
+      "algorithm": "Ed25519",
+      "signature_value": "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
+    },
+    {
+      "signature_id": "signature.cultural-rights-policy",
+      "artifact_id": "cultural-rights-policy.sovereign-production",
+      "signer_role": "governance-artifact-publisher",
+      "algorithm": "Ed25519",
+      "signature_value": "JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ"
+    },
+    {
+      "signature_id": "signature.kristal-core",
+      "artifact_id": "kristal-artifact.core.2026-08-03",
+      "signer_role": "knowledge-artifact-publisher",
+      "algorithm": "Ed25519",
+      "signature_value": "KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK"
+    },
+    {
+      "signature_id": "signature.language-pack",
+      "artifact_id": "language-pack.en-core.2026-08-03",
+      "signer_role": "knowledge-artifact-publisher",
+      "algorithm": "Ed25519",
+      "signature_value": "LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL"
+    },
+    {
+      "signature_id": "signature.ariane-routes",
+      "artifact_id": "ariane-artifact.routes.sovereign-linux-node.2026-08-03",
+      "signer_role": "knowledge-artifact-publisher",
+      "algorithm": "Ed25519",
+      "signature_value": "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM"
+    },
+    {
+      "signature_id": "signature.orgo-migration",
+      "artifact_id": "migration.orgo.2026-08-03",
+      "signer_role": "orgo-release-publisher",
+      "algorithm": "Ed25519",
+      "signature_value": "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN"
+    },
+    {
+      "signature_id": "signature.konnaxion-migration",
+      "artifact_id": "migration.konnaxion.2026-08-03",
+      "signer_role": "konnaxion-release-publisher",
+      "algorithm": "Ed25519",
+      "signature_value": "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
+    },
+    {
+      "signature_id": "signature.uckk-migration",
+      "artifact_id": "migration.uckk-platform.2026-08-03",
+      "signer_role": "uckk-release-publisher",
+      "algorithm": "Ed25519",
+      "signature_value": "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
+    },
+    {
+      "signature_id": "signature.trust-update",
+      "artifact_id": "trust-bundle.koa-sovereign-production.2026-08-03",
+      "signer_role": "trust-release-publisher",
+      "algorithm": "Ed25519",
+      "signature_value": "QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ"
+    },
+    {
+      "signature_id": "signature.revocation-update",
+      "artifact_id": "revocation-update.2026-08-03",
+      "signer_role": "trust-release-publisher",
+      "algorithm": "Ed25519",
+      "signature_value": "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR"
+    },
+    {
+      "signature_id": "signature.validation-pack",
+      "artifact_id": "test-pack.offline-release.2026-08-03",
+      "signer_role": "test-artifact-publisher",
+      "algorithm": "Ed25519",
+      "signature_value": "SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS"
+    },
+    {
+      "signature_id": "signature.operator-instructions",
+      "artifact_id": "operator-instructions.sovereign-offline-update-and-recovery.en",
+      "signer_role": "operations-document-publisher",
+      "algorithm": "Ed25519",
+      "signature_value": "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT"
+    },
+    {
+      "signature_id": "signature.recovery-runtime-pack",
+      "artifact_id": "runtime-pack.recovery.sovereign-linux-node.2026-08-03",
+      "signer_role": "system-recovery-publisher",
+      "algorithm": "Ed25519",
+      "signature_value": "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU"
+    },
+    {
+      "signature_id": "signature.provenance-receipts",
+      "artifact_id": "provenance-receipt-set.offline-release.2026-08-03",
+      "signer_role": "evidence-publisher",
+      "algorithm": "Ed25519",
+      "signature_value": "VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV"
+    }
+  ],
+  "lifecycle": {
+    "support_status": "supported",
+    "import_eligibility": "eligible",
+    "activation_eligibility": "eligible_after_local_validation",
+    "supersedes_bundle_ids": [
+      "offline-bundle.sovereign-linux-node.release-2026-07-15"
+    ],
+    "withdrawal_behavior": "block_new_import_and_activation",
+    "retention": {
+      "manifest_retained": true,
+      "receipts_retained": true,
+      "failure_evidence_retained": true,
+      "minimum_retention_days": 2555
+    },
+    "cleanup": {
+      "quarantine_removed_after_success": false,
+      "successful_bundle_retained_until_superseded_and_recovery_window_closed": true,
+      "decrypted_temporary_material_removed": true,
+      "transport_media_unmounted": true
+    }
+  },
+  "example": true,
+  "authority": "non_authoritative_example"
+}

@@ -1,0 +1,60 @@
+{
+  "$schema": "../artifact-contracts/node-profile.schema.json",
+  "schema_version": "1.0",
+  "node_id": "node-sovereign-hub-01",
+  "profile": "koa-sovereign-hub",
+  "hardware_class": "hub-16c-64g-4tb",
+  "tenants": [
+    "tenant-community-operations"
+  ],
+  "capability_policy": "sovereign-hub-capability-policy-v1",
+  "channels": {
+    "system": {
+      "allowed": [
+        "stable"
+      ],
+      "trust_root_set": "system-trust-roots-v1"
+    },
+    "services": {
+      "allowed": [
+        "stable",
+        "validated-hotfix"
+      ],
+      "trust_root_set": "services-trust-roots-v1"
+    },
+    "governance": {
+      "allowed": [
+        "stable"
+      ],
+      "trust_root_set": "governance-trust-roots-v1"
+    },
+    "knowledge": {
+      "allowed": [
+        "stable",
+        "locally-approved"
+      ],
+      "trust_root_set": "knowledge-trust-roots-v1"
+    }
+  },
+  "storage": {
+    "layout": "encrypted-local",
+    "system_volume": "a-b",
+    "component_data": "component-owned",
+    "artifact_store": "local-verified",
+    "backup_target": "encrypted-removable-media"
+  },
+  "network": {
+    "mode": "controlled",
+    "inbound_policy": "deny-by-default",
+    "outbound_policy": "allowlisted",
+    "peer_synchronization": "explicit-trusted-peers"
+  },
+  "offline": {
+    "supported": true,
+    "core_operation_without_internet": true,
+    "artifact_import": "verified-offline-bundle",
+    "artifact_export": "controlled"
+  },
+  "example": true,
+  "authority": "non_authoritative_example"
+}

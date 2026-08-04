@@ -1,0 +1,850 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "contract_id": "CONTRACT-COMP-PUBLICATION-GATEWAY",
+  "contract_type": "component_contract",
+  "component_id": "publication_gateway",
+  "version": "1.0.0",
+  "status": "active",
+  "language": "en",
+  "effective_at": "2026-08-03T16:39:00-04:00",
+  "display_name": "Publication Gateway",
+  "component_kind": "governed_gateway",
+  "domain": "cross_domain_publication",
+  "purpose": "Mediate every governed publication from one authority or disclosure domain to another by validating a bounded publication request, resolving identity, consent, policy, trust, audience, representation, and evidence, executing only the approved release, and producing a durable publication receipt.",
+  "authority": {
+    "authority_role": "publication_request_decision_and_receipt_mediator",
+    "canonical_owner_of": [
+      "publication_request_lifecycle",
+      "publication_decision_record",
+      "bounded_release_representation",
+      "publication_staging_state",
+      "publication_execution_state",
+      "publication_receipt",
+      "publication_reversal_record",
+      "publication_retry_state"
+    ],
+    "does_not_own": [
+      "source_component_authoritative_data",
+      "source_content_semantic_truth",
+      "identity_source_records",
+      "governance_policy_content",
+      "cultural_authority",
+      "consent_grant",
+      "destination_component_authoritative_data",
+      "uckk_admission",
+      "external_service_authority",
+      "release_channel_identity"
+    ],
+    "direct_cross_component_authoritative_writes_allowed": false,
+    "authority_transfer_by_publication": false
+  },
+  "canonical_refs": {
+    "authority_registry": "generated/authority-manifest.json",
+    "decisions_registry": "generated/decision-index.json",
+    "system_registry": "contracts/system.contract.json",
+    "components_registry": "generated/component-catalog.json",
+    "requirements_registry": "generated/requirements-index.json",
+    "locks_registry": "generated/assertion-index.json",
+    "traceability_registry": "generated/traceability.json",
+    "exceptions_registry": "generated/exception-index.json",
+    "evidence_registry": "generated/evidence-catalog.json",
+    "integration_registry": "contracts/integration-types.contract.json",
+    "profile_index": "generated/profile-catalog.json",
+    "release_channels_registry": "contracts/release-channels.contract.json",
+    "publication_request_contract": "contracts/artifact-contracts/publication-request.schema.json",
+    "publication_receipt_contract": "contracts/artifact-contracts/publication-receipt.schema.json",
+    "cultural_rights_policy_contract": "contracts/artifact-contracts/cultural-rights-policy.schema.json",
+    "provenance_receipt_contract": "contracts/artifact-contracts/provenance-receipt.schema.json",
+    "integration_manifest_contract": "contracts/artifact-contracts/integration-manifest.schema.json",
+    "component_documentation": "04-components/publication-gateway.md",
+    "security_documentation": "07-security/17-cross-domain-publication.md",
+    "cultural_rights_documentation": "01-constitution/12-cultural-rights-and-consent.md",
+    "separation_adr": "10-adrs/ADR-020-publication-gateway-and-uckk-dimension-gateway-separation.md"
+  },
+  "decision_ids": [
+    "DEC-GATE-001",
+    "DEC-GOV-001",
+    "DEC-DATA-001",
+    "DEC-CULT-001",
+    "DEC-CULT-002",
+    "DEC-CULT-003",
+    "DEC-CULT-004",
+    "DEC-CULT-005",
+    "DEC-AI-001",
+    "DEC-OFFLINE-001",
+    "DEC-AUDIT-001",
+    "DEC-REL-001"
+  ],
+  "requirement_ids": [
+    "REQ-GATE-001",
+    "REQ-GOV-001",
+    "REQ-DATA-001",
+    "REQ-CULT-003",
+    "REQ-CULT-004",
+    "REQ-CULT-005",
+    "REQ-CULT-006",
+    "REQ-CULT-009",
+    "REQ-CULT-010",
+    "REQ-CULT-011",
+    "REQ-CULT-012",
+    "REQ-CULT-013",
+    "REQ-CULT-014",
+    "REQ-CULT-016",
+    "REQ-CULT-017",
+    "REQ-CULT-018",
+    "REQ-CULT-019",
+    "REQ-CULT-020",
+    "REQ-CULT-021",
+    "REQ-CULT-022",
+    "REQ-CULT-023",
+    "REQ-CULT-024",
+    "REQ-AI-001",
+    "REQ-OFFLINE-001",
+    "REQ-AUDIT-001",
+    "REQ-LIFE-001"
+  ],
+  "lock_ids": [
+    "LOCK-GATE-001",
+    "LOCK-GOV-001",
+    "LOCK-DATA-001",
+    "LOCK-COMP-001",
+    "LOCK-COMP-002",
+    "LOCK-CULT-001",
+    "LOCK-CULT-002",
+    "LOCK-CULT-003",
+    "LOCK-CULT-004",
+    "LOCK-CULT-005",
+    "LOCK-CULT-006",
+    "LOCK-CULT-007",
+    "LOCK-CULT-008",
+    "LOCK-CULT-009",
+    "LOCK-CULT-010",
+    "LOCK-AI-001",
+    "LOCK-AI-002",
+    "LOCK-AUDIT-001",
+    "LOCK-OFFLINE-001",
+    "LOCK-LIFE-001",
+    "LOCK-LIFE-002",
+    "LOCK-LIFE-003",
+    "LOCK-LIFE-004"
+  ],
+  "exception_ids": [],
+  "responsibilities": [
+    {
+      "responsibility_id": "PUB-RESP-001",
+      "name": "Request admission",
+      "description": "Validate the publication request structure, requester identity, source reference, declared purpose, destination, audience, representation, requested transformations, and required authority references."
+    },
+    {
+      "responsibility_id": "PUB-RESP-002",
+      "name": "Source binding",
+      "description": "Bind the request to an immutable source version or another explicitly stable source identity supplied by the owning component."
+    },
+    {
+      "responsibility_id": "PUB-RESP-003",
+      "name": "Authority resolution",
+      "description": "Resolve identity, delegation, trust, consent, cultural authority, governance policy, exceptions, and time validity before approval."
+    },
+    {
+      "responsibility_id": "PUB-RESP-004",
+      "name": "Bounded representation",
+      "description": "Create or receive only the exact release representation approved for the declared destination, audience, purpose, and duration."
+    },
+    {
+      "responsibility_id": "PUB-RESP-005",
+      "name": "Decision mediation",
+      "description": "Record an allow, deny, blocked, or review-required decision together with obligations and supporting authority."
+    },
+    {
+      "responsibility_id": "PUB-RESP-006",
+      "name": "Controlled execution",
+      "description": "Execute release only after the approved representation and all decision obligations pass final validation."
+    },
+    {
+      "responsibility_id": "PUB-RESP-007",
+      "name": "Receipt production",
+      "description": "Produce a publication receipt that records what was released, under which authority, to which destination and audience, and with what result."
+    },
+    {
+      "responsibility_id": "PUB-RESP-008",
+      "name": "Revocation response",
+      "description": "Stop future and reversible pending publication within the revoked scope and record supported downstream remediation without falsifying history."
+    },
+    {
+      "responsibility_id": "PUB-RESP-009",
+      "name": "Selective audit",
+      "description": "Expose the minimum proof required for accountability while protecting restricted source material, identities, and cultural details."
+    }
+  ],
+  "non_responsibilities": [
+    "Selecting content on behalf of the source component.",
+    "Determining semantic truth or editorial quality.",
+    "Assigning cultural authority or community membership.",
+    "Granting consent.",
+    "Admitting user media into UCKK.",
+    "Editing source component records directly.",
+    "Replacing Governance Policy Runtime.",
+    "Replacing Identity and Trust.",
+    "Replacing Audit Broker.",
+    "Acting as a general external integration proxy.",
+    "Making external AI output authoritative.",
+    "Guaranteeing deletion from destinations outside kOA control."
+  ],
+  "component_dependencies": [
+    {
+      "component_id": "identity_and_trust",
+      "contract_ref": "contracts/components/identity-and-trust.component.json",
+      "dependency_kind": "required_for_identity_and_trust_resolution",
+      "direct_data_write_allowed": false
+    },
+    {
+      "component_id": "governance_policy_runtime",
+      "contract_ref": "contracts/components/governance-policy-runtime.component.json",
+      "dependency_kind": "required_for_governed_decision_evaluation",
+      "direct_data_write_allowed": false
+    },
+    {
+      "component_id": "audit_broker",
+      "contract_ref": "contracts/components/audit-broker.component.json",
+      "dependency_kind": "required_for_selective_audit_and_evidence_brokerage",
+      "direct_data_write_allowed": false
+    }
+  ],
+  "source_component_relationships": [
+    {
+      "component_id": "konnaxion",
+      "contract_ref": "contracts/components/konnaxion.component.json",
+      "role": "publication_destination_or_source_domain",
+      "direct_data_write_allowed": false
+    },
+    {
+      "component_id": "orgo",
+      "contract_ref": "contracts/components/orgo.component.json",
+      "role": "private_workflow_source_domain",
+      "direct_data_write_allowed": false
+    },
+    {
+      "component_id": "uckk_platform",
+      "contract_ref": "contracts/components/uckk-platform.component.json",
+      "role": "media_source_domain",
+      "direct_data_write_allowed": false
+    },
+    {
+      "component_id": "kristal_runtime",
+      "contract_ref": "contracts/components/kristal-runtime.component.json",
+      "role": "knowledge_source_domain",
+      "direct_data_write_allowed": false
+    }
+  ],
+  "gateway_separation": {
+    "uckk_dimension_gateway_ref": "contracts/components/uckk-dimension-gateway.component.json",
+    "publication_gateway_responsibility": "Governed release from one authority or disclosure domain to another.",
+    "uckk_dimension_gateway_responsibility": "Controlled admission of user-selected media into a UCKK dimension.",
+    "admission_implies_publication_authority": false,
+    "publication_implies_uckk_admission_authority": false,
+    "shared_implementation_process_allowed": false,
+    "shared_authority_state_allowed": false,
+    "direct_gateway_bypass_allowed": false
+  },
+  "authoritative_data": {
+    "logical_owner": "publication_gateway",
+    "stores": [
+      "publication_request",
+      "source_binding",
+      "publication_decision",
+      "decision_obligation",
+      "bounded_release_representation",
+      "publication_staging_record",
+      "publication_execution_record",
+      "publication_receipt",
+      "publication_reversal_record",
+      "retry_record",
+      "downstream_notice_record"
+    ],
+    "does_not_store_as_authoritative_source": [
+      "source_component_primary_content",
+      "source_component_business_state",
+      "identity_master_record",
+      "governance_policy_bundle",
+      "cultural_rights_master_record",
+      "destination_component_business_state"
+    ],
+    "source_snapshot_policy": {
+      "full_source_copy_required": false,
+      "minimum_bounded_representation_required": true,
+      "source_identity_and_version_required": true,
+      "source_owner_remains_authoritative": true
+    },
+    "retention_classes": {
+      "request_and_decision": "governed_operational_record",
+      "bounded_representation": "purpose_limited_staging",
+      "receipt": "durable_historical_evidence",
+      "failed_candidate": "bounded_diagnostic_record",
+      "restricted_evidence": "policy_controlled_evidence"
+    },
+    "secret_material_allowed": false
+  },
+  "interfaces": {
+    "inbound": [
+      {
+        "interface_id": "publication_request",
+        "artifact_contract_ref": "contracts/artifact-contracts/publication-request.schema.json",
+        "authentication_required": true,
+        "idempotency_key_required": true,
+        "source_component_identity_required": true,
+        "tenant_or_authority_domain_required": true
+      },
+      {
+        "interface_id": "revocation_or_withdrawal_notice",
+        "authentication_required": true,
+        "authority_resolution_required": true,
+        "supported_actions": [
+          "cancel_pending",
+          "stop_future_release",
+          "initiate_supported_downstream_notice"
+        ]
+      },
+      {
+        "interface_id": "publication_status_query",
+        "authentication_required": true,
+        "selective_disclosure_required": true
+      }
+    ],
+    "outbound": [
+      {
+        "interface_id": "publication_decision",
+        "result_values": [
+          "allow",
+          "deny",
+          "blocked",
+          "review_required"
+        ],
+        "obligations_required_when_allow": true
+      },
+      {
+        "interface_id": "publication_receipt",
+        "artifact_contract_ref": "contracts/artifact-contracts/publication-receipt.schema.json",
+        "produced_for_success": true,
+        "produced_for_terminal_failure": true
+      },
+      {
+        "interface_id": "selective_audit_event",
+        "target_component_id": "audit_broker",
+        "minimum_disclosure_required": true
+      },
+      {
+        "interface_id": "destination_delivery",
+        "destination_must_be_declared": true,
+        "integration_manifest_required_for_external_destination": true
+      }
+    ],
+    "administrative": [
+      {
+        "interface_id": "health",
+        "authentication_required": true,
+        "contains_source_content": false
+      },
+      {
+        "interface_id": "queue_inspection",
+        "authentication_required": true,
+        "restricted_metadata_only": true
+      },
+      {
+        "interface_id": "controlled_retry",
+        "authentication_required": true,
+        "revalidation_required": true
+      }
+    ]
+  },
+  "publication_request_minimum": {
+    "required_fields": [
+      "request_id",
+      "requester_identity",
+      "source_component_id",
+      "source_object_ref",
+      "source_version",
+      "source_authority_domain",
+      "destination",
+      "audience",
+      "purpose",
+      "requested_representation",
+      "requested_transformations",
+      "consent_refs",
+      "cultural_rights_policy_refs",
+      "governance_context",
+      "idempotency_key",
+      "requested_at"
+    ],
+    "implicit_audience_allowed": false,
+    "implicit_purpose_allowed": false,
+    "implicit_destination_allowed": false,
+    "implicit_transformation_allowed": false,
+    "wildcard_source_allowed": false,
+    "unbounded_collection_publication_allowed": false
+  },
+  "decision_model": {
+    "results": [
+      "allow",
+      "deny",
+      "blocked",
+      "review_required"
+    ],
+    "allow_requires": [
+      "valid_request",
+      "stable_source_binding",
+      "authenticated_requester",
+      "authorized_source_component",
+      "valid_identity_and_delegation",
+      "valid_trust_scope",
+      "valid_consent",
+      "valid_cultural_authority",
+      "governance_policy_allow",
+      "destination_compatibility",
+      "audience_compatibility",
+      "representation_compatibility",
+      "transformation_authority",
+      "active_exception_validation",
+      "required_human_review",
+      "required_evidence",
+      "resource_capacity"
+    ],
+    "deny_is_terminal_for_request_version": true,
+    "blocked_requires_new_evidence_or_state_change": true,
+    "review_required_prevents_execution": true,
+    "missing_authority_result": "blocked",
+    "ambiguous_scope_result": "blocked",
+    "expired_consent_result": "deny",
+    "revoked_consent_result": "deny",
+    "conflicting_authority_result": "review_required"
+  },
+  "representation_policy": {
+    "representation_is_bounded": true,
+    "minimum_necessary_content_required": true,
+    "required_context_preserved": true,
+    "required_attribution_preserved": true,
+    "prohibited_attribution_preserved": true,
+    "audience_specific_redaction_supported": true,
+    "purpose_specific_transformation_supported": true,
+    "transformation_without_explicit_authority_allowed": false,
+    "staging_representation_may_become_source_authority": false,
+    "destination_receives_only_approved_representation": true
+  },
+  "state_machine": {
+    "initial_state": "received",
+    "states": [
+      "received",
+      "validating",
+      "awaiting_authority",
+      "awaiting_review",
+      "denied",
+      "blocked",
+      "approved",
+      "staging",
+      "ready",
+      "publishing",
+      "published",
+      "partially_delivered",
+      "failed",
+      "cancelled",
+      "revoked",
+      "remediating",
+      "closed"
+    ],
+    "terminal_states": [
+      "denied",
+      "cancelled",
+      "closed"
+    ],
+    "permitted_transitions": [
+      [
+        "received",
+        "validating"
+      ],
+      [
+        "validating",
+        "awaiting_authority"
+      ],
+      [
+        "validating",
+        "denied"
+      ],
+      [
+        "validating",
+        "blocked"
+      ],
+      [
+        "awaiting_authority",
+        "awaiting_review"
+      ],
+      [
+        "awaiting_authority",
+        "approved"
+      ],
+      [
+        "awaiting_authority",
+        "denied"
+      ],
+      [
+        "awaiting_authority",
+        "blocked"
+      ],
+      [
+        "awaiting_review",
+        "approved"
+      ],
+      [
+        "awaiting_review",
+        "denied"
+      ],
+      [
+        "awaiting_review",
+        "blocked"
+      ],
+      [
+        "approved",
+        "staging"
+      ],
+      [
+        "approved",
+        "cancelled"
+      ],
+      [
+        "staging",
+        "ready"
+      ],
+      [
+        "staging",
+        "failed"
+      ],
+      [
+        "ready",
+        "publishing"
+      ],
+      [
+        "ready",
+        "cancelled"
+      ],
+      [
+        "publishing",
+        "published"
+      ],
+      [
+        "publishing",
+        "partially_delivered"
+      ],
+      [
+        "publishing",
+        "failed"
+      ],
+      [
+        "published",
+        "revoked"
+      ],
+      [
+        "partially_delivered",
+        "remediating"
+      ],
+      [
+        "failed",
+        "remediating"
+      ],
+      [
+        "revoked",
+        "remediating"
+      ],
+      [
+        "remediating",
+        "closed"
+      ]
+    ],
+    "automatic_transition_from_blocked_to_approved_allowed": false,
+    "automatic_transition_after_reconnection_allowed": false,
+    "state_change_receipt_required": true
+  },
+  "idempotency_and_delivery": {
+    "request_id_unique": true,
+    "idempotency_key_required": true,
+    "duplicate_request_behavior": "return_existing_status_or_receipt",
+    "delivery_semantics": "at_least_once_transport_exactly_once_effect_when_supported",
+    "destination_deduplication_contract_required": true,
+    "retry_requires_revalidation": true,
+    "retry_must_not_broaden_scope": true,
+    "partial_delivery_requires_remediation": true,
+    "silent_duplicate_publication_allowed": false
+  },
+  "offline_behavior": {
+    "local_domain_publication_supported": true,
+    "condition": "All required identity, trust, consent, policy, destination, time, and evidence authority is locally available and valid.",
+    "remote_destination_unavailable_behavior": "queue_or_deny_by_request_policy",
+    "automatic_remote_release_on_reconnection": false,
+    "queued_request_revalidation_required": true,
+    "revalidation_dimensions": [
+      "source_version",
+      "requester_identity",
+      "delegation",
+      "trust",
+      "revocation",
+      "consent",
+      "cultural_authority",
+      "governance_policy",
+      "exception",
+      "destination",
+      "audience",
+      "representation",
+      "credentials",
+      "time_validity",
+      "conflict_state"
+    ],
+    "uncertain_time_behavior": "block_time_sensitive_publication",
+    "unrelated_local_capabilities_continue": true
+  },
+  "external_destination_policy": {
+    "integration_manifest_required": true,
+    "automatic_external_provider_selection_allowed": false,
+    "data_minimization_required": true,
+    "provider_identity_disclosure_required": true,
+    "retention_and_reuse_terms_required": true,
+    "external_ai_required": false,
+    "external_output_authoritative_by_default": false,
+    "guaranteed_external_deletion_claim_allowed": false,
+    "unsupported_deletion_behavior": "stop_future_release_record_limitation_and_issue_supported_notice"
+  },
+  "security": {
+    "authentication_required": true,
+    "authorization_required": true,
+    "least_privilege_required": true,
+    "dedicated_service_identity_required": true,
+    "default_deny_network": true,
+    "source_component_database_access_allowed": false,
+    "destination_component_database_access_allowed": false,
+    "secrets_by_reference_required": true,
+    "secret_material_in_request_allowed": false,
+    "privileged_host_operations_required": false,
+    "restricted_evidence_selective_disclosure_required": true,
+    "request_payload_size_limit_required": true,
+    "malware_and_content_policy_validation_required_when_applicable": true,
+    "rate_limits_required": true,
+    "queue_limits_required": true,
+    "audit_for_administrative_actions_required": true
+  },
+  "resource_policy": {
+    "resource_authority_component_id": "resource_governor",
+    "component_may_override_resource_governor": false,
+    "bounded_resources": [
+      "cpu",
+      "memory",
+      "process_count",
+      "staging_storage",
+      "queue_depth",
+      "concurrent_publications",
+      "network_egress"
+    ],
+    "constitutional_service_priority": true,
+    "resource_exhaustion_behavior": [
+      "preserve accepted requests and receipts",
+      "deny or queue new work",
+      "avoid partial authoritative activation",
+      "make degraded state visible"
+    ]
+  },
+  "profile_bindings": [
+    {
+      "profile_id": "sovereign_hub",
+      "profile_ref": "contracts/profiles/sovereign-hub.profile.json",
+      "selection": "required",
+      "activation": "always_on",
+      "supported_destinations": [
+        "local_domain",
+        "configured_federation_peer",
+        "approved_external_destination"
+      ]
+    },
+    {
+      "profile_id": "user_lightweight",
+      "profile_ref": "contracts/profiles/user-lightweight.profile.json",
+      "selection": "capability_dependent",
+      "activation": "on_demand_or_local_service",
+      "supported_destinations": [
+        "local_domain",
+        "configured_hub",
+        "approved_external_destination"
+      ]
+    },
+    {
+      "profile_id": "developer_linux_workstation",
+      "profile_ref": "contracts/profiles/developer-linux-workstation.profile.json",
+      "selection": "workbench_optional",
+      "activation": "development_task",
+      "supported_destinations": [
+        "local_test_domain",
+        "declared_test_integration"
+      ],
+      "production_publication_claim_allowed": false
+    }
+  ],
+  "lifecycle": {
+    "release_channel": "services",
+    "governance_policy_compatibility_required": true,
+    "artifact_contract_compatibility_required": true,
+    "profile_compatibility_required": true,
+    "database_migration_validation_required": true,
+    "partial_authoritative_activation_allowed": false,
+    "last_known_good_state_required": true,
+    "rollback_or_forward_repair_required": true,
+    "inflight_request_upgrade_policy": "Complete under the validated prior contract or pause and revalidate under the candidate contract.",
+    "release_set_required_for_activation": true
+  },
+  "failure_behavior": {
+    "invalid_request": "deny_without_staging",
+    "source_version_changed": "block_and_require_new_request_or_revalidation",
+    "identity_unavailable": "block",
+    "trust_ambiguous": "block",
+    "consent_missing": "block",
+    "consent_expired_or_revoked": "deny",
+    "cultural_authority_disputed": "require_human_review",
+    "governance_runtime_unavailable": "block_new_governed_publication",
+    "audit_broker_unavailable": "retain_local_evidence_and_block_when_audit_is_mandatory",
+    "destination_unavailable": "queue_or_fail_by_request_policy",
+    "destination_contract_incompatible": "block",
+    "staging_validation_failed": "fail_without_delivery",
+    "partial_delivery": "enter_remediation_and_prevent_silent_retry",
+    "receipt_write_failed": "do_not_report_success",
+    "resource_exhausted": "queue_or_deny_new_work",
+    "time_uncertain": "block_time_sensitive_publication",
+    "revocation_received": "stop_future_and_reversible_pending_release",
+    "external_deletion_unsupported": "record_limitation_without_false_completion_claim",
+    "single_dependency_failure": "preserve_unrelated_component_capabilities"
+  },
+  "observability": {
+    "health_states": [
+      "healthy",
+      "degraded",
+      "blocked",
+      "unavailable"
+    ],
+    "metrics": [
+      "requests_received",
+      "requests_allowed",
+      "requests_denied",
+      "requests_blocked",
+      "requests_awaiting_review",
+      "publication_latency",
+      "queue_depth",
+      "staging_storage_usage",
+      "delivery_failures",
+      "partial_deliveries",
+      "revalidation_failures",
+      "revocations_processed"
+    ],
+    "logs_must_exclude": [
+      "secret_material",
+      "full_restricted_source_content",
+      "unnecessary_personal_data",
+      "private_cultural_details"
+    ],
+    "correlation_id_required": true,
+    "receipt_id_required_after_terminal_execution": true
+  },
+  "prohibited_assumptions": [
+    "Ingestion or storage authorizes publication.",
+    "The uploader holds every publication or cultural right.",
+    "A source component may bypass Publication Gateway.",
+    "UCKK Dimension Gateway can authorize cross-domain publication.",
+    "Publication Gateway may write into source or destination authoritative databases.",
+    "An internal network location establishes trust.",
+    "A valid signature alone authorizes publication.",
+    "Consent for one purpose, audience, provider, or transformation authorizes another.",
+    "Silence, inactivity, public availability, or prior access is consent.",
+    "A queued request remains authorized after reconnection.",
+    "An external AI or creative service is a native gateway dependency.",
+    "External output is authoritative by default.",
+    "A successful transport proves destination acceptance.",
+    "A retry may broaden the original publication scope.",
+    "A partial delivery can be reported as complete.",
+    "Publication receipts may be discarded after revocation.",
+    "Revocation erases truthful historical evidence.",
+    "Deletion from an external destination can be guaranteed without destination support.",
+    "Audit requires unrestricted disclosure of protected source content.",
+    "Resource Governor and Governance Policy Runtime are one authority.",
+    "An undeclared profile or overlay changes gateway behavior."
+  ],
+  "conformance": {
+    "claimable": true,
+    "current_claim": "not_asserted",
+    "test_ids": [
+      "TEST-PUB-REQUEST-001",
+      "TEST-PUB-SOURCE-BINDING-001",
+      "TEST-PUB-IDENTITY-001",
+      "TEST-PUB-CONSENT-001",
+      "TEST-PUB-CULTURAL-RIGHTS-001",
+      "TEST-PUB-GOVERNANCE-001",
+      "TEST-PUB-REPRESENTATION-001",
+      "TEST-PUB-GATEWAY-SEPARATION-001",
+      "TEST-PUB-DATA-AUTHORITY-001",
+      "TEST-PUB-IDEMPOTENCY-001",
+      "TEST-PUB-PARTIAL-DELIVERY-001",
+      "TEST-PUB-OFFLINE-001",
+      "TEST-PUB-RECONNECTION-001",
+      "TEST-PUB-REVOCATION-001",
+      "TEST-PUB-SELECTIVE-AUDIT-001",
+      "TEST-PUB-RESOURCE-001",
+      "TEST-PUB-ROLLBACK-001",
+      "TEST-PUB-PROFILE-001"
+    ],
+    "evidence_required": true,
+    "evidence_ids": [],
+    "claim_requires": [
+      "component contract validation",
+      "artifact contract validation",
+      "identity and trust integration tests",
+      "governance policy integration tests",
+      "consent and cultural-rights tests",
+      "gateway separation tests",
+      "cross-component data ownership tests",
+      "offline and reconnection tests",
+      "idempotency and partial-delivery tests",
+      "selective-audit tests",
+      "resource-pressure tests",
+      "release and rollback tests",
+      "traceability completeness",
+      "active evidence"
+    ],
+    "missing_evidence_result": "blocked",
+    "failure_result": "non_conformant"
+  },
+  "validation": {
+    "entry_point": "tools/validate_docs.py",
+    "required_checks": [
+      "schema_validation",
+      "component_identity_resolution",
+      "canonical_reference_resolution",
+      "accepted_decision_resolution",
+      "requirement_resolution",
+      "lock_resolution",
+      "component_dependency_resolution",
+      "artifact_contract_resolution",
+      "profile_binding_resolution",
+      "authority_boundary_validation",
+      "source_and_destination_data_ownership",
+      "publication_and_admission_gateway_separation",
+      "state_machine_transition_validation",
+      "request_minimum_validation",
+      "decision_obligation_validation",
+      "bounded_representation_validation",
+      "idempotency_validation",
+      "offline_revalidation",
+      "security_control_validation",
+      "resource_policy_validation",
+      "lifecycle_compatibility",
+      "traceability_completeness",
+      "evidence_validity"
+    ],
+    "validation_outcomes": [
+      "pass",
+      "fail",
+      "blocked"
+    ],
+    "authority_participation_requires_outcome": "pass",
+    "ordinary_file_hashes_required": false
+  }
+}

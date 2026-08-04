@@ -1,0 +1,3605 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.koa.local/artifact-contracts/policy-bundle.schema.json",
+  "title": "kOA Governance Policy Bundle",
+  "description": "Validates a signed, versioned governance policy bundle consumed by Governance Policy Runtime. A conforming bundle declares deterministic policy modules, facts, outcomes, reason codes, obligations, review and recourse paths, compatibility, activation, rollback, offline behavior, tests, provenance, approvals, and signatures. The schema does not grant activation authority; lifecycle and Release Set validation remain required.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "artifact_id",
+    "artifact_type",
+    "artifact_class",
+    "release_channel",
+    "version",
+    "status",
+    "language",
+    "issued_at",
+    "authority_ref",
+    "decisions_ref",
+    "system_ref",
+    "profiles_ref",
+    "components_ref",
+    "integrations_ref",
+    "artifact_classes_ref",
+    "release_channels_ref",
+    "requirements_ref",
+    "locks_ref",
+    "traceability_ref",
+    "exceptions_ref",
+    "test_catalog_ref",
+    "evidence_ref",
+    "manifest",
+    "scope",
+    "runtime",
+    "facts",
+    "modules",
+    "decision_contract",
+    "tests",
+    "governance",
+    "compatibility",
+    "activation",
+    "offline",
+    "ai_boundary",
+    "integration_controls",
+    "security",
+    "provenance",
+    "lifecycle",
+    "signatures"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "const": "contracts/artifact-contracts/policy-bundle.schema.json"
+    },
+    "artifact_id": {
+      "$ref": "#/$defs/policyBundleId"
+    },
+    "artifact_type": {
+      "type": "string",
+      "const": "governance_policy_bundle"
+    },
+    "artifact_class": {
+      "type": "string",
+      "const": "policy_bundle"
+    },
+    "release_channel": {
+      "type": "string",
+      "const": "governance"
+    },
+    "version": {
+      "$ref": "#/$defs/semanticVersion"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "candidate",
+        "validated",
+        "staged",
+        "active",
+        "superseded",
+        "withdrawn",
+        "archived",
+        "recovery_eligible"
+      ]
+    },
+    "language": {
+      "type": "string",
+      "const": "en"
+    },
+    "issued_at": {
+      "$ref": "#/$defs/dateTime"
+    },
+    "authority_ref": {
+      "$ref": "#/$defs/repositoryJsonReference",
+      "const": "generated/authority-manifest.json"
+    },
+    "decisions_ref": {
+      "$ref": "#/$defs/repositoryJsonReference",
+      "const": "generated/decision-index.json"
+    },
+    "system_ref": {
+      "$ref": "#/$defs/repositoryJsonReference",
+      "const": "contracts/system.contract.json#/governance_policy"
+    },
+    "profiles_ref": {
+      "$ref": "#/$defs/repositoryJsonReference",
+      "const": "generated/profile-catalog.json"
+    },
+    "components_ref": {
+      "$ref": "#/$defs/repositoryJsonReference",
+      "const": "generated/component-catalog.json"
+    },
+    "integrations_ref": {
+      "$ref": "#/$defs/repositoryJsonReference",
+      "const": "contracts/integration-types.contract.json"
+    },
+    "artifact_classes_ref": {
+      "$ref": "#/$defs/repositoryJsonReference",
+      "const": "contracts/artifact-classes.contract.json"
+    },
+    "release_channels_ref": {
+      "$ref": "#/$defs/repositoryJsonReference",
+      "const": "contracts/release-channels.contract.json"
+    },
+    "requirements_ref": {
+      "$ref": "#/$defs/repositoryJsonReference",
+      "const": "generated/requirements-index.json"
+    },
+    "locks_ref": {
+      "$ref": "#/$defs/repositoryJsonReference",
+      "const": "generated/assertion-index.json"
+    },
+    "traceability_ref": {
+      "$ref": "#/$defs/repositoryJsonReference",
+      "const": "generated/traceability.json"
+    },
+    "exceptions_ref": {
+      "$ref": "#/$defs/repositoryJsonReference",
+      "const": "generated/exception-index.json"
+    },
+    "test_catalog_ref": {
+      "$ref": "#/$defs/repositoryJsonReference",
+      "const": "generated/test-catalog.json"
+    },
+    "evidence_ref": {
+      "$ref": "#/$defs/repositoryJsonReference",
+      "const": "generated/evidence-catalog.json"
+    },
+    "manifest": {
+      "$ref": "#/$defs/manifest"
+    },
+    "scope": {
+      "$ref": "#/$defs/scope"
+    },
+    "runtime": {
+      "$ref": "#/$defs/runtime"
+    },
+    "facts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/factDefinition"
+      },
+      "minItems": 1
+    },
+    "modules": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/policyModule"
+      },
+      "minItems": 1
+    },
+    "decision_contract": {
+      "$ref": "#/$defs/decisionContract"
+    },
+    "tests": {
+      "$ref": "#/$defs/testSuite"
+    },
+    "governance": {
+      "$ref": "#/$defs/governance"
+    },
+    "compatibility": {
+      "$ref": "#/$defs/compatibility"
+    },
+    "activation": {
+      "$ref": "#/$defs/activation"
+    },
+    "offline": {
+      "$ref": "#/$defs/offline"
+    },
+    "ai_boundary": {
+      "$ref": "#/$defs/aiBoundary"
+    },
+    "integration_controls": {
+      "$ref": "#/$defs/integrationControls"
+    },
+    "security": {
+      "$ref": "#/$defs/security"
+    },
+    "provenance": {
+      "$ref": "#/$defs/provenance"
+    },
+    "lifecycle": {
+      "$ref": "#/$defs/lifecycle"
+    },
+    "signatures": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/signature"
+      },
+      "minItems": 1
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "governance": {
+            "properties": {
+              "emergency_policy": {
+                "properties": {
+                  "enabled": {
+                    "const": true
+                  }
+                },
+                "required": [
+                  "enabled"
+                ]
+              }
+            },
+            "required": [
+              "emergency_policy"
+            ]
+          }
+        },
+        "required": [
+          "governance"
+        ]
+      },
+      "then": {
+        "properties": {
+          "manifest": {
+            "required": [
+              "expires_at"
+            ]
+          },
+          "governance": {
+            "properties": {
+              "emergency_policy": {
+                "required": [
+                  "enabled",
+                  "authority_roles",
+                  "maximum_duration_seconds",
+                  "required_approvals",
+                  "post_event_review_required",
+                  "expiry_behavior"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "governance": {
+            "properties": {
+              "fork": {
+                "properties": {
+                  "is_local_fork": {
+                    "const": true
+                  }
+                },
+                "required": [
+                  "is_local_fork"
+                ]
+              }
+            },
+            "required": [
+              "fork"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "governance": {
+            "properties": {
+              "fork": {
+                "required": [
+                  "is_local_fork",
+                  "upstream_bundle_ref",
+                  "fork_authority_ref",
+                  "lineage_statement"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "validated",
+              "staged",
+              "active",
+              "recovery_eligible"
+            ]
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "tests": {
+            "properties": {
+              "execution_summary": {
+                "properties": {
+                  "overall_result": {
+                    "const": "pass"
+                  }
+                },
+                "required": [
+                  "overall_result"
+                ]
+              }
+            },
+            "required": [
+              "execution_summary"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "semanticVersion": {
+      "type": "string",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+    },
+    "dateTime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "simpleId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"
+    },
+    "policyBundleId": {
+      "type": "string",
+      "pattern": "^policy-bundle\\.[a-z0-9]+(?:[._-][a-z0-9]+)*$"
+    },
+    "policyModuleId": {
+      "type": "string",
+      "pattern": "^policy-module\\.[a-z0-9]+(?:[._-][a-z0-9]+)*$"
+    },
+    "policyRuleId": {
+      "type": "string",
+      "pattern": "^policy-rule\\.[a-z0-9]+(?:[._-][a-z0-9]+)*$"
+    },
+    "factId": {
+      "type": "string",
+      "pattern": "^fact\\.[a-z0-9]+(?:[._-][a-z0-9]+)*$"
+    },
+    "reasonCode": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)+$"
+    },
+    "obligationId": {
+      "type": "string",
+      "pattern": "^obligation\\.[a-z0-9]+(?:[._-][a-z0-9]+)*$"
+    },
+    "reviewRequirementId": {
+      "type": "string",
+      "pattern": "^review\\.[a-z0-9]+(?:[._-][a-z0-9]+)*$"
+    },
+    "testVectorId": {
+      "type": "string",
+      "pattern": "^policy-test\\.[a-z0-9]+(?:[._-][a-z0-9]+)*$"
+    },
+    "actorReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "identity_ref",
+        "role"
+      ],
+      "properties": {
+        "identity_ref": {
+          "$ref": "#/$defs/canonicalReference"
+        },
+        "role": {
+          "$ref": "#/$defs/simpleId"
+        },
+        "organization_ref": {
+          "$ref": "#/$defs/canonicalReference"
+        }
+      }
+    },
+    "repositoryPath": {
+      "type": "string",
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9._-]+(?:/[A-Za-z0-9._-]+)*$"
+    },
+    "repositoryJsonReference": {
+      "type": "string",
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9._-]+(?:/[A-Za-z0-9._-]+)*\\.json(?:#(?:/[^#\\s]*)?)?$"
+    },
+    "canonicalReference": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/repositoryPath"
+        },
+        {
+          "type": "string",
+          "pattern": "^(?:DEC|REQ|LOCK|TEST|EVID|EXC|ADR|DOC)-[A-Z0-9][A-Z0-9-]*$"
+        },
+        {
+          "type": "string",
+          "pattern": "^urn:koa:[A-Za-z0-9._:-]+$"
+        }
+      ]
+    },
+    "stringSet": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "canonicalReferenceSet": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/canonicalReference"
+      },
+      "uniqueItems": true
+    },
+    "jsonValue": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/jsonValue"
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/jsonValue"
+          }
+        }
+      ]
+    },
+    "manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "description",
+        "policy_series",
+        "owner_role",
+        "policy_domains",
+        "effective_from",
+        "environment_classes",
+        "supersession_mode"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "policy_series": {
+          "$ref": "#/$defs/simpleId"
+        },
+        "owner_role": {
+          "$ref": "#/$defs/simpleId"
+        },
+        "policy_domains": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "authorization",
+              "separation_of_duties",
+              "workflow_transition",
+              "disclosure",
+              "publication",
+              "artifact_activation",
+              "release_activation",
+              "identity_and_delegation",
+              "rights_and_consent",
+              "retention_and_deletion",
+              "export_and_exit",
+              "emergency_and_break_glass",
+              "ai_capability",
+              "integration_capability",
+              "exception_handling",
+              "reader_policy",
+              "recovery",
+              "advisory"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "effective_from": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "expires_at": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "environment_classes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "development",
+              "test",
+              "staging",
+              "production",
+              "offline",
+              "recovery"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "supersession_mode": {
+          "type": "string",
+          "enum": [
+            "full_replacement",
+            "scoped_replacement",
+            "parallel_scope"
+          ]
+        },
+        "support_statement": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operator_notice": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope_type",
+        "scope_ids",
+        "profiles",
+        "overlays",
+        "components",
+        "actions",
+        "resource_classes",
+        "default_outside_scope"
+      ],
+      "properties": {
+        "scope_type": {
+          "type": "string",
+          "enum": [
+            "global",
+            "organization",
+            "tenant",
+            "profile",
+            "component",
+            "resource",
+            "operation",
+            "mixed"
+          ]
+        },
+        "scope_ids": {
+          "$ref": "#/$defs/stringSet"
+        },
+        "profiles": {
+          "$ref": "#/$defs/stringSet"
+        },
+        "overlays": {
+          "$ref": "#/$defs/stringSet"
+        },
+        "components": {
+          "$ref": "#/$defs/stringSet"
+        },
+        "actions": {
+          "$ref": "#/$defs/stringSet"
+        },
+        "resource_classes": {
+          "$ref": "#/$defs/stringSet"
+        },
+        "jurisdiction_refs": {
+          "$ref": "#/$defs/canonicalReferenceSet"
+        },
+        "cultural_rights_context_refs": {
+          "$ref": "#/$defs/canonicalReferenceSet"
+        },
+        "default_outside_scope": {
+          "type": "string",
+          "enum": [
+            "deny",
+            "require_review",
+            "not_applicable"
+          ]
+        }
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "component_id",
+        "engine_name",
+        "minimum_version",
+        "maximum_version",
+        "deterministic",
+        "side_effect_free",
+        "supported_outcomes",
+        "unknown_fact_behavior",
+        "resource_limits",
+        "clock_policy"
+      ],
+      "properties": {
+        "component_id": {
+          "type": "string",
+          "const": "governance-policy-runtime"
+        },
+        "engine_name": {
+          "$ref": "#/$defs/simpleId"
+        },
+        "minimum_version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "maximum_version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "deterministic": {
+          "type": "boolean",
+          "const": true
+        },
+        "side_effect_free": {
+          "type": "boolean",
+          "const": true
+        },
+        "supported_outcomes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "allow",
+              "deny",
+              "require_review"
+            ]
+          },
+          "minItems": 3,
+          "maxItems": 3,
+          "uniqueItems": true,
+          "allOf": [
+            {
+              "contains": {
+                "const": "allow"
+              }
+            },
+            {
+              "contains": {
+                "const": "deny"
+              }
+            },
+            {
+              "contains": {
+                "const": "require_review"
+              }
+            }
+          ]
+        },
+        "unknown_fact_behavior": {
+          "type": "string",
+          "enum": [
+            "deny",
+            "require_review",
+            "error"
+          ]
+        },
+        "resource_limits": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "maximum_evaluation_milliseconds",
+            "maximum_memory_mebibytes",
+            "maximum_rule_depth",
+            "maximum_rules_evaluated"
+          ],
+          "properties": {
+            "maximum_evaluation_milliseconds": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "maximum_memory_mebibytes": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "maximum_rule_depth": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "maximum_rules_evaluated": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        "clock_policy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "clock_fact_id",
+            "confidence_fact_id",
+            "untrusted_clock_behavior"
+          ],
+          "properties": {
+            "clock_fact_id": {
+              "$ref": "#/$defs/factId"
+            },
+            "confidence_fact_id": {
+              "$ref": "#/$defs/factId"
+            },
+            "untrusted_clock_behavior": {
+              "type": "string",
+              "enum": [
+                "deny",
+                "require_review",
+                "restricted_rules_only"
+              ]
+            }
+          }
+        },
+        "required_features": {
+          "$ref": "#/$defs/stringSet"
+        },
+        "prohibited_features": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "network_access_during_evaluation",
+              "filesystem_mutation_during_evaluation",
+              "process_execution_during_evaluation",
+              "nondeterministic_randomness",
+              "undeclared_time_source",
+              "external_ai_call_during_evaluation",
+              "resource_allocation_authority",
+              "component_state_mutation"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
+    "factDefinition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fact_id",
+        "description",
+        "source_kind",
+        "data_type",
+        "required",
+        "missing_behavior",
+        "classification",
+        "source_authority"
+      ],
+      "properties": {
+        "fact_id": {
+          "$ref": "#/$defs/factId"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_kind": {
+          "type": "string",
+          "enum": [
+            "provided",
+            "derived",
+            "runtime_context",
+            "policy_constant"
+          ]
+        },
+        "data_type": {
+          "type": "string",
+          "enum": [
+            "boolean",
+            "integer",
+            "number",
+            "string",
+            "date_time",
+            "duration",
+            "identifier",
+            "reference",
+            "set",
+            "object"
+          ]
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "missing_behavior": {
+          "type": "string",
+          "enum": [
+            "deny",
+            "require_review",
+            "error",
+            "use_declared_default"
+          ]
+        },
+        "default_value": {
+          "$ref": "#/$defs/jsonValue"
+        },
+        "classification": {
+          "type": "string",
+          "enum": [
+            "public",
+            "internal",
+            "private",
+            "restricted",
+            "highly_restricted"
+          ]
+        },
+        "source_authority": {
+          "$ref": "#/$defs/canonicalReference"
+        },
+        "derivation_rule_ref": {
+          "$ref": "#/$defs/policyRuleId"
+        },
+        "freshness_seconds": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "allowed_values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/jsonValue"
+          },
+          "minItems": 1
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "missing_behavior": {
+                "const": "use_declared_default"
+              }
+            },
+            "required": [
+              "missing_behavior"
+            ]
+          },
+          "then": {
+            "required": [
+              "default_value"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "source_kind": {
+                "const": "derived"
+              }
+            },
+            "required": [
+              "source_kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "derivation_rule_ref"
+            ]
+          }
+        }
+      ]
+    },
+    "operand": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "fact_ref"
+          ],
+          "properties": {
+            "fact_ref": {
+              "$ref": "#/$defs/factId"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "literal"
+          ],
+          "properties": {
+            "literal": {
+              "$ref": "#/$defs/jsonValue"
+            }
+          }
+        }
+      ]
+    },
+    "expression": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "all"
+          ],
+          "properties": {
+            "all": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/expression"
+              },
+              "minItems": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "any"
+          ],
+          "properties": {
+            "any": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/expression"
+              },
+              "minItems": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "not"
+          ],
+          "properties": {
+            "not": {
+              "$ref": "#/$defs/expression"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "exists"
+          ],
+          "properties": {
+            "exists": {
+              "$ref": "#/$defs/factId"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "compare"
+          ],
+          "properties": {
+            "compare": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "left",
+                "operator",
+                "right"
+              ],
+              "properties": {
+                "left": {
+                  "$ref": "#/$defs/operand"
+                },
+                "operator": {
+                  "type": "string",
+                  "enum": [
+                    "eq",
+                    "ne",
+                    "lt",
+                    "lte",
+                    "gt",
+                    "gte"
+                  ]
+                },
+                "right": {
+                  "$ref": "#/$defs/operand"
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "contains"
+          ],
+          "properties": {
+            "contains": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "set",
+                "value"
+              ],
+              "properties": {
+                "set": {
+                  "$ref": "#/$defs/operand"
+                },
+                "value": {
+                  "$ref": "#/$defs/operand"
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "matches"
+          ],
+          "properties": {
+            "matches": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "value",
+                "pattern"
+              ],
+              "properties": {
+                "value": {
+                  "$ref": "#/$defs/operand"
+                },
+                "pattern": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 500
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ruleDecision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "outcome",
+        "reason_codes",
+        "obligation_ids"
+      ],
+      "properties": {
+        "outcome": {
+          "type": "string",
+          "enum": [
+            "allow",
+            "deny",
+            "require_review"
+          ]
+        },
+        "reason_codes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reasonCode"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "obligation_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/obligationId"
+          },
+          "uniqueItems": true
+        },
+        "review_requirement_id": {
+          "$ref": "#/$defs/reviewRequirementId"
+        },
+        "decision_validity_seconds": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "outcome": {
+                "const": "require_review"
+              }
+            },
+            "required": [
+              "outcome"
+            ]
+          },
+          "then": {
+            "required": [
+              "review_requirement_id"
+            ]
+          }
+        }
+      ]
+    },
+    "policyRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rule_id",
+        "version",
+        "title",
+        "description",
+        "priority",
+        "when",
+        "decision",
+        "enabled"
+      ],
+      "properties": {
+        "rule_id": {
+          "$ref": "#/$defs/policyRuleId"
+        },
+        "version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "priority": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "when": {
+          "$ref": "#/$defs/expression"
+        },
+        "decision": {
+          "$ref": "#/$defs/ruleDecision"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "effective_from": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "expires_at": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "supersedes_rule_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/policyRuleId"
+          },
+          "uniqueItems": true
+        },
+        "recourse_ref": {
+          "$ref": "#/$defs/canonicalReference"
+        },
+        "evidence_requirement_refs": {
+          "$ref": "#/$defs/canonicalReferenceSet"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/simpleId"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "policyModule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "module_id",
+        "version",
+        "title",
+        "description",
+        "domain",
+        "evaluation_order",
+        "dependencies",
+        "exports"
+      ],
+      "properties": {
+        "module_id": {
+          "$ref": "#/$defs/policyModuleId"
+        },
+        "version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "domain": {
+          "type": "string",
+          "enum": [
+            "authorization",
+            "separation_of_duties",
+            "workflow_transition",
+            "disclosure",
+            "publication",
+            "artifact_activation",
+            "release_activation",
+            "identity_and_delegation",
+            "rights_and_consent",
+            "retention_and_deletion",
+            "export_and_exit",
+            "emergency_and_break_glass",
+            "ai_capability",
+            "integration_capability",
+            "exception_handling",
+            "reader_policy",
+            "recovery",
+            "advisory"
+          ]
+        },
+        "evaluation_order": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/policyModuleId"
+          },
+          "uniqueItems": true
+        },
+        "exports": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/simpleId"
+          },
+          "uniqueItems": true
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/policyRule"
+          },
+          "minItems": 1
+        },
+        "module_artifact_ref": {
+          "$ref": "#/$defs/canonicalReference"
+        },
+        "entrypoint": {
+          "$ref": "#/$defs/simpleId"
+        },
+        "required_fact_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/factId"
+          },
+          "uniqueItems": true
+        },
+        "compatibility_refs": {
+          "$ref": "#/$defs/canonicalReferenceSet"
+        }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "rules"
+          ],
+          "not": {
+            "required": [
+              "module_artifact_ref"
+            ]
+          }
+        },
+        {
+          "required": [
+            "module_artifact_ref",
+            "entrypoint"
+          ],
+          "not": {
+            "required": [
+              "rules"
+            ]
+          }
+        }
+      ]
+    },
+    "reasonCodeDefinition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "title",
+        "description",
+        "severity",
+        "user_visible"
+      ],
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/reasonCode"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "info",
+            "warning",
+            "error",
+            "critical"
+          ]
+        },
+        "user_visible": {
+          "type": "boolean"
+        },
+        "remediation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recourse_ref": {
+          "$ref": "#/$defs/canonicalReference"
+        }
+      }
+    },
+    "obligationDefinition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "obligation_id",
+        "type",
+        "description",
+        "enforcement_owner",
+        "failure_behavior"
+      ],
+      "properties": {
+        "obligation_id": {
+          "$ref": "#/$defs/obligationId"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "redact_fields",
+            "retain_receipt",
+            "require_dual_control",
+            "require_human_review",
+            "limit_audience",
+            "limit_duration",
+            "record_evidence",
+            "notify_role",
+            "require_consent",
+            "require_reauthentication",
+            "require_offline_only",
+            "require_export_manifest",
+            "custom_declared"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "enforcement_owner": {
+          "$ref": "#/$defs/canonicalReference"
+        },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/jsonValue"
+          }
+        },
+        "failure_behavior": {
+          "type": "string",
+          "enum": [
+            "deny",
+            "require_review",
+            "block_completion"
+          ]
+        },
+        "evidence_requirement_refs": {
+          "$ref": "#/$defs/canonicalReferenceSet"
+        }
+      }
+    },
+    "reviewRequirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "review_requirement_id",
+        "description",
+        "reviewer_roles",
+        "minimum_approvals",
+        "separation_of_duties",
+        "expiry_behavior"
+      ],
+      "properties": {
+        "review_requirement_id": {
+          "$ref": "#/$defs/reviewRequirementId"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reviewer_roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/simpleId"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "minimum_approvals": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "separation_of_duties": {
+          "type": "boolean"
+        },
+        "maximum_age_seconds": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "expiry_behavior": {
+          "type": "string",
+          "enum": [
+            "deny",
+            "require_new_review"
+          ]
+        },
+        "dissent_recording_required": {
+          "type": "boolean"
+        },
+        "recourse_ref": {
+          "$ref": "#/$defs/canonicalReference"
+        }
+      }
+    },
+    "decisionContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "outcomes",
+        "reason_codes",
+        "obligations",
+        "review_requirements",
+        "receipt_contract",
+        "missing_fact_reporting"
+      ],
+      "properties": {
+        "outcomes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "allow",
+              "deny",
+              "require_review"
+            ]
+          },
+          "minItems": 3,
+          "maxItems": 3,
+          "uniqueItems": true,
+          "allOf": [
+            {
+              "contains": {
+                "const": "allow"
+              }
+            },
+            {
+              "contains": {
+                "const": "deny"
+              }
+            },
+            {
+              "contains": {
+                "const": "require_review"
+              }
+            }
+          ]
+        },
+        "reason_codes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reasonCodeDefinition"
+          },
+          "minItems": 1
+        },
+        "obligations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/obligationDefinition"
+          }
+        },
+        "review_requirements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reviewRequirement"
+          },
+          "minItems": 1
+        },
+        "receipt_contract": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema_ref",
+            "required_fields",
+            "retention_class",
+            "selective_disclosure"
+          ],
+          "properties": {
+            "schema_ref": {
+              "$ref": "#/$defs/repositoryJsonReference"
+            },
+            "required_fields": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "receipt_id",
+                  "policy_bundle_id",
+                  "policy_bundle_version",
+                  "module_id",
+                  "rule_ids",
+                  "subject_reference",
+                  "action",
+                  "resource_reference",
+                  "scope",
+                  "outcome",
+                  "reason_codes",
+                  "obligations",
+                  "review_requirements",
+                  "missing_fact_ids",
+                  "evaluated_at",
+                  "clock_confidence",
+                  "correlation_id"
+                ]
+              },
+              "minItems": 8,
+              "uniqueItems": true
+            },
+            "retention_class": {
+              "$ref": "#/$defs/simpleId"
+            },
+            "selective_disclosure": {
+              "type": "boolean",
+              "const": true
+            }
+          }
+        },
+        "missing_fact_reporting": {
+          "type": "boolean",
+          "const": true
+        }
+      }
+    },
+    "testVector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "test_id",
+        "category",
+        "title",
+        "input",
+        "expected",
+        "required"
+      ],
+      "properties": {
+        "test_id": {
+          "$ref": "#/$defs/testVectorId"
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "positive",
+            "negative",
+            "unknown_input",
+            "determinism",
+            "separation_of_duties",
+            "resource_limit",
+            "compatibility",
+            "recourse",
+            "supersession",
+            "emergency_expiry",
+            "offline",
+            "receipt"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "input": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/jsonValue"
+          }
+        },
+        "expected": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "outcome",
+            "reason_codes",
+            "obligation_ids"
+          ],
+          "properties": {
+            "outcome": {
+              "type": "string",
+              "enum": [
+                "allow",
+                "deny",
+                "require_review",
+                "error"
+              ]
+            },
+            "reason_codes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/reasonCode"
+              },
+              "uniqueItems": true
+            },
+            "obligation_ids": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/obligationId"
+              },
+              "uniqueItems": true
+            },
+            "review_requirement_id": {
+              "$ref": "#/$defs/reviewRequirementId"
+            },
+            "missing_fact_ids": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/factId"
+              },
+              "uniqueItems": true
+            },
+            "maximum_evaluation_milliseconds": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "profile_refs": {
+          "$ref": "#/$defs/stringSet"
+        },
+        "evidence_ref": {
+          "$ref": "#/$defs/canonicalReference"
+        }
+      }
+    },
+    "testSuite": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required_categories",
+        "vectors",
+        "regression_corpus_refs",
+        "execution_summary"
+      ],
+      "properties": {
+        "required_categories": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "positive",
+              "negative",
+              "unknown_input",
+              "determinism",
+              "separation_of_duties",
+              "resource_limit",
+              "compatibility",
+              "recourse",
+              "supersession",
+              "emergency_expiry",
+              "offline",
+              "receipt"
+            ]
+          },
+          "minItems": 8,
+          "uniqueItems": true
+        },
+        "vectors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/testVector"
+          },
+          "minItems": 1
+        },
+        "regression_corpus_refs": {
+          "$ref": "#/$defs/canonicalReferenceSet"
+        },
+        "execution_summary": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "overall_result",
+            "executed_at",
+            "executor_ref",
+            "passed",
+            "failed",
+            "blocked",
+            "evidence_refs"
+          ],
+          "properties": {
+            "overall_result": {
+              "type": "string",
+              "enum": [
+                "pass",
+                "fail",
+                "blocked"
+              ]
+            },
+            "executed_at": {
+              "$ref": "#/$defs/dateTime"
+            },
+            "executor_ref": {
+              "$ref": "#/$defs/canonicalReference"
+            },
+            "passed": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "failed": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "blocked": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "evidence_refs": {
+              "$ref": "#/$defs/canonicalReferenceSet"
+            }
+          }
+        }
+      }
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "approval_id",
+        "approver",
+        "decision",
+        "approved_at",
+        "scope"
+      ],
+      "properties": {
+        "approval_id": {
+          "$ref": "#/$defs/simpleId"
+        },
+        "approver": {
+          "$ref": "#/$defs/actorReference"
+        },
+        "decision": {
+          "type": "string",
+          "enum": [
+            "approve",
+            "reject",
+            "abstain"
+          ]
+        },
+        "approved_at": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "scope": {
+          "$ref": "#/$defs/stringSet"
+        },
+        "conditions": {
+          "$ref": "#/$defs/stringSet"
+        },
+        "dissent_ref": {
+          "$ref": "#/$defs/canonicalReference"
+        },
+        "evidence_ref": {
+          "$ref": "#/$defs/canonicalReference"
+        }
+      }
+    },
+    "governance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "proposed_by",
+        "proposal_ref",
+        "change_rationale",
+        "approvals",
+        "separation_of_duties",
+        "recourse",
+        "dissent_records",
+        "emergency_policy",
+        "fork"
+      ],
+      "properties": {
+        "proposed_by": {
+          "$ref": "#/$defs/actorReference"
+        },
+        "proposal_ref": {
+          "$ref": "#/$defs/canonicalReference"
+        },
+        "change_rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "impact_report_ref": {
+          "$ref": "#/$defs/canonicalReference"
+        },
+        "approvals": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/approval"
+          },
+          "minItems": 1
+        },
+        "separation_of_duties": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "required",
+            "proposer_may_solely_approve",
+            "producer_may_solely_approve"
+          ],
+          "properties": {
+            "required": {
+              "type": "boolean"
+            },
+            "proposer_may_solely_approve": {
+              "type": "boolean",
+              "const": false
+            },
+            "producer_may_solely_approve": {
+              "type": "boolean",
+              "const": false
+            },
+            "incompatible_role_pairs": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "$ref": "#/$defs/simpleId"
+                  },
+                  {
+                    "$ref": "#/$defs/simpleId"
+                  }
+                ],
+                "minItems": 2,
+                "maxItems": 2
+              }
+            }
+          }
+        },
+        "recourse": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "procedure_ref",
+            "requester_roles",
+            "maximum_response_seconds",
+            "outcome_visibility"
+          ],
+          "properties": {
+            "procedure_ref": {
+              "$ref": "#/$defs/canonicalReference"
+            },
+            "requester_roles": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/simpleId"
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "maximum_response_seconds": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "outcome_visibility": {
+              "type": "string",
+              "enum": [
+                "requester_only",
+                "authorized_participants",
+                "public_summary"
+              ]
+            }
+          }
+        },
+        "dissent_records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "dissent_id",
+              "actor_ref",
+              "statement",
+              "recorded_at",
+              "disposition"
+            ],
+            "properties": {
+              "dissent_id": {
+                "$ref": "#/$defs/simpleId"
+              },
+              "actor_ref": {
+                "$ref": "#/$defs/canonicalReference"
+              },
+              "statement": {
+                "type": "string",
+                "minLength": 1
+              },
+              "recorded_at": {
+                "$ref": "#/$defs/dateTime"
+              },
+              "disposition": {
+                "type": "string",
+                "enum": [
+                  "accepted",
+                  "rejected",
+                  "partially_addressed",
+                  "retained_for_recourse"
+                ]
+              }
+            }
+          }
+        },
+        "emergency_policy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "enabled"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "authority_roles": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/simpleId"
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "maximum_duration_seconds": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "required_approvals": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "post_event_review_required": {
+              "type": "boolean",
+              "const": true
+            },
+            "expiry_behavior": {
+              "type": "string",
+              "enum": [
+                "deny",
+                "revert_to_previous_bundle",
+                "enter_restricted_mode"
+              ]
+            },
+            "scope_limit": {
+              "$ref": "#/$defs/stringSet"
+            }
+          }
+        },
+        "fork": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "is_local_fork"
+          ],
+          "properties": {
+            "is_local_fork": {
+              "type": "boolean"
+            },
+            "upstream_bundle_ref": {
+              "$ref": "#/$defs/canonicalReference"
+            },
+            "fork_authority_ref": {
+              "$ref": "#/$defs/canonicalReference"
+            },
+            "lineage_statement": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    },
+    "versionConstraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "minimum",
+        "maximum",
+        "selection"
+      ],
+      "properties": {
+        "minimum": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "maximum": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "selection": {
+          "type": "string",
+          "enum": [
+            "exact",
+            "compatible_range",
+            "manifest_resolved"
+          ]
+        },
+        "exact_release_ref": {
+          "$ref": "#/$defs/canonicalReference"
+        }
+      }
+    },
+    "compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "release_channel_constraints",
+        "profile_rules",
+        "component_contract_refs",
+        "artifact_dependencies",
+        "schema_dependencies",
+        "incompatible_refs",
+        "required_validation_refs"
+      ],
+      "properties": {
+        "release_channel_constraints": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "system",
+            "services",
+            "governance",
+            "knowledge"
+          ],
+          "properties": {
+            "system": {
+              "$ref": "#/$defs/versionConstraint"
+            },
+            "services": {
+              "$ref": "#/$defs/versionConstraint"
+            },
+            "governance": {
+              "$ref": "#/$defs/versionConstraint"
+            },
+            "knowledge": {
+              "$ref": "#/$defs/versionConstraint"
+            }
+          }
+        },
+        "profile_rules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "profile_id",
+              "compatibility",
+              "required_overlays",
+              "prohibited_overlays"
+            ],
+            "properties": {
+              "profile_id": {
+                "$ref": "#/$defs/simpleId"
+              },
+              "compatibility": {
+                "type": "string",
+                "enum": [
+                  "compatible",
+                  "compatible_with_constraints",
+                  "not_compatible"
+                ]
+              },
+              "required_overlays": {
+                "$ref": "#/$defs/stringSet"
+              },
+              "prohibited_overlays": {
+                "$ref": "#/$defs/stringSet"
+              },
+              "conditions": {
+                "$ref": "#/$defs/stringSet"
+              }
+            }
+          },
+          "minItems": 1
+        },
+        "component_contract_refs": {
+          "$ref": "#/$defs/canonicalReferenceSet"
+        },
+        "artifact_dependencies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "artifact_ref",
+              "required",
+              "activation_order"
+            ],
+            "properties": {
+              "artifact_ref": {
+                "$ref": "#/$defs/canonicalReference"
+              },
+              "required": {
+                "type": "boolean"
+              },
+              "activation_order": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "purpose": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "schema_dependencies": {
+          "$ref": "#/$defs/canonicalReferenceSet"
+        },
+        "incompatible_refs": {
+          "$ref": "#/$defs/canonicalReferenceSet"
+        },
+        "required_validation_refs": {
+          "$ref": "#/$defs/canonicalReferenceSet"
+        },
+        "supported_predecessor_bundle_refs": {
+          "$ref": "#/$defs/canonicalReferenceSet"
+        }
+      }
+    },
+    "activation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "partial_activation_permitted",
+        "staging_required",
+        "validation_before_activation",
+        "activation_authority_roles",
+        "pre_activation_checks",
+        "health_gates",
+        "last_known_good_required",
+        "rollback",
+        "failure_behavior",
+        "receipt_required"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "const": "atomic"
+        },
+        "partial_activation_permitted": {
+          "type": "boolean",
+          "const": false
+        },
+        "staging_required": {
+          "type": "boolean",
+          "const": true
+        },
+        "validation_before_activation": {
+          "type": "boolean",
+          "const": true
+        },
+        "activation_authority_roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/simpleId"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "pre_activation_checks": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "signature",
+              "authority",
+              "scope",
+              "runtime_compatibility",
+              "release_set_compatibility",
+              "profile_compatibility",
+              "module_validation",
+              "fact_catalog_validation",
+              "reason_code_validation",
+              "obligation_validation",
+              "test_execution",
+              "offline_completeness",
+              "evidence_path",
+              "rollback_readiness"
+            ]
+          },
+          "minItems": 8,
+          "uniqueItems": true
+        },
+        "health_gates": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "runtime_load",
+              "deterministic_evaluation",
+              "decision_receipt",
+              "required_test_vectors",
+              "resource_limits",
+              "offline_evaluation",
+              "last_known_good_available",
+              "active_identity_reported"
+            ]
+          },
+          "minItems": 4,
+          "uniqueItems": true
+        },
+        "last_known_good_required": {
+          "type": "boolean",
+          "const": true
+        },
+        "rollback": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "supported",
+            "requires_authority",
+            "requires_compatibility_validation",
+            "receipt_required",
+            "unsafe_behavior"
+          ],
+          "properties": {
+            "supported": {
+              "type": "boolean"
+            },
+            "requires_authority": {
+              "type": "boolean",
+              "const": true
+            },
+            "requires_compatibility_validation": {
+              "type": "boolean",
+              "const": true
+            },
+            "receipt_required": {
+              "type": "boolean",
+              "const": true
+            },
+            "unsafe_behavior": {
+              "type": "string",
+              "enum": [
+                "forward_repair",
+                "recovery",
+                "restricted_mode"
+              ]
+            }
+          }
+        },
+        "failure_behavior": {
+          "type": "string",
+          "enum": [
+            "retain_active_bundle",
+            "restore_last_known_good",
+            "enter_restricted_mode"
+          ]
+        },
+        "receipt_required": {
+          "type": "boolean",
+          "const": true
+        },
+        "receipt_schema_ref": {
+          "$ref": "#/$defs/repositoryJsonReference"
+        }
+      }
+    },
+    "offline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "offline_capable",
+        "required_local_inputs",
+        "remote_dependencies",
+        "validation_not_weakened",
+        "undeclared_provider_substitution_permitted",
+        "receipt_buffering",
+        "failure_behavior"
+      ],
+      "properties": {
+        "offline_capable": {
+          "type": "boolean"
+        },
+        "required_local_inputs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "bundle_manifest",
+              "policy_modules",
+              "fact_schemas",
+              "reason_codes",
+              "obligations",
+              "review_requirements",
+              "test_vectors",
+              "runtime",
+              "trust_material",
+              "release_set_manifest",
+              "evidence_buffer",
+              "rollback_bundle"
+            ]
+          },
+          "minItems": 6,
+          "uniqueItems": true
+        },
+        "remote_dependencies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "integration_ref",
+              "required_for_local_decision"
+            ],
+            "properties": {
+              "integration_ref": {
+                "$ref": "#/$defs/canonicalReference"
+              },
+              "required_for_local_decision": {
+                "type": "boolean",
+                "const": false
+              },
+              "disabled_behavior": {
+                "type": "string",
+                "enum": [
+                  "deny_dependent_capability",
+                  "require_review",
+                  "not_applicable"
+                ]
+              }
+            }
+          }
+        },
+        "validation_not_weakened": {
+          "type": "boolean",
+          "const": true
+        },
+        "undeclared_provider_substitution_permitted": {
+          "type": "boolean",
+          "const": false
+        },
+        "receipt_buffering": {
+          "type": "string",
+          "enum": [
+            "durable_local",
+            "profile_declared_durable_local"
+          ]
+        },
+        "failure_behavior": {
+          "type": "string",
+          "enum": [
+            "continue_local_policy",
+            "restricted_mode",
+            "fail_closed"
+          ]
+        }
+      }
+    },
+    "aiBoundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "native_ai_authority",
+        "external_ai_evaluation_dependency",
+        "external_ai_output_authoritative",
+        "direct_component_mutation_permitted",
+        "direct_publication_permitted",
+        "privilege_grant_permitted",
+        "silent_provider_substitution_permitted",
+        "candidate_review_required"
+      ],
+      "properties": {
+        "native_ai_authority": {
+          "type": "boolean",
+          "const": false
+        },
+        "external_ai_evaluation_dependency": {
+          "type": "boolean",
+          "const": false
+        },
+        "external_ai_output_authoritative": {
+          "type": "boolean",
+          "const": false
+        },
+        "direct_component_mutation_permitted": {
+          "type": "boolean",
+          "const": false
+        },
+        "direct_publication_permitted": {
+          "type": "boolean",
+          "const": false
+        },
+        "privilege_grant_permitted": {
+          "type": "boolean",
+          "const": false
+        },
+        "silent_provider_substitution_permitted": {
+          "type": "boolean",
+          "const": false
+        },
+        "candidate_review_required": {
+          "type": "boolean",
+          "const": true
+        },
+        "allowed_external_ai_capability_refs": {
+          "$ref": "#/$defs/canonicalReferenceSet"
+        }
+      }
+    },
+    "integrationControls": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "default_deny_undeclared",
+        "removable",
+        "allowed_integration_refs",
+        "required_integration_refs",
+        "secret_material_embedded",
+        "failure_is_capability_scoped"
+      ],
+      "properties": {
+        "default_deny_undeclared": {
+          "type": "boolean",
+          "const": true
+        },
+        "removable": {
+          "type": "boolean",
+          "const": true
+        },
+        "allowed_integration_refs": {
+          "$ref": "#/$defs/canonicalReferenceSet"
+        },
+        "required_integration_refs": {
+          "$ref": "#/$defs/canonicalReferenceSet"
+        },
+        "secret_material_embedded": {
+          "type": "boolean",
+          "const": false
+        },
+        "failure_is_capability_scoped": {
+          "type": "boolean",
+          "const": true
+        }
+      }
+    },
+    "security": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "default_classification",
+        "private_key_material_embedded",
+        "secret_material_embedded",
+        "signing_policy",
+        "allowed_signer_roles",
+        "minimum_signatures",
+        "selective_disclosure",
+        "log_payload_policy"
+      ],
+      "properties": {
+        "default_classification": {
+          "type": "string",
+          "enum": [
+            "internal",
+            "private",
+            "restricted"
+          ]
+        },
+        "private_key_material_embedded": {
+          "type": "boolean",
+          "const": false
+        },
+        "secret_material_embedded": {
+          "type": "boolean",
+          "const": false
+        },
+        "signing_policy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "canonicalization",
+            "signature_purposes",
+            "separation_of_duties_required",
+            "revocation_checked"
+          ],
+          "properties": {
+            "canonicalization": {
+              "type": "string",
+              "enum": [
+                "JCS",
+                "deterministic_cbor",
+                "profile_declared"
+              ]
+            },
+            "signature_purposes": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "producer",
+                  "governance_approval",
+                  "release_publication",
+                  "local_fork_authority"
+                ]
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "separation_of_duties_required": {
+              "type": "boolean"
+            },
+            "revocation_checked": {
+              "type": "boolean",
+              "const": true
+            }
+          }
+        },
+        "allowed_signer_roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/simpleId"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "minimum_signatures": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "selective_disclosure": {
+          "type": "boolean",
+          "const": true
+        },
+        "log_payload_policy": {
+          "type": "string",
+          "enum": [
+            "metadata_only",
+            "minimized_declared_fields",
+            "no_governed_payload"
+          ]
+        },
+        "classified_section_names": {
+          "$ref": "#/$defs/stringSet"
+        }
+      }
+    },
+    "signature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "signature_id",
+        "key_id",
+        "signer_identity_ref",
+        "signer_role",
+        "algorithm",
+        "canonicalization",
+        "purpose",
+        "covered_sections",
+        "signed_at",
+        "signature_value"
+      ],
+      "properties": {
+        "signature_id": {
+          "$ref": "#/$defs/simpleId"
+        },
+        "key_id": {
+          "$ref": "#/$defs/canonicalReference"
+        },
+        "signer_identity_ref": {
+          "$ref": "#/$defs/canonicalReference"
+        },
+        "signer_role": {
+          "$ref": "#/$defs/simpleId"
+        },
+        "algorithm": {
+          "type": "string",
+          "enum": [
+            "Ed25519",
+            "ES256",
+            "PS256"
+          ]
+        },
+        "canonicalization": {
+          "type": "string",
+          "enum": [
+            "JCS",
+            "deterministic_cbor",
+            "profile_declared"
+          ]
+        },
+        "purpose": {
+          "type": "string",
+          "enum": [
+            "producer",
+            "governance_approval",
+            "release_publication",
+            "local_fork_authority"
+          ]
+        },
+        "covered_sections": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "manifest",
+              "scope",
+              "runtime",
+              "facts",
+              "modules",
+              "decision_contract",
+              "tests",
+              "governance",
+              "compatibility",
+              "activation",
+              "offline",
+              "ai_boundary",
+              "integration_controls",
+              "security",
+              "provenance",
+              "lifecycle"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "signed_at": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "expires_at": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "signature_value": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{32,}$"
+        },
+        "certificate_or_attestation_ref": {
+          "$ref": "#/$defs/canonicalReference"
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "producer",
+        "produced_at",
+        "source_revision",
+        "build_profile",
+        "toolchain_ref",
+        "source_refs",
+        "test_evidence_refs",
+        "approval_evidence_refs",
+        "reproducibility"
+      ],
+      "properties": {
+        "producer": {
+          "$ref": "#/$defs/actorReference"
+        },
+        "produced_at": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "source_revision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "build_profile": {
+          "$ref": "#/$defs/simpleId"
+        },
+        "toolchain_ref": {
+          "$ref": "#/$defs/canonicalReference"
+        },
+        "source_refs": {
+          "$ref": "#/$defs/canonicalReferenceSet"
+        },
+        "test_evidence_refs": {
+          "$ref": "#/$defs/canonicalReferenceSet"
+        },
+        "approval_evidence_refs": {
+          "$ref": "#/$defs/canonicalReferenceSet"
+        },
+        "reproducibility": {
+          "type": "string",
+          "enum": [
+            "reproducible",
+            "fully_attributable"
+          ]
+        },
+        "simulation_evidence_refs": {
+          "$ref": "#/$defs/canonicalReferenceSet"
+        },
+        "sbom_ref": {
+          "$ref": "#/$defs/canonicalReference"
+        }
+      }
+    },
+    "lifecycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "support_status",
+        "supersedes",
+        "revokes",
+        "withdrawal_behavior",
+        "retention",
+        "migration",
+        "rollback_eligibility",
+        "forward_repair_supported"
+      ],
+      "properties": {
+        "support_status": {
+          "type": "string",
+          "enum": [
+            "supported",
+            "maintenance",
+            "deprecated",
+            "withdrawn",
+            "archived"
+          ]
+        },
+        "supersedes": {
+          "$ref": "#/$defs/canonicalReferenceSet"
+        },
+        "revokes": {
+          "$ref": "#/$defs/canonicalReferenceSet"
+        },
+        "withdrawal_behavior": {
+          "type": "string",
+          "enum": [
+            "block_new_activation",
+            "require_update",
+            "enter_restricted_mode",
+            "rollback_or_repair"
+          ]
+        },
+        "retention": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "manifest_retained",
+            "test_evidence_retained",
+            "decision_receipts_retain_original_bundle_identity",
+            "minimum_retention_days"
+          ],
+          "properties": {
+            "manifest_retained": {
+              "type": "boolean",
+              "const": true
+            },
+            "test_evidence_retained": {
+              "type": "boolean",
+              "const": true
+            },
+            "decision_receipts_retain_original_bundle_identity": {
+              "type": "boolean",
+              "const": true
+            },
+            "minimum_retention_days": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        "migration": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "required",
+            "strategy",
+            "preserve_existing_receipt_identity",
+            "partial_migration_permitted"
+          ],
+          "properties": {
+            "required": {
+              "type": "boolean"
+            },
+            "strategy": {
+              "type": "string",
+              "enum": [
+                "none",
+                "new_decisions_only",
+                "explicit_re_evaluation",
+                "scoped_supersession"
+              ]
+            },
+            "migration_ref": {
+              "$ref": "#/$defs/canonicalReference"
+            },
+            "preserve_existing_receipt_identity": {
+              "type": "boolean",
+              "const": true
+            },
+            "partial_migration_permitted": {
+              "type": "boolean",
+              "const": false
+            }
+          }
+        },
+        "rollback_eligibility": {
+          "type": "string",
+          "enum": [
+            "eligible",
+            "eligible_with_validation",
+            "not_eligible_use_forward_repair"
+          ]
+        },
+        "forward_repair_supported": {
+          "type": "boolean"
+        },
+        "last_known_good_bundle_ref": {
+          "$ref": "#/$defs/canonicalReference"
+        },
+        "deprecation_notice": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  },
+  "x-koa": {
+    "contract_id": "artifact-contract.policy-bundle",
+    "contract_type": "artifact_contract_schema",
+    "artifact_class": "policy_bundle",
+    "release_channel": "governance",
+    "version": "1.0.0",
+    "status": "active",
+    "language": "en",
+    "effective_at": "2026-08-03T17:56:00-04:00",
+    "decision_ids": [
+      "DEC-GOV-001",
+      "DEC-LIFE-001",
+      "DEC-REL-001",
+      "DEC-SEC-001",
+      "DEC-OFFLINE-001",
+      "DEC-RECEIPT-001",
+      "DEC-AUDIT-001",
+      "DEC-PORT-001",
+      "DEC-INTEGRATION-001",
+      "DEC-AI-001",
+      "DEC-PROFILE-001",
+      "DEC-DATA-001",
+      "DEC-COMP-001"
+    ],
+    "requirement_ids": [
+      "REQ-ART-POLICY-001",
+      "REQ-ART-POLICY-002",
+      "REQ-ART-POLICY-003",
+      "REQ-ART-POLICY-004",
+      "REQ-ART-POLICY-005",
+      "REQ-ART-POLICY-006",
+      "REQ-ART-POLICY-007",
+      "REQ-ART-POLICY-008",
+      "REQ-ART-POLICY-009",
+      "REQ-ART-POLICY-010",
+      "REQ-ART-POLICY-011",
+      "REQ-ART-POLICY-012",
+      "REQ-ART-POLICY-013",
+      "REQ-ART-POLICY-014",
+      "REQ-ART-POLICY-015",
+      "REQ-ART-POLICY-016",
+      "REQ-ART-POLICY-017",
+      "REQ-ART-POLICY-018",
+      "REQ-ART-POLICY-019",
+      "REQ-ART-POLICY-020",
+      "REQ-ART-POLICY-021",
+      "REQ-ART-POLICY-022",
+      "REQ-ART-POLICY-023",
+      "REQ-ART-POLICY-024",
+      "REQ-ART-POLICY-025",
+      "REQ-ART-POLICY-026",
+      "REQ-ART-POLICY-027",
+      "REQ-ART-POLICY-028",
+      "REQ-ART-POLICY-029",
+      "REQ-ART-POLICY-030",
+      "REQ-ART-POLICY-031",
+      "REQ-ART-POLICY-032"
+    ],
+    "lock_ids": [
+      "LOCK-GOV-001",
+      "LOCK-LIFE-001",
+      "LOCK-LIFE-002",
+      "LOCK-LIFE-003",
+      "LOCK-LIFE-004",
+      "LOCK-REL-001",
+      "LOCK-REL-002",
+      "LOCK-PROFILE-001",
+      "LOCK-PROFILE-002",
+      "LOCK-COMP-001",
+      "LOCK-COMP-002",
+      "LOCK-DATA-001",
+      "LOCK-AI-001",
+      "LOCK-AI-002",
+      "LOCK-SEC-001",
+      "LOCK-SEC-002",
+      "LOCK-OFFLINE-001",
+      "LOCK-PORT-001",
+      "LOCK-IMPL-001",
+      "LOCK-IMPL-002"
+    ],
+    "exception_ids": [],
+    "semantic_rules": [
+      "Identifiers within each catalog are unique and permanently reserved after publication.",
+      "Every rule references a declared fact, reason code, obligation, and review requirement.",
+      "Every module domain appears in manifest.policy_domains.",
+      "Every declared required test category has at least one executable test vector.",
+      "Validated, staged, active, and recovery-eligible bundles have complete passing evidence.",
+      "The bundle is activated only as part of a compatible four-channel Release Set.",
+      "Policy evaluation is deterministic and side-effect free.",
+      "Missing facts cannot produce implicit allow.",
+      "No module allocates CPU, memory, I/O, queue, or worker capacity.",
+      "No rule directly mutates component authoritative state or grants host privilege.",
+      "Emergency policy expires automatically and receives post-event review.",
+      "Published bundle content is immutable; changes use a new artifact identity or version."
+    ]
+  },
+  "examples": [
+    {
+      "$schema": "contracts/artifact-contracts/policy-bundle.schema.json",
+      "artifact_id": "policy-bundle.core-governance",
+      "artifact_type": "governance_policy_bundle",
+      "artifact_class": "policy_bundle",
+      "release_channel": "governance",
+      "version": "1.0.0",
+      "status": "active",
+      "language": "en",
+      "issued_at": "2026-08-03T17:56:00-04:00",
+      "authority_ref": "generated/authority-manifest.json",
+      "decisions_ref": "generated/decision-index.json",
+      "system_ref": "contracts/system.contract.json#/governance_policy",
+      "profiles_ref": "generated/profile-catalog.json",
+      "components_ref": "generated/component-catalog.json",
+      "integrations_ref": "contracts/integration-types.contract.json",
+      "artifact_classes_ref": "contracts/artifact-classes.contract.json",
+      "release_channels_ref": "contracts/release-channels.contract.json",
+      "requirements_ref": "generated/requirements-index.json",
+      "locks_ref": "generated/assertion-index.json",
+      "traceability_ref": "generated/traceability.json",
+      "exceptions_ref": "generated/exception-index.json",
+      "test_catalog_ref": "generated/test-catalog.json",
+      "evidence_ref": "generated/evidence-catalog.json",
+      "manifest": {
+        "name": "Core Governance Policy",
+        "description": "Core deterministic authorization and review policy.",
+        "policy_series": "core-governance",
+        "owner_role": "governance-policy-owner",
+        "policy_domains": [
+          "authorization",
+          "separation_of_duties"
+        ],
+        "effective_from": "2026-08-03T18:00:00-04:00",
+        "environment_classes": [
+          "production",
+          "offline",
+          "recovery"
+        ],
+        "supersession_mode": "full_replacement"
+      },
+      "scope": {
+        "scope_type": "global",
+        "scope_ids": [
+          "koa"
+        ],
+        "profiles": [
+          "user_lightweight",
+          "sovereign_linux_node"
+        ],
+        "overlays": [],
+        "components": [
+          "governance-policy-runtime",
+          "orgo"
+        ],
+        "actions": [
+          "workflow.transition"
+        ],
+        "resource_classes": [
+          "private_operational_work"
+        ],
+        "default_outside_scope": "not_applicable"
+      },
+      "runtime": {
+        "component_id": "governance-policy-runtime",
+        "engine_name": "koa-policy-runtime",
+        "minimum_version": "1.0.0",
+        "maximum_version": "1.9.99",
+        "deterministic": true,
+        "side_effect_free": true,
+        "supported_outcomes": [
+          "allow",
+          "deny",
+          "require_review"
+        ],
+        "unknown_fact_behavior": "require_review",
+        "resource_limits": {
+          "maximum_evaluation_milliseconds": 100,
+          "maximum_memory_mebibytes": 64,
+          "maximum_rule_depth": 16,
+          "maximum_rules_evaluated": 1000
+        },
+        "clock_policy": {
+          "clock_fact_id": "fact.context.current-time",
+          "confidence_fact_id": "fact.context.clock-confidence",
+          "untrusted_clock_behavior": "require_review"
+        },
+        "required_features": [
+          "declarative-rules",
+          "decision-receipts"
+        ],
+        "prohibited_features": [
+          "network_access_during_evaluation",
+          "filesystem_mutation_during_evaluation",
+          "external_ai_call_during_evaluation",
+          "resource_allocation_authority",
+          "component_state_mutation"
+        ]
+      },
+      "facts": [
+        {
+          "fact_id": "fact.subject.authenticated",
+          "description": "Whether the subject is authenticated.",
+          "source_kind": "provided",
+          "data_type": "boolean",
+          "required": true,
+          "missing_behavior": "deny",
+          "classification": "private",
+          "source_authority": "contracts/components/identity-and-trust.component.json",
+          "purpose": "Authorize workflow transition."
+        },
+        {
+          "fact_id": "fact.context.current-time",
+          "description": "Current evaluation time.",
+          "source_kind": "runtime_context",
+          "data_type": "date_time",
+          "required": true,
+          "missing_behavior": "error",
+          "classification": "internal",
+          "source_authority": "contracts/components/governance-policy-runtime.component.json"
+        },
+        {
+          "fact_id": "fact.context.clock-confidence",
+          "description": "Confidence in the evaluation clock.",
+          "source_kind": "runtime_context",
+          "data_type": "string",
+          "required": true,
+          "missing_behavior": "require_review",
+          "classification": "internal",
+          "source_authority": "contracts/components/governance-policy-runtime.component.json",
+          "allowed_values": [
+            "trusted",
+            "degraded",
+            "untrusted"
+          ]
+        }
+      ],
+      "modules": [
+        {
+          "module_id": "policy-module.workflow-auth",
+          "version": "1.0.0",
+          "title": "Workflow Authorization",
+          "description": "Authorizes authenticated workflow transitions.",
+          "domain": "authorization",
+          "evaluation_order": 10,
+          "dependencies": [],
+          "exports": [
+            "workflow-transition-decision"
+          ],
+          "required_fact_ids": [
+            "fact.subject.authenticated"
+          ],
+          "rules": [
+            {
+              "rule_id": "policy-rule.workflow-authenticated",
+              "version": "1.0.0",
+              "title": "Authenticated transition",
+              "description": "Allow the transition when authentication is present.",
+              "priority": 100,
+              "when": {
+                "compare": {
+                  "left": {
+                    "fact_ref": "fact.subject.authenticated"
+                  },
+                  "operator": "eq",
+                  "right": {
+                    "literal": true
+                  }
+                }
+              },
+              "decision": {
+                "outcome": "allow",
+                "reason_codes": [
+                  "subject_authenticated"
+                ],
+                "obligation_ids": [
+                  "obligation.retain-receipt"
+                ],
+                "decision_validity_seconds": 60
+              },
+              "enabled": true
+            }
+          ]
+        }
+      ],
+      "decision_contract": {
+        "outcomes": [
+          "allow",
+          "deny",
+          "require_review"
+        ],
+        "reason_codes": [
+          {
+            "code": "subject_authenticated",
+            "title": "Subject authenticated",
+            "description": "The subject has a valid authenticated identity.",
+            "severity": "info",
+            "user_visible": true
+          },
+          {
+            "code": "subject_authentication_missing",
+            "title": "Authentication missing",
+            "description": "The subject authentication fact is absent or false.",
+            "severity": "error",
+            "user_visible": true,
+            "remediation": "Authenticate and submit the request again."
+          }
+        ],
+        "obligations": [
+          {
+            "obligation_id": "obligation.retain-receipt",
+            "type": "retain_receipt",
+            "description": "Retain the decision receipt.",
+            "enforcement_owner": "contracts/components/audit-broker.component.json",
+            "parameters": {
+              "retention_days": 2555
+            },
+            "failure_behavior": "block_completion",
+            "evidence_requirement_refs": [
+              "EVID-GOV-001"
+            ]
+          }
+        ],
+        "review_requirements": [
+          {
+            "review_requirement_id": "review.governance-default",
+            "description": "Default governance review.",
+            "reviewer_roles": [
+              "governance-reviewer"
+            ],
+            "minimum_approvals": 1,
+            "separation_of_duties": true,
+            "maximum_age_seconds": 86400,
+            "expiry_behavior": "require_new_review",
+            "dissent_recording_required": true,
+            "recourse_ref": "DOC-GOV-010"
+          }
+        ],
+        "receipt_contract": {
+          "schema_ref": "contracts/artifact-contracts/policy-decision-receipt.schema.json",
+          "required_fields": [
+            "receipt_id",
+            "policy_bundle_id",
+            "policy_bundle_version",
+            "module_id",
+            "rule_ids",
+            "subject_reference",
+            "action",
+            "resource_reference",
+            "scope",
+            "outcome",
+            "reason_codes",
+            "obligations",
+            "review_requirements",
+            "missing_fact_ids",
+            "evaluated_at",
+            "clock_confidence",
+            "correlation_id"
+          ],
+          "retention_class": "governance-decision",
+          "selective_disclosure": true
+        },
+        "missing_fact_reporting": true
+      },
+      "tests": {
+        "required_categories": [
+          "positive",
+          "negative",
+          "unknown_input",
+          "determinism",
+          "separation_of_duties",
+          "resource_limit",
+          "compatibility",
+          "recourse",
+          "supersession",
+          "emergency_expiry",
+          "offline",
+          "receipt"
+        ],
+        "vectors": [
+          {
+            "test_id": "policy-test.workflow-authenticated",
+            "category": "positive",
+            "title": "Authenticated subject is allowed.",
+            "input": {
+              "fact.subject.authenticated": true,
+              "fact.context.current-time": "2026-08-03T18:00:00-04:00",
+              "fact.context.clock-confidence": "trusted"
+            },
+            "expected": {
+              "outcome": "allow",
+              "reason_codes": [
+                "subject_authenticated"
+              ],
+              "obligation_ids": [
+                "obligation.retain-receipt"
+              ],
+              "maximum_evaluation_milliseconds": 100
+            },
+            "required": true,
+            "profile_refs": [
+              "user_lightweight",
+              "sovereign_linux_node"
+            ],
+            "evidence_ref": "EVID-GOV-TEST-001"
+          }
+        ],
+        "regression_corpus_refs": [
+          "TEST-GOV-POLICY-001"
+        ],
+        "execution_summary": {
+          "overall_result": "pass",
+          "executed_at": "2026-08-03T17:55:00-04:00",
+          "executor_ref": "TEST-GOV-POLICY-001",
+          "passed": 1,
+          "failed": 0,
+          "blocked": 0,
+          "evidence_refs": [
+            "EVID-GOV-TEST-001"
+          ]
+        }
+      },
+      "governance": {
+        "proposed_by": {
+          "identity_ref": "urn:koa:identity:policy-author",
+          "role": "policy-author"
+        },
+        "proposal_ref": "DOC-GOV-001",
+        "change_rationale": "Establish the initial deterministic workflow authorization policy.",
+        "impact_report_ref": "EVID-GOV-IMPACT-001",
+        "approvals": [
+          {
+            "approval_id": "approval-core-governance-1",
+            "approver": {
+              "identity_ref": "urn:koa:identity:governance-approver",
+              "role": "governance-approver"
+            },
+            "decision": "approve",
+            "approved_at": "2026-08-03T17:50:00-04:00",
+            "scope": [
+              "full-bundle"
+            ],
+            "conditions": [],
+            "evidence_ref": "EVID-GOV-APPROVAL-001"
+          }
+        ],
+        "separation_of_duties": {
+          "required": true,
+          "proposer_may_solely_approve": false,
+          "producer_may_solely_approve": false,
+          "incompatible_role_pairs": [
+            [
+              "policy-author",
+              "sole-governance-approver"
+            ]
+          ]
+        },
+        "recourse": {
+          "procedure_ref": "DOC-GOV-010",
+          "requester_roles": [
+            "subject",
+            "operator"
+          ],
+          "maximum_response_seconds": 604800,
+          "outcome_visibility": "authorized_participants"
+        },
+        "dissent_records": [],
+        "emergency_policy": {
+          "enabled": false
+        },
+        "fork": {
+          "is_local_fork": false
+        }
+      },
+      "compatibility": {
+        "release_channel_constraints": {
+          "system": {
+            "minimum": "1.0.0",
+            "maximum": "1.9.99",
+            "selection": "manifest_resolved"
+          },
+          "services": {
+            "minimum": "1.0.0",
+            "maximum": "1.9.99",
+            "selection": "manifest_resolved"
+          },
+          "governance": {
+            "minimum": "1.0.0",
+            "maximum": "1.0.0",
+            "selection": "exact",
+            "exact_release_ref": "urn:koa:release:governance:1.0.0"
+          },
+          "knowledge": {
+            "minimum": "1.0.0",
+            "maximum": "1.9.99",
+            "selection": "manifest_resolved"
+          }
+        },
+        "profile_rules": [
+          {
+            "profile_id": "user_lightweight",
+            "compatibility": "compatible",
+            "required_overlays": [],
+            "prohibited_overlays": [],
+            "conditions": []
+          },
+          {
+            "profile_id": "sovereign_linux_node",
+            "compatibility": "compatible",
+            "required_overlays": [],
+            "prohibited_overlays": [],
+            "conditions": [
+              "local-policy-runtime-present"
+            ]
+          }
+        ],
+        "component_contract_refs": [
+          "contracts/components/governance-policy-runtime.component.json",
+          "contracts/components/identity-and-trust.component.json",
+          "contracts/components/audit-broker.component.json"
+        ],
+        "artifact_dependencies": [],
+        "schema_dependencies": [
+          "contracts/artifact-contracts/policy-decision-receipt.schema.json"
+        ],
+        "incompatible_refs": [],
+        "required_validation_refs": [
+          "TEST-GOV-POLICY-001",
+          "TEST-GOV-POLICY-002"
+        ],
+        "supported_predecessor_bundle_refs": []
+      },
+      "activation": {
+        "mode": "atomic",
+        "partial_activation_permitted": false,
+        "staging_required": true,
+        "validation_before_activation": true,
+        "activation_authority_roles": [
+          "governance-release-operator"
+        ],
+        "pre_activation_checks": [
+          "signature",
+          "authority",
+          "scope",
+          "runtime_compatibility",
+          "release_set_compatibility",
+          "profile_compatibility",
+          "module_validation",
+          "fact_catalog_validation",
+          "reason_code_validation",
+          "obligation_validation",
+          "test_execution",
+          "offline_completeness",
+          "evidence_path",
+          "rollback_readiness"
+        ],
+        "health_gates": [
+          "runtime_load",
+          "deterministic_evaluation",
+          "decision_receipt",
+          "required_test_vectors",
+          "resource_limits",
+          "offline_evaluation",
+          "last_known_good_available",
+          "active_identity_reported"
+        ],
+        "last_known_good_required": true,
+        "rollback": {
+          "supported": true,
+          "requires_authority": true,
+          "requires_compatibility_validation": true,
+          "receipt_required": true,
+          "unsafe_behavior": "forward_repair"
+        },
+        "failure_behavior": "retain_active_bundle",
+        "receipt_required": true,
+        "receipt_schema_ref": "contracts/artifact-contracts/policy-activation-receipt.schema.json"
+      },
+      "offline": {
+        "offline_capable": true,
+        "required_local_inputs": [
+          "bundle_manifest",
+          "policy_modules",
+          "fact_schemas",
+          "reason_codes",
+          "obligations",
+          "review_requirements",
+          "test_vectors",
+          "runtime",
+          "trust_material",
+          "release_set_manifest",
+          "evidence_buffer",
+          "rollback_bundle"
+        ],
+        "remote_dependencies": [],
+        "validation_not_weakened": true,
+        "undeclared_provider_substitution_permitted": false,
+        "receipt_buffering": "durable_local",
+        "failure_behavior": "continue_local_policy"
+      },
+      "ai_boundary": {
+        "native_ai_authority": false,
+        "external_ai_evaluation_dependency": false,
+        "external_ai_output_authoritative": false,
+        "direct_component_mutation_permitted": false,
+        "direct_publication_permitted": false,
+        "privilege_grant_permitted": false,
+        "silent_provider_substitution_permitted": false,
+        "candidate_review_required": true,
+        "allowed_external_ai_capability_refs": []
+      },
+      "integration_controls": {
+        "default_deny_undeclared": true,
+        "removable": true,
+        "allowed_integration_refs": [],
+        "required_integration_refs": [],
+        "secret_material_embedded": false,
+        "failure_is_capability_scoped": true
+      },
+      "security": {
+        "default_classification": "restricted",
+        "private_key_material_embedded": false,
+        "secret_material_embedded": false,
+        "signing_policy": {
+          "canonicalization": "JCS",
+          "signature_purposes": [
+            "producer",
+            "governance_approval",
+            "release_publication"
+          ],
+          "separation_of_duties_required": true,
+          "revocation_checked": true
+        },
+        "allowed_signer_roles": [
+          "policy-producer",
+          "governance-approver",
+          "governance-release-publisher"
+        ],
+        "minimum_signatures": 1,
+        "selective_disclosure": true,
+        "log_payload_policy": "no_governed_payload",
+        "classified_section_names": [
+          "facts",
+          "tests"
+        ]
+      },
+      "provenance": {
+        "producer": {
+          "identity_ref": "urn:koa:identity:policy-builder",
+          "role": "policy-producer"
+        },
+        "produced_at": "2026-08-03T17:54:00-04:00",
+        "source_revision": "governance-policy-source-v1.0.0",
+        "build_profile": "build_farm",
+        "toolchain_ref": "contracts/toolchains/governance-policy.toolchain.json",
+        "source_refs": [
+          "contracts/policies/core-governance.policy.json"
+        ],
+        "test_evidence_refs": [
+          "EVID-GOV-TEST-001"
+        ],
+        "approval_evidence_refs": [
+          "EVID-GOV-APPROVAL-001"
+        ],
+        "reproducibility": "fully_attributable",
+        "simulation_evidence_refs": [],
+        "sbom_ref": "EVID-GOV-SBOM-001"
+      },
+      "lifecycle": {
+        "support_status": "supported",
+        "supersedes": [],
+        "revokes": [],
+        "withdrawal_behavior": "block_new_activation",
+        "retention": {
+          "manifest_retained": true,
+          "test_evidence_retained": true,
+          "decision_receipts_retain_original_bundle_identity": true,
+          "minimum_retention_days": 2555
+        },
+        "migration": {
+          "required": false,
+          "strategy": "none",
+          "preserve_existing_receipt_identity": true,
+          "partial_migration_permitted": false
+        },
+        "rollback_eligibility": "eligible_with_validation",
+        "forward_repair_supported": true
+      },
+      "signatures": [
+        {
+          "signature_id": "signature-core-governance-producer",
+          "key_id": "urn:koa:key:policy-producer-1",
+          "signer_identity_ref": "urn:koa:identity:policy-builder",
+          "signer_role": "policy-producer",
+          "algorithm": "Ed25519",
+          "canonicalization": "JCS",
+          "purpose": "producer",
+          "covered_sections": [
+            "manifest",
+            "scope",
+            "runtime",
+            "facts",
+            "modules",
+            "decision_contract",
+            "tests",
+            "governance",
+            "compatibility",
+            "activation",
+            "offline",
+            "ai_boundary",
+            "integration_controls",
+            "security",
+            "provenance",
+            "lifecycle"
+          ],
+          "signed_at": "2026-08-03T17:55:00-04:00",
+          "signature_value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "certificate_or_attestation_ref": "EVID-GOV-SIGNER-001"
+        }
+      ]
+    }
+  ]
+}

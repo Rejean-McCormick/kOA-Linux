@@ -1,0 +1,2186 @@
+{
+  "$schema": "../schemas/terminology.contract.schema.json",
+  "version": "1.0.0",
+  "status": "active",
+  "language": "en",
+  "effective_at": "2026-08-03T15:13:00-04:00",
+  "purpose": "Own the canonical names, identifiers, definitions, aliases, replacements, capitalization, and distinction rules used by the active kOA documentation corpus.",
+  "language_policy": {
+    "active_documentation_language": "en",
+    "allowed_non_english_content": [
+      "exact_proper_name",
+      "user_content_example",
+      "linguistic_test_fixture",
+      "identified_historical_quotation",
+      "archived_migration_evidence"
+    ],
+    "english_explanation_required_when_non_english_content_affects_interpretation": true
+  },
+  "canonicalization_policy": {
+    "one_active_term_per_canonical_identifier": true,
+    "aliases_must_resolve_to_one_term": true,
+    "deprecated_terms_require_replacement_refs": true,
+    "forbidden_aliases_allowed_in_active_prose": false,
+    "historical_quotation_exception_requires_classification": true,
+    "proper_name_capitalization_is_exact": true,
+    "unknown_architectural_term_result": "blocked",
+    "silent_ai_normalization_allowed": false
+  },
+  "identifier_families": [
+    {
+      "object": "document",
+      "pattern": "^DOC-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$",
+      "example": "DOC-GOV-016"
+    },
+    {
+      "object": "decision",
+      "pattern": "^DEC-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$",
+      "example": "DEC-DOC-003"
+    },
+    {
+      "object": "requirement",
+      "pattern": "^REQ-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$",
+      "example": "REQ-DOC-LANG-001"
+    },
+    {
+      "object": "lock",
+      "pattern": "^LOCK-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$",
+      "example": "LOCK-DOC-019"
+    },
+    {
+      "object": "adr",
+      "pattern": "^ADR-[0-9]{3}$",
+      "example": "ADR-025"
+    },
+    {
+      "object": "test",
+      "pattern": "^TEST-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$",
+      "example": "TEST-DOC-LANG-001"
+    },
+    {
+      "object": "evidence",
+      "pattern": "^EVID-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$",
+      "example": "EVID-DOC-LANG-001"
+    },
+    {
+      "object": "exception",
+      "pattern": "^EXC-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$",
+      "example": "EXC-DOC-001"
+    },
+    {
+      "object": "term",
+      "pattern": "^TERM-[A-Z0-9]+(?:-[A-Z0-9]+)+$",
+      "example": "TERM-COMP-RESOURCE-GOVERNOR"
+    }
+  ],
+  "representation_rules": {
+    "json_keys": "lowercase_snake_case",
+    "json_enum_values": "lowercase_snake_case",
+    "repository_paths": "repository_relative_forward_slash",
+    "markdown_filenames": "lowercase_kebab_case",
+    "reserved_root_filenames": [
+      "README.md",
+      "AI_CONTEXT.md",
+      "CHANGELOG.md"
+    ],
+    "canonical_reference_format": "<repository-relative-path>#<json-pointer>",
+    "calendar_date_format": "YYYY-MM-DD",
+    "timestamp_format": "RFC_3339_with_explicit_offset_or_Z",
+    "semantic_version_format": "MAJOR.MINOR.PATCH",
+    "memory_units": [
+      "MiB",
+      "GiB",
+      "TiB"
+    ],
+    "nominal_storage_units": [
+      "GB",
+      "TB"
+    ]
+  },
+  "controlled_vocabularies": {
+    "document_classes": [
+      "authority",
+      "registry",
+      "schema",
+      "normative_markdown",
+      "explanatory_markdown",
+      "adr",
+      "recipe",
+      "generated",
+      "migration_evidence",
+      "archive",
+      "template"
+    ],
+    "document_statuses": [
+      "active",
+      "deprecated",
+      "superseded",
+      "archived"
+    ],
+    "decision_statuses": [
+      "proposed",
+      "accepted",
+      "rejected",
+      "deprecated",
+      "superseded",
+      "archived"
+    ],
+    "registry_statuses": [
+      "active",
+      "deprecated",
+      "superseded",
+      "archived"
+    ],
+    "scope_kinds": [
+      "global",
+      "profile",
+      "profile_overlay",
+      "component",
+      "artifact_class",
+      "development_toolchain",
+      "migration_only"
+    ],
+    "requirement_strengths": [
+      "SHALL",
+      "SHALL NOT",
+      "SHOULD",
+      "SHOULD NOT",
+      "MAY"
+    ],
+    "validation_outcomes": [
+      "pass",
+      "fail",
+      "blocked"
+    ],
+    "semantic_change_classes": [
+      "patch",
+      "minor",
+      "major"
+    ],
+    "profile_kinds": [
+      "primary_profile",
+      "profile_overlay"
+    ],
+    "capability_states": [
+      "required",
+      "optional",
+      "conditional",
+      "task_activated",
+      "excluded"
+    ],
+    "activation_modes": [
+      "always_on",
+      "socket_activated",
+      "task_activated",
+      "manual",
+      "prohibited"
+    ]
+  },
+  "universally_recognized_abbreviations": [
+    {
+      "abbreviation": "AI",
+      "expanded_form": "artificial intelligence"
+    },
+    {
+      "abbreviation": "API",
+      "expanded_form": "application programming interface"
+    },
+    {
+      "abbreviation": "CPU",
+      "expanded_form": "central processing unit"
+    },
+    {
+      "abbreviation": "I/O",
+      "expanded_form": "input/output"
+    },
+    {
+      "abbreviation": "JSON",
+      "expanded_form": "JavaScript Object Notation"
+    },
+    {
+      "abbreviation": "RAM",
+      "expanded_form": "random-access memory"
+    },
+    {
+      "abbreviation": "SBOM",
+      "expanded_form": "Software Bill of Materials"
+    },
+    {
+      "abbreviation": "SSD",
+      "expanded_form": "solid-state drive"
+    },
+    {
+      "abbreviation": "WSL",
+      "expanded_form": "Windows Subsystem for Linux"
+    }
+  ],
+  "operation_verbs": [
+    {
+      "verb": "reads",
+      "meaning": "Performs non-mutating access through a declared interface."
+    },
+    {
+      "verb": "imports",
+      "meaning": "Admits content through a controlled authority boundary."
+    },
+    {
+      "verb": "publishes",
+      "meaning": "Performs controlled cross-domain release."
+    },
+    {
+      "verb": "emits",
+      "meaning": "Produces an event, receipt, or declared output."
+    },
+    {
+      "verb": "activates",
+      "meaning": "Makes a verified artifact or release current without partial authoritative state."
+    },
+    {
+      "verb": "proposes",
+      "meaning": "Creates candidate content that is not yet authoritative."
+    },
+    {
+      "verb": "accepts",
+      "meaning": "Converts validated candidate content into component-owned authoritative state."
+    }
+  ],
+  "ambiguous_operation_phrases": [
+    {
+      "phrase": "shares data",
+      "policy": "forbidden_without_precise_operation",
+      "required_replacements": [
+        "reads through API",
+        "publishes through gateway",
+        "exports artifact",
+        "imports verified bundle"
+      ]
+    },
+    {
+      "phrase": "syncs",
+      "policy": "forbidden_unless_contract_defines_direction_conflict_and_authority",
+      "required_replacements": []
+    }
+  ],
+  "distinction_rules": [
+    {
+      "rule_id": "TERM-DIST-001",
+      "left_term_id": "TERM-COMP-RESOURCE-GOVERNOR",
+      "right_term_id": "TERM-COMP-GOVERNANCE-POLICY-RUNTIME",
+      "required_distinction": "Resource control is separate from authorization, disclosure, consent, and governed privilege."
+    },
+    {
+      "rule_id": "TERM-DIST-002",
+      "left_term_id": "TERM-COMP-PUBLICATION-GATEWAY",
+      "right_term_id": "TERM-COMP-UCKK-DIMENSION-GATEWAY",
+      "required_distinction": "Cross-domain publication is separate from selected-media ingestion into UCKK."
+    },
+    {
+      "rule_id": "TERM-DIST-003",
+      "left_term_id": "TERM-COMP-ARIANE-RUNTIME",
+      "right_term_id": "TERM-AI-APPROVED-ARIANE-VOICE-ADAPTER",
+      "required_distinction": "Local deterministic navigation is separate from the optional external voice capability."
+    },
+    {
+      "rule_id": "TERM-DIST-004",
+      "left_term_id": "TERM-COMP-UCKK-PLATFORM",
+      "right_term_id": "TERM-COMP-UCKK-DIMENSION-GATEWAY",
+      "required_distinction": "Media-platform authority is separate from its controlled ingestion boundary."
+    },
+    {
+      "rule_id": "TERM-DIST-005",
+      "left_term_id": "TERM-COMP-KRISTAL-RUNTIME",
+      "right_term_id": "TERM-COMP-GF-WORDBENCH",
+      "required_distinction": "Runtime consumption is separate from language construction."
+    },
+    {
+      "rule_id": "TERM-DIST-006",
+      "left_term_id": "TERM-COMP-SEMANTIK-ARCHITECT-RUNTIME",
+      "right_term_id": "TERM-COMP-GF-WORDBENCH",
+      "required_distinction": "Execution of compiled language artifacts is separate from language build sessions."
+    },
+    {
+      "rule_id": "TERM-DIST-007",
+      "left_term_id": "TERM-GOV-PROFILE",
+      "right_term_id": "TERM-GOV-PROFILE-OVERLAY",
+      "required_distinction": "A complete deployment identity is separate from a composable strengthening or restriction."
+    },
+    {
+      "rule_id": "TERM-DIST-008",
+      "left_term_id": "TERM-GOV-COMPONENT",
+      "right_term_id": "TERM-GOV-SERVICE-INSTANCE",
+      "required_distinction": "Architectural responsibility is separate from one running instance."
+    },
+    {
+      "rule_id": "TERM-DIST-009",
+      "left_term_id": "TERM-GOV-ARTIFACT",
+      "right_term_id": "TERM-GOV-RELEASE",
+      "required_distinction": "A deliverable is separate from the governed event that publishes it."
+    },
+    {
+      "rule_id": "TERM-DIST-010",
+      "left_term_id": "TERM-GOV-RELEASE-SET",
+      "right_term_id": "TERM-GOV-RELEASE-CHANNEL",
+      "required_distinction": "A compatible multi-channel version binding is separate from one independently versioned stream."
+    },
+    {
+      "rule_id": "TERM-DIST-011",
+      "left_term_id": "TERM-DEV-WORKSPACE",
+      "right_term_id": "TERM-DEV-WORKTREE",
+      "required_distinction": "The complete isolation unit is separate from the Git checkout mechanism that may host it."
+    },
+    {
+      "rule_id": "TERM-DIST-012",
+      "left_term_id": "TERM-GOV-CANDIDATE-INPUT",
+      "right_term_id": "TERM-GOV-AUTHORITATIVE-STATE",
+      "required_distinction": "An unaccepted result is separate from component-owned accepted state."
+    },
+    {
+      "rule_id": "TERM-DIST-013",
+      "left_term_id": "TERM-GOV-RECIPE",
+      "right_term_id": "TERM-GOV-NORMATIVE-REQUIREMENT",
+      "required_distinction": "Implementation guidance is separate from a testable active obligation."
+    },
+    {
+      "rule_id": "TERM-DIST-014",
+      "left_term_id": "TERM-GOV-OWNER-DECISION",
+      "right_term_id": "TERM-GOV-ADR",
+      "required_distinction": "Owner authorization is separate from the record of context, rationale, and consequences."
+    }
+  ],
+  "terms": [
+    {
+      "term_id": "TERM-AI-APPROVED-ARIANE-VOICE-ADAPTER",
+      "canonical_name": "approved Ariane voice adapter",
+      "canonical_identifier": "ariane-voice",
+      "category": "ai_boundary",
+      "definition": "The optional approved external voice path used by Ariane without replacing local deterministic navigation.",
+      "semantic_owner_ref": "contracts/system.contract.json#/ai_boundary",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [
+        "AI+Ariane"
+      ],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-AI-EXTERNAL-AI-SURFACE",
+      "canonical_name": "external AI surface",
+      "canonical_identifier": "external_ai_surface",
+      "category": "ai_boundary",
+      "definition": "An optional external capability accessed through an explicit user-triggered and capability-scoped boundary.",
+      "semantic_owner_ref": "contracts/system.contract.json#/ai_boundary",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-AI-NATIVE-AI",
+      "canonical_name": "native AI",
+      "canonical_identifier": "native_ai",
+      "category": "ai_boundary",
+      "definition": "An AI capability shipped and executed as part of the kOA baseline.",
+      "semantic_owner_ref": "contracts/system.contract.json#/ai_boundary",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-ART-CULTURAL-RIGHTS-POLICY",
+      "canonical_name": "cultural rights policy",
+      "canonical_identifier": "cultural_rights_policy",
+      "category": "artifact_class",
+      "definition": "A machine-readable policy governing cultural rights, consent, use, and disclosure conditions.",
+      "semantic_owner_ref": "contracts/artifact-classes.contract.json#/artifact_classes/cultural_rights_policy",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-ART-DECISION-RECEIPT",
+      "canonical_name": "decision receipt",
+      "canonical_identifier": "decision_receipt",
+      "category": "artifact_class",
+      "definition": "A machine-readable record of a governed decision and its relevant inputs, outcome, and authority.",
+      "semantic_owner_ref": "contracts/artifact-classes.contract.json#/artifact_classes/decision_receipt",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-ART-INTEGRATION-MANIFEST",
+      "canonical_name": "integration manifest",
+      "canonical_identifier": "integration_manifest",
+      "category": "artifact_class",
+      "definition": "A machine-readable declaration of an external integration, its capabilities, boundaries, and configuration.",
+      "semantic_owner_ref": "contracts/artifact-classes.contract.json#/artifact_classes/integration_manifest",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-ART-LANGUAGE-PACK",
+      "canonical_name": "language pack",
+      "canonical_identifier": "language_pack",
+      "category": "artifact_class",
+      "definition": "A versioned package of compiled language artifacts.",
+      "semantic_owner_ref": "contracts/artifact-classes.contract.json#/artifact_classes/language_pack",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-ART-NODE-PROFILE",
+      "canonical_name": "node profile",
+      "canonical_identifier": "node_profile",
+      "category": "artifact_class",
+      "definition": "A machine-readable declaration of a node's selected profile, overlays, capabilities, and constraints.",
+      "semantic_owner_ref": "contracts/artifact-classes.contract.json#/artifact_classes/node_profile",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-ART-OFFLINE-BUNDLE",
+      "canonical_name": "offline bundle",
+      "canonical_identifier": "offline_bundle",
+      "category": "artifact_class",
+      "definition": "A verified package used to transfer approved artifacts into a disconnected environment.",
+      "semantic_owner_ref": "contracts/artifact-classes.contract.json#/artifact_classes/offline_bundle",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-ART-POLICY-BUNDLE",
+      "canonical_name": "policy bundle",
+      "canonical_identifier": "policy_bundle",
+      "category": "artifact_class",
+      "definition": "A versioned package of governance policy artifacts.",
+      "semantic_owner_ref": "contracts/artifact-classes.contract.json#/artifact_classes/policy_bundle",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-ART-PROVENANCE-RECEIPT",
+      "canonical_name": "provenance receipt",
+      "canonical_identifier": "provenance_receipt",
+      "category": "artifact_class",
+      "definition": "A machine-readable record of artifact origin, processing, transfer, and acceptance history.",
+      "semantic_owner_ref": "contracts/artifact-classes.contract.json#/artifact_classes/provenance_receipt",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-ART-PUBLICATION-RECEIPT",
+      "canonical_name": "publication receipt",
+      "canonical_identifier": "publication_receipt",
+      "category": "artifact_class",
+      "definition": "A machine-readable record of a publication decision and outcome.",
+      "semantic_owner_ref": "contracts/artifact-classes.contract.json#/artifact_classes/publication_receipt",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-ART-PUBLICATION-REQUEST",
+      "canonical_name": "publication request",
+      "canonical_identifier": "publication_request",
+      "category": "artifact_class",
+      "definition": "A request submitted to the Publication Gateway for controlled cross-domain release.",
+      "semantic_owner_ref": "contracts/artifact-classes.contract.json#/artifact_classes/publication_request",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-ART-RESOURCE-ENVELOPE",
+      "canonical_name": "resource envelope",
+      "canonical_identifier": "resource_envelope",
+      "category": "artifact_class",
+      "definition": "A machine-readable declaration of CPU, memory, I/O, concurrency, queue, and process limits.",
+      "semantic_owner_ref": "contracts/artifact-classes.contract.json#/artifact_classes/resource_envelope",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-ART-RUNTIME-PACK",
+      "canonical_name": "Runtime Pack",
+      "canonical_identifier": "runtime_pack",
+      "category": "artifact_class",
+      "definition": "A versioned package consumed by a runtime component.",
+      "semantic_owner_ref": "contracts/artifact-classes.contract.json#/artifact_classes/runtime_pack",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-ART-SOVEREIGNTY-BUNDLE",
+      "canonical_name": "sovereignty bundle",
+      "canonical_identifier": "sovereignty_bundle",
+      "category": "artifact_class",
+      "definition": "A package containing the artifacts and evidence required for a declared sovereign deployment operation.",
+      "semantic_owner_ref": "contracts/artifact-classes.contract.json#/artifact_classes/sovereignty_bundle",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-ART-WORKSPACE-PORT-ALLOCATION",
+      "canonical_name": "workspace port allocation",
+      "canonical_identifier": "workspace_port_allocation",
+      "category": "artifact_class",
+      "definition": "A machine-readable allocation of host ports to one development workspace.",
+      "semantic_owner_ref": "contracts/artifact-classes.contract.json#/artifact_classes/workspace_port_allocation",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-CHANNEL-GOVERNANCE",
+      "canonical_name": "governance release channel",
+      "canonical_identifier": "governance",
+      "category": "release_channel",
+      "definition": "The release channel for governance policies and related authoritative bundles.",
+      "semantic_owner_ref": "contracts/release-channels.contract.json#/channels/governance",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-CHANNEL-KNOWLEDGE",
+      "canonical_name": "knowledge release channel",
+      "canonical_identifier": "knowledge",
+      "category": "release_channel",
+      "definition": "The release channel for Kristal, language, Atlas, runtime-pack, and approved knowledge artifacts.",
+      "semantic_owner_ref": "contracts/release-channels.contract.json#/channels/knowledge",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-CHANNEL-SERVICES",
+      "canonical_name": "services release channel",
+      "canonical_identifier": "services",
+      "category": "release_channel",
+      "definition": "The release channel for deployable application and component service artifacts.",
+      "semantic_owner_ref": "contracts/release-channels.contract.json#/channels/services",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-CHANNEL-SYSTEM",
+      "canonical_name": "system release channel",
+      "canonical_identifier": "system",
+      "category": "release_channel",
+      "definition": "The release channel for operating-system and system-image artifacts.",
+      "semantic_owner_ref": "contracts/release-channels.contract.json#/channels/system",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-COMP-ARIANE-RUNTIME",
+      "canonical_name": "Ariane Runtime",
+      "canonical_identifier": "ariane_runtime",
+      "category": "component",
+      "definition": "The local deterministic navigation and accessibility runtime for Ariane capabilities.",
+      "semantic_owner_ref": "generated/component-catalog.json#/components/ariane_runtime",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [
+        "Ariane"
+      ],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_full_name_then_registered_alias"
+    },
+    {
+      "term_id": "TERM-COMP-AUDIT-BROKER",
+      "canonical_name": "Audit Broker",
+      "canonical_identifier": "audit_broker",
+      "category": "component",
+      "definition": "The component that coordinates registered audit requests, evidence access, and selective disclosure.",
+      "semantic_owner_ref": "generated/component-catalog.json#/components/audit_broker",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_full_name_then_registered_alias"
+    },
+    {
+      "term_id": "TERM-COMP-GF-WORDBENCH",
+      "canonical_name": "GF Wordbench",
+      "canonical_identifier": "gf_wordbench",
+      "category": "component",
+      "definition": "The designated workbench for constructing and compiling language artifacts.",
+      "semantic_owner_ref": "generated/component-catalog.json#/components/gf_wordbench",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_full_name_then_registered_alias"
+    },
+    {
+      "term_id": "TERM-COMP-GOVERNANCE-POLICY-RUNTIME",
+      "canonical_name": "Governance Policy Runtime",
+      "canonical_identifier": "governance_policy_runtime",
+      "category": "component",
+      "definition": "The authority for authorization, disclosure, consent, governed privilege, and governed exceptions in profiles that deploy it.",
+      "semantic_owner_ref": "generated/component-catalog.json#/components/governance_policy_runtime",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [
+        "governance runtime",
+        "resource governor runtime"
+      ],
+      "status": "active",
+      "first_use_rule": "use_full_name_then_registered_alias"
+    },
+    {
+      "term_id": "TERM-COMP-IDENTITY-AND-TRUST",
+      "canonical_name": "Identity and Trust",
+      "canonical_identifier": "identity_and_trust",
+      "category": "component",
+      "definition": "The component authority for registered identity, trust-root, signature, and verification functions.",
+      "semantic_owner_ref": "generated/component-catalog.json#/components/identity_and_trust",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_full_name_then_registered_alias"
+    },
+    {
+      "term_id": "TERM-COMP-KOA-NODE-AGENT",
+      "canonical_name": "kOA Node Agent",
+      "canonical_identifier": "koa_node_agent",
+      "category": "component",
+      "definition": "The node-local component that performs registered node management and reporting functions.",
+      "semantic_owner_ref": "generated/component-catalog.json#/components/koa_node_agent",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [
+        "Node Agent"
+      ],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_full_name_then_registered_alias"
+    },
+    {
+      "term_id": "TERM-COMP-KONNAXION",
+      "canonical_name": "Konnaxion",
+      "canonical_identifier": "konnaxion",
+      "category": "component",
+      "definition": "The first-class kOA domain responsible for its registered Konnaxion capabilities and authoritative data.",
+      "semantic_owner_ref": "generated/component-catalog.json#/components/konnaxion",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_full_name_then_registered_alias"
+    },
+    {
+      "term_id": "TERM-COMP-KRISTAL-RUNTIME",
+      "canonical_name": "Kristal Runtime",
+      "canonical_identifier": "kristal_runtime",
+      "category": "component",
+      "definition": "The runtime that consumes and serves Kristal artifacts without becoming a universal operational database or workflow engine.",
+      "semantic_owner_ref": "generated/component-catalog.json#/components/kristal_runtime",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_full_name_then_registered_alias"
+    },
+    {
+      "term_id": "TERM-COMP-ORGO",
+      "canonical_name": "Orgo",
+      "canonical_identifier": "orgo",
+      "category": "component",
+      "definition": "The first-class kOA domain responsible for its registered Orgo capabilities and authoritative data.",
+      "semantic_owner_ref": "generated/component-catalog.json#/components/orgo",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_full_name_then_registered_alias"
+    },
+    {
+      "term_id": "TERM-COMP-PUBLICATION-GATEWAY",
+      "canonical_name": "Publication Gateway",
+      "canonical_identifier": "publication_gateway",
+      "category": "component",
+      "definition": "The controlled boundary for cross-domain disclosure and publication.",
+      "semantic_owner_ref": "generated/component-catalog.json#/components/publication_gateway",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_full_name_then_registered_alias"
+    },
+    {
+      "term_id": "TERM-COMP-RESOURCE-GOVERNOR",
+      "canonical_name": "Resource Governor",
+      "canonical_identifier": "resource_governor",
+      "category": "component",
+      "definition": "The deterministic authority for CPU, memory, I/O, concurrency, queues, scheduling, and process limits.",
+      "semantic_owner_ref": "generated/component-catalog.json#/components/resource_governor",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [
+        "governance runtime",
+        "resource policy runtime"
+      ],
+      "status": "active",
+      "first_use_rule": "use_full_name_then_registered_alias"
+    },
+    {
+      "term_id": "TERM-COMP-SEMANTIK-ARCHITECT-RUNTIME",
+      "canonical_name": "SemantiK Architect Runtime",
+      "canonical_identifier": "semantik_architect_runtime",
+      "category": "component",
+      "definition": "The runtime that executes compiled language artifacts and does not perform language construction.",
+      "semantic_owner_ref": "generated/component-catalog.json#/components/semantik_architect_runtime",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [
+        "SemantiK Runtime"
+      ],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_full_name_then_registered_alias"
+    },
+    {
+      "term_id": "TERM-COMP-SENTIENT",
+      "canonical_name": "SenTient",
+      "canonical_identifier": "sentient",
+      "category": "component",
+      "definition": "An optional isolated research and enrichment workbench whose outputs remain candidate inputs until explicitly reviewed and imported.",
+      "semantic_owner_ref": "generated/component-catalog.json#/components/sentient",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_full_name_then_registered_alias"
+    },
+    {
+      "term_id": "TERM-COMP-UCKK-DIMENSION-GATEWAY",
+      "canonical_name": "UCKK Dimension Gateway",
+      "canonical_identifier": "uckk_dimension_gateway",
+      "category": "component",
+      "definition": "The controlled boundary that imports user-selected media into a declared UCKK dimension.",
+      "semantic_owner_ref": "generated/component-catalog.json#/components/uckk_dimension_gateway",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [
+        "UCKK gateway"
+      ],
+      "status": "active",
+      "first_use_rule": "use_full_name_then_registered_alias"
+    },
+    {
+      "term_id": "TERM-COMP-UCKK-PLATFORM",
+      "canonical_name": "UCKK Platform",
+      "canonical_identifier": "uckk_platform",
+      "category": "component",
+      "definition": "The authoritative media platform for deterministic ingestion, storage, transformation, export, backup, and restore.",
+      "semantic_owner_ref": "generated/component-catalog.json#/components/uckk_platform",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [
+        "UCKK"
+      ],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_full_name_then_registered_alias"
+    },
+    {
+      "term_id": "TERM-DEV-DOCKER",
+      "canonical_name": "Docker",
+      "canonical_identifier": "docker",
+      "category": "development",
+      "definition": "A permitted OCI-compatible container runtime for the Windows/WSL development profile.",
+      "semantic_owner_ref": "contracts/system.contract.json#/implementation_technologies",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_exact_name"
+    },
+    {
+      "term_id": "TERM-DEV-KUBERNETES",
+      "canonical_name": "Kubernetes",
+      "canonical_identifier": "kubernetes",
+      "category": "development",
+      "definition": "A cluster orchestration platform permitted for selected hub, build-farm, or control-plane profiles and not required on endpoints.",
+      "semantic_owner_ref": "contracts/system.contract.json#/implementation_technologies",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_exact_name"
+    },
+    {
+      "term_id": "TERM-DEV-MUTABLE-DEPENDENCY-ENVIRONMENT",
+      "canonical_name": "mutable dependency environment",
+      "canonical_identifier": "mutable_dependency_environment",
+      "category": "development",
+      "definition": "An installed dependency environment whose contents can change during development and therefore cannot be shared between workspaces.",
+      "semantic_owner_ref": "contracts/toolchains/python-uv.toolchain.json",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_exact_name"
+    },
+    {
+      "term_id": "TERM-DEV-PODMAN",
+      "canonical_name": "Podman",
+      "canonical_identifier": "podman",
+      "category": "development",
+      "definition": "The preferred rootless container runtime for Linux development and sovereign Linux recipes.",
+      "semantic_owner_ref": "contracts/system.contract.json#/implementation_technologies",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_exact_name"
+    },
+    {
+      "term_id": "TERM-DEV-PYPROJECT",
+      "canonical_name": "pyproject.toml",
+      "canonical_identifier": "pyproject_toml",
+      "category": "development",
+      "definition": "The versioned Python project configuration file used by a workspace.",
+      "semantic_owner_ref": "contracts/toolchains/python-uv.toolchain.json",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_exact_name"
+    },
+    {
+      "term_id": "TERM-DEV-QUADLET",
+      "canonical_name": "Quadlet",
+      "canonical_identifier": "quadlet",
+      "category": "development",
+      "definition": "A systemd-oriented declarative mechanism used by applicable sovereign Linux recipes to manage Podman containers.",
+      "semantic_owner_ref": "contracts/system.contract.json#/implementation_technologies",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_exact_name"
+    },
+    {
+      "term_id": "TERM-DEV-ROOTLESS-CONTAINER",
+      "canonical_name": "rootless container",
+      "canonical_identifier": "rootless_container",
+      "category": "development",
+      "definition": "A container executed without host-root privileges.",
+      "semantic_owner_ref": "contracts/system.contract.json#/implementation_technologies",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_exact_name"
+    },
+    {
+      "term_id": "TERM-DEV-SHARED-UV-CACHE",
+      "canonical_name": "shared content-addressed UV cache",
+      "canonical_identifier": "shared_content_addressed_uv_cache",
+      "category": "development",
+      "definition": "A reusable download and build cache that may be shared because it does not represent a mutable installed environment.",
+      "semantic_owner_ref": "contracts/toolchains/python-uv.toolchain.json",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_exact_name"
+    },
+    {
+      "term_id": "TERM-DEV-UV",
+      "canonical_name": "UV",
+      "canonical_identifier": "uv",
+      "category": "development",
+      "definition": "The mandatory Python dependency and environment manager for kOA development workspaces.",
+      "semantic_owner_ref": "contracts/toolchains/python-uv.toolchain.json",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [
+        "uv"
+      ],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_exact_name"
+    },
+    {
+      "term_id": "TERM-DEV-UV-LOCK",
+      "canonical_name": "uv.lock",
+      "canonical_identifier": "uv_lock",
+      "category": "development",
+      "definition": "The versioned UV dependency lock file used for reproducible synchronization.",
+      "semantic_owner_ref": "contracts/toolchains/python-uv.toolchain.json",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_exact_name"
+    },
+    {
+      "term_id": "TERM-DEV-WORKSPACE",
+      "canonical_name": "workspace",
+      "canonical_identifier": "workspace",
+      "category": "development",
+      "definition": "A logical development isolation unit with its own identity, mutable dependencies, services, state, ports, secrets, and resource budget.",
+      "semantic_owner_ref": "contracts/artifact-contracts/developer-workspace.schema.json",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_exact_name"
+    },
+    {
+      "term_id": "TERM-DEV-WORKSPACE-ID",
+      "canonical_name": "workspace identifier",
+      "canonical_identifier": "workspace_id",
+      "category": "development",
+      "definition": "The stable identifier used to namespace mutable development resources.",
+      "semantic_owner_ref": "contracts/artifact-contracts/developer-workspace.schema.json",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_exact_name"
+    },
+    {
+      "term_id": "TERM-DEV-WORKSPACE-VENV",
+      "canonical_name": "workspace virtual environment",
+      "canonical_identifier": "workspace_virtual_environment",
+      "category": "development",
+      "definition": "The mutable Python virtual environment dedicated to one workspace.",
+      "semantic_owner_ref": "contracts/toolchains/python-uv.toolchain.json",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_exact_name"
+    },
+    {
+      "term_id": "TERM-DEV-WORKTREE",
+      "canonical_name": "worktree",
+      "canonical_identifier": "worktree",
+      "category": "development",
+      "definition": "A Git checkout mechanism that may host one workspace but does not itself define the complete workspace boundary.",
+      "semantic_owner_ref": "contracts/artifact-contracts/developer-workspace.schema.json",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_exact_name"
+    },
+    {
+      "term_id": "TERM-GOV-ACTIVE-AUTHORITY",
+      "canonical_name": "active authority",
+      "canonical_identifier": "active_authority",
+      "category": "governance_concept",
+      "definition": "The set of currently activated decisions, registries, contracts, ADRs, and normative documents.",
+      "semantic_owner_ref": "generated/authority-manifest.json#/canonical_ownership",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-GOV-ACTIVE-DOCUMENTATION-CORPUS",
+      "canonical_name": "active documentation corpus",
+      "canonical_identifier": "active_documentation_corpus",
+      "category": "governance_concept",
+      "definition": "The single current documentation tree under docs that participates in authority.",
+      "semantic_owner_ref": "contracts/terminology.contract.json#/terms",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-GOV-ADR",
+      "canonical_name": "Architecture Decision Record",
+      "canonical_identifier": "architecture_decision_record",
+      "category": "governance_concept",
+      "definition": "A record of architectural context, alternatives, rationale, consequences, and decision history.",
+      "semantic_owner_ref": "generated/decision-index.json#/adrs",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [
+        "ADR"
+      ],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name",
+      "abbreviation": "ADR"
+    },
+    {
+      "term_id": "TERM-GOV-AI-CONTEXT-PACKAGE",
+      "canonical_name": "AI context package",
+      "canonical_identifier": "ai_context_package",
+      "category": "governance_concept",
+      "definition": "A task-scoped generated projection that provides an AI agent with applicable authority, scope, requirements, locks, decisions, and prohibited assumptions.",
+      "semantic_owner_ref": "contracts/terminology.contract.json#/terms",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-GOV-ARCHIVE",
+      "canonical_name": "archive",
+      "canonical_identifier": "archive",
+      "category": "governance_concept",
+      "definition": "Historical documentation retained without current product or documentation authority.",
+      "semantic_owner_ref": "contracts/terminology.contract.json#/terms",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-GOV-ARTIFACT",
+      "canonical_name": "artifact",
+      "canonical_identifier": "artifact",
+      "category": "governance_concept",
+      "definition": "An immutable or versioned deliverable governed by an artifact class and lifecycle contract.",
+      "semantic_owner_ref": "contracts/artifact-classes.contract.json#/artifact_classes",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-GOV-AUTHORITATIVE-STATE",
+      "canonical_name": "authoritative state",
+      "canonical_identifier": "authoritative_state",
+      "category": "governance_concept",
+      "definition": "State accepted and owned by the component or registry responsible for the relevant domain.",
+      "semantic_owner_ref": "contracts/terminology.contract.json#/terms",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-GOV-AUTHORITY-REGISTRY",
+      "canonical_name": "Authority Registry",
+      "canonical_identifier": "authority_registry",
+      "category": "governance_concept",
+      "definition": "The registry that activates the documentation release, registry versions, schema versions, authority order, ownership map, validation policy, and cutover state.",
+      "semantic_owner_ref": "generated/authority-manifest.json#/canonical_ownership",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-GOV-CANDIDATE-INPUT",
+      "canonical_name": "candidate input",
+      "canonical_identifier": "candidate_input",
+      "category": "governance_concept",
+      "definition": "An external or generated result that has not yet been accepted into component-owned authoritative state.",
+      "semantic_owner_ref": "contracts/terminology.contract.json#/terms",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-GOV-CANONICAL-OWNER",
+      "canonical_name": "canonical owner",
+      "canonical_identifier": "canonical_owner",
+      "category": "governance_concept",
+      "definition": "The single machine-readable location authorized to define one architectural fact.",
+      "semantic_owner_ref": "generated/authority-manifest.json#/canonical_ownership",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-GOV-CANONICAL-REFERENCE",
+      "canonical_name": "canonical reference",
+      "canonical_identifier": "canonical_reference",
+      "category": "governance_concept",
+      "definition": "A repository-relative path, optionally followed by a JSON Pointer, that identifies an authoritative object.",
+      "semantic_owner_ref": "generated/authority-manifest.json#/canonical_ownership",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-GOV-CANONICAL-REGISTRY",
+      "canonical_name": "canonical registry",
+      "canonical_identifier": "canonical_registry",
+      "category": "governance_concept",
+      "definition": "A machine-readable registry with exclusive ownership of a defined architectural domain.",
+      "semantic_owner_ref": "generated/authority-manifest.json#/canonical_ownership",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-GOV-COMPONENT",
+      "canonical_name": "component",
+      "canonical_identifier": "component",
+      "category": "governance_concept",
+      "definition": "A first-class architectural responsibility with explicit boundaries, owned data, interfaces, and failure behavior.",
+      "semantic_owner_ref": "generated/component-catalog.json#/components",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-GOV-FAIL-CLOSED-AUTHORITY",
+      "canonical_name": "fail-closed authority",
+      "canonical_identifier": "fail_closed_authority",
+      "category": "governance_concept",
+      "definition": "The rule that an operation requiring authority does not proceed when identity, policy, scope, compatibility, or ownership cannot be resolved.",
+      "semantic_owner_ref": "generated/authority-manifest.json#/canonical_ownership",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-GOV-GENERATED-PROJECTION",
+      "canonical_name": "generated projection",
+      "canonical_identifier": "generated_projection",
+      "category": "governance_concept",
+      "definition": "A reproducible view of canonical data that carries no independent authority.",
+      "semantic_owner_ref": "contracts/terminology.contract.json#/terms",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-GOV-INTERFILE-ALIGNMENT-LOCK",
+      "canonical_name": "Interfile Alignment Lock",
+      "canonical_identifier": "interfile_alignment_lock",
+      "category": "governance_concept",
+      "definition": "A versioned machine-readable assertion that prevents mutually dependent documentation objects from drifting out of alignment.",
+      "semantic_owner_ref": "generated/assertion-index.json#/locks",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-GOV-MIGRATION-EVIDENCE",
+      "canonical_name": "migration evidence",
+      "canonical_identifier": "migration_evidence",
+      "category": "governance_concept",
+      "definition": "Read-only evidence that records source lineage, disposition, redirects, and cutover history without defining current product behavior.",
+      "semantic_owner_ref": "contracts/terminology.contract.json#/terms",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-GOV-NORMATIVE-REQUIREMENT",
+      "canonical_name": "normative requirement",
+      "canonical_identifier": "normative_requirement",
+      "category": "governance_concept",
+      "definition": "A testable obligation with a stable requirement identifier, strength, scope, owner, source decision, and validation method.",
+      "semantic_owner_ref": "generated/requirements-index.json#/requirements",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-GOV-OFFLINE-CONTINUITY",
+      "canonical_name": "offline continuity",
+      "canonical_identifier": "offline_continuity",
+      "category": "governance_concept",
+      "definition": "The ability of declared core capabilities to remain available without Internet access within the applicable profile envelope.",
+      "semantic_owner_ref": "contracts/terminology.contract.json#/terms",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-GOV-OWNER-DECISION",
+      "canonical_name": "owner decision",
+      "canonical_identifier": "owner_decision",
+      "category": "governance_concept",
+      "definition": "An accepted decision that authorizes an implementation-affecting architectural fact or semantic change.",
+      "semantic_owner_ref": "contracts/terminology.contract.json#/terms",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-GOV-PORTABILITY-AND-EXIT",
+      "canonical_name": "portability and exit",
+      "canonical_identifier": "portability_and_exit",
+      "category": "governance_concept",
+      "definition": "The ability to export, restore, migrate, and leave a deployment without dependence on an unavailable authority or proprietary-only path.",
+      "semantic_owner_ref": "contracts/terminology.contract.json#/terms",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-GOV-PROFILE",
+      "canonical_name": "deployment profile",
+      "canonical_identifier": "deployment_profile",
+      "category": "governance_concept",
+      "definition": "A complete deployable system identity that selects and constrains the global kOA baseline for a declared purpose.",
+      "semantic_owner_ref": "generated/profile-catalog.json",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-GOV-PROFILE-OVERLAY",
+      "canonical_name": "profile overlay",
+      "canonical_identifier": "profile_overlay",
+      "category": "governance_concept",
+      "definition": "A composable profile that strengthens or restricts a compatible primary profile without being independently deployable.",
+      "semantic_owner_ref": "generated/profile-catalog.json",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-GOV-RECIPE",
+      "canonical_name": "recipe",
+      "canonical_identifier": "recipe",
+      "category": "governance_concept",
+      "definition": "Non-normative implementation guidance that becomes binding only when explicitly adopted by an active profile contract.",
+      "semantic_owner_ref": "contracts/terminology.contract.json#/terms",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-GOV-RECOURSE",
+      "canonical_name": "recourse",
+      "canonical_identifier": "recourse",
+      "category": "governance_concept",
+      "definition": "A defined mechanism to challenge, review, correct, or reverse a governed decision or outcome.",
+      "semantic_owner_ref": "contracts/terminology.contract.json#/terms",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-GOV-RELEASE",
+      "canonical_name": "release",
+      "canonical_identifier": "release",
+      "category": "governance_concept",
+      "definition": "A governed publication event that makes a versioned artifact or compatible artifact set available for activation.",
+      "semantic_owner_ref": "contracts/release-channels.contract.json",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-GOV-RELEASE-CHANNEL",
+      "canonical_name": "release channel",
+      "canonical_identifier": "release_channel",
+      "category": "governance_concept",
+      "definition": "An independently versioned stream of related artifact classes.",
+      "semantic_owner_ref": "contracts/release-channels.contract.json",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-GOV-RELEASE-SET",
+      "canonical_name": "Release Set",
+      "canonical_identifier": "release_set",
+      "category": "governance_concept",
+      "definition": "A signed or otherwise verified binding of compatible versions across the system, services, governance, and knowledge release channels.",
+      "semantic_owner_ref": "contracts/release-channels.contract.json",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-GOV-SAFE-DEGRADATION",
+      "canonical_name": "safe degradation",
+      "canonical_identifier": "safe_degradation",
+      "category": "governance_concept",
+      "definition": "Reduction of an affected capability without silently violating authority, integrity, or unrelated core behavior.",
+      "semantic_owner_ref": "contracts/terminology.contract.json#/terms",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-GOV-SELECTIVE-AUDIT",
+      "canonical_name": "selective audit",
+      "canonical_identifier": "selective_audit",
+      "category": "governance_concept",
+      "definition": "Accountability that exposes only the evidence required for the declared audit purpose.",
+      "semantic_owner_ref": "contracts/terminology.contract.json#/terms",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-GOV-SERVICE-INSTANCE",
+      "canonical_name": "service instance",
+      "canonical_identifier": "service_instance",
+      "category": "governance_concept",
+      "definition": "One running deployment instance of a component or component capability.",
+      "semantic_owner_ref": "contracts/terminology.contract.json#/terms",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-INTEGRATION-CHATGPT",
+      "canonical_name": "ChatGPT",
+      "canonical_identifier": "chatgpt",
+      "category": "external_integration",
+      "definition": "An approved optional external integration surface named ChatGPT.",
+      "semantic_owner_ref": "contracts/integrations/chatgpt.integration.json",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_exact_name"
+    },
+    {
+      "term_id": "TERM-INTEGRATION-GAMMA",
+      "canonical_name": "Gamma",
+      "canonical_identifier": "gamma",
+      "category": "external_integration",
+      "definition": "An approved optional external integration surface named Gamma.",
+      "semantic_owner_ref": "contracts/integration-types.contract.json#/integrations/gamma",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_exact_name"
+    },
+    {
+      "term_id": "TERM-INTEGRATION-SUNO",
+      "canonical_name": "Suno",
+      "canonical_identifier": "suno",
+      "category": "external_integration",
+      "definition": "An approved optional external integration surface named Suno.",
+      "semantic_owner_ref": "contracts/integration-types.contract.json#/integrations/suno",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_exact_name"
+    },
+    {
+      "term_id": "TERM-OPS-BREAK-GLASS",
+      "canonical_name": "break-glass operation",
+      "canonical_identifier": "break_glass_operation",
+      "category": "security_or_operations",
+      "definition": "A narrowly controlled emergency operation that requires explicit authorization, evidence, and post-event review.",
+      "semantic_owner_ref": "contracts/system.contract.json#/security_and_operations",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-OPS-OFFLINE-IMPORT",
+      "canonical_name": "offline import",
+      "canonical_identifier": "offline_import",
+      "category": "security_or_operations",
+      "definition": "The controlled admission of verified artifacts into a disconnected environment.",
+      "semantic_owner_ref": "contracts/system.contract.json#/security_and_operations",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-PROD-KOA",
+      "canonical_name": "kOA",
+      "canonical_identifier": "koa",
+      "category": "product_name",
+      "definition": "The exact product-family name used in prose for the kOA ecosystem.",
+      "semantic_owner_ref": "contracts/system.contract.json#/identity/product_family",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [
+        "KOA",
+        "Koa",
+        "koa"
+      ],
+      "status": "active",
+      "first_use_rule": "use_exact_name"
+    },
+    {
+      "term_id": "TERM-PROD-KOA-OPERATING-ENVIRONMENT",
+      "canonical_name": "kOA Operating Environment",
+      "canonical_identifier": "koa_operating_environment",
+      "category": "product_name",
+      "definition": "The current global operating environment that defines the common kOA system baseline.",
+      "semantic_owner_ref": "contracts/system.contract.json#/identity/product_name",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [
+        "the operating environment"
+      ],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [
+        "kOA OS",
+        "KOA Operating Environment"
+      ],
+      "status": "active",
+      "first_use_rule": "use_full_name_then_contextual_short_form"
+    },
+    {
+      "term_id": "TERM-PROFILE-APPLIANCE-SHELL",
+      "canonical_name": "appliance shell overlay",
+      "canonical_identifier": "appliance_shell",
+      "category": "profile_overlay",
+      "definition": "An overlay that constrains the user shell to a minimal appliance-oriented experience.",
+      "semantic_owner_ref": "contracts/profiles/appliance-shell.profile.json",
+      "scope": [
+        "appliance_shell"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [
+        "appliance shell"
+      ],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_display_name_with_identifier_on_first_use"
+    },
+    {
+      "term_id": "TERM-PROFILE-BUILD-FARM",
+      "canonical_name": "build farm",
+      "canonical_identifier": "build_farm",
+      "category": "primary_profile",
+      "definition": "The reproducible build and artifact-production profile.",
+      "semantic_owner_ref": "contracts/profiles/build-farm.profile.json",
+      "scope": [
+        "build_farm"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_display_name_with_identifier_on_first_use"
+    },
+    {
+      "term_id": "TERM-PROFILE-CONTROL-PLANE",
+      "canonical_name": "control plane",
+      "canonical_identifier": "control_plane",
+      "category": "primary_profile",
+      "definition": "The profile for centralized coordination functions where those functions are explicitly deployed.",
+      "semantic_owner_ref": "contracts/profiles/control-plane.profile.json",
+      "scope": [
+        "control_plane"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_display_name_with_identifier_on_first_use"
+    },
+    {
+      "term_id": "TERM-PROFILE-DEVELOPER-LINUX-WORKSTATION",
+      "canonical_name": "developer Linux workstation",
+      "canonical_identifier": "developer_linux_workstation",
+      "category": "primary_profile",
+      "definition": "The native Linux development profile with isolated workspaces, UV-managed Python environments, and workspace-scoped services.",
+      "semantic_owner_ref": "contracts/profiles/developer-linux-workstation.profile.json",
+      "scope": [
+        "developer_linux_workstation"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_display_name_with_identifier_on_first_use"
+    },
+    {
+      "term_id": "TERM-PROFILE-DEVELOPER-WINDOWS-WSL",
+      "canonical_name": "developer Windows/WSL workstation",
+      "canonical_identifier": "developer_windows_wsl",
+      "category": "primary_profile",
+      "definition": "The Windows 11 and WSL2 development profile permitted for development convenience without sovereign Linux conformance.",
+      "semantic_owner_ref": "contracts/profiles/developer-windows-wsl.profile.json",
+      "scope": [
+        "developer_windows_wsl"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [
+        "Windows/WSL developer profile"
+      ],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_display_name_with_identifier_on_first_use"
+    },
+    {
+      "term_id": "TERM-PROFILE-HIGH-ASSURANCE",
+      "canonical_name": "high assurance overlay",
+      "canonical_identifier": "high_assurance",
+      "category": "profile_overlay",
+      "definition": "An overlay that strengthens identity, verification, security, evidence, and operational controls.",
+      "semantic_owner_ref": "contracts/profiles/high-assurance.profile.json",
+      "scope": [
+        "high_assurance"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [
+        "high assurance"
+      ],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_display_name_with_identifier_on_first_use"
+    },
+    {
+      "term_id": "TERM-PROFILE-SOVEREIGN-HUB",
+      "canonical_name": "sovereign hub",
+      "canonical_identifier": "sovereign_hub",
+      "category": "primary_profile",
+      "definition": "A multi-service sovereign deployment profile for shared or coordinated operation.",
+      "semantic_owner_ref": "contracts/profiles/sovereign-hub.profile.json",
+      "scope": [
+        "sovereign_hub"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_display_name_with_identifier_on_first_use"
+    },
+    {
+      "term_id": "TERM-PROFILE-SOVEREIGN-LINUX-NODE",
+      "canonical_name": "sovereign Linux node",
+      "canonical_identifier": "sovereign_linux_node",
+      "category": "primary_profile",
+      "definition": "The hardened Linux production profile with explicit identity, recovery, offline, privilege, and assurance controls.",
+      "semantic_owner_ref": "contracts/profiles/sovereign-linux-node.profile.json",
+      "scope": [
+        "sovereign_linux_node"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_display_name_with_identifier_on_first_use"
+    },
+    {
+      "term_id": "TERM-PROFILE-SOVEREIGN-OFFLINE",
+      "canonical_name": "sovereign offline overlay",
+      "canonical_identifier": "sovereign_offline",
+      "category": "profile_overlay",
+      "definition": "An overlay that requires operation and recovery within a declared disconnected environment.",
+      "semantic_owner_ref": "contracts/profiles/sovereign-offline.profile.json",
+      "scope": [
+        "sovereign_offline"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [
+        "sovereign offline"
+      ],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_display_name_with_identifier_on_first_use"
+    },
+    {
+      "term_id": "TERM-PROFILE-USER-LIGHTWEIGHT",
+      "canonical_name": "user lightweight profile",
+      "canonical_identifier": "user_lightweight",
+      "category": "primary_profile",
+      "definition": "The lightweight end-user deployment profile for local daily operation on modest hardware.",
+      "semantic_owner_ref": "contracts/profiles/user-lightweight.profile.json",
+      "scope": [
+        "user_lightweight"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_display_name_with_identifier_on_first_use"
+    },
+    {
+      "term_id": "TERM-SEC-CROSS-DOMAIN-PUBLICATION",
+      "canonical_name": "cross-domain publication",
+      "canonical_identifier": "cross_domain_publication",
+      "category": "security_or_operations",
+      "definition": "A controlled release of information from one authority or security domain to another.",
+      "semantic_owner_ref": "contracts/system.contract.json#/security_and_operations",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-SEC-CULTURAL-RIGHTS-AND-CONSENT",
+      "canonical_name": "cultural rights and consent",
+      "canonical_identifier": "cultural_rights_and_consent",
+      "category": "security_or_operations",
+      "definition": "The governance domain that constrains use, disclosure, transformation, and publication according to registered cultural rights and consent.",
+      "semantic_owner_ref": "contracts/system.contract.json#/security_and_operations",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-SEC-NARROW-PRIVILEGED-BROKER",
+      "canonical_name": "narrow privileged broker",
+      "canonical_identifier": "narrow_privileged_broker",
+      "category": "security_or_operations",
+      "definition": "A minimal broker that performs explicitly authorized host mutations without exposing general root access.",
+      "semantic_owner_ref": "contracts/system.contract.json#/security_and_operations",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-SEC-PRIVATE-PROOF",
+      "canonical_name": "private proof",
+      "canonical_identifier": "private_proof",
+      "category": "security_or_operations",
+      "definition": "Evidence that proves a required property without indiscriminate disclosure of underlying private information.",
+      "semantic_owner_ref": "contracts/system.contract.json#/security_and_operations",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-SEC-SBOM",
+      "canonical_name": "Software Bill of Materials",
+      "canonical_identifier": "software_bill_of_materials",
+      "category": "security_or_operations",
+      "definition": "A machine-readable inventory of software components and dependencies associated with an artifact or release.",
+      "semantic_owner_ref": "contracts/artifact-classes.contract.json#/artifact_classes/sbom",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [
+        "SBOM"
+      ],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "expand_abbreviation_on_first_use",
+      "abbreviation": "SBOM"
+    },
+    {
+      "term_id": "TERM-SEC-TRUST-ROOT",
+      "canonical_name": "trust root",
+      "canonical_identifier": "trust_root",
+      "category": "security_or_operations",
+      "definition": "A configured root of trust used to validate identity, signatures, or artifact provenance within a declared scope.",
+      "semantic_owner_ref": "contracts/system.contract.json#/security_and_operations",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    }
+  ],
+  "validation": {
+    "required_checks": [
+      "unique_term_ids",
+      "unique_active_canonical_identifiers",
+      "unique_active_canonical_names_within_category",
+      "accepted_alias_single_target",
+      "deprecated_term_replacement_present",
+      "forbidden_alias_absent_from_active_prose",
+      "exact_product_and_component_capitalization",
+      "identifier_family_conformance",
+      "repository_path_conformance",
+      "canonical_reference_conformance",
+      "controlled_vocabulary_conformance",
+      "distinct_term_rules_preserved",
+      "english_active_documentation"
+    ],
+    "unknown_term_result": "blocked",
+    "alias_collision_result": "fail",
+    "deprecated_term_in_active_prose_result": "fail",
+    "forbidden_alias_result": "fail"
+  },
+  "contract_id": "terminology.registry",
+  "contract_type": "terminology_registry"
+}

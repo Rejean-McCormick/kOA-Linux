@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "receipt_id": "receipt:decision:2026-08-03:resource-envelope-activation:001",
+  "timestamp": "2026-08-03T21:55:00Z",
+  "decision": "allow",
+  "policy": {
+    "id": "policy:resource-envelope-activation",
+    "version": "1.0.0",
+    "module": "resource_governance"
+  },
+  "request": {
+    "subject": "service:resource_governor",
+    "action": "resource_envelope.activate",
+    "resource": "resource-envelope:build-farm-default@1.0.0",
+    "tenant_id": "tenant:koa-example",
+    "node_id": "node:build-farm-example-01",
+    "operation_id": "operation:resource-envelope-activation:2026-08-03:001"
+  },
+  "reason_codes": [
+    "ACTOR_AUTHORIZED",
+    "POLICY_SCOPE_MATCH",
+    "RESOURCE_ENVELOPE_VALID",
+    "TARGET_PROFILE_COMPATIBLE",
+    "ROLLBACK_TARGET_AVAILABLE"
+  ],
+  "obligations": [
+    "VERIFY_POST_ACTIVATION_LIMITS",
+    "PRESERVE_PREVIOUS_VERIFIED_ENVELOPE",
+    "EMIT_ACTIVATION_EVIDENCE"
+  ],
+  "redactions": [],
+  "valid_until": "2026-08-03T22:10:00Z",
+  "correlation_id": "correlation:resource-envelope-activation:2026-08-03:001",
+  "signature": {
+    "kid": "did:koa:example:resource-governor#decision-receipt-signing-1",
+    "value": "ZXhhbXBsZS1kZWNpc2lvbi1yZWNlaXB0LXNpZ25hdHVyZS12MQ=="
+  },
+  "$schema": "../artifact-contracts/decision-receipt.schema.json",
+  "example": true,
+  "authority": "non_authoritative_example"
+}

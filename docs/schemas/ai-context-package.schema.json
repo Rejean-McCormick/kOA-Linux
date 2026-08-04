@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:koa:docs:schema:generated-ai-context:1",
+  "type": "object",
+  "required": [
+    "context_package_id",
+    "context_package_type",
+    "version",
+    "status",
+    "language",
+    "generated",
+    "authority",
+    "generator",
+    "scope"
+  ],
+  "properties": {
+    "context_package_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "context_package_type": {
+      "const": "generated_ai_context"
+    },
+    "version": {
+      "type": "string"
+    },
+    "status": {
+      "const": "active"
+    },
+    "language": {
+      "const": "en"
+    },
+    "generated": {
+      "const": true
+    },
+    "authority": {
+      "type": "object"
+    },
+    "generator": {
+      "type": "object"
+    },
+    "scope": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

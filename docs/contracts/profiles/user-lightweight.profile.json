@@ -1,0 +1,894 @@
+{
+  "$schema": "../../schemas/deployment-profile.schema.json",
+  "profile_id": "user_lightweight",
+  "profile_type": "primary",
+  "version": "1.0.0",
+  "status": "active",
+  "language": "en",
+  "effective_at": "2026-08-03T16:03:00-04:00",
+  "title": "User Lightweight",
+  "summary": "A resource-bounded, general-purpose Linux deployment for daily local use on commodity hardware. It preserves the kOA system baseline while excluding development workbenches, native AI, permanent heavy search engines, and parallel heavy processing.",
+  "authority_ref": "generated/authority-manifest.json",
+  "decisions_ref": "generated/decision-index.json",
+  "system_ref": "contracts/system.contract.json",
+  "components_ref": "generated/component-catalog.json",
+  "profile_index_ref": "generated/profile-catalog.json",
+  "requirements_ref": "generated/requirements-index.json",
+  "locks_ref": "generated/assertion-index.json",
+  "integrations_ref": "contracts/integration-types.contract.json",
+  "artifact_classes_ref": "contracts/artifact-classes.contract.json",
+  "release_channels_ref": "contracts/release-channels.contract.json",
+  "test_catalog_ref": "generated/test-catalog.json",
+  "evidence_ref": "generated/evidence-catalog.json",
+  "decision_ids": [
+    "DEC-PROFILE-001",
+    "DEC-HW-001",
+    "DEC-AI-001",
+    "DEC-SENT-001",
+    "DEC-UCKK-001",
+    "DEC-ARI-001",
+    "DEC-OFFLINE-001",
+    "DEC-GOV-001",
+    "DEC-DATA-001",
+    "DEC-SEC-001",
+    "DEC-CONTAINER-001",
+    "DEC-SHELL-001",
+    "DEC-INTEGRATION-001",
+    "DEC-LIFE-001",
+    "DEC-RECEIPT-001",
+    "DEC-PORT-001"
+  ],
+  "requirement_ids": [
+    "REQ-PROFILE-USER-001",
+    "REQ-PROFILE-USER-002",
+    "REQ-PROFILE-USER-003",
+    "REQ-PROFILE-USER-004",
+    "REQ-PROFILE-USER-005",
+    "REQ-PROFILE-USER-006",
+    "REQ-PROFILE-USER-007",
+    "REQ-PROFILE-USER-008",
+    "REQ-PROFILE-USER-009",
+    "REQ-PROFILE-USER-010",
+    "REQ-PROFILE-USER-011",
+    "REQ-PROFILE-USER-012",
+    "REQ-PROFILE-USER-013",
+    "REQ-PROFILE-USER-014",
+    "REQ-PROFILE-USER-015",
+    "REQ-PROFILE-USER-016",
+    "REQ-PROFILE-USER-017",
+    "REQ-PROFILE-USER-018",
+    "REQ-PROFILE-USER-019",
+    "REQ-PROFILE-USER-020",
+    "REQ-PROFILE-USER-021",
+    "REQ-PROFILE-USER-022",
+    "REQ-PROFILE-USER-023",
+    "REQ-PROFILE-USER-024"
+  ],
+  "lock_ids": [
+    "LOCK-PROFILE-001",
+    "LOCK-PROFILE-002",
+    "LOCK-AI-001",
+    "LOCK-AI-002",
+    "LOCK-SENT-001",
+    "LOCK-UCKK-001",
+    "LOCK-UCKK-002",
+    "LOCK-ARI-001",
+    "LOCK-ARI-002",
+    "LOCK-GOV-001",
+    "LOCK-DATA-001",
+    "LOCK-COMP-001",
+    "LOCK-COMP-002",
+    "LOCK-GATE-001",
+    "LOCK-LIFE-001",
+    "LOCK-LIFE-002",
+    "LOCK-LIFE-003",
+    "LOCK-LIFE-004",
+    "LOCK-IMPL-001",
+    "LOCK-IMPL-002"
+  ],
+  "exception_ids": [],
+  "scope": {
+    "kind": "profile",
+    "applies_to": [
+      "single-user daily operation",
+      "local personal knowledge and workflow use",
+      "deterministic local media ingestion and processing",
+      "general-purpose maintained Linux desktops",
+      "commodity or refurbished x86_64 and arm64 hardware"
+    ],
+    "does_not_claim": [
+      "developer workstation conformance",
+      "sovereign Linux node conformance",
+      "high-assurance conformance",
+      "build-farm conformance",
+      "control-plane conformance",
+      "native AI capability",
+      "multi-tenant service hosting",
+      "continuous high-throughput media processing"
+    ]
+  },
+  "purpose": {
+    "primary_user": "An individual using kOA for ordinary daily work.",
+    "operating_goal": "Keep the authoritative local core responsive and available on modest hardware while activating expensive workers only for explicit tasks.",
+    "design_priorities": [
+      "local-first operation",
+      "low idle resource consumption",
+      "deterministic behavior",
+      "clear component ownership",
+      "explicit optional integrations",
+      "safe offline continuity",
+      "simple backup, restore, and exit",
+      "maintained general-purpose desktop support"
+    ],
+    "non_goals": [
+      "running every kOA workbench simultaneously",
+      "hosting native language-model inference",
+      "permanent Solr or Elasticsearch services",
+      "building system images or release bundles",
+      "compiling grammars or language runtimes",
+      "running a permanent Windows virtual machine",
+      "serving as a sovereign production node",
+      "serving as a clustered control plane"
+    ]
+  },
+  "composition": {
+    "base_model": "contracts/system.contract.json",
+    "inherits_from_primary_profile": null,
+    "default_overlays": [],
+    "overlay_compatibility": [
+      {
+        "overlay_id": "appliance_shell",
+        "compatibility": "compatible",
+        "conditions": [
+          "The appliance shell replaces the general-purpose desktop shell.",
+          "The overlay does not reduce the minimum hardware envelope.",
+          "The overlay retains non-voice Ariane navigation and accessibility paths."
+        ]
+      },
+      {
+        "overlay_id": "sovereign_offline",
+        "compatibility": "compatible_with_constraints",
+        "conditions": [
+          "All required runtime artifacts and update material are available through verified offline bundles.",
+          "External AI, voice, synchronization, and other remote-dependent capabilities are disabled.",
+          "The composed profile uses the stronger offline validation and evidence rules."
+        ]
+      },
+      {
+        "overlay_id": "high_assurance",
+        "compatibility": "not_compatible",
+        "reason": "The lightweight profile does not establish the physical isolation, trust, privilege, evidence, and recovery envelope required for a high-assurance conformance claim. Use sovereign_linux_node with high_assurance."
+      }
+    ],
+    "composition_rules": [
+      "An overlay changes only the fields it explicitly owns.",
+      "An overlay cannot weaken a global or profile requirement.",
+      "An overlay conflict blocks the composed profile.",
+      "The composed profile receives a distinct conformance result."
+    ]
+  },
+  "hardware_envelope": {
+    "architecture": {
+      "required": [
+        "x86_64_or_arm64"
+      ],
+      "notes": "The selected architecture must be supported by every required runtime artifact in the active release set."
+    },
+    "cpu": {
+      "minimum_physical_cores": 4,
+      "preferred_physical_cores": 6,
+      "modern_64_bit_required": true,
+      "heavy_job_concurrency": 1
+    },
+    "memory": {
+      "minimum_gib": 16,
+      "preferred_gib": 32,
+      "idle_platform_target_gib": {
+        "minimum": 5,
+        "maximum": 8,
+        "classification": "performance_target"
+      },
+      "user_workload_reserve_gib_at_minimum_memory": 6,
+      "swap": {
+        "zram_required": true,
+        "disk_swap_permitted": true,
+        "swap_is_not_a_substitute_for_minimum_ram": true
+      }
+    },
+    "storage": {
+      "minimum_ssd_gb": 512,
+      "preferred_ssd_gb": 1000,
+      "ssd_required": true,
+      "free_space_floor_percent": 15,
+      "uckk_capacity_is_profiled_separately": true
+    },
+    "graphics": {
+      "integrated_gpu_supported": true,
+      "discrete_gpu_required": false,
+      "gpu_compute_required": false
+    },
+    "network": {
+      "internet_required_for_core_operation": false,
+      "local_network_required_for_single_node_operation": false,
+      "optional_remote_capabilities_require_explicit_connectivity": true
+    },
+    "power": {
+      "battery_operation_supported": true,
+      "background_heavy_jobs_must_respect_power_state": true
+    }
+  },
+  "host_platform": {
+    "operating_system": {
+      "family": "maintained_linux",
+      "release_policy": "vendor_supported_release",
+      "unsupported_end_of_life_release_permitted": false
+    },
+    "desktop": {
+      "mode": "general_purpose",
+      "supported_shell_classes": [
+        "GNOME",
+        "KDE Plasma",
+        "another maintained Linux desktop environment"
+      ],
+      "minimal_wayland_shell_requires_overlay": "appliance_shell",
+      "gnome_prohibited": false,
+      "kde_prohibited": false,
+      "wayland_required": false,
+      "accessibility_paths_required": [
+        "keyboard",
+        "pointer",
+        "touch_when_hardware_supports_it",
+        "menu_or_command_navigation"
+      ]
+    },
+    "containers": {
+      "required": false,
+      "permitted": true,
+      "preferred_mode_when_used": "rootless",
+      "permitted_runtimes": [
+        "Podman",
+        "Docker",
+        "another OCI-compatible runtime"
+      ],
+      "runtime_specific_behavior_may_define_application_contracts": false,
+      "permanent_development_containers_in_minimal_install": false
+    },
+    "virtualization": {
+      "permanent_virtual_machine_permitted": false,
+      "windows_virtual_machine_in_baseline": false
+    },
+    "privilege": {
+      "application_components_run_as_root": false,
+      "host_mutation_path": "operating_system_or_declared_broker_only",
+      "general_privileged_component_channel": false
+    }
+  },
+  "component_membership": {
+    "required": [
+      {
+        "component_id": "identity-and-trust",
+        "activation": "always_on",
+        "role": "Local identity, session, trust, and delegation services."
+      },
+      {
+        "component_id": "resource-governor",
+        "activation": "always_on",
+        "role": "Resource limits, worker admission, queues, and background scheduling."
+      },
+      {
+        "component_id": "ariane-runtime",
+        "activation": "always_on",
+        "role": "Deterministic local navigation and interaction."
+      },
+      {
+        "component_id": "konnaxion",
+        "activation": "always_on",
+        "role": "Konnaxion-owned user and knowledge capabilities."
+      },
+      {
+        "component_id": "orgo",
+        "activation": "always_on",
+        "role": "Local workflow and orchestration within Orgo ownership."
+      },
+      {
+        "component_id": "kristal-runtime",
+        "activation": "always_on",
+        "role": "Consumption and validation of active Kristal artifacts."
+      },
+      {
+        "component_id": "semantik-architect-runtime",
+        "activation": "always_on",
+        "role": "Runtime use of precompiled language artifacts."
+      },
+      {
+        "component_id": "uckk-platform",
+        "activation": "always_on",
+        "role": "Local deterministic UCKK storage, metadata, and processing."
+      },
+      {
+        "component_id": "uckk-dimension-gateway",
+        "activation": "always_on",
+        "role": "Verified user-selected media admission into UCKK."
+      },
+      {
+        "component_id": "koa-node-agent",
+        "activation": "always_on",
+        "role": "Local node status and declared unprivileged node operations."
+      },
+      {
+        "component_id": "audit-broker",
+        "activation": "socket_or_event_activated",
+        "role": "Selective critical-transition receipts and evidence routing."
+      }
+    ],
+    "conditional": [
+      {
+        "component_id": "publication-gateway",
+        "condition": "A governed publication or cross-domain disclosure capability is enabled.",
+        "activation": "socket_or_task_activated"
+      },
+      {
+        "component_id": "governance-policy-runtime",
+        "condition": "A separately accepted composition requires centralized local governance evaluation without claiming high-assurance conformance.",
+        "activation": "on_demand",
+        "default_included": false
+      }
+    ],
+    "excluded": [
+      {
+        "component_id": "sentient",
+        "reason": "SenTient is restricted to developer and build profiles and is non-authoritative."
+      },
+      {
+        "component_id": "gf-wordbench",
+        "reason": "Grammar authoring and compilation are development functions. The user profile consumes precompiled language artifacts."
+      }
+    ]
+  },
+  "service_activation": {
+    "always_on_policy": "Only required local authority, navigation, core runtime, identity, and resource-control services remain resident.",
+    "task_activated_workers": [
+      {
+        "worker_id": "uckk-thumbnail-worker",
+        "maximum_parallel_instances": 1,
+        "priority": "low",
+        "auto_stop_after_task": true
+      },
+      {
+        "worker_id": "uckk-preview-worker",
+        "maximum_parallel_instances": 1,
+        "priority": "low",
+        "auto_stop_after_task": true
+      },
+      {
+        "worker_id": "uckk-text-extraction-worker",
+        "maximum_parallel_instances": 1,
+        "priority": "low",
+        "auto_stop_after_task": true
+      },
+      {
+        "worker_id": "uckk-transcode-worker",
+        "maximum_parallel_instances": 1,
+        "priority": "low",
+        "auto_stop_after_task": true
+      },
+      {
+        "worker_id": "uckk-index-update-worker",
+        "maximum_parallel_instances": 1,
+        "priority": "low",
+        "auto_stop_after_task": true
+      },
+      {
+        "worker_id": "backup-worker",
+        "maximum_parallel_instances": 1,
+        "priority": "low",
+        "auto_stop_after_task": true
+      },
+      {
+        "worker_id": "restore-validation-worker",
+        "maximum_parallel_instances": 1,
+        "priority": "normal",
+        "auto_stop_after_task": true
+      },
+      {
+        "worker_id": "synchronization-worker",
+        "maximum_parallel_instances": 1,
+        "priority": "low",
+        "auto_stop_after_task": true,
+        "remote_dependency": true
+      }
+    ],
+    "global_limits": {
+      "maximum_concurrent_heavy_jobs": 1,
+      "maximum_semantik_runtime_workers": 1,
+      "normally_loaded_language_artifacts": 1,
+      "heavy_java_services_at_boot": 0,
+      "idle_task_workers": 0,
+      "background_cpu_priority": "below_interactive",
+      "background_io_priority": "below_interactive"
+    }
+  },
+  "resource_governance": {
+    "resource_governor_required": true,
+    "governance_policy_runtime_required": false,
+    "admission_rules": [
+      "Interactive work has priority over preview, indexing, synchronization, conversion, and backup work.",
+      "Only one heavy media, restore, or bulk-index job runs at a time.",
+      "A heavy job is deferred when minimum interactive memory reserve cannot be preserved.",
+      "Workers stop after their queue becomes empty.",
+      "Thermal, battery, memory-pressure, and low-storage conditions may pause background jobs."
+    ],
+    "memory_pressure_order": [
+      "pause synchronization",
+      "pause index updates",
+      "pause preview generation",
+      "pause thumbnail generation",
+      "pause media conversion",
+      "retain identity, Resource Governor, Ariane, authoritative stores, and active user session"
+    ],
+    "storage_pressure_order": [
+      "stop new large imports",
+      "stop preview and transcode expansion",
+      "prune reproducible caches according to retention policy",
+      "preserve authoritative originals, manifests, receipts, and required recovery material"
+    ]
+  },
+  "data_and_storage": {
+    "logical_ownership": {
+      "single_owner_per_authoritative_domain": true,
+      "direct_cross_component_writes_permitted": false,
+      "permitted_cross_domain_mechanisms": [
+        "versioned commands",
+        "versioned queries",
+        "domain events",
+        "immutable artifacts",
+        "controlled read models",
+        "Publication Gateway",
+        "UCKK Dimension Gateway"
+      ]
+    },
+    "database_topology": {
+      "shared_database_process_permitted": true,
+      "required_isolation_when_shared": [
+        "separate logical databases or schemas",
+        "separate service identities",
+        "separate migration ownership",
+        "separate backup inventory entries",
+        "no cross-owner write grants"
+      ],
+      "component_local_sqlite_or_duckdb_permitted": true,
+      "permanent_solr_service_permitted": false,
+      "permanent_elasticsearch_service_permitted": false
+    },
+    "filesystem": {
+      "separate_component_storage_roots_required": true,
+      "authoritative_and_reproducible_cache_data_separated": true,
+      "temporary_worker_data_removed_after_declared_retention": true
+    },
+    "backup_and_restore": {
+      "documented_export_required": true,
+      "scheduled_backup_supported": true,
+      "restore_test_required_for_restore_claim": true,
+      "backup_completion_is_restore_proof": false,
+      "credible_exit_requires_independent_consumption_or_clean_restore": true
+    }
+  },
+  "ai_boundary": {
+    "native_ai_runtime_present": false,
+    "native_ai_capabilities": [],
+    "approved_external_surfaces": [
+      {
+        "integration_id": "chatgpt",
+        "activation": "explicit_user_action",
+        "default_enabled": false
+      },
+      {
+        "integration_id": "suno",
+        "activation": "explicit_user_action",
+        "default_enabled": false
+      },
+      {
+        "integration_id": "gamma",
+        "activation": "explicit_user_action",
+        "default_enabled": false
+      },
+      {
+        "integration_id": "ariane-voice",
+        "activation": "explicit_user_action",
+        "default_enabled": false
+      }
+    ],
+    "prohibited_behavior": [
+      "automatic AI invocation during ingestion",
+      "AI-based authoritative classification",
+      "AI-based autonomous routing",
+      "direct external AI writes to authoritative stores",
+      "AI-granted privilege",
+      "AI-controlled artifact activation",
+      "silent substitution of an unavailable AI provider"
+    ],
+    "candidate_output_import": {
+      "user_review_required": true,
+      "component_owned_validation_required": true,
+      "provenance_required": true,
+      "direct_authoritative_write_permitted": false
+    }
+  },
+  "uckk_behavior": {
+    "native_pipeline": "local_deterministic",
+    "required_local_capabilities": [
+      "user-selected ingestion",
+      "identity and integrity verification",
+      "metadata capture",
+      "storage",
+      "thumbnail generation",
+      "preview generation",
+      "transcoding",
+      "deterministic text extraction when supported",
+      "export",
+      "backup",
+      "restore"
+    ],
+    "heavy_processing": {
+      "maximum_parallel_jobs": 1,
+      "foreground_priority": false,
+      "may_pause_for_interactive_load": true
+    },
+    "not_native_capabilities": [
+      "AI classification",
+      "AI summarization",
+      "AI tagging",
+      "AI routing",
+      "AI transcription",
+      "AI translation",
+      "content generation"
+    ],
+    "publication_requires_publication_gateway": true
+  },
+  "ariane_behavior": {
+    "local_navigation_required": true,
+    "local_navigation_requires_ai": false,
+    "required_non_voice_inputs": [
+      "keyboard",
+      "pointer",
+      "touch_when_available",
+      "menu",
+      "shortcut",
+      "command",
+      "accessibility_navigation"
+    ],
+    "external_voice_optional": true,
+    "voice_unavailable_behavior": "Disable voice capability only and retain all supported local non-voice navigation.",
+    "silent_voice_provider_substitution_permitted": false
+  },
+  "language_runtime": {
+    "precompiled_artifacts_only": true,
+    "grammar_compiler_present": false,
+    "gf_wordbench_present": false,
+    "maximum_runtime_workers": 1,
+    "normally_active_languages": 1,
+    "additional_language_activation": "explicit_user_action",
+    "external_ai_required": false
+  },
+  "network_and_integrations": {
+    "internal_default": "local_only",
+    "remote_inbound_services_enabled_by_default": false,
+    "external_egress": {
+      "default": "denied_except_declared_integrations",
+      "user_trigger_required_for_ai_and_publication_integrations": true,
+      "provider_substitution_permitted": false
+    },
+    "integration_properties": [
+      "capability_scoped",
+      "data_transfer_scoped",
+      "explicitly_authenticated",
+      "removable",
+      "failure_isolated",
+      "provenance_aware"
+    ],
+    "remote_dependency_failure": "Disable only the dependent capability and preserve declared local operation."
+  },
+  "offline_capability_envelope": {
+    "claim": "core_local_operation",
+    "available_without_internet": [
+      "local identity and session use",
+      "Ariane non-voice navigation",
+      "Konnaxion local capabilities backed by local authoritative state",
+      "Orgo local workflows backed by local authoritative state",
+      "Kristal runtime consumption of installed artifacts",
+      "SemantiK runtime use of installed precompiled language artifacts",
+      "UCKK ingestion and deterministic local processing",
+      "local export",
+      "local backup",
+      "local restore validation",
+      "Resource Governor scheduling",
+      "selective local receipts and evidence"
+    ],
+    "unavailable_without_internet": [
+      "ChatGPT",
+      "Suno",
+      "Gamma",
+      "external Ariane voice",
+      "remote synchronization",
+      "remote publication destinations",
+      "remote artifact retrieval not already cached or bundled"
+    ],
+    "degradation_rules": [
+      "No undeclared provider is selected.",
+      "Queued remote work remains visibly pending, expires, or is cancelled under its contract.",
+      "Local authoritative state remains available when its own validation succeeds.",
+      "No offline failure creates mutation authority."
+    ],
+    "validation_required": true
+  },
+  "security_and_privacy": {
+    "fail_closed_checks": [
+      "identity",
+      "authority",
+      "ownership",
+      "policy_when_applicable",
+      "consent_when_applicable",
+      "artifact_compatibility",
+      "schema_validation",
+      "integration_authentication"
+    ],
+    "least_privilege_required": true,
+    "component_service_identity_required": true,
+    "direct_host_privilege_permitted": false,
+    "secrets_in_ordinary_exports_permitted": false,
+    "governed_payloads_in_logs_permitted_by_default": false,
+    "critical_transition_receipts_required": [
+      "artifact activation",
+      "governed publication",
+      "privileged host mutation when enabled",
+      "restore activation",
+      "release transition",
+      "external AI import into authoritative state"
+    ],
+    "selective_audit_required": true
+  },
+  "release_and_lifecycle": {
+    "consumed_release_channels": [
+      "system",
+      "services",
+      "governance",
+      "knowledge"
+    ],
+    "active_version_set_recorded": true,
+    "partial_activation_permitted": false,
+    "artifact_validation_before_activation": true,
+    "rollback_or_forward_repair_required": true,
+    "operating_system_update_model": "The maintained Linux distribution owns host operating-system updates. kOA artifact activation follows active artifact-class and release-channel contracts.",
+    "offline_update_supported": true,
+    "development_build_tools_included": false
+  },
+  "excluded_software_and_services": [
+    {
+      "id": "sentient",
+      "category": "component",
+      "reason": "Restricted to developer and build profiles."
+    },
+    {
+      "id": "solr",
+      "category": "heavy_search_service",
+      "reason": "No permanent Java search service belongs to the lightweight baseline."
+    },
+    {
+      "id": "elasticsearch",
+      "category": "heavy_search_service",
+      "reason": "No permanent Java search service belongs to the lightweight baseline."
+    },
+    {
+      "id": "openrefine",
+      "category": "development_or_research_tool",
+      "reason": "Not part of daily user operation."
+    },
+    {
+      "id": "sbert-models",
+      "category": "native_ai_model",
+      "reason": "The baseline contains no native AI model."
+    },
+    {
+      "id": "gf-wordbench",
+      "category": "development_tool",
+      "reason": "The profile consumes precompiled language artifacts."
+    },
+    {
+      "id": "gf-compiler",
+      "category": "development_tool",
+      "reason": "Compilation belongs to development and build profiles."
+    },
+    {
+      "id": "development-containers",
+      "category": "development_environment",
+      "reason": "Not included in the minimal user installation."
+    },
+    {
+      "id": "windows-virtual-machine",
+      "category": "virtual_machine",
+      "reason": "A permanent Windows virtual machine is outside the profile."
+    },
+    {
+      "id": "local-ai-runtime",
+      "category": "native_ai_runtime",
+      "reason": "The global baseline has no native AI runtime."
+    }
+  ],
+  "operations": {
+    "startup": [
+      "Validate the active release and artifact set.",
+      "Start required always-on services within Resource Governor limits.",
+      "Do not start heavy Java services or task workers.",
+      "Expose the offline and integration capability status."
+    ],
+    "shutdown": [
+      "Stop admission of new heavy jobs.",
+      "Commit or safely cancel owned transactions.",
+      "Persist declared queues and job state.",
+      "Stop task workers before authoritative stores."
+    ],
+    "background_work": [
+      "Run one heavy job at a time.",
+      "Prefer idle, externally powered, thermally safe periods.",
+      "Pause work under memory, storage, battery, or interactive pressure.",
+      "Expose job state and cancellation."
+    ],
+    "backup": [
+      "Create component-owned exports or backup inputs.",
+      "Record included data and artifact versions.",
+      "Store recovery material outside the active data root.",
+      "Run scheduled restore validation."
+    ],
+    "supportability": [
+      "Expose component health without disclosing governed payloads.",
+      "Provide clear failure and degraded-capability states.",
+      "Retain enough evidence for recovery and recourse."
+    ]
+  },
+  "failure_and_degradation": [
+    {
+      "condition": "internet_unavailable",
+      "result": "degraded",
+      "retained": "all declared local capabilities",
+      "disabled": "remote-dependent integrations"
+    },
+    {
+      "condition": "external_ai_unavailable",
+      "result": "degraded",
+      "retained": "deterministic local operation and non-voice Ariane navigation",
+      "disabled": "the requested external AI capability"
+    },
+    {
+      "condition": "memory_pressure",
+      "result": "degraded",
+      "retained": "identity, active user session, authoritative stores, Ariane, and Resource Governor",
+      "disabled": "background workers in declared pressure order"
+    },
+    {
+      "condition": "low_storage",
+      "result": "blocked_for_growth",
+      "retained": "read access and safe export when possible",
+      "disabled": "new large imports and derivative expansion"
+    },
+    {
+      "condition": "artifact_validation_failure",
+      "result": "blocked",
+      "retained": "previously active compatible artifact set",
+      "disabled": "activation of the invalid artifact"
+    },
+    {
+      "condition": "component_owner_unavailable",
+      "result": "capability_scoped_failure",
+      "retained": "unrelated component capabilities",
+      "disabled": "mutations owned by the unavailable component"
+    },
+    {
+      "condition": "required_evidence_path_unavailable",
+      "result": "blocked_for_critical_transition",
+      "retained": "noncritical operations explicitly permitted by contract",
+      "disabled": "critical transition lacking required evidence"
+    }
+  ],
+  "conformance": {
+    "claim_id": "CONFORMANCE-PROFILE-USER-LIGHTWEIGHT",
+    "required_tests": [
+      "TEST-PROFILE-USER-001",
+      "TEST-PROFILE-USER-002",
+      "TEST-PROFILE-USER-003",
+      "TEST-PROFILE-USER-004",
+      "TEST-PROFILE-USER-005",
+      "TEST-PROFILE-USER-006",
+      "TEST-PROFILE-USER-007",
+      "TEST-PROFILE-USER-008",
+      "TEST-PROFILE-USER-009",
+      "TEST-PROFILE-USER-010",
+      "TEST-PROFILE-USER-011",
+      "TEST-PROFILE-USER-012"
+    ],
+    "test_intents": [
+      {
+        "test_id": "TEST-PROFILE-USER-001",
+        "intent": "Validate minimum hardware and zram configuration."
+      },
+      {
+        "test_id": "TEST-PROFILE-USER-002",
+        "intent": "Validate required, conditional, and excluded component membership."
+      },
+      {
+        "test_id": "TEST-PROFILE-USER-003",
+        "intent": "Validate that heavy services and task workers do not start at boot."
+      },
+      {
+        "test_id": "TEST-PROFILE-USER-004",
+        "intent": "Validate the single-heavy-job Resource Governor limit."
+      },
+      {
+        "test_id": "TEST-PROFILE-USER-005",
+        "intent": "Validate logical data ownership and absence of direct cross-component writes."
+      },
+      {
+        "test_id": "TEST-PROFILE-USER-006",
+        "intent": "Validate complete core-local operation without Internet access."
+      },
+      {
+        "test_id": "TEST-PROFILE-USER-007",
+        "intent": "Validate external AI absence from the native runtime and controlled candidate import."
+      },
+      {
+        "test_id": "TEST-PROFILE-USER-008",
+        "intent": "Validate non-voice Ariane navigation when external voice is unavailable."
+      },
+      {
+        "test_id": "TEST-PROFILE-USER-009",
+        "intent": "Validate deterministic UCKK operation and one-worker heavy processing."
+      },
+      {
+        "test_id": "TEST-PROFILE-USER-010",
+        "intent": "Validate precompiled-only language runtime operation."
+      },
+      {
+        "test_id": "TEST-PROFILE-USER-011",
+        "intent": "Validate backup, clean restore, and credible-exit evidence."
+      },
+      {
+        "test_id": "TEST-PROFILE-USER-012",
+        "intent": "Validate fail-closed critical transitions and capability-scoped degradation."
+      }
+    ],
+    "evidence_required": true,
+    "result_values": [
+      "pass",
+      "fail",
+      "blocked",
+      "not_applicable"
+    ],
+    "claim_requires_all_required_tests": "pass",
+    "missing_required_test_result": "blocked",
+    "missing_required_evidence_result": "fail"
+  },
+  "prohibited_assumptions": [
+    "The user profile includes every kOA component and workbench.",
+    "SenTient can be installed or activated under this profile.",
+    "Solr or Elasticsearch may run permanently because search is useful.",
+    "An integrated GPU is intended for native AI inference.",
+    "A shared database process permits shared data ownership or cross-component writes.",
+    "Containers are required for conformance.",
+    "Podman, Docker, Quadlet, systemd, Wayland, GNOME, or KDE is a universal system requirement.",
+    "External voice availability is required for Ariane navigation.",
+    "External AI output may directly modify authoritative state.",
+    "More than one heavy media or indexing job may run concurrently.",
+    "A completed backup proves restoration.",
+    "Internet loss permits automatic provider substitution.",
+    "The lightweight profile proves sovereign or high-assurance conformance."
+  ],
+  "change_policy": {
+    "owner": "system-architecture",
+    "semantic_change_requires_accepted_decision": true,
+    "impact_report_required": true,
+    "schema_validation_required": true,
+    "requirements_and_locks_validation_required": true,
+    "profile_composition_validation_required": true,
+    "test_and_evidence_update_required": true,
+    "authority_registry_updated_last": true
+  }
+}

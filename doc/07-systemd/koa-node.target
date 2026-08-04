@@ -1,4 +1,0 @@
-[Unit]
-Description=kOA node plane
-Requires=koa-policy-runtime.service koa-audit-broker.service koa-node-agent.service
-After=local-fs.target network-pre.target

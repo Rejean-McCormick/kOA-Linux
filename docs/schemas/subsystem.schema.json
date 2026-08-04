@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:koa:docs:schema:subsystem:1",
+  "type": "object",
+  "required": [
+    "subsystem_id",
+    "title",
+    "status",
+    "official_documentation",
+    "koa_owns",
+    "koa_does_not_own",
+    "boundary_rules"
+  ],
+  "properties": {
+    "subsystem_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "const": "active"
+    },
+    "official_documentation": {
+      "type": "object",
+      "required": [
+        "mount_path",
+        "mount_kind",
+        "required_for_final_alignment",
+        "authority"
+      ],
+      "properties": {
+        "mount_path": {
+          "type": "string",
+          "pattern": "^subsystems/"
+        },
+        "mount_kind": {
+          "const": "directory_junction_or_symbolic_link"
+        },
+        "required_for_final_alignment": {
+          "const": true
+        },
+        "authority": {
+          "const": "subsystem_internal_documentation"
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

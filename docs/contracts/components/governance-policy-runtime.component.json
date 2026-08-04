@@ -1,0 +1,1366 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "contract_id": "component-contract:governance_policy_runtime",
+  "contract_type": "component_contract",
+  "component_id": "governance_policy_runtime",
+  "version": "1.0.0",
+  "status": "active",
+  "language": "en",
+  "effective_at": "2026-08-03T16:27:00-04:00",
+  "owner": "governance-architecture",
+  "title": "Governance Policy Runtime Component Contract",
+  "description": "Defines the observable contract for profile-conditioned local governance decision evaluation. The component evaluates authorization, disclosure, consent, privilege, and registered-exception requests and produces bounded decisions, obligations, diagnostics, and machine-readable receipts. It does not execute the governed operation or own another component's state.",
+  "classification": {
+    "component_class": "governance_service",
+    "logical_plane": "governance_identity_and_accountability",
+    "authority_role": "policy_authority",
+    "native": true,
+    "profile_conditioned": true,
+    "optional_in_global_baseline": true,
+    "user_facing": false,
+    "external_service": false,
+    "ai_component": false
+  },
+  "canonical_responsibility": {
+    "primary": "Evaluate governed decisions against the exact active compatible policy set and verified bounded context.",
+    "decision_classes": [
+      "authorization",
+      "disclosure",
+      "consent",
+      "privilege",
+      "exception"
+    ],
+    "owned_outcomes": [
+      "policy_evaluation_result",
+      "policy_obligations",
+      "policy_diagnostics",
+      "policy_decision_receipt",
+      "policy_set_activation_state"
+    ],
+    "non_responsibilities": [
+      "business_state_mutation",
+      "publication_transport",
+      "privileged_operation_execution",
+      "identity_issuance",
+      "resource_allocation",
+      "cpu_scheduling",
+      "memory_allocation",
+      "io_scheduling",
+      "job_queue_ownership",
+      "consent_record_ownership",
+      "exception_record_ownership",
+      "application_audit_state_ownership",
+      "external_ai_inference",
+      "policy_authority_invention"
+    ]
+  },
+  "authority_boundaries": {
+    "may": [
+      "evaluate_registered_governance_decisions",
+      "resolve_active_policy_rules",
+      "resolve_registered_exception_applicability",
+      "produce_decision_obligations",
+      "produce_decision_receipts",
+      "stage_validate_activate_and_rollback_policy_sets",
+      "report_policy_health_and_compatibility"
+    ],
+    "may_not": [
+      "write_foreign_authoritative_state",
+      "execute_publication",
+      "execute_privileged_host_mutation",
+      "grant_operating_system_credentials",
+      "allocate_or_schedule_resources",
+      "create_consent_records",
+      "create_exception_records",
+      "rewrite_requirements_or_locks",
+      "treat_external_ai_output_as_policy",
+      "infer_missing_authority",
+      "activate_partial_policy_state"
+    ],
+    "enforcement_owner": "The calling authoritative component, gateway, or privileged execution component enforces the returned result and owns the resulting state.",
+    "data_ownership_transfer_by_decision": false,
+    "component_authority_transfer_by_decision": false,
+    "publication_authority_transfer_by_decision": false,
+    "privilege_ownership_transfer_by_decision": false
+  },
+  "profile_applicability": {
+    "model": "profile_conditioned",
+    "global_baseline_required": false,
+    "required_when_profile_claims_include": [
+      "sovereign_governance",
+      "high_assurance_governance",
+      "offline_governed_operation"
+    ],
+    "required_by_primary_profiles": [
+      "sovereign_linux_node",
+      "sovereign_hub"
+    ],
+    "required_by_overlays": [
+      "high_assurance",
+      "sovereign_offline"
+    ],
+    "not_required_by_default_in_profiles": [
+      "user_lightweight",
+      "developer_linux_workstation",
+      "developer_windows_wsl",
+      "build_farm"
+    ],
+    "control_plane_behavior": "profile_contract_defined",
+    "offline_support": {
+      "supported": true,
+      "required_when_claimed": true,
+      "local_policy_bundles_required": true,
+      "local_identity_assertion_verification_required": true,
+      "remote_policy_service_required": false,
+      "remote_ai_service_required": false
+    },
+    "activation_modes": [
+      "always_available",
+      "socket_activated",
+      "task_activated",
+      "embedded_behind_registered_interface"
+    ],
+    "selected_mode_owner": "contracts/profiles/*.profile.json"
+  },
+  "provided_interfaces": [
+    {
+      "interface_id": "IFACE-GOV-POL-001",
+      "name": "evaluate_decision",
+      "kind": "request_response",
+      "purpose": "Evaluate one governed request using the active policy set.",
+      "availability": "required_when_component_active",
+      "authentication": "registered_component_or_actor_identity",
+      "authorization": "interface_access_policy",
+      "idempotency": {
+        "supported": true,
+        "key": "request_id",
+        "same_key_same_semantic_request_required": true,
+        "conflicting_reuse_result": "blocked"
+      },
+      "request_type": "policy_evaluation_request",
+      "response_type": "policy_evaluation_response",
+      "failure_type": "policy_evaluation_failure",
+      "critical": true
+    },
+    {
+      "interface_id": "IFACE-GOV-POL-002",
+      "name": "get_policy_set_status",
+      "kind": "query",
+      "purpose": "Return active, staged, previous-valid, and compatibility state.",
+      "availability": "required_when_component_active",
+      "authentication": "registered_component_or_operator_identity",
+      "authorization": "status_read_policy",
+      "request_type": "policy_set_status_request",
+      "response_type": "policy_set_status_response",
+      "failure_type": "policy_status_failure",
+      "critical": false
+    },
+    {
+      "interface_id": "IFACE-GOV-POL-003",
+      "name": "stage_policy_bundle",
+      "kind": "command",
+      "purpose": "Stage and validate a candidate policy bundle without activation.",
+      "availability": "maintenance_or_release_workflow",
+      "authentication": "registered_release_or_operator_identity",
+      "authorization": "policy_bundle_stage_policy",
+      "request_type": "policy_bundle_stage_request",
+      "response_type": "policy_bundle_stage_response",
+      "failure_type": "policy_bundle_stage_failure",
+      "critical": true
+    },
+    {
+      "interface_id": "IFACE-GOV-POL-004",
+      "name": "activate_policy_set",
+      "kind": "command",
+      "purpose": "Atomically activate a validated compatible complete policy set.",
+      "availability": "maintenance_or_release_workflow",
+      "authentication": "registered_release_or_operator_identity",
+      "authorization": "policy_set_activation_policy",
+      "request_type": "policy_set_activation_request",
+      "response_type": "policy_set_activation_response",
+      "failure_type": "policy_set_activation_failure",
+      "critical": true
+    },
+    {
+      "interface_id": "IFACE-GOV-POL-005",
+      "name": "rollback_policy_set",
+      "kind": "command",
+      "purpose": "Restore the previous valid compatible policy set when safe.",
+      "availability": "recovery_workflow",
+      "authentication": "registered_release_or_operator_identity",
+      "authorization": "policy_set_rollback_policy",
+      "request_type": "policy_set_rollback_request",
+      "response_type": "policy_set_rollback_response",
+      "failure_type": "policy_set_rollback_failure",
+      "critical": true
+    },
+    {
+      "interface_id": "IFACE-GOV-POL-006",
+      "name": "get_decision_receipt",
+      "kind": "query",
+      "purpose": "Retrieve a retained decision receipt by receipt or correlation identity.",
+      "availability": "required_when_receipts_retained_locally",
+      "authentication": "registered_component_operator_or_auditor_identity",
+      "authorization": "receipt_read_policy",
+      "request_type": "decision_receipt_query",
+      "response_type": "decision_receipt_response",
+      "failure_type": "decision_receipt_query_failure",
+      "critical": false
+    },
+    {
+      "interface_id": "IFACE-GOV-POL-007",
+      "name": "health_and_readiness",
+      "kind": "query",
+      "purpose": "Report process health, active authority, compatibility, and readiness.",
+      "availability": "always_when_process_running",
+      "authentication": "profile_defined_local_health_access",
+      "authorization": "health_read_policy",
+      "request_type": "health_request",
+      "response_type": "governance_policy_health_response",
+      "failure_type": "health_query_failure",
+      "critical": true
+    }
+  ],
+  "consumed_interfaces": [
+    {
+      "dependency_id": "DEP-GOV-POL-001",
+      "component_id": "identity_and_trust",
+      "interface_purpose": "Verify actor, component, signer, and trust assertions.",
+      "dependency_class": "required_runtime",
+      "authority_received": "verified_identity_and_trust_assertions_only",
+      "failure_result": "trust_dependent_evaluation_blocked",
+      "direct_data_write_allowed": false
+    },
+    {
+      "dependency_id": "DEP-GOV-POL-002",
+      "component_id": "audit_broker",
+      "interface_purpose": "Submit selected decision evidence and activation evidence.",
+      "dependency_class": "profile_conditioned_runtime",
+      "authority_received": "evidence_acceptance_status_only",
+      "failure_result": "profile_receipt_policy_applied",
+      "direct_data_write_allowed": false
+    },
+    {
+      "dependency_id": "DEP-GOV-POL-003",
+      "component_id": "koa_node_agent",
+      "interface_purpose": "Coordinate profile-authorized policy-bundle staging and activation.",
+      "dependency_class": "activation_time",
+      "authority_received": "node_operation_result_only",
+      "failure_result": "policy_activation_blocked",
+      "direct_data_write_allowed": false
+    },
+    {
+      "dependency_id": "DEP-GOV-POL-004",
+      "component_id": "publication_gateway",
+      "interface_purpose": "Correlate disclosure decisions with publication execution.",
+      "dependency_class": "optional_runtime_consumer",
+      "authority_received": "publication_execution_result_only",
+      "failure_result": "publication_capability_unavailable",
+      "direct_data_write_allowed": false
+    },
+    {
+      "dependency_id": "DEP-GOV-POL-005",
+      "component_id": "resource_governor",
+      "interface_purpose": "Observe independent readiness where a profile coordinates policy and resource-sensitive work; no decision authority is exchanged.",
+      "dependency_class": "independent_peer",
+      "authority_received": "none",
+      "failure_result": "resource_sensitive_work_follows_resource_governor_contract",
+      "direct_data_write_allowed": false
+    }
+  ],
+  "input_contracts": {
+    "policy_evaluation_request": {
+      "required_fields": [
+        "request_id",
+        "correlation_id",
+        "decision_class",
+        "requester",
+        "action",
+        "target",
+        "scope",
+        "policy_set_ref",
+        "authority_version",
+        "evaluation_context"
+      ],
+      "fields": {
+        "request_id": {
+          "type": "string",
+          "pattern": "^POLREQ-[A-Z0-9-]{8,}$"
+        },
+        "correlation_id": {
+          "type": "string",
+          "pattern": "^CORR-[A-Z0-9-]{8,}$"
+        },
+        "decision_class": {
+          "enum": [
+            "authorization",
+            "disclosure",
+            "consent",
+            "privilege",
+            "exception"
+          ]
+        },
+        "requester": {
+          "type": "actor_or_component_reference"
+        },
+        "action": {
+          "type": "registered_action_reference"
+        },
+        "target": {
+          "type": "registered_target_reference"
+        },
+        "scope": {
+          "type": "governed_scope"
+        },
+        "policy_set_ref": {
+          "type": "versioned_policy_set_reference"
+        },
+        "authority_version": {
+          "type": "semantic_version"
+        },
+        "evaluation_context": {
+          "type": "bounded_context_map"
+        },
+        "exception_ids": {
+          "type": "exception_id_array",
+          "default": []
+        },
+        "prior_receipt_refs": {
+          "type": "decision_receipt_reference_array",
+          "default": []
+        },
+        "requested_at": {
+          "type": "date_time"
+        }
+      },
+      "context_policy": {
+        "minimum_necessary_only": true,
+        "undeclared_context_rejected": true,
+        "privacy_and_disclosure_rules_apply": true,
+        "verified_assertions_required": true,
+        "raw_foreign_authoritative_state_required": false
+      }
+    },
+    "policy_bundle_stage_request": {
+      "required_fields": [
+        "request_id",
+        "correlation_id",
+        "bundle_ref",
+        "target_profiles",
+        "target_components",
+        "expected_current_policy_set",
+        "proposed_policy_set",
+        "release_set_ref"
+      ],
+      "validation_required": [
+        "artifact_identity",
+        "signature_and_provenance",
+        "policy_syntax",
+        "policy_semantics",
+        "profile_compatibility",
+        "component_compatibility",
+        "exception_compatibility",
+        "test_plan",
+        "rollback_or_forward_repair"
+      ]
+    },
+    "policy_set_activation_request": {
+      "required_fields": [
+        "request_id",
+        "correlation_id",
+        "staged_policy_set_ref",
+        "expected_current_policy_set",
+        "release_set_ref",
+        "activation_authority_ref"
+      ],
+      "preconditions": [
+        "staged_policy_set_valid",
+        "all_required_compatibility_checks_pass",
+        "all_required_tests_pass",
+        "required_evidence_valid",
+        "previous_valid_policy_set_retained",
+        "atomic_activation_available"
+      ]
+    }
+  },
+  "output_contracts": {
+    "policy_evaluation_response": {
+      "required_fields": [
+        "request_id",
+        "correlation_id",
+        "decision_class",
+        "result",
+        "policy_set_ref",
+        "authority_version",
+        "evaluated_at",
+        "evaluator_identity",
+        "obligations",
+        "diagnostics",
+        "receipt"
+      ],
+      "result_enum": [
+        "allow",
+        "deny",
+        "blocked"
+      ],
+      "result_semantics": {
+        "allow": "Policy evaluation permits the declared request within its exact scope, subject to all returned obligations and caller validation.",
+        "deny": "Active policy resolves the request and does not permit the declared operation.",
+        "blocked": "The runtime cannot produce an authoritative allow or deny result because authority, trust, compatibility, context, or required evidence is unavailable or invalid."
+      },
+      "obligation_types": [
+        "data_minimization",
+        "destination_restriction",
+        "secondary_approval",
+        "duration_limit",
+        "privileged_execution_path",
+        "audit_evidence",
+        "subject_notification",
+        "compensating_control",
+        "follow_up_review",
+        "retention_limit",
+        "receipt_linkage",
+        "re_evaluation_before_execution"
+      ],
+      "caller_rules": {
+        "caller_enforces_result": true,
+        "caller_enforces_all_required_obligations": true,
+        "caller_owns_resulting_state_transition": true,
+        "caller_must_reject_mismatched_correlation": true,
+        "caller_must_reject_stale_authority_version": true,
+        "caller_must_link_execution_evidence_when_required": true
+      }
+    },
+    "decision_receipt": {
+      "schema_ref": "contracts/artifact-contracts/decision-receipt.schema.json",
+      "required_content": [
+        "receipt_id",
+        "request_id",
+        "correlation_id",
+        "requester_ref",
+        "action_ref",
+        "target_ref",
+        "scope",
+        "decision_class",
+        "result",
+        "obligations",
+        "policy_set_ref",
+        "authority_version",
+        "verified_context_refs",
+        "exception_ids",
+        "evaluated_at",
+        "evaluator_identity",
+        "evaluator_version"
+      ],
+      "critical_decision_receipt_required": true,
+      "receipt_is_execution_evidence": false,
+      "execution_evidence_link_supported": true
+    }
+  },
+  "decision_semantics": {
+    "authorization": {
+      "required_context": [
+        "verified_requester",
+        "registered_action",
+        "target",
+        "scope",
+        "component_authority",
+        "profile_applicability"
+      ],
+      "does_not_imply": [
+        "disclosure_permission",
+        "consent",
+        "privilege",
+        "data_ownership"
+      ]
+    },
+    "disclosure": {
+      "required_context": [
+        "source_owner",
+        "data_or_representation",
+        "destination",
+        "audience",
+        "purpose",
+        "applicable_consent",
+        "retention_or_use_constraints"
+      ],
+      "execution_component": "publication_gateway",
+      "does_not_imply": [
+        "transport_completed",
+        "destination_owns_source_domain"
+      ]
+    },
+    "consent": {
+      "required_context": [
+        "subject",
+        "purpose",
+        "data_scope",
+        "recipient_or_use_domain",
+        "duration_or_closure_condition",
+        "revocation_state",
+        "evidence_obligations"
+      ],
+      "consent_may_be_inferred_from_silence": false
+    },
+    "privilege": {
+      "required_context": [
+        "verified_requester",
+        "target_node_or_resource",
+        "exact_privileged_operation",
+        "profile",
+        "assurance_context",
+        "duration",
+        "evidence_requirements"
+      ],
+      "execution_component": "koa_node_agent_or_registered_privileged_broker",
+      "decision_is_credential": false
+    },
+    "exception": {
+      "required_context": [
+        "exception_id",
+        "affected_requirement_or_lock",
+        "subject",
+        "scope",
+        "activation_condition",
+        "expiration_or_closure_condition",
+        "compensating_controls",
+        "evidence_obligations"
+      ],
+      "registered_exception_required": true,
+      "underlying_requirement_mutated": false,
+      "underlying_lock_mutated": false
+    }
+  },
+  "trusted_dynamic_inputs": [
+    {
+      "input_id": "DYN-GOV-POL-001",
+      "name": "trusted_time",
+      "source": "profile_registered_time_source",
+      "receipt_recording_required": true,
+      "failure_result": "time_sensitive_evaluation_blocked"
+    },
+    {
+      "input_id": "DYN-GOV-POL-002",
+      "name": "active_authority_version",
+      "source": "generated/authority-manifest.json",
+      "receipt_recording_required": true,
+      "failure_result": "evaluation_blocked"
+    },
+    {
+      "input_id": "DYN-GOV-POL-003",
+      "name": "active_profile_state",
+      "source": "generated/profile-catalog.json_and_effective_profile",
+      "receipt_recording_required": true,
+      "failure_result": "profile_conditioned_evaluation_blocked"
+    },
+    {
+      "input_id": "DYN-GOV-POL-004",
+      "name": "consent_validity",
+      "source": "registered_consent_owner",
+      "receipt_recording_required": true,
+      "failure_result": "consent_dependent_evaluation_blocked"
+    },
+    {
+      "input_id": "DYN-GOV-POL-005",
+      "name": "exception_validity",
+      "source": "generated/exception-index.json",
+      "receipt_recording_required": true,
+      "failure_result": "exception_not_applied"
+    },
+    {
+      "input_id": "DYN-GOV-POL-006",
+      "name": "artifact_or_release_state",
+      "source": "registered_artifact_and_release_authority",
+      "receipt_recording_required": true,
+      "failure_result": "release_dependent_evaluation_blocked"
+    }
+  ],
+  "owned_data": [
+    {
+      "data_domain_id": "DATA-GOV-POL-001",
+      "name": "policy_set_state",
+      "authority": "authoritative",
+      "content": [
+        "installed_policy_bundle_refs",
+        "staged_policy_set_refs",
+        "validated_policy_set_refs",
+        "active_policy_set_ref",
+        "previous_valid_policy_set_ref",
+        "compatibility_state",
+        "activation_state"
+      ],
+      "contains_foreign_authoritative_business_data": false,
+      "rebuildable_from": [
+        "active_policy_bundle_artifacts",
+        "activation_receipts",
+        "local_component_state"
+      ]
+    },
+    {
+      "data_domain_id": "DATA-GOV-POL-002",
+      "name": "decision_receipts",
+      "authority": "authoritative_for_policy_evaluation_event",
+      "content": [
+        "decision_request_reference",
+        "semantic_result",
+        "obligations",
+        "diagnostics",
+        "policy_set_ref",
+        "authority_version",
+        "verified_context_refs",
+        "evaluation_time",
+        "evaluator_identity"
+      ],
+      "contains_foreign_authoritative_business_data": false,
+      "data_minimization_required": true
+    },
+    {
+      "data_domain_id": "DATA-GOV-POL-003",
+      "name": "evaluation_operational_state",
+      "authority": "authoritative_for_component_operation",
+      "content": [
+        "request_processing_state",
+        "idempotency_state",
+        "receipt_generation_state",
+        "health_state",
+        "readiness_state"
+      ],
+      "contains_foreign_authoritative_business_data": false
+    },
+    {
+      "data_domain_id": "DATA-GOV-POL-004",
+      "name": "verified_canonical_input_cache",
+      "authority": "derived",
+      "content": [
+        "policy_input_references",
+        "profile_references",
+        "exception_references",
+        "authority_references"
+      ],
+      "source_authority_retained_by_origin": true,
+      "freshness_bounded": true,
+      "stale_use_result": "blocked"
+    }
+  ],
+  "foreign_data_policy": {
+    "foreign_authoritative_state_write_allowed": false,
+    "foreign_source_table_write_allowed": false,
+    "foreign_consent_record_write_allowed": false,
+    "foreign_exception_record_write_allowed": false,
+    "foreign_identity_record_write_allowed": false,
+    "foreign_resource_schedule_write_allowed": false,
+    "read_access": "contract_defined_minimum_context_only",
+    "cache_access": "reference_or_minimized_verified_projection_only"
+  },
+  "state_model": {
+    "service_states": [
+      "initializing",
+      "ready",
+      "degraded",
+      "blocked",
+      "maintenance",
+      "stopped"
+    ],
+    "policy_set_states": [
+      "absent",
+      "staged",
+      "validating",
+      "validated",
+      "active",
+      "superseded",
+      "activation_failed",
+      "rollback_required",
+      "forward_repair_required"
+    ],
+    "allowed_transitions": [
+      {
+        "transition_id": "TRANSITION-GOV-POL-001",
+        "from": "absent",
+        "to": "staged",
+        "trigger": "stage_verified_policy_bundle"
+      },
+      {
+        "transition_id": "TRANSITION-GOV-POL-002",
+        "from": "staged",
+        "to": "validating",
+        "trigger": "begin_policy_validation"
+      },
+      {
+        "transition_id": "TRANSITION-GOV-POL-003",
+        "from": "validating",
+        "to": "validated",
+        "trigger": "all_required_validation_passes"
+      },
+      {
+        "transition_id": "TRANSITION-GOV-POL-004",
+        "from": "validated",
+        "to": "active",
+        "trigger": "atomic_activation_authorized"
+      },
+      {
+        "transition_id": "TRANSITION-GOV-POL-005",
+        "from": "active",
+        "to": "superseded",
+        "trigger": "compatible_replacement_activated"
+      },
+      {
+        "transition_id": "TRANSITION-GOV-POL-006",
+        "from": "validating",
+        "to": "activation_failed",
+        "trigger": "validation_or_compatibility_failure"
+      },
+      {
+        "transition_id": "TRANSITION-GOV-POL-007",
+        "from": "validated",
+        "to": "activation_failed",
+        "trigger": "atomic_activation_failure"
+      },
+      {
+        "transition_id": "TRANSITION-GOV-POL-008",
+        "from": "activation_failed",
+        "to": "active",
+        "trigger": "previous_valid_policy_set_restored"
+      },
+      {
+        "transition_id": "TRANSITION-GOV-POL-009",
+        "from": "activation_failed",
+        "to": "forward_repair_required",
+        "trigger": "rollback_incompatible"
+      }
+    ],
+    "partial_policy_authority_allowed": false,
+    "mixed_policy_set_versions_allowed": false
+  },
+  "commands": [
+    {
+      "command_id": "CMD-GOV-POL-001",
+      "name": "evaluate_policy",
+      "interface_id": "IFACE-GOV-POL-001",
+      "result_events": [
+        "EVENT-GOV-POL-001",
+        "EVENT-GOV-POL-002"
+      ]
+    },
+    {
+      "command_id": "CMD-GOV-POL-002",
+      "name": "stage_policy_bundle",
+      "interface_id": "IFACE-GOV-POL-003",
+      "result_events": [
+        "EVENT-GOV-POL-003",
+        "EVENT-GOV-POL-004"
+      ]
+    },
+    {
+      "command_id": "CMD-GOV-POL-003",
+      "name": "activate_policy_set",
+      "interface_id": "IFACE-GOV-POL-004",
+      "result_events": [
+        "EVENT-GOV-POL-005",
+        "EVENT-GOV-POL-006"
+      ]
+    },
+    {
+      "command_id": "CMD-GOV-POL-004",
+      "name": "rollback_policy_set",
+      "interface_id": "IFACE-GOV-POL-005",
+      "result_events": [
+        "EVENT-GOV-POL-007",
+        "EVENT-GOV-POL-008"
+      ]
+    }
+  ],
+  "published_events": [
+    {
+      "event_id": "EVENT-GOV-POL-001",
+      "name": "policy_decision_completed",
+      "meaning": "A policy request produced allow or deny.",
+      "contains": [
+        "request_id",
+        "correlation_id",
+        "decision_class",
+        "result",
+        "policy_set_ref",
+        "receipt_ref"
+      ],
+      "authoritative_for_execution_success": false
+    },
+    {
+      "event_id": "EVENT-GOV-POL-002",
+      "name": "policy_decision_blocked",
+      "meaning": "A policy request could not produce authoritative allow or deny.",
+      "contains": [
+        "request_id",
+        "correlation_id",
+        "decision_class",
+        "block_reason",
+        "policy_set_ref",
+        "receipt_ref"
+      ],
+      "authoritative_for_execution_success": false
+    },
+    {
+      "event_id": "EVENT-GOV-POL-003",
+      "name": "policy_bundle_staged",
+      "meaning": "A candidate bundle entered staged non-active state.",
+      "contains": [
+        "bundle_ref",
+        "candidate_policy_set_ref",
+        "validation_plan_ref"
+      ]
+    },
+    {
+      "event_id": "EVENT-GOV-POL-004",
+      "name": "policy_bundle_stage_failed",
+      "meaning": "A candidate bundle could not enter valid staged state.",
+      "contains": [
+        "bundle_ref",
+        "failure_code",
+        "diagnostic_refs"
+      ]
+    },
+    {
+      "event_id": "EVENT-GOV-POL-005",
+      "name": "policy_set_activated",
+      "meaning": "A complete validated policy set became active atomically.",
+      "contains": [
+        "previous_policy_set_ref",
+        "active_policy_set_ref",
+        "release_set_ref",
+        "activation_receipt_ref"
+      ]
+    },
+    {
+      "event_id": "EVENT-GOV-POL-006",
+      "name": "policy_set_activation_failed",
+      "meaning": "Candidate activation failed and did not create partial authority.",
+      "contains": [
+        "candidate_policy_set_ref",
+        "retained_policy_set_ref",
+        "failure_code",
+        "evidence_refs"
+      ]
+    },
+    {
+      "event_id": "EVENT-GOV-POL-007",
+      "name": "policy_set_rolled_back",
+      "meaning": "The previous compatible policy set was restored.",
+      "contains": [
+        "failed_policy_set_ref",
+        "restored_policy_set_ref",
+        "rollback_receipt_ref"
+      ]
+    },
+    {
+      "event_id": "EVENT-GOV-POL-008",
+      "name": "policy_set_forward_repair_required",
+      "meaning": "Rollback was unsafe or incompatible and forward repair is required.",
+      "contains": [
+        "affected_policy_set_ref",
+        "repair_plan_ref",
+        "evidence_refs"
+      ]
+    },
+    {
+      "event_id": "EVENT-GOV-POL-009",
+      "name": "governance_policy_runtime_degraded",
+      "meaning": "One or more policy capabilities are unavailable or blocked.",
+      "contains": [
+        "affected_decision_classes",
+        "preserved_capabilities",
+        "blocked_capabilities",
+        "diagnostic_refs"
+      ]
+    },
+    {
+      "event_id": "EVENT-GOV-POL-010",
+      "name": "governance_policy_runtime_recovered",
+      "meaning": "Required authority and compatibility checks passed after degradation.",
+      "contains": [
+        "active_policy_set_ref",
+        "recovered_capabilities",
+        "recovery_evidence_refs"
+      ]
+    }
+  ],
+  "failure_contract": [
+    {
+      "failure_code": "GOV_POLICY_MISSING",
+      "condition": "No active applicable policy set resolves.",
+      "result": "blocked",
+      "preserve": "previous_valid_policy_set_when_explicitly_permitted_and_verifiable",
+      "retry": "after_policy_authority_restored"
+    },
+    {
+      "failure_code": "GOV_POLICY_STALE",
+      "condition": "Policy freshness or authority-version validity fails.",
+      "result": "blocked",
+      "preserve": "unaffected_non_governed_capabilities",
+      "retry": "after_compatible_policy_refresh"
+    },
+    {
+      "failure_code": "GOV_POLICY_INCOMPATIBLE",
+      "condition": "Policy set is incompatible with profile, component, release, or evaluator.",
+      "result": "blocked",
+      "preserve": "current_compatible_active_policy_set",
+      "retry": "after_compatibility_restored"
+    },
+    {
+      "failure_code": "GOV_IDENTITY_UNVERIFIED",
+      "condition": "Required identity or trust assertion cannot be verified.",
+      "result": "blocked",
+      "preserve": "unaffected_verified_activity",
+      "retry": "after_trust_verification"
+    },
+    {
+      "failure_code": "GOV_CONTEXT_INVALID",
+      "condition": "Required context is missing, malformed, excessive, or unauthorized.",
+      "result": "blocked",
+      "preserve": "authoritative_component_state",
+      "retry": "with_valid_bounded_context"
+    },
+    {
+      "failure_code": "GOV_EXCEPTION_INVALID",
+      "condition": "Exception is missing, inactive, expired, closed, or out of scope.",
+      "result": "evaluate_without_exception_or_block_under_base_rule",
+      "preserve": "underlying_requirement_and_lock",
+      "retry": "only_with_active_applicable_exception"
+    },
+    {
+      "failure_code": "GOV_OBLIGATION_UNSATISFIED",
+      "condition": "Caller cannot satisfy a required obligation.",
+      "result": "blocked",
+      "preserve": "pre_transition_state",
+      "retry": "after_obligation_can_be_satisfied"
+    },
+    {
+      "failure_code": "GOV_RECEIPT_FAILURE",
+      "condition": "A required decision receipt cannot be durably created.",
+      "result": "blocked_for_receipt_required_transition",
+      "preserve": "pre_transition_state",
+      "retry": "after_receipt_storage_recovers"
+    },
+    {
+      "failure_code": "GOV_AUDIT_UNAVAILABLE",
+      "condition": "Required audit evidence intake is unavailable.",
+      "result": "profile_evidence_policy_applied",
+      "preserve": "locally_retained_evidence_when_permitted",
+      "retry": "after_audit_or_buffer_recovery"
+    },
+    {
+      "failure_code": "GOV_ACTIVATION_FAILED",
+      "condition": "Policy-set activation fails.",
+      "result": "candidate_inactive",
+      "preserve": "previous_valid_policy_set",
+      "retry": "after_validation_or_repair"
+    },
+    {
+      "failure_code": "GOV_EXTERNAL_AI_UNAVAILABLE",
+      "condition": "An optional external AI surface is unavailable.",
+      "result": "no_effect_on_native_policy_evaluation",
+      "preserve": "all_native_policy_capabilities",
+      "retry": "not_required_for_core_recovery"
+    }
+  ],
+  "degradation": {
+    "capability_scoped": true,
+    "partial_authority_allowed": false,
+    "silent_fallback_allowed": false,
+    "external_substitution_allowed": false,
+    "rules": [
+      {
+        "degradation_id": "DEGRADE-GOV-POL-001",
+        "trigger": "policy_evaluation_engine_unavailable",
+        "blocked": [
+          "new_policy_dependent_transitions"
+        ],
+        "preserved": [
+          "unaffected_non_governed_capabilities",
+          "health_and_diagnostics",
+          "previous_valid_authoritative_state"
+        ]
+      },
+      {
+        "degradation_id": "DEGRADE-GOV-POL-002",
+        "trigger": "one_decision_class_unavailable",
+        "blocked": [
+          "affected_decision_class"
+        ],
+        "preserved": [
+          "verified_unaffected_decision_classes"
+        ]
+      },
+      {
+        "degradation_id": "DEGRADE-GOV-POL-003",
+        "trigger": "audit_or_receipt_storage_unavailable",
+        "blocked": [
+          "receipt_required_critical_transitions"
+        ],
+        "preserved": [
+          "non_critical_evaluation_only_when_profile_contract_permits"
+        ]
+      },
+      {
+        "degradation_id": "DEGRADE-GOV-POL-004",
+        "trigger": "remote_connectivity_unavailable",
+        "blocked": [
+          "remote_optional_capabilities_only"
+        ],
+        "preserved": [
+          "local_policy_evaluation_when_profile_claims_offline_operation"
+        ]
+      }
+    ]
+  },
+  "security": {
+    "authenticated_callers_required": true,
+    "verified_assertions_required": true,
+    "least_privilege_required": true,
+    "local_only_endpoint_supported": true,
+    "remote_endpoint_profile_conditioned": true,
+    "unregistered_external_call_allowed": false,
+    "raw_secret_input_allowed": false,
+    "raw_root_credential_input_allowed": false,
+    "decision_result_is_privilege_credential": false,
+    "foreign_database_credentials_allowed": false,
+    "decision_context_minimization_required": true,
+    "decision_receipt_integrity_protection_required": true,
+    "policy_bundle_signature_and_provenance_required": true,
+    "external_ai_in_policy_evaluation_allowed": false
+  },
+  "privacy_and_audit": {
+    "minimum_context_required": true,
+    "selective_audit": true,
+    "universal_application_state_replication_allowed": false,
+    "decision_receipt_contains_execution_payload_by_default": false,
+    "sensitive_context_embedded_in_receipt": "only_when_required_and_authorized",
+    "execution_evidence_separate": true,
+    "retention_owner": "active_profile_and_evidence_contracts"
+  },
+  "policy_bundle_lifecycle": {
+    "artifact_schema_ref": "contracts/artifact-contracts/policy-bundle.schema.json",
+    "release_channel": "governance",
+    "versioned": true,
+    "signed": true,
+    "provenance_required": true,
+    "profile_compatibility_required": true,
+    "component_compatibility_required": true,
+    "exception_compatibility_required": true,
+    "evaluator_compatibility_required": true,
+    "test_and_evidence_required": true,
+    "activation": "atomic",
+    "partial_activation_allowed": false,
+    "previous_valid_policy_set_retained_until_success": true,
+    "rollback_required_when_safe": true,
+    "forward_repair_required_when_rollback_unsafe": true,
+    "activation_receipt_required": true
+  },
+  "health_and_readiness": {
+    "health_checks": [
+      "process_responsive",
+      "local_storage_accessible",
+      "receipt_store_accessible"
+    ],
+    "readiness_checks": [
+      "active_policy_set_resolves",
+      "policy_set_compatible_with_profile",
+      "policy_set_compatible_with_components",
+      "authority_version_resolves",
+      "required_trust_sources_resolve",
+      "required_exception_data_resolves",
+      "evaluator_version_compatible",
+      "critical_receipt_path_ready"
+    ],
+    "ready_requires_all_readiness_checks": true,
+    "process_health_implies_readiness": false
+  },
+  "compatibility": {
+    "compatibility_dimensions": [
+      "policy_language",
+      "evaluator_version",
+      "profile_version",
+      "component_contract_version",
+      "authority_version",
+      "exception_registry_version",
+      "artifact_contract_version",
+      "release_set_version",
+      "decision_receipt_version"
+    ],
+    "backward_compatible_change_classes": [
+      "add_optional_diagnostic",
+      "add_optional_non_semantic_metadata",
+      "clarify_existing_result_description_without_semantic_change"
+    ],
+    "major_change_classes": [
+      "change_policy_authority",
+      "change_decision_meaning",
+      "change_required_input",
+      "change_result_semantics",
+      "change_obligation_semantics",
+      "change_exception_handling",
+      "change_profile_applicability",
+      "change_failure_behavior",
+      "change_data_authority",
+      "remove_supported_decision_class"
+    ],
+    "unknown_compatibility_result": "blocked"
+  },
+  "migration_and_recovery": {
+    "policy_state_migration_required_when_schema_changes": true,
+    "decision_receipts_preserved": true,
+    "retired_policy_set_ids_reserved": true,
+    "active_evaluation_during_migration": "previous_valid_policy_set_only",
+    "mixed_policy_authority_allowed": false,
+    "rollback_precondition": "previous_policy_set_compatible_with_current_state",
+    "forward_repair_required_when_rollback_incompatible": true,
+    "recovery_evidence_required": true
+  },
+  "observability": {
+    "metrics": [
+      "policy_requests_total",
+      "policy_results_allow_total",
+      "policy_results_deny_total",
+      "policy_results_blocked_total",
+      "policy_evaluation_duration",
+      "active_policy_set_info",
+      "policy_bundle_validation_failures_total",
+      "policy_activation_failures_total",
+      "receipt_failures_total",
+      "degraded_decision_classes"
+    ],
+    "logs": [
+      "component_lifecycle",
+      "policy_bundle_lifecycle",
+      "evaluation_diagnostics_without_unauthorized_context",
+      "activation_and_recovery"
+    ],
+    "traces": [
+      "correlation_id",
+      "request_id",
+      "receipt_id",
+      "policy_set_ref",
+      "authority_version"
+    ],
+    "sensitive_context_in_general_logs_allowed": false
+  },
+  "traceability": {
+    "decision_ids": [
+      "DEC-GOV-001",
+      "DEC-AI-001",
+      "DEC-PROFILE-001",
+      "DEC-DATA-001",
+      "DEC-GATE-001"
+    ],
+    "adr_ids": [
+      "ADR-009",
+      "ADR-010",
+      "ADR-012"
+    ],
+    "requirement_ids": [
+      "REQ-SYS-GOV-001",
+      "REQ-SYS-GOV-002",
+      "REQ-SYS-GOV-003",
+      "REQ-SYS-GOV-004",
+      "REQ-SYS-GOV-005",
+      "REQ-SYS-GOV-006",
+      "REQ-SYS-GOV-007",
+      "REQ-SYS-GOV-008",
+      "REQ-SYS-GOV-009",
+      "REQ-SYS-GOV-010",
+      "REQ-SYS-GOV-011",
+      "REQ-SYS-GOV-012",
+      "REQ-SYS-GOV-013",
+      "REQ-SYS-GOV-014",
+      "REQ-SYS-GOV-015",
+      "REQ-SYS-GOV-016",
+      "REQ-SYS-GOV-017",
+      "REQ-SYS-GOV-018",
+      "REQ-SYS-GOV-019",
+      "REQ-SYS-GOV-020",
+      "REQ-SYS-GOV-021",
+      "REQ-SYS-GOV-022",
+      "REQ-SYS-GOV-023",
+      "REQ-SYS-GOV-024",
+      "REQ-SYS-GOV-025",
+      "REQ-SYS-GOV-026",
+      "REQ-SYS-GOV-027",
+      "REQ-SYS-GOV-028",
+      "REQ-SYS-GOV-029",
+      "REQ-SYS-GOV-030",
+      "REQ-SYS-GOV-031",
+      "REQ-SYS-GOV-032"
+    ],
+    "lock_ids": [
+      "LOCK-GOV-001",
+      "LOCK-DATA-001",
+      "LOCK-GATE-001",
+      "LOCK-AI-002",
+      "LOCK-PROFILE-001",
+      "LOCK-LIFE-001"
+    ],
+    "test_ids": [
+      "TEST-SYS-GOV-001",
+      "TEST-SYS-GOV-002",
+      "TEST-SYS-GOV-003",
+      "TEST-SYS-GOV-004",
+      "TEST-SYS-GOV-005",
+      "TEST-SYS-GOV-006",
+      "TEST-SYS-GOV-007",
+      "TEST-SYS-GOV-008",
+      "TEST-SYS-GOV-009",
+      "TEST-SYS-GOV-010",
+      "TEST-SYS-GOV-011",
+      "TEST-SYS-GOV-012",
+      "TEST-SYS-GOV-013",
+      "TEST-SYS-GOV-014",
+      "TEST-SYS-GOV-015",
+      "TEST-SYS-GOV-016",
+      "TEST-SYS-GOV-017",
+      "TEST-SYS-GOV-018",
+      "TEST-SYS-GOV-019",
+      "TEST-SYS-GOV-020"
+    ],
+    "evidence_ids": [
+      "EVID-SYS-GOV-001",
+      "EVID-SYS-GOV-002",
+      "EVID-SYS-GOV-003",
+      "EVID-SYS-GOV-004",
+      "EVID-SYS-GOV-005",
+      "EVID-SYS-GOV-006",
+      "EVID-SYS-GOV-007",
+      "EVID-SYS-GOV-008",
+      "EVID-SYS-GOV-009",
+      "EVID-SYS-GOV-010",
+      "EVID-SYS-GOV-011",
+      "EVID-SYS-GOV-012",
+      "EVID-SYS-GOV-013",
+      "EVID-SYS-GOV-014",
+      "EVID-SYS-GOV-015",
+      "EVID-SYS-GOV-016",
+      "EVID-SYS-GOV-017",
+      "EVID-SYS-GOV-018",
+      "EVID-SYS-GOV-019",
+      "EVID-SYS-GOV-020"
+    ],
+    "exception_ids": [],
+    "document_refs": [
+      {
+        "doc_id": "DOC-SYS-015",
+        "path": "02-system/15-governance-policy-runtime.md"
+      },
+      {
+        "doc_id": "DOC-SYS-002",
+        "path": "02-system/02-logical-architecture.md"
+      },
+      {
+        "doc_id": "DOC-PROFILE-007",
+        "path": "03-profiles/07-sovereign-linux-node.md"
+      },
+      {
+        "doc_id": "DOC-PROFILE-012",
+        "path": "03-profiles/12-sovereign-offline.md"
+      }
+    ]
+  },
+  "canonical_references": [
+    "generated/authority-manifest.json",
+    "generated/decision-index.json",
+    "contracts/system.contract.json",
+    "generated/component-catalog.json",
+    "generated/component-catalog.json",
+    "contracts/components/identity-and-trust.component.json",
+    "contracts/components/audit-broker.component.json",
+    "contracts/components/publication-gateway.component.json",
+    "contracts/components/koa-node-agent.component.json",
+    "contracts/components/resource-governor.component.json",
+    "generated/profile-catalog.json",
+    "contracts/profiles/sovereign-linux-node.profile.json",
+    "contracts/profiles/sovereign-hub.profile.json",
+    "contracts/profiles/high-assurance.profile.json",
+    "contracts/profiles/sovereign-offline.profile.json",
+    "contracts/release-channels.contract.json",
+    "contracts/artifact-classes.contract.json",
+    "generated/exception-index.json",
+    "generated/requirements-index.json",
+    "generated/assertion-index.json",
+    "generated/traceability.json",
+    "generated/test-catalog.json",
+    "generated/evidence-catalog.json",
+    "contracts/artifact-contracts/policy-bundle.schema.json",
+    "contracts/artifact-contracts/decision-receipt.schema.json",
+    "contracts/artifact-contracts/release-set.schema.json"
+  ],
+  "validation": {
+    "schema_validation_required": true,
+    "component_registry_alignment_required": true,
+    "component_index_alignment_required": true,
+    "profile_applicability_validation_required": true,
+    "interface_reference_validation_required": true,
+    "data_ownership_validation_required": true,
+    "foreign_write_prohibition_validation_required": true,
+    "resource_policy_separation_validation_required": true,
+    "publication_policy_separation_validation_required": true,
+    "privilege_execution_separation_validation_required": true,
+    "external_ai_non_authority_validation_required": true,
+    "atomic_policy_activation_validation_required": true,
+    "offline_policy_evaluation_validation_required_when_claimed": true,
+    "traceability_validation_required": true,
+    "required_test_ids": [
+      "TEST-SYS-GOV-001",
+      "TEST-SYS-GOV-002",
+      "TEST-SYS-GOV-003",
+      "TEST-SYS-GOV-004",
+      "TEST-SYS-GOV-005",
+      "TEST-SYS-GOV-006",
+      "TEST-SYS-GOV-007",
+      "TEST-SYS-GOV-008",
+      "TEST-SYS-GOV-009",
+      "TEST-SYS-GOV-010",
+      "TEST-SYS-GOV-011",
+      "TEST-SYS-GOV-012",
+      "TEST-SYS-GOV-013",
+      "TEST-SYS-GOV-014",
+      "TEST-SYS-GOV-015",
+      "TEST-SYS-GOV-016",
+      "TEST-SYS-GOV-017",
+      "TEST-SYS-GOV-018",
+      "TEST-SYS-GOV-019",
+      "TEST-SYS-GOV-020"
+    ],
+    "required_evidence_ids": [
+      "EVID-SYS-GOV-001",
+      "EVID-SYS-GOV-002",
+      "EVID-SYS-GOV-003",
+      "EVID-SYS-GOV-004",
+      "EVID-SYS-GOV-005",
+      "EVID-SYS-GOV-006",
+      "EVID-SYS-GOV-007",
+      "EVID-SYS-GOV-008",
+      "EVID-SYS-GOV-009",
+      "EVID-SYS-GOV-010",
+      "EVID-SYS-GOV-011",
+      "EVID-SYS-GOV-012",
+      "EVID-SYS-GOV-013",
+      "EVID-SYS-GOV-014",
+      "EVID-SYS-GOV-015",
+      "EVID-SYS-GOV-016",
+      "EVID-SYS-GOV-017",
+      "EVID-SYS-GOV-018",
+      "EVID-SYS-GOV-019",
+      "EVID-SYS-GOV-020"
+    ],
+    "activation_result_on_failure": "blocked"
+  },
+  "change_policy": {
+    "semantic_owner": "governance-architecture",
+    "accepted_owner_decision_required": true,
+    "major_change_requires_adr": true,
+    "impact_report_required": true,
+    "component_and_profile_compatibility_review_required": true,
+    "migration_or_compatibility_plan_required": true,
+    "rollback_or_forward_repair_required": true,
+    "complete_validation_required": true,
+    "authority_registry_updated_last": true
+  },
+  "supersedes": [],
+  "replaced_by": null
+}

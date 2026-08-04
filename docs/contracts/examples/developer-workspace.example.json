@@ -1,0 +1,519 @@
+{
+  "$schema": "../artifact-contracts/developer-workspace.schema.json",
+  "artifact_type": "developer_workspace",
+  "artifact_id": "DEV-WORKSPACE-KONNAXION-FEATURE-VOTING-92CD",
+  "version": "1.0.0",
+  "status": "active",
+  "language": "en",
+  "example": true,
+  "created_at": "2026-08-03T18:01:00-04:00",
+  "workspace": {
+    "workspace_id": "konnaxion-feature-voting-92cd",
+    "display_name": "Konnaxion feature voting workspace",
+    "component_id": "konnaxion",
+    "purpose": "Develop and validate the feature/voting branch in an isolated WSL workspace.",
+    "state": "ready",
+    "primary_profile": "developer_windows_wsl",
+    "overlay_ids": [],
+    "profile_ref": "contracts/profiles/developer-windows-wsl.profile.json",
+    "workspace_contract_ref": "contracts/artifact-contracts/developer-workspace.schema.json",
+    "owner_identity_ref": "contracts/identities.registry.json#/developers/developer-example",
+    "release_authority": false,
+    "sovereign_linux_conformance_claimed": false,
+    "high_assurance_conformance_claimed": false,
+    "production_node_conformance_claimed": false
+  },
+  "host_environment": {
+    "host_operating_system": "Windows",
+    "linux_execution_environment": "WSL 2",
+    "wsl_distribution": "Ubuntu",
+    "architecture": "x86_64",
+    "source_and_runtime_location": "wsl_linux_filesystem",
+    "windows_mounted_active_workspace": false,
+    "host_integration": {
+      "editor_connection": "remote_wsl",
+      "terminal": "wsl",
+      "container_integration": "docker_wsl_integration",
+      "windows_path_used_for_active_mutable_state": false
+    },
+    "environment_evidence_ref": "generated/evidence-catalog.json#/evidence/EVID-DEV-WSL-KONNAXION-001"
+  },
+  "source": {
+    "repository_id": "konnaxion",
+    "repository_ref": "contracts/repositories.registry.json#/repositories/konnaxion",
+    "branch": "feature/voting",
+    "source_revision": "example-revision-2026-08-03-001",
+    "working_tree_state": "clean",
+    "checkout_type": "git_worktree",
+    "root_path": "/home/koa/workspaces/konnaxion-feature-voting-92cd/source",
+    "inside_linux_filesystem": true,
+    "line_ending_policy": "repository_declared",
+    "case_sensitivity": "linux_case_sensitive",
+    "executable_bit_preserved": true,
+    "symbolic_links_preserved": true
+  },
+  "namespace": {
+    "prefix": "konnaxion-feature-voting-92cd",
+    "service_namespace": "konnaxion-feature-voting-92cd",
+    "network_namespace": "konnaxion-feature-voting-92cd",
+    "volume_namespace": "konnaxion-feature-voting-92cd",
+    "secret_namespace": "konnaxion-feature-voting-92cd",
+    "database_namespace": "konnaxion-feature-voting-92cd",
+    "temporary_data_namespace": "konnaxion-feature-voting-92cd",
+    "log_namespace": "konnaxion-feature-voting-92cd",
+    "process_namespace": "konnaxion-feature-voting-92cd",
+    "port_allocation_namespace": "konnaxion-feature-voting-92cd",
+    "cross_workspace_mutation_allowed": false
+  },
+  "toolchains": {
+    "python": {
+      "toolchain_ref": "contracts/toolchains/python-uv.toolchain.json",
+      "python_version": "3.12",
+      "dependency_manager": "uv",
+      "project_file": "/home/koa/workspaces/konnaxion-feature-voting-92cd/source/pyproject.toml",
+      "lock_file": "/home/koa/workspaces/konnaxion-feature-voting-92cd/source/uv.lock",
+      "environment_path": "/home/koa/workspaces/konnaxion-feature-voting-92cd/source/.venv",
+      "environment_scope": "workspace_local",
+      "frozen_sync_command": "uv sync --frozen",
+      "global_application_dependencies_allowed": false,
+      "shared_mutable_environment_allowed": false
+    },
+    "container_runtime": {
+      "toolchain_ref": "contracts/toolchains/container-runtime.toolchain.json",
+      "runtime": "docker",
+      "execution_context": "wsl_integration",
+      "application_contract_runtime_specific": false,
+      "compose_project_name": "konnaxion-feature-voting-92cd"
+    }
+  },
+  "dependency_isolation": {
+    "installed_environments": [
+      {
+        "environment_id": "konnaxion-feature-voting-92cd-python",
+        "kind": "python_virtual_environment",
+        "path": "/home/koa/workspaces/konnaxion-feature-voting-92cd/source/.venv",
+        "mutable": true,
+        "workspace_exclusive": true,
+        "reconstructable_from_lock": true
+      }
+    ],
+    "shared_caches": [
+      {
+        "cache_id": "uv-download-cache",
+        "kind": "content_addressed_download_cache",
+        "path": "/home/koa/.cache/uv",
+        "mutable_installed_environment": false,
+        "authoritative": false,
+        "evictable": true,
+        "corruption_changes_locked_graph": false
+      },
+      {
+        "cache_id": "oci-layer-cache",
+        "kind": "content_addressed_container_layer_cache",
+        "path": "docker-managed-layer-cache",
+        "mutable_installed_environment": false,
+        "authoritative": false,
+        "evictable": true,
+        "corruption_changes_locked_graph": false
+      }
+    ],
+    "implicit_host_dependencies_allowed": false,
+    "user_site_packages_allowed": false,
+    "sibling_checkout_discovery_allowed": false,
+    "undeclared_path_dependencies_allowed": false
+  },
+  "services": [
+    {
+      "service_id": "konnaxion-feature-voting-92cd-api",
+      "component_ref": "generated/component-catalog.json#/components/konnaxion",
+      "service_class": "application_api",
+      "runtime": "container",
+      "container_name": "konnaxion-feature-voting-92cd-api",
+      "network_refs": [
+        "konnaxion-feature-voting-92cd-app"
+      ],
+      "volume_refs": [
+        "konnaxion-feature-voting-92cd-source",
+        "konnaxion-feature-voting-92cd-logs",
+        "konnaxion-feature-voting-92cd-tmp"
+      ],
+      "secret_refs": [
+        "contracts/secrets.registry.json#/secrets/konnaxion-feature-voting-92cd-database-url",
+        "contracts/secrets.registry.json#/secrets/konnaxion-feature-voting-92cd-application-key"
+      ],
+      "database_identity_refs": [
+        "contracts/databases.registry.json#/identities/konnaxion-feature-voting-92cd-konnaxion"
+      ],
+      "resource_envelope_ref": "contracts/resource-envelopes.registry.json#/envelopes/konnaxion-feature-voting-92cd-api",
+      "depends_on": [
+        "konnaxion-feature-voting-92cd-postgres",
+        "konnaxion-feature-voting-92cd-redis"
+      ]
+    },
+    {
+      "service_id": "konnaxion-feature-voting-92cd-worker",
+      "component_ref": "generated/component-catalog.json#/components/konnaxion",
+      "service_class": "background_worker",
+      "runtime": "container",
+      "container_name": "konnaxion-feature-voting-92cd-worker",
+      "network_refs": [
+        "konnaxion-feature-voting-92cd-app"
+      ],
+      "volume_refs": [
+        "konnaxion-feature-voting-92cd-source",
+        "konnaxion-feature-voting-92cd-logs",
+        "konnaxion-feature-voting-92cd-tmp"
+      ],
+      "secret_refs": [
+        "contracts/secrets.registry.json#/secrets/konnaxion-feature-voting-92cd-database-url"
+      ],
+      "database_identity_refs": [
+        "contracts/databases.registry.json#/identities/konnaxion-feature-voting-92cd-konnaxion"
+      ],
+      "resource_envelope_ref": "contracts/resource-envelopes.registry.json#/envelopes/konnaxion-feature-voting-92cd-worker",
+      "depends_on": [
+        "konnaxion-feature-voting-92cd-postgres",
+        "konnaxion-feature-voting-92cd-redis"
+      ]
+    },
+    {
+      "service_id": "konnaxion-feature-voting-92cd-postgres",
+      "component_ref": "contracts/development-services.registry.json#/services/postgresql",
+      "service_class": "database_dependency",
+      "runtime": "container",
+      "container_name": "konnaxion-feature-voting-92cd-postgres",
+      "network_refs": [
+        "konnaxion-feature-voting-92cd-data"
+      ],
+      "volume_refs": [
+        "konnaxion-feature-voting-92cd-postgres-data"
+      ],
+      "secret_refs": [
+        "contracts/secrets.registry.json#/secrets/konnaxion-feature-voting-92cd-postgres-password"
+      ],
+      "database_identity_refs": [
+        "contracts/databases.registry.json#/identities/konnaxion-feature-voting-92cd-konnaxion"
+      ],
+      "resource_envelope_ref": "contracts/resource-envelopes.registry.json#/envelopes/konnaxion-feature-voting-92cd-postgres",
+      "depends_on": []
+    },
+    {
+      "service_id": "konnaxion-feature-voting-92cd-redis",
+      "component_ref": "contracts/development-services.registry.json#/services/redis",
+      "service_class": "queue_and_cache_dependency",
+      "runtime": "container",
+      "container_name": "konnaxion-feature-voting-92cd-redis",
+      "network_refs": [
+        "konnaxion-feature-voting-92cd-data"
+      ],
+      "volume_refs": [
+        "konnaxion-feature-voting-92cd-redis-data"
+      ],
+      "secret_refs": [],
+      "database_identity_refs": [],
+      "resource_envelope_ref": "contracts/resource-envelopes.registry.json#/envelopes/konnaxion-feature-voting-92cd-redis",
+      "depends_on": []
+    }
+  ],
+  "networks": [
+    {
+      "network_id": "konnaxion-feature-voting-92cd-app",
+      "runtime_name": "konnaxion-feature-voting-92cd-app",
+      "scope": "workspace_private",
+      "internet_access": "restricted_by_policy",
+      "attached_service_ids": [
+        "konnaxion-feature-voting-92cd-api",
+        "konnaxion-feature-voting-92cd-worker"
+      ]
+    },
+    {
+      "network_id": "konnaxion-feature-voting-92cd-data",
+      "runtime_name": "konnaxion-feature-voting-92cd-data",
+      "scope": "workspace_private",
+      "internet_access": "none",
+      "attached_service_ids": [
+        "konnaxion-feature-voting-92cd-postgres",
+        "konnaxion-feature-voting-92cd-redis"
+      ]
+    }
+  ],
+  "ports": {
+    "allocation_registry_ref": "contracts/workspace-ports.registry.json#/allocations/konnaxion-feature-voting-92cd",
+    "host_bind_address": "127.0.0.1",
+    "allocations": [
+      {
+        "allocation_id": "konnaxion-feature-voting-92cd-api-http",
+        "service_id": "konnaxion-feature-voting-92cd-api",
+        "protocol": "tcp",
+        "host_port": 18431,
+        "service_port": 8000,
+        "purpose": "Local Konnaxion API and development UI",
+        "fixed_inside_workspace_network": true
+      },
+      {
+        "allocation_id": "konnaxion-feature-voting-92cd-postgres-client",
+        "service_id": "konnaxion-feature-voting-92cd-postgres",
+        "protocol": "tcp",
+        "host_port": 15432,
+        "service_port": 5432,
+        "purpose": "Workspace-scoped local database tooling",
+        "fixed_inside_workspace_network": true
+      }
+    ],
+    "hardcoded_cross_workspace_host_ports_allowed": false
+  },
+  "volumes": [
+    {
+      "volume_id": "konnaxion-feature-voting-92cd-source",
+      "runtime_name": "konnaxion-feature-voting-92cd-source",
+      "kind": "bind_mount",
+      "path": "/home/koa/workspaces/konnaxion-feature-voting-92cd/source",
+      "owner_component_id": "konnaxion",
+      "persistence": "workspace_lifetime",
+      "cleanup_policy": "preserve_source_checkout"
+    },
+    {
+      "volume_id": "konnaxion-feature-voting-92cd-postgres-data",
+      "runtime_name": "konnaxion-feature-voting-92cd-postgres-data",
+      "kind": "named_volume",
+      "path": "/home/koa/workspaces/konnaxion-feature-voting-92cd/data/postgres",
+      "owner_component_id": "konnaxion",
+      "persistence": "workspace_lifetime",
+      "cleanup_policy": "delete_on_explicit_workspace_destroy"
+    },
+    {
+      "volume_id": "konnaxion-feature-voting-92cd-redis-data",
+      "runtime_name": "konnaxion-feature-voting-92cd-redis-data",
+      "kind": "named_volume",
+      "path": "/home/koa/workspaces/konnaxion-feature-voting-92cd/data/redis",
+      "owner_component_id": "konnaxion",
+      "persistence": "workspace_lifetime",
+      "cleanup_policy": "delete_on_explicit_workspace_destroy"
+    },
+    {
+      "volume_id": "konnaxion-feature-voting-92cd-logs",
+      "runtime_name": "konnaxion-feature-voting-92cd-logs",
+      "kind": "bind_mount",
+      "path": "/home/koa/workspaces/konnaxion-feature-voting-92cd/logs",
+      "owner_component_id": "konnaxion",
+      "persistence": "bounded_workspace_evidence",
+      "cleanup_policy": "retain_only_registered_evidence"
+    },
+    {
+      "volume_id": "konnaxion-feature-voting-92cd-tmp",
+      "runtime_name": "konnaxion-feature-voting-92cd-tmp",
+      "kind": "bind_mount",
+      "path": "/home/koa/workspaces/konnaxion-feature-voting-92cd/tmp",
+      "owner_component_id": "konnaxion",
+      "persistence": "ephemeral",
+      "cleanup_policy": "delete_on_stop"
+    }
+  ],
+  "secrets": [
+    {
+      "secret_id": "konnaxion-feature-voting-92cd-database-url",
+      "secret_ref": "contracts/secrets.registry.json#/secrets/konnaxion-feature-voting-92cd-database-url",
+      "scope": "workspace",
+      "consumer_service_ids": [
+        "konnaxion-feature-voting-92cd-api",
+        "konnaxion-feature-voting-92cd-worker"
+      ],
+      "stored_in_source_control": false,
+      "included_in_logs_or_evidence": false
+    },
+    {
+      "secret_id": "konnaxion-feature-voting-92cd-application-key",
+      "secret_ref": "contracts/secrets.registry.json#/secrets/konnaxion-feature-voting-92cd-application-key",
+      "scope": "workspace",
+      "consumer_service_ids": [
+        "konnaxion-feature-voting-92cd-api"
+      ],
+      "stored_in_source_control": false,
+      "included_in_logs_or_evidence": false
+    },
+    {
+      "secret_id": "konnaxion-feature-voting-92cd-postgres-password",
+      "secret_ref": "contracts/secrets.registry.json#/secrets/konnaxion-feature-voting-92cd-postgres-password",
+      "scope": "workspace",
+      "consumer_service_ids": [
+        "konnaxion-feature-voting-92cd-postgres"
+      ],
+      "stored_in_source_control": false,
+      "included_in_logs_or_evidence": false
+    }
+  ],
+  "databases": [
+    {
+      "database_identity_id": "konnaxion-feature-voting-92cd-konnaxion",
+      "database_process_service_id": "konnaxion-feature-voting-92cd-postgres",
+      "database_name": "konnaxion_feature_voting_92cd",
+      "database_user": "konnaxion_feature_voting_92cd",
+      "owner_component_ref": "generated/component-catalog.json#/components/konnaxion",
+      "migration_owner": "konnaxion",
+      "authoritative_source_tables_owned_by": "konnaxion",
+      "cross_component_writes_allowed": false,
+      "cross_workspace_writes_allowed": false
+    }
+  ],
+  "runtime_paths": {
+    "socket_directory": "/home/koa/workspaces/konnaxion-feature-voting-92cd/run/sockets",
+    "temporary_directory": "/home/koa/workspaces/konnaxion-feature-voting-92cd/tmp",
+    "log_directory": "/home/koa/workspaces/konnaxion-feature-voting-92cd/logs",
+    "pid_directory": "/home/koa/workspaces/konnaxion-feature-voting-92cd/run/pids",
+    "service_state_directory": "/home/koa/workspaces/konnaxion-feature-voting-92cd/run/services"
+  },
+  "resource_budget": {
+    "resource_envelope_ref": "contracts/resource-envelopes.registry.json#/envelopes/konnaxion-feature-voting-92cd",
+    "cpu_cores": 4,
+    "memory_gib": 12,
+    "temporary_storage_gib": 20,
+    "persistent_storage_gib": 80,
+    "maximum_concurrent_build_jobs": 2,
+    "maximum_concurrent_test_jobs": 2,
+    "heavy_workspace": true,
+    "resource_governor_required": true,
+    "pressure_behavior": [
+      "reduce_test_concurrency",
+      "stop_optional_services",
+      "preserve_source_and_database_state",
+      "preserve_operator_control"
+    ]
+  },
+  "validation": {
+    "commands": [
+      {
+        "command_id": "konnaxion-feature-voting-92cd-dependency-sync",
+        "command": "uv sync --frozen",
+        "purpose": "Reconstruct the workspace-local Python environment from committed lock state."
+      },
+      {
+        "command_id": "konnaxion-feature-voting-92cd-workspace-isolation",
+        "command": "koa-validate workspace isolation",
+        "purpose": "Validate namespaces, paths, mutable environments, services, ports, volumes, secrets, and database identities."
+      },
+      {
+        "command_id": "konnaxion-feature-voting-92cd-unit-tests",
+        "command": "uv run pytest tests/unit",
+        "purpose": "Run workspace-local unit tests."
+      },
+      {
+        "command_id": "konnaxion-feature-voting-92cd-contract-tests",
+        "command": "uv run pytest tests/contracts",
+        "purpose": "Run versioned component and interface contract tests."
+      }
+    ],
+    "required_test_ids": [
+      "TEST-DEV-DEP-001",
+      "TEST-DEV-DEP-002",
+      "TEST-DEV-DEP-006",
+      "TEST-DEV-DEP-010",
+      "TEST-PROFILE-WSL-004",
+      "TEST-PROFILE-WSL-005",
+      "TEST-PROFILE-WSL-009",
+      "TEST-DEV-BTV-001",
+      "TEST-DEV-BTV-002",
+      "TEST-DEV-BTV-005"
+    ],
+    "evidence_refs": [
+      "generated/evidence-catalog.json#/evidence/EVID-DEV-WORKSPACE-KONNAXION-001"
+    ],
+    "workspace_validation_state": "passed",
+    "profile_conformance_claimed": false,
+    "release_conformance_claimed": false,
+    "unsupported_claim_result": "blocked"
+  },
+  "authority_boundaries": {
+    "workspace_observation_transfers_authority": false,
+    "container_runtime_administration_transfers_application_authority": false,
+    "physical_database_sharing_transfers_logical_ownership": false,
+    "direct_cross_component_authoritative_writes": "prohibited",
+    "direct_cross_workspace_mutable_writes": "prohibited",
+    "external_ai_can_control_build_test_database_or_release": false
+  },
+  "cleanup": {
+    "stop_service_ids": [
+      "konnaxion-feature-voting-92cd-worker",
+      "konnaxion-feature-voting-92cd-api",
+      "konnaxion-feature-voting-92cd-redis",
+      "konnaxion-feature-voting-92cd-postgres"
+    ],
+    "release_port_allocation_ids": [
+      "konnaxion-feature-voting-92cd-api-http",
+      "konnaxion-feature-voting-92cd-postgres-client"
+    ],
+    "remove_network_ids": [
+      "konnaxion-feature-voting-92cd-app",
+      "konnaxion-feature-voting-92cd-data"
+    ],
+    "remove_disposable_volume_ids": [
+      "konnaxion-feature-voting-92cd-postgres-data",
+      "konnaxion-feature-voting-92cd-redis-data",
+      "konnaxion-feature-voting-92cd-tmp"
+    ],
+    "remove_secret_ids": [
+      "konnaxion-feature-voting-92cd-database-url",
+      "konnaxion-feature-voting-92cd-application-key",
+      "konnaxion-feature-voting-92cd-postgres-password"
+    ],
+    "remove_dependency_environment": "/home/koa/workspaces/konnaxion-feature-voting-92cd/source/.venv",
+    "preserve_shared_cache_ids": [
+      "uv-download-cache",
+      "oci-layer-cache"
+    ],
+    "preserve_source_checkout": true,
+    "preserve_registered_evidence": true,
+    "affect_other_workspaces": false
+  },
+  "traceability": {
+    "decision_ids": [
+      "DEC-DEV-001",
+      "DEC-DEV-002",
+      "DEC-DATA-001",
+      "DEC-PROFILE-001",
+      "DEC-CONTAINER-001"
+    ],
+    "requirement_ids": [
+      "REQ-DEV-DEP-001",
+      "REQ-DEV-DEP-002",
+      "REQ-DEV-DEP-006",
+      "REQ-DEV-DEP-007",
+      "REQ-DEV-DEP-009",
+      "REQ-DEV-DEP-014",
+      "REQ-DEV-DEP-015",
+      "REQ-PROFILE-WSL-002",
+      "REQ-PROFILE-WSL-005",
+      "REQ-PROFILE-WSL-006",
+      "REQ-PROFILE-WSL-007",
+      "REQ-PROFILE-WSL-008",
+      "REQ-PROFILE-WSL-013",
+      "REQ-PROFILE-WSL-014",
+      "REQ-DEV-BTV-001",
+      "REQ-DEV-BTV-002",
+      "REQ-DEV-BTV-005"
+    ],
+    "lock_ids": [
+      "LOCK-DEV-001",
+      "LOCK-DEV-002",
+      "LOCK-DATA-001",
+      "LOCK-PROFILE-001",
+      "LOCK-IMPL-001",
+      "LOCK-IMPL-002"
+    ],
+    "canonical_refs": [
+      "contracts/profiles/developer-windows-wsl.profile.json",
+      "contracts/toolchains/python-uv.toolchain.json",
+      "contracts/toolchains/container-runtime.toolchain.json",
+      "generated/component-catalog.json#/components/konnaxion",
+      "contracts/artifact-contracts/developer-workspace.schema.json"
+    ]
+  },
+  "tags": [
+    "developer-workspace",
+    "wsl2",
+    "konnaxion",
+    "parallel-workspace",
+    "uv",
+    "workspace-isolation"
+  ],
+  "authority": "non_authoritative_example"
+}

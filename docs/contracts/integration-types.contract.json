@@ -1,0 +1,23 @@
+{
+  "$schema": "../schemas/integration-types.contract.schema.json",
+  "contract_id": "integration-types",
+  "version": "1.0.0",
+  "status": "active",
+  "types": [
+    {
+      "integration_type": "external_ai",
+      "authority": "candidate_output_only",
+      "undeclared_substitution": "prohibited"
+    },
+    {
+      "integration_type": "external_media_service",
+      "authority": "non_authoritative",
+      "undeclared_substitution": "prohibited"
+    },
+    {
+      "integration_type": "external_voice",
+      "authority": "input_surface_only",
+      "undeclared_substitution": "prohibited"
+    }
+  ]
+}

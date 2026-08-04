@@ -1,0 +1,1293 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:koa:docs:schema:developer-workspace:1.0.0",
+  "title": "kOA Developer Workspace Contract Schema",
+  "description": "Validates one active kOA development workspace contract. The contract makes workspace identity, dependency isolation, mutable-state namespaces, parallel execution, reproducibility, resource limits, secrets, and teardown behavior explicit.",
+  "$comment": "The semantic validator additionally verifies that workspace_id and every generated namespace equal the declared derivation inputs, allocated host ports are unique across active workspaces, canonical references resolve, linked decisions are accepted, and referenced tests and evidence are current.",
+  "type": "object",
+  "required": [
+    "$schema",
+    "contract_type",
+    "workspace_id",
+    "version",
+    "status",
+    "profile_id",
+    "owner",
+    "description",
+    "identity",
+    "source_control",
+    "isolation",
+    "resource_budget",
+    "reproducibility",
+    "lifecycle",
+    "canonical_refs",
+    "decision_ids",
+    "requirement_ids",
+    "lock_ids",
+    "exception_ids",
+    "validation"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri-reference",
+      "pattern": "(?:^|/)developer-workspace\\.schema\\.json$"
+    },
+    "contract_type": {
+      "const": "developer_workspace"
+    },
+    "workspace_id": {
+      "$ref": "#/$defs/workspaceId"
+    },
+    "version": {
+      "$ref": "urn:koa:docs:schema:common-metadata:1.0.0#/$defs/semanticVersion"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "suspended",
+        "retired"
+      ]
+    },
+    "profile_id": {
+      "type": "string",
+      "enum": [
+        "developer_linux_workstation",
+        "developer_windows_wsl"
+      ]
+    },
+    "owner": {
+      "$ref": "urn:koa:docs:schema:common-metadata:1.0.0#/$defs/ownerId"
+    },
+    "description": {
+      "$ref": "urn:koa:docs:schema:common-metadata:1.0.0#/$defs/resolvedString"
+    },
+    "created_at": {
+      "$ref": "urn:koa:docs:schema:common-metadata:1.0.0#/$defs/timestamp"
+    },
+    "updated_at": {
+      "$ref": "urn:koa:docs:schema:common-metadata:1.0.0#/$defs/timestamp"
+    },
+    "identity": {
+      "$ref": "#/$defs/workspaceIdentity"
+    },
+    "source_control": {
+      "$ref": "#/$defs/sourceControl"
+    },
+    "isolation": {
+      "$ref": "#/$defs/workspaceIsolation"
+    },
+    "resource_budget": {
+      "$ref": "#/$defs/resourceBudget"
+    },
+    "reproducibility": {
+      "$ref": "#/$defs/reproducibility"
+    },
+    "lifecycle": {
+      "$ref": "#/$defs/workspaceLifecycle"
+    },
+    "canonical_refs": {
+      "type": "array",
+      "minItems": 3,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "urn:koa:docs:schema:common-metadata:1.0.0#/$defs/canonicalReference"
+      }
+    },
+    "decision_ids": {
+      "allOf": [
+        {
+          "$ref": "urn:koa:docs:schema:common-metadata:1.0.0#/$defs/decisionIds"
+        },
+        {
+          "minItems": 2
+        },
+        {
+          "contains": {
+            "const": "DEC-DEV-001"
+          }
+        },
+        {
+          "contains": {
+            "const": "DEC-DEV-002"
+          }
+        }
+      ]
+    },
+    "requirement_ids": {
+      "allOf": [
+        {
+          "$ref": "urn:koa:docs:schema:common-metadata:1.0.0#/$defs/requirementIds"
+        },
+        {
+          "minItems": 5
+        },
+        {
+          "contains": {
+            "const": "REQ-DEV-UV-001"
+          }
+        },
+        {
+          "contains": {
+            "const": "REQ-DEV-UV-002"
+          }
+        },
+        {
+          "contains": {
+            "const": "REQ-DEV-UV-003"
+          }
+        },
+        {
+          "contains": {
+            "const": "REQ-DEV-STATE-001"
+          }
+        },
+        {
+          "contains": {
+            "const": "REQ-DEV-PARALLEL-001"
+          }
+        }
+      ]
+    },
+    "lock_ids": {
+      "allOf": [
+        {
+          "$ref": "urn:koa:docs:schema:common-metadata:1.0.0#/$defs/lockIds"
+        },
+        {
+          "minItems": 5
+        },
+        {
+          "contains": {
+            "const": "LOCK-DEV-001"
+          }
+        },
+        {
+          "contains": {
+            "const": "LOCK-DEV-002"
+          }
+        },
+        {
+          "contains": {
+            "const": "LOCK-DEV-003"
+          }
+        },
+        {
+          "contains": {
+            "const": "LOCK-DEV-004"
+          }
+        },
+        {
+          "contains": {
+            "const": "LOCK-DEV-005"
+          }
+        }
+      ]
+    },
+    "exception_ids": {
+      "$ref": "urn:koa:docs:schema:common-metadata:1.0.0#/$defs/exceptionIds"
+    },
+    "tags": {
+      "$ref": "urn:koa:docs:schema:common-metadata:1.0.0#/$defs/tags"
+    },
+    "validation": {
+      "$ref": "#/$defs/workspaceValidation"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "active"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "required": [
+          "created_at",
+          "updated_at"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "isolation": {
+            "properties": {
+              "dependency_environment": {
+                "properties": {
+                  "toolchains": {
+                    "contains": {
+                      "const": "python_uv"
+                    }
+                  }
+                },
+                "required": [
+                  "toolchains"
+                ]
+              }
+            },
+            "required": [
+              "dependency_environment"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "isolation": {
+            "properties": {
+              "dependency_environment": {
+                "required": [
+                  "python"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "slug": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"
+    },
+    "workspaceId": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128,
+      "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)+-[a-z0-9]{4,12}$"
+    },
+    "componentToken": {
+      "$ref": "#/$defs/slug"
+    },
+    "toolchainId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
+    },
+    "workspaceIdentity": {
+      "type": "object",
+      "required": [
+        "component",
+        "branch_or_purpose",
+        "unique_suffix",
+        "derivation_template",
+        "namespace_prefix",
+        "workspace_id_matches_derivation"
+      ],
+      "properties": {
+        "component": {
+          "$ref": "#/$defs/componentToken"
+        },
+        "branch_or_purpose": {
+          "$ref": "#/$defs/slug"
+        },
+        "unique_suffix": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 12,
+          "pattern": "^[a-z0-9]+$"
+        },
+        "derivation_template": {
+          "const": "{component}-{branch_or_purpose}-{unique_suffix}"
+        },
+        "namespace_prefix": {
+          "$ref": "#/$defs/workspaceId"
+        },
+        "workspace_id_matches_derivation": {
+          "const": true
+        },
+        "display_name": {
+          "$ref": "urn:koa:docs:schema:common-metadata:1.0.0#/$defs/resolvedString"
+        }
+      },
+      "additionalProperties": false
+    },
+    "sourceControl": {
+      "type": "object",
+      "required": [
+        "repository_id",
+        "workspace_kind",
+        "ref_name",
+        "workspace_root"
+      ],
+      "properties": {
+        "repository_id": {
+          "$ref": "#/$defs/slug"
+        },
+        "workspace_kind": {
+          "type": "string",
+          "enum": [
+            "primary_checkout",
+            "branch_checkout",
+            "worktree",
+            "task_workspace"
+          ]
+        },
+        "ref_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255,
+          "pattern": "^(?!.*\\.\\.)(?!/)(?!.*//)(?!.*[~^:?*\\[\\]\\\\]).+$"
+        },
+        "commit_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{7,64}$"
+        },
+        "workspace_root": {
+          "const": "."
+        },
+        "clean_repository_required_for_validation": {
+          "const": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "pythonEnvironment": {
+      "type": "object",
+      "required": [
+        "manager",
+        "project_file",
+        "lock_file",
+        "python_version_file",
+        "virtual_environment_path",
+        "per_workspace_virtual_environment",
+        "validation_sync_command",
+        "global_application_installation_allowed",
+        "shared_mutable_virtual_environment_allowed",
+        "shared_content_addressed_download_cache_allowed"
+      ],
+      "properties": {
+        "manager": {
+          "const": "uv"
+        },
+        "project_file": {
+          "const": "pyproject.toml"
+        },
+        "lock_file": {
+          "const": "uv.lock"
+        },
+        "python_version_file": {
+          "const": ".python-version"
+        },
+        "declared_python_version": {
+          "type": "string",
+          "pattern": "^3\\.(?:1[0-9]|[8-9])(?:\\.[0-9]+)?$"
+        },
+        "virtual_environment_path": {
+          "const": ".venv"
+        },
+        "per_workspace_virtual_environment": {
+          "const": true
+        },
+        "validation_sync_command": {
+          "const": "uv sync --frozen"
+        },
+        "global_application_installation_allowed": {
+          "const": false
+        },
+        "shared_mutable_virtual_environment_allowed": {
+          "const": false
+        },
+        "shared_content_addressed_download_cache_allowed": {
+          "const": true
+        },
+        "lockfile_refresh_requires_explicit_action": {
+          "const": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "dependencyEnvironment": {
+      "type": "object",
+      "required": [
+        "strategy",
+        "toolchains",
+        "mutable_environment_shared",
+        "workspace_removal_is_independent"
+      ],
+      "properties": {
+        "strategy": {
+          "const": "per_workspace"
+        },
+        "toolchains": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/toolchainId"
+          }
+        },
+        "mutable_environment_shared": {
+          "const": false
+        },
+        "workspace_removal_is_independent": {
+          "const": true
+        },
+        "python": {
+          "$ref": "#/$defs/pythonEnvironment"
+        }
+      },
+      "additionalProperties": false
+    },
+    "serviceIsolation": {
+      "type": "object",
+      "required": [
+        "mechanism",
+        "service_names_prefixed",
+        "container_names_prefixed",
+        "shared_mutable_service_identity_allowed"
+      ],
+      "properties": {
+        "mechanism": {
+          "type": "string",
+          "enum": [
+            "rootless_containers",
+            "workspace_namespaces",
+            "mixed_equivalent"
+          ]
+        },
+        "service_names_prefixed": {
+          "const": true
+        },
+        "container_names_prefixed": {
+          "const": true
+        },
+        "shared_mutable_service_identity_allowed": {
+          "const": false
+        },
+        "services": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/serviceDefinition"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "serviceDefinition": {
+      "type": "object",
+      "required": [
+        "service_id",
+        "runtime_name",
+        "activation",
+        "stateful"
+      ],
+      "properties": {
+        "service_id": {
+          "$ref": "#/$defs/slug"
+        },
+        "runtime_name": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)+-[a-z0-9]{4,12}-[a-z0-9-]+$"
+        },
+        "activation": {
+          "type": "string",
+          "enum": [
+            "always_on",
+            "socket_activated",
+            "task_activated",
+            "manual"
+          ]
+        },
+        "stateful": {
+          "type": "boolean"
+        },
+        "internal_ports": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 65535
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "stateIsolation": {
+      "type": "object",
+      "required": [
+        "namespace_prefix",
+        "namespaced_resources",
+        "shared_mutable_state_allowed"
+      ],
+      "properties": {
+        "namespace_prefix": {
+          "$ref": "#/$defs/workspaceId"
+        },
+        "namespaced_resources": {
+          "type": "array",
+          "minItems": 16,
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          },
+          "allOf": [
+            {
+              "contains": {
+                "const": "dependency_environment"
+              }
+            },
+            {
+              "contains": {
+                "const": "containers"
+              }
+            },
+            {
+              "contains": {
+                "const": "networks"
+              }
+            },
+            {
+              "contains": {
+                "const": "volumes"
+              }
+            },
+            {
+              "contains": {
+                "const": "database_names"
+              }
+            },
+            {
+              "contains": {
+                "const": "database_users"
+              }
+            },
+            {
+              "contains": {
+                "const": "database_schemas"
+              }
+            },
+            {
+              "contains": {
+                "const": "unix_sockets"
+              }
+            },
+            {
+              "contains": {
+                "const": "temporary_directories"
+              }
+            },
+            {
+              "contains": {
+                "const": "log_directories"
+              }
+            },
+            {
+              "contains": {
+                "const": "pid_files"
+              }
+            },
+            {
+              "contains": {
+                "const": "service_names"
+              }
+            },
+            {
+              "contains": {
+                "const": "secret_names"
+              }
+            },
+            {
+              "contains": {
+                "const": "local_certificates"
+              }
+            },
+            {
+              "contains": {
+                "const": "development_queues"
+              }
+            },
+            {
+              "contains": {
+                "const": "host_ports"
+              }
+            }
+          ]
+        },
+        "shared_mutable_state_allowed": {
+          "const": false
+        },
+        "workspace_local_directories": {
+          "type": "object",
+          "properties": {
+            "temporary": {
+              "type": "string",
+              "pattern": "^\\.[A-Za-z0-9._/-]+$"
+            },
+            "logs": {
+              "type": "string",
+              "pattern": "^\\.[A-Za-z0-9._/-]+$"
+            },
+            "runtime": {
+              "type": "string",
+              "pattern": "^\\.[A-Za-z0-9._/-]+$"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "databaseIsolation": {
+      "type": "object",
+      "required": [
+        "isolation_model",
+        "workspace_scoped_database_identity",
+        "cross_workspace_mutable_sharing_allowed",
+        "cross_component_direct_writes_allowed"
+      ],
+      "properties": {
+        "isolation_model": {
+          "type": "string",
+          "enum": [
+            "separate_database",
+            "separate_schema",
+            "separate_instance",
+            "mixed"
+          ]
+        },
+        "workspace_scoped_database_identity": {
+          "const": true
+        },
+        "cross_workspace_mutable_sharing_allowed": {
+          "const": false
+        },
+        "cross_component_direct_writes_allowed": {
+          "const": false
+        },
+        "databases": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/databaseDefinition"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "databaseDefinition": {
+      "type": "object",
+      "required": [
+        "component_id",
+        "database_name",
+        "database_user"
+      ],
+      "properties": {
+        "component_id": {
+          "$ref": "#/$defs/componentToken"
+        },
+        "database_name": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "database_user": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "schema_name": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "connection_secret_ref": {
+          "$ref": "#/$defs/secretReference"
+        }
+      },
+      "additionalProperties": false
+    },
+    "secretReference": {
+      "type": "string",
+      "pattern": "^secret://[a-z][a-z0-9]*(?:-[a-z0-9]+)+(?:/[A-Za-z0-9._-]+)+$"
+    },
+    "secretIsolation": {
+      "type": "object",
+      "required": [
+        "namespace_prefix",
+        "secret_values_embedded",
+        "cross_workspace_secret_reuse_allowed",
+        "references"
+      ],
+      "properties": {
+        "namespace_prefix": {
+          "$ref": "#/$defs/workspaceId"
+        },
+        "secret_values_embedded": {
+          "const": false
+        },
+        "cross_workspace_secret_reuse_allowed": {
+          "const": false
+        },
+        "references": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/secretReference"
+          }
+        },
+        "generated_local_certificates_namespaced": {
+          "const": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "portAllocation": {
+      "type": "object",
+      "required": [
+        "service_id",
+        "container_port",
+        "host_port",
+        "protocol"
+      ],
+      "properties": {
+        "service_id": {
+          "$ref": "#/$defs/slug"
+        },
+        "container_port": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "host_port": {
+          "type": "integer",
+          "minimum": 1024,
+          "maximum": 65535
+        },
+        "protocol": {
+          "type": "string",
+          "enum": [
+            "tcp",
+            "udp"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "portIsolation": {
+      "type": "object",
+      "required": [
+        "host_allocation_strategy",
+        "fixed_internal_ports_allowed",
+        "host_port_collisions_allowed",
+        "allocation_registry_ref"
+      ],
+      "properties": {
+        "host_allocation_strategy": {
+          "const": "workspace_scoped_allocation_registry"
+        },
+        "fixed_internal_ports_allowed": {
+          "const": true
+        },
+        "host_port_collisions_allowed": {
+          "const": false
+        },
+        "allocation_registry_ref": {
+          "$ref": "urn:koa:docs:schema:common-metadata:1.0.0#/$defs/canonicalReference"
+        },
+        "allocations": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/portAllocation"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "networkIsolation": {
+      "type": "object",
+      "required": [
+        "isolated_logical_network",
+        "network_names_prefixed",
+        "cross_workspace_default_connectivity"
+      ],
+      "properties": {
+        "isolated_logical_network": {
+          "const": true
+        },
+        "network_names_prefixed": {
+          "const": true
+        },
+        "cross_workspace_default_connectivity": {
+          "const": false
+        },
+        "network_name": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)+-[a-z0-9]{4,12}-net$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "parallelExecution": {
+      "type": "object",
+      "required": [
+        "simultaneous_workspaces_supported",
+        "collision_free",
+        "collision_domains"
+      ],
+      "properties": {
+        "simultaneous_workspaces_supported": {
+          "const": true
+        },
+        "collision_free": {
+          "const": true
+        },
+        "collision_domains": {
+          "type": "array",
+          "minItems": 12,
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          },
+          "allOf": [
+            {
+              "contains": {
+                "const": "host_ports"
+              }
+            },
+            {
+              "contains": {
+                "const": "process_names"
+              }
+            },
+            {
+              "contains": {
+                "const": "service_names"
+              }
+            },
+            {
+              "contains": {
+                "const": "database_names"
+              }
+            },
+            {
+              "contains": {
+                "const": "database_users"
+              }
+            },
+            {
+              "contains": {
+                "const": "database_schemas"
+              }
+            },
+            {
+              "contains": {
+                "const": "networks"
+              }
+            },
+            {
+              "contains": {
+                "const": "volumes"
+              }
+            },
+            {
+              "contains": {
+                "const": "secrets"
+              }
+            },
+            {
+              "contains": {
+                "const": "sockets"
+              }
+            },
+            {
+              "contains": {
+                "const": "temporary_files"
+              }
+            },
+            {
+              "contains": {
+                "const": "logs"
+              }
+            }
+          ]
+        },
+        "minimum_concurrent_workspaces": {
+          "type": "integer",
+          "minimum": 2
+        }
+      },
+      "additionalProperties": false
+    },
+    "workspaceIsolation": {
+      "type": "object",
+      "required": [
+        "dependency_environment",
+        "services",
+        "state",
+        "databases",
+        "secrets",
+        "ports",
+        "network",
+        "parallel_execution"
+      ],
+      "properties": {
+        "dependency_environment": {
+          "$ref": "#/$defs/dependencyEnvironment"
+        },
+        "services": {
+          "$ref": "#/$defs/serviceIsolation"
+        },
+        "state": {
+          "$ref": "#/$defs/stateIsolation"
+        },
+        "databases": {
+          "$ref": "#/$defs/databaseIsolation"
+        },
+        "secrets": {
+          "$ref": "#/$defs/secretIsolation"
+        },
+        "ports": {
+          "$ref": "#/$defs/portIsolation"
+        },
+        "network": {
+          "$ref": "#/$defs/networkIsolation"
+        },
+        "parallel_execution": {
+          "$ref": "#/$defs/parallelExecution"
+        }
+      },
+      "additionalProperties": false
+    },
+    "resourceBudget": {
+      "type": "object",
+      "required": [
+        "cpu",
+        "memory",
+        "processes",
+        "io",
+        "queues",
+        "heavy_jobs"
+      ],
+      "properties": {
+        "cpu": {
+          "type": "object",
+          "required": [
+            "maximum_cores"
+          ],
+          "properties": {
+            "maximum_cores": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "weight": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10000
+            }
+          },
+          "additionalProperties": false
+        },
+        "memory": {
+          "type": "object",
+          "required": [
+            "maximum_mb"
+          ],
+          "properties": {
+            "maximum_mb": {
+              "type": "integer",
+              "minimum": 128
+            },
+            "swap_maximum_mb": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false
+        },
+        "processes": {
+          "type": "object",
+          "required": [
+            "maximum"
+          ],
+          "properties": {
+            "maximum": {
+              "type": "integer",
+              "minimum": 16
+            }
+          },
+          "additionalProperties": false
+        },
+        "io": {
+          "type": "object",
+          "required": [
+            "priority"
+          ],
+          "properties": {
+            "priority": {
+              "type": "string",
+              "enum": [
+                "low",
+                "normal",
+                "high"
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "queues": {
+          "type": "object",
+          "required": [
+            "maximum_pending_jobs"
+          ],
+          "properties": {
+            "maximum_pending_jobs": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "additionalProperties": false
+        },
+        "heavy_jobs": {
+          "type": "object",
+          "required": [
+            "maximum_concurrent",
+            "default_activation"
+          ],
+          "properties": {
+            "maximum_concurrent": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "default_activation": {
+              "const": "task_activated"
+            },
+            "services": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "sentient",
+                  "solr",
+                  "elasticsearch",
+                  "openrefine",
+                  "model_runtime",
+                  "intensive_uckk_job"
+                ]
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "reproducibility": {
+      "type": "object",
+      "required": [
+        "declared_runtime_versions",
+        "versioned_project_manifests",
+        "versioned_lockfiles",
+        "frozen_validation_sync",
+        "clean_environment_rebuild_supported",
+        "dependency_upgrade_requires_impact_and_tests",
+        "shared_cache_is_not_installed_environment"
+      ],
+      "properties": {
+        "declared_runtime_versions": {
+          "const": true
+        },
+        "versioned_project_manifests": {
+          "const": true
+        },
+        "versioned_lockfiles": {
+          "const": true
+        },
+        "frozen_validation_sync": {
+          "const": true
+        },
+        "clean_environment_rebuild_supported": {
+          "const": true
+        },
+        "dependency_upgrade_requires_impact_and_tests": {
+          "const": true
+        },
+        "shared_cache_is_not_installed_environment": {
+          "const": true
+        },
+        "validation_commands": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "workspaceLifecycle": {
+      "type": "object",
+      "required": [
+        "creation_is_explicit",
+        "activation_is_explicit",
+        "teardown_is_explicit",
+        "removal_does_not_affect_other_workspaces",
+        "shared_download_cache_may_be_retained",
+        "orphan_cleanup_required"
+      ],
+      "properties": {
+        "creation_is_explicit": {
+          "const": true
+        },
+        "activation_is_explicit": {
+          "const": true
+        },
+        "teardown_is_explicit": {
+          "const": true
+        },
+        "removal_does_not_affect_other_workspaces": {
+          "const": true
+        },
+        "shared_download_cache_may_be_retained": {
+          "const": true
+        },
+        "orphan_cleanup_required": {
+          "const": true
+        },
+        "retained_resources": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "shared_content_addressed_download_cache"
+            ]
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "validationResult": {
+      "type": "object",
+      "required": [
+        "check_id",
+        "result"
+      ],
+      "properties": {
+        "check_id": {
+          "type": "string",
+          "enum": [
+            "workspace_id_derivation",
+            "dependency_environment_isolation",
+            "workspace_state_namespacing",
+            "parallel_workspace_collision_check",
+            "reproducible_dependency_sync",
+            "resource_budget_validation",
+            "secret_reference_validation",
+            "independent_teardown_validation"
+          ]
+        },
+        "result": {
+          "type": "string",
+          "enum": [
+            "pass",
+            "fail",
+            "blocked"
+          ]
+        },
+        "test_ids": {
+          "$ref": "urn:koa:docs:schema:common-metadata:1.0.0#/$defs/testIds"
+        },
+        "evidence_ids": {
+          "$ref": "urn:koa:docs:schema:common-metadata:1.0.0#/$defs/evidenceIds"
+        },
+        "message": {
+          "$ref": "urn:koa:docs:schema:common-metadata:1.0.0#/$defs/resolvedString"
+        }
+      },
+      "additionalProperties": false
+    },
+    "workspaceValidation": {
+      "type": "object",
+      "required": [
+        "required_checks",
+        "activation_requires",
+        "results"
+      ],
+      "properties": {
+        "required_checks": {
+          "type": "array",
+          "minItems": 8,
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          },
+          "allOf": [
+            {
+              "contains": {
+                "const": "workspace_id_derivation"
+              }
+            },
+            {
+              "contains": {
+                "const": "dependency_environment_isolation"
+              }
+            },
+            {
+              "contains": {
+                "const": "workspace_state_namespacing"
+              }
+            },
+            {
+              "contains": {
+                "const": "parallel_workspace_collision_check"
+              }
+            },
+            {
+              "contains": {
+                "const": "reproducible_dependency_sync"
+              }
+            },
+            {
+              "contains": {
+                "const": "resource_budget_validation"
+              }
+            },
+            {
+              "contains": {
+                "const": "secret_reference_validation"
+              }
+            },
+            {
+              "contains": {
+                "const": "independent_teardown_validation"
+              }
+            }
+          ]
+        },
+        "activation_requires": {
+          "const": "pass"
+        },
+        "results": {
+          "type": "array",
+          "minItems": 8,
+          "items": {
+            "$ref": "#/$defs/validationResult"
+          }
+        },
+        "validated_at": {
+          "$ref": "urn:koa:docs:schema:common-metadata:1.0.0#/$defs/timestamp"
+        },
+        "validator_version": {
+          "$ref": "urn:koa:docs:schema:common-metadata:1.0.0#/$defs/semanticVersion"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,295 @@
+{
+  "$schema": "../artifact-contracts/sovereignty-bundle.schema.json",
+  "artifact_class": "sovereignty_bundle",
+  "bundle_id": "sovereignty-bundle-sovereign-hub-community-operations-2026-08-03-001",
+  "version": "1.0.0",
+  "lifecycle_state": "sealed",
+  "created_at": "2026-08-03T18:09:00-04:00",
+  "producer": {
+    "role": "sovereign_release_authority",
+    "authority_id": "sovereign-release-authority-community-operations",
+    "organization_id": "community-operations"
+  },
+  "purpose": "Provide the artifacts, policies, manifests, receipts, and evidence required to admit and activate a sovereign hub deployment without Internet access.",
+  "scope": {
+    "scope_type": "profile",
+    "profile_id": "sovereign_hub",
+    "profile_version": "1.0.0",
+    "overlay_ids": [
+      "high_assurance",
+      "sovereign_offline"
+    ],
+    "deployment_operation": "initial_activation",
+    "target_node_profile_id": "node-sovereign-hub-01",
+    "tenant_ids": [
+      "tenant-community-operations"
+    ]
+  },
+  "release_set": {
+    "release_set_id": "release-set-sovereign-hub-2026.08.03.1",
+    "version": "2026.08.03.1",
+    "manifest_path": "manifests/release-set.json",
+    "channels": {
+      "system": {
+        "release_id": "koa-system-sovereign-hub-1.0.0",
+        "version": "1.0.0"
+      },
+      "services": {
+        "release_id": "koa-services-sovereign-hub-1.0.0",
+        "version": "1.0.0"
+      },
+      "governance": {
+        "release_id": "koa-governance-community-operations-1.0.0",
+        "version": "1.0.0"
+      },
+      "knowledge": {
+        "release_id": "koa-knowledge-sovereign-hub-1.0.0",
+        "version": "1.0.0"
+      }
+    },
+    "compatibility_status": "verified"
+  },
+  "contents": [
+    {
+      "entry_id": "bundle-entry-system-image",
+      "category": "artifact",
+      "release_channel": "system",
+      "artifact_class": "system_image",
+      "artifact_id": "koa-system-image-sovereign-hub-1.0.0",
+      "version": "1.0.0",
+      "media_type": "application/vnd.koa.system-image",
+      "path": "artifacts/system/koa-system-image-sovereign-hub-1.0.0.img",
+      "sha256": "127f46f1ec8a239a3e2d8867fb6f68b5b07fafd8209880df468c9d2e8af9f53d",
+      "size_bytes": 4294967296,
+      "provenance_receipt_ref": "receipts/provenance/system-image.provenance.json",
+      "sbom_ref": "evidence/sbom/system-image.spdx.json",
+      "required_for_activation": true
+    },
+    {
+      "entry_id": "bundle-entry-services-release",
+      "category": "artifact",
+      "release_channel": "services",
+      "artifact_class": "services_release",
+      "artifact_id": "koa-services-sovereign-hub-1.0.0",
+      "version": "1.0.0",
+      "media_type": "application/vnd.koa.services-release",
+      "path": "artifacts/services/koa-services-sovereign-hub-1.0.0.tar.zst",
+      "sha256": "dec31b60dfb5bf9d59e45bb45826ee87107d2b800df2d5ee97b42439a931545f",
+      "size_bytes": 2147483648,
+      "provenance_receipt_ref": "receipts/provenance/services-release.provenance.json",
+      "sbom_ref": "evidence/sbom/services-release.spdx.json",
+      "required_for_activation": true
+    },
+    {
+      "entry_id": "bundle-entry-policy-bundle",
+      "category": "policy",
+      "release_channel": "governance",
+      "artifact_class": "policy_bundle",
+      "artifact_id": "policy-bundle-sovereign-hub-community-operations-1.0.0",
+      "version": "1.0.0",
+      "media_type": "application/vnd.koa.policy-bundle+json",
+      "path": "governance/policy-bundle-sovereign-hub-community-operations-1.0.0.json",
+      "sha256": "64cb09087701fa959a852ba7850a6de999f368bf4f19f603ee4525bd122547b4",
+      "size_bytes": 262144,
+      "provenance_receipt_ref": "receipts/provenance/policy-bundle.provenance.json",
+      "required_for_activation": true
+    },
+    {
+      "entry_id": "bundle-entry-resource-envelope",
+      "category": "policy",
+      "release_channel": "governance",
+      "artifact_class": "resource_envelope",
+      "artifact_id": "resource-envelope-sovereign-hub-1.0.0",
+      "version": "1.0.0",
+      "media_type": "application/vnd.koa.resource-envelope+json",
+      "path": "governance/resource-envelope-sovereign-hub-1.0.0.json",
+      "sha256": "35fcd2a20b819f9ac1cc39f35c1f2c787dcc4ac375432a416c5a55bea87767c9",
+      "size_bytes": 65536,
+      "provenance_receipt_ref": "receipts/provenance/resource-envelope.provenance.json",
+      "required_for_activation": true
+    },
+    {
+      "entry_id": "bundle-entry-cultural-rights-policy",
+      "category": "policy",
+      "release_channel": "governance",
+      "artifact_class": "cultural_rights_policy",
+      "artifact_id": "cultural-rights-policy-community-operations-1.0.0",
+      "version": "1.0.0",
+      "media_type": "application/vnd.koa.cultural-rights-policy+json",
+      "path": "governance/cultural-rights-policy-community-operations-1.0.0.json",
+      "sha256": "aa97b7a38230e523c80ee85b74adcd549474498880284f3367cc85db2e933a1b",
+      "size_bytes": 98304,
+      "provenance_receipt_ref": "receipts/provenance/cultural-rights-policy.provenance.json",
+      "required_for_activation": true
+    },
+    {
+      "entry_id": "bundle-entry-language-pack",
+      "category": "artifact",
+      "release_channel": "knowledge",
+      "artifact_class": "language_pack",
+      "artifact_id": "language-pack-en-fr-1.0.0",
+      "version": "1.0.0",
+      "media_type": "application/vnd.koa.language-pack",
+      "path": "knowledge/language-pack-en-fr-1.0.0.tar.zst",
+      "sha256": "580e95390eb941bf15f0eb5730629b3eb5cc38788dd1720180f803eb6a1a1209",
+      "size_bytes": 536870912,
+      "provenance_receipt_ref": "receipts/provenance/language-pack.provenance.json",
+      "required_for_activation": true
+    },
+    {
+      "entry_id": "bundle-entry-ariane-atlases",
+      "category": "artifact",
+      "release_channel": "knowledge",
+      "artifact_class": "atlas_collection",
+      "artifact_id": "ariane-atlas-collection-sovereign-hub-1.0.0",
+      "version": "1.0.0",
+      "media_type": "application/vnd.koa.atlas-collection",
+      "path": "knowledge/ariane-atlas-collection-sovereign-hub-1.0.0.tar.zst",
+      "sha256": "93287e0fd5df11ff1420d8bf4573c7e8c486a73a1319924b6e9e1509be109e90",
+      "size_bytes": 134217728,
+      "provenance_receipt_ref": "receipts/provenance/ariane-atlases.provenance.json",
+      "required_for_activation": false
+    },
+    {
+      "entry_id": "bundle-entry-node-profile",
+      "category": "manifest",
+      "artifact_class": "node_profile",
+      "artifact_id": "node-sovereign-hub-01",
+      "version": "1.0.0",
+      "media_type": "application/vnd.koa.node-profile+json",
+      "path": "manifests/node-profile.json",
+      "sha256": "d77f98c1761c142a951c536728097a4ab0ea543e8448db3c6c7bd9c43d262b57",
+      "size_bytes": 1440,
+      "required_for_activation": true
+    },
+    {
+      "entry_id": "bundle-entry-integration-manifests",
+      "category": "manifest",
+      "artifact_class": "integration_manifest",
+      "artifact_id": "integration-manifest-set-sovereign-hub-1.0.0",
+      "version": "1.0.0",
+      "media_type": "application/vnd.koa.integration-manifest-set+json",
+      "path": "manifests/integration-manifests.json",
+      "sha256": "a9b71d7c221f244a9e6ce27eb4eda95cc8c752370c1abda7162eeed4d7f09f0d",
+      "size_bytes": 131072,
+      "required_for_activation": true
+    },
+    {
+      "entry_id": "bundle-entry-release-set",
+      "category": "manifest",
+      "artifact_class": "release_set",
+      "artifact_id": "release-set-sovereign-hub-2026.08.03.1",
+      "version": "2026.08.03.1",
+      "media_type": "application/vnd.koa.release-set+json",
+      "path": "manifests/release-set.json",
+      "sha256": "eff3f900fc79e5b3b7c2b706864edfa25515a5f62018d3a2a2bd4528ea27f7df",
+      "size_bytes": 32768,
+      "required_for_activation": true
+    },
+    {
+      "entry_id": "bundle-entry-conformance-evidence",
+      "category": "evidence",
+      "artifact_class": "conformance_evidence",
+      "artifact_id": "conformance-evidence-sovereign-hub-2026-08-03",
+      "version": "1.0.0",
+      "media_type": "application/vnd.koa.conformance-evidence+json",
+      "path": "evidence/conformance/sovereign-hub-conformance.json",
+      "sha256": "8130f1bf4a0983daa51847ade2387e5ab73924cd376015323cfc436e9ae713fb",
+      "size_bytes": 1048576,
+      "required_for_activation": true
+    },
+    {
+      "entry_id": "bundle-entry-provenance-index",
+      "category": "receipt",
+      "artifact_class": "provenance_receipt",
+      "artifact_id": "provenance-index-sovereign-hub-2026-08-03",
+      "version": "1.0.0",
+      "media_type": "application/vnd.koa.provenance-index+json",
+      "path": "receipts/provenance/index.json",
+      "sha256": "668abbc9b0cee58b62893c97dc0f283f57e1e60b1ed178e7202d8ff58ab76c84",
+      "size_bytes": 262144,
+      "required_for_activation": true
+    },
+    {
+      "entry_id": "bundle-entry-assembly-receipt",
+      "category": "receipt",
+      "artifact_class": "decision_receipt",
+      "artifact_id": "decision-receipt-sovereignty-bundle-assembly-2026-08-03",
+      "version": "1.0.0",
+      "media_type": "application/vnd.koa.decision-receipt+json",
+      "path": "receipts/decisions/bundle-assembly.receipt.json",
+      "sha256": "12a4cd32053859eabe8f4c127636ee5e8695139f9e208d7d80ae463619918b1d",
+      "size_bytes": 8192,
+      "required_for_activation": true
+    }
+  ],
+  "trust": {
+    "trust_root_sets": [
+      {
+        "release_channel": "system",
+        "trust_root_set_id": "system-trust-roots-v1"
+      },
+      {
+        "release_channel": "services",
+        "trust_root_set_id": "services-trust-roots-v1"
+      },
+      {
+        "release_channel": "governance",
+        "trust_root_set_id": "governance-trust-roots-v1"
+      },
+      {
+        "release_channel": "knowledge",
+        "trust_root_set_id": "knowledge-trust-roots-v1"
+      }
+    ],
+    "scope_validation": "pass"
+  },
+  "verification": {
+    "schema_validation": "pass",
+    "content_manifest_path": "MANIFEST.sha256",
+    "content_manifest_sha256": "f6d7a8d906ccaf2674aa4381f5f4c19bd8785e9961413bde7c3f577f681cbc75",
+    "required_evidence_complete": true,
+    "software_sbom_coverage": "complete",
+    "provenance_receipt_coverage": "complete",
+    "release_set_compatibility": "pass",
+    "target_profile_match": "pass",
+    "trust_root_scope": "pass"
+  },
+  "seal": {
+    "signature_algorithm": "ed25519",
+    "key_id": "ed25519-sha256:66d1a84bf48b134b9bfa9b26543bba5198ff1b21fde82c1a8940bbfeabb4fb64",
+    "public_key_base64": "TmpMSCiKwJJGM5wAn+fFDr4qwUvk0Pc1Uw7A75ZCUXg=",
+    "signed_value_format": "bundle_id|version|content_manifest_sha256|release_set_id",
+    "signed_value": "sovereignty-bundle-sovereign-hub-community-operations-2026-08-03-001|1.0.0|f6d7a8d906ccaf2674aa4381f5f4c19bd8785e9961413bde7c3f577f681cbc75|release-set-sovereign-hub-2026.08.03.1",
+    "signature_base64": "eBnCRFSSKPtn5BAwNX0wQ2wLllnFENSma5ZoE1jFmG0uTNk76TEox+EGR0PnAeyPt1aStmfw7B+IrxMMjLjTAQ==",
+    "sealed_at": "2026-08-03T18:09:00-04:00"
+  },
+  "activation": {
+    "model": "admission_then_release_set_activation",
+    "partial_activation_allowed": false,
+    "preconditions": [
+      "target_profile_matches",
+      "release_set_resolves",
+      "required_evidence_complete",
+      "trust_root_scope_valid"
+    ],
+    "bundle_authority": "transport_only",
+    "activation_authority_role": "deployment_authority"
+  },
+  "recovery": {
+    "strategy": "reject_bundle_or_rollback_release_set",
+    "forward_repair_allowed": true,
+    "failed_activation_effect": "no_partial_sovereignty_claim"
+  },
+  "consumers": [
+    "deployment_authority",
+    "conformance_validator",
+    "audit_broker"
+  ],
+  "retention": {
+    "active_versions": "retain_current_deployment_bundle",
+    "historical_versions": "retain_with_sovereignty_and_conformance_evidence"
+  },
+  "example": true,
+  "authority": "non_authoritative_example"
+}

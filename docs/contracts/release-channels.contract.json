@@ -1,0 +1,264 @@
+{
+  "$schema": "../schemas/release-channels.contract.schema.json",
+  "version": "1.0.0",
+  "status": "active",
+  "language": "en",
+  "effective_at": "2026-08-03T15:30:00-04:00",
+  "purpose": "Own the canonical release-channel identities, channel membership, independent release boundaries, and cross-channel Release Set rules for kOA.",
+  "authority": {
+    "canonical_owner_of": [
+      "release_channel_identity",
+      "release_channel_membership",
+      "release_channel_purpose",
+      "release_channel_independence",
+      "cross_channel_compatibility_policy",
+      "release_set_channel_requirements"
+    ],
+    "does_not_own": [
+      "artifact_class_structure",
+      "artifact_payload_schema",
+      "component_release_procedure",
+      "deployment_profile_behavior",
+      "cryptographic_signature_format",
+      "release_evidence_records"
+    ]
+  },
+  "governing_decisions": [
+    {
+      "decision_id": "DEC-REL-001",
+      "status": "accepted",
+      "statement": "kOA uses four canonical and independently versioned release channels: system, services, governance, and knowledge."
+    }
+  ],
+  "governing_adrs": [
+    {
+      "adr_id": "ADR-008",
+      "path": "10-adrs/ADR-008-four-independent-release-channels.md",
+      "status": "accepted"
+    }
+  ],
+  "governing_locks": [
+    {
+      "lock_id": "LOCK-LIFE-003",
+      "statement": "A Release Set binds tested compatible versions across all canonical release channels."
+    },
+    {
+      "lock_id": "LOCK-LIFE-004",
+      "statement": "An independent channel update is permitted only when every declared cross-channel compatibility constraint remains satisfied."
+    }
+  ],
+  "channel_model": {
+    "canonical_channel_count": 4,
+    "identities_are_independent": true,
+    "versions_are_independent": true,
+    "updates_may_be_independent": true,
+    "independent_update_condition": "all_declared_compatibility_constraints_pass",
+    "implicit_channel_membership_allowed": false,
+    "multiple_channel_membership_allowed": false,
+    "unknown_channel_result": "blocked"
+  },
+  "channels": [
+    {
+      "channel_id": "system",
+      "display_name": "System",
+      "status": "active",
+      "scope": [
+        "global"
+      ],
+      "purpose": "Release the operating-system and host-platform artifacts that establish the bootable and recoverable kOA system foundation.",
+      "artifact_class_keys": [
+        "system_image",
+        "boot_artifact",
+        "recovery_artifact"
+      ],
+      "release_identity": {
+        "namespace": "koa.system",
+        "independent_from": [
+          "services",
+          "governance",
+          "knowledge"
+        ]
+      },
+      "activation_expectations": [
+        "no_partial_authoritative_state",
+        "rollback_or_forward_repair_defined",
+        "release_identity_verifiable"
+      ]
+    },
+    {
+      "channel_id": "services",
+      "display_name": "Services",
+      "status": "active",
+      "scope": [
+        "global"
+      ],
+      "purpose": "Release independently deployable kOA services, component runtimes, and service-level execution packages.",
+      "artifact_class_keys": [
+        "service_release",
+        "component_runtime",
+        "service_configuration_bundle"
+      ],
+      "release_identity": {
+        "namespace": "koa.services",
+        "independent_from": [
+          "system",
+          "governance",
+          "knowledge"
+        ]
+      },
+      "activation_expectations": [
+        "no_partial_authoritative_state",
+        "rollback_or_forward_repair_defined",
+        "declared_system_compatibility"
+      ]
+    },
+    {
+      "channel_id": "governance",
+      "display_name": "Governance",
+      "status": "active",
+      "scope": [
+        "global"
+      ],
+      "purpose": "Release governance policy bundles and other versioned governance artifacts that control authorization, disclosure, privilege, and governed activation.",
+      "artifact_class_keys": [
+        "governance_policy_bundle"
+      ],
+      "release_identity": {
+        "namespace": "koa.governance",
+        "independent_from": [
+          "system",
+          "services",
+          "knowledge"
+        ]
+      },
+      "activation_expectations": [
+        "no_partial_authoritative_state",
+        "rollback_or_forward_repair_defined",
+        "policy_authority_verifiable",
+        "declared_runtime_compatibility"
+      ]
+    },
+    {
+      "channel_id": "knowledge",
+      "display_name": "Knowledge",
+      "status": "active",
+      "scope": [
+        "global"
+      ],
+      "purpose": "Release versioned knowledge, language, and epistemic artifacts independently from the operating system, services, and governance policies.",
+      "artifact_class_keys": [
+        "kristal_artifact",
+        "pgf_artifact",
+        "atlas",
+        "language_runtime_pack",
+        "approved_knowledge_package"
+      ],
+      "release_identity": {
+        "namespace": "koa.knowledge",
+        "independent_from": [
+          "system",
+          "services",
+          "governance"
+        ]
+      },
+      "activation_expectations": [
+        "no_partial_authoritative_state",
+        "rollback_or_forward_repair_defined",
+        "content_identity_verifiable",
+        "declared_runtime_compatibility"
+      ]
+    }
+  ],
+  "release_set_policy": {
+    "artifact_class_key": "release_set",
+    "purpose": "Bind one tested compatible release identity from each canonical channel into a deployable compatibility statement.",
+    "required": true,
+    "signature_required": true,
+    "required_channel_ids": [
+      "system",
+      "services",
+      "governance",
+      "knowledge"
+    ],
+    "exactly_one_release_per_channel": true,
+    "omitted_channel_allowed": false,
+    "duplicate_channel_allowed": false,
+    "compatibility_status_required": "tested_compatible",
+    "activation_result_when_incomplete": "blocked",
+    "activation_result_when_incompatible": "blocked",
+    "independent_channel_update_procedure": [
+      "select_candidate_channel_release",
+      "evaluate_declared_cross_channel_constraints",
+      "execute_applicable_compatibility_tests",
+      "record_test_evidence",
+      "issue_replacement_release_set",
+      "activate_only_after_release_set_validation_passes"
+    ]
+  },
+  "compatibility_policy": {
+    "constraint_declaration_required": true,
+    "constraints_must_be_machine_readable": true,
+    "constraints_may_reference": [
+      "channel_release_identity",
+      "artifact_class",
+      "component_contract",
+      "deployment_profile",
+      "runtime_interface",
+      "schema_version",
+      "minimum_supported_version",
+      "maximum_supported_version",
+      "prohibited_version"
+    ],
+    "undeclared_compatibility_assumption_allowed": false,
+    "missing_constraint_evaluation_result": "blocked",
+    "failed_constraint_result": "blocked",
+    "successful_constraint_result": "eligible_for_release_set"
+  },
+  "channel_membership_policy": {
+    "owner": "contracts/release-channels.contract.json#/channels",
+    "artifact_class_definition_owner": "contracts/artifact-classes.contract.json",
+    "membership_change_requires": [
+      "accepted_owner_decision",
+      "impact_analysis",
+      "artifact_class_alignment",
+      "linked_requirement_and_lock_review",
+      "compatibility_test_update",
+      "release_evidence_update",
+      "authority_activation"
+    ],
+    "artifact_without_channel_result": "blocked",
+    "artifact_in_multiple_channels_result": "blocked"
+  },
+  "validation": {
+    "required_checks": [
+      "exactly_four_canonical_channels",
+      "unique_channel_ids",
+      "unique_release_identity_namespaces",
+      "complete_release_set_channel_membership",
+      "single_channel_per_artifact_class",
+      "declared_cross_channel_constraints",
+      "compatibility_test_evidence",
+      "signed_release_set",
+      "no_partial_authoritative_activation",
+      "rollback_or_forward_repair_declared"
+    ],
+    "ordinary_markdown_file_hashes_required": false,
+    "validation_outcomes": [
+      "pass",
+      "fail",
+      "blocked"
+    ],
+    "activation_requires_outcome": "pass"
+  },
+  "prohibited_assumptions": [
+    "A service release implicitly includes a system release.",
+    "A governance policy update may activate without runtime compatibility validation.",
+    "A knowledge artifact belongs to the services channel because a service consumes it.",
+    "Matching version strings across channels imply compatibility.",
+    "A partial Release Set is sufficient for activation.",
+    "The newest release in each channel forms a compatible Release Set.",
+    "An artifact may change channels without an accepted owner decision."
+  ],
+  "contract_id": "release-channels.registry",
+  "contract_type": "release_channels_registry"
+}

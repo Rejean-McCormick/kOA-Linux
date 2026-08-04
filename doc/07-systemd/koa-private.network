@@ -1,4 +1,0 @@
-[Network]
-NetworkName=koa-private
-Subnet=10.89.20.0/24
-Internal=true

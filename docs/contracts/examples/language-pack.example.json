@@ -1,0 +1,538 @@
+{
+  "$schema": "../artifact-contracts/language-pack.schema.json",
+  "schema_version": "1.0.0",
+  "artifact_class": "language_pack",
+  "artifact_id": "language-pack:fr-ca-core:1.4.0",
+  "pack_id": "language-pack:fr-ca-core",
+  "pack_version": "1.4.0",
+  "lifecycle_status": "published",
+  "release_channel": "knowledge",
+  "created_at": "2026-08-03T18:02:00-04:00",
+  "published_at": "2026-08-03T18:12:00-04:00",
+  "language": "fr-CA",
+  "language_metadata": {
+    "language_name": "French",
+    "locale_name": "French (Canada)",
+    "bcp47_tag": "fr-CA",
+    "iso_639_1": "fr",
+    "script": "Latn",
+    "region": "CA",
+    "fallback_language_tags": [
+      "fr",
+      "en-CA"
+    ],
+    "text_direction": "ltr",
+    "normalization_form": "NFC"
+  },
+  "pgf_sha256": "f81219c456e5be9e2ac88fd4f0cf5c7dbf06582339be46b3ad51c431d3c16ac0",
+  "gf_version": "3.12.0",
+  "rgl_revision": "rgl:2026.07.0",
+  "runtime_contract": "semantik.render.v1",
+  "display_name": "kOA Core French (Canada) Language Pack",
+  "description": "Deterministic French (Canada) runtime language pack compiled by GF Wordbench for SemantiK Architect Runtime.",
+  "publisher": {
+    "publisher_id": "publisher:koa-language-release",
+    "publisher_type": "organization",
+    "authority_domain": "authority-domain:koa-language",
+    "publication_decision_ref": "decision:language-publication:fr-ca-core:1.4.0",
+    "release_authority_ref": "authority:knowledge-release"
+  },
+  "source": {
+    "workspace_id": "workspace:gf-wordbench:fr-ca-core",
+    "source_revision_id": "source-revision:fr-ca-core:1.4.0",
+    "build_definition_id": "language-build:fr-ca-core:1.4.0",
+    "grammar_abstract_module": "KoaMessages",
+    "grammar_concrete_module": "KoaMessagesFrCA",
+    "source_modules": [
+      "KoaMessages.gf",
+      "KoaMessagesFre.gf",
+      "KoaMessagesFrCA.gf"
+    ],
+    "dependency_artifacts": [
+      {
+        "artifact_id": "gf-rgl:2026.07.0",
+        "role": "resource_grammar_library",
+        "version": "2026.07.0",
+        "sha256": "153f65637417d53145ee65f20bd2fe88f5dc91be84455c30c1748bc69fc0113d"
+      },
+      {
+        "artifact_id": "language-contract:koa-message-catalog:1.0.0",
+        "role": "message_contract",
+        "version": "1.0.0",
+        "sha256": "14df82db3c29301382603cd0e9919db8414827824936f8c99dead681338d25a9"
+      }
+    ],
+    "external_ai_used": false,
+    "sentient_candidate_used": false,
+    "candidate_inputs_admitted": []
+  },
+  "runtime": {
+    "consumer_component_id": "semantik_architect_runtime",
+    "producer_component_id": "gf_wordbench",
+    "build_tools_required_at_runtime": false,
+    "compiled_pgf_required": true,
+    "deterministic_rendering_required": true,
+    "probabilistic_generation_allowed": false,
+    "load_policy": "installed_language_packs_only",
+    "entrypoint_grammar": "KoaMessages",
+    "concrete_syntax": "KoaMessagesFrCA",
+    "supported_operations": [
+      "render_message",
+      "render_parameterized_template",
+      "linearize_abstract_tree",
+      "validate_message_parameters"
+    ],
+    "unsupported_operations": [
+      "compile_grammar",
+      "edit_grammar_source",
+      "repair_grammar",
+      "probabilistic_text_generation"
+    ]
+  },
+  "runtime_contract_detail": {
+    "contract_id": "semantik.render.v1",
+    "contract_version": "1.2.0",
+    "minimum_runtime_version": "1.3.0",
+    "maximum_runtime_version_exclusive": "2.0.0",
+    "input_schema_ref": "schemas/semantik-render-request.schema.json",
+    "output_schema_ref": "schemas/semantik-render-result.schema.json",
+    "error_contract_ref": "contracts/error-codes/semantik-render.errors.json",
+    "stable_ordering": true,
+    "bounded_execution": true,
+    "maximum_render_input_bytes": 65536,
+    "maximum_output_characters": 32768,
+    "default_timeout_milliseconds": 250
+  },
+  "compatibility": {
+    "compatible_primary_profiles": [
+      "user_lightweight",
+      "developer_linux_workstation",
+      "developer_windows_wsl",
+      "sovereign_linux_node",
+      "sovereign_hub",
+      "build_farm",
+      "control_plane"
+    ],
+    "compatible_overlays": [
+      "high_assurance",
+      "sovereign_offline",
+      "appliance_shell"
+    ],
+    "supported_architectures": [
+      "architecture_independent"
+    ],
+    "required_component_contracts": [
+      {
+        "component_id": "semantik_architect_runtime",
+        "minimum_version": "1.0.0"
+      },
+      {
+        "component_id": "identity_and_trust",
+        "minimum_version": "1.0.0"
+      }
+    ],
+    "required_release_channels": {
+      "knowledge": "knowledge-release:2026.08.03-language",
+      "governance_minimum": "governance-release:2026.08.0"
+    },
+    "minimum_authority_release": "authority-release:2026.08.0",
+    "offline_capable": true,
+    "network_required_for_rendering": false
+  },
+  "contents": {
+    "message_catalog": {
+      "catalog_id": "message-catalog:koa-core:fr-CA:1.4.0",
+      "message_count": 184,
+      "parameterized_message_count": 93,
+      "static_message_count": 91,
+      "required_parameter_types": [
+        "string",
+        "integer",
+        "decimal",
+        "date",
+        "time",
+        "duration",
+        "person_name",
+        "organization_name",
+        "resource_label"
+      ],
+      "fallback_behavior": "return_stable_missing_message_error"
+    },
+    "template_catalog": {
+      "catalog_id": "template-catalog:koa-core:fr-CA:1.4.0",
+      "template_count": 67,
+      "maximum_parameters_per_template": 12,
+      "parameter_validation_required": true,
+      "unsafe_raw_markup_allowed": false
+    },
+    "terminology": {
+      "terminology_set_id": "terminology:koa-core:fr-CA:1.4.0",
+      "term_count": 412,
+      "protected_term_count": 38,
+      "case_sensitive_term_count": 17,
+      "source_ref": "contracts/terminology/koa-core.fr-CA.json"
+    },
+    "render_cache_policy": {
+      "static_messages_cacheable": true,
+      "validated_parameterized_messages_cacheable": true,
+      "cache_is_authoritative": false,
+      "cache_regeneration_supported": true
+    }
+  },
+  "inventory": [
+    {
+      "item_id": "item:language-pack-manifest",
+      "content_role": "manifest",
+      "path": "manifest/language-pack.json",
+      "artifact_id": "artifact:language-pack:fr-ca-core:1.4.0",
+      "media_type": "application/json",
+      "size_bytes": 4233,
+      "sha256": "0712d10f0626f8f4352816a8d906138ed9a793c8f274969a1720fe36971841dd",
+      "required_for_activation": true
+    },
+    {
+      "item_id": "item:compiled-pgf",
+      "content_role": "compiled_grammar",
+      "path": "runtime/KoaMessages.pgf",
+      "artifact_id": "artifact:pgf:KoaMessages:fr-CA:1.4.0",
+      "media_type": "application/vnd.grammaticalframework.pgf",
+      "size_bytes": 8329,
+      "sha256": "f81219c456e5be9e2ac88fd4f0cf5c7dbf06582339be46b3ad51c431d3c16ac0",
+      "required_for_activation": true
+    },
+    {
+      "item_id": "item:message-catalog",
+      "content_role": "message_catalog",
+      "path": "runtime/message-catalog.fr-CA.json",
+      "artifact_id": "artifact:message-catalog:fr-CA:1.4.0",
+      "media_type": "application/json",
+      "size_bytes": 12425,
+      "sha256": "a569854c42f60a7f2ce31676f3f93ef6b606f4512507ad7ab62950e1efb3e17d",
+      "required_for_activation": true
+    },
+    {
+      "item_id": "item:template-catalog",
+      "content_role": "template_catalog",
+      "path": "runtime/template-catalog.fr-CA.json",
+      "artifact_id": "artifact:template-catalog:fr-CA:1.4.0",
+      "media_type": "application/json",
+      "size_bytes": 16521,
+      "sha256": "b2052064ffab57e03ced277f87f06fe8ae1a9d44c48a229f5f51c3798ac7dd00",
+      "required_for_activation": true
+    },
+    {
+      "item_id": "item:validation-report",
+      "content_role": "validation_report",
+      "path": "evidence/validation-report.json",
+      "artifact_id": "artifact:validation-report:fr-ca-core:1.4.0",
+      "media_type": "application/json",
+      "size_bytes": 20617,
+      "sha256": "0ea15c53ee44fd2b398252d61c02d9bfa12011db35192c6236ec7edb06d04aee",
+      "required_for_activation": true
+    },
+    {
+      "item_id": "item:compatibility-report",
+      "content_role": "compatibility_report",
+      "path": "evidence/compatibility-report.json",
+      "artifact_id": "artifact:compatibility-report:fr-ca-core:1.4.0",
+      "media_type": "application/json",
+      "size_bytes": 24713,
+      "sha256": "ab09897bb676108a774190973efb6d90db04ba18a7f57afff128703d0747cd40",
+      "required_for_activation": true
+    },
+    {
+      "item_id": "item:sbom",
+      "content_role": "sbom",
+      "path": "supply-chain/sbom.json",
+      "artifact_id": "artifact:sbom:fr-ca-core:1.4.0",
+      "media_type": "application/json",
+      "size_bytes": 28809,
+      "sha256": "60b5b90584c96b3a2ccf9276781d064ddaa133dd04c39fc141d2e9aea322ef9e",
+      "required_for_activation": false
+    },
+    {
+      "item_id": "item:provenance",
+      "content_role": "provenance",
+      "path": "supply-chain/provenance.json",
+      "artifact_id": "artifact:provenance:fr-ca-core:1.4.0",
+      "media_type": "application/json",
+      "size_bytes": 32905,
+      "sha256": "36f0a03435c50bd2516c8bc10e65e6a6e7ab7f9657c8d72da7897599abb08d2a",
+      "required_for_activation": true
+    },
+    {
+      "item_id": "item:signature",
+      "content_role": "signature",
+      "path": "signatures/language-pack.sig.json",
+      "artifact_id": "artifact:signature:fr-ca-core:1.4.0",
+      "media_type": "application/json",
+      "size_bytes": 37001,
+      "sha256": "a9ee1bb0831676d5f65a05c3dba91695caa3a6de9960491d4ace6e3a92e32630",
+      "required_for_activation": true
+    }
+  ],
+  "validation": {
+    "overall_outcome": "pass",
+    "validation_run_id": "validation-run:fr-ca-core:1.4.0",
+    "validated_at": "2026-08-03T17:44:00-04:00",
+    "validator_workload_id": "workload:gf-wordbench-validator:001",
+    "checks": {
+      "schema_validation": "pass",
+      "source_graph_validation": "pass",
+      "gf_compilation": "pass",
+      "pgf_load_test": "pass",
+      "deterministic_rendering": "pass",
+      "regression_vectors": "pass",
+      "coverage": "pass",
+      "ambiguity_bounds": "pass",
+      "parameter_validation": "pass",
+      "runtime_contract_compatibility": "pass",
+      "profile_compatibility": "pass",
+      "artifact_inventory": "pass",
+      "provenance": "pass",
+      "rights_and_attribution": "pass"
+    },
+    "metrics": {
+      "test_vector_count": 420,
+      "test_vectors_passed": 420,
+      "message_coverage_percent": 100.0,
+      "template_coverage_percent": 100.0,
+      "unexpected_ambiguity_count": 0,
+      "maximum_render_time_milliseconds": 41,
+      "maximum_memory_mebibytes": 38
+    },
+    "manual_review": {
+      "required": true,
+      "outcome": "approved",
+      "reviewer_role": "authorized_language_reviewer",
+      "review_record_id": "review:fr-ca-core:1.4.0",
+      "reviewed_at": "2026-08-03T17:50:00-04:00",
+      "reviewed_dimensions": [
+        "semantic_correctness",
+        "language_quality",
+        "regional_usage",
+        "terminology",
+        "ambiguity",
+        "accessibility",
+        "attribution"
+      ]
+    },
+    "warnings": []
+  },
+  "provenance": {
+    "provenance_id": "provenance:language-pack:fr-ca-core:1.4.0",
+    "builder_component_id": "gf_wordbench",
+    "builder_workload_id": "workload:gf-wordbench-builder:001",
+    "build_environment_id": "environment:build-farm:language:001",
+    "build_profile_id": "build_farm",
+    "toolchain": {
+      "gf_version": "3.12.0",
+      "rgl_revision": "rgl:2026.07.0",
+      "packager_id": "toolchain:koa-language-packager",
+      "packager_version": "1.1.0"
+    },
+    "build_started_at": "2026-08-03T17:35:00-04:00",
+    "build_completed_at": "2026-08-03T17:42:00-04:00",
+    "network_use": "none",
+    "deterministic_mode": true,
+    "mutable_external_inputs": false,
+    "manual_build_steps": false,
+    "source_ref": "source-revision:fr-ca-core:1.4.0",
+    "build_definition_ref": "language-build:fr-ca-core:1.4.0",
+    "output_artifact_id": "language-pack:fr-ca-core:1.4.0",
+    "attestation_artifact_id": "artifact:provenance:fr-ca-core:1.4.0"
+  },
+  "supply_chain": {
+    "artifact_manifest_id": "artifact:language-pack:fr-ca-core:1.4.0",
+    "sbom_artifact_id": "artifact:sbom:fr-ca-core:1.4.0",
+    "provenance_artifact_id": "artifact:provenance:fr-ca-core:1.4.0",
+    "inventory_sha256": "4cd595c0b56fd8ab2037dd19e4eae17d4e5f89e85c7e514b08e5e242d6bb8668",
+    "reproducibility_status": "content_identity_equivalent",
+    "reproducibility_evidence_ref": "evidence:reproducibility:fr-ca-core:1.4.0",
+    "signature_required": true,
+    "signature": {
+      "signature_id": "signature:language-pack:fr-ca-core:1.4.0",
+      "signed_subject_id": "language-pack:fr-ca-core:1.4.0",
+      "signed_statement": "language_pack_manifest_and_inventory",
+      "signer_id": "signer:knowledge-release:001",
+      "key_id": "key:knowledge-release:2026:01",
+      "algorithm": "ed25519",
+      "value": "gKZSrH7vFy0Nxk3WMckv1VYYtlIAcHd8l2oi9tukd1rJHlouYlCnDKG92RPqns09NeZAD6qI/2umKbmlFtlq5Q==",
+      "trust_scope": [
+        "artifact-class:language_pack",
+        "release-channel:knowledge",
+        "language:fr-CA"
+      ],
+      "verification_status": "verified",
+      "verification_evidence_ref": "evidence:signature:fr-ca-core:1.4.0"
+    }
+  },
+  "rights_and_consent": {
+    "classification": "public",
+    "attribution_required": true,
+    "attribution": [
+      {
+        "attribution_id": "attribution:gf-rgl",
+        "subject": "Grammatical Framework Resource Grammar Library",
+        "notice_ref": "notices/gf-rgl.txt"
+      },
+      {
+        "attribution_id": "attribution:koa-language-team",
+        "subject": "kOA Language Team",
+        "notice_ref": "notices/koa-language-team.txt"
+      }
+    ],
+    "audience_restrictions": [],
+    "export_restrictions": [],
+    "cultural_rights_applicable": false,
+    "consent_records": [],
+    "withdrawal_supported": true,
+    "no_ai_restrictions": {
+      "external_ai_training_allowed": false,
+      "external_ai_inference_use_allowed": false,
+      "local_deterministic_runtime_use_allowed": true
+    }
+  },
+  "publication": {
+    "publication_candidate_id": "publication-candidate:fr-ca-core:1.4.0",
+    "release_id": "knowledge-release:2026.08.03-language",
+    "release_channel": "knowledge",
+    "repository_id": "repository:koa-knowledge-artifacts",
+    "repository_artifact_ref": "knowledge/language-packs/fr-CA/fr-ca-core/1.4.0",
+    "publication_request_id": "publication-request:fr-ca-core:1.4.0",
+    "publication_status": "published",
+    "durable_acceptance": true,
+    "receipt_id": "receipt:publication:fr-ca-core:1.4.0",
+    "published_by": "publisher:koa-language-release",
+    "signed_by": "signer:knowledge-release:001",
+    "activation_claim": false
+  },
+  "activation_policy": {
+    "activation_owner_component_id": "semantik_architect_runtime",
+    "verification_precedes_activation": true,
+    "partial_activation_allowed": false,
+    "atomic_activation_required": true,
+    "last_valid_pack_preserved": true,
+    "rollback_required": true,
+    "post_activation_render_vectors_required": true,
+    "activation_evidence_required": true,
+    "automatic_activation_on_publication": false,
+    "build_toolchain_required_on_target": false,
+    "revocation_check_required": true,
+    "downgrade_protection_required": true,
+    "substitution_protection_required": true
+  },
+  "conformance": {
+    "required_test_ids": [
+      "TEST-COMP-GFWB-005",
+      "TEST-COMP-GFWB-009",
+      "TEST-COMP-SEMANTIK-005",
+      "TEST-COMP-SEMANTIK-007",
+      "TEST-CROSS-005",
+      "TEST-SYS-009",
+      "TEST-LIFE-003",
+      "TEST-LIFE-004",
+      "TEST-LIFE-005",
+      "TEST-LIFE-013",
+      "TEST-LIFE-015",
+      "TEST-SEC-015",
+      "TEST-PROF-006",
+      "TEST-OPS-005",
+      "TEST-EXIT-003"
+    ],
+    "test_results": [
+      {
+        "test_id": "TEST-COMP-GFWB-005",
+        "outcome": "pass",
+        "evidence_ref": "evidence:test-comp-gfwb-005"
+      },
+      {
+        "test_id": "TEST-COMP-GFWB-009",
+        "outcome": "pass",
+        "evidence_ref": "evidence:test-comp-gfwb-009"
+      },
+      {
+        "test_id": "TEST-COMP-SEMANTIK-005",
+        "outcome": "pass",
+        "evidence_ref": "evidence:test-comp-semantik-005"
+      },
+      {
+        "test_id": "TEST-COMP-SEMANTIK-007",
+        "outcome": "pass",
+        "evidence_ref": "evidence:test-comp-semantik-007"
+      },
+      {
+        "test_id": "TEST-CROSS-005",
+        "outcome": "pass",
+        "evidence_ref": "evidence:test-cross-005"
+      },
+      {
+        "test_id": "TEST-SYS-009",
+        "outcome": "pass",
+        "evidence_ref": "evidence:test-sys-009"
+      },
+      {
+        "test_id": "TEST-LIFE-003",
+        "outcome": "pass",
+        "evidence_ref": "evidence:test-life-003"
+      },
+      {
+        "test_id": "TEST-LIFE-004",
+        "outcome": "pass",
+        "evidence_ref": "evidence:test-life-004"
+      },
+      {
+        "test_id": "TEST-LIFE-005",
+        "outcome": "pass",
+        "evidence_ref": "evidence:test-life-005"
+      },
+      {
+        "test_id": "TEST-LIFE-013",
+        "outcome": "pass",
+        "evidence_ref": "evidence:test-life-013"
+      },
+      {
+        "test_id": "TEST-LIFE-015",
+        "outcome": "pass",
+        "evidence_ref": "evidence:test-life-015"
+      },
+      {
+        "test_id": "TEST-SEC-015",
+        "outcome": "pass",
+        "evidence_ref": "evidence:test-sec-015"
+      },
+      {
+        "test_id": "TEST-PROF-006",
+        "outcome": "pass",
+        "evidence_ref": "evidence:test-prof-006"
+      },
+      {
+        "test_id": "TEST-OPS-005",
+        "outcome": "pass",
+        "evidence_ref": "evidence:test-ops-005"
+      },
+      {
+        "test_id": "TEST-EXIT-003",
+        "outcome": "pass",
+        "evidence_ref": "evidence:test-exit-003"
+      }
+    ],
+    "evidence_registry_ref": "generated/evidence-catalog.json",
+    "traceability_registry_ref": "generated/traceability.json",
+    "overall_outcome": "pass"
+  },
+  "lifecycle": {
+    "predecessor_artifact_id": "language-pack:fr-ca-core:1.3.2",
+    "supersedes_artifact_ids": [
+      "language-pack:fr-ca-core:1.3.2"
+    ],
+    "revocation_refs": [],
+    "withdrawal_refs": [],
+    "retention_policy_ref": "retention:language-pack",
+    "restore_eligibility": "eligible",
+    "activation_effect": "no_implicit_activation",
+    "rollback_target_artifact_id": "language-pack:fr-ca-core:1.3.2"
+  },
+  "example": true,
+  "authority": "non_authoritative_example"
+}

@@ -1,0 +1,1191 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:koa:schema:test-evidence:1.0.0",
+  "title": "kOA Test Evidence",
+  "description": "Defines one machine-readable kOA test-evidence record. The record identifies the test and subject, captures execution context, assertions, outcomes, diagnostics, produced artifacts, provenance, integrity, signing, validity, and traceability to decisions, requirements, locks, exceptions, and releases.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "evidence_id",
+    "evidence_type",
+    "version",
+    "status",
+    "language",
+    "recorded_at",
+    "subject",
+    "test",
+    "execution",
+    "environment",
+    "result",
+    "assertions",
+    "artifacts",
+    "provenance",
+    "integrity",
+    "signing",
+    "validity",
+    "traceability"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "const": "test-evidence.schema.json",
+      "description": "Schema reference as stored beside this schema or resolved by the evidence producer."
+    },
+    "evidence_id": {
+      "$ref": "#/$defs/evidence_id"
+    },
+    "evidence_type": {
+      "type": "string",
+      "enum": [
+        "automated_test_run",
+        "manual_test_run",
+        "mixed_test_run",
+        "conformance_assessment",
+        "compatibility_test",
+        "reproducibility_test",
+        "security_test",
+        "activation_test",
+        "rollback_test",
+        "forward_repair_test",
+        "restore_test",
+        "recovery_test",
+        "offline_operation_test",
+        "performance_test",
+        "resource_envelope_test"
+      ]
+    },
+    "version": {
+      "$ref": "#/$defs/semantic_version"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "invalidated",
+        "superseded",
+        "expired",
+        "archived"
+      ]
+    },
+    "language": {
+      "type": "string",
+      "const": "en"
+    },
+    "recorded_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "supersedes_evidence_id": {
+      "$ref": "#/$defs/evidence_id"
+    },
+    "superseded_by_evidence_id": {
+      "$ref": "#/$defs/evidence_id"
+    },
+    "subject": {
+      "$ref": "#/$defs/subject"
+    },
+    "test": {
+      "$ref": "#/$defs/test_reference"
+    },
+    "execution": {
+      "$ref": "#/$defs/execution"
+    },
+    "environment": {
+      "$ref": "#/$defs/environment"
+    },
+    "result": {
+      "$ref": "#/$defs/result"
+    },
+    "assertions": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/assertion_result"
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/evidence_artifact"
+      }
+    },
+    "provenance": {
+      "$ref": "#/$defs/provenance"
+    },
+    "integrity": {
+      "$ref": "#/$defs/integrity_policy"
+    },
+    "signing": {
+      "$ref": "#/$defs/signing_policy"
+    },
+    "validity": {
+      "$ref": "#/$defs/validity"
+    },
+    "traceability": {
+      "$ref": "#/$defs/traceability"
+    },
+    "notes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/non_empty_string"
+      }
+    },
+    "tags": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/snake_case_identifier"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "superseded"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "required": [
+          "superseded_by_evidence_id"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "result": {
+            "properties": {
+              "outcome": {
+                "enum": [
+                  "blocked",
+                  "error",
+                  "not_applicable"
+                ]
+              }
+            },
+            "required": [
+              "outcome"
+            ]
+          }
+        },
+        "required": [
+          "result"
+        ]
+      },
+      "then": {
+        "properties": {
+          "result": {
+            "required": [
+              "reason"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "evidence_type": {
+            "const": "manual_test_run"
+          }
+        },
+        "required": [
+          "evidence_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "execution": {
+            "properties": {
+              "executor": {
+                "properties": {
+                  "executor_type": {
+                    "const": "human"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "active"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "not": {
+          "required": [
+            "superseded_by_evidence_id"
+          ]
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "semantic_version": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+    },
+    "snake_case_identifier": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
+    },
+    "non_empty_string": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence_id": {
+      "type": "string",
+      "pattern": "^EVID-[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)*-[0-9]{3}$"
+    },
+    "test_id": {
+      "type": "string",
+      "pattern": "^TEST-[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)*-[0-9]{3}$"
+    },
+    "decision_id": {
+      "type": "string",
+      "pattern": "^DEC-[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)*-[0-9]{3}$"
+    },
+    "requirement_id": {
+      "type": "string",
+      "pattern": "^REQ-[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)*-[0-9]{3}$"
+    },
+    "lock_id": {
+      "type": "string",
+      "pattern": "^LOCK-[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)*-[0-9]{3}$"
+    },
+    "exception_id": {
+      "type": "string",
+      "pattern": "^EXC-[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)*-[0-9]{3}$"
+    },
+    "canonical_reference": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._/-]*(?:#(?:/.*)?)?$"
+    },
+    "media_type": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9!#$&^_.+-]+/[A-Za-z0-9!#$&^_.+-]+(?:\\+[A-Za-z0-9!#$&^_.+-]+)?$"
+    },
+    "digest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "algorithm",
+        "value"
+      ],
+      "properties": {
+        "algorithm": {
+          "type": "string",
+          "enum": [
+            "sha256",
+            "sha384",
+            "sha512",
+            "blake3"
+          ]
+        },
+        "value": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{32,128}$"
+        }
+      }
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subject_type",
+        "subject_id",
+        "subject_ref",
+        "subject_version"
+      ],
+      "properties": {
+        "subject_type": {
+          "type": "string",
+          "enum": [
+            "system",
+            "profile",
+            "profile_overlay",
+            "component",
+            "artifact",
+            "artifact_class",
+            "release_set",
+            "integration",
+            "toolchain",
+            "documentation",
+            "migration"
+          ]
+        },
+        "subject_id": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "subject_ref": {
+          "$ref": "#/$defs/canonical_reference"
+        },
+        "subject_version": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "artifact_digest": {
+          "$ref": "#/$defs/digest"
+        },
+        "release_set_ref": {
+          "$ref": "#/$defs/canonical_reference"
+        }
+      }
+    },
+    "test_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "test_id",
+        "catalog_ref",
+        "test_version",
+        "test_type"
+      ],
+      "properties": {
+        "test_id": {
+          "$ref": "#/$defs/test_id"
+        },
+        "catalog_ref": {
+          "$ref": "#/$defs/canonical_reference"
+        },
+        "test_version": {
+          "$ref": "#/$defs/semantic_version"
+        },
+        "test_type": {
+          "type": "string",
+          "enum": [
+            "unit",
+            "integration",
+            "contract",
+            "system",
+            "conformance",
+            "security",
+            "performance",
+            "resource",
+            "reproducibility",
+            "compatibility",
+            "activation",
+            "rollback",
+            "forward_repair",
+            "restore",
+            "recovery",
+            "offline_operation",
+            "manual_control"
+          ]
+        },
+        "procedure_ref": {
+          "$ref": "#/$defs/canonical_reference"
+        }
+      }
+    },
+    "executor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "executor_type",
+        "executor_id"
+      ],
+      "properties": {
+        "executor_type": {
+          "type": "string",
+          "enum": [
+            "tool",
+            "service",
+            "human",
+            "mixed"
+          ]
+        },
+        "executor_id": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "tool_name": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "tool_version": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "actor_ref": {
+          "$ref": "#/$defs/canonical_reference"
+        }
+      }
+    },
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run_id",
+        "started_at",
+        "completed_at",
+        "executor",
+        "attempt",
+        "trigger",
+        "exit_status"
+      ],
+      "properties": {
+        "run_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,127}$"
+        },
+        "started_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "completed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "executor": {
+          "$ref": "#/$defs/executor"
+        },
+        "attempt": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "trigger": {
+          "type": "string",
+          "enum": [
+            "manual",
+            "pre_merge",
+            "continuous_integration",
+            "release_gate",
+            "scheduled",
+            "post_activation",
+            "incident_response",
+            "recovery_validation",
+            "migration_validation"
+          ]
+        },
+        "command": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "working_directory_ref": {
+          "$ref": "#/$defs/canonical_reference"
+        },
+        "exit_status": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind"
+          ],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "exit_code",
+                "signal",
+                "manual_completion",
+                "not_executed"
+              ]
+            },
+            "code": {
+              "type": "integer"
+            },
+            "signal": {
+              "$ref": "#/$defs/non_empty_string"
+            }
+          }
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "environment_id",
+        "profile_ids",
+        "component_ids",
+        "operating_system",
+        "architecture",
+        "connectivity_state",
+        "workspace_isolated",
+        "clean_environment"
+      ],
+      "properties": {
+        "environment_id": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "profile_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/snake_case_identifier"
+          }
+        },
+        "profile_overlay_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/snake_case_identifier"
+          }
+        },
+        "component_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/snake_case_identifier"
+          }
+        },
+        "operating_system": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "operating_system_version": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "kernel_or_host_version": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "architecture": {
+          "type": "string",
+          "enum": [
+            "x86_64",
+            "aarch64",
+            "arm64",
+            "riscv64",
+            "other"
+          ]
+        },
+        "connectivity_state": {
+          "type": "string",
+          "enum": [
+            "online",
+            "restricted_network",
+            "intermittent",
+            "offline",
+            "offline_with_imported_sources"
+          ]
+        },
+        "workspace_id": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "workspace_isolated": {
+          "type": "boolean"
+        },
+        "clean_environment": {
+          "type": "boolean"
+        },
+        "system_release_ref": {
+          "$ref": "#/$defs/canonical_reference"
+        },
+        "release_set_ref": {
+          "$ref": "#/$defs/canonical_reference"
+        },
+        "resource_envelope_ref": {
+          "$ref": "#/$defs/canonical_reference"
+        },
+        "dependency_lock_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/canonical_reference"
+          }
+        },
+        "environment_artifact_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/canonical_reference"
+          }
+        }
+      }
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "outcome",
+        "assertions_total",
+        "assertions_passed",
+        "assertions_failed",
+        "assertions_blocked",
+        "authoritative_claim_allowed"
+      ],
+      "properties": {
+        "outcome": {
+          "type": "string",
+          "enum": [
+            "passed",
+            "failed",
+            "blocked",
+            "error",
+            "not_applicable"
+          ]
+        },
+        "reason": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "summary": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "assertions_total": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "assertions_passed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "assertions_failed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "assertions_blocked": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "authoritative_claim_allowed": {
+          "type": "boolean"
+        },
+        "failure_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/snake_case_identifier"
+          }
+        }
+      }
+    },
+    "assertion_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "assertion_id",
+        "description",
+        "outcome",
+        "expected",
+        "observed"
+      ],
+      "properties": {
+        "assertion_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9._:-]{2,127}$"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 10
+        },
+        "outcome": {
+          "type": "string",
+          "enum": [
+            "passed",
+            "failed",
+            "blocked",
+            "error",
+            "not_applicable"
+          ]
+        },
+        "expected": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "observed": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "reason": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "duration_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "requirement_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/requirement_id"
+          }
+        },
+        "lock_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/lock_id"
+          }
+        },
+        "diagnostic_artifact_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/snake_case_identifier"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "outcome": {
+                "enum": [
+                  "blocked",
+                  "error",
+                  "not_applicable"
+                ]
+              }
+            },
+            "required": [
+              "outcome"
+            ]
+          },
+          "then": {
+            "required": [
+              "reason"
+            ]
+          }
+        }
+      ]
+    },
+    "evidence_artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifact_id",
+        "role",
+        "location",
+        "media_type",
+        "retention_required"
+      ],
+      "properties": {
+        "artifact_id": {
+          "$ref": "#/$defs/snake_case_identifier"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "log",
+            "report",
+            "trace",
+            "screenshot",
+            "recording",
+            "metrics",
+            "coverage",
+            "sbom",
+            "provenance_attestation",
+            "signature",
+            "manifest",
+            "input_fixture",
+            "output_fixture",
+            "diagnostic",
+            "other"
+          ]
+        },
+        "location": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "media_type": {
+          "$ref": "#/$defs/media_type"
+        },
+        "digest": {
+          "$ref": "#/$defs/digest"
+        },
+        "size_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "retention_required": {
+          "type": "boolean"
+        },
+        "contains_sensitive_data": {
+          "type": "boolean"
+        },
+        "redaction_applied": {
+          "type": "boolean"
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "producer_type",
+        "producer_id",
+        "source_refs",
+        "generated_automatically",
+        "manual_modification_allowed"
+      ],
+      "properties": {
+        "producer_type": {
+          "type": "string",
+          "enum": [
+            "test_runner",
+            "validation_tool",
+            "component",
+            "human_reviewer",
+            "mixed"
+          ]
+        },
+        "producer_id": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "producer_version": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "source_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/canonical_reference"
+          }
+        },
+        "generated_automatically": {
+          "type": "boolean"
+        },
+        "manual_modification_allowed": {
+          "type": "boolean"
+        },
+        "reviewer_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/canonical_reference"
+          }
+        }
+      }
+    },
+    "integrity_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "scope"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "not_required",
+            "optional",
+            "required"
+          ]
+        },
+        "scope": {
+          "type": "string",
+          "enum": [
+            "none",
+            "canonical_evidence_record",
+            "record_and_retained_artifacts"
+          ]
+        },
+        "record_digest": {
+          "$ref": "#/$defs/digest"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "required"
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "required": [
+              "record_digest"
+            ],
+            "properties": {
+              "scope": {
+                "not": {
+                  "const": "none"
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "not_required"
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "scope": {
+                "const": "none"
+              }
+            },
+            "not": {
+              "required": [
+                "record_digest"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "signing_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "signature_scope",
+        "trust_root_scope"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "not_required",
+            "optional",
+            "required"
+          ]
+        },
+        "signature_scope": {
+          "type": "string",
+          "enum": [
+            "none",
+            "evidence_record",
+            "evidence_and_retained_artifacts"
+          ]
+        },
+        "trust_root_scope": {
+          "type": "string",
+          "enum": [
+            "none",
+            "component",
+            "profile",
+            "organization",
+            "release_channel",
+            "system"
+          ]
+        },
+        "signature_artifact_id": {
+          "$ref": "#/$defs/snake_case_identifier"
+        },
+        "signer_identity": {
+          "$ref": "#/$defs/non_empty_string"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "required"
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "required": [
+              "signature_artifact_id",
+              "signer_identity"
+            ],
+            "properties": {
+              "signature_scope": {
+                "not": {
+                  "const": "none"
+                }
+              },
+              "trust_root_scope": {
+                "not": {
+                  "const": "none"
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "not_required"
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "signature_scope": {
+                "const": "none"
+              },
+              "trust_root_scope": {
+                "const": "none"
+              }
+            },
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "signature_artifact_id"
+                  ]
+                },
+                {
+                  "required": [
+                    "signer_identity"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "validity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "valid_from",
+        "invalidation_triggers",
+        "reuse_scope",
+        "stale_result"
+      ],
+      "properties": {
+        "valid_from": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "valid_until": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "invalidation_triggers": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "subject_version_change",
+              "test_definition_change",
+              "profile_contract_change",
+              "component_contract_change",
+              "requirement_change",
+              "lock_change",
+              "release_set_change",
+              "environment_material_change",
+              "evidence_integrity_failure",
+              "manual_invalidation"
+            ]
+          }
+        },
+        "reuse_scope": {
+          "type": "string",
+          "enum": [
+            "single_run_only",
+            "same_subject_version",
+            "same_release_set",
+            "same_environment_fingerprint",
+            "explicitly_declared_scope"
+          ]
+        },
+        "reuse_scope_description": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "stale_result": {
+          "type": "string",
+          "const": "invalid_for_current_claim"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "reuse_scope": {
+                "const": "explicitly_declared_scope"
+              }
+            },
+            "required": [
+              "reuse_scope"
+            ]
+          },
+          "then": {
+            "required": [
+              "reuse_scope_description"
+            ]
+          }
+        }
+      ]
+    },
+    "traceability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "decision_ids",
+        "requirement_ids",
+        "lock_ids",
+        "exception_ids",
+        "release_refs",
+        "artifact_refs",
+        "traceability_registry_ref"
+      ],
+      "properties": {
+        "decision_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/decision_id"
+          }
+        },
+        "requirement_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/requirement_id"
+          }
+        },
+        "lock_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/lock_id"
+          }
+        },
+        "exception_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/exception_id"
+          }
+        },
+        "release_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/canonical_reference"
+          }
+        },
+        "artifact_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/canonical_reference"
+          }
+        },
+        "traceability_registry_ref": {
+          "type": "string",
+          "const": "generated/traceability.json"
+        }
+      }
+    }
+  }
+}

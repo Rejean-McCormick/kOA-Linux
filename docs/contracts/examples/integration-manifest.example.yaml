@@ -1,0 +1,430 @@
+# Non-authoritative example of an integration manifest.
+# Canonical integration facts remain owned by contracts/integration-types.contract.json.
+"$schema": ../artifact-contracts/integration-manifest.schema.json
+manifest_id: INTEGRATION-MANIFEST-CHATGPT-001
+manifest_type: integration_manifest
+manifest_version: 1.0.0
+status: active
+example_manifest: true
+language: en
+effective_at: "2026-08-03T18:02:00-04:00"
+owner: integration-architecture
+title: ChatGPT Explicit Assistance Integration
+description: >-
+  Example manifest for an optional, user-triggered ChatGPT assistance surface.
+  The integration exports only explicitly selected and minimized context, returns
+  a non-authoritative candidate artifact, and cannot write directly to any
+  authoritative component store.
+
+integration:
+  integration_id: chatgpt
+  registry_ref: contracts/integrations/chatgpt.integration.json
+  adapter_id: chatgpt_adapter
+  adapter_contract_ref: contracts/integrations/chatgpt.adapter.json
+  provider_class: external_ai
+  integration_class: user_triggered_candidate_generation
+  authority_role: non_authoritative_candidate_producer
+  capability_ids:
+    - chatgpt_external_assistance
+  external_service: true
+  native_baseline_capability: false
+  required_for_core_operation: false
+  removable_without_core_failure: true
+
+classification:
+  optional: true
+  user_triggered: true
+  task_scoped: true
+  background_invocation_allowed: false
+  automatic_routing_allowed: false
+  automatic_retry_to_alternate_provider_allowed: false
+  direct_authoritative_write_allowed: false
+  machine_privilege_allowed: false
+  publication_authority: none
+  data_ownership_transfer: false
+
+profile_applicability:
+  supported_primary_profiles:
+    - user_lightweight
+    - developer_linux_workstation
+    - developer_windows_wsl
+    - sovereign_linux_node
+    - sovereign_hub
+  profile_defined_primary_profiles:
+    - control_plane
+  excluded_primary_profiles:
+    - build_farm
+  compatible_overlays:
+    - high_assurance
+    - appliance_shell
+  incompatible_overlays:
+    - sovereign_offline
+  online_connectivity_required: true
+  profile_selection_required: true
+  unsupported_profile_result: unavailable
+  high_assurance_strengthening:
+    - stronger_actor_verification
+    - stronger_disclosure_review
+    - stronger_receipt_integrity
+    - restricted_secret_scope
+
+activation:
+  trigger: explicit_user_action
+  initiating_actor_required: true
+  active_user_session_required: true
+  operation_selection_required: true
+  transferred_data_preview_required: true
+  confirmation_required: true
+  consent_or_policy_check: profile_conditioned
+  activation_scope: single_request
+  background_activation_allowed: false
+  scheduled_activation_allowed: false
+  autonomous_activation_allowed: false
+  session_persistence: none
+  cancellation_supported: true
+
+operations:
+  - operation_id: chatgpt_draft_assistance
+    title: Draft assistance
+    purpose: >-
+      Produce a candidate draft from an explicit user instruction and selected
+      context without modifying the source component.
+    requesting_component_ids:
+      - konnaxion
+      - orgo
+      - ariane_runtime
+    request_contract:
+      request_id_required: true
+      correlation_id_required: true
+      user_instruction_required: true
+      explicit_selection_required: true
+      purpose_declaration_required: true
+      destination_component_required: true
+      permitted_data_classes:
+        - user_instruction
+        - user_selected_text
+        - minimized_context_metadata
+        - declared_output_constraints
+      prohibited_data_classes:
+        - passwords
+        - private_keys
+        - access_tokens
+        - unrestricted_secrets
+        - foreign_database_credentials
+        - complete_authoritative_database_export
+        - undeclared_personal_data
+        - undeclared_restricted_cultural_content
+        - machine_privilege_material
+      export_mode: controlled_explicit_export
+      maximum_request_bytes: 262144
+      raw_attachment_transfer_allowed: false
+      source_owner_retains_authority: true
+    response_contract:
+      output_class: external_ai_candidate
+      media_type: application/vnd.koa.external-ai-candidate+json
+      candidate_identity_required: true
+      provider_response_reference_required: true
+      provenance_required: true
+      limitations_required: true
+      direct_authoritative_write_allowed: false
+      automatic_publication_allowed: false
+      destination_validation_required: true
+      explicit_adoption_required: true
+
+data_transfer:
+  outbound:
+    transfer_id: chatgpt_request_payload
+    direction: koa_to_external
+    data_minimization_required: true
+    field_allowlist_required: true
+    user_preview_required: true
+    purpose_binding_required: true
+    source_references_required: true
+    payload_encryption_in_transit_required: true
+    payload_in_general_logs_allowed: false
+    payload_in_receipts_allowed: false
+  inbound:
+    transfer_id: chatgpt_candidate_response
+    direction: external_to_koa
+    treated_as_untrusted_input: true
+    candidate_classification_required: true
+    integrity_reference_required: true
+    provenance_receipt_required: true
+    content_validation_required: true
+    automatic_import_allowed: false
+    automatic_adoption_allowed: false
+  provider_terms:
+    policy_ref: contracts/integrations/chatgpt.integration.json
+    current_terms_resolution_required: true
+    retention_and_training_disclosure_required: true
+    request_blocked_when_terms_unresolved: true
+
+authority_and_adoption:
+  external_output_authority: none
+  candidate_only: true
+  source_component_state_unchanged_by_external_call: true
+  destination_component_owns_adoption_decision: true
+  destination_component_owns_resulting_state: true
+  direct_database_write_allowed: false
+  direct_file_store_write_allowed: false
+  direct_policy_write_allowed: false
+  direct_release_write_allowed: false
+  direct_identity_write_allowed: false
+  adoption_sequence:
+    - receive_candidate
+    - verify_candidate_identity
+    - verify_provenance
+    - validate_content_and_contract
+    - perform_required_review
+    - obtain_required_policy_or_consent_decision
+    - accept_or_reject_in_destination_component
+    - record_adoption_or_rejection_evidence
+  rejection_preserves_authoritative_state: true
+
+authentication:
+  method: provider_api_credential
+  credential_ref: secret://integrations/chatgpt/api-credential
+  credential_owner: integration-operations
+  credential_scope: chatgpt_adapter_only
+  credential_in_source_control_allowed: false
+  credential_in_manifest_allowed: false
+  credential_in_image_allowed: false
+  credential_in_logs_allowed: false
+  credential_rotation_required: true
+  user_identity_forwarding: minimized_profile_conditioned
+  provider_account_separation:
+    development: separate
+    validation: separate
+    production: separate
+
+network:
+  default_egress_policy: deny
+  permitted_endpoint_refs:
+    - configuration://integrations/chatgpt/api-endpoint
+  permitted_protocols:
+    - https
+  tls_required: true
+  certificate_validation_required: true
+  proxy_policy: profile_defined
+  inbound_provider_connection_allowed: false
+  webhook_required: false
+  provider_callback_required: false
+  dns_dependency: profile_defined_online_resolution
+  undeclared_endpoint_result: blocked
+
+security_and_privacy:
+  least_privilege_required: true
+  untrusted_response_handling_required: true
+  prompt_injection_treated_as_untrusted_content: true
+  response_may_not_define_policy: true
+  response_may_not_grant_privilege: true
+  response_may_not_select_release: true
+  response_may_not_bypass_destination_validation: true
+  restricted_content_policy_ref: contracts/security/external-transfer.policy.json
+  cultural_rights_and_consent_check: profile_and_content_conditioned
+  personal_data_check: purpose_and_profile_conditioned
+  secret_scan_before_transfer: true
+  output_scan_before_import: true
+  local_redaction_supported: true
+
+resource_and_resilience:
+  timeout_seconds: 60
+  connection_timeout_seconds: 10
+  maximum_attempts: 2
+  retry_backoff: bounded_exponential
+  retry_only_on:
+    - transient_network_error
+    - provider_rate_limit
+    - provider_temporary_unavailable
+  retry_never_on:
+    - invalid_authority
+    - invalid_consent
+    - prohibited_data
+    - authentication_rejected
+    - contract_validation_failure
+  maximum_concurrent_requests_per_user: 1
+  maximum_concurrent_requests_per_profile: 8
+  queueing: bounded
+  provider_rate_limit_handling: defer_or_reject
+  local_core_resource_reservation_preserved: true
+
+offline_and_degradation:
+  offline_behavior: unavailable
+  sovereign_offline_behavior: prohibited
+  failure_scope: integration_capability_only
+  preserved_capabilities:
+    - local_ariane_navigation
+    - native_uckk_operation
+    - local_language_runtime
+    - local_component_workflows
+    - local_governance_when_profile_selected
+  blocked_capabilities:
+    - chatgpt_external_assistance
+  silent_substitute_allowed: false
+  alternate_external_provider_allowed: false
+  local_ai_fallback_allowed: false
+  queued_request_persistence: none
+  user_visible_status_required: true
+  recovery_condition: explicit_new_user_request_after_service_recovery
+
+receipts_and_observability:
+  request_receipt_required: true
+  provenance_receipt_required: true
+  adoption_receipt_required_when_accepted: true
+  rejection_evidence_required_when_reviewed: true
+  receipt_fields:
+    - request_id
+    - correlation_id
+    - integration_id
+    - operation_id
+    - requesting_actor_ref
+    - requesting_component_ref
+    - purpose
+    - transferred_data_class_summary
+    - provider_endpoint_ref
+    - provider_response_ref
+    - candidate_artifact_ref
+    - destination_component_ref
+    - terminal_result
+    - occurred_at
+  raw_request_payload_in_receipt: false
+  raw_response_payload_in_receipt: false
+  selected_audit_events:
+    - external_request_authorized
+    - external_request_sent
+    - external_response_received
+    - candidate_exported
+    - candidate_adopted
+    - candidate_rejected
+    - integration_request_blocked
+  metrics:
+    - requests_total
+    - responses_total
+    - blocked_requests_total
+    - provider_errors_total
+    - timeouts_total
+    - candidate_adoptions_total
+    - candidate_rejections_total
+    - request_duration
+  sensitive_payload_in_general_logs_allowed: false
+
+failure_contract:
+  - failure_code: INTEGRATION_PROFILE_UNSUPPORTED
+    condition: The effective profile or overlay does not permit the integration.
+    result: unavailable
+    preserved_state: all_native_authoritative_state
+    retry: only_after_profile_change_or_overlay_removal
+  - failure_code: INTEGRATION_USER_CONFIRMATION_MISSING
+    condition: The explicit transfer preview was not confirmed by the user.
+    result: blocked
+    preserved_state: source_and_destination_authoritative_state
+    retry: after_new_explicit_confirmation
+  - failure_code: INTEGRATION_PROHIBITED_DATA
+    condition: The transfer contains a prohibited data class or fails minimization.
+    result: blocked
+    preserved_state: source_and_destination_authoritative_state
+    retry: after_payload_is_reduced_and_reauthorized
+  - failure_code: INTEGRATION_CREDENTIAL_UNAVAILABLE
+    condition: The scoped provider credential cannot be resolved.
+    result: unavailable
+    preserved_state: all_native_capabilities
+    retry: after_credential_recovery
+  - failure_code: INTEGRATION_PROVIDER_UNAVAILABLE
+    condition: The provider cannot complete the bounded request.
+    result: unavailable
+    preserved_state: all_native_capabilities
+    retry: bounded_retry_or_new_user_request
+  - failure_code: INTEGRATION_RESPONSE_INVALID
+    condition: The external response fails the candidate contract or safety checks.
+    result: rejected
+    preserved_state: destination_authoritative_state
+    retry: with_new_explicit_request
+  - failure_code: INTEGRATION_PROVENANCE_FAILURE
+    condition: Required provenance cannot be created or retained.
+    result: candidate_non_adoptable
+    preserved_state: destination_authoritative_state
+    retry: after_receipt_path_recovery
+  - failure_code: INTEGRATION_ADOPTION_REJECTED
+    condition: The destination component or required reviewer rejects the candidate.
+    result: rejected
+    preserved_state: destination_previous_valid_state
+    retry: only_with_new_or_corrected_candidate
+
+lifecycle:
+  configuration_version: 1.0.0
+  activation_state: enabled_when_profile_and_user_select
+  content_frozen_for_release: true
+  release_channel: services
+  change_class_for_authority_or_transfer_change: major
+  impact_report_required_for_semantic_change: true
+  previous_compatible_configuration_retained: true
+  rollback_supported: true
+  forward_repair_required_when_rollback_unsafe: true
+  removal_behavior:
+    disable_adapter: true
+    revoke_credentials: true
+    remove_network_allowlist: true
+    preserve_required_receipts: true
+    preserve_candidate_artifacts_by_destination_policy: true
+    preserve_native_core: true
+
+validation:
+  conformance_claim: false
+  expected_checks:
+    - schema_validation
+    - integration_registry_alignment
+    - profile_applicability
+    - explicit_user_trigger
+    - transfer_minimization
+    - prohibited_data_rejection
+    - secret_reference_isolation
+    - closed_default_egress
+    - no_direct_authoritative_write
+    - candidate_classification
+    - destination_adoption_boundary
+    - offline_unavailability
+    - capability_scoped_degradation
+    - receipt_minimization
+    - adapter_removal_without_core_failure
+  expected_result: pass
+  required_test_ids: []
+  required_evidence_ids: []
+  unresolved_items: []
+
+traceability:
+  decision_ids:
+    - DEC-AI-001
+    - DEC-PROFILE-001
+    - DEC-DATA-001
+  lock_ids:
+    - LOCK-AI-001
+    - LOCK-AI-002
+    - LOCK-DATA-001
+    - LOCK-PROFILE-001
+  requirement_ids: []
+  test_ids: []
+  evidence_ids: []
+  exception_ids: []
+  document_refs:
+    - doc_id: DOC-SYS-010
+      path: 02-system/10-external-ai-surfaces.md
+    - doc_id: DOC-SYS-016
+      path: 02-system/16-external-integrations.md
+    - doc_id: DOC-SEC-011
+      path: 07-security/11-ai-boundaries.md
+    - doc_id: DOC-SEC-012
+      path: 07-security/12-external-integration-classification.md
+
+canonical_references:
+  - contracts/integration-types.contract.json
+  - generated/component-catalog.json
+  - generated/profile-catalog.json
+  - generated/component-catalog.json
+  - generated/requirements-index.json
+  - generated/assertion-index.json
+  - generated/traceability.json
+  - generated/test-catalog.json
+  - generated/evidence-catalog.json
+
+supersedes: []
+replaced_by: null

@@ -1,0 +1,635 @@
+{
+  "$schema": "../artifact-contracts/policy-bundle.schema.json",
+  "contract_type": "policy_bundle",
+  "contract_version": "1.0.0",
+  "artifact_id": "POLICY-BUNDLE-SOVEREIGN-BASELINE",
+  "artifact_class": "policy_bundle",
+  "artifact_version": "1.0.0",
+  "status": "published",
+  "release_channel": "governance",
+  "title": "Sovereign Governance Baseline",
+  "description": "Example immutable governance policy bundle for sovereign deployments. It demonstrates fail-closed decisions, explicit authority, component-data separation, controlled publication, bounded break-glass, external-AI candidate handling, and critical-transition receipts.",
+  "producer": {
+    "producer_identity_ref": "identity:governance-policy-publisher",
+    "producer_component_ref": "component:governance-policy-workbench",
+    "produced_at": "2026-08-03T18:03:00-04:00",
+    "environment_ref": "environment:governance-publication",
+    "toolchain_ref": "toolchain:policy-bundle-compiler:1.0.0",
+    "source_revision_ref": "source:governance-policy:git:8f4c1a2",
+    "production_receipt_ref": "PROV-RECEIPT-POLICY-0001"
+  },
+  "policy_scope": {
+    "scope_id": "policy-scope:sovereign-baseline",
+    "authority_domain_ref": "authority-domain:example-sovereign",
+    "tenant_refs": [
+      "tenant:example"
+    ],
+    "primary_profiles": [
+      "sovereign_linux_node",
+      "sovereign_hub"
+    ],
+    "overlays": [
+      "high_assurance",
+      "sovereign_offline"
+    ],
+    "environment_classes": [
+      "staging",
+      "production",
+      "recovery"
+    ],
+    "component_refs": [
+      "component:governance_policy_runtime",
+      "component:identity_and_trust",
+      "component:audit_broker",
+      "component:publication_gateway",
+      "component:resource_governor",
+      "component:uckk_platform"
+    ],
+    "capability_refs": [
+      "capability:governance_authorization",
+      "capability:controlled_publication",
+      "capability:critical_transition_receipts",
+      "capability:external_ai_candidate_import",
+      "capability:break_glass"
+    ]
+  },
+  "schema_version": "1.0.0",
+  "policy_model": {
+    "decision_states": [
+      "authorized",
+      "denied",
+      "indeterminate"
+    ],
+    "default_decision": "denied",
+    "indeterminate_effect": "denied",
+    "combining_algorithm": "deny_overrides",
+    "explicit_grant_required": true,
+    "resource_availability_creates_authority": false,
+    "identity_success_creates_authority": false
+  },
+  "rules": [
+    {
+      "rule_id": "POLICY-RULE-IDENTITY-NOT-AUTHORITY",
+      "version": "1.0.0",
+      "status": "active",
+      "priority": 100,
+      "effect": "deny",
+      "description": "Authentication or trust verification alone cannot authorize a protected business, governance, publication, or host action.",
+      "subject_selector": {
+        "subject_types": [
+          "human",
+          "service",
+          "node",
+          "component_instance"
+        ],
+        "identity_required": true
+      },
+      "action_selector": {
+        "action_classes": [
+          "protected_business_action",
+          "governance_mutation",
+          "publication",
+          "privileged_host_mutation"
+        ]
+      },
+      "resource_selector": {
+        "resource_classes": [
+          "protected"
+        ]
+      },
+      "conditions": [
+        {
+          "condition_id": "COND-AUTHORITY-REF-MISSING",
+          "operator": "is_empty",
+          "field_ref": "request.authority_refs"
+        }
+      ],
+      "obligations": [
+        {
+          "obligation_id": "OBL-RETURN-DENIAL-REASON",
+          "type": "return_reason_code",
+          "value": "explicit_authority_missing"
+        }
+      ],
+      "reason_code": "identity_is_not_authorization"
+    },
+    {
+      "rule_id": "POLICY-RULE-CROSS-COMPONENT-WRITE",
+      "version": "1.0.0",
+      "status": "active",
+      "priority": 110,
+      "effect": "deny",
+      "description": "A component cannot write directly to another component's authoritative source tables.",
+      "subject_selector": {
+        "subject_types": [
+          "service",
+          "component_instance"
+        ],
+        "identity_required": true
+      },
+      "action_selector": {
+        "action_classes": [
+          "database_write"
+        ]
+      },
+      "resource_selector": {
+        "resource_classes": [
+          "component_authoritative_store"
+        ]
+      },
+      "conditions": [
+        {
+          "condition_id": "COND-OWNER-MISMATCH",
+          "operator": "not_equal",
+          "left_field_ref": "subject.component_id",
+          "right_field_ref": "resource.canonical_owner_component_id"
+        }
+      ],
+      "obligations": [
+        {
+          "obligation_id": "OBL-USE-DECLARED-CONTRACT",
+          "type": "required_remediation",
+          "value": "use_declared_component_interface_gateway_event_or_artifact"
+        },
+        {
+          "obligation_id": "OBL-RECORD-DENIAL",
+          "type": "emit_decision_receipt",
+          "value": "decision_receipt"
+        }
+      ],
+      "reason_code": "cross_component_source_write_denied"
+    },
+    {
+      "rule_id": "POLICY-RULE-PUBLICATION-AUTHORITY",
+      "version": "1.0.0",
+      "status": "active",
+      "priority": 120,
+      "effect": "require",
+      "description": "Cross-domain publication requires an explicit Publication Gateway decision covering source, audience, destination, purpose, and disclosure.",
+      "subject_selector": {
+        "subject_types": [
+          "human",
+          "service",
+          "component_instance"
+        ],
+        "identity_required": true
+      },
+      "action_selector": {
+        "action_classes": [
+          "cross_domain_publication"
+        ]
+      },
+      "resource_selector": {
+        "resource_classes": [
+          "content_object",
+          "knowledge_artifact",
+          "uckk_rendition"
+        ]
+      },
+      "conditions": [
+        {
+          "condition_id": "COND-PUBLICATION-GATEWAY-DECISION",
+          "operator": "contains_authority_class",
+          "field_ref": "request.authority_refs",
+          "value": "publication_gateway_decision"
+        },
+        {
+          "condition_id": "COND-AUDIENCE-DECLARED",
+          "operator": "is_present",
+          "field_ref": "request.audience_ref"
+        },
+        {
+          "condition_id": "COND-DESTINATION-DECLARED",
+          "operator": "is_present",
+          "field_ref": "request.destination_ref"
+        }
+      ],
+      "obligations": [
+        {
+          "obligation_id": "OBL-PUBLICATION-RECEIPT",
+          "type": "emit_transition_receipt",
+          "value": "publication_receipt"
+        },
+        {
+          "obligation_id": "OBL-SELECTIVE-DISCLOSURE",
+          "type": "apply_disclosure_view",
+          "value": "audience_and_destination_scoped"
+        }
+      ],
+      "reason_code": "publication_authority_required"
+    },
+    {
+      "rule_id": "POLICY-RULE-EXTERNAL-AI-CANDIDATE",
+      "version": "1.0.0",
+      "status": "active",
+      "priority": 130,
+      "effect": "require",
+      "description": "Output from an approved external AI surface remains a candidate until controlled import, provenance verification, review, and component-level acceptance complete.",
+      "subject_selector": {
+        "subject_types": [
+          "external_integration"
+        ],
+        "identity_required": true
+      },
+      "action_selector": {
+        "action_classes": [
+          "external_ai_result_import"
+        ]
+      },
+      "resource_selector": {
+        "resource_classes": [
+          "candidate_content",
+          "candidate_metadata",
+          "candidate_command"
+        ]
+      },
+      "conditions": [
+        {
+          "condition_id": "COND-INTEGRATION-APPROVED",
+          "operator": "in",
+          "field_ref": "subject.integration_id",
+          "values": [
+            "chatgpt",
+            "suno",
+            "gamma",
+            "ariane_external_voice"
+          ]
+        },
+        {
+          "condition_id": "COND-PROVENANCE-PRESENT",
+          "operator": "is_present",
+          "field_ref": "request.provenance_receipt_ref"
+        },
+        {
+          "condition_id": "COND-ACCEPTANCE-STATE",
+          "operator": "equal",
+          "field_ref": "resource.acceptance_state",
+          "value": "candidate"
+        }
+      ],
+      "obligations": [
+        {
+          "obligation_id": "OBL-CONTROLLED-IMPORT",
+          "type": "route_to_workflow",
+          "value": "controlled_import_and_review"
+        },
+        {
+          "obligation_id": "OBL-NO-DIRECT-MUTATION",
+          "type": "prohibit_direct_mutation",
+          "value": true
+        }
+      ],
+      "reason_code": "external_ai_output_is_candidate"
+    },
+    {
+      "rule_id": "POLICY-RULE-BREAK-GLASS",
+      "version": "1.0.0",
+      "status": "active",
+      "priority": 140,
+      "effect": "require",
+      "description": "Break-glass use is bounded, human-authorized, time-limited, capability-scoped, visible, receipt-producing, and explicitly closed.",
+      "subject_selector": {
+        "subject_types": [
+          "human",
+          "recovery_operator"
+        ],
+        "identity_required": true
+      },
+      "action_selector": {
+        "action_classes": [
+          "break_glass_action"
+        ]
+      },
+      "resource_selector": {
+        "resource_classes": [
+          "protected"
+        ]
+      },
+      "conditions": [
+        {
+          "condition_id": "COND-BREAK-GLASS-AUTHORITY",
+          "operator": "contains_authority_class",
+          "field_ref": "request.authority_refs",
+          "value": "break_glass_authority"
+        },
+        {
+          "condition_id": "COND-EXPIRATION-PRESENT",
+          "operator": "is_present",
+          "field_ref": "request.expires_at"
+        },
+        {
+          "condition_id": "COND-CAPABILITY-SCOPE-PRESENT",
+          "operator": "not_empty",
+          "field_ref": "request.capability_scope"
+        }
+      ],
+      "obligations": [
+        {
+          "obligation_id": "OBL-VISIBLE-MODE",
+          "type": "display_authority_context",
+          "value": "break_glass"
+        },
+        {
+          "obligation_id": "OBL-BREAK-GLASS-RECEIPTS",
+          "type": "emit_receipts",
+          "value": [
+            "activation",
+            "use",
+            "expiration_or_revocation",
+            "closure"
+          ]
+        },
+        {
+          "obligation_id": "OBL-AUTOMATIC-EXPIRY",
+          "type": "enforce_expiration",
+          "value": true
+        }
+      ],
+      "reason_code": "bounded_break_glass_required"
+    },
+    {
+      "rule_id": "POLICY-RULE-CRITICAL-RECEIPT",
+      "version": "1.0.0",
+      "status": "active",
+      "priority": 150,
+      "effect": "require",
+      "description": "Critical policy, privilege, publication, activation, rollback, restore, migration, transfer, and recovery transitions require machine-readable receipts from the owning decision or commit boundary.",
+      "subject_selector": {
+        "subject_types": [
+          "human",
+          "service",
+          "component_instance"
+        ],
+        "identity_required": true
+      },
+      "action_selector": {
+        "action_classes": [
+          "policy_activation",
+          "privileged_host_mutation",
+          "publication",
+          "artifact_activation",
+          "artifact_rollback",
+          "restore",
+          "migration",
+          "external_transfer",
+          "recovery"
+        ]
+      },
+      "resource_selector": {
+        "resource_classes": [
+          "critical_transition_target"
+        ]
+      },
+      "conditions": [
+        {
+          "condition_id": "COND-TRANSITION-CRITICAL",
+          "operator": "equal",
+          "field_ref": "request.critical",
+          "value": true
+        }
+      ],
+      "obligations": [
+        {
+          "obligation_id": "OBL-OWNER-RECEIPT",
+          "type": "emit_owner_receipt",
+          "value": true
+        },
+        {
+          "obligation_id": "OBL-RECEIPT-CORRELATION",
+          "type": "require_correlation_id",
+          "value": true
+        }
+      ],
+      "reason_code": "critical_transition_receipt_required"
+    }
+  ],
+  "rule_order": [
+    "POLICY-RULE-IDENTITY-NOT-AUTHORITY",
+    "POLICY-RULE-CROSS-COMPONENT-WRITE",
+    "POLICY-RULE-PUBLICATION-AUTHORITY",
+    "POLICY-RULE-EXTERNAL-AI-CANDIDATE",
+    "POLICY-RULE-BREAK-GLASS",
+    "POLICY-RULE-CRITICAL-RECEIPT"
+  ],
+  "compatibility": {
+    "minimum_system_contract_version": "1.0.0",
+    "governance_policy_runtime_contract": {
+      "component_ref": "component:governance_policy_runtime",
+      "minimum_contract_version": "1.0.0"
+    },
+    "required_component_contracts": [
+      {
+        "component_ref": "component:identity_and_trust",
+        "minimum_contract_version": "1.0.0"
+      },
+      {
+        "component_ref": "component:audit_broker",
+        "minimum_contract_version": "1.0.0"
+      },
+      {
+        "component_ref": "component:publication_gateway",
+        "minimum_contract_version": "1.0.0"
+      }
+    ],
+    "target_profile_refs": [
+      "profile:sovereign_linux_node",
+      "profile:sovereign_hub",
+      "overlay:high_assurance",
+      "overlay:sovereign_offline"
+    ],
+    "release_set_constraints": {
+      "required_system_selection_ref": "system:release:2026.08.03",
+      "required_services_selection_ref": "services:release:2026.08.03",
+      "governance_selection_ref": "governance:policy:sovereign-baseline:1.0.0",
+      "minimum_knowledge_selection_ref": "knowledge:release:2026.08.03"
+    },
+    "conflicts": [
+      "policy-bundle:deprecated-permissive-cross-component-writes",
+      "policy-bundle:native-ai-baseline"
+    ],
+    "validation_evidence_refs": [
+      "EVID-POLICY-CONTRACT-001",
+      "EVID-POLICY-FAIL-CLOSED-001",
+      "EVID-POLICY-PUBLICATION-001",
+      "EVID-POLICY-BREAK-GLASS-001"
+    ]
+  },
+  "activation": {
+    "deployment_scoped": true,
+    "owner_component_ref": "component:governance_policy_runtime",
+    "authority_ref": "authority:governance-policy-activation",
+    "atomic": true,
+    "partial_policy_authoritative": false,
+    "effective_release_set_ref": "RELEASE-SET-2026.08.03-A",
+    "stages": [
+      "verify_artifact_identity",
+      "verify_integrity_and_signature",
+      "verify_signer_trust_scope",
+      "validate_policy_schema",
+      "validate_rule_references",
+      "validate_profile_and_release_compatibility",
+      "run_policy_test_suite",
+      "stage_policy",
+      "commit_policy_atomically",
+      "validate_active_policy",
+      "record_activation_receipt"
+    ],
+    "required_test_refs": [
+      "TEST-POLICY-SCHEMA-001",
+      "TEST-POLICY-FAIL-CLOSED-001",
+      "TEST-POLICY-SEPARATION-001",
+      "TEST-POLICY-PUBLICATION-001",
+      "TEST-POLICY-EXTERNAL-AI-001",
+      "TEST-POLICY-BREAK-GLASS-001",
+      "TEST-POLICY-RECEIPT-001"
+    ],
+    "activation_receipt_schema_ref": "contracts/artifact-contracts/decision-receipt.schema.json",
+    "preserve_previous_valid_policy_on_failure": true
+  },
+  "rollback": {
+    "supported": true,
+    "strategy": "restore_previous_policy_bundle",
+    "previous_artifact_ref": "POLICY-BUNDLE-SOVEREIGN-BASELINE@0.9.0",
+    "previous_artifact_digest": {
+      "algorithm": "sha256",
+      "value": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+    },
+    "data_rollback_required": false,
+    "validation_after_rollback": [
+      "policy_runtime_ready",
+      "active_policy_identity_matches_previous",
+      "fail_closed_default_active",
+      "critical_receipt_path_ready"
+    ],
+    "rollback_receipt_required": true,
+    "forward_repair_supported": true,
+    "forward_repair_artifact_class": "policy_bundle"
+  },
+  "migration": {
+    "migration_type": "policy_schema",
+    "strategy": "no_data_change",
+    "from_schema_version": "0.9.0",
+    "to_schema_version": "1.0.0",
+    "deterministic": true,
+    "migration_artifact_ref": "artifact:policy-migration:0.9.0-to-1.0.0",
+    "verification_evidence_refs": [
+      "EVID-POLICY-MIGRATION-001"
+    ]
+  },
+  "integrity": {
+    "manifest_digest": {
+      "algorithm": "sha256",
+      "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "payload_digest": {
+      "algorithm": "sha256",
+      "value": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    },
+    "canonical_serialization": "jcs",
+    "immutable_after_publication": true
+  },
+  "signatures": [
+    {
+      "signature_id": "signature:policy-bundle:sovereign-baseline:1.0.0",
+      "signer_identity_ref": "identity:governance-policy-signer",
+      "trust_scope_ref": "trust-scope:governance:policy-bundle:production",
+      "algorithm": "ed25519",
+      "signature_value": "QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUE=",
+      "signed_digest": {
+        "algorithm": "sha256",
+        "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "intended_use": "governance_policy_bundle_publication",
+      "signed_at": "2026-08-03T18:03:00-04:00",
+      "verification_ref": "verification:policy-bundle-signature:0001"
+    }
+  ],
+  "provenance": {
+    "provenance_receipt_ref": "PROV-RECEIPT-POLICY-0001",
+    "source_refs": [
+      "source:governance-policy:git:8f4c1a2",
+      "source:decisions.registry:1.0.0",
+      "source:locks.registry:1.0.0"
+    ],
+    "toolchain_ref": "toolchain:policy-bundle-compiler:1.0.0",
+    "environment_ref": "environment:governance-publication",
+    "test_evidence_refs": [
+      "EVID-POLICY-CONTRACT-001",
+      "EVID-POLICY-FAIL-CLOSED-001",
+      "EVID-POLICY-PUBLICATION-001",
+      "EVID-POLICY-BREAK-GLASS-001"
+    ],
+    "publication_receipt_ref": "receipt:publication:policy-bundle:0001"
+  },
+  "receipt_policy": {
+    "required_transition_types": [
+      "policy_verification",
+      "policy_activation",
+      "policy_rollback",
+      "policy_forward_repair",
+      "policy_supersession",
+      "policy_retirement"
+    ],
+    "decision_receipt_schema_ref": "contracts/artifact-contracts/decision-receipt.schema.json",
+    "durability": "durable_before_commit",
+    "false_success_reporting": false,
+    "selective_disclosure": true
+  },
+  "validity": {
+    "issued_at": "2026-08-03T18:03:00-04:00",
+    "not_before": "2026-08-03T18:03:00-04:00",
+    "expires_at": "2027-08-03T18:03:00-04:00",
+    "revocation_check_required": true
+  },
+  "retention": {
+    "retention_class": "governance_policy_lifecycle",
+    "retain_active_version": true,
+    "retain_previous_rollback_version": true,
+    "retain_provenance_and_receipts": true,
+    "retired_identifier_reserved": true,
+    "minimum_retention_until": "2033-08-03T18:03:00-04:00"
+  },
+  "disclosure": {
+    "artifact_classification": "operator_restricted",
+    "ordinary_view_fields": [
+      "artifact_id",
+      "artifact_version",
+      "release_channel",
+      "title",
+      "status",
+      "policy_scope",
+      "rule_order",
+      "compatibility",
+      "validity"
+    ],
+    "restricted_fields": [
+      "producer",
+      "signatures",
+      "provenance",
+      "authority_refs"
+    ],
+    "redaction_policy_ref": "policy:policy-bundle-disclosure"
+  },
+  "authority_refs": [
+    "authority:governance-policy-publication",
+    "authority:governance-policy-activation"
+  ],
+  "evidence_refs": [
+    "EVID-POLICY-CONTRACT-001",
+    "EVID-POLICY-FAIL-CLOSED-001",
+    "EVID-POLICY-PUBLICATION-001",
+    "EVID-POLICY-BREAK-GLASS-001",
+    "EVID-POLICY-MIGRATION-001"
+  ],
+  "canonical_refs": [
+    "contracts/artifact-contracts/policy-bundle.schema.json",
+    "contracts/artifact-classes.contract.json#/artifact_classes/policy_bundle",
+    "contracts/release-channels.contract.json#/channels/governance",
+    "contracts/components/governance-policy-runtime.component.json",
+    "contracts/components/identity-and-trust.component.json",
+    "contracts/components/audit-broker.component.json",
+    "contracts/components/publication-gateway.component.json"
+  ],
+  "example": true,
+  "authority": "non_authoritative_example"
+}

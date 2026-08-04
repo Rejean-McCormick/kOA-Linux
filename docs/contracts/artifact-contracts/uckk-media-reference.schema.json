@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.koa.local/artifact-contracts/uckk-media-reference.schema.json",
+  "type": "object",
+  "required": [
+    "uckk_object_id",
+    "version_id",
+    "dimension_ids",
+    "content_ref",
+    "sha256",
+    "media_type",
+    "availability"
+  ],
+  "properties": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "availability": {
+      "enum": [
+        "local",
+        "external_reference",
+        "offline",
+        "unavailable"
+      ]
+    }
+  },
+  "additionalProperties": true
+}

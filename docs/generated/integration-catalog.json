@@ -1,0 +1,33 @@
+{
+  "generated": true,
+  "records": [
+    {
+      "id": "ariane-voice",
+      "path": "contracts/integrations/ariane-voice.integration.json",
+      "title": "Ariane Voice",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    {
+      "id": "chatgpt",
+      "path": "contracts/integrations/chatgpt.integration.json",
+      "title": "ChatGPT",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    {
+      "id": "gamma",
+      "path": "contracts/integrations/gamma.integration.json",
+      "title": "Gamma",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    {
+      "id": "suno",
+      "path": "contracts/integrations/suno.integration.json",
+      "title": "Suno",
+      "status": "active",
+      "version": "1.0.0"
+    }
+  ]
+}

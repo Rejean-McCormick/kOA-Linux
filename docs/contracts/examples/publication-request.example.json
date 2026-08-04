@@ -1,0 +1,182 @@
+{
+  "$schema": "../artifact-contracts/publication-request.schema.json",
+  "schema_version": "1.0.0",
+  "artifact_class": "publication_request",
+  "request_id": "publication-request:orgo-community-garden-progress-20260803-001",
+  "request_version": "1.0.0",
+  "status": "submitted",
+  "created_at": "2026-08-03T18:03:00-04:00",
+  "expires_at": "2026-08-10T18:03:00-04:00",
+  "requester": {
+    "subject_id": "service:orgo-publication-worker:example",
+    "subject_type": "service",
+    "component_id": "orgo",
+    "service_instance_id": "service:orgo-publication-worker:example",
+    "contract_ref": "contracts/components/orgo.component.json",
+    "authorization_ref": "receipt:orgo-publication-authorization-20260803-001"
+  },
+  "gateway": {
+    "component_id": "publication_gateway",
+    "contract_ref": "contracts/components/publication-gateway.component.json",
+    "requested_operation": "cross_domain_publish"
+  },
+  "source": {
+    "component_id": "orgo",
+    "domain_id": "orgo:operations",
+    "record_ref": "orgo:initiative:community-garden-2026:progress-summary:2026-08-03",
+    "record_version": "7",
+    "source_owner_contract_ref": "contracts/components/orgo.component.json",
+    "correlation_id": "correlation:community-garden-progress-20260803"
+  },
+  "destination": {
+    "component_id": "konnaxion",
+    "domain_id": "konnaxion:public_common",
+    "audience": "public",
+    "import_contract_ref": "contracts/components/konnaxion.component.json",
+    "publication_surface": "public_progress_updates"
+  },
+  "publication_subject": {
+    "subject_id": "initiative:community-garden-2026",
+    "subject_type": "initiative_progress_summary",
+    "title": "Community Garden Initiative Progress",
+    "language": "en"
+  },
+  "candidate_content": {
+    "content_id": "publication-candidate:community-garden-progress-20260803",
+    "content_type": "progress_summary",
+    "media_type": "application/json",
+    "content_digest": "sha256:9f3a1203a2c0b35f8a8778a11a4f5297dcb82af6262fe63227d224709f428c3a",
+    "digest_scope": "canonical_candidate_content",
+    "staging_ref": "staging:publication:community-garden-progress-20260803",
+    "immutable_candidate": true,
+    "source_record_refs": [
+      "orgo:initiative:community-garden-2026:milestone:site-preparation",
+      "orgo:initiative:community-garden-2026:milestone:volunteer-registration"
+    ]
+  },
+  "classification": {
+    "source_classification": "authorized_internal",
+    "requested_target_classification": "public",
+    "classification_authority_ref": "contracts/components/governance-policy-runtime.component.json",
+    "contains_personal_data": false,
+    "contains_secret_values": false,
+    "contains_security_sensitive_data": false,
+    "contains_restricted_provenance": false,
+    "contains_cultural_rights_material": false,
+    "unknown_classification_behavior": "block"
+  },
+  "disclosure_policy": {
+    "policy_id": "policy:public-progress-summary",
+    "policy_version": "1.0.0",
+    "policy_bundle_ref": "contracts/examples/policy-bundle.example.json",
+    "allowed_fields": [
+      "/title",
+      "/summary",
+      "/milestones_completed",
+      "/next_public_milestone",
+      "/public_contact_channel"
+    ],
+    "prohibited_fields": [
+      "/internal_notes",
+      "/private_contact_details",
+      "/service_credentials",
+      "/security_controls",
+      "/unreleased_financial_details"
+    ],
+    "required_redactions": [
+      {
+        "field": "/contributors/*/private_contact_details",
+        "method": "remove",
+        "reason_code": "PRIVATE_CONTACT_DATA"
+      }
+    ],
+    "transformations": [
+      {
+        "transformation_id": "transformation:public-progress-summary-v1",
+        "method": "deterministic_field_projection",
+        "input_schema_ref": "contracts/components/orgo.component.json",
+        "output_schema_ref": "contracts/components/konnaxion.component.json",
+        "reproducible": true
+      }
+    ],
+    "ai_assistance_used": false,
+    "binding_validation": "deterministic"
+  },
+  "rights_and_consent": {
+    "rights_review_required": false,
+    "consent_required": false,
+    "rights_policy_ref": "contracts/artifact-contracts/cultural-rights-policy.schema.json",
+    "review_outcome": "not_applicable"
+  },
+  "approvals": {
+    "approval_mode": "single_human",
+    "required_roles": [
+      "orgo_publication_owner"
+    ],
+    "approvals": [
+      {
+        "approval_id": "approval:orgo-publication-owner-20260803-001",
+        "approver_id": "user:publication-owner:example",
+        "approver_role": "orgo_publication_owner",
+        "decision": "approved",
+        "decided_at": "2026-08-03T18:02:30-04:00",
+        "decision_receipt_ref": "receipt:orgo-publication-approval-20260803-001"
+      }
+    ]
+  },
+  "publication_controls": {
+    "idempotency_key": "orgo|community-garden-2026|progress-summary|2026-08-03|v7",
+    "direct_cross_component_write_allowed": false,
+    "shared_mutable_storage_allowed": false,
+    "gateway_import_required": true,
+    "public_receipt_required": true,
+    "restricted_receipt_required": true,
+    "withdrawal_supported": true,
+    "supersession_supported": true,
+    "withdrawal_subject_ref": "publication:community-garden-progress-20260803",
+    "supersedes_publication_ref": null
+  },
+  "verification": {
+    "required_checks": [
+      "schema_validation",
+      "source_identity_validation",
+      "source_owner_validation",
+      "candidate_digest_validation",
+      "data_classification_validation",
+      "disclosure_policy_validation",
+      "rights_and_consent_validation",
+      "redaction_validation",
+      "transformation_reproducibility_validation",
+      "approval_validation",
+      "destination_contract_validation",
+      "idempotency_validation",
+      "no_direct_cross_component_write",
+      "no_sensitive_field_leakage"
+    ],
+    "failure_result": "blocked",
+    "unknown_classification_result": "blocked",
+    "missing_approval_result": "blocked",
+    "publication_receipt_schema_ref": "contracts/artifact-contracts/publication-receipt.schema.json",
+    "decision_receipt_schema_ref": "contracts/artifact-contracts/decision-receipt.schema.json"
+  },
+  "traceability": {
+    "decision_refs": [
+      "DEC-GATE-001",
+      "DEC-DATA-001"
+    ],
+    "lock_refs": [
+      "LOCK-GATE-001",
+      "LOCK-DATA-001"
+    ],
+    "test_refs": [
+      "TEST-GATE-PUBLICATION-001",
+      "TEST-GATE-PUBLICATION-002"
+    ],
+    "evidence_refs": [
+      "EVID-GATE-PUBLICATION-001",
+      "EVID-GATE-PUBLICATION-002"
+    ]
+  },
+  "example": true,
+  "authority": "non_authoritative_example"
+}

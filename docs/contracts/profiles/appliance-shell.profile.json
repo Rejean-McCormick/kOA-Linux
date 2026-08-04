@@ -1,0 +1,462 @@
+{
+  "$schema": "../../schemas/deployment-profile.schema.json",
+  "profile_id": "appliance_shell",
+  "profile_type": "overlay",
+  "version": "1.0.0",
+  "status": "active",
+  "language": "en",
+  "title": "Appliance Shell Overlay",
+  "description": "A composable Linux graphical-shell overlay that replaces a general-purpose desktop session with a constrained local kOA experience based on a minimal Wayland compositor, Ariane local navigation, and an optional embedded web interface.",
+  "scope": {
+    "kind": "profile_overlay",
+    "overlays": [
+      "appliance_shell"
+    ]
+  },
+  "owner": "system-architecture",
+  "effective_at": "2026-08-03T16:13:00-04:00",
+  "canonical_refs": [
+    "generated/decision-index.json",
+    "contracts/system.contract.json#/profile_model",
+    "contracts/system.contract.json#/operating_modes",
+    "contracts/system.contract.json#/ariane",
+    "generated/profile-catalog.json",
+    "generated/component-catalog.json",
+    "contracts/components/ariane-runtime.component.json",
+    "generated/requirements-index.json",
+    "generated/assertion-index.json",
+    "generated/traceability.json",
+    "generated/exception-index.json"
+  ],
+  "decision_ids": [
+    "DEC-PROFILE-001",
+    "DEC-SHELL-001",
+    "DEC-ARI-001",
+    "DEC-AI-001"
+  ],
+  "adr_ids": [
+    "ADR-003",
+    "ADR-004",
+    "ADR-021",
+    "ADR-023"
+  ],
+  "requirement_ids": [
+    "REQ-PROFILE-APP-001",
+    "REQ-PROFILE-APP-002",
+    "REQ-PROFILE-APP-003",
+    "REQ-PROFILE-APP-004",
+    "REQ-PROFILE-APP-005",
+    "REQ-PROFILE-APP-006",
+    "REQ-PROFILE-APP-007",
+    "REQ-PROFILE-APP-008",
+    "REQ-PROFILE-APP-009",
+    "REQ-PROFILE-APP-010",
+    "REQ-PROFILE-APP-011",
+    "REQ-PROFILE-APP-012",
+    "REQ-PROFILE-APP-013",
+    "REQ-PROFILE-APP-014",
+    "REQ-PROFILE-APP-015",
+    "REQ-PROFILE-APP-016",
+    "REQ-PROFILE-APP-017",
+    "REQ-PROFILE-APP-018",
+    "REQ-PROFILE-APP-019",
+    "REQ-PROFILE-APP-020"
+  ],
+  "lock_ids": [
+    "LOCK-PROFILE-001",
+    "LOCK-PROFILE-002",
+    "LOCK-IMPL-002",
+    "LOCK-AI-001",
+    "LOCK-AI-002",
+    "LOCK-ARI-001",
+    "LOCK-ARI-002",
+    "LOCK-LIFE-001",
+    "LOCK-LIFE-002"
+  ],
+  "exception_ids": [],
+  "composition": {
+    "composable": true,
+    "composition_role": "graphical_shell_overlay",
+    "compatible_base_profiles": [
+      "user_lightweight",
+      "sovereign_linux_node"
+    ],
+    "incompatible_base_profiles": [
+      "developer_linux_workstation",
+      "developer_windows_wsl",
+      "sovereign_hub",
+      "build_farm",
+      "control_plane"
+    ],
+    "required_host_properties": {
+      "operating_system_family": "linux",
+      "local_graphical_seat": true,
+      "wayland_capable": true,
+      "local_input_available": true
+    },
+    "required_base_capabilities": [
+      "interactive_user",
+      "ariane_local_navigation"
+    ],
+    "inheritance": {
+      "inherits_base_profile_components": true,
+      "inherits_base_profile_resources": true,
+      "inherits_base_profile_security": true,
+      "inherits_base_profile_offline_envelope": true,
+      "overlay_can_broaden_authority": false,
+      "overlay_can_broaden_data_ownership": false,
+      "overlay_can_broaden_external_integrations": false,
+      "overlay_precedence": [
+        "explicit_overlay_restriction",
+        "compatible_base_profile_rule",
+        "global_system_rule"
+      ]
+    },
+    "conflicts": [
+      {
+        "conflict_id": "PROFILE-CONFLICT-APP-001",
+        "selector": "desktop.full_general_purpose_environment",
+        "result": "composition_rejected"
+      },
+      {
+        "conflict_id": "PROFILE-CONFLICT-APP-002",
+        "selector": "operating_modes.development_workspace",
+        "result": "composition_rejected"
+      },
+      {
+        "conflict_id": "PROFILE-CONFLICT-APP-003",
+        "selector": "interface.unrestricted_external_navigation",
+        "result": "composition_rejected"
+      }
+    ]
+  },
+  "operating_modes": {
+    "permitted_primary_modes": [
+      "interactive_user",
+      "unattended_service",
+      "maintenance",
+      "recovery"
+    ],
+    "prohibited_primary_modes": [
+      "development_workspace"
+    ],
+    "connectivity_states": [
+      "connected",
+      "offline",
+      "restricted_connectivity"
+    ],
+    "capability_health_states": [
+      "nominal",
+      "degraded",
+      "suspended"
+    ],
+    "authority_contexts": [
+      "ordinary",
+      "break_glass",
+      "authority_blocked"
+    ],
+    "ordinary_session_mode": "interactive_user",
+    "maintenance_entry": "explicit_authorized_transition",
+    "recovery_entry": "explicit_authorized_transition",
+    "break_glass_changes_primary_mode": false
+  },
+  "shell": {
+    "session_type": "dedicated_appliance_session",
+    "display_protocol": "wayland",
+    "compositor": {
+      "class": "minimal_wayland_compositor",
+      "full_desktop_environment": false,
+      "desktop_environment_packages_required": false,
+      "gnome_allowed_in_overlay_session": false,
+      "kde_plasma_allowed_in_overlay_session": false,
+      "window_management": "application_allowlist"
+    },
+    "interface": {
+      "primary_experience": "ariane_local_navigation",
+      "embedded_web_interface": {
+        "permitted": true,
+        "required": false,
+        "content_origin_policy": "declared_local_or_explicitly_approved_origins",
+        "unrestricted_browser_chrome": false,
+        "unrestricted_external_navigation": false
+      },
+      "supported_input_methods": [
+        "keyboard",
+        "pointer",
+        "touch",
+        "accessibility_controls",
+        "local_deterministic_commands"
+      ],
+      "external_voice": {
+        "available": "optional",
+        "authority": "approved_external_ariane_voice",
+        "failure_effect": "voice_capability_unavailable_only",
+        "silent_substitution": false
+      },
+      "local_navigation_requires_external_ai": false,
+      "general_purpose_desktop_behavior": "restricted"
+    },
+    "application_surface": {
+      "launch_policy": "explicit_allowlist",
+      "arbitrary_application_launcher": false,
+      "unrestricted_terminal_in_ordinary_session": false,
+      "package_manager_ui_in_ordinary_session": false,
+      "host_administration_ui_in_ordinary_session": false,
+      "development_tools_in_ordinary_session": false,
+      "external_url_handoff": "explicit_controlled_action",
+      "file_selection": "capability_scoped",
+      "clipboard": "capability_scoped",
+      "drag_and_drop": "capability_scoped"
+    },
+    "session_controls": {
+      "user_visible_actions": [
+        "navigate",
+        "open_allowed_capability",
+        "return_home",
+        "lock_session",
+        "end_session",
+        "request_restart",
+        "request_shutdown",
+        "open_accessibility_controls",
+        "view_system_status"
+      ],
+      "privileged_actions_require_separate_authority": true,
+      "maintenance_controls_hidden_during_ordinary_session": true,
+      "recovery_controls_hidden_during_ordinary_session": true
+    }
+  },
+  "components": {
+    "required": [
+      {
+        "component_id": "ariane-runtime",
+        "role": "local_navigation_and_shell_orchestration",
+        "always_available_in_ordinary_session": true
+      },
+      {
+        "component_id": "identity-and-trust",
+        "role": "session_and_service_identity",
+        "always_available_in_ordinary_session": true
+      },
+      {
+        "component_id": "resource-governor",
+        "role": "interactive_resource_protection",
+        "always_available_in_ordinary_session": true
+      }
+    ],
+    "conditional": [
+      {
+        "component_id": "governance-policy-runtime",
+        "condition": "required_by_composed_base_profile_or_active_policy",
+        "role": "governance_authorization"
+      },
+      {
+        "component_id": "audit-broker",
+        "condition": "required_by_composed_base_profile_or_receipt_policy",
+        "role": "receipt_and_evidence_services"
+      },
+      {
+        "component_id": "koa-node-agent",
+        "condition": "required_by_composed_base_profile",
+        "role": "node_lifecycle_and_status"
+      }
+    ],
+    "ordinary_session_exclusions": [
+      "gf-wordbench",
+      "sentient",
+      "development-containers",
+      "compiler-toolchains",
+      "unrestricted-host-shell"
+    ],
+    "base_profile_component_ownership_preserved": true
+  },
+  "capabilities": {
+    "required": [
+      "ariane_local_navigation",
+      "deterministic_local_commands",
+      "session_lock",
+      "truthful_capability_status",
+      "accessible_input",
+      "safe_degradation",
+      "authorized_maintenance_entry",
+      "authorized_recovery_entry"
+    ],
+    "optional": [
+      "ariane_external_voice",
+      "embedded_local_web_interface",
+      "controlled_external_link_handoff"
+    ],
+    "prohibited": [
+      "unrestricted_general_purpose_desktop",
+      "unrestricted_application_launch",
+      "unrestricted_terminal_access",
+      "automatic_external_ai_invocation",
+      "silent_external_voice_substitution",
+      "ordinary_session_host_mutation",
+      "ordinary_session_development_workspace",
+      "ordinary_session_package_installation"
+    ],
+    "external_ai_baseline_dependency": false
+  },
+  "security": {
+    "ordinary_session": {
+      "least_privilege": true,
+      "privileged_processes_exposed_to_session": false,
+      "direct_host_mutation": false,
+      "direct_cross_component_data_writes": false,
+      "unrestricted_local_socket_access": false,
+      "unrestricted_device_access": false,
+      "secrets_exposed_to_interface": false
+    },
+    "maintenance_and_recovery": {
+      "separate_authority_required": true,
+      "separate_entry_flow_required": true,
+      "visible_mode_indicator_required": true,
+      "receipt_required_for_critical_transitions": true,
+      "automatic_return_to_ordinary_session": "after_validated_completion"
+    },
+    "network": {
+      "default_ui_origin": "local",
+      "external_origins": "explicit_allowlist",
+      "unrestricted_web_browsing": false,
+      "external_transfer_requires_declared_integration": true,
+      "external_ai_transfer_requires_explicit_user_initiation": true
+    },
+    "fail_closed": {
+      "unknown_application": "deny_launch",
+      "unknown_origin": "deny_navigation",
+      "missing_session_authority": "deny_session_activation",
+      "missing_privileged_authority": "deny_privileged_action",
+      "invalid_shell_artifact": "preserve_last_valid_shell_or_enter_recovery"
+    }
+  },
+  "offline_behavior": {
+    "local_shell_available": true,
+    "ariane_local_navigation_available": true,
+    "external_voice_available": false,
+    "external_ai_available": false,
+    "external_navigation_available": false,
+    "base_profile_offline_capabilities_preserved": true,
+    "queued_external_actions": "explicit_only_and_reevaluated_before_execution",
+    "false_success_reporting": false
+  },
+  "resource_policy": {
+    "inherits_base_profile_budget": true,
+    "interactive_priority": true,
+    "shell_process_class": "interactive_critical",
+    "background_workers": "base_profile_governed",
+    "heavy_jobs": "base_profile_governed",
+    "resource_pressure_response": [
+      "suspend_optional_background_work",
+      "preserve_ariane_local_navigation",
+      "preserve_session_status_and_exit_controls",
+      "degrade_optional_embedded_content",
+      "enter_declared_recovery_when_shell_integrity_is_lost"
+    ],
+    "resource_availability_creates_authority": false
+  },
+  "lifecycle": {
+    "activation": {
+      "artifact_verification_required": true,
+      "compatibility_validation_required": true,
+      "atomic_activation_required": true,
+      "last_valid_shell_preserved_on_failure": true
+    },
+    "rollback": {
+      "required": true,
+      "target": "last_valid_shell_configuration"
+    },
+    "forward_repair": {
+      "permitted": true,
+      "requires_declared_repair_plan": true
+    },
+    "session_start": [
+      "verify_active_profile_composition",
+      "verify_shell_artifacts",
+      "verify_local_navigation",
+      "verify_input_and_accessibility",
+      "verify_status_and_exit_controls",
+      "activate_restricted_session"
+    ],
+    "session_failure": [
+      "preserve_authoritative_application_state",
+      "show_truthful_local_failure_surface_when_available",
+      "restart_bounded_shell_components",
+      "enter_recovery_when_integrity_or_repeated_startup_checks_fail"
+    ],
+    "fallback_to_unrestricted_desktop": false
+  },
+  "conformance": {
+    "claim_id": "CLAIM-PROFILE-APPLIANCE-SHELL-001",
+    "claim_type": "profile_overlay",
+    "claim_statement": "The composed deployment provides a restricted appliance-style graphical session without converting appliance-specific shell choices into global Linux requirements.",
+    "required_tests": [
+      "TEST-PROFILE-APP-001",
+      "TEST-PROFILE-APP-002",
+      "TEST-PROFILE-APP-003",
+      "TEST-PROFILE-APP-004",
+      "TEST-PROFILE-APP-005",
+      "TEST-PROFILE-APP-006",
+      "TEST-PROFILE-APP-007",
+      "TEST-PROFILE-APP-008",
+      "TEST-PROFILE-APP-009",
+      "TEST-PROFILE-APP-010",
+      "TEST-PROFILE-APP-011",
+      "TEST-PROFILE-APP-012",
+      "TEST-PROFILE-APP-013",
+      "TEST-PROFILE-APP-014",
+      "TEST-PROFILE-APP-015"
+    ],
+    "required_evidence_classes": [
+      "profile_contract_validation",
+      "profile_composition_validation",
+      "shell_activation_test",
+      "application_allowlist_test",
+      "offline_navigation_test",
+      "external_ai_independence_test",
+      "maintenance_recovery_separation_test",
+      "rollback_test",
+      "accessibility_test",
+      "resource_pressure_test"
+    ],
+    "claim_blocking_conditions": [
+      "incompatible_base_profile",
+      "full_desktop_environment_active_in_overlay_session",
+      "development_workspace_available_in_ordinary_session",
+      "unrestricted_terminal_available_in_ordinary_session",
+      "unrestricted_external_navigation",
+      "ariane_local_navigation_requires_external_ai",
+      "shell_failure_opens_unrestricted_desktop",
+      "missing_atomic_activation_or_rollback",
+      "missing_required_test_or_evidence"
+    ]
+  },
+  "validation": {
+    "schema_validation": true,
+    "canonical_reference_validation": true,
+    "decision_closure_validation": true,
+    "lock_validation": true,
+    "profile_composition_validation": true,
+    "component_boundary_validation": true,
+    "capability_membership_validation": true,
+    "offline_behavior_validation": true,
+    "resource_policy_validation": true,
+    "lifecycle_validation": true,
+    "test_and_evidence_validation": true,
+    "expected_failure_codes": [
+      "profile_overlay_base_incompatible",
+      "profile_overlay_inheritance_implicit",
+      "appliance_shell_full_desktop_enabled",
+      "appliance_shell_development_mode_enabled",
+      "appliance_shell_unrestricted_terminal_enabled",
+      "appliance_shell_unrestricted_navigation_enabled",
+      "appliance_shell_external_ai_baseline_dependency",
+      "appliance_shell_local_navigation_unavailable",
+      "appliance_shell_privilege_boundary_invalid",
+      "appliance_shell_offline_behavior_invalid",
+      "appliance_shell_resource_policy_invalid",
+      "appliance_shell_atomic_activation_not_proven",
+      "appliance_shell_unrestricted_desktop_fallback",
+      "profile_conformance_evidence_incomplete"
+    ]
+  }
+}

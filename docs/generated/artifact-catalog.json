@@ -1,0 +1,124 @@
+{
+  "generated": true,
+  "records": [
+    {
+      "id": "https://schemas.koa.local/artifact-contracts/cultural-rights-policy.schema.json",
+      "path": "contracts/artifact-contracts/cultural-rights-policy.schema.json",
+      "title": "kOA Cultural Rights Policy Artifact",
+      "status": null,
+      "version": null
+    },
+    {
+      "id": "https://schemas.koa.local/artifact-contracts/decision-receipt.schema.json",
+      "path": "contracts/artifact-contracts/decision-receipt.schema.json",
+      "title": "kOA Decision Receipt",
+      "status": null,
+      "version": null
+    },
+    {
+      "id": "https://schemas.koa.local/artifact-contracts/developer-workspace.schema.json",
+      "path": "contracts/artifact-contracts/developer-workspace.schema.json",
+      "title": "kOA Developer Workspace Manifest",
+      "status": null,
+      "version": null
+    },
+    {
+      "id": "https://schemas.koa.local/artifact-contracts/integration-manifest.schema.json",
+      "path": "contracts/artifact-contracts/integration-manifest.schema.json",
+      "title": "kOA Integration Manifest Schema",
+      "status": null,
+      "version": null
+    },
+    {
+      "id": "https://schemas.koa.local/artifact-contracts/language-pack.schema.json",
+      "path": "contracts/artifact-contracts/language-pack.schema.json",
+      "title": "kOA Language Runtime Pack Artifact Contract",
+      "status": null,
+      "version": null
+    },
+    {
+      "id": "https://schemas.koa.local/artifact-contracts/node-profile.schema.json",
+      "path": "contracts/artifact-contracts/node-profile.schema.json",
+      "title": "kOA Node Profile Artifact",
+      "status": null,
+      "version": null
+    },
+    {
+      "id": "https://schemas.koa.local/artifact-contracts/offline-bundle.schema.json",
+      "path": "contracts/artifact-contracts/offline-bundle.schema.json",
+      "title": "kOA Offline Bundle",
+      "status": null,
+      "version": null
+    },
+    {
+      "id": "https://schemas.koa.local/artifact-contracts/policy-bundle.schema.json",
+      "path": "contracts/artifact-contracts/policy-bundle.schema.json",
+      "title": "kOA Governance Policy Bundle",
+      "status": null,
+      "version": null
+    },
+    {
+      "id": "https://schemas.koa.local/artifact-contracts/provenance-receipt.schema.json",
+      "path": "contracts/artifact-contracts/provenance-receipt.schema.json",
+      "title": "kOA Provenance Receipt",
+      "status": null,
+      "version": null
+    },
+    {
+      "id": "https://schemas.koa.local/artifact-contracts/publication-receipt.schema.json",
+      "path": "contracts/artifact-contracts/publication-receipt.schema.json",
+      "title": "kOA Publication Receipt",
+      "status": null,
+      "version": null
+    },
+    {
+      "id": "https://schemas.koa.local/artifact-contracts/publication-request.schema.json",
+      "path": "contracts/artifact-contracts/publication-request.schema.json",
+      "title": "kOA Publication Request",
+      "status": null,
+      "version": null
+    },
+    {
+      "id": "https://schemas.koa.local/artifact-contracts/release-set.schema.json",
+      "path": "contracts/artifact-contracts/release-set.schema.json",
+      "title": "kOA Release Set",
+      "status": null,
+      "version": null
+    },
+    {
+      "id": "https://schemas.koa.local/artifact-contracts/resource-envelope.schema.json",
+      "path": "contracts/artifact-contracts/resource-envelope.schema.json",
+      "title": "kOA Resource Envelope",
+      "status": null,
+      "version": null
+    },
+    {
+      "id": "https://schemas.koa.local/artifact-contracts/runtime-pack.schema.json",
+      "path": "contracts/artifact-contracts/runtime-pack.schema.json",
+      "title": "kOA Runtime Pack",
+      "status": null,
+      "version": null
+    },
+    {
+      "id": "https://schemas.koa.local/artifact-contracts/sovereignty-bundle.schema.json",
+      "path": "contracts/artifact-contracts/sovereignty-bundle.schema.json",
+      "title": "kOA Sovereignty Bundle Schema",
+      "status": null,
+      "version": null
+    },
+    {
+      "id": "https://schemas.koa.local/artifact-contracts/uckk-media-reference.schema.json",
+      "path": "contracts/artifact-contracts/uckk-media-reference.schema.json",
+      "title": "https://schemas.koa.local/artifact-contracts/uckk-media-reference.schema.json",
+      "status": null,
+      "version": null
+    },
+    {
+      "id": "https://schemas.koa.local/artifact-contracts/workspace-port-allocation.schema.json",
+      "path": "contracts/artifact-contracts/workspace-port-allocation.schema.json",
+      "title": "kOA Workspace Port Allocation",
+      "status": null,
+      "version": null
+    }
+  ]
+}

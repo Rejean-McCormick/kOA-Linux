@@ -1,6 +1,0 @@
-[Unit]
-Description=kOA graphical session
-Requires=koa-node.target
-Wants=koa-services.target
-After=koa-node.target koa-services.target
-AllowIsolate=yes

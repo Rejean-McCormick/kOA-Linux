@@ -1,0 +1,462 @@
+{
+  "$schema": "../artifact-contracts/workspace-port-allocation.schema.json",
+  "artifact_type": "workspace_port_allocation",
+  "artifact_id": "PORT-SET-KONNAXION-FEATURE-VOTING-92CD",
+  "version": "1.0.0",
+  "status": "active",
+  "language": "en",
+  "example": true,
+  "issued_at": "2026-08-03T18:09:00-04:00",
+  "effective_at": "2026-08-03T18:09:00-04:00",
+  "workspace": {
+    "workspace_id": "konnaxion-feature-voting-92cd",
+    "workspace_artifact_ref": "contracts/examples/developer-workspace.example.json",
+    "component_id": "konnaxion",
+    "primary_profile": "developer_windows_wsl",
+    "profile_ref": "contracts/profiles/developer-windows-wsl.profile.json",
+    "owner_identity_ref": "contracts/identities.registry.json#/developers/developer-example",
+    "port_allocation_namespace": "konnaxion-feature-voting-92cd",
+    "parallel_workspace_isolation_required": true,
+    "release_authority": false
+  },
+  "allocator": {
+    "allocator_id": "workspace-port-registry",
+    "registry_ref": "contracts/workspace-ports.registry.json#/allocations/konnaxion-feature-voting-92cd",
+    "allocator_identity_ref": "contracts/identities.registry.json#/services/workspace-port-registry",
+    "allocation_mode": "transactional_registry",
+    "scope": "developer_host",
+    "host_identity": "developer-wsl-host-example",
+    "operating_environment": "WSL 2",
+    "container_runtime": "docker",
+    "automatic_unregistered_port_selection_allowed": false,
+    "manual_hardcoded_cross_workspace_ports_allowed": false
+  },
+  "port_pool": {
+    "pool_id": "developer-loopback-tcp",
+    "protocol": "tcp",
+    "bind_addresses": [
+      "127.0.0.1"
+    ],
+    "allowed_range": {
+      "minimum": 15000,
+      "maximum": 19999
+    },
+    "excluded_ports": [
+      15430,
+      15431,
+      18429,
+      18430
+    ],
+    "privileged_ports_allowed": false,
+    "public_bind_allowed": false,
+    "dynamic_allocation_supported": true,
+    "fixed_request_supported": true,
+    "uniqueness_scope": "host_protocol_address_port"
+  },
+  "lease": {
+    "lease_id": "konnaxion-feature-voting-92cd-ports",
+    "state": "active",
+    "created_at": "2026-08-03T18:09:00-04:00",
+    "last_validated_at": "2026-08-03T18:09:00-04:00",
+    "expires_at": "2026-08-10T18:09:00-04:00",
+    "renewal_mode": "explicit_or_active_workspace_heartbeat",
+    "grace_period_seconds": 300,
+    "reclaim_after_expiry": true,
+    "reclaim_requires_service_stop_verification": true,
+    "stale_lease_does_not_transfer_workspace_authority": true
+  },
+  "allocations": [
+    {
+      "allocation_id": "konnaxion-feature-voting-92cd-api-http",
+      "state": "allocated",
+      "service_id": "konnaxion-feature-voting-92cd-api",
+      "component_ref": "generated/component-catalog.json#/components/konnaxion",
+      "purpose": "Local Konnaxion API and development UI",
+      "protocol": "tcp",
+      "host": {
+        "bind_address": "127.0.0.1",
+        "port": 18431,
+        "exposure": "loopback_only",
+        "allocation_source": "registry_selected"
+      },
+      "service": {
+        "network_id": "konnaxion-feature-voting-92cd-app",
+        "address": "konnaxion-feature-voting-92cd-api",
+        "port": 8000,
+        "port_is_stable_inside_workspace_network": true
+      },
+      "transport": {
+        "runtime": "docker",
+        "mapping": "127.0.0.1:18431->8000/tcp",
+        "tls_required": false
+      },
+      "consumers": [
+        {
+          "consumer_id": "developer-browser",
+          "access_scope": "local_host",
+          "endpoint": "http://127.0.0.1:18431"
+        },
+        {
+          "consumer_id": "workspace-contract-tests",
+          "access_scope": "local_host",
+          "endpoint": "http://127.0.0.1:18431"
+        }
+      ],
+      "health_check": {
+        "kind": "http",
+        "target": "http://127.0.0.1:18431/health",
+        "expected_result": "ready",
+        "timeout_seconds": 5
+      },
+      "required": true,
+      "cleanup_on_workspace_destroy": true
+    },
+    {
+      "allocation_id": "konnaxion-feature-voting-92cd-postgres-client",
+      "state": "allocated",
+      "service_id": "konnaxion-feature-voting-92cd-postgres",
+      "component_ref": "contracts/development-services.registry.json#/services/postgresql",
+      "purpose": "Workspace-scoped database access for local development tooling",
+      "protocol": "tcp",
+      "host": {
+        "bind_address": "127.0.0.1",
+        "port": 15432,
+        "exposure": "loopback_only",
+        "allocation_source": "fixed_request_validated_by_registry"
+      },
+      "service": {
+        "network_id": "konnaxion-feature-voting-92cd-data",
+        "address": "konnaxion-feature-voting-92cd-postgres",
+        "port": 5432,
+        "port_is_stable_inside_workspace_network": true
+      },
+      "transport": {
+        "runtime": "docker",
+        "mapping": "127.0.0.1:15432->5432/tcp",
+        "tls_required": false
+      },
+      "consumers": [
+        {
+          "consumer_id": "developer-database-client",
+          "access_scope": "local_host",
+          "endpoint": "postgresql://127.0.0.1:15432/konnaxion_feature_voting_92cd"
+        },
+        {
+          "consumer_id": "workspace-migration-runner",
+          "access_scope": "local_host",
+          "endpoint": "postgresql://127.0.0.1:15432/konnaxion_feature_voting_92cd"
+        }
+      ],
+      "health_check": {
+        "kind": "tcp",
+        "target": "127.0.0.1:15432",
+        "expected_result": "accepting_connections",
+        "timeout_seconds": 5
+      },
+      "required": true,
+      "cleanup_on_workspace_destroy": true
+    }
+  ],
+  "internal_only_endpoints": [
+    {
+      "endpoint_id": "konnaxion-feature-voting-92cd-redis-internal",
+      "service_id": "konnaxion-feature-voting-92cd-redis",
+      "network_id": "konnaxion-feature-voting-92cd-data",
+      "address": "konnaxion-feature-voting-92cd-redis",
+      "protocol": "tcp",
+      "service_port": 6379,
+      "host_port_allocated": false,
+      "reason": "Only workspace services consume Redis; host exposure is unnecessary."
+    },
+    {
+      "endpoint_id": "konnaxion-feature-voting-92cd-worker-internal",
+      "service_id": "konnaxion-feature-voting-92cd-worker",
+      "network_id": "konnaxion-feature-voting-92cd-app",
+      "address": "konnaxion-feature-voting-92cd-worker",
+      "protocol": "tcp",
+      "service_port": 9100,
+      "host_port_allocated": false,
+      "reason": "Worker diagnostics remain inside the workspace network."
+    }
+  ],
+  "collision_control": {
+    "pre_allocation_checks": [
+      "validate_workspace_identity",
+      "validate_allocator_lease",
+      "validate_protocol_and_bind_address",
+      "validate_port_pool_membership",
+      "validate_exclusion_list",
+      "query_active_registry_allocations",
+      "probe_host_socket_availability",
+      "validate_container_runtime_mapping_absent"
+    ],
+    "reservation_is_atomic": true,
+    "registry_write_precedes_service_start": true,
+    "service_start_failure_releases_new_reservation": true,
+    "collision_result": "allocation_rejected",
+    "existing_valid_allocation_preserved": true,
+    "automatic_port_reassignment": {
+      "allowed": true,
+      "requires_registry_transaction": true,
+      "requires_workspace_configuration_regeneration": true,
+      "requires_consumer_notification": true,
+      "silent_reassignment_allowed": false
+    },
+    "same_internal_service_port_across_workspaces_allowed": true,
+    "same_host_tuple_across_workspaces_allowed": false
+  },
+  "runtime_configuration": {
+    "compose_project_name": "konnaxion-feature-voting-92cd",
+    "environment_variables": [
+      {
+        "name": "KOA_WORKSPACE_ID",
+        "value": "konnaxion-feature-voting-92cd",
+        "secret": false
+      },
+      {
+        "name": "KONNAXION_HOST",
+        "value": "127.0.0.1",
+        "secret": false
+      },
+      {
+        "name": "KONNAXION_HOST_PORT",
+        "value": "18431",
+        "secret": false
+      },
+      {
+        "name": "POSTGRES_HOST_PORT",
+        "value": "15432",
+        "secret": false
+      }
+    ],
+    "generated_configuration_refs": [
+      "/home/koa/workspaces/konnaxion-feature-voting-92cd/run/ports/workspace-ports.env",
+      "/home/koa/workspaces/konnaxion-feature-voting-92cd/run/ports/compose.override.yaml"
+    ],
+    "configuration_generation_is_deterministic": true,
+    "configuration_may_not_override_registry": true
+  },
+  "security": {
+    "default_bind_scope": "loopback_only",
+    "public_exposure_requires_separate_policy_and_allocation": true,
+    "remote_lan_exposure_enabled": false,
+    "firewall_policy_ref": "contracts/network-policies.registry.json#/policies/developer-loopback",
+    "port_allocation_does_not_grant_service_authority": true,
+    "knowledge_of_port_does_not_grant_access": true,
+    "service_authentication_remains_required_when_service_contract_requires": true,
+    "secrets_in_registry_or_generated_port_files": false
+  },
+  "lifecycle": {
+    "states": [
+      "requested",
+      "validated",
+      "reserved",
+      "allocated",
+      "active",
+      "renewing",
+      "releasing",
+      "released",
+      "expired",
+      "conflict"
+    ],
+    "current_state": "active",
+    "state_transitions": [
+      {
+        "from": "requested",
+        "to": "validated",
+        "condition": "workspace, pool, address, protocol, and request are valid"
+      },
+      {
+        "from": "validated",
+        "to": "reserved",
+        "condition": "registry transaction reserves every requested host tuple"
+      },
+      {
+        "from": "reserved",
+        "to": "allocated",
+        "condition": "runtime configuration is generated from the reservation"
+      },
+      {
+        "from": "allocated",
+        "to": "active",
+        "condition": "services start and health checks pass"
+      },
+      {
+        "from": "active",
+        "to": "releasing",
+        "condition": "workspace stop, destroy, expiry, or explicit release begins"
+      },
+      {
+        "from": "releasing",
+        "to": "released",
+        "condition": "service stop and socket release are verified"
+      }
+    ],
+    "partial_allocation_allowed": false,
+    "previous_valid_allocations_preserved_on_failure": true,
+    "release_is_idempotent": true
+  },
+  "release": {
+    "requested_by": "contracts/identities.registry.json#/developers/developer-example",
+    "release_triggers": [
+      "explicit_workspace_destroy",
+      "explicit_port_release",
+      "expired_lease_after_grace_period"
+    ],
+    "release_order": [
+      "konnaxion-feature-voting-92cd-postgres-client",
+      "konnaxion-feature-voting-92cd-api-http"
+    ],
+    "service_stop_required_before_registry_release": true,
+    "host_socket_absence_verified": true,
+    "container_mapping_absence_verified": true,
+    "registry_entries_removed": false,
+    "registry_history_retained": true,
+    "released_allocations_reusable_after_verification": true,
+    "affects_other_workspaces": false
+  },
+  "validation": {
+    "validation_state": "passed",
+    "validated_at": "2026-08-03T18:09:00-04:00",
+    "checks": [
+      {
+        "check_id": "workspace-id-match",
+        "result": "passed",
+        "detail": "Every allocation, service, network, lease, and generated configuration is bound to the same workspace_id."
+      },
+      {
+        "check_id": "host-tuple-uniqueness",
+        "result": "passed",
+        "detail": "No active registry allocation uses 127.0.0.1:18431/tcp or 127.0.0.1:15432/tcp."
+      },
+      {
+        "check_id": "socket-probe",
+        "result": "passed",
+        "detail": "Both requested host sockets were available before reservation."
+      },
+      {
+        "check_id": "loopback-only",
+        "result": "passed",
+        "detail": "Every allocated host port binds only to 127.0.0.1."
+      },
+      {
+        "check_id": "service-port-stability",
+        "result": "passed",
+        "detail": "API remains on 8000/tcp and PostgreSQL remains on 5432/tcp inside the workspace networks."
+      },
+      {
+        "check_id": "internal-only-services",
+        "result": "passed",
+        "detail": "Redis and worker diagnostics have no host port allocation."
+      }
+    ],
+    "required_test_ids": [
+      "TEST-PROFILE-WSL-004",
+      "TEST-PROFILE-WSL-005",
+      "TEST-PROFILE-WSL-008",
+      "TEST-DEV-DEP-010",
+      "TEST-DEV-BTV-002",
+      "TEST-DEV-BTV-005"
+    ],
+    "evidence_refs": [
+      "generated/evidence-catalog.json#/evidence/EVID-WORKSPACE-PORTS-KONNAXION-001"
+    ],
+    "unsupported_claim_result": "blocked"
+  },
+  "failure_behavior": {
+    "registry_unavailable": {
+      "new_allocation": "blocked",
+      "existing_allocation": "preserved_until_verified_release_or_expiry",
+      "manual_unregistered_fallback": false
+    },
+    "requested_port_busy": {
+      "allocation": "rejected_or_transactionally_reassigned",
+      "existing_registry_state": "preserved",
+      "silent_reassignment": false
+    },
+    "service_start_failure": {
+      "new_reservation": "released",
+      "other_allocations": "preserved"
+    },
+    "health_check_failure": {
+      "allocation_state": "allocated_not_active",
+      "consumer_readiness": "blocked"
+    },
+    "lease_expiry_while_service_running": {
+      "immediate_reuse": false,
+      "operator_action": "stop_or_renew_workspace_then_verify_socket_release"
+    },
+    "cleanup_failure": {
+      "allocation_state": "releasing",
+      "port_reuse": "blocked",
+      "other_workspaces": "unaffected"
+    },
+    "host_restart": {
+      "registry_state": "revalidated",
+      "runtime_mappings": "reconciled",
+      "conflicting_service_start": "blocked"
+    }
+  },
+  "authority_boundaries": {
+    "registry_owns_allocation_records": true,
+    "workspace_owns_requested_service_usage": true,
+    "container_runtime_owns_socket_mapping_execution": true,
+    "port_allocation_transfers_component_authority": false,
+    "port_allocation_transfers_data_ownership": false,
+    "administrator_socket_access_is_application_authority": false,
+    "cross_workspace_port_claims_without_registry": "prohibited",
+    "external_ai_can_allocate_release_or_reassign_ports": false
+  },
+  "traceability": {
+    "decision_ids": [
+      "DEC-DEV-001",
+      "DEC-DEV-002",
+      "DEC-PROFILE-001",
+      "DEC-CONTAINER-001"
+    ],
+    "requirement_ids": [
+      "REQ-DEV-DEP-001",
+      "REQ-DEV-DEP-014",
+      "REQ-PROFILE-WSL-005",
+      "REQ-PROFILE-WSL-006",
+      "REQ-PROFILE-WSL-007",
+      "REQ-PROFILE-WSL-008",
+      "REQ-PROFILE-WSL-022",
+      "REQ-DEV-BTV-001",
+      "REQ-DEV-BTV-002",
+      "REQ-DEV-BTV-005"
+    ],
+    "lock_ids": [
+      "LOCK-DEV-001",
+      "LOCK-DEV-002",
+      "LOCK-PROFILE-001",
+      "LOCK-IMPL-001",
+      "LOCK-IMPL-002"
+    ],
+    "test_ids": [
+      "TEST-PROFILE-WSL-004",
+      "TEST-PROFILE-WSL-005",
+      "TEST-PROFILE-WSL-008",
+      "TEST-DEV-DEP-010",
+      "TEST-DEV-BTV-002",
+      "TEST-DEV-BTV-005"
+    ],
+    "canonical_refs": [
+      "contracts/examples/developer-workspace.example.json",
+      "contracts/artifact-contracts/workspace-port-allocation.schema.json",
+      "contracts/profiles/developer-windows-wsl.profile.json",
+      "contracts/toolchains/container-runtime.toolchain.json",
+      "contracts/workspace-ports.registry.json"
+    ]
+  },
+  "tags": [
+    "workspace-port-allocation",
+    "wsl2",
+    "konnaxion",
+    "loopback",
+    "parallel-workspaces",
+    "transactional-registry",
+    "example"
+  ],
+  "authority": "non_authoritative_example"
+}

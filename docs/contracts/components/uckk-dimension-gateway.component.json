@@ -1,0 +1,1550 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "contract_id": "component-contract:uckk_dimension_gateway",
+  "contract_type": "component_contract",
+  "component_id": "uckk_dimension_gateway",
+  "version": "1.0.0",
+  "status": "active",
+  "language": "en",
+  "effective_at": "2026-08-03T16:39:00-04:00",
+  "owner": "uckk-architecture",
+  "title": "UCKK Dimension Gateway Component Contract",
+  "description": "Defines the controlled boundary for user-selected or explicitly authorized media transfer into a declared UCKK dimension. The gateway verifies the selection, source authority, target dimension, content identity, applicable admission rules, and transfer integrity; stages the media in quarantine; submits the accepted representation to UCKK Platform through a registered contract; and produces an admission receipt. It does not own the source media, the final UCKK object, publication, or external AI processing.",
+  "classification": {
+    "component_class": "gateway",
+    "logical_plane": "media_and_dimension",
+    "authority_role": "governed_operator",
+    "native": true,
+    "profile_conditioned": false,
+    "optional_in_global_baseline": false,
+    "user_facing": true,
+    "external_service": false,
+    "ai_component": false
+  },
+  "canonical_responsibility": {
+    "primary": "Control explicit dimension-targeted admission of selected media into UCKK without bypassing UCKK Platform authority.",
+    "owned_outcomes": [
+      "admission_session_state",
+      "source_selection_validation",
+      "target_dimension_validation",
+      "content_identity_verification",
+      "quarantine_and_staging_state",
+      "transfer_submission_result",
+      "admission_receipt"
+    ],
+    "non_responsibilities": [
+      "source_media_ownership",
+      "final_uckk_object_ownership",
+      "uckk_storage_ownership",
+      "uckk_internal_routing",
+      "general_media_library_management",
+      "cross_domain_publication",
+      "external_audience_release",
+      "suno_invocation",
+      "gamma_invocation",
+      "external_ai_inference",
+      "ai_classification",
+      "ai_summarization",
+      "ai_tagging",
+      "ai_routing",
+      "ai_transcription",
+      "ai_translation",
+      "privilege_policy_evaluation",
+      "resource_scheduling"
+    ]
+  },
+  "authority_boundaries": {
+    "may": [
+      "create_admission_session",
+      "validate_explicit_media_selection",
+      "validate_target_dimension_reference",
+      "verify_content_identity_and_integrity",
+      "stage_content_in_gateway_quarantine",
+      "apply_registered_admission_checks",
+      "submit_admission_to_uckk_platform",
+      "cancel_or_expire_uncommitted_session",
+      "produce_admission_receipt",
+      "report_admission_health_and_status"
+    ],
+    "may_not": [
+      "write_directly_to_uckk_authoritative_storage",
+      "write_to_source_component_authoritative_storage",
+      "create_final_uckk_object_without_uckk_platform_acceptance",
+      "publish_to_external_audience",
+      "substitute_for_publication_gateway",
+      "invoke_suno_or_gamma",
+      "invoke_external_ai_automatically",
+      "infer_target_dimension",
+      "infer_user_consent",
+      "infer_missing_source_authority",
+      "activate_partial_admission",
+      "retain_source_content_without_declared_policy"
+    ],
+    "source_authority_before_acceptance": "The source actor or source component retains authority over the selected media until UCKK Platform accepts the submitted representation.",
+    "final_authority_after_acceptance": "UCKK Platform owns the admitted UCKK object and all resulting UCKK state.",
+    "gateway_authority": "The gateway owns only the admission session, quarantine state, validation results, transfer coordination state, and admission receipt.",
+    "publication_authority": "publication_gateway_only",
+    "data_ownership_transfer_by_staging": false,
+    "data_ownership_transfer_by_receipt": false
+  },
+  "profile_applicability": {
+    "model": "component_selected_by_profile",
+    "required_by_profiles": [
+      "user_lightweight",
+      "sovereign_linux_node",
+      "sovereign_hub"
+    ],
+    "permitted_by_profiles": [
+      "developer_linux_workstation",
+      "developer_windows_wsl",
+      "control_plane"
+    ],
+    "build_farm_behavior": "artifact_and_test_workflows_only",
+    "overlay_effects": {
+      "high_assurance": [
+        "stronger_source_identity_verification",
+        "stronger_content_integrity_evidence",
+        "stronger_dual_control_when_profile_requires"
+      ],
+      "sovereign_offline": [
+        "local_only_admission",
+        "external_ai_disabled",
+        "signed_offline_source_artifacts_when_imported",
+        "local_receipt_storage"
+      ],
+      "appliance_shell": [
+        "restricted_user_selection_surface"
+      ]
+    },
+    "offline_support": {
+      "supported": true,
+      "native_admission_requires_internet": false,
+      "native_admission_requires_external_ai": false,
+      "local_target_dimension_resolution_required": true,
+      "local_uckk_platform_required": true
+    },
+    "activation_modes": [
+      "always_available",
+      "socket_activated",
+      "task_activated"
+    ],
+    "selected_mode_owner": "contracts/profiles/*.profile.json"
+  },
+  "provided_interfaces": [
+    {
+      "interface_id": "IFACE-UCKK-DIM-001",
+      "name": "create_admission_session",
+      "kind": "command",
+      "purpose": "Create a bounded admission session for one explicit source selection and one declared target dimension.",
+      "availability": "required_when_component_active",
+      "authentication": "registered_actor_or_component_identity",
+      "authorization": "admission_session_create_policy",
+      "request_type": "admission_session_create_request",
+      "response_type": "admission_session_create_response",
+      "failure_type": "admission_session_failure",
+      "idempotency": {
+        "supported": true,
+        "key": "request_id",
+        "conflicting_reuse_result": "blocked"
+      },
+      "critical": true
+    },
+    {
+      "interface_id": "IFACE-UCKK-DIM-002",
+      "name": "submit_selected_media",
+      "kind": "stream_or_artifact_transfer",
+      "purpose": "Transfer the explicitly selected media or registered source artifact into gateway quarantine for verification.",
+      "availability": "active_admission_session_only",
+      "authentication": "session_bound_registered_identity",
+      "authorization": "source_transfer_policy",
+      "request_type": "selected_media_transfer_request",
+      "response_type": "selected_media_transfer_response",
+      "failure_type": "selected_media_transfer_failure",
+      "idempotency": {
+        "supported": true,
+        "key": "admission_id_and_content_identity",
+        "duplicate_same_content_result": "existing_transfer_returned",
+        "duplicate_different_content_result": "blocked"
+      },
+      "critical": true
+    },
+    {
+      "interface_id": "IFACE-UCKK-DIM-003",
+      "name": "validate_admission",
+      "kind": "command",
+      "purpose": "Run all registered source, dimension, integrity, format, policy, and profile admission checks without creating final UCKK state.",
+      "availability": "staged_session_only",
+      "authentication": "session_bound_registered_identity",
+      "authorization": "admission_validation_policy",
+      "request_type": "admission_validation_request",
+      "response_type": "admission_validation_response",
+      "failure_type": "admission_validation_failure",
+      "critical": true
+    },
+    {
+      "interface_id": "IFACE-UCKK-DIM-004",
+      "name": "commit_admission",
+      "kind": "command",
+      "purpose": "Submit the validated representation to UCKK Platform and complete only after UCKK Platform atomically accepts or rejects the admission.",
+      "availability": "validated_session_only",
+      "authentication": "session_bound_registered_identity",
+      "authorization": "admission_commit_policy",
+      "request_type": "admission_commit_request",
+      "response_type": "admission_commit_response",
+      "failure_type": "admission_commit_failure",
+      "idempotency": {
+        "supported": true,
+        "key": "admission_id",
+        "accepted_replay_result": "same_final_object_and_receipt_returned",
+        "conflicting_replay_result": "blocked"
+      },
+      "critical": true
+    },
+    {
+      "interface_id": "IFACE-UCKK-DIM-005",
+      "name": "cancel_admission",
+      "kind": "command",
+      "purpose": "Cancel an uncommitted admission and schedule quarantine cleanup.",
+      "availability": "before_final_acceptance",
+      "authentication": "session_owner_or_registered_operator",
+      "authorization": "admission_cancel_policy",
+      "request_type": "admission_cancel_request",
+      "response_type": "admission_cancel_response",
+      "failure_type": "admission_cancel_failure",
+      "critical": false
+    },
+    {
+      "interface_id": "IFACE-UCKK-DIM-006",
+      "name": "get_admission_status",
+      "kind": "query",
+      "purpose": "Return the current admission state and non-sensitive diagnostics.",
+      "availability": "while_session_or_receipt_is_retained",
+      "authentication": "session_owner_registered_component_or_operator",
+      "authorization": "admission_status_read_policy",
+      "request_type": "admission_status_request",
+      "response_type": "admission_status_response",
+      "failure_type": "admission_status_failure",
+      "critical": false
+    },
+    {
+      "interface_id": "IFACE-UCKK-DIM-007",
+      "name": "get_admission_receipt",
+      "kind": "query",
+      "purpose": "Return the admission receipt by admission or receipt identity.",
+      "availability": "after_terminal_admission_result",
+      "authentication": "authorized_actor_component_operator_or_auditor",
+      "authorization": "admission_receipt_read_policy",
+      "request_type": "admission_receipt_query",
+      "response_type": "admission_receipt_response",
+      "failure_type": "admission_receipt_query_failure",
+      "critical": false
+    },
+    {
+      "interface_id": "IFACE-UCKK-DIM-008",
+      "name": "health_and_readiness",
+      "kind": "query",
+      "purpose": "Report process health, quarantine readiness, target-dimension resolution, UCKK Platform connectivity, and receipt readiness.",
+      "availability": "always_when_process_running",
+      "authentication": "profile_defined_local_health_access",
+      "authorization": "health_read_policy",
+      "request_type": "health_request",
+      "response_type": "uckk_dimension_gateway_health_response",
+      "failure_type": "health_query_failure",
+      "critical": true
+    }
+  ],
+  "consumed_interfaces": [
+    {
+      "dependency_id": "DEP-UCKK-DIM-001",
+      "component_id": "uckk_platform",
+      "interface_purpose": "Resolve target dimensions and atomically accept or reject the final admitted representation.",
+      "dependency_class": "required_runtime",
+      "authority_received": "target_dimension_and_final_admission_result",
+      "failure_result": "new_admission_commit_blocked",
+      "direct_data_write_allowed": false
+    },
+    {
+      "dependency_id": "DEP-UCKK-DIM-002",
+      "component_id": "identity_and_trust",
+      "interface_purpose": "Verify user, component, artifact, signer, and source assertions when required by the active profile and source contract.",
+      "dependency_class": "profile_conditioned_runtime",
+      "authority_received": "verified_identity_and_trust_assertions_only",
+      "failure_result": "trust_dependent_admission_blocked",
+      "direct_data_write_allowed": false
+    },
+    {
+      "dependency_id": "DEP-UCKK-DIM-003",
+      "component_id": "governance_policy_runtime",
+      "interface_purpose": "Evaluate governed admission, consent, disclosure, privilege, or exception decisions when selected by the active profile.",
+      "dependency_class": "profile_conditioned_runtime",
+      "authority_received": "bounded_policy_decision_and_obligations_only",
+      "failure_result": "governed_admission_blocked",
+      "direct_data_write_allowed": false
+    },
+    {
+      "dependency_id": "DEP-UCKK-DIM-004",
+      "component_id": "resource_governor",
+      "interface_purpose": "Admit and schedule bounded hashing, validation, quarantine-copy, and cleanup work within the active resource envelope.",
+      "dependency_class": "required_runtime",
+      "authority_received": "resource_admission_and_scheduling_result_only",
+      "failure_result": "resource_sensitive_admission_work_deferred_or_blocked",
+      "direct_data_write_allowed": false
+    },
+    {
+      "dependency_id": "DEP-UCKK-DIM-005",
+      "component_id": "audit_broker",
+      "interface_purpose": "Submit selected admission and security evidence when required.",
+      "dependency_class": "profile_conditioned_runtime",
+      "authority_received": "evidence_acceptance_status_only",
+      "failure_result": "profile_evidence_policy_applied",
+      "direct_data_write_allowed": false
+    },
+    {
+      "dependency_id": "DEP-UCKK-DIM-006",
+      "component_id": "publication_gateway",
+      "interface_purpose": "No runtime dependency. The reference exists solely to enforce separate publication and admission contracts.",
+      "dependency_class": "prohibited_substitution_peer",
+      "authority_received": "none",
+      "failure_result": "no_effect_on_uckk_admission",
+      "direct_data_write_allowed": false
+    }
+  ],
+  "input_contracts": {
+    "admission_session_create_request": {
+      "required_fields": [
+        "request_id",
+        "correlation_id",
+        "requester",
+        "source",
+        "target_dimension_ref",
+        "selection_evidence",
+        "profile_ref",
+        "authority_version"
+      ],
+      "fields": {
+        "request_id": {
+          "type": "string",
+          "pattern": "^UCKKADMREQ-[A-Z0-9-]{8,}$"
+        },
+        "correlation_id": {
+          "type": "string",
+          "pattern": "^CORR-[A-Z0-9-]{8,}$"
+        },
+        "requester": {
+          "type": "actor_or_component_reference"
+        },
+        "source": {
+          "type": "selected_media_source_reference"
+        },
+        "target_dimension_ref": {
+          "type": "versioned_uckk_dimension_reference"
+        },
+        "selection_evidence": {
+          "type": "explicit_selection_record"
+        },
+        "profile_ref": {
+          "type": "effective_profile_reference"
+        },
+        "authority_version": {
+          "type": "semantic_version"
+        },
+        "declared_metadata": {
+          "type": "user_supplied_metadata_map",
+          "default": {}
+        },
+        "consent_or_policy_refs": {
+          "type": "canonical_reference_array",
+          "default": []
+        },
+        "exception_ids": {
+          "type": "exception_id_array",
+          "default": []
+        },
+        "requested_at": {
+          "type": "date_time"
+        }
+      },
+      "selection_policy": {
+        "explicit_selection_required": true,
+        "automatic_background_selection_allowed": false,
+        "target_dimension_inference_allowed": false,
+        "source_authority_inference_allowed": false,
+        "bulk_wildcard_selection_allowed": false
+      }
+    },
+    "selected_media_transfer_request": {
+      "required_fields": [
+        "admission_id",
+        "transfer_id",
+        "source_ref",
+        "declared_content_identity",
+        "declared_size",
+        "media_contract_ref"
+      ],
+      "transfer_modes": [
+        "bounded_stream",
+        "registered_local_path_handle",
+        "signed_artifact_reference",
+        "approved_offline_bundle_reference"
+      ],
+      "prohibited_transfer_modes": [
+        "unregistered_remote_url",
+        "direct_uckk_storage_write",
+        "direct_source_database_read",
+        "automatic_external_fetch"
+      ]
+    },
+    "admission_validation_request": {
+      "required_fields": [
+        "admission_id",
+        "expected_source_ref",
+        "expected_target_dimension_ref",
+        "expected_content_identity"
+      ],
+      "required_check_classes": [
+        "session_authority",
+        "source_authority",
+        "explicit_selection",
+        "target_dimension_existence",
+        "target_dimension_acceptance_contract",
+        "content_identity",
+        "content_integrity",
+        "declared_size",
+        "media_contract",
+        "profile_policy",
+        "resource_envelope",
+        "retention_and_cleanup"
+      ],
+      "profile_conditioned_check_classes": [
+        "signature_and_provenance",
+        "malware_or_content_safety_scan",
+        "consent",
+        "governance_policy",
+        "dual_control",
+        "offline_bundle_authority"
+      ]
+    },
+    "admission_commit_request": {
+      "required_fields": [
+        "admission_id",
+        "validation_result_ref",
+        "expected_target_dimension_ref",
+        "expected_content_identity",
+        "commit_authority_ref"
+      ],
+      "preconditions": [
+        "session_state_is_validated",
+        "source_and_target_authority_resolve",
+        "content_identity_matches_staged_content",
+        "all_required_checks_pass",
+        "all_required_obligations_satisfied",
+        "uckk_platform_ready",
+        "receipt_path_ready",
+        "atomic_acceptance_available"
+      ]
+    }
+  },
+  "output_contracts": {
+    "admission_session_create_response": {
+      "required_fields": [
+        "admission_id",
+        "request_id",
+        "correlation_id",
+        "state",
+        "source_ref",
+        "target_dimension_ref",
+        "expires_at"
+      ],
+      "initial_state": "requested"
+    },
+    "admission_validation_response": {
+      "required_fields": [
+        "admission_id",
+        "result",
+        "source_ref",
+        "target_dimension_ref",
+        "verified_content_identity",
+        "check_results",
+        "obligations",
+        "validated_at"
+      ],
+      "result_enum": [
+        "pass",
+        "fail",
+        "blocked"
+      ],
+      "pass_semantics": "The staged representation satisfies all currently applicable admission checks but has not yet become an authoritative UCKK object."
+    },
+    "admission_commit_response": {
+      "required_fields": [
+        "admission_id",
+        "result",
+        "target_dimension_ref",
+        "content_identity",
+        "uckk_object_ref",
+        "receipt",
+        "completed_at"
+      ],
+      "result_enum": [
+        "accepted",
+        "rejected",
+        "blocked"
+      ],
+      "result_semantics": {
+        "accepted": "UCKK Platform atomically accepted the representation and returned the authoritative UCKK object reference.",
+        "rejected": "UCKK Platform or active admission policy resolved the request and did not accept it.",
+        "blocked": "Required authority, integrity, compatibility, resource, policy, or evidence could not be verified."
+      },
+      "accepted_requires_final_object_ref": true,
+      "rejected_or_blocked_final_object_ref": null
+    },
+    "admission_receipt": {
+      "schema_role": "component_specific_receipt",
+      "required_content": [
+        "receipt_id",
+        "admission_id",
+        "request_id",
+        "correlation_id",
+        "requester_ref",
+        "source_ref",
+        "target_dimension_ref",
+        "verified_content_identity",
+        "media_contract_ref",
+        "profile_ref",
+        "authority_version",
+        "validation_result",
+        "admission_result",
+        "uckk_object_ref_when_accepted",
+        "policy_decision_refs",
+        "exception_ids",
+        "created_at",
+        "gateway_identity",
+        "gateway_version",
+        "uckk_platform_result_ref"
+      ],
+      "receipt_is_source_ownership_transfer": false,
+      "receipt_is_publication_receipt": false,
+      "receipt_is_uckk_object": false,
+      "receipt_links_final_acceptance_evidence": true
+    }
+  },
+  "admission_semantics": {
+    "explicit_selection": {
+      "required": true,
+      "selection_owner": "requesting_user_or_authorized_component",
+      "automatic_ingestion_allowed": false,
+      "background_discovery_allowed": false
+    },
+    "target_dimension": {
+      "explicit_reference_required": true,
+      "gateway_may_create_dimension": false,
+      "gateway_may_infer_dimension": false,
+      "uckk_platform_confirms_acceptance": true
+    },
+    "content_identity": {
+      "verification_required": true,
+      "algorithm_owner": "media_or_artifact_contract",
+      "declared_and_computed_identity_must_match": true,
+      "mismatch_result": "rejected",
+      "ordinary_markdown_hash_requirement_created": false
+    },
+    "staging": {
+      "quarantine_required": true,
+      "staging_is_authoritative_uckk_state": false,
+      "staging_transfers_source_ownership": false,
+      "staging_retention_bounded": true,
+      "cleanup_required_after_terminal_state": true
+    },
+    "acceptance": {
+      "uckk_platform_is_final_acceptance_authority": true,
+      "gateway_direct_commit_to_storage_allowed": false,
+      "atomic_acceptance_required": true,
+      "partial_object_visibility_allowed": false,
+      "idempotent_replay_required": true
+    },
+    "publication": {
+      "gateway_is_publication_gateway": false,
+      "external_audience_release_allowed": false,
+      "publication_request_must_use": "publication_gateway"
+    },
+    "external_ai": {
+      "native_ai_required": false,
+      "suno_invocation_allowed": false,
+      "gamma_invocation_allowed": false,
+      "automatic_external_ai_invocation_allowed": false,
+      "external_ai_output_direct_admission_allowed": false,
+      "candidate_output_requires_controlled_reimport": true
+    }
+  },
+  "owned_data": [
+    {
+      "data_domain_id": "DATA-UCKK-DIM-001",
+      "name": "admission_sessions",
+      "authority": "authoritative_for_gateway_workflow",
+      "content": [
+        "admission_identity",
+        "request_and_correlation_identity",
+        "requester_reference",
+        "source_reference",
+        "target_dimension_reference",
+        "session_state",
+        "expiration",
+        "validation_summary"
+      ],
+      "contains_source_media_as_authoritative_data": false,
+      "contains_final_uckk_object_as_authoritative_data": false
+    },
+    {
+      "data_domain_id": "DATA-UCKK-DIM-002",
+      "name": "quarantine_and_staging",
+      "authority": "temporary_operational_state",
+      "content": [
+        "staged_content",
+        "computed_content_identity",
+        "transfer_progress",
+        "validation_artifacts",
+        "cleanup_state"
+      ],
+      "source_authority_retained_by_origin": true,
+      "final_uckk_authority_retained_by_uckk_platform": true,
+      "retention_bounded": true
+    },
+    {
+      "data_domain_id": "DATA-UCKK-DIM-003",
+      "name": "admission_receipts",
+      "authority": "authoritative_for_gateway_admission_event",
+      "content": [
+        "selection_reference",
+        "validation_result",
+        "acceptance_result",
+        "source_and_target_refs",
+        "content_identity",
+        "uckk_object_ref_when_accepted",
+        "policy_and_exception_refs",
+        "gateway_and_platform_result_refs"
+      ],
+      "contains_media_payload_by_default": false
+    },
+    {
+      "data_domain_id": "DATA-UCKK-DIM-004",
+      "name": "idempotency_and_deduplication_state",
+      "authority": "authoritative_for_gateway_replay_control",
+      "content": [
+        "request_keys",
+        "admission_keys",
+        "content_identity_bindings",
+        "terminal_result_bindings"
+      ],
+      "retention_policy": "component_contract_and_profile_defined"
+    }
+  ],
+  "foreign_data_policy": {
+    "source_media_authority_owned_by_gateway": false,
+    "final_uckk_object_authority_owned_by_gateway": false,
+    "foreign_authoritative_state_write_allowed": false,
+    "uckk_authoritative_storage_write_allowed": false,
+    "source_component_storage_write_allowed": false,
+    "source_component_database_read_allowed": false,
+    "publication_state_write_allowed": false,
+    "read_access": "explicit_selected_representation_only",
+    "staging_access": "session_scoped_and_bounded"
+  },
+  "state_model": {
+    "service_states": [
+      "initializing",
+      "ready",
+      "degraded",
+      "blocked",
+      "maintenance",
+      "stopped"
+    ],
+    "admission_states": [
+      "requested",
+      "receiving",
+      "staged",
+      "validating",
+      "validated",
+      "submitting",
+      "accepted",
+      "rejected",
+      "blocked",
+      "cancelled",
+      "expired",
+      "cleanup_pending",
+      "completed"
+    ],
+    "terminal_result_states": [
+      "accepted",
+      "rejected",
+      "blocked",
+      "cancelled",
+      "expired"
+    ],
+    "allowed_transitions": [
+      {
+        "transition_id": "TRANSITION-UCKK-DIM-001",
+        "from": "requested",
+        "to": "receiving",
+        "trigger": "first_valid_transfer_chunk_or_artifact_open"
+      },
+      {
+        "transition_id": "TRANSITION-UCKK-DIM-002",
+        "from": "receiving",
+        "to": "staged",
+        "trigger": "complete_transfer_and_identity_verification"
+      },
+      {
+        "transition_id": "TRANSITION-UCKK-DIM-003",
+        "from": "staged",
+        "to": "validating",
+        "trigger": "begin_registered_admission_checks"
+      },
+      {
+        "transition_id": "TRANSITION-UCKK-DIM-004",
+        "from": "validating",
+        "to": "validated",
+        "trigger": "all_required_checks_pass"
+      },
+      {
+        "transition_id": "TRANSITION-UCKK-DIM-005",
+        "from": "validated",
+        "to": "submitting",
+        "trigger": "authorized_commit_request"
+      },
+      {
+        "transition_id": "TRANSITION-UCKK-DIM-006",
+        "from": "submitting",
+        "to": "accepted",
+        "trigger": "uckk_platform_atomic_acceptance"
+      },
+      {
+        "transition_id": "TRANSITION-UCKK-DIM-007",
+        "from": "submitting",
+        "to": "rejected",
+        "trigger": "uckk_platform_or_policy_rejection"
+      },
+      {
+        "transition_id": "TRANSITION-UCKK-DIM-008",
+        "from": "validating",
+        "to": "blocked",
+        "trigger": "authority_integrity_compatibility_or_evidence_unavailable"
+      },
+      {
+        "transition_id": "TRANSITION-UCKK-DIM-009",
+        "from": "requested",
+        "to": "cancelled",
+        "trigger": "authorized_cancel"
+      },
+      {
+        "transition_id": "TRANSITION-UCKK-DIM-010",
+        "from": "receiving",
+        "to": "cancelled",
+        "trigger": "authorized_cancel"
+      },
+      {
+        "transition_id": "TRANSITION-UCKK-DIM-011",
+        "from": "staged",
+        "to": "cancelled",
+        "trigger": "authorized_cancel"
+      },
+      {
+        "transition_id": "TRANSITION-UCKK-DIM-012",
+        "from": "requested",
+        "to": "expired",
+        "trigger": "session_expiration"
+      },
+      {
+        "transition_id": "TRANSITION-UCKK-DIM-013",
+        "from": "staged",
+        "to": "expired",
+        "trigger": "staging_expiration"
+      },
+      {
+        "transition_id": "TRANSITION-UCKK-DIM-014",
+        "from": "accepted",
+        "to": "cleanup_pending",
+        "trigger": "receipt_persisted"
+      },
+      {
+        "transition_id": "TRANSITION-UCKK-DIM-015",
+        "from": "rejected",
+        "to": "cleanup_pending",
+        "trigger": "terminal_receipt_persisted"
+      },
+      {
+        "transition_id": "TRANSITION-UCKK-DIM-016",
+        "from": "blocked",
+        "to": "cleanup_pending",
+        "trigger": "terminal_receipt_persisted_or_session_closed"
+      },
+      {
+        "transition_id": "TRANSITION-UCKK-DIM-017",
+        "from": "cancelled",
+        "to": "cleanup_pending",
+        "trigger": "cancellation_recorded"
+      },
+      {
+        "transition_id": "TRANSITION-UCKK-DIM-018",
+        "from": "expired",
+        "to": "cleanup_pending",
+        "trigger": "expiration_recorded"
+      },
+      {
+        "transition_id": "TRANSITION-UCKK-DIM-019",
+        "from": "cleanup_pending",
+        "to": "completed",
+        "trigger": "quarantine_cleanup_verified"
+      }
+    ],
+    "final_uckk_state_created_before_accepted": false,
+    "partial_admission_authority_allowed": false
+  },
+  "commands": [
+    {
+      "command_id": "CMD-UCKK-DIM-001",
+      "name": "create_admission_session",
+      "interface_id": "IFACE-UCKK-DIM-001",
+      "result_events": [
+        "EVENT-UCKK-DIM-001",
+        "EVENT-UCKK-DIM-002"
+      ]
+    },
+    {
+      "command_id": "CMD-UCKK-DIM-002",
+      "name": "submit_selected_media",
+      "interface_id": "IFACE-UCKK-DIM-002",
+      "result_events": [
+        "EVENT-UCKK-DIM-003",
+        "EVENT-UCKK-DIM-004"
+      ]
+    },
+    {
+      "command_id": "CMD-UCKK-DIM-003",
+      "name": "validate_admission",
+      "interface_id": "IFACE-UCKK-DIM-003",
+      "result_events": [
+        "EVENT-UCKK-DIM-005",
+        "EVENT-UCKK-DIM-006"
+      ]
+    },
+    {
+      "command_id": "CMD-UCKK-DIM-004",
+      "name": "commit_admission",
+      "interface_id": "IFACE-UCKK-DIM-004",
+      "result_events": [
+        "EVENT-UCKK-DIM-007",
+        "EVENT-UCKK-DIM-008",
+        "EVENT-UCKK-DIM-009"
+      ]
+    },
+    {
+      "command_id": "CMD-UCKK-DIM-005",
+      "name": "cancel_admission",
+      "interface_id": "IFACE-UCKK-DIM-005",
+      "result_events": [
+        "EVENT-UCKK-DIM-010"
+      ]
+    }
+  ],
+  "published_events": [
+    {
+      "event_id": "EVENT-UCKK-DIM-001",
+      "name": "admission_session_created",
+      "meaning": "A bounded admission session was created.",
+      "contains": [
+        "admission_id",
+        "request_id",
+        "correlation_id",
+        "source_ref",
+        "target_dimension_ref",
+        "expires_at"
+      ]
+    },
+    {
+      "event_id": "EVENT-UCKK-DIM-002",
+      "name": "admission_session_create_failed",
+      "meaning": "The request could not establish a valid admission session.",
+      "contains": [
+        "request_id",
+        "correlation_id",
+        "failure_code",
+        "diagnostic_refs"
+      ]
+    },
+    {
+      "event_id": "EVENT-UCKK-DIM-003",
+      "name": "selected_media_staged",
+      "meaning": "The selected media was fully staged and content identity verified.",
+      "contains": [
+        "admission_id",
+        "transfer_id",
+        "content_identity",
+        "declared_size",
+        "staged_size"
+      ]
+    },
+    {
+      "event_id": "EVENT-UCKK-DIM-004",
+      "name": "selected_media_transfer_failed",
+      "meaning": "The selected media could not be staged as declared.",
+      "contains": [
+        "admission_id",
+        "transfer_id",
+        "failure_code",
+        "diagnostic_refs"
+      ]
+    },
+    {
+      "event_id": "EVENT-UCKK-DIM-005",
+      "name": "admission_validated",
+      "meaning": "All applicable admission checks passed.",
+      "contains": [
+        "admission_id",
+        "validation_result_ref",
+        "content_identity",
+        "target_dimension_ref",
+        "obligations"
+      ],
+      "creates_final_uckk_state": false
+    },
+    {
+      "event_id": "EVENT-UCKK-DIM-006",
+      "name": "admission_validation_failed",
+      "meaning": "One or more admission checks failed or were blocked.",
+      "contains": [
+        "admission_id",
+        "result",
+        "failure_code",
+        "check_result_refs"
+      ],
+      "creates_final_uckk_state": false
+    },
+    {
+      "event_id": "EVENT-UCKK-DIM-007",
+      "name": "admission_accepted",
+      "meaning": "UCKK Platform atomically accepted the representation.",
+      "contains": [
+        "admission_id",
+        "target_dimension_ref",
+        "content_identity",
+        "uckk_object_ref",
+        "receipt_ref",
+        "uckk_platform_result_ref"
+      ],
+      "authoritative_for_final_uckk_object": false
+    },
+    {
+      "event_id": "EVENT-UCKK-DIM-008",
+      "name": "admission_rejected",
+      "meaning": "The admission was authoritatively rejected without final object creation.",
+      "contains": [
+        "admission_id",
+        "target_dimension_ref",
+        "content_identity",
+        "reason_code",
+        "receipt_ref"
+      ]
+    },
+    {
+      "event_id": "EVENT-UCKK-DIM-009",
+      "name": "admission_blocked",
+      "meaning": "The admission could not proceed because required authority or control was unavailable.",
+      "contains": [
+        "admission_id",
+        "block_reason",
+        "preserved_state",
+        "receipt_ref"
+      ]
+    },
+    {
+      "event_id": "EVENT-UCKK-DIM-010",
+      "name": "admission_cancelled",
+      "meaning": "An uncommitted admission was cancelled.",
+      "contains": [
+        "admission_id",
+        "cancelled_by",
+        "cleanup_state"
+      ]
+    },
+    {
+      "event_id": "EVENT-UCKK-DIM-011",
+      "name": "admission_expired",
+      "meaning": "An uncommitted session expired.",
+      "contains": [
+        "admission_id",
+        "expired_at",
+        "cleanup_state"
+      ]
+    },
+    {
+      "event_id": "EVENT-UCKK-DIM-012",
+      "name": "admission_cleanup_completed",
+      "meaning": "Gateway quarantine state was removed according to retention policy.",
+      "contains": [
+        "admission_id",
+        "cleanup_result",
+        "completed_at"
+      ]
+    },
+    {
+      "event_id": "EVENT-UCKK-DIM-013",
+      "name": "uckk_dimension_gateway_degraded",
+      "meaning": "One or more admission capabilities are unavailable.",
+      "contains": [
+        "affected_capabilities",
+        "preserved_capabilities",
+        "blocked_capabilities",
+        "diagnostic_refs"
+      ]
+    },
+    {
+      "event_id": "EVENT-UCKK-DIM-014",
+      "name": "uckk_dimension_gateway_recovered",
+      "meaning": "Required admission dependencies and checks recovered.",
+      "contains": [
+        "recovered_capabilities",
+        "recovery_evidence_refs"
+      ]
+    }
+  ],
+  "failure_contract": [
+    {
+      "failure_code": "UCKK_DIM_REQUEST_INVALID",
+      "condition": "Admission request is incomplete, malformed, or inconsistent.",
+      "result": "rejected",
+      "preserve": "source_media_and_uckk_state",
+      "retry": "with_valid_request"
+    },
+    {
+      "failure_code": "UCKK_DIM_SELECTION_NOT_EXPLICIT",
+      "condition": "No valid explicit user or authorized component selection exists.",
+      "result": "blocked",
+      "preserve": "source_media_and_uckk_state",
+      "retry": "after_explicit_selection"
+    },
+    {
+      "failure_code": "UCKK_DIM_SOURCE_UNAUTHORIZED",
+      "condition": "Requester lacks authority to transfer the selected source.",
+      "result": "rejected",
+      "preserve": "source_media_and_uckk_state",
+      "retry": "after_source_authority_is_valid"
+    },
+    {
+      "failure_code": "UCKK_DIM_TARGET_NOT_FOUND",
+      "condition": "The declared target dimension does not resolve.",
+      "result": "rejected",
+      "preserve": "source_media_and_uckk_state",
+      "retry": "with_valid_target_dimension"
+    },
+    {
+      "failure_code": "UCKK_DIM_CONTENT_IDENTITY_MISMATCH",
+      "condition": "Declared and computed content identity differ.",
+      "result": "rejected",
+      "preserve": "source_media_and_uckk_state",
+      "retry": "with_correct_source_or_identity"
+    },
+    {
+      "failure_code": "UCKK_DIM_TRANSFER_INCOMPLETE",
+      "condition": "Transfer terminates before complete verified staging.",
+      "result": "blocked",
+      "preserve": "source_media_and_uckk_state",
+      "retry": "restart_or_resume_according_to_transfer_contract"
+    },
+    {
+      "failure_code": "UCKK_DIM_MEDIA_CONTRACT_INVALID",
+      "condition": "The media representation does not satisfy its active contract.",
+      "result": "rejected",
+      "preserve": "source_media_and_uckk_state",
+      "retry": "after_valid_representation_is_supplied"
+    },
+    {
+      "failure_code": "UCKK_DIM_POLICY_BLOCKED",
+      "condition": "Required policy, consent, privilege, or exception authority is unavailable or negative.",
+      "result": "blocked_or_rejected_according_to_policy_result",
+      "preserve": "source_media_and_uckk_state",
+      "retry": "only_after_governed_authority_changes"
+    },
+    {
+      "failure_code": "UCKK_DIM_RESOURCE_UNAVAILABLE",
+      "condition": "Required bounded hashing, transfer, validation, or cleanup resources are unavailable.",
+      "result": "deferred_or_blocked",
+      "preserve": "last_valid_session_and_source_state",
+      "retry": "after_resource_governor_admission"
+    },
+    {
+      "failure_code": "UCKK_DIM_PLATFORM_UNAVAILABLE",
+      "condition": "UCKK Platform cannot resolve or accept the admission.",
+      "result": "commit_blocked",
+      "preserve": "validated_gateway_session_and_existing_uckk_state",
+      "retry": "after_uckk_platform_recovery_within_session_validity"
+    },
+    {
+      "failure_code": "UCKK_DIM_PLATFORM_REJECTED",
+      "condition": "UCKK Platform rejects the final admission.",
+      "result": "rejected",
+      "preserve": "existing_uckk_state",
+      "retry": "only_with_new_or_corrected_admission"
+    },
+    {
+      "failure_code": "UCKK_DIM_RECEIPT_FAILURE",
+      "condition": "Required terminal admission receipt cannot be created.",
+      "result": "commit_blocked_or_reconciled_from_platform_result",
+      "preserve": "platform_result_and_preexisting_state",
+      "retry": "after_receipt_storage_recovery"
+    },
+    {
+      "failure_code": "UCKK_DIM_AUDIT_UNAVAILABLE",
+      "condition": "Required selective audit evidence cannot be submitted or retained.",
+      "result": "profile_evidence_policy_applied",
+      "preserve": "locally_retained_evidence_when_permitted",
+      "retry": "after_audit_or_buffer_recovery"
+    },
+    {
+      "failure_code": "UCKK_DIM_CLEANUP_FAILED",
+      "condition": "Quarantine content cannot be removed after terminal state.",
+      "result": "cleanup_pending",
+      "preserve": "terminal_receipt_and_final_uckk_result",
+      "retry": "bounded_cleanup_retry_and_operator_alert"
+    },
+    {
+      "failure_code": "UCKK_DIM_PUBLICATION_MISROUTED",
+      "condition": "A publication request is submitted to this gateway.",
+      "result": "rejected",
+      "preserve": "all_source_and_uckk_state",
+      "retry": "submit_to_publication_gateway"
+    },
+    {
+      "failure_code": "UCKK_DIM_EXTERNAL_AI_REQUESTED",
+      "condition": "A request attempts to invoke Suno, Gamma, or external AI through this gateway.",
+      "result": "rejected",
+      "preserve": "native_admission_capability",
+      "retry": "use_explicit_registered_external_adapter_workflow"
+    }
+  ],
+  "degradation": {
+    "capability_scoped": true,
+    "partial_authority_allowed": false,
+    "silent_fallback_allowed": false,
+    "publication_substitution_allowed": false,
+    "external_ai_substitution_allowed": false,
+    "rules": [
+      {
+        "degradation_id": "DEGRADE-UCKK-DIM-001",
+        "trigger": "uckk_platform_unavailable",
+        "blocked": [
+          "new_final_admission_commit"
+        ],
+        "preserved": [
+          "existing_uckk_objects",
+          "bounded_session_status",
+          "safe_cancellation",
+          "diagnostics"
+        ]
+      },
+      {
+        "degradation_id": "DEGRADE-UCKK-DIM-002",
+        "trigger": "identity_or_policy_unavailable_when_required",
+        "blocked": [
+          "new_trust_or_policy_dependent_admission"
+        ],
+        "preserved": [
+          "unaffected_local_uckk_operation",
+          "previously_accepted_objects"
+        ]
+      },
+      {
+        "degradation_id": "DEGRADE-UCKK-DIM-003",
+        "trigger": "resource_governor_unavailable",
+        "blocked": [
+          "new_resource_sensitive_transfer_validation_and_cleanup"
+        ],
+        "preserved": [
+          "existing_authoritative_uckk_state",
+          "bounded_status_and_diagnostics"
+        ]
+      },
+      {
+        "degradation_id": "DEGRADE-UCKK-DIM-004",
+        "trigger": "external_network_or_external_ai_unavailable",
+        "blocked": [
+          "none_for_native_admission"
+        ],
+        "preserved": [
+          "all_native_local_admission_capabilities"
+        ]
+      },
+      {
+        "degradation_id": "DEGRADE-UCKK-DIM-005",
+        "trigger": "receipt_or_audit_storage_unavailable",
+        "blocked": [
+          "receipt_required_terminal_transition"
+        ],
+        "preserved": [
+          "existing_uckk_state",
+          "safe_session_cancellation",
+          "diagnostics"
+        ]
+      }
+    ]
+  },
+  "security": {
+    "authenticated_requester_required": true,
+    "explicit_selection_required": true,
+    "source_authority_verification_required": true,
+    "target_dimension_verification_required": true,
+    "content_integrity_verification_required": true,
+    "quarantine_required": true,
+    "least_privilege_required": true,
+    "session_scoped_access_required": true,
+    "direct_source_database_access_allowed": false,
+    "direct_uckk_storage_access_allowed": false,
+    "publication_endpoint_exposed": false,
+    "external_ai_endpoint_exposed": false,
+    "unregistered_remote_fetch_allowed": false,
+    "autorun_from_imported_media_allowed": false,
+    "profile_conditioned_scan_and_signature_controls_supported": true,
+    "receipt_integrity_protection_required": true
+  },
+  "privacy_and_audit": {
+    "minimum_source_metadata_required": true,
+    "media_payload_in_general_logs_allowed": false,
+    "media_payload_in_receipt_allowed": false,
+    "source_path_exposure": "minimized_or_referenced",
+    "selective_audit": true,
+    "universal_media_replication_to_audit_allowed": false,
+    "admission_receipt_and_uckk_object_are_distinct": true,
+    "retention_owner": "component_contract_profile_and_data_policy"
+  },
+  "resource_behavior": {
+    "resource_governor_required": true,
+    "workload_classes": [
+      "content_hashing",
+      "quarantine_copy",
+      "media_contract_validation",
+      "profile_conditioned_security_scan",
+      "uckk_submission",
+      "quarantine_cleanup"
+    ],
+    "bounded_concurrency_required": true,
+    "session_size_limits_required": true,
+    "quarantine_capacity_limits_required": true,
+    "low_resource_behavior": "defer_or_reject_new_admission_without_affecting_existing_uckk_state",
+    "unbounded_work_allowed": false
+  },
+  "health_and_readiness": {
+    "health_checks": [
+      "process_responsive",
+      "session_store_accessible",
+      "quarantine_store_accessible",
+      "receipt_store_accessible"
+    ],
+    "readiness_checks": [
+      "active_component_contract_resolves",
+      "active_profile_resolves",
+      "uckk_platform_interface_resolves",
+      "target_dimension_resolution_available",
+      "resource_governor_available",
+      "required_identity_and_policy_dependencies_available",
+      "quarantine_capacity_within_limits",
+      "receipt_path_ready"
+    ],
+    "ready_requires_all_applicable_readiness_checks": true,
+    "process_health_implies_readiness": false
+  },
+  "compatibility": {
+    "compatibility_dimensions": [
+      "gateway_contract_version",
+      "uckk_platform_contract_version",
+      "dimension_reference_version",
+      "media_contract_version",
+      "profile_version",
+      "authority_version",
+      "admission_receipt_version",
+      "release_set_version"
+    ],
+    "backward_compatible_change_classes": [
+      "add_optional_non_semantic_metadata",
+      "add_optional_diagnostic",
+      "add_supported_media_contract_without_changing_existing_semantics"
+    ],
+    "major_change_classes": [
+      "change_admission_authority",
+      "change_source_or_target_ownership",
+      "change_required_request_field",
+      "change_content_identity_semantics",
+      "change_target_dimension_semantics",
+      "change_uckk_platform_acceptance_boundary",
+      "change_publication_separation",
+      "introduce_external_ai_dependency",
+      "change_failure_or_degradation_behavior",
+      "change_profile_applicability",
+      "remove_supported_admission_flow"
+    ],
+    "unknown_compatibility_result": "blocked"
+  },
+  "migration_and_recovery": {
+    "active_sessions_during_upgrade": "drain_cancel_or_migrate_by_declared_plan",
+    "accepted_admission_receipts_preserved": true,
+    "terminal_result_bindings_preserved": true,
+    "quarantine_state_not_carried_without_explicit_migration": true,
+    "mixed_gateway_contract_versions_allowed": false,
+    "mixed_gateway_and_uckk_platform_acceptance_semantics_allowed": false,
+    "rollback_precondition": "no_incompatible_session_or_receipt_state",
+    "forward_repair_required_when_rollback_incompatible": true,
+    "recovery_evidence_required": true
+  },
+  "observability": {
+    "metrics": [
+      "admission_sessions_created_total",
+      "admission_bytes_received_total",
+      "admission_validation_pass_total",
+      "admission_validation_fail_total",
+      "admission_validation_blocked_total",
+      "admission_accepted_total",
+      "admission_rejected_total",
+      "admission_blocked_total",
+      "admission_cancelled_total",
+      "admission_expired_total",
+      "admission_duration",
+      "quarantine_bytes",
+      "quarantine_cleanup_failures_total",
+      "content_identity_mismatches_total",
+      "platform_submission_failures_total",
+      "receipt_failures_total"
+    ],
+    "logs": [
+      "component_lifecycle",
+      "admission_state_transitions",
+      "validation_diagnostics_without_media_payload",
+      "platform_submission_and_result",
+      "cleanup_and_recovery"
+    ],
+    "traces": [
+      "request_id",
+      "correlation_id",
+      "admission_id",
+      "transfer_id",
+      "receipt_id",
+      "uckk_object_ref_when_accepted"
+    ],
+    "media_payload_in_logs_allowed": false
+  },
+  "traceability": {
+    "decision_ids": [
+      "DEC-UCKK-001",
+      "DEC-GATE-001",
+      "DEC-AI-001",
+      "DEC-DATA-001",
+      "DEC-PROFILE-001",
+      "DEC-REL-001"
+    ],
+    "adr_ids": [
+      "ADR-006",
+      "ADR-008"
+    ],
+    "requirement_ids": [
+      "REQ-SYS-ARCH-014",
+      "REQ-SYS-ARCH-015",
+      "REQ-SYS-ARCH-023",
+      "REQ-SYS-ARCH-024",
+      "REQ-SYS-ARCH-025",
+      "REQ-SYS-ARCH-026",
+      "REQ-SYS-ARCH-027",
+      "REQ-SYS-ARCH-028",
+      "REQ-SYS-ARCH-029",
+      "REQ-SYS-ARCH-030",
+      "REQ-SYS-ARCH-032",
+      "REQ-SYS-ARCH-034",
+      "REQ-SYS-ARCH-035",
+      "REQ-SYS-ARCH-036",
+      "REQ-CONST-DATA-003",
+      "REQ-CONST-DATA-006",
+      "REQ-CONST-DATA-007",
+      "REQ-CONST-DATA-008",
+      "REQ-CONST-DATA-011",
+      "REQ-CONST-DATA-012",
+      "REQ-CONST-DATA-013",
+      "REQ-CONST-DATA-014",
+      "REQ-CONST-DATA-015",
+      "REQ-CONST-DATA-017",
+      "REQ-CONST-DATA-021",
+      "REQ-CONST-DATA-022",
+      "REQ-CONST-DATA-023",
+      "REQ-CONST-DATA-024"
+    ],
+    "lock_ids": [
+      "LOCK-UCKK-001",
+      "LOCK-UCKK-002",
+      "LOCK-GATE-001",
+      "LOCK-DATA-001",
+      "LOCK-AI-001",
+      "LOCK-AI-002",
+      "LOCK-PROFILE-001",
+      "LOCK-LIFE-001",
+      "LOCK-LIFE-003"
+    ],
+    "test_ids": [
+      "TEST-COMP-UCKK-DIM-001",
+      "TEST-COMP-UCKK-DIM-002",
+      "TEST-COMP-UCKK-DIM-003",
+      "TEST-COMP-UCKK-DIM-004",
+      "TEST-COMP-UCKK-DIM-005",
+      "TEST-COMP-UCKK-DIM-006",
+      "TEST-COMP-UCKK-DIM-007",
+      "TEST-COMP-UCKK-DIM-008",
+      "TEST-COMP-UCKK-DIM-009",
+      "TEST-COMP-UCKK-DIM-010",
+      "TEST-COMP-UCKK-DIM-011",
+      "TEST-COMP-UCKK-DIM-012",
+      "TEST-COMP-UCKK-DIM-013",
+      "TEST-COMP-UCKK-DIM-014",
+      "TEST-COMP-UCKK-DIM-015",
+      "TEST-COMP-UCKK-DIM-016",
+      "TEST-COMP-UCKK-DIM-017",
+      "TEST-COMP-UCKK-DIM-018",
+      "TEST-COMP-UCKK-DIM-019",
+      "TEST-COMP-UCKK-DIM-020"
+    ],
+    "evidence_ids": [
+      "EVID-COMP-UCKK-DIM-001",
+      "EVID-COMP-UCKK-DIM-002",
+      "EVID-COMP-UCKK-DIM-003",
+      "EVID-COMP-UCKK-DIM-004",
+      "EVID-COMP-UCKK-DIM-005",
+      "EVID-COMP-UCKK-DIM-006",
+      "EVID-COMP-UCKK-DIM-007",
+      "EVID-COMP-UCKK-DIM-008",
+      "EVID-COMP-UCKK-DIM-009",
+      "EVID-COMP-UCKK-DIM-010",
+      "EVID-COMP-UCKK-DIM-011",
+      "EVID-COMP-UCKK-DIM-012",
+      "EVID-COMP-UCKK-DIM-013",
+      "EVID-COMP-UCKK-DIM-014",
+      "EVID-COMP-UCKK-DIM-015",
+      "EVID-COMP-UCKK-DIM-016",
+      "EVID-COMP-UCKK-DIM-017",
+      "EVID-COMP-UCKK-DIM-018",
+      "EVID-COMP-UCKK-DIM-019",
+      "EVID-COMP-UCKK-DIM-020"
+    ],
+    "exception_ids": [],
+    "document_refs": [
+      {
+        "doc_id": "DOC-SYS-002",
+        "path": "02-system/02-logical-architecture.md"
+      },
+      {
+        "doc_id": "DOC-SYS-012",
+        "path": "02-system/12-uckk-system-boundary.md"
+      },
+      {
+        "doc_id": "DOC-CONST-008",
+        "path": "01-constitution/08-data-authority-and-ownership.md"
+      },
+      {
+        "doc_id": "DOC-COMP-UCKK-DIM-001",
+        "path": "04-components/uckk-dimension-gateway.md"
+      }
+    ]
+  },
+  "canonical_references": [
+    "generated/authority-manifest.json",
+    "generated/decision-index.json",
+    "contracts/system.contract.json",
+    "generated/component-catalog.json",
+    "generated/component-catalog.json",
+    "contracts/components/uckk-platform.component.json",
+    "contracts/components/publication-gateway.component.json",
+    "contracts/components/identity-and-trust.component.json",
+    "contracts/components/governance-policy-runtime.component.json",
+    "contracts/components/resource-governor.component.json",
+    "contracts/components/audit-broker.component.json",
+    "generated/profile-catalog.json",
+    "contracts/release-channels.contract.json",
+    "contracts/artifact-classes.contract.json",
+    "contracts/integration-types.contract.json",
+    "generated/exception-index.json",
+    "generated/requirements-index.json",
+    "generated/assertion-index.json",
+    "generated/traceability.json",
+    "generated/test-catalog.json",
+    "generated/evidence-catalog.json"
+  ],
+  "validation": {
+    "schema_validation_required": true,
+    "component_registry_alignment_required": true,
+    "component_index_alignment_required": true,
+    "profile_applicability_validation_required": true,
+    "interface_reference_validation_required": true,
+    "source_and_target_authority_validation_required": true,
+    "content_identity_validation_required": true,
+    "direct_foreign_write_prohibition_validation_required": true,
+    "uckk_platform_acceptance_boundary_validation_required": true,
+    "publication_gateway_separation_validation_required": true,
+    "native_ai_absence_validation_required": true,
+    "suno_gamma_non_invocation_validation_required": true,
+    "offline_admission_validation_required": true,
+    "atomic_admission_validation_required": true,
+    "receipt_validation_required": true,
+    "traceability_validation_required": true,
+    "required_test_ids": [
+      "TEST-COMP-UCKK-DIM-001",
+      "TEST-COMP-UCKK-DIM-002",
+      "TEST-COMP-UCKK-DIM-003",
+      "TEST-COMP-UCKK-DIM-004",
+      "TEST-COMP-UCKK-DIM-005",
+      "TEST-COMP-UCKK-DIM-006",
+      "TEST-COMP-UCKK-DIM-007",
+      "TEST-COMP-UCKK-DIM-008",
+      "TEST-COMP-UCKK-DIM-009",
+      "TEST-COMP-UCKK-DIM-010",
+      "TEST-COMP-UCKK-DIM-011",
+      "TEST-COMP-UCKK-DIM-012",
+      "TEST-COMP-UCKK-DIM-013",
+      "TEST-COMP-UCKK-DIM-014",
+      "TEST-COMP-UCKK-DIM-015",
+      "TEST-COMP-UCKK-DIM-016",
+      "TEST-COMP-UCKK-DIM-017",
+      "TEST-COMP-UCKK-DIM-018",
+      "TEST-COMP-UCKK-DIM-019",
+      "TEST-COMP-UCKK-DIM-020"
+    ],
+    "required_evidence_ids": [
+      "EVID-COMP-UCKK-DIM-001",
+      "EVID-COMP-UCKK-DIM-002",
+      "EVID-COMP-UCKK-DIM-003",
+      "EVID-COMP-UCKK-DIM-004",
+      "EVID-COMP-UCKK-DIM-005",
+      "EVID-COMP-UCKK-DIM-006",
+      "EVID-COMP-UCKK-DIM-007",
+      "EVID-COMP-UCKK-DIM-008",
+      "EVID-COMP-UCKK-DIM-009",
+      "EVID-COMP-UCKK-DIM-010",
+      "EVID-COMP-UCKK-DIM-011",
+      "EVID-COMP-UCKK-DIM-012",
+      "EVID-COMP-UCKK-DIM-013",
+      "EVID-COMP-UCKK-DIM-014",
+      "EVID-COMP-UCKK-DIM-015",
+      "EVID-COMP-UCKK-DIM-016",
+      "EVID-COMP-UCKK-DIM-017",
+      "EVID-COMP-UCKK-DIM-018",
+      "EVID-COMP-UCKK-DIM-019",
+      "EVID-COMP-UCKK-DIM-020"
+    ],
+    "activation_result_on_failure": "blocked"
+  },
+  "change_policy": {
+    "semantic_owner": "uckk-architecture",
+    "accepted_owner_decision_required": true,
+    "major_change_requires_adr": true,
+    "impact_report_required": true,
+    "uckk_platform_compatibility_review_required": true,
+    "profile_compatibility_review_required": true,
+    "migration_or_compatibility_plan_required": true,
+    "rollback_or_forward_repair_required": true,
+    "complete_validation_required": true,
+    "authority_registry_updated_last": true
+  },
+  "supersedes": [],
+  "replaced_by": null
+}

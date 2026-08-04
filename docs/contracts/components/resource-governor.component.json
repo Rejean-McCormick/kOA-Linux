@@ -1,0 +1,1168 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "component_id": "resource_governor",
+  "component_kind": "runtime_component",
+  "version": "1.0.0",
+  "status": "active",
+  "language": "en",
+  "display_name": "Resource Governor",
+  "aliases": [],
+  "terminology_ref": "contracts/terminology.contract.json#/terms/TERM-COMP-RESOURCE-GOVERNOR",
+  "purpose": "Provide deterministic admission, allocation, prioritization, concurrency, queue, scheduling, throttling, suspension, and process-limit enforcement for profile, component, artifact-class, workspace, and workload resource envelopes.",
+  "scope": {
+    "kind": "component",
+    "identifier": "resource_governor",
+    "global_behavior": true,
+    "profile_membership_owner_ref": "generated/profile-catalog.json",
+    "profile_specific_limits_owner": "the active deployment profile and active resource envelope artifacts",
+    "implementation_mechanism_owner": "the active profile and applicable platform toolchain"
+  },
+  "canonical_refs": [
+    "generated/authority-manifest.json",
+    "generated/decision-index.json",
+    "contracts/terminology.contract.json",
+    "contracts/system.contract.json#/resource_governor",
+    "contracts/system.contract.json#/capability_degradation",
+    "generated/component-catalog.json#/components/resource_governor",
+    "generated/component-catalog.json#/components/governance_policy_runtime",
+    "generated/profile-catalog.json",
+    "contracts/artifact-classes.contract.json#/artifact_classes/resource_envelope",
+    "contracts/release-channels.contract.json",
+    "generated/requirements-index.json",
+    "generated/assertion-index.json",
+    "generated/traceability.json",
+    "generated/exception-index.json",
+    "generated/test-catalog.json",
+    "generated/evidence-catalog.json"
+  ],
+  "decision_ids": [
+    "DEC-DATA-001",
+    "DEC-GOV-001",
+    "DEC-HW-001",
+    "DEC-PROFILE-001",
+    "DEC-REL-001"
+  ],
+  "requirement_ids": [
+    "REQ-RG-001",
+    "REQ-RG-002",
+    "REQ-RG-003",
+    "REQ-RG-004",
+    "REQ-RG-005",
+    "REQ-RG-006",
+    "REQ-RG-007",
+    "REQ-RG-008",
+    "REQ-RG-009",
+    "REQ-RG-010",
+    "REQ-RG-011",
+    "REQ-RG-012",
+    "REQ-RG-013",
+    "REQ-RG-014",
+    "REQ-RG-015",
+    "REQ-RG-016",
+    "REQ-RG-017",
+    "REQ-RG-018",
+    "REQ-RG-019",
+    "REQ-RG-020",
+    "REQ-RG-021",
+    "REQ-RG-022",
+    "REQ-RG-023",
+    "REQ-RG-024",
+    "REQ-RG-025",
+    "REQ-RG-026",
+    "REQ-RG-027",
+    "REQ-RG-028",
+    "REQ-RG-029",
+    "REQ-RG-030",
+    "REQ-RG-031",
+    "REQ-RG-032",
+    "REQ-RG-033",
+    "REQ-RG-034",
+    "REQ-RG-035",
+    "REQ-RG-036",
+    "REQ-RG-037",
+    "REQ-RG-038",
+    "REQ-RG-039",
+    "REQ-RG-040"
+  ],
+  "lock_ids": [
+    "LOCK-COMP-001",
+    "LOCK-COMP-002",
+    "LOCK-DATA-001",
+    "LOCK-GOV-001",
+    "LOCK-LIFE-001",
+    "LOCK-LIFE-002",
+    "LOCK-LIFE-003",
+    "LOCK-LIFE-004",
+    "LOCK-PROFILE-001",
+    "LOCK-PROFILE-002"
+  ],
+  "exception_ids": [],
+  "ownership": {
+    "owns": {
+      "active_resource_envelope_state": "The verified set of active resource envelopes and their resolved precedence for each governed target.",
+      "workload_admission_state": "Admission outcomes for workload requests based on active envelopes, current capacity, declared criticality, priority, and concurrency.",
+      "resource_allocation_state": "Current reservations, allocations, leases, limits, and execution bindings created by Resource Governor.",
+      "resource_queue_state": "Pending workload metadata, ordering, priority, capacity, expiry, retry, cancellation, and dequeue decisions for queues owned by Resource Governor.",
+      "resource_scheduling_state": "Deterministic scheduling, throttling, suspension, resumption, and rejection decisions made within active envelopes.",
+      "resource_usage_observations": "Resource-governance observations required to compare actual usage against active limits without owning workload business content.",
+      "resource_decision_interfaces": "Observable request, decision, allocation, queue, pressure, usage, release, event, and receipt payload semantics defined by this contract."
+    },
+    "does_not_own": [
+      {
+        "fact": "authorization_disclosure_consent_privilege_and_governed_exceptions",
+        "owner_ref": "generated/component-catalog.json#/components/governance_policy_runtime"
+      },
+      {
+        "fact": "workload_business_data_and_domain_state",
+        "owner_ref": "the workload's owning component"
+      },
+      {
+        "fact": "component_capability_membership",
+        "owner_ref": "the active deployment profile and component contract"
+      },
+      {
+        "fact": "resource_envelope_artifact_class_and_lifecycle",
+        "owner_ref": "contracts/artifact-classes.contract.json#/artifact_classes/resource_envelope"
+      },
+      {
+        "fact": "profile_hardware_envelope_and_profile_specific_thresholds",
+        "owner_ref": "the active deployment profile"
+      },
+      {
+        "fact": "host_operating_system_resource_control_implementation",
+        "owner_ref": "the active profile and applicable platform toolchain"
+      },
+      {
+        "fact": "identity_and_trust",
+        "owner_ref": "generated/component-catalog.json#/components/identity_and_trust"
+      },
+      {
+        "fact": "release_channel_compatibility",
+        "owner_ref": "contracts/release-channels.contract.json"
+      },
+      {
+        "fact": "normative_requirement_text_and_strength",
+        "owner_ref": "generated/requirements-index.json"
+      }
+    ]
+  },
+  "responsibilities": [
+    "Resolve the active resource envelope applicable to a target workload.",
+    "Validate resource envelope structure, target scope, compatibility, and precedence before activation.",
+    "Admit, queue, throttle, defer, or reject workload requests deterministically.",
+    "Apply CPU, memory, I/O, process, worker, queue, and concurrency limits through the active profile's enforcement mechanisms.",
+    "Preserve required and higher-priority capabilities before optional and task-activated work during pressure.",
+    "Track active reservations, allocations, leases, and execution bindings.",
+    "Observe governed resource usage without reading or owning workload business content.",
+    "Detect envelope violations, capacity pressure, queue saturation, and orphaned execution state.",
+    "Suspend, resume, terminate, or reject work only within declared resource authority.",
+    "Publish structured resource decisions, pressure events, health state, and required receipts.",
+    "Reconcile active controls, workloads, queues, reservations, and envelopes during recovery.",
+    "Fail closed for new heavy or unconstrained work when enforceable limits cannot be established."
+  ],
+  "non_responsibilities": [
+    "Making business, identity, policy, consent, disclosure, privilege, publication, or conformance decisions.",
+    "Deciding whether a workload is legally, ethically, culturally, or organizationally authorized.",
+    "Owning or modifying workload business data.",
+    "Selecting deployment profile membership.",
+    "Inventing resource limits when no active envelope resolves.",
+    "Treating measured capacity as permission to execute an unauthorized workload.",
+    "Treating policy authorization as proof that sufficient resources exist.",
+    "Replacing an operating-system scheduler, container runtime, queue broker, or workload executor as an implementation.",
+    "Requiring one universal operating-system, cgroup, container, orchestration, or virtualization mechanism.",
+    "Guaranteeing application-level correctness after a workload is terminated or suspended.",
+    "Activating production Release Sets solely because resource checks pass."
+  ],
+  "authority_boundary": {
+    "resource_authority": "Resource Governor may decide whether and when an already authorized workload can consume resources within active envelopes.",
+    "policy_authority": "Governance Policy Runtime decides governed authorization, disclosure, consent, privilege, and exceptions where required.",
+    "separation_rules": [
+      "A resource admission decision does not authorize the workload's business operation.",
+      "A policy approval does not reserve or guarantee resources.",
+      "Resource Governor does not infer policy from priority, capacity, queue position, or requester identity.",
+      "Governance Policy Runtime does not alter resource allocations directly.",
+      "A workload requiring both authorities proceeds only after both independent decisions pass."
+    ]
+  },
+  "resource_dimensions": {
+    "cpu": {
+      "units": [
+        "cores",
+        "millicores",
+        "quota_period"
+      ],
+      "controls": [
+        "reservation",
+        "limit",
+        "weight",
+        "priority",
+        "throttle"
+      ]
+    },
+    "memory": {
+      "units": [
+        "bytes",
+        "MiB",
+        "GiB"
+      ],
+      "controls": [
+        "reservation",
+        "soft_limit",
+        "hard_limit",
+        "pressure_threshold"
+      ]
+    },
+    "io": {
+      "units": [
+        "bytes_per_second",
+        "operations_per_second",
+        "weight"
+      ],
+      "controls": [
+        "read_limit",
+        "write_limit",
+        "priority",
+        "throttle"
+      ]
+    },
+    "processes": {
+      "units": [
+        "processes",
+        "threads",
+        "file_descriptors"
+      ],
+      "controls": [
+        "hard_limit",
+        "admission_limit"
+      ]
+    },
+    "workers": {
+      "units": [
+        "workers",
+        "jobs"
+      ],
+      "controls": [
+        "concurrency_limit",
+        "pool_limit",
+        "task_activation_limit"
+      ]
+    },
+    "queues": {
+      "units": [
+        "items",
+        "bytes",
+        "age"
+      ],
+      "controls": [
+        "capacity",
+        "priority",
+        "ordering",
+        "expiry",
+        "retry_limit"
+      ]
+    },
+    "time": {
+      "units": [
+        "seconds",
+        "minutes"
+      ],
+      "controls": [
+        "execution_timeout",
+        "idle_timeout",
+        "lease_duration",
+        "grace_period"
+      ]
+    },
+    "accelerators": {
+      "units": [
+        "devices",
+        "fractions",
+        "memory"
+      ],
+      "controls": [
+        "reservation",
+        "exclusive_allocation",
+        "time_slice"
+      ],
+      "profile_condition": "used only when the active profile and workload contract declare accelerator support"
+    }
+  },
+  "resource_envelope_contract": {
+    "artifact_class_ref": "contracts/artifact-classes.contract.json#/artifact_classes/resource_envelope",
+    "release_channel_ref": "contracts/release-channels.contract.json#/channels/governance",
+    "role": "A versioned declaration of resource limits and scheduling constraints for a profile, profile overlay, component, artifact class, workspace, or workload class.",
+    "required_semantics": [
+      "stable envelope identity and version",
+      "target scope and target identifier",
+      "resource dimensions and units",
+      "minimum reservations where applicable",
+      "soft and hard limits",
+      "priority and criticality",
+      "concurrency and worker limits",
+      "queue capacity, ordering, expiry, retry, and cancellation policy",
+      "task timeout and suspension behavior",
+      "pressure thresholds and degradation actions",
+      "profile compatibility constraints",
+      "activation and rollback metadata"
+    ],
+    "precedence": [
+      "global constitutional and system limits",
+      "active primary profile limits",
+      "active overlay restrictions",
+      "component limits",
+      "artifact-class limits",
+      "workspace or workload-class limits",
+      "individual workload request within all enclosing limits"
+    ],
+    "resolution_rule": "The most specific applicable envelope may strengthen or further restrict an enclosing envelope but cannot exceed or weaken an enclosing hard boundary.",
+    "activation": {
+      "model": "staged_atomic_activation",
+      "partial_activation_allowed": false,
+      "preconditions": [
+        "schema validation passes",
+        "target scope resolves",
+        "all referenced units and dimensions are supported",
+        "limits remain within the active profile capability",
+        "precedence and compatibility resolve",
+        "required owner decision and evidence resolve",
+        "rollback target is available"
+      ],
+      "failed_activation_effect": "the previous verified envelope remains active"
+    }
+  },
+  "capabilities": {
+    "envelope_resolution": {
+      "capability_id": "resource_envelope_resolution",
+      "classification": "required_local_capability",
+      "description": "Resolve the complete active envelope chain for a governed target.",
+      "required_internet": false,
+      "required_ai": false,
+      "failure_behavior": "Block new governed work for targets whose enforceable envelope cannot be resolved."
+    },
+    "workload_admission": {
+      "capability_id": "resource_workload_admission",
+      "classification": "required_local_capability",
+      "description": "Admit, queue, defer, or reject workload requests using active limits and current capacity.",
+      "required_internet": false,
+      "required_ai": false,
+      "failure_behavior": "Block new heavy or unconstrained work; preserve bounded existing work when controls remain verifiable."
+    },
+    "runtime_enforcement": {
+      "capability_id": "resource_runtime_enforcement",
+      "classification": "required_local_capability",
+      "description": "Apply resolved resource controls through profile-selected enforcement adapters.",
+      "required_internet": false,
+      "required_ai": false,
+      "failure_behavior": "Block new affected work and stop or safely constrain nonconforming execution according to the active envelope."
+    },
+    "priority_scheduling": {
+      "capability_id": "resource_priority_scheduling",
+      "classification": "required_local_capability",
+      "description": "Order eligible work deterministically by criticality, priority, fairness, deadlines, and declared queue policy.",
+      "required_internet": false,
+      "required_ai": false,
+      "failure_behavior": "Pause dequeue and preserve durable queue state until deterministic ordering can be restored."
+    },
+    "concurrency_control": {
+      "capability_id": "resource_concurrency_control",
+      "classification": "required_local_capability",
+      "description": "Enforce concurrent workload, worker, process, and heavy-job limits.",
+      "required_internet": false,
+      "required_ai": false,
+      "failure_behavior": "Reject or queue new work rather than weakening concurrency limits."
+    },
+    "queue_management": {
+      "capability_id": "resource_queue_management",
+      "classification": "conditional_local_capability",
+      "description": "Own pending-work metadata for queues explicitly delegated to Resource Governor.",
+      "required_internet": false,
+      "required_ai": false,
+      "condition": "the workload contract permits durable queuing",
+      "failure_behavior": "Reject new queue submissions when durability or capacity cannot be guaranteed."
+    },
+    "pressure_degradation": {
+      "capability_id": "resource_pressure_degradation",
+      "classification": "required_local_capability",
+      "description": "Reduce resource use while preserving required capabilities and active authority boundaries.",
+      "required_internet": false,
+      "required_ai": false,
+      "failure_behavior": "Block new nonessential work when no safe degraded action can be selected."
+    },
+    "resource_observability": {
+      "capability_id": "resource_observability",
+      "classification": "required_local_capability",
+      "description": "Expose current envelope, allocation, queue, usage, pressure, and enforcement state.",
+      "required_internet": false,
+      "required_ai": false,
+      "failure_behavior": "Do not claim healthy enforcement when required observations are unavailable."
+    }
+  },
+  "admission_model": {
+    "input_factors": [
+      "active profile and overlays",
+      "resolved target resource envelope",
+      "workload identity and owner",
+      "workload class and criticality",
+      "requested resource reservation and limit",
+      "current verified capacity",
+      "current allocations and reservations",
+      "queue capacity and ordering",
+      "dependency and policy decision references",
+      "applicable exception references",
+      "deadline, expiry, retry, and cancellation rules"
+    ],
+    "outcomes": {
+      "admitted": "Resources are reserved and an execution binding may be created.",
+      "queued": "The valid request is durably retained for later reevaluation.",
+      "deferred": "The request is returned without queue ownership and may be resubmitted.",
+      "rejected": "The request cannot execute under current or declared constraints.",
+      "blocked": "Required authority, envelope, identity, compatibility, or enforcement cannot be resolved."
+    },
+    "rules": [
+      "Admission is deterministic for the same verified state and inputs.",
+      "Admission does not authorize the business action performed by the workload.",
+      "A queued request is reevaluated against current policy and resource authority before execution.",
+      "An expired, cancelled, superseded, or unauthorized queued request is not executed.",
+      "Priority never overrides a hard limit or missing authority.",
+      "Capacity availability never creates undeclared profile or component capability."
+    ]
+  },
+  "scheduling_model": {
+    "ordering_inputs": [
+      "profile criticality",
+      "component criticality",
+      "workload priority",
+      "explicit deadline",
+      "queue order",
+      "fairness group",
+      "resource fit",
+      "retry count",
+      "request age"
+    ],
+    "determinism": "Ties are resolved through a stable registered ordering rule and never through an unrecorded random or provider-controlled decision.",
+    "preemption": {
+      "allowed": true,
+      "conditions": [
+        "the active envelope permits suspension or termination",
+        "the workload contract defines safe interruption behavior",
+        "required state is checkpointed or explicitly disposable",
+        "the preemption action remains within resource authority"
+      ],
+      "prohibited_when": [
+        "the workload is in a registered non-interruptible critical section",
+        "preemption would corrupt authoritative data",
+        "no declared recovery or termination behavior exists"
+      ]
+    },
+    "fairness": "Fairness applies within active criticality and hard boundaries; it does not force equal resource allocation across unequal declared priorities."
+  },
+  "queue_contract": {
+    "authority": "Resource Governor owns only queue and delivery metadata for queues delegated to it; the workload owner retains authority over the requested domain action.",
+    "required_fields": [
+      "queue_item_id",
+      "workload_request_id",
+      "workload_owner_ref",
+      "workload_class",
+      "priority",
+      "submitted_at",
+      "expires_at",
+      "retry_limit",
+      "retry_count",
+      "cancellation_state",
+      "ordering_group",
+      "resource_request",
+      "policy_context_ref",
+      "current_authorization_state"
+    ],
+    "rules": [
+      "Queue capacity is finite and enforced.",
+      "Queue persistence matches the workload's durability requirement.",
+      "Queue ordering is explicit.",
+      "Expiry and cancellation are evaluated before dequeue.",
+      "Authorization and resource authority are reevaluated before execution.",
+      "Duplicate execution is prevented or the workload contract declares idempotency.",
+      "Queue exhaustion rejects or defers new work without silently dropping accepted items.",
+      "A queue item never becomes an authoritative domain object."
+    ]
+  },
+  "interfaces": {
+    "resource_envelope_activation_request": {
+      "interface_id": "RG-IF-001",
+      "direction": "inbound",
+      "authority": "activation_request_only",
+      "producers": [
+        "release_authority",
+        "profile_authority",
+        "resource_policy_authority"
+      ],
+      "required_fields": [
+        "request_id",
+        "envelope_ref",
+        "target_scope",
+        "requested_activation_time",
+        "requesting_actor_ref"
+      ],
+      "validation": [
+        "envelope artifact resolves and validates",
+        "target scope resolves",
+        "profile compatibility resolves",
+        "required authority and evidence resolve",
+        "rollback target exists"
+      ]
+    },
+    "workload_admission_request": {
+      "interface_id": "RG-IF-002",
+      "direction": "inbound",
+      "authority": "resource_request_only",
+      "producers": [
+        "component_runtime",
+        "workspace_runtime",
+        "job_orchestrator",
+        "authorized_operator"
+      ],
+      "required_fields": [
+        "request_id",
+        "workload_owner_ref",
+        "workload_class",
+        "target_scope",
+        "resource_request",
+        "criticality",
+        "priority",
+        "requested_at"
+      ],
+      "optional_fields": [
+        "deadline",
+        "expiry",
+        "queue_policy_ref",
+        "policy_decision_ref",
+        "exception_refs"
+      ]
+    },
+    "resource_admission_decision": {
+      "interface_id": "RG-IF-003",
+      "direction": "outbound",
+      "authority": "resource_decision",
+      "consumers": [
+        "requesting_component",
+        "workload_executor",
+        "queue_owner"
+      ],
+      "required_fields": [
+        "decision_id",
+        "request_id",
+        "outcome",
+        "resolved_envelope_refs",
+        "decision_reason",
+        "decided_at"
+      ],
+      "outcomes": [
+        "admitted",
+        "queued",
+        "deferred",
+        "rejected",
+        "blocked"
+      ]
+    },
+    "execution_binding": {
+      "interface_id": "RG-IF-004",
+      "direction": "outbound",
+      "authority": "resource_execution_binding",
+      "consumer": "profile_selected_enforcement_adapter",
+      "required_fields": [
+        "binding_id",
+        "request_id",
+        "target_execution_ref",
+        "applied_limits",
+        "lease_or_reservation",
+        "effective_at"
+      ]
+    },
+    "usage_observation": {
+      "interface_id": "RG-IF-005",
+      "direction": "inbound",
+      "authority": "resource_observation_only",
+      "producers": [
+        "enforcement_adapter",
+        "workload_executor",
+        "node_monitor"
+      ],
+      "required_fields": [
+        "observation_id",
+        "target_execution_ref",
+        "resource_measurements",
+        "observed_at",
+        "measurement_source"
+      ],
+      "content_rule": "Business payload content is excluded."
+    },
+    "workload_lifecycle_event": {
+      "interface_id": "RG-IF-006",
+      "direction": "inbound",
+      "authority": "execution_state_notification",
+      "producers": [
+        "workload_executor",
+        "component_runtime"
+      ],
+      "required_fields": [
+        "event_id",
+        "target_execution_ref",
+        "event_type",
+        "occurred_at"
+      ],
+      "event_types": [
+        "started",
+        "checkpointed",
+        "suspended",
+        "resumed",
+        "completed",
+        "failed",
+        "cancelled",
+        "terminated"
+      ]
+    },
+    "resource_control_command": {
+      "interface_id": "RG-IF-007",
+      "direction": "outbound",
+      "authority": "bounded_resource_control",
+      "consumer": "profile_selected_enforcement_adapter",
+      "required_fields": [
+        "command_id",
+        "target_execution_ref",
+        "command",
+        "reason",
+        "expected_result",
+        "issued_at"
+      ],
+      "commands": [
+        "apply_limits",
+        "update_limits",
+        "throttle",
+        "suspend",
+        "resume",
+        "terminate",
+        "release"
+      ]
+    },
+    "resource_pressure_event": {
+      "interface_id": "RG-IF-008",
+      "direction": "outbound",
+      "authority": "observability_event",
+      "consumers": [
+        "affected_component",
+        "operator_interface",
+        "audit_broker_when_applicable"
+      ],
+      "required_fields": [
+        "event_id",
+        "scope",
+        "pressure_class",
+        "severity",
+        "affected_capabilities",
+        "active_degradation_actions",
+        "occurred_at"
+      ]
+    },
+    "queue_item_state": {
+      "interface_id": "RG-IF-009",
+      "direction": "outbound",
+      "authority": "queue_delivery_state",
+      "consumer": "requesting_component",
+      "required_fields": [
+        "queue_item_id",
+        "workload_request_id",
+        "state",
+        "position_or_priority",
+        "updated_at"
+      ],
+      "states": [
+        "accepted",
+        "waiting",
+        "eligible",
+        "dequeued",
+        "cancelled",
+        "expired",
+        "rejected",
+        "completed"
+      ]
+    },
+    "resource_decision_receipt": {
+      "interface_id": "RG-IF-010",
+      "direction": "outbound",
+      "authority": "immutable_record",
+      "artifact_class_ref": "contracts/artifact-classes.contract.json#/artifact_classes/decision_receipt",
+      "consumer": "audit_broker",
+      "emission": "Required for resource-envelope activation, governed override, forced termination, emergency degradation, and other policy-classified critical transitions."
+    }
+  },
+  "data_authority": {
+    "authoritative_stores": [
+      {
+        "store_id": "resource_envelope_activation_state",
+        "content": "active envelope identities, versions, targets, precedence, activation state, and rollback references",
+        "write_owner": "resource_governor",
+        "cross_component_direct_write_allowed": false
+      },
+      {
+        "store_id": "resource_allocation_state",
+        "content": "reservations, allocations, execution bindings, leases, limits, and release state",
+        "write_owner": "resource_governor",
+        "cross_component_direct_write_allowed": false
+      },
+      {
+        "store_id": "resource_queue_state",
+        "content": "queue items and delivery metadata for queues explicitly delegated to Resource Governor",
+        "write_owner": "resource_governor",
+        "cross_component_direct_write_allowed": false
+      }
+    ],
+    "observational_data": [
+      {
+        "data_class": "resource_usage_measurement",
+        "authority": "measurement of governed resource use only",
+        "content_exclusion": "workload business payload"
+      },
+      {
+        "data_class": "capacity_snapshot",
+        "authority": "observed capacity at a recorded time; not a future guarantee"
+      },
+      {
+        "data_class": "pressure_signal",
+        "authority": "resource pressure evidence; not policy authorization"
+      }
+    ],
+    "prohibited_data_actions": [
+      "reading workload business content to determine resource admission",
+      "writing into workload-owned authoritative stores",
+      "using queue metadata as a domain transaction record",
+      "retaining credentials not required for resource-control interfaces",
+      "treating cached measurements as current capacity without freshness validation",
+      "altering a resource envelope artifact in place"
+    ]
+  },
+  "dependencies": {
+    "required_local": [
+      {
+        "dependency_id": "active_profile",
+        "role": "provide profile hardware and capability boundaries",
+        "failure_behavior": "block new governed workload admission"
+      },
+      {
+        "dependency_id": "active_resource_envelope",
+        "role": "provide enforceable target limits",
+        "failure_behavior": "block new affected work; existing verified controls may remain active"
+      },
+      {
+        "dependency_id": "profile_selected_enforcement_adapter",
+        "role": "apply resource controls through the active platform",
+        "failure_behavior": "block new work requiring unavailable enforcement"
+      },
+      {
+        "dependency_id": "workload_execution_identity",
+        "role": "bind controls to the intended process, container, service, workspace, worker, or job",
+        "failure_behavior": "block or terminate the unbound execution according to the active envelope"
+      },
+      {
+        "dependency_id": "resource_observation_source",
+        "role": "provide measurements required to verify enforcement",
+        "failure_behavior": "do not claim healthy enforcement; block work that cannot be safely bounded"
+      }
+    ],
+    "conditional": [
+      {
+        "dependency_ref": "generated/component-catalog.json#/components/identity_and_trust",
+        "condition": "activation or override requires actor identity or trust verification",
+        "failure_behavior": "block the activation or override"
+      },
+      {
+        "dependency_ref": "generated/component-catalog.json#/components/governance_policy_runtime",
+        "condition": "envelope activation, override, termination, or exception requires a governed decision",
+        "failure_behavior": "block the governed transition; Resource Governor does not infer approval"
+      },
+      {
+        "dependency_ref": "generated/component-catalog.json#/components/audit_broker",
+        "condition": "the resource transition requires an immutable receipt",
+        "failure_behavior": "do not commit a receipt-before-commit transition when persistence is unavailable"
+      },
+      {
+        "dependency_id": "durable_queue_backend",
+        "condition": "a delegated queue requires durable pending-work state",
+        "failure_behavior": "reject new durable queue submissions while preserving verified accepted state"
+      },
+      {
+        "dependency_id": "privileged_resource_control_broker",
+        "condition": "the active profile requires privileged host resource mutations",
+        "failure_behavior": "block privileged enforcement changes; do not bypass the broker"
+      }
+    ]
+  },
+  "capability_degradation": {
+    "state_model_ref": "contracts/system.contract.json#/capability_degradation",
+    "states": [
+      "normal",
+      "degraded",
+      "blocked",
+      "restoring"
+    ],
+    "permitted_degraded_modes": [
+      "read_only",
+      "advisory",
+      "queued",
+      "locally_limited"
+    ],
+    "pressure_policy": [
+      "preserve required profile capabilities",
+      "reduce optional and task-activated concurrency",
+      "throttle lower-priority work",
+      "suspend safely interruptible work",
+      "queue eligible pending work",
+      "reject new heavy work when capacity or enforceability is insufficient",
+      "terminate work only when the active envelope authorizes termination behavior"
+    ],
+    "failure_matrix": [
+      {
+        "condition": "active envelope cannot be resolved",
+        "capability": "new affected workload admission",
+        "state": "blocked",
+        "preserved": [
+          "existing workloads with verified active controls"
+        ]
+      },
+      {
+        "condition": "enforcement adapter unavailable",
+        "capability": "new work requiring the adapter",
+        "state": "blocked",
+        "preserved": [
+          "bounded work whose controls remain independently verifiable"
+        ]
+      },
+      {
+        "condition": "resource observation unavailable",
+        "capability": "enforcement verification",
+        "state": "degraded",
+        "mode": "locally_limited",
+        "preserved": [
+          "low-risk work explicitly permitted without the missing observation"
+        ]
+      },
+      {
+        "condition": "capacity pressure threshold reached",
+        "capability": "lower-priority and optional work",
+        "state": "degraded",
+        "mode": "queued",
+        "preserved": [
+          "required and higher-priority capabilities"
+        ]
+      },
+      {
+        "condition": "queue capacity exhausted",
+        "capability": "new queue admission",
+        "state": "blocked",
+        "preserved": [
+          "already accepted queue items"
+        ]
+      },
+      {
+        "condition": "durable queue persistence unavailable",
+        "capability": "durable queued work",
+        "state": "blocked",
+        "preserved": [
+          "verified existing queue state when readable"
+        ]
+      },
+      {
+        "condition": "Governance Policy Runtime unavailable for a required override",
+        "capability": "governed resource override",
+        "state": "blocked",
+        "preserved": [
+          "current active envelope"
+        ]
+      },
+      {
+        "condition": "receipt persistence unavailable for a receipt-before-commit transition",
+        "capability": "critical resource transition",
+        "state": "blocked",
+        "preserved": [
+          "previous authoritative state"
+        ]
+      },
+      {
+        "condition": "hard memory, process, or storage pressure threatens core integrity",
+        "capability": "optional and heavy work",
+        "state": "degraded",
+        "mode": "locally_limited",
+        "preserved": [
+          "required core and recovery operations"
+        ]
+      },
+      {
+        "condition": "component runtime unavailable",
+        "capability": "new heavy or unconstrained work",
+        "state": "blocked",
+        "preserved": [
+          "existing kernel or platform controls that remain independently active",
+          "bounded low-risk reading and recovery permitted by owning component contracts"
+        ]
+      },
+      {
+        "condition": "dependency returns after failure",
+        "capability": "affected resource governance capability",
+        "state": "restoring",
+        "preserved": [
+          "current verified controls until reconciliation completes"
+        ]
+      }
+    ],
+    "recovery_preconditions": [
+      "the active profile and overlays resolve",
+      "active envelope identities and versions resolve",
+      "envelope precedence and compatibility validate",
+      "enforcement adapters report current controls",
+      "running workload identities reconcile with allocation state",
+      "orphaned or escaped workloads are isolated",
+      "reservations and leases reconcile with actual execution",
+      "queue items reconcile for durability, expiry, cancellation, duplication, and current authorization",
+      "resource observations are fresh enough for the declared workload classes",
+      "required receipts and evidence resolve",
+      "no workload is assumed controlled without verification"
+    ]
+  },
+  "security_and_privacy": {
+    "principles": [
+      "least privilege",
+      "deterministic enforcement",
+      "data minimization",
+      "separation of resource and policy authority",
+      "component data ownership",
+      "profile-scoped implementation",
+      "fail closed for unconstrained work",
+      "selective audit"
+    ],
+    "privilege_rules": [
+      "Ordinary admission and scheduling logic runs without host-wide privilege.",
+      "Privileged resource-control operations use the profile-approved narrow broker or platform mechanism.",
+      "Resource Governor receives only the capability needed to bind and control declared workload executions.",
+      "A privileged control path cannot grant business authorization or read workload payloads.",
+      "Failed privilege verification blocks the affected control operation."
+    ],
+    "privacy_rules": [
+      "Usage observations contain resource metadata rather than workload business content.",
+      "Per-user and per-tenant resource records are access-controlled.",
+      "Logs omit secrets, payload data, and unrelated command arguments.",
+      "Retention is limited to operational, incident, billing when applicable, and conformance needs.",
+      "Selective audit records the decision and relevant resource facts without indiscriminate workload disclosure."
+    ]
+  },
+  "release_and_artifacts": {
+    "runtime_release_channel_ref": "contracts/release-channels.contract.json#/channels/services",
+    "resource_envelope_release_channel_ref": "contracts/release-channels.contract.json#/channels/governance",
+    "release_set_rule": "The active Resource Governor runtime and active resource envelope versions must satisfy declared compatibility constraints in the active Release Set or an explicitly permitted independent-channel compatibility declaration.",
+    "activation_rules": [
+      "runtime and envelope candidates are validated before activation",
+      "resource envelope activation is staged and atomic",
+      "partial target activation is prohibited",
+      "the previous verified envelope remains available for rollback",
+      "existing workloads are reconciled before a new envelope becomes authoritative",
+      "a stricter envelope defines explicit handling for currently running workloads",
+      "an incompatible runtime and envelope combination cannot admit new work"
+    ],
+    "receipts": [
+      "runtime activation receipt when classified as critical",
+      "resource envelope activation receipt",
+      "governed resource override receipt",
+      "forced termination receipt when classified as critical",
+      "emergency degradation and recovery receipts when required"
+    ]
+  },
+  "observability": {
+    "health_signals": [
+      "runtime_ready",
+      "profile_resolved",
+      "envelopes_resolved",
+      "enforcement_adapter_ready",
+      "observation_source_ready",
+      "queue_backend_ready",
+      "allocation_state_reconciled",
+      "resource_pressure_state",
+      "receipt_sink_available"
+    ],
+    "metrics": [
+      "capacity_by_resource_dimension",
+      "reserved_resources",
+      "allocated_resources",
+      "actual_usage",
+      "hard_limit_violations",
+      "throttle_events",
+      "suspension_events",
+      "termination_events",
+      "active_workloads",
+      "queued_workloads",
+      "queue_age",
+      "queue_rejections",
+      "admission_outcomes",
+      "envelope_activation_state",
+      "orphaned_execution_count",
+      "recovery_reconciliation_state"
+    ],
+    "event_types": [
+      "envelope_activation_requested",
+      "envelope_activated",
+      "envelope_activation_failed",
+      "workload_admission_requested",
+      "workload_admitted",
+      "workload_queued",
+      "workload_deferred",
+      "workload_rejected",
+      "workload_blocked",
+      "limits_applied",
+      "workload_throttled",
+      "workload_suspended",
+      "workload_resumed",
+      "workload_terminated",
+      "resource_pressure_entered",
+      "resource_pressure_cleared",
+      "queue_capacity_reached",
+      "enforcement_degraded",
+      "recovery_started",
+      "recovery_completed"
+    ],
+    "logging_rules": [
+      "Events use stable envelope, request, allocation, queue, and execution identifiers.",
+      "Logs distinguish observed usage from configured limits.",
+      "Logs do not contain workload business payloads.",
+      "A missing observation is not logged as zero usage.",
+      "Health does not report ready until envelope, adapter, and allocation reconciliation checks pass.",
+      "Critical transitions link to applicable receipt identifiers."
+    ]
+  },
+  "conformance": {
+    "required_test_categories": [
+      "resource envelope schema and target validation",
+      "envelope precedence and non-weakening behavior",
+      "atomic resource envelope activation",
+      "rollback to the previous verified envelope",
+      "deterministic admission outcomes",
+      "hard-limit enforcement",
+      "priority and fairness behavior",
+      "concurrency and worker-limit enforcement",
+      "finite queue capacity",
+      "queue expiry, cancellation, retry, and authorization reevaluation",
+      "resource pressure degradation",
+      "required capability preservation",
+      "Resource Governor and Governance Policy Runtime separation",
+      "component data ownership preservation",
+      "no workload payload inspection",
+      "privileged broker enforcement where applicable",
+      "runtime and envelope release compatibility",
+      "runtime failure blocks unconstrained work",
+      "recovery reconciliation of workloads, queues, reservations, and controls",
+      "critical-transition receipt behavior"
+    ],
+    "required_evidence_categories": [
+      "component contract validation",
+      "resource envelope validation result",
+      "admission determinism test result",
+      "hard-limit enforcement test result",
+      "queue behavior test result",
+      "pressure degradation test result",
+      "authority-separation test result",
+      "cross-component data-write prohibition test result",
+      "privilege-path test result",
+      "runtime and envelope compatibility test result",
+      "degradation and recovery test result",
+      "activation and rollback receipt evidence"
+    ],
+    "conformance_claim": "A deployment may claim Resource Governor conformance only for the active profile, supported resource dimensions, enforcement adapters, and workload classes covered by passing tests and retained evidence."
+  },
+  "contract_invariants": [
+    {
+      "invariant_id": "RG-INV-001",
+      "statement": "Resource Governor is the deterministic authority for CPU, memory, I/O, concurrency, queues, scheduling, and process limits.",
+      "lock_ref": "LOCK-GOV-001"
+    },
+    {
+      "invariant_id": "RG-INV-002",
+      "statement": "Resource Governor does not make authorization, disclosure, consent, privilege, or exception decisions.",
+      "lock_ref": "LOCK-GOV-001"
+    },
+    {
+      "invariant_id": "RG-INV-003",
+      "statement": "Resource availability never grants business authority.",
+      "lock_ref": "LOCK-COMP-001"
+    },
+    {
+      "invariant_id": "RG-INV-004",
+      "statement": "Resource Governor does not write into workload-owned authoritative data stores.",
+      "lock_ref": "LOCK-DATA-001"
+    },
+    {
+      "invariant_id": "RG-INV-005",
+      "statement": "Profile-specific resource mechanisms and thresholds do not become global implementation requirements.",
+      "lock_ref": "LOCK-PROFILE-001"
+    },
+    {
+      "invariant_id": "RG-INV-006",
+      "statement": "A more specific resource envelope may restrict but cannot weaken an enclosing hard boundary.",
+      "lock_ref": "LOCK-PROFILE-002"
+    },
+    {
+      "invariant_id": "RG-INV-007",
+      "statement": "Resource envelope activation never creates partial authoritative state.",
+      "lock_ref": "LOCK-LIFE-001"
+    },
+    {
+      "invariant_id": "RG-INV-008",
+      "statement": "Failed envelope or runtime activation preserves the previous verified state.",
+      "lock_ref": "LOCK-LIFE-002"
+    },
+    {
+      "invariant_id": "RG-INV-009",
+      "statement": "A Release Set preserves compatibility between the services runtime and governance envelopes.",
+      "lock_ref": "LOCK-LIFE-003"
+    },
+    {
+      "invariant_id": "RG-INV-010",
+      "statement": "Independent service or governance updates remain within declared compatibility constraints.",
+      "lock_ref": "LOCK-LIFE-004"
+    }
+  ],
+  "validation": {
+    "entry_point": "tools/validate_docs.py",
+    "required_checks": [
+      "component_id_matches_filename",
+      "component_id_is_unique",
+      "terminology_ref_resolves",
+      "canonical_refs_resolve",
+      "decision_ids_resolve_and_are_accepted",
+      "requirement_ids_resolve",
+      "lock_ids_resolve",
+      "interface_ids_are_unique",
+      "capability_ids_are_unique",
+      "resource_dimensions_use_registered_units",
+      "resource_envelope_artifact_ref_resolves",
+      "resource_envelope_precedence_is_acyclic",
+      "specific_envelopes_do_not_weaken_enclosing_hard_limits",
+      "resource_and_policy_authorities_are_distinct",
+      "admission_does_not_grant_business_authority",
+      "component_data_ownership_is_explicit",
+      "cross_component_direct_writes_are_prohibited",
+      "workload_payload_inspection_is_prohibited",
+      "profile_membership_is_not_owned_by_component_contract",
+      "profile_specific_mechanisms_do_not_become_global",
+      "queue_capacity_is_finite",
+      "queued_work_is_reevaluated_before_execution",
+      "hard_limits_and_concurrency_are_enforceable",
+      "resource_pressure_preserves_required_capabilities",
+      "runtime_failure_blocks_unconstrained_work",
+      "resource_envelope_activation_is_atomic",
+      "runtime_and_envelope_release_channels_are_distinct",
+      "runtime_and_envelope_compatibility_is_declared",
+      "degradation_states_match_system_registry",
+      "recovery_preconditions_are_complete",
+      "critical_transition_receipt_behavior_is_declared",
+      "no_unresolved_authority_markers"
+    ],
+    "failure_outcome": "fail",
+    "missing_dependency_outcome": "blocked",
+    "automatic_semantic_repairs_allowed": false
+  }
+}

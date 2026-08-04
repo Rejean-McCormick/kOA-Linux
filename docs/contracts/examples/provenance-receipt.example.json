@@ -1,0 +1,507 @@
+{
+  "$schema": "../artifact-contracts/provenance-receipt.schema.json",
+  "artifact_type": "provenance_receipt",
+  "receipt_id": "PROV-RECEIPT-KONNAXION-FEATURE-VOTING-20260803-001",
+  "version": "1.0.0",
+  "status": "active",
+  "language": "en",
+  "example": true,
+  "recorded_at": "2026-08-03T18:03:00-04:00",
+  "example_digest_notice": "Digest values are deterministic example values derived from the named example materials and products. They do not attest to real external bytes.",
+  "subject": {
+    "build_id": "BUILD-KONNAXION-FEATURE-VOTING-20260803-001",
+    "subject_type": "candidate_build",
+    "component_id": "konnaxion",
+    "source_revision": "example-revision-2026-08-03-001",
+    "workspace_id": "konnaxion-feature-voting-92cd",
+    "primary_profile": "build_farm",
+    "overlay_ids": [],
+    "release_channel": "services",
+    "release_set_ref": null,
+    "candidate_only": true,
+    "release_authority": false,
+    "activation_authority": false,
+    "profile_conformance_claimed": false,
+    "reproducibility_claimed": false
+  },
+  "builder": {
+    "builder_identity_ref": "contracts/identities.registry.json#/builders/koa-build-farm",
+    "worker_identity": "build-worker-017",
+    "worker_profile_ref": "contracts/profiles/build-farm.profile.json",
+    "worker_image_ref": "oci://registry.example.invalid/koa/build-worker-python@sha256:cb9905c385aa953e59aa6740381e9c001bf6d9ba85ba7b97e4156d3c15e780df",
+    "execution_class": "clean_ephemeral_worker",
+    "prior_workspace_state_available": false,
+    "human_interactive_mutation_during_build": false,
+    "external_ai_in_build_path": false
+  },
+  "invocation": {
+    "invocation_id": "INV-KONNAXION-20260803-001",
+    "trigger": "controlled_manual_candidate_build",
+    "requested_by_identity_ref": "contracts/identities.registry.json#/developers/developer-example",
+    "started_at": "2026-08-03T17:52:00-04:00",
+    "completed_at": "2026-08-03T18:02:30-04:00",
+    "timeout_seconds": 1800,
+    "result": "succeeded",
+    "command_set": [
+      {
+        "step_id": "sync-dependencies",
+        "command": "uv sync --frozen",
+        "working_directory": "/workspace/source",
+        "exit_code": 0
+      },
+      {
+        "step_id": "static-validation",
+        "command": "uv run koa-validate repository",
+        "working_directory": "/workspace/source",
+        "exit_code": 0
+      },
+      {
+        "step_id": "unit-tests",
+        "command": "uv run pytest tests/unit",
+        "working_directory": "/workspace/source",
+        "exit_code": 0
+      },
+      {
+        "step_id": "contract-tests",
+        "command": "uv run pytest tests/contracts",
+        "working_directory": "/workspace/source",
+        "exit_code": 0
+      },
+      {
+        "step_id": "build-wheel",
+        "command": "uv build --wheel",
+        "working_directory": "/workspace/source",
+        "exit_code": 0
+      },
+      {
+        "step_id": "build-oci-image",
+        "command": "docker build --pull=false --tag registry.example.invalid/koa/konnaxion-api:0.8.0-dev.1 .",
+        "working_directory": "/workspace/source",
+        "exit_code": 0
+      },
+      {
+        "step_id": "generate-sbom",
+        "command": "koa-sbom generate --output reports/konnaxion-0.8.0.dev1.spdx.json",
+        "working_directory": "/workspace/source",
+        "exit_code": 0
+      }
+    ],
+    "parameters": {
+      "build_mode": "candidate",
+      "network_mode": "restricted_fetch_then_offline_build",
+      "dependency_mode": "frozen",
+      "clean_source_required": true,
+      "tests_required": true,
+      "sbom_required": true,
+      "provenance_required": true
+    }
+  },
+  "environment": {
+    "operating_system": "Linux",
+    "distribution": "registered-build-worker-linux",
+    "distribution_version": "2026.08",
+    "kernel": "6.12-example",
+    "architecture": "x86_64",
+    "python_version": "3.12.11",
+    "uv_version": "0.8.3",
+    "container_runtime": "docker",
+    "container_runtime_version": "28.3.2",
+    "workspace_root": "/workspace/source",
+    "timezone": "UTC",
+    "locale": "C.UTF-8",
+    "resource_envelope_ref": "contracts/resource-envelopes.registry.json#/envelopes/build-worker-standard",
+    "resource_limits": {
+      "cpu_cores": 8,
+      "memory_gib": 24,
+      "temporary_storage_gib": 80,
+      "maximum_parallel_jobs": 4,
+      "execution_timeout_seconds": 1800
+    },
+    "connectivity": {
+      "initial_state": "restricted_network",
+      "build_execution_state": "offline",
+      "allowed_fetch_sources": [
+        "contracts/supply-chain.registry.json#/sources/python",
+        "contracts/supply-chain.registry.json#/sources/oci"
+      ],
+      "silent_remote_fallback": false
+    },
+    "environment_digest": {
+      "algorithm": "sha256",
+      "value": "7ca0a0480b65a62e17d7463e683849010a7233a1d2e6bfc263e944f1a999bfa2"
+    }
+  },
+  "source": {
+    "repository_id": "konnaxion",
+    "repository_ref": "contracts/repositories.registry.json#/repositories/konnaxion",
+    "uri": "git+https://example.invalid/koa/konnaxion.git",
+    "revision": "example-revision-2026-08-03-001",
+    "branch": "feature/voting",
+    "working_tree_state": "clean",
+    "submodules": [],
+    "source_digest": {
+      "algorithm": "sha256",
+      "value": "af81bb4a6efdc4d5cb06b576a458a870115552d46ea479cbc9ea8d12c2c52c1d"
+    },
+    "source_archive_ref": "contracts/artifacts.registry.json#/artifacts/ART-KONNAXION-SOURCE-20260803-001"
+  },
+  "materials": [
+    {
+      "material_id": "source-repository",
+      "material_type": "git_repository",
+      "uri": "git+https://example.invalid/koa/konnaxion.git",
+      "revision": "example-revision-2026-08-03-001",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "e0d35b63c119d453de6d84396e967d89c75d055d8387bbbe3ee0527df887fc6b"
+      },
+      "authoritative": true,
+      "required": true
+    },
+    {
+      "material_id": "pyproject",
+      "material_type": "dependency_declaration",
+      "uri": "workspace://source/pyproject.toml",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "1d7da0087b1d6c88341afa2675d6ef8c7d4252f05797c50ba39cb730b1a2f562"
+      },
+      "authoritative": true,
+      "required": true
+    },
+    {
+      "material_id": "uv-lock",
+      "material_type": "dependency_lock",
+      "uri": "workspace://source/uv.lock",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "8a6774ae6c97abc980722dbe8ff4687f9f11c99611a66da4bf902e2d8c706ad0"
+      },
+      "authoritative": true,
+      "required": true
+    },
+    {
+      "material_id": "python-toolchain",
+      "material_type": "toolchain_contract",
+      "uri": "contracts/toolchains/python-uv.toolchain.json",
+      "version": "1.0.0",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "2531a3880f51213a034d8c4e6755747616ead1cba7f50028f91c593ad7e3a833"
+      },
+      "authoritative": true,
+      "required": true
+    },
+    {
+      "material_id": "container-toolchain",
+      "material_type": "toolchain_contract",
+      "uri": "contracts/toolchains/container-runtime.toolchain.json",
+      "version": "1.0.0",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "859f6566929d2eaf12fcf2ccb9506235eb14aaab6cda2734a81d95b5283ab0d3"
+      },
+      "authoritative": true,
+      "required": true
+    },
+    {
+      "material_id": "build-worker-image",
+      "material_type": "oci_image",
+      "uri": "oci://registry.example.invalid/koa/build-worker-python",
+      "version": "2026.08.03",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "cb9905c385aa953e59aa6740381e9c001bf6d9ba85ba7b97e4156d3c15e780df"
+      },
+      "authoritative": true,
+      "required": true
+    }
+  ],
+  "dependency_resolution": {
+    "manager": "uv",
+    "toolchain_ref": "contracts/toolchains/python-uv.toolchain.json",
+    "project_file": "pyproject.toml",
+    "lock_file": "uv.lock",
+    "lock_digest": {
+      "algorithm": "sha256",
+      "value": "8a6774ae6c97abc980722dbe8ff4687f9f11c99611a66da4bf902e2d8c706ad0"
+    },
+    "sync_command": "uv sync --frozen",
+    "frozen": true,
+    "lock_modified_during_build": false,
+    "global_application_dependencies_used": false,
+    "user_site_packages_used": false,
+    "undeclared_host_dependencies_used": false,
+    "shared_mutable_environment_used": false,
+    "download_cache": {
+      "cache_ref": "contracts/caches.registry.json#/caches/build-farm-uv",
+      "content_addressed": true,
+      "authoritative": false,
+      "evictable": true,
+      "cache_hit_affects_dependency_graph": false
+    },
+    "resolved_package_count": 86,
+    "direct_dependency_count": 14
+  },
+  "tests": {
+    "overall_result": "passed",
+    "required_test_results": [
+      {
+        "test_id": "TEST-DEV-BTV-002",
+        "result": "passed",
+        "evidence_ref": "generated/evidence-catalog.json#/evidence/EVID-KONNAXION-CLEAN-BUILD-001"
+      },
+      {
+        "test_id": "TEST-DEV-BTV-003",
+        "result": "passed",
+        "evidence_ref": "generated/evidence-catalog.json#/evidence/EVID-KONNAXION-DECLARED-INPUTS-001"
+      },
+      {
+        "test_id": "TEST-DEV-BTV-010",
+        "result": "passed",
+        "evidence_ref": "generated/evidence-catalog.json#/evidence/EVID-KONNAXION-STATIC-VALIDATION-001"
+      },
+      {
+        "test_id": "TEST-DEV-BTV-014",
+        "result": "passed",
+        "evidence_ref": "generated/evidence-catalog.json#/evidence/EVID-KONNAXION-CANDIDATE-BUILD-001"
+      },
+      {
+        "test_id": "TEST-DEV-BTV-017",
+        "result": "not_applicable",
+        "reason": "This receipt records a candidate build only and does not claim release, activation, rollback, or recovery validation."
+      }
+    ],
+    "failed_test_ids": [],
+    "blocked_test_ids": [],
+    "errored_test_ids": [],
+    "flaky_or_quarantined_test_ids": [],
+    "test_report_artifact_id": "ART-KONNAXION-TEST-REPORT-20260803-001"
+  },
+  "products": [
+    {
+      "artifact_id": "ART-KONNAXION-WHEEL-20260803-001",
+      "artifact_type": "python_wheel",
+      "path": "dist/konnaxion-0.8.0.dev1-py3-none-any.whl",
+      "media_type": "application/zip",
+      "size_bytes": 184320,
+      "digest": {
+        "algorithm": "sha256",
+        "value": "8d302b2b721799eaf318e7934f1db0ab1aeaf1bf2c95501e7c9210e5445d5ac2"
+      },
+      "release_channel": "services",
+      "candidate": true,
+      "published": false,
+      "activated": false
+    },
+    {
+      "artifact_id": "ART-KONNAXION-OCI-20260803-001",
+      "artifact_type": "oci_image",
+      "path": "oci://registry.example.invalid/koa/konnaxion-api:0.8.0-dev.1",
+      "media_type": "application/vnd.oci.image.manifest.v1+json",
+      "size_bytes": 268435456,
+      "digest": {
+        "algorithm": "sha256",
+        "value": "cb0ea7b129e1478a571d46bc6fa6a8f9e100357d30710e9962c6ba0d4d209933"
+      },
+      "release_channel": "services",
+      "candidate": true,
+      "published": false,
+      "activated": false
+    },
+    {
+      "artifact_id": "ART-KONNAXION-SBOM-20260803-001",
+      "artifact_type": "sbom",
+      "path": "reports/konnaxion-0.8.0.dev1.spdx.json",
+      "media_type": "application/spdx+json",
+      "size_bytes": 147456,
+      "digest": {
+        "algorithm": "sha256",
+        "value": "94aa67713de857d95f2eccf3192b1d351f7ececb8df2d1723b034a41bb12a392"
+      },
+      "release_channel": "services",
+      "candidate": true,
+      "published": false,
+      "activated": false
+    },
+    {
+      "artifact_id": "ART-KONNAXION-TEST-REPORT-20260803-001",
+      "artifact_type": "test_report",
+      "path": "reports/build-test-validation.json",
+      "media_type": "application/json",
+      "size_bytes": 32768,
+      "digest": {
+        "algorithm": "sha256",
+        "value": "43499827f1925387cf9344f32a9f9b163e2bff230350a49b8085d263d6af9e3d"
+      },
+      "release_channel": "services",
+      "candidate": true,
+      "published": false,
+      "activated": false
+    }
+  ],
+  "sbom": {
+    "required": true,
+    "format": "SPDX-JSON",
+    "specification_version": "2.3",
+    "artifact_id": "ART-KONNAXION-SBOM-20260803-001",
+    "subject_artifact_ids": [
+      "ART-KONNAXION-WHEEL-20260803-001",
+      "ART-KONNAXION-OCI-20260803-001"
+    ],
+    "generated_by": "koa-sbom",
+    "generated_at": "2026-08-03T18:01:30-04:00",
+    "complete_for_declared_build_inputs": true,
+    "security_or_license_approval_implied": false
+  },
+  "reproducibility": {
+    "claim": "not_claimed",
+    "reason": "Only one clean build execution is represented. A second independent clean execution and canonical product comparison are required.",
+    "independent_build_receipt_refs": [],
+    "canonical_comparison_result": "not_executed"
+  },
+  "authority": "non_authoritative_example",
+  "integrity": {
+    "canonicalization": "json_canonicalization_scheme",
+    "material_digests_verified": true,
+    "product_digests_recorded": true,
+    "receipt_digest": {
+      "algorithm": "sha256",
+      "value": "c563c85a5c0f5d9eafb8b0eaa589ea3fc8e8d7386cfbfbe958dfcb878609ba70",
+      "scope": "canonical_receipt_without_signature_material"
+    },
+    "verification_policy_ref": "contracts/security/provenance-verification.policy.json"
+  },
+  "signing": {
+    "required": true,
+    "signature_status": "valid_example",
+    "algorithm": "ed25519",
+    "signer_identity_ref": "contracts/identities.registry.json#/signers/build-farm-provenance",
+    "trust_scope_ref": "contracts/trust/trust-roots.json#/sets/build-provenance",
+    "signature_ref": "contracts/signatures/PROV-RECEIPT-KONNAXION-FEATURE-VOTING-20260803-001.sig",
+    "signed_at": "2026-08-03T18:03:00-04:00",
+    "revocation_check_required": true,
+    "signer_scope_validation_required": true
+  },
+  "publication": {
+    "registered": true,
+    "registry_ref": "contracts/provenance.registry.json#/receipts/PROV-RECEIPT-KONNAXION-FEATURE-VOTING-20260803-001",
+    "audit_submission_required": true,
+    "audit_event_class": "test_or_evidence_event",
+    "audit_record_ref": "contracts/audit.registry.json#/records/AUDIT-PROVENANCE-KONNAXION-20260803-001",
+    "public_disclosure_allowed": false,
+    "cross_domain_publication_requires_publication_gateway": true
+  },
+  "validity": {
+    "state": "active_example",
+    "valid_for": [
+      "BUILD-KONNAXION-FEATURE-VOTING-20260803-001",
+      "example-revision-2026-08-03-001",
+      "ART-KONNAXION-WHEEL-20260803-001",
+      "ART-KONNAXION-OCI-20260803-001",
+      "ART-KONNAXION-SBOM-20260803-001",
+      "ART-KONNAXION-TEST-REPORT-20260803-001"
+    ],
+    "validity_scope": "Candidate-build provenance for the exact recorded source, materials, environment, invocation, tests, and products.",
+    "does_not_support": [
+      "release_approval",
+      "artifact_activation",
+      "profile_conformance",
+      "sovereign_linux_conformance",
+      "reproducibility",
+      "production_readiness"
+    ],
+    "invalidation_conditions": [
+      "source revision changes",
+      "material digest changes",
+      "toolchain or worker identity changes",
+      "lockfile changes",
+      "product digest mismatch",
+      "signature revocation",
+      "test evidence invalidation",
+      "provenance schema incompatibility"
+    ],
+    "supersedes_receipt_id": null,
+    "superseded_by_receipt_id": null
+  },
+  "retention": {
+    "retention_class_ref": "contracts/retention.registry.json#/classes/build-provenance",
+    "retain_with_subject_artifacts": true,
+    "retain_after_candidate_rejection": true,
+    "retain_for_historical_reconstruction": true,
+    "disposition_requires_dependency_check": true
+  },
+  "traceability": {
+    "decision_ids": [
+      "DEC-DEV-001",
+      "DEC-DEV-002",
+      "DEC-PROFILE-001",
+      "DEC-CONTAINER-001",
+      "DEC-REL-001",
+      "DEC-AI-001"
+    ],
+    "requirement_ids": [
+      "REQ-DEV-DEP-003",
+      "REQ-DEV-DEP-004",
+      "REQ-DEV-DEP-016",
+      "REQ-DEV-DEP-017",
+      "REQ-DEV-DEP-021",
+      "REQ-DEV-DEP-022",
+      "REQ-DEV-BTV-001",
+      "REQ-DEV-BTV-002",
+      "REQ-DEV-BTV-003",
+      "REQ-DEV-BTV-014",
+      "REQ-DEV-BTV-015",
+      "REQ-DEV-BTV-018",
+      "REQ-DEV-BTV-019",
+      "REQ-DEV-BTV-020",
+      "REQ-DEV-BTV-021",
+      "REQ-DEV-BTV-023",
+      "REQ-DEV-BTV-024"
+    ],
+    "lock_ids": [
+      "LOCK-DEV-001",
+      "LOCK-DEV-002",
+      "LOCK-PROFILE-001",
+      "LOCK-LIFE-001",
+      "LOCK-LIFE-002",
+      "LOCK-AI-001",
+      "LOCK-AI-002",
+      "LOCK-IMPL-001",
+      "LOCK-IMPL-002"
+    ],
+    "test_ids": [
+      "TEST-DEV-BTV-002",
+      "TEST-DEV-BTV-003",
+      "TEST-DEV-BTV-010",
+      "TEST-DEV-BTV-014",
+      "TEST-DEV-BTV-017"
+    ],
+    "evidence_refs": [
+      "generated/evidence-catalog.json#/evidence/EVID-KONNAXION-CLEAN-BUILD-001",
+      "generated/evidence-catalog.json#/evidence/EVID-KONNAXION-DECLARED-INPUTS-001",
+      "generated/evidence-catalog.json#/evidence/EVID-KONNAXION-STATIC-VALIDATION-001",
+      "generated/evidence-catalog.json#/evidence/EVID-KONNAXION-CANDIDATE-BUILD-001"
+    ],
+    "canonical_refs": [
+      "contracts/artifact-contracts/provenance-receipt.schema.json",
+      "contracts/examples/developer-workspace.example.json",
+      "contracts/profiles/build-farm.profile.json",
+      "contracts/toolchains/python-uv.toolchain.json",
+      "contracts/toolchains/container-runtime.toolchain.json",
+      "contracts/artifact-classes.contract.json",
+      "generated/test-catalog.json",
+      "generated/evidence-catalog.json"
+    ]
+  },
+  "tags": [
+    "provenance-receipt",
+    "candidate-build",
+    "konnaxion",
+    "build-farm",
+    "uv",
+    "sbom",
+    "signed",
+    "example"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "$schema": "../../schemas/integration.schema.json",
+  "integration_id": "gamma",
+  "title": "Gamma",
+  "version": "1.0.0",
+  "status": "active",
+  "integration_type": "external_media_service",
+  "role": "Optional external presentation surface.",
+  "authority": "non_authoritative",
+  "undeclared_substitution": "prohibited",
+  "availability": "optional"
+}

@@ -1,0 +1,308 @@
+{
+  "$schema": "../artifact-contracts/runtime-pack.schema.json",
+  "artifact_class": "runtime_pack",
+  "runtime_pack_id": "runtime-packs/community-services-guide/en-ca/1.0.0",
+  "version": "1.0.0",
+  "status": "active",
+  "language": "en",
+  "release_channel": "knowledge",
+  "title": "Community Services Guide Runtime Pack",
+  "description": "A deterministic offline Runtime Pack containing approved community-service knowledge, query contracts, presentation resources, and provenance for local use by compatible kOA components.",
+  "created_at": "2026-08-03T18:09:00-04:00",
+  "producer": {
+    "component_id": "kristal_runtime",
+    "component_contract_ref": "contracts/components/kristal-runtime.component.json",
+    "producer_identity_ref": "component-identities/kristal-runtime/build-01",
+    "producer_version": "1.0.0",
+    "release_set_ref": "release-sets/2026.08.03.1"
+  },
+  "source": {
+    "source_class": "approved_knowledge_package",
+    "source_package_ref": "knowledge-packages/community-services-guide/en-ca/2026.08.03",
+    "source_version": "2026.08.03",
+    "source_authority_domain_ref": "authority-domains/community-services-guide",
+    "acceptance_decision_ref": "knowledge-decisions/community-services-guide/2026.08.03",
+    "source_provenance_refs": [
+      "provenance/community-services-guide/source-catalog/2026.08.03",
+      "provenance/community-services-guide/editorial-review/2026.08.03"
+    ]
+  },
+  "scope": {
+    "knowledge_domain": "community_services",
+    "locale": "en-CA",
+    "jurisdiction_refs": [
+      "jurisdictions/ca-qc"
+    ],
+    "audience_classes": [
+      "general_public",
+      "authenticated_local_user"
+    ],
+    "content_period": {
+      "effective_from": "2026-08-03T00:00:00-04:00",
+      "review_by": "2026-11-03T00:00:00-05:00"
+    },
+    "excluded_uses": [
+      "automated_eligibility_decision",
+      "legal_determination",
+      "medical_diagnosis",
+      "financial_advice",
+      "model_training"
+    ]
+  },
+  "runtime_model": {
+    "execution_class": "deterministic_offline_knowledge_runtime",
+    "native_ai_dependency": false,
+    "external_service_dependency": false,
+    "network_required_for_query": false,
+    "mutable_runtime_state_required": false,
+    "authoritative_business_state_owned": false,
+    "supported_operations": [
+      "lookup_by_identifier",
+      "filter_by_category",
+      "filter_by_locality",
+      "full_text_search_over_pack_content",
+      "render_approved_summary",
+      "resolve_declared_related_items"
+    ]
+  },
+  "contents": {
+    "manifest_ref": "runtime-pack-members/community-services-guide/manifest/1.0.0",
+    "knowledge_units": [
+      {
+        "unit_id": "knowledge-units/community-services/food-support",
+        "unit_version": "2026.08.03",
+        "unit_class": "service_category",
+        "title": "Food support",
+        "summary": "Approved directory information for local food-support services.",
+        "entry_ref": "entries/community-services/food-support",
+        "provenance_refs": [
+          "provenance/community-services/food-support/2026.08.03"
+        ],
+        "review_state": "accepted"
+      },
+      {
+        "unit_id": "knowledge-units/community-services/housing-support",
+        "unit_version": "2026.08.03",
+        "unit_class": "service_category",
+        "title": "Housing support",
+        "summary": "Approved directory information for local housing-support services.",
+        "entry_ref": "entries/community-services/housing-support",
+        "provenance_refs": [
+          "provenance/community-services/housing-support/2026.08.03"
+        ],
+        "review_state": "accepted"
+      },
+      {
+        "unit_id": "knowledge-units/community-services/employment-support",
+        "unit_version": "2026.08.03",
+        "unit_class": "service_category",
+        "title": "Employment support",
+        "summary": "Approved directory information for local employment-support services.",
+        "entry_ref": "entries/community-services/employment-support",
+        "provenance_refs": [
+          "provenance/community-services/employment-support/2026.08.03"
+        ],
+        "review_state": "accepted"
+      }
+    ],
+    "indexes": [
+      {
+        "index_id": "indexes/community-services/by-category",
+        "index_class": "category",
+        "format": "application/vnd.koa.kristal-index+json",
+        "runtime_ref": "pack://indexes/by-category.json"
+      },
+      {
+        "index_id": "indexes/community-services/by-locality",
+        "index_class": "locality",
+        "format": "application/vnd.koa.kristal-index+json",
+        "runtime_ref": "pack://indexes/by-locality.json"
+      },
+      {
+        "index_id": "indexes/community-services/text-search",
+        "index_class": "deterministic_text_search",
+        "format": "application/vnd.koa.kristal-search-index+json",
+        "runtime_ref": "pack://indexes/text-search.json"
+      }
+    ],
+    "presentation_resources": [
+      {
+        "resource_id": "presentation/community-services/default-summary",
+        "resource_class": "approved_template",
+        "media_type": "text/markdown",
+        "language": "en-CA",
+        "runtime_ref": "pack://presentation/default-summary.md"
+      }
+    ],
+    "policy_refs": [
+      "policies/knowledge/community-services/1.0.0",
+      "policies/attribution/community-services/1.0.0"
+    ]
+  },
+  "interfaces": {
+    "query_contract_version": "1.0.0",
+    "queries": [
+      {
+        "query_id": "queries/community-services/get-by-id",
+        "operation": "lookup_by_identifier",
+        "input_contract_ref": "runtime-contracts/community-services/query-by-id/1.0.0",
+        "output_contract_ref": "runtime-contracts/community-services/service-entry/1.0.0",
+        "side_effect_free": true
+      },
+      {
+        "query_id": "queries/community-services/filter",
+        "operation": "filter_by_category",
+        "input_contract_ref": "runtime-contracts/community-services/filter/1.0.0",
+        "output_contract_ref": "runtime-contracts/community-services/service-entry-list/1.0.0",
+        "side_effect_free": true
+      },
+      {
+        "query_id": "queries/community-services/search",
+        "operation": "full_text_search_over_pack_content",
+        "input_contract_ref": "runtime-contracts/community-services/search/1.0.0",
+        "output_contract_ref": "runtime-contracts/community-services/search-results/1.0.0",
+        "side_effect_free": true
+      }
+    ],
+    "events_emitted": [],
+    "commands_accepted": []
+  },
+  "consumer_compatibility": {
+    "compatible_components": [
+      {
+        "component_id": "kristal_runtime",
+        "minimum_component_version": "1.0.0",
+        "maximum_component_version_exclusive": "2.0.0",
+        "use": "validation_activation_and_query"
+      },
+      {
+        "component_id": "orgo",
+        "minimum_component_version": "1.0.0",
+        "maximum_component_version_exclusive": "2.0.0",
+        "use": "read_only_knowledge_reference"
+      },
+      {
+        "component_id": "konnaxion",
+        "minimum_component_version": "1.0.0",
+        "maximum_component_version_exclusive": "2.0.0",
+        "use": "approved_public_directory_rendering"
+      },
+      {
+        "component_id": "semantik_architect_runtime",
+        "minimum_component_version": "1.0.0",
+        "maximum_component_version_exclusive": "2.0.0",
+        "use": "deterministic_structured_rendering"
+      }
+    ],
+    "profile_compatibility": [
+      {
+        "profile_id": "user_lightweight",
+        "compatibility": "supported"
+      },
+      {
+        "profile_id": "sovereign_hub",
+        "compatibility": "supported"
+      },
+      {
+        "profile_id": "developer_linux_workstation",
+        "compatibility": "supported_for_validation"
+      }
+    ],
+    "required_artifact_contracts": [
+      "contracts/artifact-contracts/runtime-pack.schema.json",
+      "contracts/artifact-contracts/provenance-receipt.schema.json"
+    ],
+    "release_set_compatibility_ref": "compatibility/runtime-pack/community-services-guide/1.0.0"
+  },
+  "activation": {
+    "activation_model": "validated_atomic_selection",
+    "default_state": "inactive",
+    "candidate_validation_required": true,
+    "active_pack_replacement_requires_compatibility": true,
+    "partial_activation_allowed": false,
+    "last_known_good_pack_ref": "runtime-packs/community-services-guide/en-ca/0.9.0",
+    "rollback_supported": true,
+    "activation_evidence_refs": [
+      "evidence/runtime-pack/community-services-guide/schema-validation/1.0.0",
+      "evidence/runtime-pack/community-services-guide/query-tests/1.0.0",
+      "evidence/runtime-pack/community-services-guide/offline-tests/1.0.0"
+    ]
+  },
+  "offline_behavior": {
+    "fully_queryable_offline": true,
+    "local_indexes_included": true,
+    "remote_name_resolution_required": false,
+    "remote_authority_refresh_required_for_existing_pack_queries": false,
+    "external_ai_fallback_allowed": false,
+    "stale_content_behavior": "show_review_state_and_review_by_date",
+    "missing_optional_resource_behavior": "degrade_only_affected_presentation"
+  },
+  "security_and_rights": {
+    "data_classification": "public",
+    "contains_secrets": false,
+    "contains_personal_data": false,
+    "contains_restricted_cultural_material": false,
+    "read_only_runtime": true,
+    "source_authority_transferred_to_pack": false,
+    "direct_component_data_writes_allowed": false,
+    "attribution": {
+      "mode": "collective",
+      "display_text": "Community Services Editorial Group",
+      "attribution_policy_ref": "policies/attribution/community-services/1.0.0"
+    },
+    "rights_policy_refs": [
+      "rights/community-services/runtime-distribution/1.0.0"
+    ]
+  },
+  "provenance": {
+    "provenance_receipt_ref": "provenance-receipts/runtime-pack/community-services-guide/1.0.0",
+    "build_manifest_ref": "build-manifests/runtime-pack/community-services-guide/1.0.0",
+    "source_provenance_refs": [
+      "provenance/community-services-guide/source-catalog/2026.08.03",
+      "provenance/community-services-guide/editorial-review/2026.08.03"
+    ],
+    "generator_id": "kristal-runtime-pack-builder",
+    "generator_version": "1.0.0",
+    "built_at": "2026-08-03T18:00:00-04:00",
+    "integrity_evidence_refs": [
+      "evidence/runtime-pack/community-services-guide/package-integrity/1.0.0"
+    ]
+  },
+  "evidence": {
+    "validation_result": "pass",
+    "schema_evidence_refs": [
+      "evidence/runtime-pack/community-services-guide/schema-validation/1.0.0"
+    ],
+    "query_test_evidence_refs": [
+      "evidence/runtime-pack/community-services-guide/query-tests/1.0.0"
+    ],
+    "offline_test_evidence_refs": [
+      "evidence/runtime-pack/community-services-guide/offline-tests/1.0.0"
+    ],
+    "compatibility_evidence_refs": [
+      "evidence/runtime-pack/community-services-guide/consumer-compatibility/1.0.0",
+      "evidence/runtime-pack/community-services-guide/release-set-compatibility/1.0.0"
+    ],
+    "review_evidence_refs": [
+      "evidence/runtime-pack/community-services-guide/editorial-acceptance/1.0.0"
+    ]
+  },
+  "example_metadata": {
+    "document_id": "EXAMPLE-RUNTIME-PACK-EXAMPLE",
+    "document_class": "example",
+    "status": "active",
+    "authority_participation": "non_authoritative",
+    "language": "en",
+    "layer": "canonical_contract",
+    "scope": [
+      "global"
+    ],
+    "depends_on": [
+      "CONTRACT-ART-RUNTIME-PACK"
+    ],
+    "illustrative_only": true,
+    "canonical_facts_owned_elsewhere": true
+  },
+  "example": true,
+  "authority": "non_authoritative_example"
+}

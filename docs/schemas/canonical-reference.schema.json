@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.koa.local/canonical-reference.schema.json",
+  "$defs": {
+    "canonicalReference": {
+      "type": "string",
+      "minLength": 1
+    },
+    "decisionId": {
+      "type": "string",
+      "pattern": "^(DEC|ADR)-[A-Z0-9][A-Z0-9-]*$"
+    },
+    "requirementId": {
+      "type": "string",
+      "pattern": "^REQ-[A-Z0-9][A-Z0-9-]*$"
+    },
+    "lockId": {
+      "type": "string",
+      "pattern": "^LOCK-[A-Z0-9][A-Z0-9-]*$"
+    },
+    "exceptionId": {
+      "type": "string",
+      "pattern": "^EXC-[A-Z0-9][A-Z0-9-]*$"
+    },
+    "testId": {
+      "type": "string",
+      "pattern": "^TEST-[A-Z0-9][A-Z0-9-]*$"
+    },
+    "evidenceId": {
+      "type": "string",
+      "pattern": "^EVID-[A-Z0-9][A-Z0-9-]*$"
+    }
+  }
+}

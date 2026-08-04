@@ -1,0 +1,1456 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.koa.local/artifact-contracts/provenance-receipt.schema.json",
+  "title": "kOA Provenance Receipt",
+  "description": "Validates an immutable machine-readable account of the source materials, revisions, producer, toolchain, environment, ordered transformations, dependencies, tests, verification, publication, and resulting subject for an artifact, content object, bundle, policy, or other governed output.",
+  "$comment": "The semantic validator additionally resolves every reference; verifies subject and material digests; checks source revisions and repository identity; validates transformation ordering and graph acyclicity; verifies toolchain, environment, producer, signer, and trust scope; confirms test evidence; checks publication linkage; rejects self-referential or unresolved lineage; and validates receipt signatures. A provenance receipt supplies evidence and does not itself make the subject compatible, authorized, published, or active.",
+  "x-koa-contract": {
+    "contract_id": "provenance_receipt",
+    "contract_version": "1.0.0",
+    "status": "active",
+    "language": "en",
+    "owner": "supply-chain-architecture",
+    "object_kind": "provenance_evidence",
+    "release_treatment": {
+      "kind": "lifecycle_evidence",
+      "release_channel": null,
+      "creates_release_channel": false
+    },
+    "canonical_refs": [
+      "generated/artifact-catalog.json#/contracts/13",
+      "generated/evidence-catalog.json",
+      "contracts/artifact-classes.contract.json",
+      "contracts/system.contract.json#/release_and_artifact_identity",
+      "contracts/system.contract.json#/receipts_and_critical_transitions",
+      "contracts/components/identity-and-trust.component.json",
+      "generated/requirements-index.json",
+      "generated/assertion-index.json",
+      "generated/traceability.json"
+    ],
+    "decision_ids": [
+      "DEC-REL-001",
+      "DEC-LIFE-001",
+      "DEC-DATA-001"
+    ],
+    "requirement_ids": [
+      "REQ-LIFE-ART-001",
+      "REQ-LIFE-ART-002",
+      "REQ-LIFE-ART-008",
+      "REQ-LIFE-ART-009",
+      "REQ-LIFE-ART-010",
+      "REQ-LIFE-ART-012",
+      "REQ-LIFE-ART-020",
+      "REQ-LIFE-ART-021",
+      "REQ-LIFE-ART-022",
+      "REQ-LIFE-ART-023",
+      "REQ-LIFE-ART-025",
+      "REQ-LIFE-ART-026",
+      "REQ-LIFE-ART-027"
+    ],
+    "lock_ids": [
+      "LOCK-DATA-001",
+      "LOCK-LIFE-001",
+      "LOCK-LIFE-002",
+      "LOCK-LIFE-003",
+      "LOCK-LIFE-004"
+    ]
+  },
+  "type": "object",
+  "required": [
+    "$schema",
+    "contract_type",
+    "contract_version",
+    "receipt_id",
+    "receipt_schema_version",
+    "receipt_class",
+    "status",
+    "subject_ref",
+    "subject",
+    "source_refs",
+    "producer_ref",
+    "producer_component_id",
+    "toolchain_ref",
+    "toolchain",
+    "environment_ref",
+    "environment",
+    "transformations",
+    "materials",
+    "test_evidence_refs",
+    "tests",
+    "outcome",
+    "recorded_at",
+    "disclosure_class",
+    "retention_class"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri-reference",
+      "anyOf": [
+        {
+          "const": "urn:koa:artifact-contract:provenance_receipt:1.0.0"
+        },
+        {
+          "pattern": "(?:^|/)provenance-receipt\\.schema\\.json$"
+        }
+      ]
+    },
+    "contract_type": {
+      "const": "provenance_receipt"
+    },
+    "contract_version": {
+      "const": "1.0.0"
+    },
+    "receipt_id": {
+      "$ref": "#/$defs/receiptId"
+    },
+    "receipt_schema_version": {
+      "const": "1.0.0"
+    },
+    "receipt_class": {
+      "const": "provenance_receipt"
+    },
+    "transition_type": {
+      "type": "string",
+      "enum": [
+        "artifact_production",
+        "content_transformation",
+        "bundle_assembly",
+        "policy_compilation",
+        "knowledge_compilation",
+        "external_candidate_import",
+        "artifact_reproduction",
+        "artifact_repair",
+        "provenance_correction"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "recorded",
+        "superseded",
+        "retired"
+      ]
+    },
+    "subject_ref": {
+      "$ref": "#/$defs/stableRef"
+    },
+    "subject": {
+      "$ref": "#/$defs/subject"
+    },
+    "source_refs": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4096,
+      "items": {
+        "$ref": "#/$defs/source"
+      }
+    },
+    "producer_ref": {
+      "$ref": "#/$defs/stableRef"
+    },
+    "producer_component_id": {
+      "$ref": "#/$defs/snakeId"
+    },
+    "producer_instance_id": {
+      "$ref": "#/$defs/stableRef"
+    },
+    "producer_identity_ref": {
+      "$ref": "#/$defs/stableRef"
+    },
+    "actor_ref": {
+      "$ref": "#/$defs/stableRef"
+    },
+    "toolchain_ref": {
+      "$ref": "#/$defs/stableRef"
+    },
+    "toolchain": {
+      "$ref": "#/$defs/toolchain"
+    },
+    "environment_ref": {
+      "$ref": "#/$defs/stableRef"
+    },
+    "environment": {
+      "$ref": "#/$defs/environment"
+    },
+    "transformations": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4096,
+      "items": {
+        "$ref": "#/$defs/transformation"
+      }
+    },
+    "materials": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 16384,
+      "items": {
+        "$ref": "#/$defs/material"
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "maxItems": 16384,
+      "items": {
+        "$ref": "#/$defs/dependency"
+      }
+    },
+    "parameters": {
+      "type": "array",
+      "maxItems": 4096,
+      "items": {
+        "$ref": "#/$defs/parameter"
+      }
+    },
+    "test_evidence_refs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/stableRef"
+      }
+    },
+    "tests": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4096,
+      "items": {
+        "$ref": "#/$defs/testResult"
+      }
+    },
+    "verification": {
+      "$ref": "#/$defs/verification"
+    },
+    "publication": {
+      "$ref": "#/$defs/publication"
+    },
+    "authority_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/stableRef"
+      }
+    },
+    "profile_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/stableRef"
+      }
+    },
+    "component_contract_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/repositoryReference"
+      }
+    },
+    "artifact_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/stableRef"
+      }
+    },
+    "release_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/stableRef"
+      }
+    },
+    "request_id": {
+      "$ref": "#/$defs/stableRef"
+    },
+    "correlation_id": {
+      "$ref": "#/$defs/stableRef"
+    },
+    "causation_id": {
+      "$ref": "#/$defs/stableRef"
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "authorized",
+        "denied",
+        "indeterminate",
+        "not_applicable"
+      ]
+    },
+    "execution_state": {
+      "type": "string",
+      "enum": [
+        "not_started",
+        "running",
+        "succeeded",
+        "failed",
+        "cancelled"
+      ]
+    },
+    "commit_state": {
+      "type": "string",
+      "enum": [
+        "not_applicable",
+        "not_committed",
+        "committed",
+        "rolled_back",
+        "forward_repaired"
+      ]
+    },
+    "outcome": {
+      "type": "string",
+      "enum": [
+        "succeeded",
+        "failed",
+        "cancelled",
+        "rejected",
+        "superseded",
+        "retired"
+      ]
+    },
+    "reason_code": {
+      "$ref": "#/$defs/snakeId"
+    },
+    "requested_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "started_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "completed_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "committed_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "recorded_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "supersedes_receipt_ref": {
+      "$ref": "#/$defs/stableRef"
+    },
+    "superseded_by_receipt_ref": {
+      "$ref": "#/$defs/stableRef"
+    },
+    "evidence_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/stableRef"
+      }
+    },
+    "disclosure_class": {
+      "type": "string",
+      "enum": [
+        "public",
+        "ordinary_visible",
+        "operator_restricted",
+        "security_restricted",
+        "evidence_restricted"
+      ]
+    },
+    "retention_class": {
+      "type": "string",
+      "enum": [
+        "artifact_lifecycle",
+        "release_lifecycle",
+        "supply_chain_evidence",
+        "knowledge_lineage",
+        "policy_lineage",
+        "permanent_identifier_evidence"
+      ]
+    },
+    "selective_disclosure": {
+      "$ref": "#/$defs/selectiveDisclosure"
+    },
+    "receipt_signatures": {
+      "type": "array",
+      "maxItems": 16,
+      "items": {
+        "$ref": "#/$defs/signature"
+      }
+    },
+    "canonical_refs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/repositoryReference"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "transition_type": {
+            "const": "provenance_correction"
+          }
+        },
+        "required": [
+          "transition_type"
+        ]
+      },
+      "then": {
+        "required": [
+          "supersedes_receipt_ref"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "superseded"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "required": [
+          "superseded_by_receipt_ref"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "outcome": {
+            "const": "succeeded"
+          }
+        },
+        "required": [
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "execution_state": {
+            "const": "succeeded"
+          }
+        },
+        "required": [
+          "execution_state",
+          "completed_at"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "commit_state": {
+            "const": "committed"
+          }
+        },
+        "required": [
+          "commit_state"
+        ]
+      },
+      "then": {
+        "required": [
+          "committed_at"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "subject": {
+            "properties": {
+              "subject_kind": {
+                "enum": [
+                  "release_artifact",
+                  "release_set",
+                  "offline_bundle",
+                  "policy_bundle",
+                  "runtime_pack",
+                  "language_pack"
+                ]
+              }
+            },
+            "required": [
+              "subject_kind"
+            ]
+          }
+        },
+        "required": [
+          "subject"
+        ]
+      },
+      "then": {
+        "properties": {
+          "subject": {
+            "required": [
+              "artifact_class",
+              "artifact_version",
+              "content_digest"
+            ]
+          }
+        },
+        "required": [
+          "release_refs"
+        ]
+      }
+    }
+  ],
+  "unevaluatedProperties": false,
+  "$defs": {
+    "resolvedString": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "pattern": "^(?!.*(?:[Tt][Bb][Dd]|[Tt][Oo][Dd][Oo]|[Ff][Ii][Xx][Mm][Ee])).+$"
+    },
+    "snakeId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
+    },
+    "semanticVersion": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "receiptId": {
+      "type": "string",
+      "pattern": "^PROV-RECEIPT-[A-Z0-9][A-Z0-9._-]{5,127}$"
+    },
+    "stableRef": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 1024,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+#@=-]*$"
+    },
+    "repositoryReference": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9._/-]+(?:#(?:|/(?:[^~/]|~0|~1)*)*)?$"
+    },
+    "hex64": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "hex96": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{96}$"
+    },
+    "hex128": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{128}$"
+    },
+    "digest": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "algorithm",
+            "value"
+          ],
+          "properties": {
+            "algorithm": {
+              "const": "sha256"
+            },
+            "value": {
+              "$ref": "#/$defs/hex64"
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "algorithm",
+            "value"
+          ],
+          "properties": {
+            "algorithm": {
+              "const": "sha384"
+            },
+            "value": {
+              "$ref": "#/$defs/hex96"
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "algorithm",
+            "value"
+          ],
+          "properties": {
+            "algorithm": {
+              "const": "sha512"
+            },
+            "value": {
+              "$ref": "#/$defs/hex128"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "subject": {
+      "type": "object",
+      "required": [
+        "subject_kind",
+        "subject_identity",
+        "content_digest"
+      ],
+      "properties": {
+        "subject_kind": {
+          "type": "string",
+          "enum": [
+            "release_artifact",
+            "release_set",
+            "offline_bundle",
+            "policy_bundle",
+            "runtime_pack",
+            "language_pack",
+            "knowledge_artifact",
+            "uckk_object",
+            "candidate_content",
+            "accepted_content",
+            "build_output",
+            "source_archive",
+            "migration_package",
+            "recovery_package"
+          ]
+        },
+        "subject_identity": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "artifact_class": {
+          "$ref": "#/$defs/snakeId"
+        },
+        "artifact_version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "release_channel": {
+          "type": "string",
+          "enum": [
+            "system",
+            "services",
+            "governance",
+            "knowledge"
+          ]
+        },
+        "media_type": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 255,
+          "pattern": "^[A-Za-z0-9!#$&^_.+-]+/[A-Za-z0-9!#$&^_.+-]+$"
+        },
+        "size_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "content_digest": {
+          "$ref": "#/$defs/digest"
+        },
+        "manifest_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "manifest_digest": {
+          "$ref": "#/$defs/digest"
+        },
+        "canonical_owner_ref": {
+          "$ref": "#/$defs/stableRef"
+        }
+      },
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "source_ref",
+        "source_kind",
+        "canonical_location_ref",
+        "revision",
+        "content_digest",
+        "retrieved_at"
+      ],
+      "properties": {
+        "source_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "source_kind": {
+          "type": "string",
+          "enum": [
+            "source_repository",
+            "source_archive",
+            "artifact",
+            "knowledge_object",
+            "policy_source",
+            "language_source",
+            "media_source",
+            "external_candidate",
+            "generated_intermediate",
+            "configuration_source"
+          ]
+        },
+        "canonical_location_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "revision": {
+          "$ref": "#/$defs/resolvedString"
+        },
+        "branch_or_tag": {
+          "$ref": "#/$defs/resolvedString"
+        },
+        "content_digest": {
+          "$ref": "#/$defs/digest"
+        },
+        "retrieved_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "retrieval_identity_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "provenance_receipt_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "license_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "rights_policy_ref": {
+          "$ref": "#/$defs/stableRef"
+        }
+      },
+      "additionalProperties": false
+    },
+    "tool": {
+      "type": "object",
+      "required": [
+        "tool_ref",
+        "name",
+        "version",
+        "digest"
+      ],
+      "properties": {
+        "tool_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "name": {
+          "$ref": "#/$defs/resolvedString"
+        },
+        "version": {
+          "$ref": "#/$defs/resolvedString"
+        },
+        "digest": {
+          "$ref": "#/$defs/digest"
+        },
+        "supplier_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "artifact_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "signature_verification_ref": {
+          "$ref": "#/$defs/stableRef"
+        }
+      },
+      "additionalProperties": false
+    },
+    "toolchain": {
+      "type": "object",
+      "required": [
+        "toolchain_identity",
+        "toolchain_version",
+        "tools",
+        "lock_or_manifest_refs",
+        "reproducibility_class"
+      ],
+      "properties": {
+        "toolchain_identity": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "toolchain_version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "tools": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1024,
+          "items": {
+            "$ref": "#/$defs/tool"
+          }
+        },
+        "lock_or_manifest_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/stableRef"
+          }
+        },
+        "reproducibility_class": {
+          "type": "string",
+          "enum": [
+            "reproducible",
+            "repeatable_declared_environment",
+            "deterministic_transformation",
+            "non_reproducible_with_declared_reason"
+          ]
+        },
+        "non_reproducible_reason": {
+          "$ref": "#/$defs/resolvedString"
+        },
+        "sbom_ref": {
+          "$ref": "#/$defs/stableRef"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "reproducibility_class": {
+                "const": "non_reproducible_with_declared_reason"
+              }
+            },
+            "required": [
+              "reproducibility_class"
+            ]
+          },
+          "then": {
+            "required": [
+              "non_reproducible_reason"
+            ]
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "environment": {
+      "type": "object",
+      "required": [
+        "environment_identity",
+        "environment_class",
+        "operating_system",
+        "architecture",
+        "isolation_class",
+        "clean_state_evidence_ref"
+      ],
+      "properties": {
+        "environment_identity": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "environment_class": {
+          "type": "string",
+          "enum": [
+            "developer_workspace",
+            "build_worker",
+            "release_environment",
+            "governance_publication_environment",
+            "knowledge_compilation_environment",
+            "controlled_import_environment",
+            "recovery_environment"
+          ]
+        },
+        "operating_system": {
+          "$ref": "#/$defs/resolvedString"
+        },
+        "architecture": {
+          "type": "string",
+          "enum": [
+            "x86_64",
+            "aarch64",
+            "architecture_independent"
+          ]
+        },
+        "isolation_class": {
+          "type": "string",
+          "enum": [
+            "workspace_isolated",
+            "clean_worker",
+            "container_isolated",
+            "virtual_machine_isolated",
+            "profile_controlled",
+            "recovery_isolated"
+          ]
+        },
+        "container_or_vm_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "workspace_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "node_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "profile_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/stableRef"
+          }
+        },
+        "clean_state_evidence_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "network_access_class": {
+          "type": "string",
+          "enum": [
+            "none",
+            "restricted",
+            "declared_sources_only",
+            "profile_controlled"
+          ]
+        },
+        "resource_envelope_ref": {
+          "$ref": "#/$defs/stableRef"
+        }
+      },
+      "additionalProperties": false
+    },
+    "transformation": {
+      "type": "object",
+      "required": [
+        "transformation_id",
+        "order",
+        "operation",
+        "processor_ref",
+        "input_refs",
+        "output_refs",
+        "parameters_digest",
+        "started_at",
+        "completed_at",
+        "outcome"
+      ],
+      "properties": {
+        "transformation_id": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "order": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "operation": {
+          "$ref": "#/$defs/snakeId"
+        },
+        "processor_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "processor_version": {
+          "$ref": "#/$defs/resolvedString"
+        },
+        "input_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/stableRef"
+          }
+        },
+        "output_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/stableRef"
+          }
+        },
+        "parameters_digest": {
+          "$ref": "#/$defs/digest"
+        },
+        "started_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "completed_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "outcome": {
+          "type": "string",
+          "enum": [
+            "succeeded",
+            "failed",
+            "cancelled",
+            "rejected"
+          ]
+        },
+        "reason_code": {
+          "$ref": "#/$defs/snakeId"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/stableRef"
+          }
+        },
+        "external_processing": {
+          "type": "boolean"
+        },
+        "external_integration_ref": {
+          "$ref": "#/$defs/stableRef"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "external_processing": {
+                "const": true
+              }
+            },
+            "required": [
+              "external_processing"
+            ]
+          },
+          "then": {
+            "required": [
+              "external_integration_ref"
+            ]
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "material": {
+      "type": "object",
+      "required": [
+        "material_ref",
+        "material_kind",
+        "identity",
+        "digest",
+        "source_or_supplier_ref",
+        "use"
+      ],
+      "properties": {
+        "material_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "material_kind": {
+          "type": "string",
+          "enum": [
+            "source",
+            "dependency",
+            "base_image",
+            "tool",
+            "configuration",
+            "policy",
+            "knowledge_artifact",
+            "language_pack",
+            "trust_material",
+            "external_candidate",
+            "generated_intermediate"
+          ]
+        },
+        "identity": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "version": {
+          "$ref": "#/$defs/resolvedString"
+        },
+        "digest": {
+          "$ref": "#/$defs/digest"
+        },
+        "source_or_supplier_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "use": {
+          "type": "string",
+          "enum": [
+            "direct_input",
+            "build_dependency",
+            "runtime_dependency",
+            "toolchain_input",
+            "base",
+            "configuration",
+            "verification",
+            "test",
+            "repair"
+          ]
+        },
+        "license_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "provenance_receipt_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "signature_verification_ref": {
+          "$ref": "#/$defs/stableRef"
+        }
+      },
+      "additionalProperties": false
+    },
+    "dependency": {
+      "type": "object",
+      "required": [
+        "dependency_ref",
+        "dependency_kind",
+        "version",
+        "digest",
+        "relationship"
+      ],
+      "properties": {
+        "dependency_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "dependency_kind": {
+          "type": "string",
+          "enum": [
+            "build",
+            "runtime",
+            "test",
+            "toolchain",
+            "base_image",
+            "language_runtime",
+            "policy",
+            "knowledge",
+            "system",
+            "service"
+          ]
+        },
+        "version": {
+          "$ref": "#/$defs/resolvedString"
+        },
+        "digest": {
+          "$ref": "#/$defs/digest"
+        },
+        "relationship": {
+          "type": "string",
+          "enum": [
+            "direct",
+            "transitive",
+            "provided",
+            "optional",
+            "development_only"
+          ]
+        },
+        "sbom_component_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "supplier_ref": {
+          "$ref": "#/$defs/stableRef"
+        }
+      },
+      "additionalProperties": false
+    },
+    "parameter": {
+      "type": "object",
+      "required": [
+        "name",
+        "value_class",
+        "value_digest",
+        "secret"
+      ],
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/snakeId"
+        },
+        "value_class": {
+          "type": "string",
+          "enum": [
+            "string",
+            "integer",
+            "boolean",
+            "list",
+            "object",
+            "file",
+            "environment_reference"
+          ]
+        },
+        "value_digest": {
+          "$ref": "#/$defs/digest"
+        },
+        "secret": {
+          "type": "boolean"
+        },
+        "public_value": {
+          "type": [
+            "string",
+            "integer",
+            "boolean",
+            "array",
+            "object"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "secret": {
+                "const": true
+              }
+            },
+            "required": [
+              "secret"
+            ]
+          },
+          "then": {
+            "properties": {
+              "public_value": false
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "testResult": {
+      "type": "object",
+      "required": [
+        "test_ref",
+        "test_type",
+        "result",
+        "evidence_ref",
+        "executed_at",
+        "environment_ref"
+      ],
+      "properties": {
+        "test_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "test_type": {
+          "type": "string",
+          "enum": [
+            "unit",
+            "integration",
+            "contract",
+            "conformance",
+            "compatibility",
+            "reproducibility",
+            "security",
+            "supply_chain",
+            "migration",
+            "activation",
+            "rollback",
+            "recovery"
+          ]
+        },
+        "result": {
+          "type": "string",
+          "enum": [
+            "passed",
+            "failed",
+            "blocked"
+          ]
+        },
+        "evidence_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "executed_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "environment_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "test_tool_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "reason_code": {
+          "$ref": "#/$defs/snakeId"
+        }
+      },
+      "additionalProperties": false
+    },
+    "verification": {
+      "type": "object",
+      "required": [
+        "verification_state",
+        "verifier_component_ref",
+        "verified_at",
+        "checks",
+        "verification_receipt_ref"
+      ],
+      "properties": {
+        "verification_state": {
+          "type": "string",
+          "enum": [
+            "verified",
+            "failed",
+            "indeterminate"
+          ]
+        },
+        "verifier_component_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "verifier_identity_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "verified_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "checks": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "subject_digest",
+              "source_revision",
+              "material_digest",
+              "toolchain_identity",
+              "environment_identity",
+              "transformation_graph",
+              "dependency_manifest",
+              "sbom",
+              "test_evidence",
+              "signer_identity",
+              "publication_linkage"
+            ]
+          }
+        },
+        "verification_receipt_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "reason_code": {
+          "$ref": "#/$defs/snakeId"
+        }
+      },
+      "additionalProperties": false
+    },
+    "publication": {
+      "type": "object",
+      "required": [
+        "publication_state",
+        "destination_ref"
+      ],
+      "properties": {
+        "publication_state": {
+          "type": "string",
+          "enum": [
+            "not_published",
+            "published",
+            "rejected",
+            "revoked",
+            "retired"
+          ]
+        },
+        "destination_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "repository_path_or_locator": {
+          "$ref": "#/$defs/resolvedString"
+        },
+        "publication_receipt_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "published_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "publisher_identity_ref": {
+          "$ref": "#/$defs/stableRef"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "publication_state": {
+                "const": "published"
+              }
+            },
+            "required": [
+              "publication_state"
+            ]
+          },
+          "then": {
+            "required": [
+              "publication_receipt_ref",
+              "published_at",
+              "publisher_identity_ref"
+            ]
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "selectiveDisclosure": {
+      "type": "object",
+      "required": [
+        "ordinary_view_fields",
+        "restricted_fields",
+        "redaction_policy_ref"
+      ],
+      "properties": {
+        "ordinary_view_fields": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/snakeId"
+          }
+        },
+        "restricted_fields": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/snakeId"
+          }
+        },
+        "redaction_policy_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "restricted_access_receipt_required": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "base64Value": {
+      "type": "string",
+      "minLength": 16,
+      "maxLength": 262144,
+      "pattern": "^[A-Za-z0-9+/]+={0,2}$"
+    },
+    "signature": {
+      "type": "object",
+      "required": [
+        "signature_id",
+        "signer_identity_ref",
+        "trust_scope_ref",
+        "algorithm",
+        "signature_value",
+        "signed_digest",
+        "intended_use",
+        "signed_at"
+      ],
+      "properties": {
+        "signature_id": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "signer_identity_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "trust_scope_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "algorithm": {
+          "type": "string",
+          "enum": [
+            "ed25519",
+            "ecdsa_p256_sha256",
+            "ecdsa_p384_sha384",
+            "rsa_pss_sha256",
+            "rsa_pss_sha512"
+          ]
+        },
+        "signature_value": {
+          "$ref": "#/$defs/base64Value"
+        },
+        "signed_digest": {
+          "$ref": "#/$defs/digest"
+        },
+        "intended_use": {
+          "const": "provenance_receipt_verification"
+        },
+        "signed_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "verification_ref": {
+          "$ref": "#/$defs/stableRef"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

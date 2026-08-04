@@ -1,0 +1,1135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "exception.schema.json",
+  "title": "kOA Exception or Waiver",
+  "description": "Schema for one bounded, human-approved deviation from an active kOA requirement. An exception preserves requirement intent through equivalent or stronger controls. A waiver temporarily accepts incomplete compliance with compensating controls, remediation, exact expiration, and disclosed conformance impact.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "exception_id",
+    "version",
+    "deviation_kind",
+    "status",
+    "title",
+    "summary",
+    "decision_ids",
+    "scope",
+    "affected_authority",
+    "owners",
+    "risk_assessment",
+    "controls",
+    "timing",
+    "approval",
+    "conformance",
+    "evidence_ids",
+    "traceability_refs",
+    "impact_analysis_ref",
+    "lifecycle_events",
+    "renewal",
+    "supersession"
+  ],
+  "properties": {
+    "exception_id": {
+      "$ref": "#/$defs/exception_id"
+    },
+    "version": {
+      "$ref": "#/$defs/semantic_version"
+    },
+    "deviation_kind": {
+      "type": "string",
+      "enum": [
+        "exception",
+        "waiver"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "proposed",
+        "under_review",
+        "approved",
+        "active",
+        "suspended",
+        "expired",
+        "revoked",
+        "superseded",
+        "closed",
+        "rejected"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 200
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 2000
+    },
+    "justification": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 5000
+    },
+    "decision_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^DEC-[A-Z0-9]+(?:-[A-Z0-9]+)+$"
+      }
+    },
+    "scope": {
+      "$ref": "#/$defs/scope"
+    },
+    "affected_authority": {
+      "$ref": "#/$defs/affected_authority"
+    },
+    "owners": {
+      "$ref": "#/$defs/owners"
+    },
+    "risk_assessment": {
+      "$ref": "#/$defs/risk_assessment"
+    },
+    "controls": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/control"
+      }
+    },
+    "remediation": {
+      "$ref": "#/$defs/remediation"
+    },
+    "timing": {
+      "$ref": "#/$defs/timing"
+    },
+    "approval": {
+      "$ref": "#/$defs/approval"
+    },
+    "conformance": {
+      "$ref": "#/$defs/conformance"
+    },
+    "evidence_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^EVID-[A-Z0-9]+(?:-[A-Z0-9]+)+$"
+      }
+    },
+    "traceability_refs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/canonical_reference"
+      }
+    },
+    "impact_analysis_ref": {
+      "$ref": "#/$defs/canonical_reference"
+    },
+    "release_disclosures": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/release_disclosure"
+      }
+    },
+    "lifecycle_events": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/lifecycle_event"
+      }
+    },
+    "renewal": {
+      "$ref": "#/$defs/renewal"
+    },
+    "supersession": {
+      "$ref": "#/$defs/supersession"
+    },
+    "closure": {
+      "$ref": "#/$defs/closure"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "deviation_kind": {
+            "const": "exception"
+          }
+        },
+        "required": [
+          "deviation_kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "conformance": {
+            "properties": {
+              "effect": {
+                "enum": [
+                  "equivalent_control",
+                  "claim_blocked",
+                  "not_applicable"
+                ]
+              }
+            }
+          },
+          "renewal": {
+            "properties": {
+              "renewal_count": {
+                "const": 0
+              },
+              "renewal_allowed": {
+                "const": false
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "deviation_kind": {
+            "const": "waiver"
+          }
+        },
+        "required": [
+          "deviation_kind"
+        ]
+      },
+      "then": {
+        "required": [
+          "remediation"
+        ],
+        "properties": {
+          "conformance": {
+            "properties": {
+              "effect": {
+                "enum": [
+                  "conformant_with_active_waiver",
+                  "claim_blocked",
+                  "not_applicable"
+                ]
+              }
+            }
+          },
+          "renewal": {
+            "properties": {
+              "renewal_allowed": {
+                "const": true
+              },
+              "renewal_count": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "approved",
+              "active",
+              "suspended"
+            ]
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "required": [
+          "justification"
+        ],
+        "properties": {
+          "approval": {
+            "properties": {
+              "approval_status": {
+                "const": "approved"
+              }
+            }
+          },
+          "evidence_ids": {
+            "minItems": 1
+          },
+          "controls": {
+            "contains": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "enum": [
+                    "implemented",
+                    "verified"
+                  ]
+                }
+              },
+              "required": [
+                "status"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "active"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "timing": {
+            "required": [
+              "approved_at",
+              "activated_at",
+              "expires_at"
+            ]
+          },
+          "approval": {
+            "required": [
+              "approved_by",
+              "approved_at"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "expired",
+              "revoked",
+              "superseded",
+              "closed",
+              "rejected"
+            ]
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "required": [
+          "closure"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "superseded"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "supersession": {
+            "required": [
+              "replaced_by"
+            ],
+            "properties": {
+              "replaced_by": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "risk_assessment": {
+            "properties": {
+              "residual_risk": {
+                "enum": [
+                  "high",
+                  "critical"
+                ]
+              }
+            },
+            "required": [
+              "residual_risk"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "owners": {
+            "properties": {
+              "requester": {},
+              "approver": {}
+            }
+          },
+          "approval": {
+            "properties": {
+              "separation_of_duties_verified": {
+                "const": true
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "semantic_version": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"
+    },
+    "exception_id": {
+      "type": "string",
+      "pattern": "^EXC-[A-Z0-9]+(?:-[A-Z0-9]+)+$"
+    },
+    "human_id": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 200,
+      "pattern": "^(?!ai:)(?!agent:)(?!system:).+$"
+    },
+    "machine_key": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
+    },
+    "canonical_reference": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*//)(?!.*(?:^|/)\\.\\.?(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]*(?:#(?:/[^ \\t\\r\\n]*)?)?$"
+    },
+    "target_identifier": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 300,
+      "pattern": "^(?!\\*)(?!all$)(?!global$)(?!any$).+$"
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "targets",
+        "description",
+        "implicit_inheritance_allowed"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "deployment_instance",
+            "release",
+            "profile_claim",
+            "component_instance",
+            "component_release",
+            "artifact_instance",
+            "development_workspace",
+            "migration_action"
+          ]
+        },
+        "targets": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 50,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/target_identifier"
+          }
+        },
+        "description": {
+          "type": "string",
+          "minLength": 20,
+          "maxLength": 2000
+        },
+        "implicit_inheritance_allowed": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    },
+    "affected_authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requirement_ids",
+        "lock_ids",
+        "profile_refs",
+        "component_refs",
+        "artifact_refs",
+        "release_refs",
+        "workspace_refs",
+        "non_waivable_authority_affected"
+      ],
+      "properties": {
+        "requirement_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^REQ-[A-Z0-9]+(?:-[A-Z0-9]+)+$"
+          }
+        },
+        "lock_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^LOCK-[A-Z0-9]+(?:-[A-Z0-9]+)+$"
+          }
+        },
+        "profile_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/canonical_reference"
+          }
+        },
+        "component_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/canonical_reference"
+          }
+        },
+        "artifact_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/canonical_reference"
+          }
+        },
+        "release_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/canonical_reference"
+          }
+        },
+        "workspace_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/canonical_reference"
+          }
+        },
+        "non_waivable_authority_affected": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    },
+    "human_role": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "human_id",
+        "display_name",
+        "role"
+      ],
+      "properties": {
+        "human_id": {
+          "$ref": "#/$defs/human_id"
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 200
+        },
+        "role": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 120
+        }
+      }
+    },
+    "owners": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requester",
+        "requirement_owner",
+        "risk_owner",
+        "control_owner",
+        "remediation_owner",
+        "approver"
+      ],
+      "properties": {
+        "requester": {
+          "$ref": "#/$defs/human_role"
+        },
+        "requirement_owner": {
+          "$ref": "#/$defs/human_role"
+        },
+        "risk_owner": {
+          "$ref": "#/$defs/human_role"
+        },
+        "control_owner": {
+          "$ref": "#/$defs/human_role"
+        },
+        "remediation_owner": {
+          "$ref": "#/$defs/human_role"
+        },
+        "approver": {
+          "$ref": "#/$defs/human_role"
+        }
+      }
+    },
+    "risk_assessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "risk_summary",
+        "inherent_risk",
+        "residual_risk",
+        "risk_acceptance_statement",
+        "assessment_ref"
+      ],
+      "properties": {
+        "risk_summary": {
+          "type": "string",
+          "minLength": 20,
+          "maxLength": 5000
+        },
+        "inherent_risk": {
+          "type": "string",
+          "enum": [
+            "low",
+            "moderate",
+            "high",
+            "critical"
+          ]
+        },
+        "residual_risk": {
+          "type": "string",
+          "enum": [
+            "low",
+            "moderate",
+            "high",
+            "critical"
+          ]
+        },
+        "risk_acceptance_statement": {
+          "type": "string",
+          "minLength": 20,
+          "maxLength": 3000
+        },
+        "assessment_ref": {
+          "$ref": "#/$defs/canonical_reference"
+        }
+      }
+    },
+    "control": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "control_id",
+        "description",
+        "owner",
+        "status",
+        "test_ids",
+        "evidence_ids"
+      ],
+      "properties": {
+        "control_id": {
+          "type": "string",
+          "pattern": "^CTRL-[A-Z0-9]+(?:-[A-Z0-9]+)+$"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 20,
+          "maxLength": 3000,
+          "not": {
+            "enum": [
+              "monitor carefully",
+              "use best efforts",
+              "be cautious",
+              "review later"
+            ]
+          }
+        },
+        "owner": {
+          "$ref": "#/$defs/human_role"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "planned",
+            "implemented",
+            "verified",
+            "failed",
+            "retired"
+          ]
+        },
+        "test_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^TEST-[A-Z0-9]+(?:-[A-Z0-9]+)+$"
+          }
+        },
+        "evidence_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^EVID-[A-Z0-9]+(?:-[A-Z0-9]+)+$"
+          }
+        }
+      }
+    },
+    "milestone": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "milestone_id",
+        "description",
+        "due_at",
+        "status",
+        "evidence_ids"
+      ],
+      "properties": {
+        "milestone_id": {
+          "type": "string",
+          "pattern": "^MILE-[A-Z0-9]+(?:-[A-Z0-9]+)+$"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 2000
+        },
+        "due_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "planned",
+            "in_progress",
+            "completed",
+            "missed",
+            "cancelled"
+          ]
+        },
+        "evidence_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^EVID-[A-Z0-9]+(?:-[A-Z0-9]+)+$"
+          }
+        }
+      }
+    },
+    "remediation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "plan",
+        "owner",
+        "milestones",
+        "completion_criteria"
+      ],
+      "properties": {
+        "plan": {
+          "type": "string",
+          "minLength": 20,
+          "maxLength": 5000
+        },
+        "owner": {
+          "$ref": "#/$defs/human_role"
+        },
+        "milestones": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/milestone"
+          }
+        },
+        "completion_criteria": {
+          "type": "string",
+          "minLength": 20,
+          "maxLength": 3000
+        }
+      }
+    },
+    "timing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "created_at",
+        "expires_at",
+        "automatic_expiration"
+      ],
+      "properties": {
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "submitted_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "approved_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "activated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "suspended_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "closed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "automatic_expiration": {
+          "type": "boolean",
+          "const": true
+        }
+      }
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "approval_status",
+        "human_approval_required",
+        "ai_approval_allowed",
+        "separation_of_duties_verified"
+      ],
+      "properties": {
+        "approval_status": {
+          "type": "string",
+          "enum": [
+            "human_approval_required",
+            "approved",
+            "rejected",
+            "revoked"
+          ]
+        },
+        "human_approval_required": {
+          "type": "boolean",
+          "const": true
+        },
+        "ai_approval_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "approved_by": {
+          "$ref": "#/$defs/human_role"
+        },
+        "approved_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "approval_decision_ref": {
+          "$ref": "#/$defs/canonical_reference"
+        },
+        "separation_of_duties_verified": {
+          "type": "boolean"
+        }
+      }
+    },
+    "conformance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "effect",
+        "disclosure_required",
+        "unqualified_conformance_allowed",
+        "claim_refs"
+      ],
+      "properties": {
+        "effect": {
+          "type": "string",
+          "enum": [
+            "equivalent_control",
+            "conformant_with_active_waiver",
+            "claim_blocked",
+            "not_applicable"
+          ]
+        },
+        "disclosure_required": {
+          "type": "boolean",
+          "const": true
+        },
+        "unqualified_conformance_allowed": {
+          "type": "boolean"
+        },
+        "claim_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/canonical_reference"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "effect": {
+                "enum": [
+                  "conformant_with_active_waiver",
+                  "claim_blocked"
+                ]
+              }
+            },
+            "required": [
+              "effect"
+            ]
+          },
+          "then": {
+            "properties": {
+              "unqualified_conformance_allowed": {
+                "const": false
+              }
+            }
+          }
+        }
+      ]
+    },
+    "release_disclosure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "release_ref",
+        "disclosed"
+      ],
+      "properties": {
+        "release_ref": {
+          "$ref": "#/$defs/canonical_reference"
+        },
+        "disclosed": {
+          "type": "boolean",
+          "const": true
+        }
+      }
+    },
+    "lifecycle_event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_type",
+        "occurred_at",
+        "actor",
+        "summary"
+      ],
+      "properties": {
+        "event_type": {
+          "type": "string",
+          "enum": [
+            "proposed",
+            "review_started",
+            "approved",
+            "activated",
+            "suspended",
+            "renewed",
+            "revoked",
+            "expired",
+            "superseded",
+            "closed",
+            "rejected",
+            "control_verified",
+            "control_failed",
+            "remediation_progressed"
+          ]
+        },
+        "occurred_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "actor": {
+          "$ref": "#/$defs/human_role"
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 2000
+        },
+        "evidence_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^EVID-[A-Z0-9]+(?:-[A-Z0-9]+)+$"
+          }
+        }
+      }
+    },
+    "renewal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "renewal_allowed",
+        "renewal_count",
+        "maximum_renewals"
+      ],
+      "properties": {
+        "renewal_allowed": {
+          "type": "boolean"
+        },
+        "renewal_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "maximum_renewals": {
+          "type": "integer",
+          "enum": [
+            0,
+            1
+          ]
+        },
+        "renewal_decision_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^DEC-[A-Z0-9]+(?:-[A-Z0-9]+)+$"
+          }
+        },
+        "renewal_evidence_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^EVID-[A-Z0-9]+(?:-[A-Z0-9]+)+$"
+          }
+        }
+      }
+    },
+    "supersession": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "supersedes",
+        "replaced_by"
+      ],
+      "properties": {
+        "supersedes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/exception_id"
+          }
+        },
+        "replaced_by": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^EXC-[A-Z0-9]+(?:-[A-Z0-9]+)+$"
+        }
+      }
+    },
+    "closure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reason",
+        "summary",
+        "closed_by",
+        "closed_at",
+        "evidence_ids"
+      ],
+      "properties": {
+        "reason": {
+          "type": "string",
+          "enum": [
+            "target_became_compliant",
+            "capability_removed",
+            "target_retired",
+            "canonical_requirement_changed",
+            "supported_alternative_activated",
+            "superseded_by_new_deviation",
+            "request_rejected"
+          ]
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 20,
+          "maxLength": 3000
+        },
+        "closed_by": {
+          "$ref": "#/$defs/human_role"
+        },
+        "closed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "evidence_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^EVID-[A-Z0-9]+(?:-[A-Z0-9]+)+$"
+          }
+        }
+      }
+    }
+  },
+  "x-koa-semantic-checks": [
+    "exception_id values are unique and never reused",
+    "all decision_ids resolve to accepted owner decisions",
+    "all affected requirement_ids and lock_ids resolve",
+    "scope targets are concrete and contain no wildcard, global, or indefinite target",
+    "the deviation does not affect non-waivable authority",
+    "requester and approver are distinct when high-assurance or security-sensitive rules require separation",
+    "risk owner and approver are named human identities",
+    "all controls are concrete, assigned, testable, and evidenced",
+    "an exception demonstrates equivalent or stronger satisfaction of requirement intent",
+    "a waiver has remediation milestones and completion criteria",
+    "waiver duration does not exceed 90 calendar days per approval",
+    "waiver renewal count does not exceed one",
+    "an exception duration does not exceed 365 calendar days or one major documentation version",
+    "expires_at is later than created_at and activated_at",
+    "approval timestamps and timing timestamps are consistent",
+    "active deviations have current evidence and verified controls",
+    "expired, revoked, suspended, or closed deviations do not authorize continued non-compliance",
+    "scope does not inherit to another deployment, release, profile, component, artifact, or workspace",
+    "release and conformance claims disclose every applicable active deviation",
+    "waivers never allow unqualified conformance",
+    "supersession links are bidirectional and acyclic",
+    "lifecycle event order is valid for the declared status",
+    "renewal requires a new accepted decision, updated risk assessment, fresh evidence, and remediation progress",
+    "repeated or broadly required deviations trigger canonical requirement review",
+    "AI-generated proposals remain unapproved until explicit human authorization is recorded"
+  ]
+}

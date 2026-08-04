@@ -1,0 +1,1044 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:koa:docs:schema:common-metadata:1.0.0",
+  "title": "kOA Common Metadata",
+  "description": "Reusable metadata definitions for kOA documentation objects, registries, schemas, contracts, generated projections, migration evidence, and archives. Ordinary Markdown metadata does not use file-content hashes.",
+  "$comment": "Specialized schemas reference definitions in $defs and close their own object shapes with unevaluatedProperties or additionalProperties as appropriate.",
+  "$ref": "#/$defs/commonMetadata",
+  "$defs": {
+    "resolvedString": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!.*(?:[Tt][Bb][Dd]|[Tt][Oo][Dd][Oo]|[Ff][Ii][Xx][Mm][Ee])).+$"
+    },
+    "semanticVersion": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$",
+      "examples": [
+        "1.0.0",
+        "2.1.0"
+      ]
+    },
+    "lifecycleStatus": {
+      "type": "string",
+      "enum": [
+        "active",
+        "deprecated",
+        "superseded",
+        "archived"
+      ]
+    },
+    "language": {
+      "type": "string",
+      "const": "en"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "ownerId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"
+    },
+    "layerId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:[_-][a-z0-9]+)*$"
+    },
+    "tag": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[a-z0-9][a-z0-9._-]*$"
+    },
+    "repositoryPath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9._/-]+$"
+    },
+    "jsonPointer": {
+      "type": "string",
+      "pattern": "^(?:|/(?:[^~/]|~0|~1)*)*$"
+    },
+    "repositoryReference": {
+      "type": "string",
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?=.*(?:/|\\.[A-Za-z0-9]+(?:#|$)))[A-Za-z0-9._/-]+(?:#(?:|/(?:[^~/]|~0|~1)*)*)?$"
+    },
+    "documentId": {
+      "type": "string",
+      "pattern": "^DOC-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$"
+    },
+    "decisionId": {
+      "type": "string",
+      "pattern": "^DEC-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$"
+    },
+    "requirementId": {
+      "type": "string",
+      "pattern": "^REQ-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$"
+    },
+    "lockId": {
+      "type": "string",
+      "pattern": "^LOCK-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$"
+    },
+    "adrId": {
+      "type": "string",
+      "pattern": "^ADR-[0-9]{3,4}$"
+    },
+    "testId": {
+      "type": "string",
+      "pattern": "^TEST-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$"
+    },
+    "evidenceId": {
+      "type": "string",
+      "pattern": "^EVID-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$"
+    },
+    "exceptionId": {
+      "type": "string",
+      "pattern": "^EXC-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$"
+    },
+    "registryId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*\\.registry$"
+    },
+    "schemaId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*\\.schema$"
+    },
+    "contractId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*(?:\\.[a-z0-9]+)+$"
+    },
+    "stableEntityReference": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/documentId"
+        },
+        {
+          "$ref": "#/$defs/decisionId"
+        },
+        {
+          "$ref": "#/$defs/requirementId"
+        },
+        {
+          "$ref": "#/$defs/lockId"
+        },
+        {
+          "$ref": "#/$defs/adrId"
+        },
+        {
+          "$ref": "#/$defs/testId"
+        },
+        {
+          "$ref": "#/$defs/evidenceId"
+        },
+        {
+          "$ref": "#/$defs/exceptionId"
+        }
+      ]
+    },
+    "canonicalReference": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/repositoryReference"
+        },
+        {
+          "$ref": "#/$defs/stableEntityReference"
+        }
+      ]
+    },
+    "scopeKind": {
+      "type": "string",
+      "enum": [
+        "global",
+        "profile",
+        "profile_overlay",
+        "component",
+        "artifact_class",
+        "development_toolchain",
+        "migration_only"
+      ]
+    },
+    "scopeName": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:[_-][a-z0-9]+)*$"
+    },
+    "scopeToken": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/scopeKind"
+        },
+        {
+          "type": "string",
+          "pattern": "^(?:profile|profile_overlay|component|artifact_class|development_toolchain):[a-z][a-z0-9]*(?:[_-][a-z0-9]+)*$"
+        }
+      ]
+    },
+    "documentScope": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/scopeToken"
+      }
+    },
+    "structuredScope": {
+      "type": "object",
+      "required": [
+        "kind"
+      ],
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/scopeKind"
+        },
+        "profiles": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/scopeName"
+          }
+        },
+        "overlays": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/scopeName"
+          }
+        },
+        "components": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/scopeName"
+          }
+        },
+        "artifact_classes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/scopeName"
+          }
+        },
+        "toolchains": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/scopeName"
+          }
+        },
+        "migration_sources": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/repositoryPath"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "global"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "profiles"
+                  ]
+                },
+                {
+                  "required": [
+                    "overlays"
+                  ]
+                },
+                {
+                  "required": [
+                    "components"
+                  ]
+                },
+                {
+                  "required": [
+                    "artifact_classes"
+                  ]
+                },
+                {
+                  "required": [
+                    "toolchains"
+                  ]
+                },
+                {
+                  "required": [
+                    "migration_sources"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "profile"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "profiles"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "profile_overlay"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "overlays"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "component"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "components"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "artifact_class"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "artifact_classes"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "development_toolchain"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "toolchains"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "migration_only"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "migration_sources"
+            ]
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "scope": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/documentScope"
+        },
+        {
+          "$ref": "#/$defs/structuredScope"
+        }
+      ]
+    },
+    "documentClass": {
+      "type": "string",
+      "enum": [
+        "authority",
+        "registry",
+        "schema",
+        "contract",
+        "normative_markdown",
+        "explanatory_markdown",
+        "adr",
+        "recipe",
+        "template",
+        "generated",
+        "migration_evidence",
+        "archive"
+      ]
+    },
+    "changeClass": {
+      "type": "string",
+      "enum": [
+        "editorial",
+        "patch",
+        "minor",
+        "major"
+      ]
+    },
+    "identifierArray": {
+      "type": "array",
+      "uniqueItems": true,
+      "default": []
+    },
+    "documentIds": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/identifierArray"
+        },
+        {
+          "items": {
+            "$ref": "#/$defs/documentId"
+          }
+        }
+      ]
+    },
+    "decisionIds": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/identifierArray"
+        },
+        {
+          "items": {
+            "$ref": "#/$defs/decisionId"
+          }
+        }
+      ]
+    },
+    "requirementIds": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/identifierArray"
+        },
+        {
+          "items": {
+            "$ref": "#/$defs/requirementId"
+          }
+        }
+      ]
+    },
+    "lockIds": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/identifierArray"
+        },
+        {
+          "items": {
+            "$ref": "#/$defs/lockId"
+          }
+        }
+      ]
+    },
+    "adrIds": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/identifierArray"
+        },
+        {
+          "items": {
+            "$ref": "#/$defs/adrId"
+          }
+        }
+      ]
+    },
+    "testIds": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/identifierArray"
+        },
+        {
+          "items": {
+            "$ref": "#/$defs/testId"
+          }
+        }
+      ]
+    },
+    "evidenceIds": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/identifierArray"
+        },
+        {
+          "items": {
+            "$ref": "#/$defs/evidenceId"
+          }
+        }
+      ]
+    },
+    "exceptionIds": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/identifierArray"
+        },
+        {
+          "items": {
+            "$ref": "#/$defs/exceptionId"
+          }
+        }
+      ]
+    },
+    "canonicalReferences": {
+      "type": "array",
+      "uniqueItems": true,
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/canonicalReference"
+      }
+    },
+    "tags": {
+      "type": "array",
+      "uniqueItems": true,
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/tag"
+      }
+    },
+    "replacementReference": {
+      "type": "object",
+      "required": [
+        "id",
+        "path"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/stableEntityReference"
+        },
+        "path": {
+          "$ref": "#/$defs/repositoryPath"
+        },
+        "effective_at": {
+          "$ref": "#/$defs/timestamp"
+        }
+      },
+      "additionalProperties": false
+    },
+    "generationPolicy": {
+      "type": "object",
+      "required": [
+        "mode"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "hand_edited",
+            "controlled",
+            "generated"
+          ]
+        },
+        "generator": {
+          "$ref": "#/$defs/repositoryPath"
+        },
+        "source_refs": {
+          "$ref": "#/$defs/canonicalReferences"
+        },
+        "renderer": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._-]*$"
+        },
+        "manual_edits_allowed": {
+          "type": "boolean"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "generated"
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "required": [
+              "generator",
+              "source_refs",
+              "manual_edits_allowed"
+            ],
+            "properties": {
+              "manual_edits_allowed": {
+                "const": false
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "commonMetadata": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "status": {
+          "$ref": "#/$defs/lifecycleStatus"
+        },
+        "language": {
+          "$ref": "#/$defs/language"
+        },
+        "owner": {
+          "$ref": "#/$defs/ownerId"
+        },
+        "scope": {
+          "$ref": "#/$defs/scope"
+        },
+        "effective_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "created_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "description": {
+          "$ref": "#/$defs/resolvedString"
+        },
+        "canonical_refs": {
+          "$ref": "#/$defs/canonicalReferences"
+        },
+        "document_ids": {
+          "$ref": "#/$defs/documentIds"
+        },
+        "decision_ids": {
+          "$ref": "#/$defs/decisionIds"
+        },
+        "requirement_ids": {
+          "$ref": "#/$defs/requirementIds"
+        },
+        "lock_ids": {
+          "$ref": "#/$defs/lockIds"
+        },
+        "adr_ids": {
+          "$ref": "#/$defs/adrIds"
+        },
+        "test_ids": {
+          "$ref": "#/$defs/testIds"
+        },
+        "evidence_ids": {
+          "$ref": "#/$defs/evidenceIds"
+        },
+        "exception_ids": {
+          "$ref": "#/$defs/exceptionIds"
+        },
+        "depends_on": {
+          "$ref": "#/$defs/documentIds"
+        },
+        "tags": {
+          "$ref": "#/$defs/tags"
+        },
+        "supersedes": {
+          "$ref": "#/$defs/replacementReference"
+        },
+        "replaced_by": {
+          "$ref": "#/$defs/replacementReference"
+        },
+        "generation": {
+          "$ref": "#/$defs/generationPolicy"
+        }
+      },
+      "additionalProperties": true
+    },
+    "documentMetadata": {
+      "type": "object",
+      "required": [
+        "doc_id",
+        "document_class",
+        "status",
+        "language",
+        "layer",
+        "scope",
+        "canonical_refs",
+        "decision_ids",
+        "requirement_ids",
+        "lock_ids",
+        "exception_ids",
+        "depends_on",
+        "tags"
+      ],
+      "properties": {
+        "doc_id": {
+          "$ref": "#/$defs/documentId"
+        },
+        "document_class": {
+          "$ref": "#/$defs/documentClass"
+        },
+        "version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "status": {
+          "$ref": "#/$defs/lifecycleStatus"
+        },
+        "language": {
+          "$ref": "#/$defs/language"
+        },
+        "layer": {
+          "$ref": "#/$defs/layerId"
+        },
+        "owner": {
+          "$ref": "#/$defs/ownerId"
+        },
+        "scope": {
+          "$ref": "#/$defs/documentScope"
+        },
+        "canonical_refs": {
+          "$ref": "#/$defs/canonicalReferences"
+        },
+        "decision_ids": {
+          "$ref": "#/$defs/decisionIds"
+        },
+        "requirement_ids": {
+          "$ref": "#/$defs/requirementIds"
+        },
+        "lock_ids": {
+          "$ref": "#/$defs/lockIds"
+        },
+        "exception_ids": {
+          "$ref": "#/$defs/exceptionIds"
+        },
+        "adr_ids": {
+          "$ref": "#/$defs/adrIds"
+        },
+        "test_ids": {
+          "$ref": "#/$defs/testIds"
+        },
+        "evidence_ids": {
+          "$ref": "#/$defs/evidenceIds"
+        },
+        "depends_on": {
+          "$ref": "#/$defs/documentIds"
+        },
+        "tags": {
+          "$ref": "#/$defs/tags"
+        },
+        "effective_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "supersedes": {
+          "$ref": "#/$defs/replacementReference"
+        },
+        "replaced_by": {
+          "$ref": "#/$defs/replacementReference"
+        },
+        "generation": {
+          "$ref": "#/$defs/generationPolicy"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "deprecated"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "required": [
+              "replaced_by"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "superseded"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "required": [
+              "replaced_by"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "document_class": {
+                "const": "generated"
+              }
+            },
+            "required": [
+              "document_class"
+            ]
+          },
+          "then": {
+            "required": [
+              "generation"
+            ],
+            "properties": {
+              "generation": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/generationPolicy"
+                  },
+                  {
+                    "properties": {
+                      "mode": {
+                        "const": "generated"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "registryMetadata": {
+      "type": "object",
+      "required": [
+        "registry_id",
+        "registry_type",
+        "version",
+        "status",
+        "language",
+        "owner",
+        "description"
+      ],
+      "properties": {
+        "$schema": {
+          "$ref": "#/$defs/schemaReference"
+        },
+        "registry_id": {
+          "$ref": "#/$defs/registryId"
+        },
+        "registry_type": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
+        },
+        "version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "status": {
+          "$ref": "#/$defs/lifecycleStatus"
+        },
+        "language": {
+          "$ref": "#/$defs/language"
+        },
+        "effective_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "owner": {
+          "$ref": "#/$defs/ownerId"
+        },
+        "scope": {
+          "$ref": "#/$defs/scope"
+        },
+        "description": {
+          "$ref": "#/$defs/resolvedString"
+        },
+        "decision_ids": {
+          "$ref": "#/$defs/decisionIds"
+        },
+        "requirement_ids": {
+          "$ref": "#/$defs/requirementIds"
+        },
+        "lock_ids": {
+          "$ref": "#/$defs/lockIds"
+        },
+        "exception_ids": {
+          "$ref": "#/$defs/exceptionIds"
+        },
+        "tags": {
+          "$ref": "#/$defs/tags"
+        }
+      },
+      "additionalProperties": true
+    },
+    "schemaMetadata": {
+      "type": "object",
+      "required": [
+        "schema_id",
+        "version",
+        "status",
+        "language",
+        "owner",
+        "description"
+      ],
+      "properties": {
+        "schema_id": {
+          "$ref": "#/$defs/schemaId"
+        },
+        "version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "status": {
+          "$ref": "#/$defs/lifecycleStatus"
+        },
+        "language": {
+          "$ref": "#/$defs/language"
+        },
+        "owner": {
+          "$ref": "#/$defs/ownerId"
+        },
+        "description": {
+          "$ref": "#/$defs/resolvedString"
+        },
+        "effective_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "canonical_refs": {
+          "$ref": "#/$defs/canonicalReferences"
+        },
+        "tags": {
+          "$ref": "#/$defs/tags"
+        }
+      },
+      "additionalProperties": true
+    },
+    "contractMetadata": {
+      "type": "object",
+      "required": [
+        "contract_id",
+        "contract_type",
+        "version",
+        "status",
+        "language",
+        "owner",
+        "scope",
+        "description"
+      ],
+      "properties": {
+        "$schema": {
+          "$ref": "#/$defs/schemaReference"
+        },
+        "contract_id": {
+          "$ref": "#/$defs/contractId"
+        },
+        "contract_type": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
+        },
+        "version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "status": {
+          "$ref": "#/$defs/lifecycleStatus"
+        },
+        "language": {
+          "$ref": "#/$defs/language"
+        },
+        "owner": {
+          "$ref": "#/$defs/ownerId"
+        },
+        "scope": {
+          "$ref": "#/$defs/structuredScope"
+        },
+        "description": {
+          "$ref": "#/$defs/resolvedString"
+        },
+        "canonical_refs": {
+          "$ref": "#/$defs/canonicalReferences"
+        },
+        "decision_ids": {
+          "$ref": "#/$defs/decisionIds"
+        },
+        "requirement_ids": {
+          "$ref": "#/$defs/requirementIds"
+        },
+        "lock_ids": {
+          "$ref": "#/$defs/lockIds"
+        },
+        "exception_ids": {
+          "$ref": "#/$defs/exceptionIds"
+        },
+        "tags": {
+          "$ref": "#/$defs/tags"
+        }
+      },
+      "additionalProperties": true
+    },
+    "schemaReference": {
+      "type": "string",
+      "format": "uri-reference",
+      "minLength": 1
+    }
+  },
+  "examples": [
+    {
+      "version": "1.0.0",
+      "status": "active",
+      "language": "en",
+      "owner": "documentation-architecture",
+      "scope": {
+        "kind": "global"
+      },
+      "description": "Active metadata for a canonical documentation object.",
+      "tags": [
+        "documentation",
+        "metadata"
+      ]
+    }
+  ]
+}

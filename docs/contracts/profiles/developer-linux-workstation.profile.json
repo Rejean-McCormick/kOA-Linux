@@ -1,0 +1,796 @@
+{
+  "$schema": "../../schemas/deployment-profile.schema.json",
+  "profile_id": "developer_linux_workstation",
+  "profile_type": "deployment_profile",
+  "version": "1.0.0",
+  "status": "active",
+  "language": "en",
+  "effective_at": "2026-08-03T16:04:00-04:00",
+  "display_name": "Developer Linux Workstation",
+  "classification": {
+    "kind": "primary_profile",
+    "environment_class": "development_endpoint",
+    "host_family": "native_linux",
+    "production_profile": false,
+    "sovereign_conformance_profile": false,
+    "high_assurance_claim": false,
+    "default_user_profile": false
+  },
+  "purpose": "Provide a first-class native Linux development environment in which one or more kOA applications, branches, worktrees, component workbenches, and local infrastructure services can be modified, built, tested, validated, and prepared for controlled publication without dependency or mutable-state collisions.",
+  "authority": {
+    "canonical_owner_of": [
+      "profile_membership",
+      "profile_host_requirements",
+      "profile_hardware_envelope",
+      "profile_component_selection",
+      "profile_workbench_selection",
+      "profile_workspace_isolation",
+      "profile_resource_policy",
+      "profile_offline_claims",
+      "profile_security_claims",
+      "profile_lifecycle_claims",
+      "profile_conformance_claims"
+    ],
+    "does_not_own": [
+      "global_system_behavior",
+      "component_responsibility",
+      "component_data_schema",
+      "normative_requirement_text",
+      "interfile_lock_statement",
+      "toolchain_internal_rules",
+      "release_channel_membership",
+      "artifact_payload_schema"
+    ]
+  },
+  "canonical_refs": {
+    "authority": "generated/authority-manifest.json",
+    "decisions": "generated/decision-index.json",
+    "documentation": "generated/document-index.json",
+    "system": "contracts/system.contract.json",
+    "components": "generated/component-catalog.json",
+    "requirements": "generated/requirements-index.json",
+    "locks": "generated/assertion-index.json",
+    "traceability": "generated/traceability.json",
+    "exceptions": "generated/exception-index.json",
+    "toolchain_index": "generated/toolchain-catalog.json",
+    "python_toolchain": "contracts/toolchains/python-uv.toolchain.json",
+    "release_channels": "contracts/release-channels.contract.json",
+    "artifact_classes": "contracts/artifact-classes.contract.json"
+  },
+  "decision_ids": [
+    "DEC-PROFILE-001",
+    "DEC-DEV-001",
+    "DEC-DEV-002",
+    "DEC-DATA-001",
+    "DEC-GOV-001",
+    "DEC-GATE-001",
+    "DEC-AI-001",
+    "DEC-SENT-001",
+    "DEC-UCKK-001",
+    "DEC-ARI-001",
+    "DEC-SHELL-001",
+    "DEC-CONTAINER-001",
+    "DEC-K8S-001",
+    "DEC-HW-001",
+    "DEC-REL-001"
+  ],
+  "requirement_ids": [
+    "REQ-PROFILE-001",
+    "REQ-PROFILE-002",
+    "REQ-DEV-WS-001",
+    "REQ-DEV-WS-002",
+    "REQ-DEV-UV-001",
+    "REQ-DEV-UV-002",
+    "REQ-DEV-UV-003",
+    "REQ-DEV-UV-004",
+    "REQ-DEV-UV-005",
+    "REQ-DEV-CACHE-001",
+    "REQ-DEV-SVC-001",
+    "REQ-DEV-NET-001",
+    "REQ-DEV-PORT-001",
+    "REQ-DEV-DATA-001",
+    "REQ-DEV-SECRET-001",
+    "REQ-DEV-RESOURCE-001",
+    "REQ-DEV-HEAVY-001",
+    "REQ-DEV-PARALLEL-001",
+    "REQ-DEV-OFFLINE-001",
+    "REQ-DEV-PUBLISH-001",
+    "REQ-AI-001",
+    "REQ-SENT-001",
+    "REQ-UCKK-001",
+    "REQ-ARI-001"
+  ],
+  "lock_ids": [
+    "LOCK-PROFILE-001",
+    "LOCK-PROFILE-002",
+    "LOCK-IMPL-001",
+    "LOCK-IMPL-002",
+    "LOCK-AI-001",
+    "LOCK-AI-002",
+    "LOCK-SENT-001",
+    "LOCK-UCKK-001",
+    "LOCK-UCKK-002",
+    "LOCK-ARI-001",
+    "LOCK-ARI-002",
+    "LOCK-DATA-001",
+    "LOCK-GOV-001",
+    "LOCK-GATE-001",
+    "LOCK-COMP-002",
+    "LOCK-DEV-001",
+    "LOCK-DEV-002",
+    "LOCK-DEV-003",
+    "LOCK-DEV-004",
+    "LOCK-DEV-005",
+    "LOCK-LIFE-001",
+    "LOCK-LIFE-002",
+    "LOCK-LIFE-003",
+    "LOCK-LIFE-004"
+  ],
+  "exception_ids": [],
+  "scope": {
+    "kind": "profile",
+    "selector": "profile:developer_linux_workstation",
+    "applies_to": [
+      "native Linux developer endpoints",
+      "local component development",
+      "parallel application, branch, and worktree execution",
+      "local build, test, validation, and artifact preparation"
+    ],
+    "excluded_claims": [
+      "production deployment conformance",
+      "sovereign Linux node conformance",
+      "high-assurance conformance",
+      "build-farm conformance",
+      "control-plane conformance",
+      "appliance-shell conformance"
+    ]
+  },
+  "inheritance": {
+    "inherits_profile_ids": [],
+    "implicit_inheritance_allowed": false,
+    "base_system_ref": "contracts/system.contract.json",
+    "unresolved_parent_result": "blocked"
+  },
+  "overlay_composition": {
+    "mode": "explicit_only",
+    "adopted_overlay_ids": [],
+    "implicit_overlay_application_allowed": false,
+    "composition_requires": [
+      "active overlay contract",
+      "accepted owner decision",
+      "profile contract version update",
+      "impact analysis",
+      "lock validation",
+      "conformance test update"
+    ],
+    "undeclared_overlay_result": "blocked"
+  },
+  "operating_modes": {
+    "required": [
+      "developer"
+    ],
+    "permitted_for_testing": [
+      "user"
+    ],
+    "forbidden_as_claims": [
+      "production",
+      "sovereign_node",
+      "control_plane"
+    ]
+  },
+  "host": {
+    "operating_system_family": "linux",
+    "native_linux_required": true,
+    "maintained_distribution_required": true,
+    "standard_maintained_kernel_required": true,
+    "immutable_system_image_required": false,
+    "measured_boot_required": false,
+    "desktop_environment": {
+      "required": false,
+      "permitted": [
+        "GNOME",
+        "KDE Plasma",
+        "another maintained Linux desktop environment",
+        "no desktop environment"
+      ],
+      "no_gnome_requirement": false,
+      "appliance_shell_adopted": false
+    },
+    "virtualization": {
+      "host_virtual_machine_required": false,
+      "nested_virtualization_required": false
+    },
+    "kubernetes": {
+      "required": false,
+      "permitted_for_profile_conformance": false,
+      "external_test_target_allowed": true
+    }
+  },
+  "hardware_envelope": {
+    "cpu": {
+      "minimum_modern_cores": 8
+    },
+    "memory": {
+      "minimum_gib": 32,
+      "recommended_gib": 64
+    },
+    "storage": {
+      "minimum_ssd_gb": 1000
+    },
+    "gpu": {
+      "required": false,
+      "use": "optional_component_or_workbench_acceleration"
+    },
+    "concurrency": {
+      "default_maximum_heavy_workspaces": 2,
+      "higher_concurrency_requires_resource_reassessment": true
+    }
+  },
+  "required_host_capabilities": [
+    "source_control",
+    "build_tools",
+    "contract_validation",
+    "local_process_isolation",
+    "workspace_scoped_resource_control",
+    "workspace_scoped_secret_storage",
+    "workspace_scoped_port_allocation"
+  ],
+  "container_policy": {
+    "containers_required_for_all_workspaces": false,
+    "rootless_execution_required_when_containers_are_used": true,
+    "preferred_runtime": "rootless_podman",
+    "runtime_specific_application_contracts_allowed": false,
+    "permitted_alternatives": [
+      "rootless OCI-compatible runtime",
+      "equivalent workspace-scoped native service isolation"
+    ],
+    "quadlet_required": false,
+    "privileged_containers_allowed_by_default": false
+  },
+  "component_selection": {
+    "required_components": [
+      {
+        "component_id": "resource_governor",
+        "contract_ref": "contracts/components/resource-governor.component.json",
+        "activation": "profile_service",
+        "authority_role": "resource_management"
+      }
+    ],
+    "selectable_component_workbenches": [
+      {
+        "workbench_id": "kristal_development",
+        "component_ids": [
+          "kristal_runtime"
+        ],
+        "contract_refs": [
+          "contracts/components/kristal-runtime.component.json"
+        ],
+        "default_activation": "stopped"
+      },
+      {
+        "workbench_id": "orgo_development",
+        "component_ids": [
+          "orgo"
+        ],
+        "contract_refs": [
+          "contracts/components/orgo.component.json"
+        ],
+        "default_activation": "stopped"
+      },
+      {
+        "workbench_id": "konnaxion_development",
+        "component_ids": [
+          "konnaxion"
+        ],
+        "contract_refs": [
+          "contracts/components/konnaxion.component.json"
+        ],
+        "default_activation": "stopped"
+      },
+      {
+        "workbench_id": "semantik_architect_development",
+        "component_ids": [
+          "semantik_architect_runtime"
+        ],
+        "contract_refs": [
+          "contracts/components/semantik-architect-runtime.component.json"
+        ],
+        "default_activation": "stopped"
+      },
+      {
+        "workbench_id": "gf_wordbench",
+        "component_ids": [
+          "gf_wordbench"
+        ],
+        "contract_refs": [
+          "contracts/components/gf-wordbench.component.json"
+        ],
+        "default_activation": "stopped",
+        "workbench_limits": {
+          "active_language_projects": 1
+        }
+      },
+      {
+        "workbench_id": "sentient_development",
+        "component_ids": [
+          "sentient"
+        ],
+        "contract_refs": [
+          "contracts/components/sentient.component.json"
+        ],
+        "default_activation": "stopped",
+        "non_authoritative": true,
+        "task_activated": true
+      },
+      {
+        "workbench_id": "ariane_lab",
+        "component_ids": [
+          "ariane_runtime"
+        ],
+        "contract_refs": [
+          "contracts/components/ariane-runtime.component.json"
+        ],
+        "default_activation": "stopped"
+      },
+      {
+        "workbench_id": "uckk_development",
+        "component_ids": [
+          "uckk_platform",
+          "uckk_dimension_gateway",
+          "publication_gateway"
+        ],
+        "contract_refs": [
+          "contracts/components/uckk-platform.component.json",
+          "contracts/components/uckk-dimension-gateway.component.json",
+          "contracts/components/publication-gateway.component.json"
+        ],
+        "default_activation": "stopped"
+      }
+    ],
+    "activate_all_workbenches_required": false,
+    "multiple_workbenches_allowed": true,
+    "multiple_workbench_condition": "declared workspace resource budgets and host envelope remain satisfied"
+  },
+  "workspace_model": {
+    "workspace_unit": [
+      "repository",
+      "branch workspace",
+      "worktree"
+    ],
+    "workspace_id": {
+      "required": true,
+      "stable_for_workspace_lifetime": true,
+      "derivation": "component + branch_or_purpose + unique_suffix",
+      "canonical_pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*-[a-z0-9]{4,12}$",
+      "examples": [
+        "konnaxion-main-a31f",
+        "konnaxion-feature-voting-92cd",
+        "orgo-main-b114"
+      ]
+    },
+    "namespaced_resources": [
+      "python_environment",
+      "container_names",
+      "network_names",
+      "volume_names",
+      "database_names_or_schemas",
+      "database_identities",
+      "unix_sockets",
+      "temporary_directories",
+      "pid_files",
+      "log_directories",
+      "host_ports",
+      "development_secrets",
+      "generated_local_certificates",
+      "development_queues",
+      "service_names"
+    ],
+    "workspace_removal": {
+      "must_not_modify_other_workspaces": true,
+      "shared_cache_entries_may_remain": true,
+      "shared_installed_environment_allowed": false
+    }
+  },
+  "workspace_isolation": {
+    "mutable_dependency_environment": {
+      "one_per_workspace": true,
+      "shared_between_workspaces": false
+    },
+    "secret_namespace": {
+      "one_per_workspace": true,
+      "repository_storage_allowed": false,
+      "cross_workspace_reuse_allowed": false
+    },
+    "temporary_data_namespace": {
+      "one_per_workspace": true
+    },
+    "service_namespace": {
+      "one_per_workspace": true
+    },
+    "network_namespace": {
+      "one_per_workspace_or_equivalent": true,
+      "fixed_internal_ports_allowed": true
+    },
+    "port_allocation": {
+      "one_set_per_workspace": true,
+      "host_ports_allocated_by_registry": true,
+      "host_port_collisions_allowed": false,
+      "allocation_contract_ref": "contracts/artifact-contracts/workspace-port-allocation.schema.json"
+    },
+    "database_identity": {
+      "one_set_per_workspace": true,
+      "shared_engine_allowed": true,
+      "shared_engine_conditions": [
+        "separate database or schema",
+        "separate database identity",
+        "no cross-component authoritative writes",
+        "no cross-workspace mutable-state collision"
+      ]
+    },
+    "resource_budget": {
+      "one_per_workspace": true,
+      "enforced_by": "resource_governor"
+    }
+  },
+  "python": {
+    "toolchain_ref": "contracts/toolchains/python-uv.toolchain.json",
+    "dependency_manager": "uv",
+    "pyproject_required": true,
+    "lockfile": {
+      "path": "uv.lock",
+      "required": true,
+      "version_control_required": true,
+      "refresh_must_be_explicit": true
+    },
+    "python_version": {
+      "declaration_required": true,
+      "global_implicit_version_allowed": false
+    },
+    "virtual_environment": {
+      "path": ".venv",
+      "one_per_workspace": true,
+      "shared_mutable_environment_allowed": false
+    },
+    "validation_sync": {
+      "command_contract": "uv sync --frozen",
+      "frozen_lock_required": true
+    },
+    "global_application_dependency_installation_allowed": false,
+    "dependency_upgrade": {
+      "impact_analysis_required": true,
+      "test_result_required": true
+    },
+    "download_cache": {
+      "shared_allowed": true,
+      "content_addressed_required": true,
+      "may_contain_installed_workspace_environment": false,
+      "may_become_authoritative_dependency_state": false
+    }
+  },
+  "services_and_state": {
+    "isolation_outcome_required": true,
+    "accepted_mechanisms": [
+      "rootless containers",
+      "explicit process and service namespaces",
+      "separate service identities",
+      "separate volumes",
+      "separate databases or schemas",
+      "equivalent workspace-scoped mechanisms"
+    ],
+    "workspace_scoped_services": [
+      "PostgreSQL",
+      "Redis",
+      "Solr",
+      "Elasticsearch",
+      "queues",
+      "local object stores",
+      "component development services"
+    ],
+    "shared_mutable_service_state_allowed": false,
+    "cross_workspace_process_name_collisions_allowed": false,
+    "cross_workspace_volume_collisions_allowed": false,
+    "cross_workspace_socket_collisions_allowed": false
+  },
+  "data_authority": {
+    "logical_ownership_required": true,
+    "component_database_identity_required": true,
+    "direct_cross_component_authoritative_writes_allowed": false,
+    "cross_component_access": [
+      "documented component API",
+      "declared event contract",
+      "declared gateway",
+      "governed import or publication contract"
+    ],
+    "build_and_diagnostic_data_separate_from_user_data": true,
+    "test_fixtures_must_not_become_authoritative_user_data": true
+  },
+  "resource_governance": {
+    "resource_governor_required": true,
+    "governance_policy_runtime_required": false,
+    "authorities_are_separate": true,
+    "per_workspace_controls": [
+      "cpu_limit",
+      "memory_limit",
+      "process_limit",
+      "io_priority",
+      "queue_limit",
+      "heavy_job_limit"
+    ],
+    "heavy_services": [
+      "sentient",
+      "solr",
+      "elasticsearch",
+      "openrefine",
+      "model_runtimes",
+      "intensive_uckk_jobs"
+    ],
+    "heavy_service_activation": "task_activated",
+    "heavy_services_permanently_active_allowed": false,
+    "default_maximum_concurrent_heavy_workspaces": 2,
+    "resource_exhaustion_behavior": [
+      "deny new heavy work",
+      "queue eligible work",
+      "throttle non-critical work",
+      "preserve active workspace data",
+      "preserve unrelated lightweight capabilities"
+    ]
+  },
+  "ai_boundary": {
+    "native_ai_in_profile_baseline": false,
+    "external_surfaces_optional": [
+      "chatgpt",
+      "suno",
+      "gamma",
+      "ariane_external_voice"
+    ],
+    "external_invocation": {
+      "automatic": false,
+      "user_triggered_required": true,
+      "provenance_required": true,
+      "component_acceptance_required": true
+    },
+    "external_output_authoritative_by_default": false,
+    "external_output_direct_authoritative_mutation_allowed": false,
+    "missing_external_surface_result": "capability_unavailable_without_substitution"
+  },
+  "sentient": {
+    "available": true,
+    "installed_by_default": false,
+    "started_by_default": false,
+    "activation": "explicit_task",
+    "authority": "non_authoritative",
+    "required_for_profile_conformance": false,
+    "required_for_offline_core_operation": false,
+    "isolated_resources": [
+      "dependencies",
+      "storage",
+      "service_accounts",
+      "temporary_data",
+      "network_access",
+      "cpu",
+      "memory"
+    ],
+    "output_acceptance": [
+      "explicit provenance",
+      "explicit review",
+      "controlled import",
+      "component-level acceptance"
+    ]
+  },
+  "uckk": {
+    "native_pipeline": "deterministic_local",
+    "native_ai_driven_ingestion_allowed": false,
+    "native_operations": [
+      "file_ingestion",
+      "integrity_verification",
+      "user_supplied_metadata_capture",
+      "thumbnail_generation",
+      "preview_generation",
+      "transcoding",
+      "deterministic_text_extraction",
+      "storage",
+      "export",
+      "backup",
+      "restore"
+    ],
+    "suno_and_gamma": {
+      "classification": "external_optional_adapters",
+      "user_triggered_only": true,
+      "automatic_ingestion_invocation_allowed": false
+    },
+    "dimension_gateway_and_publication_gateway_are_separate": true
+  },
+  "ariane": {
+    "local_navigation_available_without_ai": true,
+    "local_capabilities": [
+      "keyboard_navigation",
+      "pointer_navigation",
+      "structured_controls",
+      "local_atlas_interaction",
+      "approved_local_automation",
+      "action_verification"
+    ],
+    "external_voice_optional": true,
+    "external_voice_failure_disables_local_navigation": false,
+    "silent_voice_substitute_allowed": false
+  },
+  "offline_behavior": {
+    "local_development_supported": true,
+    "offline_capabilities": [
+      "source editing",
+      "local builds with installed toolchains and available caches",
+      "local unit and integration tests with available services",
+      "schema and contract validation",
+      "local deterministic UCKK processing",
+      "Ariane local navigation",
+      "workspace lifecycle management",
+      "local artifact preparation"
+    ],
+    "unavailable_without_connectivity": [
+      "remote source synchronization",
+      "remote package retrieval not already cached",
+      "external AI surfaces",
+      "remote publication targets",
+      "remote identity status requiring fresh validation"
+    ],
+    "queued_external_actions": {
+      "automatic_release_on_reconnection": false,
+      "revalidation_required": true,
+      "revalidation_dimensions": [
+        "authority",
+        "consent",
+        "credentials",
+        "target",
+        "contract_version",
+        "conflict_state"
+      ]
+    },
+    "missing_remote_dependency_behavior": "fail_closed_for_affected_operation",
+    "unrelated_local_capabilities_continue": true
+  },
+  "security": {
+    "least_privilege_required": true,
+    "rootless_execution_preferred": true,
+    "workspace_secret_isolation_required": true,
+    "secrets_in_source_control_allowed": false,
+    "generated_local_certificates_namespaced_by_workspace": true,
+    "host_privilege_broker_required_for_normal_development": false,
+    "direct_host_mutation_allowed_by_default": false,
+    "external_network_access": {
+      "default": "workbench_and_task_scoped",
+      "unrestricted_background_access_allowed": false
+    },
+    "production_credentials_allowed": false,
+    "production_user_data_allowed_by_default": false
+  },
+  "lifecycle": {
+    "development_output_class": "candidate_artifact",
+    "publishable_output_requires": [
+      "applicable artifact contract",
+      "component tests",
+      "integration contract validation",
+      "profile-independent runtime packaging",
+      "release-channel compatibility",
+      "provenance",
+      "release evidence"
+    ],
+    "publish_runtime_artifacts_only": true,
+    "exclude_from_published_runtime": [
+      "workspace .venv",
+      "build caches",
+      "temporary data",
+      "development secrets",
+      "local certificates",
+      "test databases",
+      "diagnostic captures unless explicitly adopted as evidence",
+      "source worktree state"
+    ],
+    "partial_authoritative_activation_allowed": false,
+    "rollback_or_forward_repair_required": true,
+    "release_set_required_for_activation_claim": true
+  },
+  "conformance": {
+    "claimable": true,
+    "current_claim": "not_asserted",
+    "claim_requires": [
+      "profile contract validation",
+      "toolchain contract validation",
+      "workspace isolation tests",
+      "parallel workspace collision tests",
+      "resource governance tests",
+      "offline behavior tests",
+      "AI boundary tests",
+      "component boundary tests",
+      "artifact publication tests",
+      "traceability completeness",
+      "active evidence"
+    ],
+    "test_ids": [
+      "TEST-PROFILE-DEV-LINUX-001",
+      "TEST-DEV-WS-001",
+      "TEST-DEV-UV-001",
+      "TEST-DEV-UV-002",
+      "TEST-DEV-SVC-001",
+      "TEST-DEV-PORT-001",
+      "TEST-DEV-DATA-001",
+      "TEST-DEV-SECRET-001",
+      "TEST-DEV-PARALLEL-001",
+      "TEST-DEV-RESOURCE-001",
+      "TEST-DEV-OFFLINE-001",
+      "TEST-DEV-AI-001",
+      "TEST-DEV-PUBLISH-001"
+    ],
+    "evidence_required": true,
+    "evidence_ids": [],
+    "failure_result": "non_conformant",
+    "missing_evidence_result": "blocked"
+  },
+  "failure_behavior": {
+    "workspace_id_collision": "block_workspace_activation",
+    "dependency_environment_collision": "block_workspace_activation",
+    "host_port_collision": "allocate_different_port_or_block",
+    "database_identity_collision": "block_service_activation",
+    "secret_namespace_collision": "block_workspace_activation",
+    "shared_mutable_installed_environment_detected": "fail_profile_conformance",
+    "resource_budget_unavailable": "queue_or_deny_heavy_work",
+    "required_local_toolchain_missing": "disable_affected_workbench",
+    "external_service_unavailable": "disable_external_capability_only",
+    "authority_or_policy_ambiguous": "block_affected_governed_operation",
+    "unrelated_workspace_failure": "preserve_other_workspaces"
+  },
+  "prohibited_assumptions": [
+    "All component workbenches must run together.",
+    "A shared UV download cache is a shared installed environment.",
+    "Two worktrees may share one mutable .venv.",
+    "A fixed internal service port may be reused as a fixed host port.",
+    "A shared database process permits shared database identities or direct cross-component writes.",
+    "Rootless Podman preference creates a runtime-specific application contract.",
+    "The profile requires Kubernetes.",
+    "A maintained desktop environment must be absent.",
+    "SenTient is required, authoritative, installed by default, or always active.",
+    "External AI is a native profile capability.",
+    "UCKK native ingestion may invoke AI automatically.",
+    "Ariane local navigation depends on external voice.",
+    "Developer profile conformance proves production, sovereign, or high-assurance conformance.",
+    "An undeclared overlay applies automatically.",
+    "A recipe is normative without explicit profile adoption.",
+    "Connectivity restoration authorizes automatic release of queued external actions."
+  ],
+  "validation": {
+    "entry_point": "tools/validate_docs.py",
+    "required_checks": [
+      "schema_validation",
+      "profile_identity_uniqueness",
+      "canonical_reference_resolution",
+      "accepted_decision_resolution",
+      "requirement_resolution",
+      "lock_resolution",
+      "explicit_inheritance",
+      "explicit_overlay_composition",
+      "hardware_envelope_consistency",
+      "component_contract_resolution",
+      "toolchain_contract_resolution",
+      "workspace_id_uniqueness",
+      "per_workspace_venv",
+      "workspace_mutable_state_namespacing",
+      "parallel_workspace_collision_absence",
+      "component_data_ownership",
+      "resource_budget_enforcement",
+      "native_ai_absence",
+      "sentient_isolation",
+      "uckk_deterministic_pipeline",
+      "ariane_local_independence",
+      "offline_behavior",
+      "artifact_publication_boundary",
+      "traceability_completeness",
+      "evidence_validity"
+    ],
+    "validation_outcomes": [
+      "pass",
+      "fail",
+      "blocked"
+    ],
+    "activation_requires_outcome": "pass",
+    "ordinary_file_hashes_required": false
+  }
+}

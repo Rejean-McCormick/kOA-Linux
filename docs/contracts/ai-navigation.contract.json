@@ -1,0 +1,41 @@
+{
+  "$schema": "../schemas/ai-navigation.contract.schema.json",
+  "contract_id": "ai-navigation",
+  "version": "1.0.0",
+  "status": "active",
+  "entrypoint": "AI_CONTEXT.md",
+  "discovery": {
+    "source_contract_globs": [
+      "contracts/*.contract.json",
+      "contracts/components/*.component.json",
+      "contracts/subsystems/*.subsystem.json",
+      "contracts/profiles/*.profile.json",
+      "contracts/integrations/*.integration.json",
+      "contracts/toolchains/*.toolchain.json"
+    ],
+    "subsystem_mounts": [
+      "subsystems/ariane",
+      "subsystems/konnaxion",
+      "subsystems/orgo",
+      "subsystems/sentient",
+      "subsystems/semantik-architect",
+      "subsystems/uckk"
+    ],
+    "generated_indexes": [
+      "generated/document-index.json",
+      "generated/component-catalog.json",
+      "generated/subsystem-catalog.json",
+      "generated/profile-catalog.json",
+      "generated/requirements-index.json",
+      "generated/assertion-index.json",
+      "generated/traceability.json"
+    ]
+  },
+  "authority_rules": {
+    "generated_indexes_are_authoritative": false,
+    "subsystem_internal_documentation_is_external": true,
+    "manual_file_inventory_required": false,
+    "missing_subsystem_mount_blocks_preparation": false,
+    "mounted_subsystems_required_for_final_alignment": true
+  }
+}

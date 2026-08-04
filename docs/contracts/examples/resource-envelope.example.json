@@ -1,0 +1,1285 @@
+{
+  "$schema": "../artifact-contracts/resource-envelope.schema.json",
+  "envelope_id": "resource-envelope.user-lightweight.minimum-host",
+  "envelope_type": "resource_envelope",
+  "artifact_class": "resource_envelope",
+  "version": "1.0.0",
+  "status": "validated",
+  "language": "en",
+  "issued_at": "2026-08-03T18:08:00-04:00",
+  "effective_from": "2026-08-03T18:08:00-04:00",
+  "authority_ref": "generated/authority-manifest.json",
+  "decisions_ref": "generated/decision-index.json",
+  "system_ref": "contracts/system.contract.json#/resource_governor",
+  "components_ref": "generated/component-catalog.json",
+  "profiles_ref": "generated/profile-catalog.json",
+  "profile_contract_ref": "contracts/profiles/user-lightweight.profile.json",
+  "resource_governor_contract_ref": "contracts/components/resource-governor.component.json",
+  "artifact_classes_ref": "contracts/artifact-classes.contract.json",
+  "release_channels_ref": "contracts/release-channels.contract.json",
+  "requirements_ref": "generated/requirements-index.json",
+  "locks_ref": "generated/assertion-index.json",
+  "traceability_ref": "generated/traceability.json",
+  "exceptions_ref": "generated/exception-index.json",
+  "test_catalog_ref": "generated/test-catalog.json",
+  "evidence_ref": "generated/evidence-catalog.json",
+  "decision_ids": [
+    "DEC-GOV-001",
+    "DEC-HW-001",
+    "DEC-PROFILE-001",
+    "DEC-COMP-001",
+    "DEC-DATA-001",
+    "DEC-SEC-001",
+    "DEC-OFFLINE-001",
+    "DEC-RECEIPT-001",
+    "DEC-AUDIT-001",
+    "DEC-LIFE-001",
+    "DEC-REL-001",
+    "DEC-INTEGRATION-001",
+    "DEC-AI-001",
+    "DEC-PRIV-001"
+  ],
+  "requirement_ids": [
+    "REQ-ART-RESOURCE-001",
+    "REQ-ART-RESOURCE-002",
+    "REQ-ART-RESOURCE-003",
+    "REQ-ART-RESOURCE-004",
+    "REQ-ART-RESOURCE-005",
+    "REQ-ART-RESOURCE-006",
+    "REQ-ART-RESOURCE-007",
+    "REQ-ART-RESOURCE-008",
+    "REQ-ART-RESOURCE-009",
+    "REQ-ART-RESOURCE-010",
+    "REQ-ART-RESOURCE-011",
+    "REQ-ART-RESOURCE-012",
+    "REQ-ART-RESOURCE-013",
+    "REQ-ART-RESOURCE-014",
+    "REQ-ART-RESOURCE-015",
+    "REQ-ART-RESOURCE-016",
+    "REQ-ART-RESOURCE-017",
+    "REQ-ART-RESOURCE-018",
+    "REQ-ART-RESOURCE-019",
+    "REQ-ART-RESOURCE-020",
+    "REQ-ART-RESOURCE-021",
+    "REQ-ART-RESOURCE-022",
+    "REQ-ART-RESOURCE-023",
+    "REQ-ART-RESOURCE-024",
+    "REQ-ART-RESOURCE-025",
+    "REQ-ART-RESOURCE-026",
+    "REQ-ART-RESOURCE-027",
+    "REQ-ART-RESOURCE-028",
+    "REQ-ART-RESOURCE-029",
+    "REQ-ART-RESOURCE-030",
+    "REQ-ART-RESOURCE-031",
+    "REQ-ART-RESOURCE-032"
+  ],
+  "lock_ids": [
+    "LOCK-GOV-001",
+    "LOCK-PROFILE-001",
+    "LOCK-PROFILE-002",
+    "LOCK-COMP-001",
+    "LOCK-COMP-002",
+    "LOCK-DATA-001",
+    "LOCK-AI-001",
+    "LOCK-AI-002",
+    "LOCK-SEC-001",
+    "LOCK-SEC-002",
+    "LOCK-OFFLINE-001",
+    "LOCK-LIFE-001",
+    "LOCK-LIFE-002",
+    "LOCK-LIFE-003",
+    "LOCK-LIFE-004",
+    "LOCK-REL-001",
+    "LOCK-REL-002",
+    "LOCK-PORT-001",
+    "LOCK-IMPL-001",
+    "LOCK-IMPL-002"
+  ],
+  "exception_ids": [],
+  "identity": {
+    "name": "User Lightweight Minimum-Host Resource Envelope",
+    "description": "A deterministic Resource Governor envelope for the minimum user_lightweight hardware profile: four physical cores, 16 GiB RAM, SSD storage, zram, one concurrent heavy job, and no idle task workers.",
+    "owner_component_id": "resource-governor",
+    "authority_class": "resource_admission_and_scheduling",
+    "envelope_kind": "profile_baseline",
+    "profile_id": "user_lightweight",
+    "profile_version": "1.0.0",
+    "release_channel": "services",
+    "release_set_compatibility": "manifest_resolved",
+    "governance_policy_authority": false,
+    "business_authorization_authority": false,
+    "data_ownership_authority": false,
+    "host_privilege_authority": false
+  },
+  "scope": {
+    "target_class": "single_user_endpoint",
+    "architectures": [
+      "x86_64",
+      "arm64"
+    ],
+    "minimum_hardware_tier": "user-lightweight-minimum",
+    "operating_modes": [
+      "interactive_normal",
+      "interactive_constrained",
+      "battery_saver",
+      "thermal_pressure",
+      "memory_pressure",
+      "storage_pressure",
+      "offline",
+      "recovery"
+    ],
+    "component_ids": [
+      "identity-and-trust",
+      "resource-governor",
+      "ariane-runtime",
+      "kristal-runtime",
+      "semantik-architect-runtime",
+      "orgo",
+      "konnaxion",
+      "uckk-platform",
+      "uckk-dimension-gateway",
+      "publication-gateway",
+      "audit-broker"
+    ],
+    "worker_ids": [
+      "uckk-thumbnail-worker",
+      "uckk-preview-worker",
+      "uckk-text-extraction-worker",
+      "uckk-transcode-worker",
+      "uckk-index-update-worker",
+      "backup-worker",
+      "restore-validation-worker",
+      "synchronization-worker"
+    ],
+    "outside_scope_behavior": "reject_or_require_profile_specific_envelope"
+  },
+  "host_capacity": {
+    "capacity_source": "profile_contract_and_runtime_observation",
+    "declared_minimum": {
+      "physical_cpu_cores": 4,
+      "logical_cpu_threads_minimum": 4,
+      "memory_mib": 16384,
+      "ssd_capacity_mib": 524288,
+      "ssd_required": true,
+      "zram_required": true,
+      "discrete_gpu_required": false,
+      "gpu_compute_required": false
+    },
+    "example_observed_host": {
+      "host_id": "host.user-lightweight.example-01",
+      "physical_cpu_cores": 4,
+      "logical_cpu_threads": 8,
+      "memory_mib": 16384,
+      "zram_capacity_mib": 4096,
+      "ssd_capacity_mib": 524288,
+      "ssd_available_mib_at_evaluation": 286720,
+      "battery_present": true,
+      "external_power_connected": true,
+      "thermal_state": "normal",
+      "memory_pressure_state": "normal",
+      "storage_pressure_state": "normal"
+    },
+    "capacity_is_not_authority": true,
+    "observed_capacity_can_only_narrow_envelope": true
+  },
+  "global_reserves": {
+    "user_workload_memory_reserve_mib": 6144,
+    "platform_and_services_memory_ceiling_mib": 10240,
+    "emergency_recovery_memory_reserve_mib": 1024,
+    "minimum_available_memory_before_heavy_admission_mib": 6144,
+    "minimum_available_memory_before_background_pause_mib": 4096,
+    "critical_available_memory_floor_mib": 2048,
+    "storage_free_space_floor_percent": 15,
+    "recovery_storage_reserve_mib": 16384,
+    "receipt_and_evidence_storage_reserve_mib": 2048,
+    "minimum_interactive_cpu_capacity_millicores": 1000,
+    "heavy_job_concurrency": 1,
+    "semantik_runtime_worker_concurrency": 1,
+    "idle_task_workers": 0,
+    "heavy_services_at_boot": 0,
+    "limits_are_ceiling_not_reservation": true
+  },
+  "resource_dimensions": {
+    "cpu": {
+      "unit": "millicores",
+      "host_capacity_at_minimum_profile": 4000,
+      "scheduler_model": "weighted_fair_with_hard_ceiling",
+      "interactive_preemption_permitted": true,
+      "background_preemption_permitted": true,
+      "critical_service_starvation_permitted": false,
+      "accounting_window_seconds": 60
+    },
+    "memory": {
+      "unit": "MiB",
+      "hard_limit_enforced": true,
+      "soft_limit_supported": true,
+      "swap_model": "zram_first_profile_declared_disk_swap_optional",
+      "swap_is_capacity_substitute": false,
+      "memory_oom_behavior": "kill_or_reject_noncritical_job_before_critical_service"
+    },
+    "io": {
+      "unit": "relative_weight_and_bytes_per_second",
+      "scheduler_model": "priority_weighted",
+      "interactive_latency_protected": true,
+      "background_writeback_throttled": true
+    },
+    "storage": {
+      "unit": "MiB_and_percent",
+      "authoritative_and_reproducible_data_distinguished": true,
+      "cache_pruning_authority": "owning_component_retention_contract",
+      "resource_governor_direct_data_deletion_permitted": false
+    },
+    "processes": {
+      "unit": "process_or_worker_count",
+      "per_component_process_limits_required": true,
+      "fork_bomb_protection_required": true
+    },
+    "queues": {
+      "unit": "items_and_bytes",
+      "bounded": true,
+      "unbounded_queue_permitted": false,
+      "queue_overflow_behavior_declared": true
+    },
+    "network": {
+      "unit": "connections_and_bytes_per_second",
+      "network_required_for_core_operation": false,
+      "remote_capacity_substitution_permitted": false
+    }
+  },
+  "resource_classes": [
+    {
+      "class_id": "interactive",
+      "description": "Direct user-facing navigation, command acknowledgement, active media interaction, and UCKK admission progress.",
+      "priority_rank": 10,
+      "cpu_weight": 1000,
+      "cpu_hard_ceiling_millicores": 2500,
+      "memory_soft_limit_mib": 1536,
+      "memory_hard_limit_mib": 3072,
+      "io_weight": 1000,
+      "maximum_concurrent_jobs": 8,
+      "preemptible": false,
+      "admission_behavior": "admit_when_authorized_and_target_healthy"
+    },
+    {
+      "class_id": "critical_service",
+      "description": "Identity, Resource Governor, active authoritative stores, critical receipts, and minimum local navigation.",
+      "priority_rank": 20,
+      "cpu_weight": 900,
+      "cpu_hard_ceiling_millicores": 2000,
+      "memory_soft_limit_mib": 2048,
+      "memory_hard_limit_mib": 4096,
+      "io_weight": 900,
+      "maximum_concurrent_jobs": 16,
+      "preemptible": false,
+      "admission_behavior": "retain_and_degrade_other_classes_first"
+    },
+    {
+      "class_id": "service",
+      "description": "Ordinary component requests not classified as interactive or critical.",
+      "priority_rank": 40,
+      "cpu_weight": 600,
+      "cpu_hard_ceiling_millicores": 1800,
+      "memory_soft_limit_mib": 1536,
+      "memory_hard_limit_mib": 3072,
+      "io_weight": 600,
+      "maximum_concurrent_jobs": 8,
+      "preemptible": true,
+      "admission_behavior": "admit_or_defer_by_pressure_and_queue"
+    },
+    {
+      "class_id": "build",
+      "description": "Compilation and build work when explicitly enabled.",
+      "priority_rank": 60,
+      "cpu_weight": 300,
+      "cpu_hard_ceiling_millicores": 1500,
+      "memory_soft_limit_mib": 1536,
+      "memory_hard_limit_mib": 3072,
+      "io_weight": 300,
+      "maximum_concurrent_jobs": 1,
+      "preemptible": true,
+      "admission_behavior": "not_applicable_in_default_user_profile"
+    },
+    {
+      "class_id": "heavy_compute",
+      "description": "Media conversion, restore validation, bulk indexing, and other declared high-impact work.",
+      "priority_rank": 70,
+      "cpu_weight": 250,
+      "cpu_hard_ceiling_millicores": 2000,
+      "memory_soft_limit_mib": 2048,
+      "memory_hard_limit_mib": 4096,
+      "io_weight": 250,
+      "maximum_concurrent_jobs": 1,
+      "preemptible": true,
+      "admission_behavior": "admit_one_only_when_interactive_memory_and_storage_reserves_hold"
+    },
+    {
+      "class_id": "background",
+      "description": "Synchronization, indexing, preview generation, thumbnail generation, cleanup, and other deferrable work.",
+      "priority_rank": 90,
+      "cpu_weight": 100,
+      "cpu_hard_ceiling_millicores": 750,
+      "memory_soft_limit_mib": 512,
+      "memory_hard_limit_mib": 1536,
+      "io_weight": 100,
+      "maximum_concurrent_jobs": 2,
+      "preemptible": true,
+      "admission_behavior": "defer_pause_or_cancel_under_pressure"
+    }
+  ],
+  "component_envelopes": [
+    {
+      "component_id": "identity-and-trust",
+      "resource_class": "critical_service",
+      "activation": "always_on",
+      "cpu_hard_ceiling_millicores": 500,
+      "memory_hard_limit_mib": 768,
+      "process_limit": 32,
+      "queue_limit_items": 1024,
+      "pressure_behavior": "retain"
+    },
+    {
+      "component_id": "resource-governor",
+      "resource_class": "critical_service",
+      "activation": "always_on",
+      "cpu_hard_ceiling_millicores": 300,
+      "memory_hard_limit_mib": 256,
+      "process_limit": 16,
+      "queue_limit_items": 4096,
+      "pressure_behavior": "retain"
+    },
+    {
+      "component_id": "ariane-runtime",
+      "resource_class": "interactive",
+      "activation": "always_on",
+      "cpu_hard_ceiling_millicores": 700,
+      "memory_hard_limit_mib": 768,
+      "process_limit": 32,
+      "queue_limit_items": 1024,
+      "pressure_behavior": "retain_local_non_voice_navigation"
+    },
+    {
+      "component_id": "kristal-runtime",
+      "resource_class": "critical_service",
+      "activation": "always_on",
+      "cpu_hard_ceiling_millicores": 700,
+      "memory_hard_limit_mib": 1536,
+      "process_limit": 64,
+      "queue_limit_items": 2048,
+      "pressure_behavior": "retain_active_artifacts_and_reads"
+    },
+    {
+      "component_id": "semantik-architect-runtime",
+      "resource_class": "service",
+      "activation": "on_demand_runtime",
+      "cpu_hard_ceiling_millicores": 800,
+      "memory_hard_limit_mib": 1024,
+      "process_limit": 32,
+      "queue_limit_items": 512,
+      "maximum_runtime_workers": 1,
+      "pressure_behavior": "retain_loaded_language_and_reject_new_worker"
+    },
+    {
+      "component_id": "orgo",
+      "resource_class": "service",
+      "activation": "resident_or_profile_declared",
+      "cpu_hard_ceiling_millicores": 800,
+      "memory_hard_limit_mib": 1024,
+      "process_limit": 48,
+      "queue_limit_items": 2048,
+      "pressure_behavior": "retain_interactive_work_defer_background"
+    },
+    {
+      "component_id": "konnaxion",
+      "resource_class": "service",
+      "activation": "resident_or_profile_declared",
+      "cpu_hard_ceiling_millicores": 700,
+      "memory_hard_limit_mib": 1024,
+      "process_limit": 48,
+      "queue_limit_items": 2048,
+      "pressure_behavior": "retain_local_reads_defer_noncritical_updates"
+    },
+    {
+      "component_id": "uckk-platform",
+      "resource_class": "service",
+      "activation": "resident_core_workers_on_demand",
+      "cpu_hard_ceiling_millicores": 1000,
+      "memory_hard_limit_mib": 1536,
+      "process_limit": 64,
+      "queue_limit_items": 4096,
+      "pressure_behavior": "retain_originals_and_navigation_pause_derivatives"
+    },
+    {
+      "component_id": "uckk-dimension-gateway",
+      "resource_class": "interactive",
+      "activation": "on_demand",
+      "cpu_hard_ceiling_millicores": 700,
+      "memory_hard_limit_mib": 768,
+      "process_limit": 32,
+      "queue_limit_items": 256,
+      "pressure_behavior": "stop_new_large_imports_preserve_active_safe_transfer"
+    },
+    {
+      "component_id": "publication-gateway",
+      "resource_class": "service",
+      "activation": "conditional",
+      "cpu_hard_ceiling_millicores": 500,
+      "memory_hard_limit_mib": 512,
+      "process_limit": 24,
+      "queue_limit_items": 512,
+      "pressure_behavior": "defer_publication_preserve_origin_state"
+    },
+    {
+      "component_id": "audit-broker",
+      "resource_class": "critical_service",
+      "activation": "always_on_or_profile_required",
+      "cpu_hard_ceiling_millicores": 400,
+      "memory_hard_limit_mib": 512,
+      "process_limit": 24,
+      "queue_limit_items": 8192,
+      "pressure_behavior": "retain_critical_receipt_buffer"
+    }
+  ],
+  "worker_envelopes": [
+    {
+      "worker_id": "uckk-thumbnail-worker",
+      "owner_component_id": "uckk-platform",
+      "resource_class": "background",
+      "job_weight": "light",
+      "maximum_parallel_instances": 1,
+      "cpu_hard_ceiling_millicores": 500,
+      "memory_hard_limit_mib": 512,
+      "temporary_storage_limit_mib": 1024,
+      "auto_stop_after_queue_empty": true,
+      "pressure_order": 40
+    },
+    {
+      "worker_id": "uckk-preview-worker",
+      "owner_component_id": "uckk-platform",
+      "resource_class": "background",
+      "job_weight": "moderate",
+      "maximum_parallel_instances": 1,
+      "cpu_hard_ceiling_millicores": 750,
+      "memory_hard_limit_mib": 768,
+      "temporary_storage_limit_mib": 2048,
+      "auto_stop_after_queue_empty": true,
+      "pressure_order": 30
+    },
+    {
+      "worker_id": "uckk-text-extraction-worker",
+      "owner_component_id": "uckk-platform",
+      "resource_class": "background",
+      "job_weight": "moderate",
+      "maximum_parallel_instances": 1,
+      "cpu_hard_ceiling_millicores": 750,
+      "memory_hard_limit_mib": 768,
+      "temporary_storage_limit_mib": 1024,
+      "auto_stop_after_queue_empty": true,
+      "pressure_order": 35
+    },
+    {
+      "worker_id": "uckk-transcode-worker",
+      "owner_component_id": "uckk-platform",
+      "resource_class": "heavy_compute",
+      "job_weight": "heavy",
+      "maximum_parallel_instances": 1,
+      "cpu_hard_ceiling_millicores": 2000,
+      "memory_hard_limit_mib": 3072,
+      "temporary_storage_limit_mib": 8192,
+      "auto_stop_after_queue_empty": true,
+      "pressure_order": 20
+    },
+    {
+      "worker_id": "uckk-index-update-worker",
+      "owner_component_id": "uckk-platform",
+      "resource_class": "background",
+      "job_weight": "moderate",
+      "maximum_parallel_instances": 1,
+      "cpu_hard_ceiling_millicores": 600,
+      "memory_hard_limit_mib": 768,
+      "temporary_storage_limit_mib": 1024,
+      "auto_stop_after_queue_empty": true,
+      "pressure_order": 50
+    },
+    {
+      "worker_id": "backup-worker",
+      "owner_component_id": "koa-node-agent",
+      "resource_class": "background",
+      "job_weight": "heavy",
+      "maximum_parallel_instances": 1,
+      "cpu_hard_ceiling_millicores": 750,
+      "memory_hard_limit_mib": 768,
+      "temporary_storage_limit_mib": 4096,
+      "auto_stop_after_queue_empty": true,
+      "pressure_order": 10
+    },
+    {
+      "worker_id": "restore-validation-worker",
+      "owner_component_id": "koa-node-agent",
+      "resource_class": "heavy_compute",
+      "job_weight": "heavy",
+      "maximum_parallel_instances": 1,
+      "cpu_hard_ceiling_millicores": 1500,
+      "memory_hard_limit_mib": 3072,
+      "temporary_storage_limit_mib": 8192,
+      "auto_stop_after_queue_empty": true,
+      "pressure_order": 5
+    },
+    {
+      "worker_id": "synchronization-worker",
+      "owner_component_id": "orgo",
+      "resource_class": "background",
+      "job_weight": "moderate",
+      "maximum_parallel_instances": 1,
+      "cpu_hard_ceiling_millicores": 500,
+      "memory_hard_limit_mib": 512,
+      "temporary_storage_limit_mib": 1024,
+      "auto_stop_after_queue_empty": true,
+      "remote_dependency": true,
+      "pressure_order": 60
+    }
+  ],
+  "queues": [
+    {
+      "queue_id": "queue.interactive-commands",
+      "owner_component_id": "ariane-runtime",
+      "resource_class": "interactive",
+      "maximum_items": 1024,
+      "maximum_bytes": 16777216,
+      "maximum_age_seconds": 300,
+      "overflow_behavior": "reject_new_with_visible_reason",
+      "durability": "component_declared",
+      "drop_permitted": false
+    },
+    {
+      "queue_id": "queue.critical-receipts",
+      "owner_component_id": "audit-broker",
+      "resource_class": "critical_service",
+      "maximum_items": 8192,
+      "maximum_bytes": 268435456,
+      "maximum_age_seconds": 604800,
+      "overflow_behavior": "block_critical_transition",
+      "durability": "durable_local",
+      "drop_permitted": false
+    },
+    {
+      "queue_id": "queue.uckk-derivatives",
+      "owner_component_id": "uckk-platform",
+      "resource_class": "background",
+      "maximum_items": 4096,
+      "maximum_bytes": 67108864,
+      "maximum_age_seconds": 2592000,
+      "overflow_behavior": "defer_new_and_require_user_visible_status",
+      "durability": "durable_local",
+      "drop_permitted": false
+    },
+    {
+      "queue_id": "queue.synchronization",
+      "owner_component_id": "orgo",
+      "resource_class": "background",
+      "maximum_items": 2048,
+      "maximum_bytes": 67108864,
+      "maximum_age_seconds": 2592000,
+      "overflow_behavior": "pause_and_require_review",
+      "durability": "durable_local",
+      "drop_permitted": false
+    },
+    {
+      "queue_id": "queue.backup",
+      "owner_component_id": "koa-node-agent",
+      "resource_class": "background",
+      "maximum_items": 32,
+      "maximum_bytes": 1048576,
+      "maximum_age_seconds": 604800,
+      "overflow_behavior": "coalesce_only_when_backup_contract_permits",
+      "durability": "durable_local",
+      "drop_permitted": false
+    },
+    {
+      "queue_id": "queue.restore-validation",
+      "owner_component_id": "koa-node-agent",
+      "resource_class": "heavy_compute",
+      "maximum_items": 8,
+      "maximum_bytes": 1048576,
+      "maximum_age_seconds": 604800,
+      "overflow_behavior": "reject_new_with_existing_job_reference",
+      "durability": "durable_local",
+      "drop_permitted": false
+    }
+  ],
+  "admission_contract": {
+    "request_required_fields": [
+      "request_id",
+      "requesting_component_id",
+      "job_or_process_id",
+      "resource_class",
+      "requested_cpu_millicores",
+      "requested_memory_mib",
+      "requested_temporary_storage_mib",
+      "requested_io_weight",
+      "expected_duration_seconds",
+      "preemptible",
+      "correlation_id"
+    ],
+    "optional_fields": [
+      "deadline",
+      "queue_id",
+      "battery_requirement",
+      "network_dependency",
+      "gpu_requirement",
+      "declared_user_interaction",
+      "governance_decision_reference"
+    ],
+    "result_values": [
+      "admitted",
+      "admitted_with_limits",
+      "deferred",
+      "paused",
+      "rejected",
+      "cancelled",
+      "completed"
+    ],
+    "decision_fields": [
+      "decision_id",
+      "request_id",
+      "envelope_id",
+      "envelope_version",
+      "result",
+      "effective_limits",
+      "reason_codes",
+      "queue_position_when_applicable",
+      "recheck_condition_when_applicable",
+      "decided_at",
+      "correlation_id"
+    ],
+    "idempotency_required": true,
+    "duplicate_request_behavior": "return_prior_decision",
+    "expected_state_or_lease_required_for_change": true,
+    "resource_decision_grants_business_authority": false,
+    "governance_decision_grants_resource_capacity": false
+  },
+  "admission_rules": [
+    {
+      "rule_id": "resource-rule.retain-user-reserve",
+      "priority": 10,
+      "condition": "available_memory_after_admission_mib < minimum_available_memory_before_heavy_admission_mib",
+      "applies_to": [
+        "heavy_compute",
+        "build",
+        "background"
+      ],
+      "result": "deferred",
+      "reason_code": "interactive_memory_reserve_would_be_violated",
+      "recheck_condition": "memory_pressure_state_returns_to_normal"
+    },
+    {
+      "rule_id": "resource-rule.single-heavy-job",
+      "priority": 20,
+      "condition": "active_heavy_jobs >= 1",
+      "applies_to": [
+        "heavy_compute"
+      ],
+      "result": "deferred",
+      "reason_code": "heavy_job_concurrency_limit_reached",
+      "recheck_condition": "active_heavy_jobs_equals_zero"
+    },
+    {
+      "rule_id": "resource-rule.no-heavy-at-boot",
+      "priority": 30,
+      "condition": "operating_phase == boot_or_initial_session_start",
+      "applies_to": [
+        "heavy_compute",
+        "build"
+      ],
+      "result": "deferred",
+      "reason_code": "heavy_job_not_permitted_during_boot",
+      "recheck_condition": "interactive_session_healthy"
+    },
+    {
+      "rule_id": "resource-rule.storage-floor",
+      "priority": 40,
+      "condition": "projected_free_storage_percent < storage_free_space_floor_percent",
+      "applies_to": [
+        "heavy_compute",
+        "background",
+        "service"
+      ],
+      "result": "rejected",
+      "reason_code": "storage_free_space_floor_would_be_violated",
+      "recheck_condition": "storage_pressure_resolved"
+    },
+    {
+      "rule_id": "resource-rule.battery-heavy-work",
+      "priority": 50,
+      "condition": "battery_present and not external_power_connected and battery_percent < 30",
+      "applies_to": [
+        "heavy_compute",
+        "build",
+        "background"
+      ],
+      "result": "deferred",
+      "reason_code": "battery_reserve_protection",
+      "recheck_condition": "external_power_connected_or_battery_percent_at_least_30"
+    },
+    {
+      "rule_id": "resource-rule.offline-remote-job",
+      "priority": 60,
+      "condition": "operating_mode == offline and network_dependency == required",
+      "applies_to": [
+        "service",
+        "background",
+        "heavy_compute"
+      ],
+      "result": "deferred",
+      "reason_code": "declared_remote_dependency_unavailable",
+      "recheck_condition": "declared_network_dependency_available"
+    },
+    {
+      "rule_id": "resource-rule.authority-separation",
+      "priority": 1,
+      "condition": "governance_authorization_missing_for_governed_action",
+      "applies_to": [
+        "interactive",
+        "critical_service",
+        "service",
+        "build",
+        "heavy_compute",
+        "background"
+      ],
+      "result": "rejected",
+      "reason_code": "resource_admission_cannot_replace_authorization",
+      "recheck_condition": "valid_governance_decision_supplied"
+    }
+  ],
+  "pressure_policies": {
+    "memory_pressure": {
+      "normal_threshold_available_mib": 6144,
+      "constrained_threshold_available_mib": 4096,
+      "critical_threshold_available_mib": 2048,
+      "emergency_threshold_available_mib": 1024,
+      "ordered_actions": [
+        "pause synchronization",
+        "pause index updates",
+        "pause preview generation",
+        "pause thumbnail generation",
+        "pause media conversion",
+        "reject new heavy jobs",
+        "reduce noncritical service concurrency",
+        "retain Identity and Trust, Resource Governor, Ariane, authoritative stores, critical receipts, and active user session"
+      ],
+      "authoritative_write_interruption_behavior": "allow_owner_controlled_completion_or_safe_abort_before_noncritical_eviction"
+    },
+    "storage_pressure": {
+      "constrained_threshold_free_percent": 20,
+      "critical_threshold_free_percent": 15,
+      "emergency_threshold_free_percent": 8,
+      "ordered_actions": [
+        "stop new large imports",
+        "stop preview and transcode expansion",
+        "pause backup growth unless required for immediate recovery",
+        "request owner-controlled pruning of reproducible caches",
+        "preserve authoritative originals",
+        "preserve manifests and Release Set metadata",
+        "preserve receipts and evidence",
+        "preserve required recovery material"
+      ],
+      "resource_governor_direct_deletion_permitted": false
+    },
+    "thermal_pressure": {
+      "constrained_behavior": [
+        "reduce background CPU ceiling",
+        "pause heavy compute after safe checkpoint"
+      ],
+      "critical_behavior": [
+        "reject new heavy work",
+        "retain interactive and critical services"
+      ]
+    },
+    "battery_pressure": {
+      "below_30_percent_behavior": [
+        "pause synchronization",
+        "pause media conversion",
+        "defer backup unless user requested or recovery critical"
+      ],
+      "below_15_percent_behavior": [
+        "reject new heavy work",
+        "preserve active user work",
+        "prepare safe shutdown when declared by profile"
+      ]
+    },
+    "io_pressure": {
+      "ordered_actions": [
+        "throttle background indexing",
+        "throttle preview generation",
+        "throttle synchronization",
+        "defer bulk export",
+        "preserve interactive reads and authoritative writes"
+      ]
+    }
+  },
+  "operating_mode_overrides": [
+    {
+      "mode": "interactive_normal",
+      "heavy_job_concurrency": 1,
+      "background_cpu_ceiling_millicores": 750,
+      "background_io_weight": 100,
+      "remote_jobs_permitted_when_declared": true
+    },
+    {
+      "mode": "interactive_constrained",
+      "heavy_job_concurrency": 0,
+      "background_cpu_ceiling_millicores": 300,
+      "background_io_weight": 50,
+      "remote_jobs_permitted_when_declared": true
+    },
+    {
+      "mode": "battery_saver",
+      "heavy_job_concurrency": 0,
+      "background_cpu_ceiling_millicores": 250,
+      "background_io_weight": 50,
+      "remote_jobs_permitted_when_declared": false
+    },
+    {
+      "mode": "thermal_pressure",
+      "heavy_job_concurrency": 0,
+      "background_cpu_ceiling_millicores": 200,
+      "background_io_weight": 50,
+      "remote_jobs_permitted_when_declared": true
+    },
+    {
+      "mode": "memory_pressure",
+      "heavy_job_concurrency": 0,
+      "background_cpu_ceiling_millicores": 250,
+      "background_io_weight": 50,
+      "remote_jobs_permitted_when_declared": false
+    },
+    {
+      "mode": "storage_pressure",
+      "heavy_job_concurrency": 0,
+      "background_cpu_ceiling_millicores": 400,
+      "background_io_weight": 50,
+      "remote_jobs_permitted_when_declared": false
+    },
+    {
+      "mode": "offline",
+      "heavy_job_concurrency": 1,
+      "background_cpu_ceiling_millicores": 750,
+      "background_io_weight": 100,
+      "remote_jobs_permitted_when_declared": false
+    },
+    {
+      "mode": "recovery",
+      "heavy_job_concurrency": 1,
+      "background_cpu_ceiling_millicores": 300,
+      "background_io_weight": 100,
+      "remote_jobs_permitted_when_declared": false,
+      "ordinary_user_background_jobs_permitted": false,
+      "restore_validation_priority": "high"
+    }
+  ],
+  "sample_runtime_state": {
+    "observed_at": "2026-08-03T18:07:30-04:00",
+    "operating_mode": "interactive_normal",
+    "available_memory_mib": 7424,
+    "used_memory_mib": 8960,
+    "zram_used_mib": 512,
+    "free_storage_percent": 54.7,
+    "cpu_load_1m": 1.15,
+    "cpu_load_5m": 0.92,
+    "io_pressure_state": "normal",
+    "thermal_state": "normal",
+    "battery_percent": 84,
+    "external_power_connected": true,
+    "active_heavy_jobs": [
+      {
+        "job_id": "job.restore-validation.2026-08-03.001",
+        "worker_id": "restore-validation-worker",
+        "resource_class": "heavy_compute",
+        "admission_decision_id": "resource-decision.001",
+        "effective_cpu_millicores": 1500,
+        "effective_memory_mib": 3072,
+        "state": "running"
+      }
+    ],
+    "active_background_jobs": [
+      {
+        "job_id": "job.uckk-index-update.2026-08-03.002",
+        "worker_id": "uckk-index-update-worker",
+        "resource_class": "background",
+        "admission_decision_id": "resource-decision.002",
+        "effective_cpu_millicores": 400,
+        "effective_memory_mib": 512,
+        "state": "running"
+      }
+    ],
+    "paused_jobs": []
+  },
+  "sample_admission_decisions": [
+    {
+      "decision_id": "resource-decision.001",
+      "request_id": "resource-request.restore-validation.001",
+      "envelope_id": "resource-envelope.user-lightweight.minimum-host",
+      "envelope_version": "1.0.0",
+      "requesting_component_id": "koa-node-agent",
+      "job_or_process_id": "job.restore-validation.2026-08-03.001",
+      "resource_class": "heavy_compute",
+      "result": "admitted_with_limits",
+      "effective_limits": {
+        "cpu_millicores": 1500,
+        "memory_mib": 3072,
+        "temporary_storage_mib": 8192,
+        "io_weight": 250,
+        "maximum_duration_seconds": 7200
+      },
+      "reason_codes": [
+        "heavy_job_slot_available",
+        "interactive_memory_reserve_preserved",
+        "restore_validation_priority_applied"
+      ],
+      "decided_at": "2026-08-03T18:00:00-04:00",
+      "correlation_id": "corr.restore-validation.001"
+    },
+    {
+      "decision_id": "resource-decision.002",
+      "request_id": "resource-request.uckk-index-update.002",
+      "envelope_id": "resource-envelope.user-lightweight.minimum-host",
+      "envelope_version": "1.0.0",
+      "requesting_component_id": "uckk-platform",
+      "job_or_process_id": "job.uckk-index-update.2026-08-03.002",
+      "resource_class": "background",
+      "result": "admitted_with_limits",
+      "effective_limits": {
+        "cpu_millicores": 400,
+        "memory_mib": 512,
+        "temporary_storage_mib": 1024,
+        "io_weight": 75,
+        "maximum_duration_seconds": 3600
+      },
+      "reason_codes": [
+        "background_capacity_available",
+        "reduced_io_weight_while_heavy_job_active"
+      ],
+      "decided_at": "2026-08-03T18:01:00-04:00",
+      "correlation_id": "corr.uckk-index-update.002"
+    },
+    {
+      "decision_id": "resource-decision.003",
+      "request_id": "resource-request.uckk-transcode.003",
+      "envelope_id": "resource-envelope.user-lightweight.minimum-host",
+      "envelope_version": "1.0.0",
+      "requesting_component_id": "uckk-platform",
+      "job_or_process_id": "job.uckk-transcode.2026-08-03.003",
+      "resource_class": "heavy_compute",
+      "result": "deferred",
+      "effective_limits": null,
+      "reason_codes": [
+        "heavy_job_concurrency_limit_reached",
+        "active_restore_validation_has_higher_priority"
+      ],
+      "queue_position_when_applicable": 1,
+      "recheck_condition_when_applicable": "active_heavy_jobs_equals_zero",
+      "decided_at": "2026-08-03T18:02:00-04:00",
+      "correlation_id": "corr.uckk-transcode.003"
+    }
+  ],
+  "safe_degradation": {
+    "capability_scoped": true,
+    "fail_closed_for_authority": true,
+    "preserved_capabilities": [
+      "identity and trust",
+      "Resource Governor evaluation",
+      "Ariane local non-voice navigation",
+      "active user session",
+      "authoritative store consistency",
+      "critical receipt buffering",
+      "controlled recovery"
+    ],
+    "first_deferred_capabilities": [
+      "synchronization",
+      "bulk indexing",
+      "preview generation",
+      "thumbnail generation",
+      "media conversion",
+      "background backup"
+    ],
+    "prohibited_fallbacks": [
+      "resource admission as business authorization",
+      "Governance Policy Runtime as CPU or memory scheduler",
+      "unbounded queues",
+      "undeclared remote compute substitution",
+      "silent job priority escalation",
+      "direct deletion of component-owned data",
+      "starting additional heavy workers",
+      "disabling critical receipts to save space",
+      "running application components as root"
+    ]
+  },
+  "offline_behavior": {
+    "internet_required": false,
+    "remote_provider_required": false,
+    "undeclared_provider_substitution_permitted": false,
+    "local_admission_continues": true,
+    "remote_dependent_jobs": [
+      "synchronization-worker",
+      "remote-publication-destination",
+      "external-ai-candidate-job",
+      "external-voice-job"
+    ],
+    "remote_dependency_failure_result": "defer_or_reject_only_dependent_job",
+    "local_receipts_buffered_durably": true
+  },
+  "security_and_authority": {
+    "service_identity_required": true,
+    "requesting_component_identity_validated": true,
+    "request_scope_validated": true,
+    "resource_class_validated": true,
+    "declared_limits_cannot_be_increased_by_caller": true,
+    "governance_decision_reference_required_for_governed_job": true,
+    "resource_governor_can_override_governance_denial": false,
+    "governance_policy_runtime_can_override_resource_exhaustion": false,
+    "resource_governor_can_grant_privilege": false,
+    "resource_governor_can_mutate_component_authoritative_data": false,
+    "resource_governor_can_publish_content": false,
+    "resource_governor_can_activate_artifacts": false,
+    "private_key_material_embedded": false,
+    "secret_material_embedded": false
+  },
+  "receipts_and_evidence": {
+    "critical_decision_receipt_required": true,
+    "critical_events": [
+      "heavy_job_admitted",
+      "critical_job_rejected",
+      "pressure_mode_entered",
+      "pressure_mode_exited",
+      "critical_service_limit_changed",
+      "queue_overflow_blocked",
+      "recovery_resource_mode_entered",
+      "resource_envelope_activated",
+      "resource_envelope_rolled_back"
+    ],
+    "receipt_minimum_fields": [
+      "receipt_id",
+      "envelope_id",
+      "envelope_version",
+      "target_id",
+      "request_id_or_transition_id",
+      "component_id",
+      "resource_class",
+      "result",
+      "effective_limits",
+      "reason_codes",
+      "observed_capacity",
+      "pressure_state",
+      "occurred_at",
+      "correlation_id",
+      "evidence_references"
+    ],
+    "selective_disclosure_required": true,
+    "governed_payloads_in_general_metrics_permitted": false,
+    "private_resource_request_payloads_in_general_logs_permitted": false,
+    "evidence_refs": [
+      "EVID-RESOURCE-ENVELOPE-001",
+      "EVID-RESOURCE-ENVELOPE-002",
+      "EVID-RESOURCE-ENVELOPE-003"
+    ]
+  },
+  "activation_and_lifecycle": {
+    "staging_required": true,
+    "validation_before_activation": true,
+    "activation_mode": "atomic_envelope_identity_switch",
+    "partial_activation_permitted": false,
+    "active_envelope_identity_exposed": true,
+    "pre_activation_checks": [
+      "profile identity",
+      "host capacity",
+      "component inventory",
+      "worker inventory",
+      "queue bounds",
+      "resource-class consistency",
+      "pressure policy completeness",
+      "authority separation",
+      "offline behavior",
+      "receipt path",
+      "rollback readiness"
+    ],
+    "last_known_good_envelope_ref": "urn:koa:resource-envelope:user-lightweight:previous-active",
+    "rollback_requires_profile_and_host_validation": true,
+    "rollback_not_inferred_from_prior_file_presence": true,
+    "failure_behavior": "retain_active_envelope_and_enter_safe_static_limits",
+    "semantic_change_requires_new_version": true,
+    "release_set_activation_required": true,
+    "release_channel": "services"
+  },
+  "validation": {
+    "overall_result": "pass",
+    "validated_at": "2026-08-03T18:06:00-04:00",
+    "validator_identity_ref": "urn:koa:identity:resource-envelope-validator",
+    "required_test_refs": [
+      "TEST-RESOURCE-ENV-001",
+      "TEST-RESOURCE-ENV-002",
+      "TEST-RESOURCE-ENV-003",
+      "TEST-RESOURCE-ENV-004",
+      "TEST-RESOURCE-ENV-005",
+      "TEST-RESOURCE-ENV-006",
+      "TEST-RESOURCE-ENV-007",
+      "TEST-RESOURCE-ENV-008",
+      "TEST-RESOURCE-ENV-009",
+      "TEST-RESOURCE-ENV-010",
+      "TEST-RESOURCE-ENV-011",
+      "TEST-RESOURCE-ENV-012",
+      "TEST-RESOURCE-ENV-013",
+      "TEST-RESOURCE-ENV-014",
+      "TEST-RESOURCE-ENV-015",
+      "TEST-RESOURCE-ENV-016"
+    ],
+    "test_results": [
+      {
+        "test_id": "TEST-RESOURCE-ENV-001",
+        "intent": "Validate profile, host capacity, and envelope identity.",
+        "result": "pass",
+        "evidence_ref": "EVID-RESOURCE-TEST-001"
+      },
+      {
+        "test_id": "TEST-RESOURCE-ENV-002",
+        "intent": "Validate Resource Governor and Governance Policy Runtime authority separation.",
+        "result": "pass",
+        "evidence_ref": "EVID-RESOURCE-TEST-002"
+      },
+      {
+        "test_id": "TEST-RESOURCE-ENV-003",
+        "intent": "Validate the 6 GiB user-workload memory reserve.",
+        "result": "pass",
+        "evidence_ref": "EVID-RESOURCE-TEST-003"
+      },
+      {
+        "test_id": "TEST-RESOURCE-ENV-004",
+        "intent": "Validate the single-heavy-job concurrency limit.",
+        "result": "pass",
+        "evidence_ref": "EVID-RESOURCE-TEST-004"
+      },
+      {
+        "test_id": "TEST-RESOURCE-ENV-005",
+        "intent": "Validate that heavy workers do not start at boot.",
+        "result": "pass",
+        "evidence_ref": "EVID-RESOURCE-TEST-005"
+      },
+      {
+        "test_id": "TEST-RESOURCE-ENV-006",
+        "intent": "Validate bounded queues and overflow behavior.",
+        "result": "pass",
+        "evidence_ref": "EVID-RESOURCE-TEST-006"
+      },
+      {
+        "test_id": "TEST-RESOURCE-ENV-007",
+        "intent": "Validate memory-pressure degradation order.",
+        "result": "pass",
+        "evidence_ref": "EVID-RESOURCE-TEST-007"
+      },
+      {
+        "test_id": "TEST-RESOURCE-ENV-008",
+        "intent": "Validate storage-pressure preservation and owner-controlled pruning.",
+        "result": "pass",
+        "evidence_ref": "EVID-RESOURCE-TEST-008"
+      },
+      {
+        "test_id": "TEST-RESOURCE-ENV-009",
+        "intent": "Validate battery and thermal pressure behavior.",
+        "result": "pass",
+        "evidence_ref": "EVID-RESOURCE-TEST-009"
+      },
+      {
+        "test_id": "TEST-RESOURCE-ENV-010",
+        "intent": "Validate idempotent admission decisions and duplicate requests.",
+        "result": "pass",
+        "evidence_ref": "EVID-RESOURCE-TEST-010"
+      },
+      {
+        "test_id": "TEST-RESOURCE-ENV-011",
+        "intent": "Validate capability-scoped offline behavior.",
+        "result": "pass",
+        "evidence_ref": "EVID-RESOURCE-TEST-011"
+      },
+      {
+        "test_id": "TEST-RESOURCE-ENV-012",
+        "intent": "Validate no direct component-data mutation or publication authority.",
+        "result": "pass",
+        "evidence_ref": "EVID-RESOURCE-TEST-012"
+      },
+      {
+        "test_id": "TEST-RESOURCE-ENV-013",
+        "intent": "Validate critical receipt buffering under pressure.",
+        "result": "pass",
+        "evidence_ref": "EVID-RESOURCE-TEST-013"
+      },
+      {
+        "test_id": "TEST-RESOURCE-ENV-014",
+        "intent": "Validate recovery-mode resource priority.",
+        "result": "pass",
+        "evidence_ref": "EVID-RESOURCE-TEST-014"
+      },
+      {
+        "test_id": "TEST-RESOURCE-ENV-015",
+        "intent": "Validate atomic envelope activation and rollback readiness.",
+        "result": "pass",
+        "evidence_ref": "EVID-RESOURCE-TEST-015"
+      },
+      {
+        "test_id": "TEST-RESOURCE-ENV-016",
+        "intent": "Validate no native or external AI scheduling authority.",
+        "result": "pass",
+        "evidence_ref": "EVID-RESOURCE-TEST-016"
+      }
+    ],
+    "all_required_tests_passed": true,
+    "missing_required_evidence": false
+  },
+  "provenance": {
+    "producer": {
+      "identity_ref": "urn:koa:identity:resource-envelope-builder",
+      "role": "resource-envelope-producer"
+    },
+    "produced_at": "2026-08-03T18:05:00-04:00",
+    "source_revision": "resource-envelope-source-2026-08-03",
+    "build_profile": "build_farm",
+    "toolchain_ref": "contracts/toolchains/resource-envelope.toolchain.json",
+    "source_refs": [
+      "contracts/profiles/user-lightweight.profile.json",
+      "contracts/components/resource-governor.component.json",
+      "contracts/artifact-contracts/resource-envelope.schema.json"
+    ],
+    "test_evidence_refs": [
+      "EVID-RESOURCE-ENVELOPE-001",
+      "EVID-RESOURCE-ENVELOPE-002"
+    ],
+    "approval_evidence_refs": [
+      "EVID-RESOURCE-APPROVAL-001"
+    ],
+    "reproducibility": "fully_attributable"
+  },
+  "approval": {
+    "approval_id": "approval.resource-envelope.user-lightweight.minimum-host",
+    "approver_identity_ref": "urn:koa:identity:profile-release-approver",
+    "approver_role": "profile-release-approver",
+    "decision": "approve",
+    "approved_at": "2026-08-03T18:06:30-04:00",
+    "scope": [
+      "user_lightweight",
+      "minimum_host",
+      "resource_admission",
+      "safe_degradation"
+    ],
+    "evidence_ref": "EVID-RESOURCE-APPROVAL-001"
+  },
+  "signature": {
+    "signature_id": "signature.resource-envelope.user-lightweight.minimum-host",
+    "key_id": "urn:koa:key:resource-envelope-publisher-1",
+    "signer_identity_ref": "urn:koa:identity:resource-envelope-publisher",
+    "signer_role": "resource-envelope-publisher",
+    "algorithm": "Ed25519",
+    "canonicalization": "JCS",
+    "purpose": "artifact_publication",
+    "signed_at": "2026-08-03T18:07:00-04:00",
+    "signature_value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+  },
+  "example": true,
+  "authority": "non_authoritative_example"
+}

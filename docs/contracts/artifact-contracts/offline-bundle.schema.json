@@ -1,0 +1,1854 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.koa.local/artifact-contracts/offline-bundle.schema.json",
+  "title": "kOA Offline Bundle",
+  "description": "Validates a signed, versioned kOA offline lifecycle container. An offline bundle binds Release Set context, selected artifacts, target profiles, trust and revocation updates, migrations, deterministic application order, rollback or forward-repair material, integrity evidence, provenance, and receipt requirements without creating a fifth release channel.",
+  "$comment": "The semantic validator additionally verifies cryptographic signatures and digests; monotonic sequence progression; validity ordering; Release Set and artifact-reference consistency; exact channel membership; trust-root scope; profile and overlay compatibility; application-step reference resolution; migration ordering; rollback feasibility; absence of duplicate archive paths; and successful validation of every embedded artifact against its indexed artifact contract.",
+  "x-koa-contract": {
+    "contract_id": "offline_bundle",
+    "contract_version": "1.0.0",
+    "status": "active",
+    "language": "en",
+    "owner": "lifecycle-architecture",
+    "object_kind": "offline_lifecycle_container",
+    "release_treatment": {
+      "kind": "lifecycle_container",
+      "release_channel": null,
+      "creates_release_channel": false
+    },
+    "canonical_refs": [
+      "generated/artifact-catalog.json#/contracts/5",
+      "contracts/artifact-classes.contract.json#/artifact_classes/offline_bundle",
+      "contracts/release-channels.contract.json",
+      "contracts/system.contract.json#/release_and_artifact_identity",
+      "contracts/system.contract.json#/receipts_and_critical_transitions",
+      "contracts/components/identity-and-trust.component.json",
+      "generated/requirements-index.json",
+      "generated/assertion-index.json",
+      "generated/traceability.json",
+      "generated/evidence-catalog.json"
+    ],
+    "decision_ids": [
+      "DEC-REL-001",
+      "DEC-LIFE-001",
+      "DEC-PROFILE-001",
+      "DEC-DATA-001"
+    ],
+    "requirement_ids": [
+      "REQ-LIFE-ART-004",
+      "REQ-LIFE-ART-005",
+      "REQ-LIFE-ART-006",
+      "REQ-LIFE-ART-008",
+      "REQ-LIFE-ART-009",
+      "REQ-LIFE-ART-010",
+      "REQ-LIFE-ART-012",
+      "REQ-LIFE-ART-014",
+      "REQ-LIFE-ART-015",
+      "REQ-LIFE-ART-016",
+      "REQ-LIFE-ART-017",
+      "REQ-LIFE-ART-019",
+      "REQ-LIFE-ART-020",
+      "REQ-LIFE-ART-024",
+      "REQ-LIFE-ART-025",
+      "REQ-LIFE-ART-026",
+      "REQ-LIFE-ART-027"
+    ],
+    "lock_ids": [
+      "LOCK-PROFILE-001",
+      "LOCK-PROFILE-002",
+      "LOCK-DATA-001",
+      "LOCK-LIFE-001",
+      "LOCK-LIFE-002",
+      "LOCK-LIFE-003",
+      "LOCK-LIFE-004"
+    ]
+  },
+  "type": "object",
+  "required": [
+    "$schema",
+    "contract_type",
+    "contract_version",
+    "bundle_id",
+    "bundle_version",
+    "status",
+    "producer",
+    "release_set_ref",
+    "artifact_refs",
+    "target_profiles",
+    "sequence",
+    "validity",
+    "integrity",
+    "signatures",
+    "trust_material",
+    "migration_plan",
+    "application_order",
+    "rollback_material",
+    "compatibility",
+    "provenance",
+    "receipt_policy"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri-reference",
+      "anyOf": [
+        {
+          "const": "urn:koa:artifact-contract:offline_bundle:1.0.0"
+        },
+        {
+          "pattern": "(?:^|/)offline-bundle\\.schema\\.json$"
+        }
+      ]
+    },
+    "contract_type": {
+      "const": "offline_bundle"
+    },
+    "contract_version": {
+      "const": "1.0.0"
+    },
+    "bundle_id": {
+      "$ref": "#/$defs/bundleId"
+    },
+    "bundle_version": {
+      "$ref": "#/$defs/semanticVersion"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "signed",
+        "published",
+        "revoked",
+        "retired"
+      ]
+    },
+    "description": {
+      "$ref": "#/$defs/resolvedString"
+    },
+    "created_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "producer": {
+      "$ref": "#/$defs/producer"
+    },
+    "sovereign_domain_ref": {
+      "$ref": "#/$defs/stableRef"
+    },
+    "release_set_ref": {
+      "$ref": "#/$defs/releaseSetReference"
+    },
+    "artifact_refs": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4096,
+      "items": {
+        "$ref": "#/$defs/embeddedArtifact"
+      }
+    },
+    "target_profiles": {
+      "$ref": "#/$defs/targetProfiles"
+    },
+    "sequence": {
+      "$ref": "#/$defs/sequence"
+    },
+    "validity": {
+      "$ref": "#/$defs/validity"
+    },
+    "integrity": {
+      "$ref": "#/$defs/bundleIntegrity"
+    },
+    "signatures": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 16,
+      "items": {
+        "$ref": "#/$defs/signature"
+      }
+    },
+    "trust_material": {
+      "$ref": "#/$defs/trustMaterial"
+    },
+    "migration_plan": {
+      "$ref": "#/$defs/migrationPlan"
+    },
+    "application_order": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4096,
+      "items": {
+        "$ref": "#/$defs/applicationStep"
+      }
+    },
+    "rollback_material": {
+      "$ref": "#/$defs/rollbackMaterial"
+    },
+    "compatibility": {
+      "$ref": "#/$defs/compatibility"
+    },
+    "provenance": {
+      "$ref": "#/$defs/provenance"
+    },
+    "receipt_policy": {
+      "$ref": "#/$defs/receiptPolicy"
+    },
+    "transport": {
+      "$ref": "#/$defs/transport"
+    },
+    "confidentiality": {
+      "$ref": "#/$defs/confidentiality"
+    },
+    "evidence_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/stableRef"
+      }
+    },
+    "canonical_refs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/repositoryReference"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "signed",
+              "published"
+            ]
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "validity": {
+            "properties": {
+              "revoked_at": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "revoked"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "validity": {
+            "required": [
+              "revoked_at",
+              "revocation_reason"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "retired"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "validity": {
+            "required": [
+              "retired_at"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false,
+  "$defs": {
+    "resolvedString": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "pattern": "^(?!.*(?:[Tt][Bb][Dd]|[Tt][Oo][Dd][Oo]|[Ff][Ii][Xx][Mm][Ee])).+$"
+    },
+    "semanticVersion": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "bundleId": {
+      "type": "string",
+      "pattern": "^OFFLINE-BUNDLE-[A-Z0-9][A-Z0-9._-]{5,127}$"
+    },
+    "releaseSetId": {
+      "type": "string",
+      "pattern": "^RELEASE-SET-[A-Z0-9][A-Z0-9._-]{3,127}$"
+    },
+    "stableRef": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/+#-]*$"
+    },
+    "repositoryReference": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9._/-]+(?:#(?:|/(?:[^~/]|~0|~1)*)*)?$"
+    },
+    "bundlePath": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//)[A-Za-z0-9._+-]+(?:/[A-Za-z0-9._+-]+)*$"
+    },
+    "base64Value": {
+      "type": "string",
+      "minLength": 16,
+      "maxLength": 262144,
+      "pattern": "^[A-Za-z0-9+/]+={0,2}$"
+    },
+    "hex64": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "hex96": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{96}$"
+    },
+    "hex128": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{128}$"
+    },
+    "contentDigest": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "algorithm",
+            "value"
+          ],
+          "properties": {
+            "algorithm": {
+              "const": "sha256"
+            },
+            "value": {
+              "$ref": "#/$defs/hex64"
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "algorithm",
+            "value"
+          ],
+          "properties": {
+            "algorithm": {
+              "const": "sha384"
+            },
+            "value": {
+              "$ref": "#/$defs/hex96"
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "algorithm",
+            "value"
+          ],
+          "properties": {
+            "algorithm": {
+              "const": "sha512"
+            },
+            "value": {
+              "$ref": "#/$defs/hex128"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "producer": {
+      "type": "object",
+      "required": [
+        "producer_identity_ref",
+        "producer_component_ref",
+        "produced_at",
+        "environment_ref"
+      ],
+      "properties": {
+        "producer_identity_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "producer_component_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "produced_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "environment_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "toolchain_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "build_or_assembly_receipt_ref": {
+          "$ref": "#/$defs/stableRef"
+        }
+      },
+      "additionalProperties": false
+    },
+    "channelArtifactSelection": {
+      "type": "object",
+      "required": [
+        "selection_id",
+        "selection_version",
+        "manifest_digest"
+      ],
+      "properties": {
+        "selection_id": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "selection_version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "manifest_digest": {
+          "$ref": "#/$defs/contentDigest"
+        },
+        "release_ref": {
+          "$ref": "#/$defs/stableRef"
+        }
+      },
+      "additionalProperties": false
+    },
+    "releaseSetReference": {
+      "type": "object",
+      "required": [
+        "release_set_id",
+        "release_set_version",
+        "manifest_digest",
+        "channel_vector",
+        "signature_verification_ref"
+      ],
+      "properties": {
+        "release_set_id": {
+          "$ref": "#/$defs/releaseSetId"
+        },
+        "release_set_version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "manifest_digest": {
+          "$ref": "#/$defs/contentDigest"
+        },
+        "channel_vector": {
+          "type": "object",
+          "required": [
+            "system",
+            "services",
+            "governance",
+            "knowledge"
+          ],
+          "properties": {
+            "system": {
+              "$ref": "#/$defs/channelArtifactSelection"
+            },
+            "services": {
+              "$ref": "#/$defs/channelArtifactSelection"
+            },
+            "governance": {
+              "$ref": "#/$defs/channelArtifactSelection"
+            },
+            "knowledge": {
+              "$ref": "#/$defs/channelArtifactSelection"
+            }
+          },
+          "additionalProperties": false
+        },
+        "signature_verification_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "compatibility_evidence_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/stableRef"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "embeddedArtifact": {
+      "type": "object",
+      "required": [
+        "artifact_ref",
+        "artifact_id",
+        "artifact_class",
+        "artifact_version",
+        "release_channel",
+        "manifest_path",
+        "payload_paths",
+        "manifest_digest",
+        "required_for_application",
+        "application_role"
+      ],
+      "properties": {
+        "artifact_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "artifact_id": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "artifact_class": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
+        },
+        "artifact_version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "release_channel": {
+          "type": "string",
+          "enum": [
+            "system",
+            "services",
+            "governance",
+            "knowledge"
+          ]
+        },
+        "manifest_path": {
+          "$ref": "#/$defs/bundlePath"
+        },
+        "payload_paths": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/bundlePath"
+          }
+        },
+        "manifest_digest": {
+          "$ref": "#/$defs/contentDigest"
+        },
+        "artifact_contract_ref": {
+          "$ref": "#/$defs/repositoryReference"
+        },
+        "producer_identity_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "provenance_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "sbom_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "signature_verification_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "required_for_application": {
+          "type": "boolean"
+        },
+        "application_role": {
+          "type": "string",
+          "enum": [
+            "target",
+            "dependency",
+            "migration",
+            "rollback",
+            "forward_repair",
+            "recovery",
+            "trust_support",
+            "evidence"
+          ]
+        },
+        "target_component_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/stableRef"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "targetProfiles": {
+      "type": "object",
+      "required": [
+        "primary_profiles",
+        "overlays",
+        "architectures",
+        "environment_classes"
+      ],
+      "properties": {
+        "primary_profiles": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "user_lightweight",
+              "developer_linux_workstation",
+              "developer_windows_wsl",
+              "sovereign_linux_node",
+              "sovereign_hub",
+              "build_farm",
+              "control_plane"
+            ]
+          }
+        },
+        "overlays": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "high_assurance",
+              "sovereign_offline",
+              "appliance_shell"
+            ]
+          }
+        },
+        "architectures": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "x86_64",
+              "aarch64",
+              "architecture_independent"
+            ]
+          }
+        },
+        "environment_classes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "development",
+              "test",
+              "staging",
+              "production",
+              "recovery"
+            ]
+          }
+        },
+        "tenant_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/stableRef"
+          }
+        },
+        "node_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/stableRef"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "sequence": {
+      "type": "object",
+      "required": [
+        "series_id",
+        "bundle_sequence",
+        "rollback_protection",
+        "sequence_authority_ref"
+      ],
+      "properties": {
+        "series_id": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "bundle_sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "previous_bundle_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "previous_bundle_digest": {
+          "$ref": "#/$defs/contentDigest"
+        },
+        "rollback_protection": {
+          "const": true
+        },
+        "sequence_authority_ref": {
+          "$ref": "#/$defs/stableRef"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "bundle_sequence": {
+                "minimum": 2
+              }
+            },
+            "required": [
+              "bundle_sequence"
+            ]
+          },
+          "then": {
+            "required": [
+              "previous_bundle_ref",
+              "previous_bundle_digest"
+            ]
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "validity": {
+      "type": "object",
+      "required": [
+        "issued_at",
+        "not_before",
+        "expires_at"
+      ],
+      "properties": {
+        "issued_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "not_before": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "expires_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "revoked_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "revocation_reason": {
+          "$ref": "#/$defs/resolvedString"
+        },
+        "retired_at": {
+          "$ref": "#/$defs/timestamp"
+        }
+      },
+      "additionalProperties": false
+    },
+    "integrityEntry": {
+      "type": "object",
+      "required": [
+        "path",
+        "entry_type",
+        "size_bytes",
+        "digest"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/bundlePath"
+        },
+        "entry_type": {
+          "type": "string",
+          "enum": [
+            "manifest",
+            "artifact_manifest",
+            "artifact_payload",
+            "trust_update",
+            "revocation_update",
+            "migration",
+            "rollback",
+            "forward_repair",
+            "recovery",
+            "evidence",
+            "receipt_template"
+          ]
+        },
+        "size_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "digest": {
+          "$ref": "#/$defs/contentDigest"
+        },
+        "media_type": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 255,
+          "pattern": "^[A-Za-z0-9!#$&^_.+-]+/[A-Za-z0-9!#$&^_.+-]+$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "bundleIntegrity": {
+      "type": "object",
+      "required": [
+        "manifest_path",
+        "manifest_digest",
+        "archive_digest",
+        "entries"
+      ],
+      "properties": {
+        "manifest_path": {
+          "$ref": "#/$defs/bundlePath"
+        },
+        "manifest_digest": {
+          "$ref": "#/$defs/contentDigest"
+        },
+        "archive_digest": {
+          "$ref": "#/$defs/contentDigest"
+        },
+        "entries": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 16384,
+          "items": {
+            "$ref": "#/$defs/integrityEntry"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "signature": {
+      "type": "object",
+      "required": [
+        "signature_id",
+        "signer_identity_ref",
+        "trust_scope_ref",
+        "algorithm",
+        "signature_value",
+        "signed_digest",
+        "intended_use",
+        "signed_at"
+      ],
+      "properties": {
+        "signature_id": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "signer_identity_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "trust_scope_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "algorithm": {
+          "type": "string",
+          "enum": [
+            "ed25519",
+            "ecdsa_p256_sha256",
+            "ecdsa_p384_sha384",
+            "rsa_pss_sha256",
+            "rsa_pss_sha512"
+          ]
+        },
+        "signature_value": {
+          "$ref": "#/$defs/base64Value"
+        },
+        "signed_digest": {
+          "$ref": "#/$defs/contentDigest"
+        },
+        "intended_use": {
+          "const": "offline_bundle_distribution_and_application"
+        },
+        "signed_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "certificate_chain_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "verification_ref": {
+          "$ref": "#/$defs/stableRef"
+        }
+      },
+      "additionalProperties": false
+    },
+    "trustUpdate": {
+      "type": "object",
+      "required": [
+        "update_ref",
+        "update_type",
+        "path",
+        "sequence",
+        "scope_ref",
+        "issuer_identity_ref",
+        "digest",
+        "signature_ref",
+        "validity"
+      ],
+      "properties": {
+        "update_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "update_type": {
+          "type": "string",
+          "enum": [
+            "trust_root_addition",
+            "trust_root_supersession",
+            "trust_root_revocation",
+            "issuer_update",
+            "credential_revocation",
+            "artifact_signer_revocation"
+          ]
+        },
+        "path": {
+          "$ref": "#/$defs/bundlePath"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "scope_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "issuer_identity_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "digest": {
+          "$ref": "#/$defs/contentDigest"
+        },
+        "signature_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "validity": {
+          "$ref": "#/$defs/validityWindow"
+        },
+        "rollback_protection": {
+          "const": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "validityWindow": {
+      "type": "object",
+      "required": [
+        "not_before",
+        "expires_at"
+      ],
+      "properties": {
+        "not_before": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "expires_at": {
+          "$ref": "#/$defs/timestamp"
+        }
+      },
+      "additionalProperties": false
+    },
+    "trustMaterial": {
+      "type": "object",
+      "required": [
+        "trust_context_ref",
+        "updates",
+        "revocation_freshness_policy_ref",
+        "trust_expansion_permitted"
+      ],
+      "properties": {
+        "trust_context_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "updates": {
+          "type": "array",
+          "maxItems": 4096,
+          "items": {
+            "$ref": "#/$defs/trustUpdate"
+          }
+        },
+        "revocation_freshness_policy_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "trust_expansion_permitted": {
+          "const": false
+        },
+        "current_sequence_required": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "resulting_sequence": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "migration": {
+      "type": "object",
+      "required": [
+        "migration_ref",
+        "migration_type",
+        "path",
+        "owner_component_ref",
+        "from_version",
+        "to_version",
+        "digest",
+        "strategy",
+        "verification_refs"
+      ],
+      "properties": {
+        "migration_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "migration_type": {
+          "type": "string",
+          "enum": [
+            "configuration",
+            "data",
+            "schema",
+            "index",
+            "trust_store",
+            "policy",
+            "content_model"
+          ]
+        },
+        "path": {
+          "$ref": "#/$defs/bundlePath"
+        },
+        "owner_component_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "data_owner_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "from_version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "to_version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "digest": {
+          "$ref": "#/$defs/contentDigest"
+        },
+        "strategy": {
+          "type": "string",
+          "enum": [
+            "reversible",
+            "forward_only_with_repair",
+            "checkpoint_restore",
+            "no_data_change"
+          ]
+        },
+        "checkpoint_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "rollback_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "forward_repair_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/stableRef"
+          }
+        },
+        "verification_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/stableRef"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "strategy": {
+                "const": "reversible"
+              }
+            },
+            "required": [
+              "strategy"
+            ]
+          },
+          "then": {
+            "required": [
+              "rollback_ref"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "strategy": {
+                "const": "forward_only_with_repair"
+              }
+            },
+            "required": [
+              "strategy"
+            ]
+          },
+          "then": {
+            "properties": {
+              "forward_repair_refs": {
+                "minItems": 1
+              }
+            },
+            "required": [
+              "forward_repair_refs"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "strategy": {
+                "const": "checkpoint_restore"
+              }
+            },
+            "required": [
+              "strategy"
+            ]
+          },
+          "then": {
+            "required": [
+              "checkpoint_ref"
+            ]
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "migrationPlan": {
+      "type": "object",
+      "required": [
+        "migrations",
+        "atomic_with_activation",
+        "partial_migration_authoritative"
+      ],
+      "properties": {
+        "migrations": {
+          "type": "array",
+          "maxItems": 4096,
+          "items": {
+            "$ref": "#/$defs/migration"
+          }
+        },
+        "atomic_with_activation": {
+          "const": true
+        },
+        "partial_migration_authoritative": {
+          "const": false
+        },
+        "global_checkpoint_ref": {
+          "$ref": "#/$defs/stableRef"
+        }
+      },
+      "additionalProperties": false
+    },
+    "applicationStep": {
+      "type": "object",
+      "required": [
+        "step_id",
+        "order",
+        "step_type",
+        "failure_behavior",
+        "receipt_required"
+      ],
+      "properties": {
+        "step_id": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "order": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "step_type": {
+          "type": "string",
+          "enum": [
+            "verify_bundle",
+            "verify_release_set",
+            "apply_trust_update",
+            "apply_revocation_update",
+            "stage_artifact",
+            "create_checkpoint",
+            "prepare_migration",
+            "apply_migration",
+            "activate_release_set",
+            "validate_activation",
+            "commit_receipts",
+            "cleanup_staging"
+          ]
+        },
+        "artifact_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "trust_update_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "migration_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "release_set_ref": {
+          "$ref": "#/$defs/releaseSetId"
+        },
+        "checkpoint_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "test_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/stableRef"
+          }
+        },
+        "depends_on_steps": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/stableRef"
+          }
+        },
+        "failure_behavior": {
+          "type": "string",
+          "enum": [
+            "stop_before_commit",
+            "rollback",
+            "forward_repair",
+            "enter_recovery",
+            "preserve_previous_state"
+          ]
+        },
+        "receipt_required": {
+          "type": "boolean"
+        },
+        "timeout_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 604800
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "step_type": {
+                "const": "stage_artifact"
+              }
+            },
+            "required": [
+              "step_type"
+            ]
+          },
+          "then": {
+            "required": [
+              "artifact_ref"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "step_type": {
+                "enum": [
+                  "apply_trust_update",
+                  "apply_revocation_update"
+                ]
+              }
+            },
+            "required": [
+              "step_type"
+            ]
+          },
+          "then": {
+            "required": [
+              "trust_update_ref"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "step_type": {
+                "enum": [
+                  "prepare_migration",
+                  "apply_migration"
+                ]
+              }
+            },
+            "required": [
+              "step_type"
+            ]
+          },
+          "then": {
+            "required": [
+              "migration_ref"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "step_type": {
+                "const": "activate_release_set"
+              }
+            },
+            "required": [
+              "step_type"
+            ]
+          },
+          "then": {
+            "required": [
+              "release_set_ref"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "step_type": {
+                "const": "create_checkpoint"
+              }
+            },
+            "required": [
+              "step_type"
+            ]
+          },
+          "then": {
+            "required": [
+              "checkpoint_ref"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "step_type": {
+                "const": "validate_activation"
+              }
+            },
+            "required": [
+              "step_type"
+            ]
+          },
+          "then": {
+            "properties": {
+              "test_refs": {
+                "minItems": 1
+              }
+            },
+            "required": [
+              "test_refs"
+            ]
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "rollbackMaterial": {
+      "type": "object",
+      "required": [
+        "initial_bootstrap",
+        "strategy",
+        "rollback_artifact_refs",
+        "forward_repair_artifact_refs",
+        "recovery_refs",
+        "retention_until"
+      ],
+      "properties": {
+        "initial_bootstrap": {
+          "type": "boolean"
+        },
+        "strategy": {
+          "type": "string",
+          "enum": [
+            "rollback",
+            "forward_repair",
+            "rollback_or_forward_repair",
+            "recovery_only"
+          ]
+        },
+        "previous_release_set_ref": {
+          "$ref": "#/$defs/releaseSetId"
+        },
+        "previous_release_set_digest": {
+          "$ref": "#/$defs/contentDigest"
+        },
+        "rollback_artifact_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/stableRef"
+          }
+        },
+        "forward_repair_artifact_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/stableRef"
+          }
+        },
+        "recovery_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/stableRef"
+          }
+        },
+        "checkpoint_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/stableRef"
+          }
+        },
+        "retention_until": {
+          "$ref": "#/$defs/timestamp"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "initial_bootstrap": {
+                "const": false
+              }
+            },
+            "required": [
+              "initial_bootstrap"
+            ]
+          },
+          "then": {
+            "required": [
+              "previous_release_set_ref",
+              "previous_release_set_digest"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "strategy": {
+                "const": "rollback"
+              }
+            },
+            "required": [
+              "strategy"
+            ]
+          },
+          "then": {
+            "properties": {
+              "rollback_artifact_refs": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "strategy": {
+                "const": "forward_repair"
+              }
+            },
+            "required": [
+              "strategy"
+            ]
+          },
+          "then": {
+            "properties": {
+              "forward_repair_artifact_refs": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "strategy": {
+                "const": "recovery_only"
+              }
+            },
+            "required": [
+              "strategy"
+            ]
+          },
+          "then": {
+            "properties": {
+              "recovery_refs": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "strategy": {
+                "const": "rollback_or_forward_repair"
+              }
+            },
+            "required": [
+              "strategy"
+            ]
+          },
+          "then": {
+            "anyOf": [
+              {
+                "properties": {
+                  "rollback_artifact_refs": {
+                    "minItems": 1
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "forward_repair_artifact_refs": {
+                    "minItems": 1
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "compatibility": {
+      "type": "object",
+      "required": [
+        "minimum_system_contract_version",
+        "release_set_compatibility_ref",
+        "profile_compatibility_refs",
+        "required_component_contracts",
+        "conflicts",
+        "validation_evidence_refs"
+      ],
+      "properties": {
+        "minimum_system_contract_version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "maximum_system_contract_version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "release_set_compatibility_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "profile_compatibility_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/stableRef"
+          }
+        },
+        "required_component_contracts": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "required": [
+              "component_ref",
+              "minimum_contract_version"
+            ],
+            "properties": {
+              "component_ref": {
+                "$ref": "#/$defs/stableRef"
+              },
+              "minimum_contract_version": {
+                "$ref": "#/$defs/semanticVersion"
+              },
+              "maximum_contract_version": {
+                "$ref": "#/$defs/semanticVersion"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "conflicts": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/stableRef"
+          }
+        },
+        "validation_evidence_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/stableRef"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "provenance_receipt_ref",
+        "source_refs",
+        "assembly_toolchain_ref",
+        "assembly_environment_ref",
+        "test_evidence_refs"
+      ],
+      "properties": {
+        "provenance_receipt_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "source_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/stableRef"
+          }
+        },
+        "assembly_toolchain_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "assembly_environment_ref": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "sbom_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/stableRef"
+          }
+        },
+        "test_evidence_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/stableRef"
+          }
+        },
+        "publication_receipt_ref": {
+          "$ref": "#/$defs/stableRef"
+        }
+      },
+      "additionalProperties": false
+    },
+    "receiptPolicy": {
+      "type": "object",
+      "required": [
+        "required_transition_types",
+        "durability",
+        "local_buffering",
+        "false_success_reporting",
+        "receipt_schema_refs"
+      ],
+      "properties": {
+        "required_transition_types": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "bundle_verification",
+              "trust_update",
+              "revocation_update",
+              "artifact_stage",
+              "migration",
+              "activation",
+              "rollback",
+              "forward_repair",
+              "recovery",
+              "application_closure"
+            ]
+          }
+        },
+        "durability": {
+          "type": "string",
+          "enum": [
+            "durable_before_commit",
+            "durable_local_before_commit",
+            "bounded_buffer_then_reconcile"
+          ]
+        },
+        "local_buffering": {
+          "type": "object",
+          "required": [
+            "permitted",
+            "bounded",
+            "reconciliation_required"
+          ],
+          "properties": {
+            "permitted": {
+              "type": "boolean"
+            },
+            "bounded": {
+              "const": true
+            },
+            "maximum_receipts": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "maximum_bytes": {
+              "type": "integer",
+              "minimum": 1024
+            },
+            "reconciliation_required": {
+              "const": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "false_success_reporting": {
+          "const": false
+        },
+        "receipt_schema_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/repositoryReference"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "transport": {
+      "type": "object",
+      "required": [
+        "container_format",
+        "compression",
+        "media_class"
+      ],
+      "properties": {
+        "container_format": {
+          "type": "string",
+          "enum": [
+            "tar",
+            "zip",
+            "directory_tree",
+            "profile_defined_container"
+          ]
+        },
+        "compression": {
+          "type": "string",
+          "enum": [
+            "none",
+            "gzip",
+            "zstd",
+            "deflate",
+            "profile_defined"
+          ]
+        },
+        "media_class": {
+          "type": "string",
+          "enum": [
+            "removable_media",
+            "local_file_transfer",
+            "restricted_network_transfer",
+            "sovereign_hub_transfer",
+            "recovery_media"
+          ]
+        },
+        "volume_id": {
+          "$ref": "#/$defs/stableRef"
+        },
+        "maximum_part_size_bytes": {
+          "type": "integer",
+          "minimum": 1048576
+        },
+        "part_count": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "confidentiality": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "encrypted"
+          ],
+          "properties": {
+            "encrypted": {
+              "const": false
+            },
+            "data_classification": {
+              "type": "string",
+              "enum": [
+                "public",
+                "internal",
+                "restricted"
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "encrypted",
+            "encryption_algorithm",
+            "key_wrap_algorithm",
+            "recipient_refs",
+            "encryption_context_ref"
+          ],
+          "properties": {
+            "encrypted": {
+              "const": true
+            },
+            "encryption_algorithm": {
+              "type": "string",
+              "enum": [
+                "aes_256_gcm",
+                "xchacha20_poly1305",
+                "profile_defined_approved"
+              ]
+            },
+            "key_wrap_algorithm": {
+              "type": "string",
+              "enum": [
+                "x25519",
+                "rsa_oaep_sha256",
+                "profile_defined_approved"
+              ]
+            },
+            "recipient_refs": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "$ref": "#/$defs/stableRef"
+              }
+            },
+            "encryption_context_ref": {
+              "$ref": "#/$defs/stableRef"
+            },
+            "data_classification": {
+              "type": "string",
+              "enum": [
+                "internal",
+                "restricted",
+                "security_restricted",
+                "cultural_restricted"
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    }
+  }
+}

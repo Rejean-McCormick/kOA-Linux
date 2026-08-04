@@ -1,0 +1,792 @@
+{
+  "$schema": "../schemas/system.contract.schema.json",
+  "version": "1.0.0",
+  "status": "active",
+  "language": "en",
+  "effective_at": "2026-08-03T15:14:00-04:00",
+  "scope": {
+    "kind": "global",
+    "applies_to": "all kOA deployments, profiles, overlays, components, contracts, and releases"
+  },
+  "decision_ids": [
+    "DEC-SYS-001",
+    "DEC-AI-001",
+    "DEC-SENT-001",
+    "DEC-UCKK-001",
+    "DEC-ARI-001",
+    "DEC-PROFILE-001",
+    "DEC-DATA-001",
+    "DEC-GOV-001",
+    "DEC-GATE-001",
+    "DEC-SHELL-001",
+    "DEC-CONTAINER-001",
+    "DEC-K8S-001",
+    "DEC-HW-001",
+    "DEC-REL-001"
+  ],
+  "lock_ids": [
+    "LOCK-SYS-001",
+    "LOCK-SYS-002",
+    "LOCK-SYS-003",
+    "LOCK-SYS-004",
+    "LOCK-AI-001",
+    "LOCK-AI-002",
+    "LOCK-SENT-001",
+    "LOCK-UCKK-001",
+    "LOCK-UCKK-002",
+    "LOCK-ARI-001",
+    "LOCK-ARI-002",
+    "LOCK-DATA-001",
+    "LOCK-GOV-001",
+    "LOCK-GATE-001",
+    "LOCK-COMP-001",
+    "LOCK-COMP-002",
+    "LOCK-LIFE-001",
+    "LOCK-LIFE-002",
+    "LOCK-LIFE-003",
+    "LOCK-LIFE-004",
+    "LOCK-PROFILE-001",
+    "LOCK-IMPL-001",
+    "LOCK-IMPL-002"
+  ],
+  "system": {
+    "system_id": "koa_operating_environment",
+    "name": "kOA Operating Environment",
+    "system_class": "local_first_modular_operating_environment",
+    "purpose": "Provide a local-first, offline-capable, modular environment for governed knowledge, coordination, language, media, navigation, publication, and sovereign deployment.",
+    "architectural_style": [
+      "explicit_authority",
+      "component_separation",
+      "local_first_operation",
+      "offline_continuity",
+      "deterministic_core_behavior",
+      "profile_scoped_deployment",
+      "contract_driven_integration",
+      "safe_degradation",
+      "selective_audit",
+      "portable_artifacts"
+    ],
+    "global_non_goals": [
+      "making every deployment an appliance",
+      "requiring Kubernetes on endpoints",
+      "requiring one desktop environment on every Linux host",
+      "requiring one container runtime on every profile",
+      "embedding native generative AI in the baseline",
+      "sharing authoritative source tables across components",
+      "turning Kristal into a universal workflow engine or operational database",
+      "making recipes authoritative through implementation prevalence"
+    ]
+  },
+  "architectural_layers": [
+    {
+      "layer_id": "L0_constitutional_principles",
+      "scope": "global",
+      "owner_ref": "01-constitution/",
+      "content_domains": [
+        "explicit_authority",
+        "fail_closed_authority",
+        "safe_degradation",
+        "offline_continuity",
+        "component_separation",
+        "selective_audit",
+        "recourse",
+        "portability_restore_and_exit",
+        "cultural_rights_and_consent"
+      ]
+    },
+    {
+      "layer_id": "L1_system_baseline",
+      "scope": "global",
+      "owner_ref": "contracts/system.contract.json",
+      "content_domains": [
+        "system_context",
+        "operating_modes",
+        "global_capabilities",
+        "global_boundaries",
+        "ai_boundary",
+        "ariane",
+        "uckk",
+        "language_runtime",
+        "resource_governance",
+        "offline_behavior",
+        "safe_degradation",
+        "release_and_artifact_identity"
+      ]
+    },
+    {
+      "layer_id": "L2_deployment_profiles",
+      "scope": "profile_and_profile_overlay",
+      "owner_ref": "generated/profile-catalog.json",
+      "content_domains": [
+        "profile_composition",
+        "profile_capabilities",
+        "profile_component_membership",
+        "profile_hardware_selection",
+        "profile_security_claims",
+        "profile_offline_claims",
+        "profile_conformance"
+      ]
+    },
+    {
+      "layer_id": "L3_component_contracts",
+      "scope": "component",
+      "owner_ref": "generated/component-catalog.json",
+      "content_domains": [
+        "component_inputs",
+        "component_outputs",
+        "component_interfaces",
+        "component_events",
+        "component_state_transitions",
+        "component_failure_behavior",
+        "component_data_boundaries"
+      ]
+    },
+    {
+      "layer_id": "L4_implementation_recipes",
+      "scope": "non_normative_unless_explicitly_adopted",
+      "owner_ref": "11-recipes/",
+      "content_domains": [
+        "systemd",
+        "quadlet",
+        "podman",
+        "docker",
+        "wayland",
+        "desktop_shells",
+        "network_layouts",
+        "storage_layouts",
+        "development_commands"
+      ]
+    }
+  ],
+  "operating_modes": [
+    {
+      "mode_id": "interactive_user",
+      "purpose": "Operate the local user-facing kOA environment with deterministic core services and task-activated heavy work.",
+      "profile_selection_ref": "generated/profile-catalog.json#/primary_profiles",
+      "connectivity_support": [
+        "online",
+        "restricted_network",
+        "offline"
+      ],
+      "core_characteristics": [
+        "local_authority",
+        "non_ai_navigation",
+        "compiled_language_artifact_consumption",
+        "deterministic_media_pipeline",
+        "bounded_background_work"
+      ]
+    },
+    {
+      "mode_id": "development",
+      "purpose": "Develop multiple kOA applications, branches, and worktrees in isolated reproducible workspaces.",
+      "profile_selection_ref": "generated/profile-catalog.json#/development_profiles",
+      "connectivity_support": [
+        "online",
+        "restricted_network"
+      ],
+      "core_characteristics": [
+        "workspace_identity",
+        "isolated_mutable_dependencies",
+        "isolated_service_state",
+        "parallel_workspace_execution",
+        "explicit_artifact_publication"
+      ]
+    },
+    {
+      "mode_id": "build",
+      "purpose": "Produce reproducible, validated, provenance-bearing system, service, governance, and knowledge artifacts.",
+      "profile_selection_ref": "generated/profile-catalog.json#/build_profiles",
+      "connectivity_support": [
+        "online",
+        "restricted_network",
+        "offline_with_imported_sources"
+      ],
+      "core_characteristics": [
+        "clean_workers",
+        "reproducible_inputs",
+        "artifact_cache",
+        "test_evidence",
+        "provenance_generation"
+      ]
+    },
+    {
+      "mode_id": "service_node",
+      "purpose": "Host a persistent kOA node with profile-defined availability, security, recovery, and offline guarantees.",
+      "profile_selection_ref": "generated/profile-catalog.json#/node_profiles",
+      "connectivity_support": [
+        "online",
+        "restricted_network",
+        "offline"
+      ],
+      "core_characteristics": [
+        "persistent_local_authority",
+        "profile_scoped_security",
+        "backup_restore",
+        "safe_degradation",
+        "controlled_updates"
+      ]
+    },
+    {
+      "mode_id": "hub",
+      "purpose": "Coordinate multiple nodes, artifacts, or governed domains without replacing component or node authority.",
+      "profile_selection_ref": "generated/profile-catalog.json#/hub_profiles",
+      "connectivity_support": [
+        "online",
+        "restricted_network",
+        "intermittent"
+      ],
+      "core_characteristics": [
+        "federated_coordination",
+        "explicit_cross_domain_contracts",
+        "bounded_centralization",
+        "auditable_distribution"
+      ]
+    },
+    {
+      "mode_id": "control_plane",
+      "purpose": "Operate deployment, release, policy, and fleet coordination services for profiles that require a control plane.",
+      "profile_selection_ref": "generated/profile-catalog.json#/control_profiles",
+      "connectivity_support": [
+        "online",
+        "restricted_network"
+      ],
+      "core_characteristics": [
+        "deployment_coordination",
+        "release_coordination",
+        "policy_distribution",
+        "fleet_observability"
+      ]
+    },
+    {
+      "mode_id": "recovery",
+      "purpose": "Restore a valid system, artifact set, or authoritative data state without creating partial authority.",
+      "profile_selection_ref": "generated/profile-catalog.json#/recovery_capable_profiles",
+      "connectivity_support": [
+        "online",
+        "restricted_network",
+        "offline"
+      ],
+      "core_characteristics": [
+        "verified_recovery_input",
+        "atomic_restore",
+        "rollback_or_forward_repair",
+        "evidence_generation"
+      ]
+    }
+  ],
+  "connectivity_states": [
+    {
+      "state_id": "online",
+      "description": "Approved remote integrations may be available subject to explicit classification and user or policy authorization."
+    },
+    {
+      "state_id": "restricted_network",
+      "description": "Only profile-approved endpoints and protocols are reachable; core local capabilities remain available."
+    },
+    {
+      "state_id": "intermittent",
+      "description": "Remote connectivity may disappear and return; queued work remains bounded and idempotent."
+    },
+    {
+      "state_id": "offline",
+      "description": "No Internet or remote service is required for the profile's declared offline capability envelope."
+    },
+    {
+      "state_id": "offline_with_imported_sources",
+      "description": "Build or update work uses locally imported and verified source or artifact bundles."
+    }
+  ],
+  "global_capabilities": [
+    {
+      "capability_id": "local_authoritative_operation",
+      "availability": "global_contract",
+      "description": "Authoritative local operations remain possible within the active profile's offline and security envelope."
+    },
+    {
+      "capability_id": "deterministic_navigation",
+      "availability": "profile_activated",
+      "description": "Ariane local navigation works without external AI or voice services."
+    },
+    {
+      "capability_id": "governed_knowledge_runtime",
+      "availability": "profile_activated",
+      "description": "Compiled knowledge and language artifacts are consumed locally without requiring build workbenches."
+    },
+    {
+      "capability_id": "deterministic_media_management",
+      "availability": "profile_activated",
+      "description": "UCKK ingests, verifies, transforms, stores, exports, backs up, and restores media through deterministic local operations."
+    },
+    {
+      "capability_id": "deterministic_resource_governance",
+      "availability": "global_baseline_component",
+      "description": "Resource Governor bounds CPU, memory, I/O, concurrency, queues, jobs, and processes."
+    },
+    {
+      "capability_id": "profile_conditioned_policy_governance",
+      "availability": "profile_conditioned",
+      "description": "Governance Policy Runtime supplies authorization, disclosure, consent, privilege decisions, and governed exceptions where required by a profile."
+    },
+    {
+      "capability_id": "controlled_external_integration",
+      "availability": "optional",
+      "description": "External services are explicitly classified, removable, capability-scoped, and unable to directly mutate authoritative state."
+    },
+    {
+      "capability_id": "selective_audit_and_recourse",
+      "availability": "global_contract",
+      "description": "Accountability evidence is produced without requiring indiscriminate disclosure."
+    },
+    {
+      "capability_id": "portability_restore_and_exit",
+      "availability": "global_contract",
+      "description": "Open interfaces, export, backup, restore, and credible independent exit remain system objectives."
+    }
+  ],
+  "global_boundaries": {
+    "baseline_and_profiles": {
+      "rule": "The global baseline defines system behavior; profiles select, constrain, strengthen, or implement that behavior for a deployment.",
+      "profile_rule_may_become_global_implicitly": false,
+      "profile_inheritance_requires_explicit_reference": true
+    },
+    "components": {
+      "component_inventory_ref": "generated/component-catalog.json#/components",
+      "component_contract_index_ref": "generated/component-catalog.json",
+      "direct_cross_component_authoritative_table_writes": "prohibited",
+      "allowed_cross_component_mechanisms": [
+        "versioned_api",
+        "command",
+        "event",
+        "gateway",
+        "exported_artifact",
+        "controlled_read_model"
+      ],
+      "reading_or_caching_transfers_ownership": false
+    },
+    "data_authority": {
+      "logical_ownership_required": true,
+      "physical_consolidation_may_be_profile_scoped": true,
+      "shared_database_process_transfers_ownership": false,
+      "cross_domain_access_requires": [
+        "explicit_contract",
+        "authorized_gateway",
+        "declared_read_model"
+      ]
+    },
+    "privilege": {
+      "ordinary_application_operations_authorized_by": "owning_component",
+      "sensitive_host_mutations_require": [
+        "applicable_policy_decision",
+        "narrow_privileged_operation_path",
+        "profile_authorization"
+      ],
+      "root_or_host_administrator_is_application_governance_interface": false
+    },
+    "implementation": {
+      "systemd_global_requirement": false,
+      "quadlet_global_requirement": false,
+      "podman_global_requirement": false,
+      "docker_global_prohibition": false,
+      "wayland_global_requirement": false,
+      "gnome_global_prohibition": false,
+      "kubernetes_endpoint_requirement": false,
+      "profile_may_adopt_specific_implementation": true
+    }
+  },
+  "ai_boundary": {
+    "decision_id": "DEC-AI-001",
+    "native_ai_in_global_baseline": false,
+    "prohibited_native_capabilities": [
+      "generative_ai",
+      "classifier",
+      "summarizer",
+      "embedding_model",
+      "autonomous_routing_model",
+      "autonomous_agent",
+      "ai_generated_category_system",
+      "ai_based_ingestion_decision"
+    ],
+    "allowed_external_surfaces": [
+      {
+        "integration_id": "chatgpt",
+        "purpose_class": "explicit_external_assistance",
+        "integration_ref": "contracts/integrations/chatgpt.integration.json"
+      },
+      {
+        "integration_id": "suno",
+        "purpose_class": "explicit_external_media_generation",
+        "integration_ref": "contracts/integration-types.contract.json#/integrations/suno"
+      },
+      {
+        "integration_id": "gamma",
+        "purpose_class": "explicit_external_presentation_generation",
+        "integration_ref": "contracts/integration-types.contract.json#/integrations/gamma"
+      },
+      {
+        "integration_id": "ariane-voice",
+        "purpose_class": "optional_external_voice",
+        "integration_ref": "contracts/integration-types.contract.json#/integrations/ariane_voice_adapter"
+      }
+    ],
+    "external_operation_rules": {
+      "user_initiated": true,
+      "capability_scoped": true,
+      "transferred_data_explicit": true,
+      "removable_without_core_failure": true,
+      "direct_authoritative_store_write": false,
+      "provenance_or_decision_receipt_when_applicable": true,
+      "output_authority": "candidate_input_until_component_acceptance"
+    }
+  },
+  "sentient_boundary": {
+    "decision_id": "DEC-SENT-001",
+    "system_role": "optional_research_and_enrichment_workbench",
+    "global_baseline_membership": "excluded",
+    "default_user_installation": "prohibited",
+    "activation_mode": "explicit_task_only",
+    "authority_over_canonical_data": false,
+    "direct_authoritative_store_write": false,
+    "host_privilege_control": false,
+    "offline_core_dependency": false,
+    "profile_activation_ref": "generated/profile-catalog.json#/optional_workbenches/sentient",
+    "required_isolation": [
+      "dependency_environment",
+      "storage",
+      "service_account",
+      "temporary_data",
+      "network_access",
+      "cpu",
+      "memory"
+    ],
+    "output_admission": [
+      "provenance",
+      "review",
+      "controlled_import",
+      "component_acceptance"
+    ]
+  },
+  "ariane": {
+    "decision_id": "DEC-ARI-001",
+    "capability_levels": [
+      {
+        "capability_id": "ariane_local_navigation",
+        "external_service_required": false,
+        "functions": [
+          "keyboard_navigation",
+          "pointer_navigation",
+          "touch_navigation",
+          "menus",
+          "deterministic_commands",
+          "accessibility_controls",
+          "local_shortcuts"
+        ]
+      },
+      {
+        "capability_id": "ariane_external_voice",
+        "external_service_required": true,
+        "integration_ref": "contracts/integration-types.contract.json#/integrations/ariane_voice_adapter",
+        "availability": "optional"
+      }
+    ],
+    "external_voice_unavailable_behavior": {
+      "local_navigation": "operational",
+      "voice_controls": "unavailable",
+      "unrelated_core_capabilities": "operational",
+      "silent_substitution": false
+    }
+  },
+  "uckk": {
+    "decision_id": "DEC-UCKK-001",
+    "native_pipeline": {
+      "execution_model": "deterministic_local",
+      "operations": [
+        "file_ingestion",
+        "content_integrity_verification",
+        "user_supplied_metadata_capture",
+        "thumbnail_generation",
+        "preview_generation",
+        "transcoding",
+        "deterministic_text_extraction",
+        "storage",
+        "export",
+        "backup",
+        "restore"
+      ],
+      "native_ai_operations": []
+    },
+    "prohibited_native_ai_operations": [
+      "ai_classification",
+      "ai_summarization",
+      "ai_generated_categories",
+      "ai_routing",
+      "ai_tagging",
+      "ai_transcription",
+      "ai_translation",
+      "ai_content_generation"
+    ],
+    "external_media_adapter_workflow": [
+      "explicit_user_selection",
+      "controlled_export",
+      "external_processing",
+      "controlled_reimport",
+      "provenance_receipt",
+      "user_approval",
+      "optional_publication"
+    ],
+    "automatic_external_adapter_invocation_by": {
+      "ingestion": false,
+      "indexing": false,
+      "classification": false,
+      "routing": false
+    },
+    "gateway_separation": {
+      "uckk_dimension_gateway_ref": "generated/component-catalog.json#/components/uckk_dimension_gateway",
+      "publication_gateway_ref": "generated/component-catalog.json#/components/publication_gateway",
+      "contracts_are_distinct": true
+    }
+  },
+  "language_runtime": {
+    "runtime_model": "compiled_artifact_consumption",
+    "user_runtime_builds_language_artifacts": false,
+    "user_runtime_consumes": [
+      "pgf_artifacts",
+      "language_runtime_packs",
+      "approved_atlases"
+    ],
+    "build_workbenches": [
+      {
+        "component_ref": "generated/component-catalog.json#/components/gf_wordbench",
+        "responsibility": "language_construction_and_compilation"
+      },
+      {
+        "component_ref": "generated/component-catalog.json#/components/semantik_architect_runtime",
+        "responsibility": "runtime_consumption_of_compiled_language_artifacts"
+      }
+    ],
+    "kristal": {
+      "component_ref": "generated/component-catalog.json#/components/kristal_runtime",
+      "role": "transversal_knowledge_foundation",
+      "identity_basis": "canonical_epistemic_content",
+      "independent_of": [
+        "tenant_workflow",
+        "interface_state"
+      ],
+      "prohibited_roles": [
+        "universal_workflow_engine",
+        "universal_operational_database"
+      ]
+    }
+  },
+  "resource_governance": {
+    "resource_governor": {
+      "component_ref": "generated/component-catalog.json#/components/resource_governor",
+      "baseline_membership": "required",
+      "authority_domains": [
+        "cpu",
+        "memory",
+        "io",
+        "concurrency",
+        "queues",
+        "job_scheduling",
+        "process_limits"
+      ]
+    },
+    "governance_policy_runtime": {
+      "component_ref": "generated/component-catalog.json#/components/governance_policy_runtime",
+      "baseline_membership": "profile_conditioned",
+      "authority_domains": [
+        "authorization",
+        "disclosure",
+        "consent",
+        "privilege_decisions",
+        "governed_exceptions"
+      ]
+    },
+    "authorities_are_separate": true
+  },
+  "external_integrations": {
+    "registry_ref": "contracts/integration-types.contract.json#/integrations",
+    "required_properties": [
+      "integration_classification",
+      "capability_scope",
+      "data_transfer_declaration",
+      "authority_boundary",
+      "failure_behavior",
+      "removal_behavior"
+    ],
+    "optional_integration_removal_breaks_core": false,
+    "direct_external_mutation_of_authoritative_state": false,
+    "automatic_scope_expansion": false
+  },
+  "offline_baseline": {
+    "core_rule": "Every active profile declares and tests its offline capability envelope.",
+    "internet_required_for_global_core_authority": false,
+    "offline_capability_classes": [
+      "local_read",
+      "local_write",
+      "local_navigation",
+      "local_media_management",
+      "local_language_runtime",
+      "local_resource_governance",
+      "backup_and_restore",
+      "verified_offline_import"
+    ],
+    "external_capability_behavior_offline": "unavailable_without_disabling_unrelated_local_capabilities",
+    "queued_remote_work": {
+      "allowed": true,
+      "requirements": [
+        "bounded",
+        "idempotent",
+        "explicitly_visible",
+        "safe_to_retry"
+      ]
+    }
+  },
+  "degradation_baseline": {
+    "authority_verification_failure": {
+      "affected_authoritative_operation": "fail_closed",
+      "previously_valid_read_only_or_advisory_state": "permitted_only_when_explicitly_allowed",
+      "automatic_bypass": false
+    },
+    "optional_capability_failure": {
+      "failure_scope": "declared_capability_only",
+      "unrelated_core_capabilities": "remain_operational",
+      "silent_substitution": false
+    },
+    "resource_pressure": {
+      "degradation_order": [
+        "defer_background_jobs",
+        "reduce_worker_concurrency",
+        "stop_task_activated_heavy_services",
+        "preserve_authoritative_data_integrity",
+        "preserve_core_navigation_and_control"
+      ],
+      "partial_authoritative_state_allowed": false
+    },
+    "contract_incompatibility": {
+      "affected_transition": "blocked",
+      "existing_valid_state": "preserved",
+      "automatic_schema_guessing": false
+    }
+  },
+  "hardware_envelope_classes": [
+    {
+      "envelope_id": "user_lightweight",
+      "decision_id": "DEC-HW-001",
+      "cpu": {
+        "minimum_modern_cores": 4,
+        "recommended_modern_cores": 6
+      },
+      "memory_gib": {
+        "minimum": 16,
+        "recommended": 32
+      },
+      "storage": {
+        "minimum": "512 GB SSD",
+        "recommended": "1 TB SSD"
+      },
+      "gpu": "integrated_gpu_sufficient",
+      "swap": "zram_required",
+      "maximum_concurrent_heavy_jobs": 1
+    },
+    {
+      "envelope_id": "developer_workstation",
+      "decision_id": "DEC-HW-001",
+      "cpu": {
+        "minimum_modern_cores": 8
+      },
+      "memory_gib": {
+        "minimum": 32,
+        "recommended": 64
+      },
+      "storage": {
+        "minimum": "1 TB SSD"
+      },
+      "gpu": "optional",
+      "default_maximum_concurrent_heavy_workspaces": 2
+    },
+    {
+      "envelope_id": "sovereign_linux_node",
+      "decision_id": "DEC-HW-001",
+      "cpu": {
+        "minimum_modern_cores": 8
+      },
+      "memory_gib": {
+        "minimum": 32,
+        "recommended": 64
+      },
+      "storage": {
+        "minimum": "1 TB encrypted SSD"
+      },
+      "recovery_target_required": true,
+      "verified_backup_target_required": true
+    },
+    {
+      "envelope_id": "build_farm",
+      "decision_id": "DEC-HW-001",
+      "cpu": {
+        "minimum_cores": 16
+      },
+      "memory_gib": {
+        "minimum": 64
+      },
+      "storage": {
+        "minimum": "2 TB SSD"
+      },
+      "artifact_cache_required": true,
+      "reproducible_clean_workers_required": true
+    }
+  ],
+  "profile_model": {
+    "profile_index_ref": "generated/profile-catalog.json",
+    "composition_rule": "one primary profile plus zero or more explicitly compatible overlays",
+    "primary_profile_is_required": true,
+    "overlay_is_independently_deployable": false,
+    "inheritance_is_explicit": true,
+    "container_technology_is_profile_identity": false
+  },
+  "release_and_artifact_identity": {
+    "release_channels_ref": "contracts/release-channels.contract.json#/channels",
+    "artifact_classes_ref": "contracts/artifact-classes.contract.json#/artifact_classes",
+    "release_set_contract_ref": "contracts/artifact-contracts/release-set.schema.json",
+    "release_set_binds_all_required_channels": true,
+    "independent_channel_updates_allowed": true,
+    "independent_update_condition": "declared_compatibility_constraints_remain_satisfied",
+    "partial_authoritative_activation_allowed": false,
+    "artifact_class_requires_recovery_behavior": true
+  },
+  "critical_transitions": {
+    "receipt_registry_ref": "contracts/artifact-classes.contract.json#/receipt_classes",
+    "machine_readable_receipt_required_for": [
+      "policy_decision",
+      "artifact_activation",
+      "release_activation",
+      "cross_domain_publication",
+      "privileged_host_mutation"
+    ],
+    "additional_receipts_may_be_required_by": [
+      "profile_contract",
+      "component_contract",
+      "artifact_contract",
+      "security_policy"
+    ]
+  },
+  "implementation_policy": {
+    "desktop_shell": {
+      "global_required_desktop": "none",
+      "maintained_desktops_permitted_by_standard_profiles": true,
+      "appliance_shell_is_overlay_scoped": true
+    },
+    "container_runtime": {
+      "global_required_runtime": "none",
+      "application_contracts_may_depend_on_runtime_specific_behavior": false,
+      "profile_specific_adoption_allowed": true
+    },
+    "kubernetes": {
+      "required_on_endpoints": false,
+      "permitted_profile_selection": "declared_profile_contracts"
+    }
+  },
+  "contract_id": "system.registry",
+  "contract_type": "system_registry"
+}

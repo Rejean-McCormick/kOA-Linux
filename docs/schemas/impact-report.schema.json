@@ -1,0 +1,2234 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.koa.local/impact-report.schema.json",
+  "title": "kOA Change Impact Report",
+  "description": "Validates machine-readable direct and transitive impact reports generated for controlled documentation and architecture changes. The report records change intent, semantic classification, canonical targets, graph traversal, affected objects, explicit dispositions, version and migration plans, validation results, blockers, review evidence, and atomic-activation eligibility. The report is generated evidence and does not own product or documentation behavior.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "impact_id",
+    "report_type",
+    "report_version",
+    "status",
+    "report_stage",
+    "language",
+    "generated_at",
+    "generator",
+    "change",
+    "analysis_inputs",
+    "impact_graph",
+    "affected_objects",
+    "version_plan",
+    "generated_artifacts",
+    "validation",
+    "blockers",
+    "unresolved_objects",
+    "review",
+    "activation_eligibility",
+    "canonical_references",
+    "decision_ids",
+    "requirement_ids",
+    "lock_ids",
+    "test_ids",
+    "evidence_ids",
+    "exception_ids"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "const": "../../schemas/impact-report.schema.json"
+    },
+    "impact_id": {
+      "type": "string",
+      "pattern": "^IMPACT-[0-9]{4}-[0-9]{2}-[0-9]{2}-CHG-[0-9]{4}-[0-9]{4,}$"
+    },
+    "report_type": {
+      "type": "string",
+      "const": "change_impact_report"
+    },
+    "report_version": {
+      "$ref": "#/$defs/semanticVersion"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "analyzing",
+        "blocked",
+        "complete",
+        "stale",
+        "superseded",
+        "archived"
+      ]
+    },
+    "report_stage": {
+      "type": "string",
+      "enum": [
+        "initial",
+        "final"
+      ]
+    },
+    "language": {
+      "type": "string",
+      "const": "en"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "generator": {
+      "$ref": "#/$defs/generator"
+    },
+    "change": {
+      "$ref": "#/$defs/change"
+    },
+    "analysis_inputs": {
+      "$ref": "#/$defs/analysisInputs"
+    },
+    "impact_graph": {
+      "$ref": "#/$defs/impactGraph"
+    },
+    "affected_objects": {
+      "type": "array",
+      "uniqueItems": true,
+      "x-koa-unique-by": "impact_entry_id",
+      "items": {
+        "$ref": "#/$defs/affectedObject"
+      }
+    },
+    "version_plan": {
+      "$ref": "#/$defs/versionPlan"
+    },
+    "migration_plan": {
+      "$ref": "#/$defs/migrationPlan"
+    },
+    "rollback_plan": {
+      "$ref": "#/$defs/rollbackPlan"
+    },
+    "forward_repair_plan": {
+      "$ref": "#/$defs/forwardRepairPlan"
+    },
+    "generated_artifacts": {
+      "type": "array",
+      "uniqueItems": true,
+      "x-koa-unique-by": "artifact_id",
+      "items": {
+        "$ref": "#/$defs/generatedArtifact"
+      }
+    },
+    "validation": {
+      "$ref": "#/$defs/validationSummary"
+    },
+    "blockers": {
+      "type": "array",
+      "uniqueItems": true,
+      "x-koa-unique-by": "blocker_id",
+      "items": {
+        "$ref": "#/$defs/blocker"
+      }
+    },
+    "unresolved_objects": {
+      "type": "array",
+      "uniqueItems": true,
+      "x-koa-unique-by": "unresolved_id",
+      "items": {
+        "$ref": "#/$defs/unresolvedObject"
+      }
+    },
+    "review": {
+      "$ref": "#/$defs/reportReview"
+    },
+    "activation_eligibility": {
+      "$ref": "#/$defs/activationEligibility"
+    },
+    "canonical_references": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/canonicalReference"
+      }
+    },
+    "decision_ids": {
+      "$ref": "#/$defs/decisionIdArray"
+    },
+    "requirement_ids": {
+      "$ref": "#/$defs/requirementIdArray"
+    },
+    "lock_ids": {
+      "$ref": "#/$defs/lockIdArray"
+    },
+    "test_ids": {
+      "$ref": "#/$defs/testIdArray"
+    },
+    "evidence_ids": {
+      "$ref": "#/$defs/evidenceIdArray"
+    },
+    "exception_ids": {
+      "$ref": "#/$defs/exceptionIdArray"
+    },
+    "supersedes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^IMPACT-[0-9]{4}-[0-9]{2}-[0-9]{2}-CHG-[0-9]{4}-[0-9]{4,}$"
+      },
+      "default": []
+    },
+    "replaced_by": {
+      "oneOf": [
+        {
+          "type": "string",
+          "pattern": "^IMPACT-[0-9]{4}-[0-9]{2}-[0-9]{2}-CHG-[0-9]{4}-[0-9]{4,}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "complete"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "unresolved_objects": {
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "blocked"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "blockers": {
+            "minItems": 1
+          },
+          "activation_eligibility": {
+            "properties": {
+              "eligible": {
+                "const": false
+              },
+              "result": {
+                "const": "blocked"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "report_stage": {
+            "const": "final"
+          }
+        },
+        "required": [
+          "report_stage"
+        ]
+      },
+      "then": {
+        "properties": {
+          "analysis_inputs": {
+            "required": [
+              "actual_changed_files",
+              "actual_changed_canonical_refs"
+            ]
+          },
+          "validation": {
+            "required": [
+              "overall_result"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "activation_eligibility": {
+            "properties": {
+              "eligible": {
+                "const": true
+              }
+            },
+            "required": [
+              "eligible"
+            ]
+          }
+        },
+        "required": [
+          "activation_eligibility"
+        ]
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "complete"
+          },
+          "report_stage": {
+            "const": "final"
+          },
+          "blockers": {
+            "maxItems": 0
+          },
+          "unresolved_objects": {
+            "maxItems": 0
+          },
+          "validation": {
+            "properties": {
+              "overall_result": {
+                "const": "pass"
+              }
+            }
+          },
+          "activation_eligibility": {
+            "properties": {
+              "result": {
+                "const": "eligible"
+              },
+              "atomic_activation_required": {
+                "const": true
+              },
+              "authority_registry_updated_last": {
+                "const": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "change": {
+            "properties": {
+              "semantic_class": {
+                "const": "major"
+              }
+            },
+            "required": [
+              "semantic_class"
+            ]
+          }
+        },
+        "required": [
+          "change"
+        ]
+      },
+      "then": {
+        "required": [
+          "migration_plan"
+        ],
+        "properties": {
+          "change": {
+            "properties": {
+              "adr_ids": {
+                "minItems": 1
+              },
+              "compatibility": {
+                "properties": {
+                  "breaking_change": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "anyOf": [
+          {
+            "required": [
+              "rollback_plan"
+            ]
+          },
+          {
+            "required": [
+              "forward_repair_plan"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "superseded"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "required": [
+          "replaced_by"
+        ],
+        "properties": {
+          "replaced_by": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "semanticVersion": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"
+    },
+    "nonEmptyText": {
+      "type": "string",
+      "minLength": 1
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "minLength": 2,
+      "maxLength": 128
+    },
+    "changeId": {
+      "type": "string",
+      "pattern": "^CHG-[0-9]{4}-[0-9]{4,}$"
+    },
+    "decisionId": {
+      "type": "string",
+      "pattern": "^DEC-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$"
+    },
+    "requirementId": {
+      "type": "string",
+      "pattern": "^REQ-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$"
+    },
+    "lockId": {
+      "type": "string",
+      "pattern": "^LOCK-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$"
+    },
+    "adrId": {
+      "type": "string",
+      "pattern": "^ADR-[0-9]{3,}$"
+    },
+    "documentId": {
+      "type": "string",
+      "pattern": "^DOC-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$"
+    },
+    "testId": {
+      "type": "string",
+      "pattern": "^TEST-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$"
+    },
+    "evidenceId": {
+      "type": "string",
+      "pattern": "^EVID-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$"
+    },
+    "exceptionId": {
+      "type": "string",
+      "pattern": "^EXC-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$"
+    },
+    "canonicalReference": {
+      "type": "string",
+      "minLength": 3,
+      "pattern": "^(?:contracts|schemas|generated|[0-9]{2}-[a-z0-9-]+|README\\.md|AI_CONTEXT\\.md|CHANGELOG\\.md)/?[A-Za-z0-9_./#~-]*$"
+    },
+    "repositoryPath": {
+      "type": "string",
+      "pattern": "^(?:contracts|schemas|generated|tools|[0-9]{2}-[a-z0-9-]+|README\\.md|AI_CONTEXT\\.md|CHANGELOG\\.md)(?:/[A-Za-z0-9_./-]+)?$"
+    },
+    "decisionIdArray": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/decisionId"
+      }
+    },
+    "requirementIdArray": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/requirementId"
+      }
+    },
+    "lockIdArray": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/lockId"
+      }
+    },
+    "testIdArray": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/testId"
+      }
+    },
+    "evidenceIdArray": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/evidenceId"
+      }
+    },
+    "exceptionIdArray": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/exceptionId"
+      }
+    },
+    "generator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version",
+        "entry_point"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "compute_impact"
+        },
+        "version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "entry_point": {
+          "type": "string",
+          "const": "tools/compute_impact.py"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/nonEmptyText"
+          },
+          "default": []
+        }
+      }
+    },
+    "change": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "change_id",
+        "title",
+        "semantic_class",
+        "state",
+        "requester",
+        "owner",
+        "intent",
+        "scope",
+        "decision_ids",
+        "adr_ids",
+        "canonical_targets",
+        "compatibility"
+      ],
+      "properties": {
+        "change_id": {
+          "$ref": "#/$defs/changeId"
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "semantic_class": {
+          "type": "string",
+          "enum": [
+            "patch",
+            "minor",
+            "major"
+          ]
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "analyzing",
+            "blocked",
+            "approved",
+            "implementing",
+            "validating",
+            "ready_for_activation",
+            "active",
+            "rolled_back",
+            "superseded",
+            "abandoned"
+          ]
+        },
+        "requester": {
+          "$ref": "#/$defs/actor"
+        },
+        "owner": {
+          "$ref": "#/$defs/actor"
+        },
+        "intent": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "scope": {
+          "$ref": "#/$defs/changeScope"
+        },
+        "decision_ids": {
+          "$ref": "#/$defs/decisionIdArray"
+        },
+        "adr_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/adrId"
+          }
+        },
+        "canonical_targets": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "x-koa-unique-by": "target_id",
+          "items": {
+            "$ref": "#/$defs/canonicalTarget"
+          }
+        },
+        "compatibility": {
+          "$ref": "#/$defs/compatibilityAssessment"
+        },
+        "emergency_change": {
+          "type": "boolean",
+          "default": false
+        },
+        "emergency_justification": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "post_activation_review_due_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "emergency_change": {
+                "const": true
+              }
+            },
+            "required": [
+              "emergency_change"
+            ]
+          },
+          "then": {
+            "required": [
+              "emergency_justification",
+              "post_activation_review_due_at"
+            ]
+          }
+        }
+      ]
+    },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "actor_id",
+        "actor_type"
+      ],
+      "properties": {
+        "actor_id": {
+          "$ref": "#/$defs/slug"
+        },
+        "actor_type": {
+          "type": "string",
+          "enum": [
+            "person",
+            "team",
+            "service",
+            "ai_agent"
+          ]
+        },
+        "display_name": {
+          "$ref": "#/$defs/nonEmptyText"
+        }
+      }
+    },
+    "changeScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope_kinds",
+        "profile_ids",
+        "component_ids",
+        "artifact_class_ids",
+        "integration_ids"
+      ],
+      "properties": {
+        "scope_kinds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "global",
+              "profile",
+              "profile_overlay",
+              "component",
+              "artifact_class",
+              "development_toolchain",
+              "migration_only"
+            ]
+          }
+        },
+        "profile_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/slug"
+          }
+        },
+        "component_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/slug"
+          }
+        },
+        "artifact_class_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/slug"
+          }
+        },
+        "integration_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/slug"
+          }
+        }
+      }
+    },
+    "canonicalTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "target_id",
+        "object_type",
+        "object_ref",
+        "owner_ref",
+        "change_kind"
+      ],
+      "properties": {
+        "target_id": {
+          "type": "string",
+          "pattern": "^TARGET-[0-9]{3,}$"
+        },
+        "object_type": {
+          "$ref": "#/$defs/objectType"
+        },
+        "object_ref": {
+          "$ref": "#/$defs/objectReference"
+        },
+        "owner_ref": {
+          "$ref": "#/$defs/canonicalReference"
+        },
+        "change_kind": {
+          "type": "string",
+          "enum": [
+            "create",
+            "modify",
+            "deprecate",
+            "supersede",
+            "retire",
+            "move",
+            "regenerate"
+          ]
+        },
+        "previous_version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "proposed_version": {
+          "$ref": "#/$defs/semanticVersion"
+        }
+      }
+    },
+    "compatibilityAssessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "breaking_change",
+        "backward_compatible",
+        "affected_consumers",
+        "compatibility_statement"
+      ],
+      "properties": {
+        "breaking_change": {
+          "type": "boolean"
+        },
+        "backward_compatible": {
+          "type": "boolean"
+        },
+        "affected_consumers": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/objectReference"
+          }
+        },
+        "compatibility_statement": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "adapter_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/canonicalReference"
+          },
+          "default": []
+        }
+      },
+      "not": {
+        "properties": {
+          "breaking_change": {
+            "const": true
+          },
+          "backward_compatible": {
+            "const": true
+          }
+        },
+        "required": [
+          "breaking_change",
+          "backward_compatible"
+        ]
+      }
+    },
+    "analysisInputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_tree_revision",
+        "authority_version",
+        "registry_versions",
+        "changed_canonical_refs",
+        "changed_object_ids",
+        "changed_files",
+        "graph_sources",
+        "analysis_started_at"
+      ],
+      "properties": {
+        "source_tree_revision": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "authority_version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "registry_versions": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "x-koa-unique-by": "registry_ref",
+          "items": {
+            "$ref": "#/$defs/versionedReference"
+          }
+        },
+        "changed_canonical_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/canonicalReference"
+          }
+        },
+        "changed_object_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/nonEmptyText"
+          }
+        },
+        "changed_files": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/repositoryPath"
+          }
+        },
+        "actual_changed_canonical_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/canonicalReference"
+          }
+        },
+        "actual_changed_files": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/repositoryPath"
+          }
+        },
+        "graph_sources": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/canonicalReference"
+          }
+        },
+        "analysis_started_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "analysis_completed_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "versionedReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "registry_ref",
+        "version",
+        "status"
+      ],
+      "properties": {
+        "registry_ref": {
+          "$ref": "#/$defs/canonicalReference"
+        },
+        "version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "status": {
+          "type": "string",
+          "const": "active"
+        }
+      }
+    },
+    "impactGraph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "complete",
+        "node_count",
+        "edge_count",
+        "max_graph_distance",
+        "nodes",
+        "edges",
+        "traversed_relationship_types"
+      ],
+      "properties": {
+        "complete": {
+          "type": "boolean"
+        },
+        "node_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "edge_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max_graph_distance": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "nodes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "x-koa-unique-by": "node_id",
+          "items": {
+            "$ref": "#/$defs/graphNode"
+          }
+        },
+        "edges": {
+          "type": "array",
+          "uniqueItems": true,
+          "x-koa-unique-by": "edge_id",
+          "items": {
+            "$ref": "#/$defs/graphEdge"
+          }
+        },
+        "traversed_relationship_types": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/relationshipType"
+          }
+        }
+      }
+    },
+    "graphNode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "node_id",
+        "object_type",
+        "object_ref",
+        "canonical",
+        "active"
+      ],
+      "properties": {
+        "node_id": {
+          "type": "string",
+          "pattern": "^NODE-[0-9]{3,}$"
+        },
+        "object_type": {
+          "$ref": "#/$defs/objectType"
+        },
+        "object_ref": {
+          "$ref": "#/$defs/objectReference"
+        },
+        "canonical": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "version": {
+          "$ref": "#/$defs/semanticVersion"
+        }
+      }
+    },
+    "graphEdge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "edge_id",
+        "source_node_id",
+        "target_node_id",
+        "relationship_type",
+        "direction"
+      ],
+      "properties": {
+        "edge_id": {
+          "type": "string",
+          "pattern": "^EDGE-[0-9]{3,}$"
+        },
+        "source_node_id": {
+          "type": "string",
+          "pattern": "^NODE-[0-9]{3,}$"
+        },
+        "target_node_id": {
+          "type": "string",
+          "pattern": "^NODE-[0-9]{3,}$"
+        },
+        "relationship_type": {
+          "$ref": "#/$defs/relationshipType"
+        },
+        "direction": {
+          "type": "string",
+          "const": "outgoing_dependency"
+        }
+      }
+    },
+    "relationshipType": {
+      "type": "string",
+      "enum": [
+        "owns",
+        "references",
+        "depends_on",
+        "implements",
+        "constrains",
+        "validated_by",
+        "evidenced_by",
+        "generated_from",
+        "included_in",
+        "supersedes",
+        "adopts",
+        "inherits",
+        "exempts",
+        "maps_from",
+        "protects",
+        "registered_by",
+        "activates"
+      ]
+    },
+    "objectType": {
+      "type": "string",
+      "enum": [
+        "decision",
+        "registry",
+        "json_pointer",
+        "schema",
+        "requirement",
+        "lock",
+        "profile",
+        "profile_overlay",
+        "component",
+        "component_contract",
+        "artifact_contract",
+        "artifact_class",
+        "toolchain",
+        "document",
+        "adr",
+        "test",
+        "evidence",
+        "exception",
+        "generated_projection",
+        "ai_context",
+        "migration_disposition",
+        "authority_manifest",
+        "release_channel",
+        "integration",
+        "conformance_claim",
+        "recipe"
+      ]
+    },
+    "objectReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "id"
+      ],
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/objectType"
+        },
+        "id": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "path": {
+          "$ref": "#/$defs/repositoryPath"
+        },
+        "canonical_ref": {
+          "$ref": "#/$defs/canonicalReference"
+        },
+        "version": {
+          "$ref": "#/$defs/semanticVersion"
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "path"
+          ]
+        },
+        {
+          "required": [
+            "canonical_ref"
+          ]
+        },
+        {
+          "properties": {
+            "kind": {
+              "enum": [
+                "decision",
+                "requirement",
+                "lock",
+                "profile",
+                "profile_overlay",
+                "component",
+                "artifact_class",
+                "adr",
+                "test",
+                "evidence",
+                "exception",
+                "release_channel",
+                "integration",
+                "conformance_claim"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "affectedObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "impact_entry_id",
+        "object",
+        "impact_kind",
+        "relationship_type",
+        "graph_distance",
+        "direct",
+        "reason",
+        "disposition"
+      ],
+      "properties": {
+        "impact_entry_id": {
+          "type": "string",
+          "pattern": "^AFFECTED-[0-9]{3,}$"
+        },
+        "object": {
+          "$ref": "#/$defs/objectReference"
+        },
+        "impact_kind": {
+          "type": "string",
+          "enum": [
+            "semantic",
+            "structural",
+            "compatibility",
+            "scope",
+            "ownership",
+            "validation",
+            "generation",
+            "documentation",
+            "migration",
+            "activation"
+          ]
+        },
+        "relationship_type": {
+          "$ref": "#/$defs/relationshipType"
+        },
+        "graph_distance": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "direct": {
+          "type": "boolean"
+        },
+        "reason": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "disposition": {
+          "type": "string",
+          "enum": [
+            "updated",
+            "reviewed_no_change",
+            "regenerated",
+            "deprecated",
+            "superseded",
+            "exception_applied",
+            "blocked"
+          ]
+        },
+        "review": {
+          "$ref": "#/$defs/objectReview"
+        },
+        "blocker_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^BLOCKER-[0-9]{3,}$"
+          }
+        },
+        "exception_ids": {
+          "$ref": "#/$defs/exceptionIdArray"
+        },
+        "replacement_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/objectReference"
+          }
+        },
+        "changed_fields": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/nonEmptyText"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "disposition": {
+                "const": "reviewed_no_change"
+              }
+            },
+            "required": [
+              "disposition"
+            ]
+          },
+          "then": {
+            "required": [
+              "review"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "disposition": {
+                "const": "blocked"
+              }
+            },
+            "required": [
+              "disposition"
+            ]
+          },
+          "then": {
+            "required": [
+              "blocker_refs"
+            ],
+            "properties": {
+              "blocker_refs": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "disposition": {
+                "const": "exception_applied"
+              }
+            },
+            "required": [
+              "disposition"
+            ]
+          },
+          "then": {
+            "required": [
+              "exception_ids"
+            ],
+            "properties": {
+              "exception_ids": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "disposition": {
+                "const": "superseded"
+              }
+            },
+            "required": [
+              "disposition"
+            ]
+          },
+          "then": {
+            "required": [
+              "replacement_refs"
+            ],
+            "properties": {
+              "replacement_refs": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "objectReview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reviewer",
+        "reviewed_at",
+        "source_version",
+        "rationale"
+      ],
+      "properties": {
+        "reviewer": {
+          "$ref": "#/$defs/actor"
+        },
+        "reviewed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "source_version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "rationale": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "evidence_ids": {
+          "$ref": "#/$defs/evidenceIdArray"
+        }
+      }
+    },
+    "versionPlan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "documentation_release",
+        "object_version_changes",
+        "path_changes",
+        "retired_identifiers",
+        "semantic_class_consistent"
+      ],
+      "properties": {
+        "documentation_release": {
+          "$ref": "#/$defs/versionTransition"
+        },
+        "object_version_changes": {
+          "type": "array",
+          "uniqueItems": true,
+          "x-koa-unique-by": "object",
+          "items": {
+            "$ref": "#/$defs/objectVersionChange"
+          }
+        },
+        "path_changes": {
+          "type": "array",
+          "uniqueItems": true,
+          "x-koa-unique-by": "old_path",
+          "items": {
+            "$ref": "#/$defs/pathChange"
+          }
+        },
+        "retired_identifiers": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/retiredIdentifier"
+          }
+        },
+        "semantic_class_consistent": {
+          "type": "boolean",
+          "const": true
+        }
+      }
+    },
+    "versionTransition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "previous_version",
+        "proposed_version",
+        "change_class"
+      ],
+      "properties": {
+        "previous_version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "proposed_version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "change_class": {
+          "type": "string",
+          "enum": [
+            "patch",
+            "minor",
+            "major"
+          ]
+        }
+      }
+    },
+    "objectVersionChange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "object",
+        "previous_version",
+        "proposed_version",
+        "change_class",
+        "compatibility"
+      ],
+      "properties": {
+        "object": {
+          "$ref": "#/$defs/objectReference"
+        },
+        "previous_version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "proposed_version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "change_class": {
+          "type": "string",
+          "enum": [
+            "patch",
+            "minor",
+            "major"
+          ]
+        },
+        "compatibility": {
+          "type": "string",
+          "enum": [
+            "compatible",
+            "compatible_with_adapter",
+            "incompatible"
+          ]
+        },
+        "migration_required": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "pathChange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "old_path",
+        "new_path",
+        "activation_release",
+        "redirect_mechanism",
+        "redirect_expiration_policy",
+        "old_path_reserved"
+      ],
+      "properties": {
+        "old_path": {
+          "$ref": "#/$defs/repositoryPath"
+        },
+        "new_path": {
+          "$ref": "#/$defs/repositoryPath"
+        },
+        "activation_release": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "redirect_mechanism": {
+          "type": "string",
+          "enum": [
+            "registry_redirect",
+            "compatibility_stub",
+            "migration_manifest"
+          ]
+        },
+        "redirect_expiration_policy": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "old_path_reserved": {
+          "type": "boolean",
+          "const": true
+        }
+      }
+    },
+    "retiredIdentifier": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "identifier",
+        "identifier_kind",
+        "reused",
+        "replacement"
+      ],
+      "properties": {
+        "identifier": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "identifier_kind": {
+          "type": "string",
+          "enum": [
+            "decision",
+            "requirement",
+            "lock",
+            "document",
+            "component",
+            "profile",
+            "artifact",
+            "test",
+            "evidence",
+            "exception",
+            "path"
+          ]
+        },
+        "reused": {
+          "type": "boolean",
+          "const": false
+        },
+        "replacement": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/nonEmptyText"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "migrationPlan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required",
+        "migration_kind",
+        "affected_objects",
+        "steps",
+        "compatibility_window",
+        "validation_test_ids",
+        "evidence_ids"
+      ],
+      "properties": {
+        "required": {
+          "type": "boolean"
+        },
+        "migration_kind": {
+          "type": "string",
+          "enum": [
+            "none",
+            "data",
+            "artifact",
+            "schema",
+            "path",
+            "identifier",
+            "profile",
+            "component_boundary",
+            "authority"
+          ]
+        },
+        "affected_objects": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/objectReference"
+          }
+        },
+        "steps": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/nonEmptyText"
+          }
+        },
+        "compatibility_window": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "validation_test_ids": {
+          "$ref": "#/$defs/testIdArray"
+        },
+        "evidence_ids": {
+          "$ref": "#/$defs/evidenceIdArray"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "required": {
+                "const": true
+              }
+            },
+            "required": [
+              "required"
+            ]
+          },
+          "then": {
+            "properties": {
+              "migration_kind": {
+                "not": {
+                  "const": "none"
+                }
+              },
+              "affected_objects": {
+                "minItems": 1
+              },
+              "steps": {
+                "minItems": 1
+              },
+              "validation_test_ids": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "rollbackPlan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "possible",
+        "previous_authority_version",
+        "previous_release_version",
+        "restore_as_atomic_set",
+        "irreversible_migration_compatible",
+        "procedure",
+        "validation_test_ids"
+      ],
+      "properties": {
+        "possible": {
+          "type": "boolean"
+        },
+        "previous_authority_version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "previous_release_version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "restore_as_atomic_set": {
+          "type": "boolean",
+          "const": true
+        },
+        "irreversible_migration_compatible": {
+          "type": "boolean"
+        },
+        "procedure": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/nonEmptyText"
+          }
+        },
+        "validation_test_ids": {
+          "$ref": "#/$defs/testIdArray"
+        }
+      }
+    },
+    "forwardRepairPlan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required",
+        "irreversible_operation",
+        "affected_versions",
+        "target_state",
+        "procedure",
+        "validation_test_ids",
+        "evidence_ids"
+      ],
+      "properties": {
+        "required": {
+          "type": "boolean",
+          "const": true
+        },
+        "irreversible_operation": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "affected_versions": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/versionedReference"
+          }
+        },
+        "target_state": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "procedure": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/nonEmptyText"
+          }
+        },
+        "validation_test_ids": {
+          "$ref": "#/$defs/testIdArray"
+        },
+        "evidence_ids": {
+          "$ref": "#/$defs/evidenceIdArray"
+        }
+      }
+    },
+    "generatedArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifact_id",
+        "path",
+        "kind",
+        "source_refs",
+        "action",
+        "status",
+        "hand_editable"
+      ],
+      "properties": {
+        "artifact_id": {
+          "type": "string",
+          "pattern": "^GEN-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^generated/[A-Za-z0-9_./-]+\\.(?:json|md|yaml|yml)$"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "metadata",
+            "requirements_block",
+            "catalog",
+            "matrix",
+            "manifest",
+            "impact_summary",
+            "ai_context",
+            "evidence",
+            "index"
+          ]
+        },
+        "source_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/canonicalReference"
+          }
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "regenerate",
+            "review_no_change",
+            "deprecate",
+            "remove"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "generated",
+            "validated",
+            "blocked"
+          ]
+        },
+        "hand_editable": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    },
+    "validationSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "overall_result",
+        "clean_repository",
+        "complete_proposed_release",
+        "checks"
+      ],
+      "properties": {
+        "overall_result": {
+          "type": "string",
+          "enum": [
+            "pass",
+            "fail",
+            "blocked",
+            "not_run"
+          ]
+        },
+        "clean_repository": {
+          "type": "boolean"
+        },
+        "complete_proposed_release": {
+          "type": "boolean"
+        },
+        "checks": {
+          "type": "array",
+          "uniqueItems": true,
+          "x-koa-unique-by": "check_id",
+          "items": {
+            "$ref": "#/$defs/validationCheck"
+          }
+        }
+      }
+    },
+    "validationCheck": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "check_id",
+        "test_id",
+        "name",
+        "required",
+        "execution_status",
+        "result",
+        "tool",
+        "evidence_ids"
+      ],
+      "properties": {
+        "check_id": {
+          "type": "string",
+          "pattern": "^CHECK-[0-9]{3,}$"
+        },
+        "test_id": {
+          "$ref": "#/$defs/testId"
+        },
+        "name": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "execution_status": {
+          "type": "string",
+          "enum": [
+            "completed",
+            "failed_to_execute",
+            "blocked",
+            "not_applicable"
+          ]
+        },
+        "result": {
+          "type": "string",
+          "enum": [
+            "pass",
+            "fail",
+            "blocked",
+            "not_applicable"
+          ]
+        },
+        "tool": {
+          "$ref": "#/$defs/repositoryPath"
+        },
+        "tool_version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "evidence_ids": {
+          "$ref": "#/$defs/evidenceIdArray"
+        },
+        "diagnostics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/nonEmptyText"
+          },
+          "default": []
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "execution_status": {
+                "const": "completed"
+              }
+            },
+            "required": [
+              "execution_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "result": {
+                "enum": [
+                  "pass",
+                  "fail"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "required": {
+                "const": true
+              },
+              "execution_status": {
+                "enum": [
+                  "failed_to_execute",
+                  "blocked"
+                ]
+              }
+            },
+            "required": [
+              "required",
+              "execution_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "result": {
+                "const": "blocked"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "result": {
+                "const": "pass"
+              }
+            },
+            "required": [
+              "result"
+            ]
+          },
+          "then": {
+            "properties": {
+              "evidence_ids": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "blocker": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "blocker_id",
+        "blocker_type",
+        "summary",
+        "affected_object_refs",
+        "resolution_required"
+      ],
+      "properties": {
+        "blocker_id": {
+          "type": "string",
+          "pattern": "^BLOCKER-[0-9]{3,}$"
+        },
+        "blocker_type": {
+          "type": "string",
+          "enum": [
+            "missing_decision",
+            "missing_owner",
+            "ownership_collision",
+            "missing_contract",
+            "missing_review",
+            "missing_test",
+            "missing_evidence",
+            "tool_unavailable",
+            "validation_failure",
+            "lock_violation",
+            "unresolved_reference",
+            "dependency_cycle",
+            "incomplete_graph",
+            "incompatible_rollback",
+            "stale_generated_artifact",
+            "scope_conflict",
+            "version_conflict"
+          ]
+        },
+        "summary": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "affected_object_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/objectReference"
+          }
+        },
+        "decision_ids": {
+          "$ref": "#/$defs/decisionIdArray"
+        },
+        "requirement_ids": {
+          "$ref": "#/$defs/requirementIdArray"
+        },
+        "test_ids": {
+          "$ref": "#/$defs/testIdArray"
+        },
+        "evidence_ids": {
+          "$ref": "#/$defs/evidenceIdArray"
+        },
+        "resolution_required": {
+          "$ref": "#/$defs/nonEmptyText"
+        }
+      }
+    },
+    "unresolvedObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "unresolved_id",
+        "object_ref",
+        "reason",
+        "blocking"
+      ],
+      "properties": {
+        "unresolved_id": {
+          "type": "string",
+          "pattern": "^UNRESOLVED-[0-9]{3,}$"
+        },
+        "object_ref": {
+          "$ref": "#/$defs/objectReference"
+        },
+        "reason": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "blocking": {
+          "type": "boolean",
+          "const": true
+        }
+      }
+    },
+    "reportReview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required_roles",
+        "approvals",
+        "review_complete"
+      ],
+      "properties": {
+        "required_roles": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "product_owner",
+              "architecture_owner",
+              "documentation_maintainer",
+              "component_owner",
+              "validation_owner",
+              "migration_owner",
+              "security_owner"
+            ]
+          }
+        },
+        "approvals": {
+          "type": "array",
+          "uniqueItems": true,
+          "x-koa-unique-by": "role",
+          "items": {
+            "$ref": "#/$defs/approval"
+          }
+        },
+        "review_complete": {
+          "type": "boolean"
+        }
+      }
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role",
+        "reviewer",
+        "decision",
+        "reviewed_at"
+      ],
+      "properties": {
+        "role": {
+          "type": "string",
+          "enum": [
+            "product_owner",
+            "architecture_owner",
+            "documentation_maintainer",
+            "component_owner",
+            "validation_owner",
+            "migration_owner",
+            "security_owner"
+          ]
+        },
+        "reviewer": {
+          "$ref": "#/$defs/actor"
+        },
+        "decision": {
+          "type": "string",
+          "enum": [
+            "approve",
+            "reject",
+            "request_changes"
+          ]
+        },
+        "reviewed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "rationale": {
+          "$ref": "#/$defs/nonEmptyText"
+        }
+      }
+    },
+    "activationEligibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "eligible",
+        "result",
+        "reason",
+        "atomic_activation_required",
+        "authority_registry_updated_last",
+        "previous_release_version",
+        "proposed_release_version"
+      ],
+      "properties": {
+        "eligible": {
+          "type": "boolean"
+        },
+        "result": {
+          "type": "string",
+          "enum": [
+            "eligible",
+            "blocked",
+            "not_evaluated"
+          ]
+        },
+        "reason": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "atomic_activation_required": {
+          "type": "boolean",
+          "const": true
+        },
+        "authority_registry_updated_last": {
+          "type": "boolean"
+        },
+        "previous_release_version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "proposed_release_version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "activation_manifest_ref": {
+          "$ref": "#/$defs/canonicalReference"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "eligible": {
+                "const": true
+              }
+            },
+            "required": [
+              "eligible"
+            ]
+          },
+          "then": {
+            "properties": {
+              "result": {
+                "const": "eligible"
+              },
+              "authority_registry_updated_last": {
+                "const": true
+              }
+            },
+            "required": [
+              "activation_manifest_ref"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "eligible": {
+                "const": false
+              }
+            },
+            "required": [
+              "eligible"
+            ]
+          },
+          "then": {
+            "properties": {
+              "result": {
+                "enum": [
+                  "blocked",
+                  "not_evaluated"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

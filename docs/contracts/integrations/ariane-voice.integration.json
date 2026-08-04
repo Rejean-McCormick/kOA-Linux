@@ -1,0 +1,12 @@
+{
+  "$schema": "../../schemas/integration.schema.json",
+  "integration_id": "ariane-voice",
+  "title": "Ariane Voice",
+  "version": "1.0.0",
+  "status": "active",
+  "integration_type": "external_voice",
+  "role": "Optional voice-input surface for Ariane.",
+  "authority": "non_authoritative",
+  "undeclared_substitution": "prohibited",
+  "availability": "optional"
+}

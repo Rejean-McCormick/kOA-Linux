@@ -1,0 +1,1469 @@
+{
+  "$schema": "../schemas/artifact-classes.contract.schema.json",
+  "version": "1.0.0",
+  "status": "active",
+  "language": "en",
+  "effective_at": "2026-08-03T15:30:00-04:00",
+  "purpose": "Define the canonical artifact classes, lifecycle profiles, verification requirements, release-channel eligibility, activation behavior, recovery behavior, and retention expectations used by kOA.",
+  "canonical_refs": [
+    "generated/authority-manifest.json",
+    "generated/decision-index.json",
+    "contracts/terminology.contract.json",
+    "contracts/release-channels.contract.json",
+    "generated/requirements-index.json",
+    "generated/assertion-index.json",
+    "generated/traceability.json",
+    "generated/test-catalog.json",
+    "generated/evidence-catalog.json"
+  ],
+  "ownership": {
+    "owns": [
+      "artifact_class_identity",
+      "artifact_class_category",
+      "artifact_contract_schema_reference",
+      "artifact_lifecycle_profile",
+      "artifact_identity_model",
+      "artifact_release_channel_eligibility",
+      "artifact_verification_requirements",
+      "artifact_activation_model",
+      "artifact_recovery_strategy",
+      "artifact_retention_expectations"
+    ],
+    "does_not_own": [
+      {
+        "fact": "canonical_term_spelling_and_aliases",
+        "owner_ref": "contracts/terminology.contract.json"
+      },
+      {
+        "fact": "release_channel_membership_and_cross_channel_compatibility",
+        "owner_ref": "contracts/release-channels.contract.json"
+      },
+      {
+        "fact": "artifact_instance_values",
+        "owner_ref": "the_validated_artifact_instance"
+      },
+      {
+        "fact": "component_behavior",
+        "owner_ref": "generated/component-catalog.json"
+      },
+      {
+        "fact": "requirement_text_and_strength",
+        "owner_ref": "generated/requirements-index.json"
+      },
+      {
+        "fact": "test_execution_and_evidence",
+        "owner_ref": "generated/test-catalog.json and generated/evidence-catalog.json"
+      }
+    ]
+  },
+  "global_invariants": [
+    {
+      "invariant_id": "ART-INV-001",
+      "statement": "Every artifact instance declares exactly one registered artifact class."
+    },
+    {
+      "invariant_id": "ART-INV-002",
+      "statement": "Every artifact instance validates against the schema registered for its artifact class."
+    },
+    {
+      "invariant_id": "ART-INV-003",
+      "statement": "Published immutable artifacts are never modified in place; a change creates a new version or replacement instance."
+    },
+    {
+      "invariant_id": "ART-INV-004",
+      "statement": "Activation never creates partial authoritative state.",
+      "lock_ref": "LOCK-LIFE-001"
+    },
+    {
+      "invariant_id": "ART-INV-005",
+      "statement": "Every artifact class defines rollback, rejection, revocation, recreation, or forward-repair behavior.",
+      "lock_ref": "LOCK-LIFE-002"
+    },
+    {
+      "invariant_id": "ART-INV-006",
+      "statement": "A Release Set binds tested compatible versions across the system, services, governance, and knowledge channels.",
+      "lock_ref": "LOCK-LIFE-003"
+    },
+    {
+      "invariant_id": "ART-INV-007",
+      "statement": "Independent release-channel updates are valid only when declared compatibility constraints remain satisfied.",
+      "lock_ref": "LOCK-LIFE-004"
+    },
+    {
+      "invariant_id": "ART-INV-008",
+      "statement": "A transport bundle carries artifacts but does not independently grant them authority."
+    },
+    {
+      "invariant_id": "ART-INV-009",
+      "statement": "A request is not evidence that its requested operation was approved or executed."
+    },
+    {
+      "invariant_id": "ART-INV-010",
+      "statement": "A receipt records an event and cannot be used to rewrite the event it records."
+    },
+    {
+      "invariant_id": "ART-INV-011",
+      "statement": "File-content hashes are not required for ordinary Markdown documentation; artifact digests and signatures are used only where the artifact contract requires integrity verification."
+    }
+  ],
+  "controlled_vocabularies": {
+    "artifact_categories": [
+      "policy",
+      "receipt",
+      "workspace_definition",
+      "manifest",
+      "profile_declaration",
+      "transport_bundle",
+      "deployable_package",
+      "release_binding",
+      "evidence_and_deployment_bundle",
+      "request",
+      "configuration",
+      "allocation"
+    ],
+    "verification_requirement_levels": [
+      "required",
+      "required_when_published",
+      "required_when_manifest_selects_deployable_software",
+      "required_when_bundle_contains_executable_policy_runtime_extensions",
+      "required_when_pack_contains_executable_code_or_native_dependencies",
+      "required_for_compiler_and_native_runtime_dependencies",
+      "required_for_included_software_artifacts",
+      "required_by_referenced_software_artifact_classes",
+      "required_for_published_or_imported_artifacts",
+      "required_for_privileged_or_cross_domain_decisions",
+      "required_when_request_crosses_a_trust_domain",
+      "required_for_successful_cross_domain_publication",
+      "required_for_source_artifacts",
+      "required_for_release_build_workspaces",
+      "recommended_for_shared_templates",
+      "not_required",
+      "not_applicable"
+    ],
+    "release_channel_ids": [
+      "system",
+      "services",
+      "governance",
+      "knowledge"
+    ],
+    "registry_statuses": [
+      "active",
+      "deprecated",
+      "superseded",
+      "archived"
+    ]
+  },
+  "lifecycle_profiles": {
+    "versioned_configuration": {
+      "description": "Lifecycle for a versioned configuration or policy artifact.",
+      "states": [
+        "authored",
+        "validated",
+        "approved",
+        "published",
+        "active",
+        "superseded",
+        "revoked",
+        "archived"
+      ],
+      "initial_state": "authored",
+      "terminal_states": [
+        "archived"
+      ],
+      "transitions": [
+        {
+          "from": "authored",
+          "to": "validated"
+        },
+        {
+          "from": "validated",
+          "to": "approved"
+        },
+        {
+          "from": "approved",
+          "to": "published"
+        },
+        {
+          "from": "published",
+          "to": "active"
+        },
+        {
+          "from": "active",
+          "to": "superseded"
+        },
+        {
+          "from": "active",
+          "to": "revoked"
+        },
+        {
+          "from": "superseded",
+          "to": "archived"
+        },
+        {
+          "from": "revoked",
+          "to": "archived"
+        }
+      ],
+      "mutation_policy": "A published version is immutable. Changes create a new version."
+    },
+    "immutable_receipt": {
+      "description": "Lifecycle for an append-only record of a completed governed event.",
+      "states": [
+        "issued",
+        "validated",
+        "retained",
+        "archived"
+      ],
+      "initial_state": "issued",
+      "terminal_states": [
+        "archived"
+      ],
+      "transitions": [
+        {
+          "from": "issued",
+          "to": "validated"
+        },
+        {
+          "from": "validated",
+          "to": "retained"
+        },
+        {
+          "from": "retained",
+          "to": "archived"
+        }
+      ],
+      "mutation_policy": "A receipt is immutable after issuance. Corrections require a linked replacement receipt."
+    },
+    "governed_request": {
+      "description": "Lifecycle for a request that requires validation and an explicit outcome.",
+      "states": [
+        "submitted",
+        "validated",
+        "approved",
+        "rejected",
+        "cancelled",
+        "executed",
+        "closed",
+        "archived"
+      ],
+      "initial_state": "submitted",
+      "terminal_states": [
+        "archived"
+      ],
+      "transitions": [
+        {
+          "from": "submitted",
+          "to": "validated"
+        },
+        {
+          "from": "submitted",
+          "to": "cancelled"
+        },
+        {
+          "from": "validated",
+          "to": "approved"
+        },
+        {
+          "from": "validated",
+          "to": "rejected"
+        },
+        {
+          "from": "approved",
+          "to": "executed"
+        },
+        {
+          "from": "approved",
+          "to": "cancelled"
+        },
+        {
+          "from": "executed",
+          "to": "closed"
+        },
+        {
+          "from": "rejected",
+          "to": "closed"
+        },
+        {
+          "from": "cancelled",
+          "to": "closed"
+        },
+        {
+          "from": "closed",
+          "to": "archived"
+        }
+      ],
+      "mutation_policy": "Request history is append-only after submission."
+    },
+    "deployable_package": {
+      "description": "Lifecycle for a versioned package that can be published and activated.",
+      "states": [
+        "assembled",
+        "validated",
+        "approved",
+        "published",
+        "staged",
+        "active",
+        "superseded",
+        "revoked",
+        "archived"
+      ],
+      "initial_state": "assembled",
+      "terminal_states": [
+        "archived"
+      ],
+      "transitions": [
+        {
+          "from": "assembled",
+          "to": "validated"
+        },
+        {
+          "from": "validated",
+          "to": "approved"
+        },
+        {
+          "from": "approved",
+          "to": "published"
+        },
+        {
+          "from": "published",
+          "to": "staged"
+        },
+        {
+          "from": "staged",
+          "to": "active"
+        },
+        {
+          "from": "active",
+          "to": "superseded"
+        },
+        {
+          "from": "active",
+          "to": "revoked"
+        },
+        {
+          "from": "superseded",
+          "to": "archived"
+        },
+        {
+          "from": "revoked",
+          "to": "archived"
+        }
+      ],
+      "mutation_policy": "A published package is immutable. Rebuilds produce a new version and provenance chain."
+    },
+    "release_binding": {
+      "description": "Lifecycle for a verified binding of compatible release-channel versions.",
+      "states": [
+        "assembled",
+        "validated",
+        "approved",
+        "published",
+        "active",
+        "superseded",
+        "revoked",
+        "archived"
+      ],
+      "initial_state": "assembled",
+      "terminal_states": [
+        "archived"
+      ],
+      "transitions": [
+        {
+          "from": "assembled",
+          "to": "validated"
+        },
+        {
+          "from": "validated",
+          "to": "approved"
+        },
+        {
+          "from": "approved",
+          "to": "published"
+        },
+        {
+          "from": "published",
+          "to": "active"
+        },
+        {
+          "from": "active",
+          "to": "superseded"
+        },
+        {
+          "from": "active",
+          "to": "revoked"
+        },
+        {
+          "from": "superseded",
+          "to": "archived"
+        },
+        {
+          "from": "revoked",
+          "to": "archived"
+        }
+      ],
+      "mutation_policy": "A published Release Set is immutable and names exact compatible channel versions."
+    },
+    "transport_bundle": {
+      "description": "Lifecycle for a sealed package transferred across a connectivity boundary.",
+      "states": [
+        "assembled",
+        "validated",
+        "sealed",
+        "exported",
+        "imported",
+        "admitted",
+        "rejected",
+        "archived"
+      ],
+      "initial_state": "assembled",
+      "terminal_states": [
+        "archived"
+      ],
+      "transitions": [
+        {
+          "from": "assembled",
+          "to": "validated"
+        },
+        {
+          "from": "validated",
+          "to": "sealed"
+        },
+        {
+          "from": "sealed",
+          "to": "exported"
+        },
+        {
+          "from": "exported",
+          "to": "imported"
+        },
+        {
+          "from": "imported",
+          "to": "admitted"
+        },
+        {
+          "from": "imported",
+          "to": "rejected"
+        },
+        {
+          "from": "admitted",
+          "to": "archived"
+        },
+        {
+          "from": "rejected",
+          "to": "archived"
+        }
+      ],
+      "mutation_policy": "A sealed bundle is immutable. Any content change requires a newly assembled bundle."
+    },
+    "workspace_definition": {
+      "description": "Lifecycle for a reproducible development workspace definition.",
+      "states": [
+        "defined",
+        "validated",
+        "allocated",
+        "active",
+        "retired",
+        "archived"
+      ],
+      "initial_state": "defined",
+      "terminal_states": [
+        "archived"
+      ],
+      "transitions": [
+        {
+          "from": "defined",
+          "to": "validated"
+        },
+        {
+          "from": "validated",
+          "to": "allocated"
+        },
+        {
+          "from": "allocated",
+          "to": "active"
+        },
+        {
+          "from": "active",
+          "to": "retired"
+        },
+        {
+          "from": "retired",
+          "to": "archived"
+        }
+      ],
+      "mutation_policy": "Mutable runtime state is external to the workspace definition. Definition changes create a new revision."
+    },
+    "allocation_record": {
+      "description": "Lifecycle for an exclusive, time-bounded or workspace-bounded allocation.",
+      "states": [
+        "requested",
+        "allocated",
+        "active",
+        "released",
+        "expired",
+        "archived"
+      ],
+      "initial_state": "requested",
+      "terminal_states": [
+        "archived"
+      ],
+      "transitions": [
+        {
+          "from": "requested",
+          "to": "allocated"
+        },
+        {
+          "from": "allocated",
+          "to": "active"
+        },
+        {
+          "from": "active",
+          "to": "released"
+        },
+        {
+          "from": "active",
+          "to": "expired"
+        },
+        {
+          "from": "released",
+          "to": "archived"
+        },
+        {
+          "from": "expired",
+          "to": "archived"
+        }
+      ],
+      "mutation_policy": "Allocation history is append-only. Reassignment creates a new allocation record."
+    }
+  },
+  "artifact_classes": {
+    "cultural_rights_policy": {
+      "artifact_class_id": "ART-CLASS-001",
+      "canonical_name": "cultural rights policy",
+      "terminology_ref": "contracts/terminology.contract.json#/terms/TERM-ART-CULTURAL-RIGHTS-POLICY",
+      "description": "Machine-readable policy governing cultural rights, consent, permitted use, disclosure, and revocation conditions.",
+      "category": "policy",
+      "schema_ref": "contracts/artifact-contracts/cultural-rights-policy.schema.json",
+      "example_refs": [],
+      "lifecycle_profile": "versioned_configuration",
+      "identity_model": "semantic_version",
+      "release_channel_refs": [
+        "contracts/release-channels.contract.json#/channels/governance"
+      ],
+      "allowed_scopes": [
+        "global",
+        "profile",
+        "component",
+        "artifact_class"
+      ],
+      "producer_roles": [
+        "governance_policy_authority"
+      ],
+      "consumer_roles": [
+        "governance_policy_runtime",
+        "publication_gateway",
+        "audit_broker"
+      ],
+      "verification": {
+        "schema_validation": "required",
+        "signature": "required_when_published",
+        "provenance_receipt": "required_when_published",
+        "sbom": "not_applicable"
+      },
+      "activation": {
+        "model": "staged_atomic_activation",
+        "partial_activation_allowed": false,
+        "preconditions": [
+          "validated",
+          "approved",
+          "compatible_policy_runtime"
+        ]
+      },
+      "recovery": {
+        "strategy": "rollback_previous",
+        "forward_repair_allowed": true,
+        "failed_activation_effect": "previous_active_version_remains_authoritative"
+      },
+      "retention": {
+        "active_versions": "current_and_previous",
+        "historical_versions": "retain_for_policy_audit_period"
+      },
+      "lock_refs": [
+        "LOCK-LIFE-001",
+        "LOCK-LIFE-002"
+      ]
+    },
+    "decision_receipt": {
+      "artifact_class_id": "ART-CLASS-002",
+      "canonical_name": "decision receipt",
+      "terminology_ref": "contracts/terminology.contract.json#/terms/TERM-ART-DECISION-RECEIPT",
+      "description": "Immutable record of a governed decision, relevant inputs, authority, outcome, and resulting state transition.",
+      "category": "receipt",
+      "schema_ref": "contracts/artifact-contracts/decision-receipt.schema.json",
+      "example_refs": [
+        "contracts/examples/decision-receipt.example.json"
+      ],
+      "lifecycle_profile": "immutable_receipt",
+      "identity_model": "unique_receipt_id",
+      "release_channel_refs": [],
+      "allowed_scopes": [
+        "global",
+        "profile",
+        "component",
+        "artifact_class",
+        "development_toolchain"
+      ],
+      "producer_roles": [
+        "decision_authority",
+        "governance_policy_runtime",
+        "audit_broker"
+      ],
+      "consumer_roles": [
+        "audit_broker",
+        "evidence_collector",
+        "conformance_validator"
+      ],
+      "verification": {
+        "schema_validation": "required",
+        "signature": "required_for_privileged_or_cross_domain_decisions",
+        "provenance_receipt": "not_applicable",
+        "sbom": "not_applicable"
+      },
+      "activation": {
+        "model": "not_activated",
+        "partial_activation_allowed": false,
+        "preconditions": []
+      },
+      "recovery": {
+        "strategy": "revoke_and_reissue",
+        "forward_repair_allowed": false,
+        "failed_activation_effect": "not_applicable"
+      },
+      "retention": {
+        "active_versions": "not_applicable",
+        "historical_versions": "retain_with_governed_event_evidence"
+      },
+      "lock_refs": [
+        "LOCK-LIFE-002"
+      ]
+    },
+    "developer_workspace": {
+      "artifact_class_id": "ART-CLASS-003",
+      "canonical_name": "developer workspace",
+      "terminology_ref": "contracts/terminology.contract.json#/terms/TERM-DEV-WORKSPACE",
+      "description": "Reproducible declaration of one development workspace, its identity, isolated dependencies, services, data namespaces, secrets, and local allocations.",
+      "category": "workspace_definition",
+      "schema_ref": "contracts/artifact-contracts/developer-workspace.schema.json",
+      "example_refs": [
+        "contracts/examples/developer-workspace.example.json"
+      ],
+      "lifecycle_profile": "workspace_definition",
+      "identity_model": "workspace_id_and_revision",
+      "release_channel_refs": [],
+      "allowed_scopes": [
+        "development_toolchain"
+      ],
+      "producer_roles": [
+        "developer",
+        "workspace_generator"
+      ],
+      "consumer_roles": [
+        "workspace_runtime",
+        "development_validator",
+        "resource_governor"
+      ],
+      "verification": {
+        "schema_validation": "required",
+        "signature": "not_required",
+        "provenance_receipt": "recommended_for_shared_templates",
+        "sbom": "required_for_release_build_workspaces"
+      },
+      "activation": {
+        "model": "allocation_then_start",
+        "partial_activation_allowed": false,
+        "preconditions": [
+          "workspace_identity_unique",
+          "dependency_environment_isolated",
+          "port_allocation_valid",
+          "mutable_state_namespaced"
+        ]
+      },
+      "recovery": {
+        "strategy": "deactivate_and_recreate",
+        "forward_repair_allowed": true,
+        "failed_activation_effect": "workspace_does_not_start"
+      },
+      "retention": {
+        "active_versions": "current_revision",
+        "historical_versions": "retain_revisions_used_for_release_evidence"
+      },
+      "lock_refs": [
+        "LOCK-DEV-001",
+        "LOCK-DEV-002",
+        "LOCK-DEV-003",
+        "LOCK-DEV-004",
+        "LOCK-DEV-005",
+        "LOCK-LIFE-002"
+      ]
+    },
+    "integration_manifest": {
+      "artifact_class_id": "ART-CLASS-004",
+      "canonical_name": "integration manifest",
+      "terminology_ref": "contracts/terminology.contract.json#/terms/TERM-ART-INTEGRATION-MANIFEST",
+      "description": "Versioned declaration of an external integration, approved capabilities, data boundaries, authentication mode, failure behavior, and removal behavior.",
+      "category": "manifest",
+      "schema_ref": "contracts/artifact-contracts/integration-manifest.schema.json",
+      "example_refs": [
+        "contracts/examples/integration-manifest.example.yaml"
+      ],
+      "lifecycle_profile": "versioned_configuration",
+      "identity_model": "integration_id_and_semantic_version",
+      "release_channel_refs": [
+        "contracts/release-channels.contract.json#/channels/governance"
+      ],
+      "allowed_scopes": [
+        "global",
+        "profile",
+        "component"
+      ],
+      "producer_roles": [
+        "integration_owner",
+        "security_authority"
+      ],
+      "consumer_roles": [
+        "integration_runtime",
+        "governance_policy_runtime",
+        "conformance_validator"
+      ],
+      "verification": {
+        "schema_validation": "required",
+        "signature": "required_when_published",
+        "provenance_receipt": "required_when_published",
+        "sbom": "required_when_manifest_selects_deployable_software"
+      },
+      "activation": {
+        "model": "staged_atomic_activation",
+        "partial_activation_allowed": false,
+        "preconditions": [
+          "integration_registered",
+          "capabilities_classified",
+          "data_transfer_declared",
+          "removal_behavior_validated"
+        ]
+      },
+      "recovery": {
+        "strategy": "rollback_previous_or_disable_integration",
+        "forward_repair_allowed": true,
+        "failed_activation_effect": "integration_remains_disabled"
+      },
+      "retention": {
+        "active_versions": "current_and_previous",
+        "historical_versions": "retain_for_integration_audit_period"
+      },
+      "lock_refs": [
+        "LOCK-AI-001",
+        "LOCK-AI-002",
+        "LOCK-LIFE-001",
+        "LOCK-LIFE-002"
+      ]
+    },
+    "node_profile": {
+      "artifact_class_id": "ART-CLASS-005",
+      "canonical_name": "node profile",
+      "terminology_ref": "contracts/terminology.contract.json#/terms/TERM-ART-NODE-PROFILE",
+      "description": "Machine-readable declaration of a node's selected deployment profile, overlays, capabilities, constraints, and conformance claims.",
+      "category": "profile_declaration",
+      "schema_ref": "contracts/artifact-contracts/node-profile.schema.json",
+      "example_refs": [
+        "contracts/examples/node-profile.example.json"
+      ],
+      "lifecycle_profile": "versioned_configuration",
+      "identity_model": "node_id_and_profile_revision",
+      "release_channel_refs": [
+        "contracts/release-channels.contract.json#/channels/governance"
+      ],
+      "allowed_scopes": [
+        "profile",
+        "profile_overlay"
+      ],
+      "producer_roles": [
+        "deployment_authority"
+      ],
+      "consumer_roles": [
+        "koa_node_agent",
+        "resource_governor",
+        "governance_policy_runtime",
+        "conformance_validator"
+      ],
+      "verification": {
+        "schema_validation": "required",
+        "signature": "required_for_sovereign_or_high_assurance_profiles",
+        "provenance_receipt": "required_when_published",
+        "sbom": "not_applicable"
+      },
+      "activation": {
+        "model": "staged_atomic_activation",
+        "partial_activation_allowed": false,
+        "preconditions": [
+          "profile_contract_resolves",
+          "overlay_composition_valid",
+          "capability_envelope_satisfied"
+        ]
+      },
+      "recovery": {
+        "strategy": "rollback_previous",
+        "forward_repair_allowed": true,
+        "failed_activation_effect": "previous_profile_remains_active"
+      },
+      "retention": {
+        "active_versions": "current_and_previous",
+        "historical_versions": "retain_with_node_conformance_history"
+      },
+      "lock_refs": [
+        "LOCK-PROFILE-001",
+        "LOCK-PROFILE-002",
+        "LOCK-LIFE-001",
+        "LOCK-LIFE-002"
+      ]
+    },
+    "offline_bundle": {
+      "artifact_class_id": "ART-CLASS-006",
+      "canonical_name": "offline bundle",
+      "terminology_ref": "contracts/terminology.contract.json#/terms/TERM-ART-OFFLINE-BUNDLE",
+      "description": "Sealed transport package used to move approved artifacts and their verification material into a disconnected environment.",
+      "category": "transport_bundle",
+      "schema_ref": "contracts/artifact-contracts/offline-bundle.schema.json",
+      "example_refs": [
+        "contracts/examples/offline-bundle.example.json"
+      ],
+      "lifecycle_profile": "transport_bundle",
+      "identity_model": "bundle_id_and_manifest_digest",
+      "release_channel_refs": [
+        "contracts/release-channels.contract.json#/channels/system",
+        "contracts/release-channels.contract.json#/channels/services",
+        "contracts/release-channels.contract.json#/channels/governance",
+        "contracts/release-channels.contract.json#/channels/knowledge"
+      ],
+      "allowed_scopes": [
+        "global",
+        "profile",
+        "artifact_class"
+      ],
+      "producer_roles": [
+        "offline_bundle_builder",
+        "release_authority"
+      ],
+      "consumer_roles": [
+        "offline_import_authority",
+        "artifact_verifier"
+      ],
+      "verification": {
+        "schema_validation": "required",
+        "signature": "required",
+        "provenance_receipt": "required",
+        "sbom": "required_for_included_software_artifacts"
+      },
+      "activation": {
+        "model": "admission_then_class_specific_activation",
+        "partial_activation_allowed": false,
+        "preconditions": [
+          "bundle_seal_valid",
+          "all_manifest_entries_present",
+          "all_required_signatures_valid",
+          "compatibility_constraints_satisfied"
+        ]
+      },
+      "recovery": {
+        "strategy": "reject_bundle_without_authority_change",
+        "forward_repair_allowed": false,
+        "failed_activation_effect": "no_contained_artifact_becomes_active"
+      },
+      "retention": {
+        "active_versions": "not_applicable",
+        "historical_versions": "retain_import_manifest_and_verification_receipts"
+      },
+      "lock_refs": [
+        "LOCK-LIFE-001",
+        "LOCK-LIFE-002",
+        "LOCK-LIFE-003",
+        "LOCK-LIFE-004"
+      ]
+    },
+    "policy_bundle": {
+      "artifact_class_id": "ART-CLASS-007",
+      "canonical_name": "policy bundle",
+      "terminology_ref": "contracts/terminology.contract.json#/terms/TERM-ART-POLICY-BUNDLE",
+      "description": "Versioned package of governance policies, policy metadata, compatibility constraints, and activation instructions.",
+      "category": "deployable_package",
+      "schema_ref": "contracts/artifact-contracts/policy-bundle.schema.json",
+      "example_refs": [
+        "contracts/examples/policy-bundle.example.json"
+      ],
+      "lifecycle_profile": "deployable_package",
+      "identity_model": "semantic_version",
+      "release_channel_refs": [
+        "contracts/release-channels.contract.json#/channels/governance"
+      ],
+      "allowed_scopes": [
+        "global",
+        "profile",
+        "component",
+        "artifact_class"
+      ],
+      "producer_roles": [
+        "governance_policy_builder",
+        "release_authority"
+      ],
+      "consumer_roles": [
+        "governance_policy_runtime",
+        "koa_node_agent",
+        "conformance_validator"
+      ],
+      "verification": {
+        "schema_validation": "required",
+        "signature": "required",
+        "provenance_receipt": "required",
+        "sbom": "required_when_bundle_contains_executable_policy_runtime_extensions"
+      },
+      "activation": {
+        "model": "staged_atomic_activation",
+        "partial_activation_allowed": false,
+        "preconditions": [
+          "policy_schemas_valid",
+          "target_runtime_compatible",
+          "required_decisions_accepted",
+          "required_locks_pass"
+        ]
+      },
+      "recovery": {
+        "strategy": "rollback_previous",
+        "forward_repair_allowed": true,
+        "failed_activation_effect": "previous_policy_bundle_remains_active"
+      },
+      "retention": {
+        "active_versions": "current_and_previous",
+        "historical_versions": "retain_versions_referenced_by_decision_or_audit_evidence"
+      },
+      "lock_refs": [
+        "LOCK-LIFE-001",
+        "LOCK-LIFE-002",
+        "LOCK-LIFE-004"
+      ]
+    },
+    "release_set": {
+      "artifact_class_id": "ART-CLASS-008",
+      "canonical_name": "Release Set",
+      "terminology_ref": "contracts/terminology.contract.json#/terms/TERM-GOV-RELEASE-SET",
+      "description": "Verified binding of tested compatible versions across the system, services, governance, and knowledge release channels.",
+      "category": "release_binding",
+      "schema_ref": "contracts/artifact-contracts/release-set.schema.json",
+      "example_refs": [],
+      "lifecycle_profile": "release_binding",
+      "identity_model": "release_set_version",
+      "release_channel_refs": [
+        "contracts/release-channels.contract.json#/channels/system",
+        "contracts/release-channels.contract.json#/channels/services",
+        "contracts/release-channels.contract.json#/channels/governance",
+        "contracts/release-channels.contract.json#/channels/knowledge"
+      ],
+      "allowed_scopes": [
+        "global",
+        "profile"
+      ],
+      "producer_roles": [
+        "release_authority"
+      ],
+      "consumer_roles": [
+        "koa_node_agent",
+        "artifact_verifier",
+        "conformance_validator"
+      ],
+      "verification": {
+        "schema_validation": "required",
+        "signature": "required",
+        "provenance_receipt": "required",
+        "sbom": "required_by_referenced_software_artifact_classes"
+      },
+      "activation": {
+        "model": "atomic_cross_channel_activation",
+        "partial_activation_allowed": false,
+        "preconditions": [
+          "all_four_channels_bound",
+          "compatibility_matrix_passes",
+          "all_required_evidence_resolves",
+          "rollback_target_available"
+        ]
+      },
+      "recovery": {
+        "strategy": "rollback_previous_release_set",
+        "forward_repair_allowed": true,
+        "failed_activation_effect": "previous_release_set_remains_active"
+      },
+      "retention": {
+        "active_versions": "current_and_previous",
+        "historical_versions": "retain_every_activated_release_set"
+      },
+      "lock_refs": [
+        "LOCK-LIFE-001",
+        "LOCK-LIFE-002",
+        "LOCK-LIFE-003",
+        "LOCK-LIFE-004"
+      ]
+    },
+    "sovereignty_bundle": {
+      "artifact_class_id": "ART-CLASS-009",
+      "canonical_name": "sovereignty bundle",
+      "terminology_ref": "contracts/terminology.contract.json#/terms/TERM-ART-SOVEREIGNTY-BUNDLE",
+      "description": "Package containing the artifacts, policies, manifests, receipts, and evidence required for a declared sovereign deployment operation.",
+      "category": "evidence_and_deployment_bundle",
+      "schema_ref": "contracts/artifact-contracts/sovereignty-bundle.schema.json",
+      "example_refs": [],
+      "lifecycle_profile": "transport_bundle",
+      "identity_model": "bundle_id_and_release_set_ref",
+      "release_channel_refs": [
+        "contracts/release-channels.contract.json#/channels/system",
+        "contracts/release-channels.contract.json#/channels/services",
+        "contracts/release-channels.contract.json#/channels/governance",
+        "contracts/release-channels.contract.json#/channels/knowledge"
+      ],
+      "allowed_scopes": [
+        "profile",
+        "profile_overlay"
+      ],
+      "producer_roles": [
+        "sovereign_release_authority"
+      ],
+      "consumer_roles": [
+        "deployment_authority",
+        "conformance_validator",
+        "audit_broker"
+      ],
+      "verification": {
+        "schema_validation": "required",
+        "signature": "required",
+        "provenance_receipt": "required",
+        "sbom": "required_for_included_software_artifacts"
+      },
+      "activation": {
+        "model": "admission_then_release_set_activation",
+        "partial_activation_allowed": false,
+        "preconditions": [
+          "target_profile_matches",
+          "release_set_resolves",
+          "required_evidence_complete",
+          "trust_root_scope_valid"
+        ]
+      },
+      "recovery": {
+        "strategy": "reject_bundle_or_rollback_release_set",
+        "forward_repair_allowed": true,
+        "failed_activation_effect": "no_partial_sovereignty_claim"
+      },
+      "retention": {
+        "active_versions": "retain_current_deployment_bundle",
+        "historical_versions": "retain_with_sovereignty_and_conformance_evidence"
+      },
+      "lock_refs": [
+        "LOCK-PROFILE-001",
+        "LOCK-LIFE-001",
+        "LOCK-LIFE-002",
+        "LOCK-LIFE-003"
+      ]
+    },
+    "runtime_pack": {
+      "artifact_class_id": "ART-CLASS-010",
+      "canonical_name": "Runtime Pack",
+      "terminology_ref": "contracts/terminology.contract.json#/terms/TERM-ART-RUNTIME-PACK",
+      "description": "Versioned package consumed by a runtime component, containing runtime-ready assets and a manifest but no authoring workspace.",
+      "category": "deployable_package",
+      "schema_ref": "contracts/artifact-contracts/runtime-pack.schema.json",
+      "example_refs": [],
+      "lifecycle_profile": "deployable_package",
+      "identity_model": "semantic_version",
+      "release_channel_refs": [
+        "contracts/release-channels.contract.json#/channels/knowledge"
+      ],
+      "allowed_scopes": [
+        "global",
+        "profile",
+        "component"
+      ],
+      "producer_roles": [
+        "authorized_pack_builder",
+        "release_authority"
+      ],
+      "consumer_roles": [
+        "runtime_component",
+        "artifact_verifier"
+      ],
+      "verification": {
+        "schema_validation": "required",
+        "signature": "required_when_published",
+        "provenance_receipt": "required_when_published",
+        "sbom": "required_when_pack_contains_executable_code_or_native_dependencies"
+      },
+      "activation": {
+        "model": "runtime_load_with_atomic_pointer_switch",
+        "partial_activation_allowed": false,
+        "preconditions": [
+          "runtime_compatibility_passes",
+          "manifest_resolves",
+          "assets_verified"
+        ]
+      },
+      "recovery": {
+        "strategy": "rollback_previous",
+        "forward_repair_allowed": true,
+        "failed_activation_effect": "previous_runtime_pack_remains_loaded"
+      },
+      "retention": {
+        "active_versions": "current_and_previous",
+        "historical_versions": "retain_versions_referenced_by_published_outputs"
+      },
+      "lock_refs": [
+        "LOCK-LIFE-001",
+        "LOCK-LIFE-002",
+        "LOCK-LIFE-004"
+      ]
+    },
+    "language_pack": {
+      "artifact_class_id": "ART-CLASS-011",
+      "canonical_name": "language pack",
+      "terminology_ref": "contracts/terminology.contract.json#/terms/TERM-ART-LANGUAGE-PACK",
+      "description": "Versioned package of compiled language artifacts, including PGF outputs and runtime metadata, for consumption by SemantiK Architect Runtime.",
+      "category": "deployable_package",
+      "schema_ref": "contracts/artifact-contracts/language-pack.schema.json",
+      "example_refs": [
+        "contracts/examples/language-pack.example.json"
+      ],
+      "lifecycle_profile": "deployable_package",
+      "identity_model": "language_id_and_semantic_version",
+      "release_channel_refs": [
+        "contracts/release-channels.contract.json#/channels/knowledge"
+      ],
+      "allowed_scopes": [
+        "global",
+        "profile",
+        "component"
+      ],
+      "producer_roles": [
+        "gf_wordbench",
+        "language_release_authority"
+      ],
+      "consumer_roles": [
+        "semantik_architect_runtime",
+        "artifact_verifier"
+      ],
+      "verification": {
+        "schema_validation": "required",
+        "signature": "required_when_published",
+        "provenance_receipt": "required_when_published",
+        "sbom": "required_for_compiler_and_native_runtime_dependencies"
+      },
+      "activation": {
+        "model": "runtime_load_with_atomic_pointer_switch",
+        "partial_activation_allowed": false,
+        "preconditions": [
+          "compiled_artifacts_only",
+          "runtime_compatibility_passes",
+          "language_identifier_unique",
+          "manifest_resolves"
+        ]
+      },
+      "recovery": {
+        "strategy": "rollback_previous",
+        "forward_repair_allowed": true,
+        "failed_activation_effect": "previous_language_pack_remains_available"
+      },
+      "retention": {
+        "active_versions": "current_and_previous",
+        "historical_versions": "retain_versions_referenced_by_published_content"
+      },
+      "lock_refs": [
+        "LOCK-COMP-002",
+        "LOCK-LIFE-001",
+        "LOCK-LIFE-002",
+        "LOCK-LIFE-004"
+      ]
+    },
+    "publication_request": {
+      "artifact_class_id": "ART-CLASS-012",
+      "canonical_name": "publication request",
+      "terminology_ref": "contracts/terminology.contract.json#/terms/TERM-ART-PUBLICATION-REQUEST",
+      "description": "Request submitted to the Publication Gateway for a controlled release of selected information across an authority or security boundary.",
+      "category": "request",
+      "schema_ref": "contracts/artifact-contracts/publication-request.schema.json",
+      "example_refs": [],
+      "lifecycle_profile": "governed_request",
+      "identity_model": "unique_request_id",
+      "release_channel_refs": [],
+      "allowed_scopes": [
+        "component",
+        "artifact_class"
+      ],
+      "producer_roles": [
+        "requesting_component",
+        "authorized_user"
+      ],
+      "consumer_roles": [
+        "publication_gateway",
+        "governance_policy_runtime"
+      ],
+      "verification": {
+        "schema_validation": "required",
+        "signature": "required_when_request_crosses_a_trust_domain",
+        "provenance_receipt": "required_for_source_artifacts",
+        "sbom": "not_applicable"
+      },
+      "activation": {
+        "model": "not_activated",
+        "partial_activation_allowed": false,
+        "preconditions": []
+      },
+      "recovery": {
+        "strategy": "reject_or_cancel_without_publication",
+        "forward_repair_allowed": false,
+        "failed_activation_effect": "no_information_is_published"
+      },
+      "retention": {
+        "active_versions": "not_applicable",
+        "historical_versions": "retain_with_publication_decision_and_receipt"
+      },
+      "lock_refs": [
+        "LOCK-GATE-001",
+        "LOCK-LIFE-002"
+      ]
+    },
+    "publication_receipt": {
+      "artifact_class_id": "ART-CLASS-013",
+      "canonical_name": "publication receipt",
+      "terminology_ref": "contracts/terminology.contract.json#/terms/TERM-ART-PUBLICATION-RECEIPT",
+      "description": "Immutable record of a Publication Gateway decision, released content identity, applied policy, destination, and outcome.",
+      "category": "receipt",
+      "schema_ref": "contracts/artifact-contracts/publication-receipt.schema.json",
+      "example_refs": [],
+      "lifecycle_profile": "immutable_receipt",
+      "identity_model": "unique_receipt_id",
+      "release_channel_refs": [],
+      "allowed_scopes": [
+        "component",
+        "artifact_class"
+      ],
+      "producer_roles": [
+        "publication_gateway"
+      ],
+      "consumer_roles": [
+        "audit_broker",
+        "requesting_component",
+        "evidence_collector"
+      ],
+      "verification": {
+        "schema_validation": "required",
+        "signature": "required_for_successful_cross_domain_publication",
+        "provenance_receipt": "required_for_published_artifact",
+        "sbom": "not_applicable"
+      },
+      "activation": {
+        "model": "not_activated",
+        "partial_activation_allowed": false,
+        "preconditions": []
+      },
+      "recovery": {
+        "strategy": "revoke_and_reissue",
+        "forward_repair_allowed": false,
+        "failed_activation_effect": "not_applicable"
+      },
+      "retention": {
+        "active_versions": "not_applicable",
+        "historical_versions": "retain_with_publication_evidence"
+      },
+      "lock_refs": [
+        "LOCK-GATE-001",
+        "LOCK-LIFE-002"
+      ]
+    },
+    "provenance_receipt": {
+      "artifact_class_id": "ART-CLASS-014",
+      "canonical_name": "provenance receipt",
+      "terminology_ref": "contracts/terminology.contract.json#/terms/TERM-ART-PROVENANCE-RECEIPT",
+      "description": "Immutable record of artifact origin, transformation, transfer, verification, and acceptance history.",
+      "category": "receipt",
+      "schema_ref": "contracts/artifact-contracts/provenance-receipt.schema.json",
+      "example_refs": [],
+      "lifecycle_profile": "immutable_receipt",
+      "identity_model": "unique_receipt_id",
+      "release_channel_refs": [],
+      "allowed_scopes": [
+        "global",
+        "profile",
+        "component",
+        "artifact_class",
+        "development_toolchain"
+      ],
+      "producer_roles": [
+        "artifact_builder",
+        "artifact_gateway",
+        "artifact_verifier"
+      ],
+      "consumer_roles": [
+        "artifact_verifier",
+        "audit_broker",
+        "conformance_validator"
+      ],
+      "verification": {
+        "schema_validation": "required",
+        "signature": "required_for_published_or_imported_artifacts",
+        "provenance_receipt": "not_applicable",
+        "sbom": "not_applicable"
+      },
+      "activation": {
+        "model": "not_activated",
+        "partial_activation_allowed": false,
+        "preconditions": []
+      },
+      "recovery": {
+        "strategy": "revoke_and_reissue",
+        "forward_repair_allowed": false,
+        "failed_activation_effect": "not_applicable"
+      },
+      "retention": {
+        "active_versions": "not_applicable",
+        "historical_versions": "retain_at_least_as_long_as_the_referenced_artifact"
+      },
+      "lock_refs": [
+        "LOCK-LIFE-002"
+      ]
+    },
+    "resource_envelope": {
+      "artifact_class_id": "ART-CLASS-015",
+      "canonical_name": "resource envelope",
+      "terminology_ref": "contracts/terminology.contract.json#/terms/TERM-ART-RESOURCE-ENVELOPE",
+      "description": "Versioned declaration of CPU, memory, I/O, concurrency, queue, and process limits for a component, profile, or workload class.",
+      "category": "configuration",
+      "schema_ref": "contracts/artifact-contracts/resource-envelope.schema.json",
+      "example_refs": [],
+      "lifecycle_profile": "versioned_configuration",
+      "identity_model": "scope_id_and_semantic_version",
+      "release_channel_refs": [
+        "contracts/release-channels.contract.json#/channels/governance"
+      ],
+      "allowed_scopes": [
+        "profile",
+        "profile_overlay",
+        "component",
+        "artifact_class"
+      ],
+      "producer_roles": [
+        "resource_policy_authority"
+      ],
+      "consumer_roles": [
+        "resource_governor",
+        "scheduler",
+        "conformance_validator"
+      ],
+      "verification": {
+        "schema_validation": "required",
+        "signature": "required_when_published",
+        "provenance_receipt": "required_when_published",
+        "sbom": "not_applicable"
+      },
+      "activation": {
+        "model": "staged_atomic_activation",
+        "partial_activation_allowed": false,
+        "preconditions": [
+          "target_scope_resolves",
+          "limits_within_profile_capability",
+          "resource_governor_compatible"
+        ]
+      },
+      "recovery": {
+        "strategy": "rollback_previous",
+        "forward_repair_allowed": true,
+        "failed_activation_effect": "previous_envelope_remains_active"
+      },
+      "retention": {
+        "active_versions": "current_and_previous",
+        "historical_versions": "retain_versions_referenced_by_incident_or_conformance_evidence"
+      },
+      "lock_refs": [
+        "LOCK-GOV-001",
+        "LOCK-LIFE-001",
+        "LOCK-LIFE-002"
+      ]
+    },
+    "workspace_port_allocation": {
+      "artifact_class_id": "ART-CLASS-016",
+      "canonical_name": "workspace port allocation",
+      "terminology_ref": "contracts/terminology.contract.json#/terms/TERM-ART-WORKSPACE-PORT-ALLOCATION",
+      "description": "Exclusive allocation of host ports and related service endpoints to one identified development workspace.",
+      "category": "allocation",
+      "schema_ref": "contracts/artifact-contracts/workspace-port-allocation.schema.json",
+      "example_refs": [],
+      "lifecycle_profile": "allocation_record",
+      "identity_model": "workspace_id_and_allocation_id",
+      "release_channel_refs": [],
+      "allowed_scopes": [
+        "development_toolchain"
+      ],
+      "producer_roles": [
+        "workspace_allocator"
+      ],
+      "consumer_roles": [
+        "workspace_runtime",
+        "development_validator"
+      ],
+      "verification": {
+        "schema_validation": "required",
+        "signature": "not_required",
+        "provenance_receipt": "not_required",
+        "sbom": "not_applicable"
+      },
+      "activation": {
+        "model": "exclusive_allocation_apply",
+        "partial_activation_allowed": false,
+        "preconditions": [
+          "workspace_identity_resolves",
+          "requested_ports_available",
+          "no_allocation_collision"
+        ]
+      },
+      "recovery": {
+        "strategy": "release_and_reallocate",
+        "forward_repair_allowed": true,
+        "failed_activation_effect": "workspace_service_does_not_start"
+      },
+      "retention": {
+        "active_versions": "current_allocation",
+        "historical_versions": "retain_for_workspace_collision_diagnostics"
+      },
+      "lock_refs": [
+        "LOCK-DEV-003",
+        "LOCK-DEV-004",
+        "LOCK-LIFE-002"
+      ]
+    }
+  },
+  "validation": {
+    "entry_point": "tools/validate_docs.py",
+    "required_checks": [
+      "artifact_class_keys_are_canonical_identifiers",
+      "artifact_class_ids_are_unique",
+      "artifact_contract_schema_refs_are_unique",
+      "terminology_refs_resolve",
+      "lifecycle_profile_refs_resolve",
+      "release_channel_refs_use_known_channel_ids",
+      "every_class_defines_verification_activation_recovery_and_retention",
+      "receipts_are_immutable_and_not_activated",
+      "requests_do_not_grant_authority",
+      "transport_bundles_do_not_activate_content_by_their_presence",
+      "release_set_binds_all_four_channels",
+      "all_classes_have_lock_life_002",
+      "no_unresolved_authority_markers"
+    ],
+    "failure_outcome": "fail",
+    "missing_dependency_outcome": "blocked",
+    "automatic_semantic_repairs_allowed": false
+  },
+  "contract_id": "artifact-classes.registry",
+  "contract_type": "artifact_class_registry"
+}
