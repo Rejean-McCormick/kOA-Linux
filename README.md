@@ -1,4 +1,4 @@
-# kOA Linux Foundation
+# kOA-Linux Operating System
 
 > Sovereign, immutable, offline-capable, and governable Linux operating environment for the kOA ecosystem.
 
