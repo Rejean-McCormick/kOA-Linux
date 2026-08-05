@@ -42,7 +42,8 @@
     "DEC-AI-001",
     "DEC-SENT-001",
     "DEC-ARI-001",
-    "DEC-UCKK-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001",
     "DEC-DEV-001",
     "DEC-DEV-002"
   ],
@@ -104,8 +105,9 @@
     "LOCK-SENT-001",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-MEDIATHEQUE-002",
+    "LOCK-UCKK-EXT-001",
     "LOCK-DEV-001",
     "LOCK-DEV-004"
   ],
@@ -197,7 +199,7 @@ Examples include:
 - Kristal Runtime queries from verified local packs;
 - SemantiK Architect Runtime operation from compiled local language packs;
 - Ariane deterministic local navigation;
-- native deterministic UCKK ingestion and processing;
+- native deterministic kOA Mediatheque ingestion and processing;
 - local backup, restore preparation, health, and recovery;
 - queueing of permitted outbound intent.
 
@@ -281,7 +283,7 @@ This document does not:
 | `generated/test-catalog.json` | Disconnect, continuity, queue, conflict, bundle, reconnection, recovery, and negative-path tests. |
 | `generated/evidence-catalog.json` | Offline conformance, queue, conflict, synchronization, backup, restore, activation, and recovery evidence. |
 | `generated/requirements-index.json` | Normative statements displayed in Section 5. |
-| `generated/assertion-index.json` | Operations, profile, component, data, lifecycle, security, gateway, AI, Ariane, UCKK, and development invariants. |
+| `generated/assertion-index.json` | Operations, profile, component, data, lifecycle, security, gateway, AI, Ariane, kOA Mediatheque, UCKK publication, and development invariants. |
 | `generated/traceability.json` | Links among profiles, capabilities, requirements, tests, evidence, queues, artifacts, and this document. |
 | `generated/exception-index.json` | Approved bounded deviations and compensating controls. |
 
@@ -785,7 +787,7 @@ Examples include:
 | Integration | Offline behavior |
 | --- | --- |
 | ChatGPT | Unavailable; requests can remain local candidate intents only when a contract permits queueing. |
-| Suno | Unavailable; native UCKK remains deterministic and no provider substitute is selected. |
+| Suno | Unavailable; the local kOA Mediatheque remains deterministic and no provider substitute is selected. |
 | Gamma | Unavailable; local content remains local and no provider substitute is selected. |
 | Ariane external voice | Unavailable; local deterministic Ariane navigation remains available. |
 | Remote publication destination | Publication intent can queue when permitted; completed publication is not claimed. |
@@ -808,9 +810,9 @@ Loss of connectivity does not cause runtime grammar compilation, remote model su
 
 Knowledge freshness and pack identity remain visible.
 
-### 4.23 Native UCKK
+### 4.23 kOA Mediatheque and queued UCKK publication
 
-Native UCKK operation remains deterministic.
+kOA Mediatheque operation remains deterministic and local. UCKK publication is optional, external, and may be queued while disconnected.
 
 Offline native capabilities can include:
 
@@ -1378,11 +1380,11 @@ External voice is a separate integration.
 
 Local navigation remains available when voice or connectivity is absent.
 
-### 8.12 UCKK Platform
+### 8.12 kOA Mediatheque and external UCKK target
 
-UCKK preserves local source and derivative ownership and deterministic processing.
+The kOA Mediatheque preserves local source and derivative ownership and deterministic processing. UCKK has separate remote authority and storage.
 
-The UCKK Dimension Gateway can queue controlled ingestion or synchronization intents where permitted.
+The UCKK publication integration can queue controlled publication intents where permitted. It does not queue direct remote database writes or implicit bidirectional synchronization.
 
 Publication remains separate from dimension ingestion.
 
@@ -1419,12 +1421,13 @@ A test peer does not use production trust or production synchronization authorit
 | `DEC-COMP-001` | Preserves first-class component boundaries during local operation and synchronization. |
 | `DEC-DATA-001` | Preserves logical data ownership across physical consolidation, queues, bundles, backup, restore, and synchronization. |
 | `DEC-GOV-001` | Separates Resource Governor controls from Governance Policy Runtime decisions offline and online. |
-| `DEC-GATE-001` | Keeps cross-domain publication separate from UCKK ingestion and local publication intent. |
+| `DEC-GATE-001` | Keeps local Mediatheque admission separate from cross-domain publication and queued UCKK intent. |
 | `DEC-REL-001` | Preserves the four independent release channels during offline import and activation. |
 | `DEC-AI-001` | Excludes native AI from the baseline and keeps external outputs candidate-only. |
 | `DEC-SENT-001` | Keeps SenTient optional, isolated, task-activated, and non-authoritative. |
 | `DEC-ARI-001` | Keeps Ariane local navigation independent from external voice. |
-| `DEC-UCKK-001` | Keeps native UCKK processing deterministic and non-AI. |
+| `DEC-MEDIATHEQUE-001` | Keeps kOA Mediatheque processing deterministic and non-AI. |
+| `DEC-UCKK-EXT-001` | Keeps UCKK external and publication explicit, optional, and receipted. |
 | `DEC-DEV-001` | Requires isolated workspace identity, services, data, queues, credentials, and resources. |
 | `DEC-DEV-002` | Requires collision-free parallel workspace and branch operation. |
 
@@ -1443,9 +1446,9 @@ A test peer does not use production trust or production synchronization authorit
 | `ADR-015` | Requires isolated development workspaces. |
 | `ADR-018` | Keeps SenTient optional and isolated. |
 | `ADR-019` | Separates resource and governance authority. |
-| `ADR-020` | Separates publication and UCKK ingestion. |
+| `ADR-030` | Establishes the kOA Mediatheque as an internal component. |
 | `ADR-021` | Preserves Ariane local navigation without external voice. |
-| `ADR-022` | Preserves deterministic native UCKK operation. |
+| `ADR-031` | Establishes UCKK as an external Moodle publication target. |
 | `ADR-023` | Makes offline overlay effects explicit. |
 | `ADR-024` | Preserves logical ownership across deployment forms. |
 | `ADR-026` | Blocks active authority based on missing implementation decisions. |
@@ -1480,7 +1483,7 @@ The following assumptions are prohibited:
 - external AI output can be generated by an undeclared local substitute;
 - loss of ChatGPT disables local civic, workflow, knowledge, language, navigation, or media capability;
 - loss of external voice disables Ariane;
-- loss of Suno or Gamma disables native UCKK;
+- loss of Suno or Gamma disables local kOA Mediatheque operation;
 - SenTient availability creates core authority;
 - public audit storage can absorb private evidence during disconnection;
 - reconnection means remote peers are trusted;
@@ -1588,7 +1591,7 @@ A sovereign node is scheduled to operate disconnected for seven days.
 
 Before disconnection, it refreshes trust and revocation state, validates local policies, synchronizes required Kristal and language packs, verifies storage capacity, creates a backup, checks queues, and records offline-readiness evidence.
 
-Konnaxion, Orgo, Kristal, language, Ariane local navigation, and native UCKK enter their declared local modes.
+Konnaxion, Orgo, Kristal, language, Ariane local navigation, and the kOA Mediatheque enter their declared local modes. UCKK publication enters queued or unavailable state.
 
 ### 11.2 Konnaxion local response
 
@@ -1626,9 +1629,9 @@ The node loses all external connectivity.
 
 Ariane continues local menus, navigation, accessibility, and component commands. The external voice capability reports unavailable. No alternate provider is selected.
 
-### 11.7 UCKK without Suno and Gamma
+### 11.7 kOA Mediatheque without Suno, Gamma, or UCKK
 
-UCKK continues local source ingestion, deterministic derivatives, playback, backup, and export preparation.
+The kOA Mediatheque continues local source ingestion, deterministic derivatives, playback, backup, and export preparation. UCKK publication waits for connectivity and explicit revalidation.
 
 Suno and Gamma actions remain unavailable. A queued external-candidate request does not produce a local candidate until an actual provider result returns.
 

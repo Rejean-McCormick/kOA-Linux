@@ -1,7 +1,7 @@
 {
   "$schema": "../schemas/ai-navigation.contract.schema.json",
   "contract_id": "ai-navigation",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "status": "active",
   "entrypoint": "AI_CONTEXT.md",
   "discovery": {
@@ -18,8 +18,7 @@
       "subsystems/konnaxion",
       "subsystems/orgo",
       "subsystems/sentient",
-      "subsystems/semantik-architect",
-      "subsystems/uckk"
+      "subsystems/semantik-architect"
     ],
     "generated_indexes": [
       "generated/document-index.json",
@@ -36,6 +35,10 @@
     "subsystem_internal_documentation_is_external": true,
     "manual_file_inventory_required": false,
     "missing_subsystem_mount_blocks_preparation": false,
-    "mounted_subsystems_required_for_final_alignment": true
+    "mounted_subsystems_required_for_final_alignment": true,
+    "uckk_is_external_platform": true,
+    "uckk_subsystem_contract_or_mount_is_prohibited": true,
+    "koa_mediatheque_is_internal_component": true,
+    "external_platform_publication_requires_integration_contract": true
   }
 }

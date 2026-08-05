@@ -26,7 +26,12 @@
     "generated/traceability.json",
     "generated/test-catalog.json",
     "generated/evidence-catalog.json",
-    "generated/exception-index.json"
+    "generated/exception-index.json",
+    "contracts/components/koa-mediatheque.component.json",
+    "contracts/integrations/uckk-publication.integration.json",
+    "contracts/artifact-contracts/koa-media-record.schema.json",
+    "contracts/artifact-contracts/uckk-publication-package.schema.json",
+    "contracts/artifact-contracts/uckk-publication-receipt.schema.json"
   ],
   "decision_ids": [
     "DEC-DATA-001",
@@ -36,7 +41,9 @@
     "DEC-AI-001",
     "DEC-SENT-001",
     "DEC-REL-001",
-    "DEC-DOC-CHANGE-001"
+    "DEC-DOC-CHANGE-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001"
   ],
   "requirement_ids": [
     "REQ-CONF-OWN-001",
@@ -105,7 +112,9 @@
     "LOCK-DOC-015",
     "LOCK-DOC-019",
     "LOCK-DOC-020",
-    "LOCK-IMPL-001"
+    "LOCK-IMPL-001",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -536,7 +545,7 @@ Examples include:
 - bypassing an import interface;
 - using an audit record as application source;
 - bypassing Publication Gateway;
-- writing directly to UCKK storage;
+- writing directly to an external UCKK Moodle database or managed storage;
 - external AI direct adoption;
 - cross-tenant mutation;
 - migration by the wrong owner;
@@ -759,20 +768,30 @@ Validation proves that it:
 - produces publication results and receipts;
 - leaves source ownership unchanged.
 
-### 4.20 UCKK Dimension Gateway
+### 4.20 kOA Mediatheque and UCKK Publication Adapter
 
-UCKK Dimension Gateway owns admission-session coordination.
+kOA Mediatheque owns local media records, file versions, managed local content references, hashes, collections, dimensions, tags, relationships, rights, restrictions, provenance, renditions, lifecycle state, import and export history, and local backup and restore state.
 
-Validation proves that it:
+Validation proves that kOA Mediatheque:
 
-- accepts explicit selected media;
-- uses bounded staging and quarantine;
-- verifies contracts and policy;
-- calls UCKK Platform's acceptance interface;
-- records acceptance or rejection;
-- does not write final UCKK objects directly;
-- does not publish externally;
-- does not invoke Suno or Gamma automatically.
+- remains usable without UCKK or another remote platform;
+- uses owner-controlled local operations and identities;
+- performs deterministic local processing for selected capabilities;
+- treats XLSX, AI services, and publication targets as interfaces rather than authoritative stores;
+- preserves local ownership when an object is exported or published.
+
+The optional UCKK Publication Adapter owns only target-specific Moodle packaging, transport, result handling, and receipt production after an explicit Publication Gateway authorization.
+
+Validation proves that the adapter:
+
+- accepts only an explicitly selected owner-authorized representation;
+- verifies rights, restrictions, destination, manifest, and policy inputs;
+- calls a declared external UCKK interface;
+- records external acceptance or rejection;
+- does not write directly to UCKK database tables or managed storage;
+- does not own or mutate the source kOA Mediatheque record;
+- is not required for local or offline Mediatheque operation;
+- does not create background bidirectional synchronization.
 
 ### 4.21 Governance Policy Runtime
 
@@ -999,8 +1018,8 @@ Evidence remains tied to exact identities and versions.
 - **REQ-CONF-OWN-020 — SHALL:** Every imported candidate or external result enter through the destination component's controlled import and acceptance boundary.
 - **REQ-CONF-OWN-021 — SHALL NOT:** ChatGPT, Suno, Gamma, Ariane external voice, SenTient, another integration, or another workbench directly mutate canonical component state.
 - **REQ-CONF-OWN-022 — SHALL:** Publication Gateway validation demonstrate that it transports only an owner-authorized representation and does not own or mutate source component data.
-- **REQ-CONF-OWN-023 — SHALL:** UCKK Dimension Gateway validation demonstrate that final admission is performed by UCKK Platform and that the gateway does not write directly to UCKK authoritative storage.
-- **REQ-CONF-OWN-024 — SHALL:** Publication Gateway and UCKK Dimension Gateway remain separately identifiable, separately authorized, separately testable, and non-substitutable.
+- **REQ-CONF-OWN-023 — SHALL:** kOA Mediatheque validation demonstrate exclusive ownership of local media records and managed local content state, deterministic local operation, and independence from UCKK availability.
+- **REQ-CONF-OWN-024 — SHALL:** Publication Gateway and the UCKK Publication Adapter remain separately identifiable, separately authorized, separately testable, and non-substitutable; the adapter SHALL NOT bypass disclosure authorization, write directly to Moodle storage, or transfer ownership of the local source record.
 - **REQ-CONF-OWN-025 — SHALL:** Governance Policy Runtime validation demonstrate that policy evaluation does not mutate application data, allocate resources, publish content, issue identities, or execute privileged operations.
 - **REQ-CONF-OWN-026 — SHALL:** Resource Governor validation demonstrate that resource admission and scheduling do not create application, policy, publication, identity, or data authority.
 - **REQ-CONF-OWN-027 — SHALL:** Audit Broker validation demonstrate that receipts and evidence remain records of bounded events rather than replacement application databases or unrestricted replicas.
@@ -1283,11 +1302,13 @@ Publication Gateway transports approved representations.
 
 Conformance checks source ownership, disclosure authority, field minimization, destination, and publication receipts.
 
-### 8.9 UCKK Dimension Gateway
+### 8.9 kOA Mediatheque and UCKK publication
 
-UCKK Dimension Gateway coordinates admission.
+kOA Mediatheque owns local media records and managed local content state.
 
-Conformance checks final UCKK Platform acceptance and absence of direct storage writes.
+Conformance checks deterministic local operation, owner-controlled mutations, backup and restore ownership, and continued availability without UCKK.
+
+When UCKK publication is selected, conformance checks explicit source selection, Publication Gateway authorization, target-specific adapter behavior, external result receipts, no direct Moodle database or storage writes, and no transfer of local source authority.
 
 ### 8.10 Integrations and workbenches
 
@@ -1318,7 +1339,9 @@ Operations execute owner-controlled procedures and provide runtime evidence.
 | Decision | Closed choice |
 | --- | --- |
 | `DEC-DATA-001` | Every authoritative domain has one owner and direct foreign source writes are prohibited |
-| `DEC-GATE-001` | Publication Gateway and UCKK Dimension Gateway remain separate |
+| `DEC-GATE-001` | Publication Gateway authorization and destination-specific transport remain separate |
+| `DEC-MEDIATHEQUE-001` | kOA Mediatheque is the internal local media authority |
+| `DEC-UCKK-EXT-001` | UCKK is an external Moodle publication target reached through an optional controlled adapter |
 | `DEC-GOV-001` | Governance Policy Runtime and Resource Governor remain separate authorities |
 | `DEC-PROFILE-001` | Profiles alter topology and strengthening without transferring ownership |
 | `DEC-AI-001` | External AI remains optional, non-authoritative, and unable to write canonical state |
@@ -1331,7 +1354,9 @@ Operations execute owner-controlled procedures and provide runtime evidence.
 | Lock | Protected ownership relationship |
 | --- | --- |
 | `LOCK-DATA-001` | No direct cross-component authoritative write |
-| `LOCK-GATE-001` | Publication and UCKK admission remain separate |
+| `LOCK-GATE-001` | Publication authorization and destination-specific transport remain separate |
+| `LOCK-MEDIATHEQUE-001` | kOA Mediatheque retains local media ownership and offline independence |
+| `LOCK-UCKK-EXT-001` | UCKK publication is explicit, optional, receipted, and does not merge Mediatheque authorities |
 | `LOCK-GOV-001` | Policy and resource authority remain separate |
 | `LOCK-PROFILE-001` | Profile topology does not transfer ownership |
 | `LOCK-AI-001`, `LOCK-AI-002` | AI cannot become native or authoritative |
@@ -1368,7 +1393,9 @@ The following assumptions are invalid:
 - useful AI output is authoritative;
 - SenTient can write canonical state because it is local;
 - Publication Gateway owns published source data;
-- UCKK Dimension Gateway owns final UCKK objects;
+- UCKK owns local kOA Mediatheque records because a publication copy exists;
+- the UCKK Publication Adapter owns either the local source record or the external Moodle object;
+- a shared Mediatheque frame implies shared storage or shared authority;
 - Governance Policy Runtime owns the action it authorizes;
 - Resource Governor owns the work it schedules;
 - Audit Broker owns the events it records;
@@ -1416,8 +1443,8 @@ This document is conformant when:
 24. imported candidates use destination-owner acceptance;
 25. external AI and SenTient cannot mutate canonical state directly;
 26. Publication Gateway remains a transport executor;
-27. UCKK Platform performs final UCKK acceptance;
-28. the two gateways remain separately authorized and tested;
+27. kOA Mediatheque remains the exclusive owner of local media records and local managed content state;
+28. the external UCKK platform accepts or rejects its own publication copy through a declared interface, while Publication Gateway and the UCKK Publication Adapter remain separately authorized and tested;
 29. Governance Policy Runtime remains non-mutating for application data;
 30. Resource Governor remains authority-neutral for application state;
 31. Audit Broker remains evidence infrastructure rather than application source;
@@ -1471,8 +1498,8 @@ TEST-CONF-OWN-019  Consumer cannot rewrite producer state
 TEST-CONF-OWN-020  Controlled candidate adoption
 TEST-CONF-OWN-021  External AI direct-write denial
 TEST-CONF-OWN-022  Publication Gateway source non-ownership
-TEST-CONF-OWN-023  UCKK Platform final acceptance
-TEST-CONF-OWN-024  Gateway separation
+TEST-CONF-OWN-023  kOA Mediatheque local ownership and offline independence
+TEST-CONF-OWN-024  Publication Gateway and UCKK adapter separation
 TEST-CONF-OWN-025  Governance Policy Runtime non-mutation
 TEST-CONF-OWN-026  Resource Governor authority separation
 TEST-CONF-OWN-027  Audit Broker non-authority
@@ -1554,15 +1581,17 @@ Publication Gateway sends the approved representation and records the result.
 
 It does not edit the source component's record or become the source owner.
 
-### 11.6 UCKK Dimension Gateway
+### 11.6 kOA Mediatheque publication to UCKK
 
-A user submits selected media to a declared dimension.
+A user selects a kOA Mediatheque record for publication to a declared UCKK Moodle destination.
 
-The gateway stages and validates it.
+The owning Mediatheque creates an owner-authorized publication representation while retaining the local source record and authority.
 
-UCKK Platform accepts or rejects the final object through its interface.
+Governance Policy Runtime supplies the required disclosure decision, and Publication Gateway authorizes the cross-domain release.
 
-A direct gateway write to UCKK storage is denied.
+The UCKK Publication Adapter creates the target-specific package and manifest, calls the declared external interface, and records the result and receipt.
+
+UCKK accepts or rejects its own external copy. Direct writes to UCKK database tables or managed storage are denied, and local Mediatheque operation remains available when UCKK is offline.
 
 ### 11.7 External AI candidate
 

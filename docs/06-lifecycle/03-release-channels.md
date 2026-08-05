@@ -277,7 +277,7 @@ Typical responsibilities include:
 - knowledge packages;
 - language and terminology assets;
 - controlled content collections;
-- UCKK knowledge artifacts;
+- kOA Mediatheque artifacts and UCKK publication packages;
 - runtime packs;
 - indexes or index inputs whose artifact contracts make them distributable;
 - other versioned knowledge resources.

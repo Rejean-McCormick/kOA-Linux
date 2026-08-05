@@ -301,7 +301,7 @@
         "role": "Runtime use of precompiled language artifacts."
       },
       {
-        "component_id": "uckk-platform",
+        "component_id": "koa-mediatheque",
         "activation": "always_on",
         "role": "Local deterministic UCKK storage, metadata, and processing."
       },

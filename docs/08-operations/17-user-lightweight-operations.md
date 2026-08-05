@@ -14,7 +14,8 @@
     "contracts/system.contract.json#/degradation_baseline",
     "contracts/system.contract.json#/resource_governance",
     "contracts/system.contract.json#/ariane",
-    "contracts/system.contract.json#/uckk",
+    "contracts/system.contract.json#/koa_mediatheque",
+    "contracts/integrations/uckk-publication.integration.json",
     "contracts/system.contract.json#/sentient_boundary",
     "contracts/system.contract.json#/ai_boundary",
     "contracts/system.contract.json#/release_and_artifact_identity",
@@ -41,7 +42,8 @@
     "DEC-REL-001",
     "DEC-AI-001",
     "DEC-SENT-001",
-    "DEC-UCKK-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001",
     "DEC-ARI-001"
   ],
   "requirement_ids": [
@@ -88,8 +90,9 @@
     "LOCK-AI-001",
     "LOCK-AI-002",
     "LOCK-SENT-001",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-MEDIATHEQUE-002",
+    "LOCK-UCKK-EXT-001",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
     "LOCK-IMPL-001",
@@ -156,7 +159,7 @@ This document applies to:
 - standard maintained desktop or browser-based user interfaces selected by the profile;
 - Resource Governor;
 - local navigation;
-- profile-selected Konnaxion, Orgo, Kristal Runtime, compiled language-runtime, and UCKK functions;
+- profile-selected Konnaxion, Orgo, Kristal Runtime, compiled language-runtime, and kOA Mediatheque functions;
 - task-activated media, indexing, synchronization, backup, export, and maintenance workers;
 - optional explicit external integrations;
 - local databases, storage, secrets, caches, logs, backups, and recovery state;
@@ -177,7 +180,8 @@ It does not include SenTient, development workbenches, build workers, or permane
 | `contracts/system.contract.json#/degradation_baseline` | Fail-closed, optional-failure, pressure, and incompatibility behavior |
 | `contracts/system.contract.json#/resource_governance` | Resource Governor authority and separation from policy |
 | `contracts/system.contract.json#/ariane` | Local navigation and optional external voice behavior |
-| `contracts/system.contract.json#/uckk` | Deterministic local UCKK operation and external media workflow |
+| `contracts/system.contract.json#/koa_mediatheque` | Deterministic local kOA Mediatheque operation |
+| `contracts/integrations/uckk-publication.integration.json` | Optional explicit publication to the external UCKK Moodle platform |
 | `contracts/system.contract.json#/sentient_boundary` | SenTient exclusion from the default user installation |
 | `contracts/system.contract.json#/ai_boundary` | No native AI and bounded external integrations |
 | `contracts/system.contract.json#/release_and_artifact_identity` | Release channels, compatibility, activation, and recovery |
@@ -187,7 +191,7 @@ It does not include SenTient, development workbenches, build workers, or permane
 | `generated/component-catalog.json` | Component identity, ownership, interfaces, and lifecycle |
 | `contracts/artifact-contracts/node-profile.schema.json` | Node-profile declaration, integrity, signing, lifecycle, and conformance |
 | `generated/requirements-index.json` | Normative statements projected in Section 5 |
-| `generated/assertion-index.json` | Profile, data, component, lifecycle, AI, UCKK, Ariane, and implementation invariants |
+| `generated/assertion-index.json` | Profile, data, component, lifecycle, AI, kOA Mediatheque, UCKK publication, Ariane, and implementation invariants |
 | `generated/traceability.json` | Capability, component, release, test, and evidence links |
 | `generated/test-catalog.json` | Registered user-lightweight tests |
 | `generated/evidence-catalog.json` | Active operational and profile evidence |
@@ -215,7 +219,7 @@ It is not optimized for simultaneous heavy media processing, software compilatio
 | Service class | Examples | Operating rule |
 | --- | --- | --- |
 | Continuously available core | Resource Governor, local navigation, required identity and trust functions, required owning-component interfaces, bounded health and recovery controls | Small fixed envelope; no heavy background loops |
-| Bounded ordinary service | Konnaxion, Orgo, Kristal Runtime, compiled language runtime, UCKK metadata and ordinary local storage functions when selected by the profile | Always on or demand-started according to measured profile evidence |
+| Bounded ordinary service | Konnaxion, Orgo, Kristal Runtime, compiled language runtime, kOA Mediatheque metadata and ordinary local storage functions when selected by the profile | Always on or demand-started according to measured profile evidence |
 | Task-activated worker | Thumbnail, preview, deterministic extraction, indexing, synchronization, backup verification, export, media transform | One heavy job globally; stop after completion |
 | Optional external capability | ChatGPT, Suno, Gamma, Ariane external voice | Explicit user initiation; local core remains independent |
 | Excluded by default | SenTient, GF Wordbench, build-farm workers, OpenRefine, permanent Solr or Elasticsearch, SBERT and equivalent heavy workbenches | Absent unless another explicit compatible profile or approved extension owns them |
@@ -243,7 +247,7 @@ A machine meeting the numeric minimum still requires measured evidence. The Reso
 | Local navigation | Required | Operational without network, AI, or voice | Ariane external voice unavailable separately |
 | Local component data | Profile-selected | Read and write according to component authority | Read-only or unavailable according to integrity and policy |
 | Compiled language runtime | Profile-selected core | Uses admitted compiled artifacts | Construction workbenches remain absent |
-| UCKK management | Profile-selected core | Deterministic ingestion, verification, storage, export, backup, and restore | Heavy transforms serialized |
+| kOA Mediatheque | Profile-selected core | Deterministic ingestion, verification, storage, export, backup, and restore | Heavy transforms serialized; UCKK publication remains optional |
 | Resource governance | Required | Admits and limits all jobs | New affected work blocks if enforcement is unavailable |
 | Governance Policy Runtime | Not required by default | Present only through an explicit compatible overlay or profile extension | No policy authority inferred |
 | External AI and media | Optional | Explicit user workflow | Unavailable without local-core impact |
@@ -293,7 +297,7 @@ Caches remain bounded and evictable. Sensitive derived content retains the prote
 
 The node declares behavior for each supported connectivity state.
 
-Local navigation, admitted component data, local language artifacts, UCKK storage, Resource Governor, and recovery remain independent of external AI and media providers.
+Local navigation, admitted component data, local language artifacts, kOA Mediatheque storage, Resource Governor, and recovery remain independent of external AI, media providers, and UCKK.
 
 Remote work can be queued only when the operation is safe to retry. The interface displays queue state, age, expiry, cancellation, and revalidation result.
 
@@ -349,7 +353,7 @@ The default profile does not require Governance Policy Runtime. An explicit comp
 - **REQ-OPS-ULW-005 — SHALL:** Core local navigation, ordinary component reads and writes, compiled language-runtime use, local resource governance, and declared recovery controls shall be prioritized over optional and background work.
 - **REQ-OPS-ULW-006 — SHALL:** Thumbnail generation, preview generation, deterministic text extraction, indexing, synchronization, backup verification, media transformation, and equivalent heavy workers shall be task-activated, bounded, and stopped after completion or cancellation.
 - **REQ-OPS-ULW-007 — SHALL NOT:** SenTient, development workbenches, build-farm workers, permanent heavy search stacks, or equivalent high-consumption services shall be installed or continuously active in the default profile.
-- **REQ-OPS-ULW-008 — SHALL:** UCKK native operations shall remain deterministic and local and shall serialize heavy media work through the one-heavy-job limit.
+- **REQ-OPS-ULW-008 — SHALL:** kOA Mediatheque operations shall remain deterministic and local and serialize heavy media work through the one-heavy-job limit; UCKK publication shall remain optional and queued or unavailable offline.
 - **REQ-OPS-ULW-009 — SHALL:** Ariane local keyboard, pointer, touch, menu, shortcut, deterministic-command, and accessibility navigation shall remain available without external AI, voice, or network access.
 - **REQ-OPS-ULW-010 — SHALL:** External ChatGPT, Suno, Gamma, and Ariane voice operations shall be explicit, user-initiated, capability-scoped, removable, and unavailable without disabling unrelated local capabilities.
 - **REQ-OPS-ULW-011 — SHALL NOT:** The profile shall contain native generative AI, classifiers, summarizers, embedding models, autonomous routing, autonomous agents, AI-generated categories, or AI-based ingestion decisions.
@@ -496,7 +500,8 @@ No failure permits hidden heavy services, cross-component writes, plaintext fall
 | Ariane local navigation | User interface and components | Provides local deterministic navigation and accessibility | External voice is a separate optional capability |
 | Konnaxion and Orgo | Local user | Provide component-owned coordination and organizational data | Each retains source ownership |
 | Kristal Runtime and language runtime | Local applications | Consume admitted compiled artifacts | They do not become language-construction workbenches |
-| UCKK | User-selected media and dimensions | Performs deterministic local media operations | Publication and external generation remain separate |
+| kOA Mediatheque | User-selected local media and collections | Performs deterministic local media operations | External generation and UCKK publication remain separate |
+| UCKK publication integration | Explicit approved publication packages | Delivers through Publication Gateway to external Moodle | Owns no local media or remote UCKK authority |
 | Local database service | Owning components | Provides isolated databases or schemas and identities | Shared process does not permit cross-component writes |
 | Identity and Trust | Components, storage, and updates | Supplies identities, keys, signatures, trust, and revocation | Key or host access does not grant application authority |
 | Node lifecycle path | Updates and protected host changes | Verifies and applies closed profile-authorized operations | No generic shell or release authority |
@@ -521,7 +526,8 @@ No failure permits hidden heavy services, cross-component writes, plaintext fall
 | `DEC-REL-001` | Updates use registered channels, compatibility, complete activation, receipts, and recovery. |
 | `DEC-AI-001` | Native AI is absent and external AI remains explicit and non-authoritative. |
 | `DEC-SENT-001` | SenTient is excluded from the default user installation. |
-| `DEC-UCKK-001` | UCKK native operation is deterministic and local. |
+| `DEC-MEDIATHEQUE-001` | kOA Mediatheque operation is deterministic and local. |
+| `DEC-UCKK-EXT-001` | UCKK is an optional external publication target. |
 | `DEC-ARI-001` | Ariane local navigation does not depend on external voice or AI. |
 
 ### Prohibited assumptions
@@ -561,7 +567,7 @@ No failure permits hidden heavy services, cross-component writes, plaintext fall
 10. `TEST-OPS-ULW-005` verifies core service responsiveness under ordinary load.
 11. `TEST-OPS-ULW-006` verifies task activation, progress, cancellation, cleanup, and shutdown of heavy workers.
 12. `TEST-OPS-ULW-007` verifies absence or stopped state of SenTient, build workers, development workbenches, and permanent heavy search stacks.
-13. `TEST-OPS-ULW-008` verifies deterministic UCKK operations and serialized heavy media work.
+13. `TEST-OPS-ULW-008` verifies deterministic kOA Mediatheque operations, serialized heavy media work, and independence from UCKK availability.
 14. `TEST-OPS-ULW-009` verifies Ariane local navigation without network, AI, or voice.
 15. `TEST-OPS-ULW-010` verifies explicit optional external integrations and local-core continuity.
 16. `TEST-OPS-ULW-011` verifies absence of prohibited native AI capabilities.
@@ -581,9 +587,9 @@ These criteria define validation requirements. They do not claim that a particul
 
 ## 11. Non-Normative Examples
 
-> **Non-normative example:** A six-core machine with 16 GiB of memory and a 512 GB SSD runs local navigation, Konnaxion, Orgo, Kristal Runtime, the language runtime, UCKK, and Resource Governor. zram is active. Heavy workers remain stopped until requested.
+> **Non-normative example:** A six-core machine with 16 GiB of memory and a 512 GB SSD runs local navigation, Konnaxion, Orgo, Kristal Runtime, the language runtime, the kOA Mediatheque, and Resource Governor. zram is active. Heavy workers remain stopped until requested.
 
-> **Non-normative example:** The user starts a large UCKK preview job. A backup verification request enters a visible queue because one heavy job is already running. The user can cancel either operation.
+> **Non-normative example:** The user starts a large kOA Mediatheque preview job. A backup verification request enters a visible queue because one heavy job is already running. The user can cancel either operation.
 
 > **Non-normative example:** Internet access fails during ordinary local work. Local navigation, admitted component data, compiled language artifacts, local media management, Resource Governor, and recovery remain available. ChatGPT, Suno, Gamma, and external voice report unavailable.
 

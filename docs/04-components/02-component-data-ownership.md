@@ -310,7 +310,7 @@ A read model never becomes a shared write surface.
 
 Publication Gateway controls governed disclosure and publication across authority domains.
 
-UCKK Dimension Gateway controls verified user-selected media admission into UCKK.
+UCKK Publication Bridge owns target-specific packaging, transport, retry, and destination receipt state for an authorized UCKK publication.
 
 Governance Policy Runtime owns applicable policy decisions.
 
@@ -375,7 +375,7 @@ Audit and evidence paths record accountability with minimized payloads. Recordin
 - **REQ-COMP-DATA-009 — SHALL:** A profile that physically consolidates component storage preserve separate service identities, logical namespaces, migration ownership, access controls, backup inventory, and write privileges.
 - **REQ-COMP-DATA-010 — SHALL:** A domain event describe an already committed fact owned by its publisher and not transfer ownership of the published domain to a consumer.
 - **REQ-COMP-DATA-011 — SHALL:** An immutable artifact crossing a component boundary retain its producer, artifact class, version, scope, compatibility, policy, and activation authority.
-- **REQ-COMP-DATA-012 — SHALL:** Cross-domain disclosure and publication use Publication Gateway when classified as governed publication, while media admission into UCKK uses UCKK Dimension Gateway.
+- **REQ-COMP-DATA-012 — SHALL:** Publication to external UCKK require Publication Gateway authorization followed by UCKK Publication Bridge packaging and transport.
 - **REQ-COMP-DATA-013 — SHALL NOT:** A workflow coordinator, gateway, broker, transport, shared database, integration adapter, AI service, or audit system become the owner of participant component data merely because it routes, processes, records, or coordinates it.
 - **REQ-COMP-DATA-014 — SHALL:** Corrections, supersession, withdrawal, revocation, deletion, and retention changes be executed by the owning component and propagated through declared references, events, artifacts, or gateway contracts.
 - **REQ-COMP-DATA-015 — SHALL:** Authority-sensitive synchronization conflicts involving identity, delegation, approval, rights, consent, ownership, publication, evidence, closure, or revocation require deterministic resolution or explicit authorized review.
@@ -539,7 +539,7 @@ The consumer can store a declared read model without acquiring source ownership.
 
 ### 8.3 External-owner reference
 
-Orgo can reference a Kristal artifact, Konnaxion object, UCKK media object, identity, policy result, publication receipt, or audit evidence record.
+Orgo can reference a Kristal artifact, Konnaxion object, kOA Mediatheque media record, identity, policy result, publication receipt, or audit evidence record.
 
 The reference preserves the external owner. Orgo owns only its workflow relationship to the reference.
 
@@ -648,7 +648,7 @@ This document is conformant when:
 12. every read model, cache, replica, search index, and analytics store declares non-authoritative status and rebuild behavior;
 13. event consumers are idempotent and do not repeat publisher mutations;
 14. profile-specific physical consolidation preserves logical isolation and write controls;
-15. Publication Gateway and UCKK Dimension Gateway remain separate and cannot be bypassed;
+15. UCKK publication cannot bypass gateway authorization or bridge transport;
 16. policy, resource, audit, integration, transport, workflow, and AI systems do not acquire participant data ownership;
 17. authority-sensitive synchronization conflicts avoid last-write-wins;
 18. exports and restores preserve ownership and external-owner references;
@@ -702,11 +702,11 @@ Konnaxion and Orgo use one PostgreSQL process in a lightweight profile.
 
 They use separate service identities, schemas, migrations, backup entries, and write grants. A controlled view or API exposes selected data. Physical consolidation does not create shared ownership.
 
-### Example 3 — UCKK media reference
+### Example 3 — kOA Mediatheque media reference
 
-A task references a UCKK media object.
+A task references a kOA Mediatheque media record.
 
-Orgo owns the task. UCKK owns the media, derivatives, provenance, and media access state. Media withdrawal is propagated through the declared contract, and Orgo updates the task without rewriting UCKK.
+Orgo owns the task. kOA Mediatheque owns the media, derivatives, provenance, and media access state. Media withdrawal is propagated through the declared contract, and Orgo updates the task without rewriting kOA Mediatheque.
 
 ### Example 4 — Derived search index
 
@@ -728,7 +728,7 @@ The ordinary notes can merge under a declared deterministic rule. The assignment
 
 ### Example 7 — Clean restore
 
-A portability package contains separate exports for Orgo, Konnaxion, UCKK, Identity and Trust, policy state, and evidence references.
+A portability package contains separate exports for Orgo, Konnaxion, kOA Mediatheque, Identity and Trust, policy state, and evidence references.
 
 Each owner restores its own state through its contract. The coordinator cannot load all tables directly into a shared database and claim success.
 

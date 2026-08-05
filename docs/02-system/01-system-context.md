@@ -30,7 +30,8 @@
     "DEC-DATA-001",
     "DEC-AI-001",
     "DEC-ARI-001",
-    "DEC-UCKK-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001",
     "DEC-GOV-001",
     "DEC-PRIV-001",
     "DEC-IDENT-001",
@@ -79,8 +80,9 @@
     "LOCK-AI-002",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-001",
     "LOCK-GOV-001",
     "LOCK-GATE-001",
     "LOCK-SENT-001",
@@ -277,7 +279,7 @@ A resource can be physically local while remaining outside the logical system bo
 | Component | Context role |
 | --- | --- |
 | Ariane Runtime | Observes supported applications, plans bounded navigation, executes or guides actions, confirms sensitive operations, and verifies results. |
-| UCKK Dimension Gateway | Transfers user-selected local files and media into the user's UCKK dimension through explicit, resumable, verified ingestion. |
+| UCKK Publication Bridge | Packages and transports an explicitly authorized publication package from the kOA Mediatheque to the user's external UCKK Moodle destination. |
 
 #### Principal domains
 
@@ -285,7 +287,7 @@ A resource can be physically local while remaining outside the logical system bo
 | --- | --- |
 | Konnaxion | Provides public and commons-oriented discovery, education, participation, collaboration, deliberation, curation, and approved distribution. |
 | Orgo | Converts signals into private and accountable cases, tasks, assignments, approvals, reviews, escalations, synchronization, and closure. |
-| UCKK Platform | Owns multimedia identity, versions, collections, provenance, visibility, publication, distribution, and archival behavior. |
+| kOA Mediatheque | Owns multimedia identity, versions, collections, provenance, visibility, publication, distribution, and archival behavior. |
 
 #### Knowledge and language plane
 
@@ -321,12 +323,12 @@ Kristal is transversal.
 - It provides portable verified epistemic artifacts.
 - It does not absorb Orgo workflow state.
 - It does not become Konnaxion's participation store.
-- It does not become UCKK's multimedia store.
+- It does not become kOA Mediatheque's multimedia store.
 
-UCKK is an independent multimedia domain.
+kOA Mediatheque is an independent multimedia domain.
 
-- UCKK Dimension Gateway owns transfer and staging state before admission.
-- UCKK Platform owns accepted media objects and lifecycle state.
+- UCKK Publication Bridge owns UCKK-specific package, transfer, retry, and destination-receipt state; it does not own local media or disclosure authority.
+- kOA Mediatheque owns accepted media objects and lifecycle state.
 - Publication Gateway remains the distinct cross-domain disclosure boundary.
 
 ### 4.6 External systems and environments
@@ -349,8 +351,8 @@ UCKK is an independent multimedia domain.
 The approved external AI surfaces are limited to:
 
 - ChatGPT used separately and explicitly by the user;
-- Suno used as an optional external step in a user-controlled UCKK workflow;
-- Gamma used as an optional external step in a user-controlled UCKK workflow;
+- Suno used as an optional external step in a user-controlled kOA Mediatheque workflow;
+- Gamma used as an optional external step in a user-controlled kOA Mediatheque workflow;
 - an external voice service that converts speech into a structured candidate command for Ariane.
 
 These services remain outside the native system baseline.
@@ -423,8 +425,8 @@ Artifact verification, identity, provenance, compatibility, activation, rollback
 - **REQ-SYS-CTX-004 — SHALL NOT:** Network reachability, local process access, shared storage visibility, or common deployment on one machine creates cross-component authority.
 - **REQ-SYS-CTX-005 — SHALL:** Konnaxion remains the public and commons-oriented principal domain, and Orgo remains the private and operational principal domain.
 - **REQ-SYS-CTX-006 — SHALL:** Kristal Runtime remains the transversal epistemic runtime and does not become the universal operational database or workflow engine.
-- **REQ-SYS-CTX-007 — SHALL:** UCKK Platform owns multimedia identity and lifecycle, while UCKK Dimension Gateway owns user-initiated local transfer state before authoritative UCKK admission.
-- **REQ-SYS-CTX-008 — SHALL:** Publication Gateway remains distinct from UCKK Dimension Gateway and controls cross-domain disclosure rather than local media ingestion.
+- **REQ-SYS-CTX-007 — SHALL:** kOA Mediatheque own local multimedia identity and lifecycle, while UCKK Publication Bridge owns only UCKK-specific package and transport state after publication authorization.
+- **REQ-SYS-CTX-008 — SHALL:** Publication Gateway authorize cross-domain disclosure before UCKK Publication Bridge performs UCKK-specific packaging and transport.
 - **REQ-SYS-CTX-009 — SHALL:** Ariane Runtime owns deterministic application navigation, and external voice processing remains an optional non-authoritative input surface.
 - **REQ-SYS-CTX-010 — SHALL:** GF Wordbench owns language construction and compilation, while SemantiK Architect Runtime consumes validated precompiled language artifacts.
 - **REQ-SYS-CTX-011 — SHALL:** SenTient remains optional, isolated, task-activated, and non-authoritative, with candidate outputs requiring owning-component review before admission.
@@ -519,14 +521,15 @@ grammar and language source in GF Wordbench
 
 Normal runtime operation does not require the development workbench.
 
-### 6.6 UCKK ingestion lifecycle
+### 6.6 kOA Mediatheque ingestion lifecycle
 
 ```text
 user-selected local file or medium
--> UCKK Dimension Gateway transfer session
+-> Publication Gateway authorization
+-> UCKK Publication Bridge package and transfer session
 -> bounded staging and integrity verification
 -> user-selected destination or unclassified destination
--> UCKK Platform admission
+-> kOA Mediatheque admission
 -> authoritative media object and version
 -> optional deterministic derivatives
 -> optional user-controlled publication or distribution
@@ -588,7 +591,7 @@ Expected outcomes include:
 - optional integration calls are rejected, queued, or deferred;
 - external AI features become unavailable;
 - local Ariane structured navigation remains available;
-- local UCKK ingestion remains available;
+- local kOA Mediatheque ingestion remains available;
 - local Kristal consultation remains available within artifact and authority validity;
 - governance decisions use valid local policy only when the profile permits it.
 
@@ -611,7 +614,7 @@ Examples:
 - SenTient failure removes optional research assistance but does not affect core runtime operation.
 - External voice failure removes voice input while preserving Ariane local structured navigation.
 - GF Wordbench failure blocks language development and compilation but not use of active validated language artifacts.
-- UCKK derivative-worker failure preserves original media and queues or suspends derivative generation.
+- kOA Mediatheque derivative-worker failure preserves original media and queues or suspends derivative generation.
 - Audit forwarding failure preserves required local evidence and uses a bounded retry path.
 
 ### 7.4 Resource pressure
@@ -672,7 +675,7 @@ The owning components:
 | Orgo | Publication Gateway | Publication candidate with provenance, classification, rights, consent, and requested audience | Orgo retains private workflow state. |
 | Publication Gateway | Konnaxion | Approved publication bundle and withdrawal or supersession instruction | Konnaxion owns accepted public state. |
 | Orgo or Konnaxion | Kristal Runtime | Bounded query, artifact consumption, and status inspection | Kristal owns artifact identity and runtime state. |
-| UCKK Dimension Gateway | UCKK Platform | Verified transfer completion and media-creation request | Gateway owns transfer state; UCKK owns admitted media. |
+| UCKK Publication Bridge | External UCKK Moodle platform | Authorized package, transport result, and destination receipt | Bridge owns transport state; kOA Mediatheque retains local source authority; UCKK owns only its accepted destination copy. |
 | GF Wordbench | SemantiK Architect Runtime | Validated compiled language artifact | GF Wordbench owns source and build evidence; runtime owns activation state. |
 | External voice service | Ariane Runtime | Structured non-authoritative candidate command | Ariane owns navigation validation and execution. |
 | SenTient | Orgo or another review workflow | Candidate mapping, reconciliation, or enrichment artifact | Target owner decides admission. |
@@ -696,13 +699,13 @@ Direct writes to another component's authoritative store are not part of any per
 | `DEC-DATA-001` | Every authoritative data domain has one owner; direct cross-component store writes are prohibited. |
 | `DEC-AI-001` | The native baseline has no AI dependency; approved external AI surfaces are optional and non-authoritative. |
 | `DEC-ARI-001` | Ariane navigation is local and deterministic; external voice supplies only a candidate command. |
-| `DEC-UCKK-001` | UCKK native ingestion and derivatives are deterministic; user categories remain user controlled. |
+| `DEC-MEDIATHEQUE-001` | kOA Mediatheque native ingestion and derivatives are deterministic; user categories remain user controlled. |
 | `DEC-GOV-001` | Governance Policy Runtime and Resource Governor are separate authorities. |
 | `DEC-PRIV-001` | Normal host privilege is enforced through the narrow kOA Node Agent. |
 | `DEC-IDENT-001` | Identity, authentication, authorization, ownership, trust, and privilege remain distinct. |
 | `DEC-SENT-001` | SenTient is optional, isolated, task-activated, and non-authoritative. |
 | `DEC-LANG-001` | GF Wordbench owns build-time language construction; SemantiK Architect Runtime consumes compiled artifacts. |
-| `DEC-GATE-001` | Publication Gateway and UCKK Dimension Gateway are separate boundaries. |
+| `DEC-UCKK-EXT-001` | Publication Gateway authorization precedes UCKK-specific packaging and transport. |
 | `DEC-LIFE-001` | System, services, governance, and knowledge are independent release channels. |
 
 ### 9.2 Prohibited assumptions
@@ -715,7 +718,7 @@ Authors, implementations, validators, and AI agents do not assume that:
 - a common user account creates cross-component write authority;
 - the public and private domains are two views of one database;
 - Kristal owns workflow, user-interface, or tenant-operational state;
-- UCKK Dimension Gateway and Publication Gateway are interchangeable;
+- UCKK Publication Bridge and Publication Gateway are interchangeable;
 - Governance Policy Runtime controls CPU and memory scheduling;
 - Resource Governor grants authorization or privilege;
 - the kOA Node Agent decides governance policy;
@@ -752,7 +755,7 @@ This document is conformant when all applicable checks pass.
 | Offline core operation remains available | `TEST-SYS-001`, `TEST-PROF-006`, `TEST-OPS-006` |
 | Native operation has no AI dependency | `TEST-SYS-002`, `TEST-SYS-003`, `TEST-CROSS-013` |
 | Ariane remains usable without external voice | `TEST-SYS-006`, `TEST-CROSS-011` |
-| UCKK remains deterministic and user controlled | `TEST-SYS-007`, `TEST-SYS-008`, `TEST-CROSS-012` |
+| kOA Mediatheque remains deterministic and user controlled | `TEST-SYS-007`, `TEST-SYS-008`, `TEST-CROSS-012` |
 | Optional integrations are removable | `TEST-SYS-012`, `TEST-EXIT-008` |
 | Resource pressure preserves critical work | `TEST-OPS-003`, `TEST-OPS-010` |
 | Release channels remain independent and compatible | `TEST-LIFE-001`, `TEST-LIFE-002`, `TEST-LIFE-003` |
@@ -780,7 +783,7 @@ A failed required test blocks the affected system-context or conformance claim.
 
 A user-lightweight profile can run the local interaction, workflow, knowledge, language, media, identity, governance, audit, and resource functions required by that profile.
 
-SenTient, GF Wordbench, compilers, development containers, and permanent local AI runtimes are absent. Heavy UCKK derivative work is queued and bounded. External voice and external AI are optional.
+SenTient, GF Wordbench, compilers, development containers, and permanent local AI runtimes are absent. Heavy kOA Mediatheque derivative work is queued and bounded. External voice and external AI are optional.
 
 This realization changes component membership and activation, not the global system context.
 
@@ -788,7 +791,7 @@ This realization changes component membership and activation, not the global sys
 
 A sovereign-offline deployment can use verified local identities, policies, profiles, artifacts, backups, and evidence without Internet connectivity.
 
-Remote integrations and external AI are unavailable. Local Ariane structured navigation, UCKK ingestion, Orgo work, Konnaxion local content, Kristal consultation, and deterministic language rendering continue within their active contracts.
+Remote integrations and external AI are unavailable. Local Ariane structured navigation, kOA Mediatheque ingestion, Orgo work, Konnaxion local content, Kristal consultation, and deterministic language rendering continue within their active contracts.
 
 ### 11.3 Developer workstation
 
@@ -804,9 +807,9 @@ The request crosses a versioned intake boundary into Orgo, where it becomes an o
 
 ### 11.5 Local media ingestion
 
-A user chooses a local media file and a personal UCKK destination.
+A user chooses a local media file and a personal kOA Mediatheque destination.
 
-UCKK Dimension Gateway performs resumable transfer and integrity verification. UCKK Platform creates the authoritative media object. Deterministic derivatives can be generated later. No native AI classifies or publishes the content.
+kOA Mediatheque creates and owns the authoritative local media record and deterministic derivatives. After explicit Publication Gateway authorization, UCKK Publication Bridge performs resumable package transfer and integrity verification to the external UCKK platform. No native AI classifies or publishes the content automatically.
 
 ### 11.6 External voice navigation
 
@@ -818,9 +821,9 @@ Loss of the external voice service removes voice input only.
 
 ### 11.7 Optional external generation workflow
 
-A user exports selected UCKK material for an explicit Suno or Gamma workflow.
+A user exports selected kOA Mediatheque material for an explicit Suno or Gamma workflow.
 
-The external result returns as a new candidate artifact with provenance. The user reviews it. UCKK admission, classification, visibility, publication, and distribution remain local controlled decisions.
+The external result returns as a new candidate artifact with provenance. The user reviews it. UCKK publication, classification, visibility, publication, and distribution remain local controlled decisions.
 
 ### 11.8 Resource pressure
 

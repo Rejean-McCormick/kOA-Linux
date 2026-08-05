@@ -24,7 +24,8 @@
     "DEC-SYS-001",
     "DEC-AI-001",
     "DEC-SENT-001",
-    "DEC-UCKK-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001",
     "DEC-ARI-001",
     "DEC-PROFILE-001",
     "DEC-DATA-001",
@@ -64,8 +65,9 @@
     "LOCK-AI-001",
     "LOCK-AI-002",
     "LOCK-SENT-001",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-001",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
     "LOCK-DATA-001",
@@ -200,7 +202,7 @@ The owning component authorizes ordinary operations within its contract. A gover
 
 Resource Governor manages resource allocation and scheduling. It does not decide whether an actor may disclose information, exercise privilege, or accept an exception.
 
-Publication Gateway controls cross-domain disclosure and publication. UCKK Dimension Gateway controls admission of user-selected media into UCKK. Neither gateway substitutes for the other.
+Publication Gateway controls cross-domain disclosure and publication. The UCKK Publication Bridge performs UCKK-specific packaging and transport only after that authorization. It cannot substitute for or bypass Publication Gateway.
 
 The user language runtime consumes compiled artifacts. Language construction and compilation belong to the designated build workbench.
 
@@ -329,7 +331,7 @@ A failed activation preserves the previous valid authoritative state.
 | Owning component | Another component | Versioned API, command, event, gateway, exported artifact, or declared read model | Explicit and contract-defined | Consumer cannot acquire write authority over producer data | Producer owns source-state failure; consumer owns import and local-state failure |
 | Resource Governor | Components and workers | Component and profile resource envelopes | Control and observation | Resource decisions do not grant policy or data authority | Resource Governor owns scheduling and limit enforcement |
 | Governance Policy Runtime | Privileged broker, Publication Gateway, or governed component | Policy decision and receipt contracts | Authorization decision | Policy authorizes; execution remains with the receiving component or broker | Policy runtime owns decision failure; executor owns operation failure |
-| UCKK Dimension Gateway | UCKK Platform | Dimension-ingestion contract | User-selected media admission | Gateway verifies and transfers; UCKK owns admitted media state | Gateway owns transfer failure; UCKK owns admission failure |
+| UCKK Publication Bridge | External UCKK Moodle platform | UCKK publication integration | Authorized package transport | Bridge owns packaging and transfer state; kOA Mediatheque retains local source authority; UCKK owns only its destination copy | Bridge owns transfer failure; external UCKK owns destination acceptance failure |
 | Publication Gateway | External audience or domain | Publication request and receipt contracts | Controlled outward disclosure | Gateway cannot rewrite source-domain authority | Gateway owns disclosure and delivery failure |
 | GF Wordbench | Language artifact repository | Language-pack and runtime-pack contracts | Build and publish | Build workbench produces artifacts; runtime does not compile them | Workbench owns build failure; repository owns admission failure |
 | SemantiK Architect Runtime | User-facing components | Compiled runtime contract | Read and evaluate | Runtime consumes approved compiled artifacts only | Runtime owns evaluation failure |
@@ -348,12 +350,12 @@ Direct cross-component writes to authoritative source tables are prohibited. Sha
 | `DEC-SYS-001` | Establishes the local-first, modular, deterministic global system baseline. |
 | `DEC-AI-001` | Excludes native generative and autonomous AI from the authoritative baseline and bounds external AI use. |
 | `DEC-SENT-001` | Keeps SenTient optional, isolated, task-activated, and non-authoritative. |
-| `DEC-UCKK-001` | Defines deterministic native UCKK behavior and explicit external media adapters. |
+| `DEC-MEDIATHEQUE-001` | Defines deterministic native kOA Mediatheque behavior and explicit external media adapters. |
 | `DEC-ARI-001` | Separates local non-AI navigation from optional external voice capability. |
 | `DEC-PROFILE-001` | Establishes seven primary profiles, three overlays, and explicit composition. |
 | `DEC-DATA-001` | Requires exclusive logical data ownership and prohibits cross-component source-table writes. |
 | `DEC-GOV-001` | Separates Resource Governor from Governance Policy Runtime. |
-| `DEC-GATE-001` | Separates Publication Gateway from UCKK Dimension Gateway. |
+| `DEC-UCKK-EXT-001` | Requires Publication Gateway authorization before UCKK-specific packaging and transport. |
 | `DEC-SHELL-001` | Keeps desktop and appliance-shell choices profile-scoped. |
 | `DEC-CONTAINER-001` | Keeps container-runtime selection profile-scoped and avoids runtime-specific application authority. |
 | `DEC-K8S-001` | Excludes Kubernetes from endpoint requirements and limits it to approved infrastructure profiles. |
@@ -369,7 +371,7 @@ Direct cross-component writes to authoritative source tables are prohibited. Sha
 - An external integration output is authoritative because a user requested it.
 - Read-only access, caching, indexing, or transformation transfers ownership.
 - Resource allocation decisions imply authorization, disclosure, consent, or privilege decisions.
-- Publication Gateway and UCKK Dimension Gateway are interchangeable.
+- Publication Gateway and UCKK Publication Bridge are interchangeable.
 - User runtime components may silently perform build-workbench functions.
 - Network availability is required for local authoritative operation.
 - Failure permits partial authoritative activation or silent substitution.
@@ -406,7 +408,7 @@ These criteria define required validation. They do not claim that the tests have
 
 > **Non-normative example:** This example illustrates one valid implementation or scenario. It does not redefine the canonical contract.
 
-A user profile loses Internet access while editing local data. Local storage, deterministic Ariane navigation, compiled language artifacts, and local UCKK operations continue within the profile's offline envelope. ChatGPT, Suno, Gamma, and external Ariane voice become unavailable. The system does not substitute an unregistered provider.
+A user profile loses Internet access while editing local data. Local storage, deterministic Ariane navigation, compiled language artifacts, and local kOA Mediatheque operations continue within the profile's offline envelope. ChatGPT, Suno, Gamma, and external Ariane voice become unavailable. The system does not substitute an unregistered provider.
 
 > **Non-normative example:** This example illustrates one valid implementation or scenario. It does not redefine the canonical contract.
 

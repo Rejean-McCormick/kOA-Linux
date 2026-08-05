@@ -1,0 +1,241 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.koa.local/artifact-contracts/uckk-publication-receipt.schema.json",
+  "title": "UCKK Publication Receipt",
+  "description": "Receipt for a publication attempt from kOA-Linux to an external UCKK Moodle platform. The receipt records destination results without transferring source authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "receipt_id",
+    "package_id",
+    "attempt_id",
+    "occurred_at",
+    "source",
+    "target",
+    "outcome",
+    "item_results",
+    "source_authority_preserved"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "receipt_id": {
+      "type": "string",
+      "pattern": "^uckk_pub_receipt_[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "package_id": {
+      "type": "string"
+    },
+    "attempt_id": {
+      "type": "string"
+    },
+    "idempotency_key": {
+      "type": "string"
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "system_id",
+        "component_id"
+      ],
+      "properties": {
+        "system_id": {
+          "const": "koa-linux"
+        },
+        "component_id": {
+          "const": "koa_mediatheque"
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "system_id",
+        "platform_type",
+        "endpoint_id"
+      ],
+      "properties": {
+        "system_id": {
+          "const": "uckk"
+        },
+        "platform_type": {
+          "const": "moodle"
+        },
+        "endpoint_id": {
+          "type": "string"
+        },
+        "site_ref": {
+          "type": "string"
+        }
+      }
+    },
+    "outcome": {
+      "enum": [
+        "queued",
+        "published",
+        "partially_published",
+        "failed",
+        "cancelled",
+        "rejected",
+        "unknown_reconciliation_required"
+      ]
+    },
+    "source_authority_preserved": {
+      "const": true
+    },
+    "remote_authority_separate": {
+      "const": true
+    },
+    "authorization": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "publication_request_ref": {
+          "type": "string"
+        },
+        "decision_ref": {
+          "type": "string"
+        },
+        "authorization_valid_at_attempt": {
+          "type": "boolean"
+        }
+      }
+    },
+    "item_results": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "item_id",
+          "record_id",
+          "version_id",
+          "outcome"
+        ],
+        "properties": {
+          "item_id": {
+            "type": "string"
+          },
+          "record_id": {
+            "type": "string"
+          },
+          "version_id": {
+            "type": "string"
+          },
+          "outcome": {
+            "enum": [
+              "published",
+              "updated",
+              "skipped_idempotent",
+              "failed",
+              "rejected",
+              "unknown"
+            ]
+          },
+          "remote_object_refs": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "remote_version_ref": {
+            "type": "string"
+          },
+          "http_status": {
+            "type": "integer",
+            "minimum": 100,
+            "maximum": 599
+          },
+          "failure_code": {
+            "type": "string"
+          },
+          "failure_message": {
+            "type": "string"
+          },
+          "retryable": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "remote_response": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "request_ref": {
+          "type": "string"
+        },
+        "response_ref": {
+          "type": "string"
+        },
+        "remote_receipt_ref": {
+          "type": "string"
+        },
+        "remote_timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "package_digest_verified": {
+          "type": "boolean"
+        },
+        "response_signature_verified": {
+          "type": "boolean"
+        },
+        "response_digest": {
+          "type": "string"
+        }
+      }
+    },
+    "retry": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "retry_allowed": {
+          "type": "boolean"
+        },
+        "next_attempt_after": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "remaining_attempts": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "reconciliation_required": {
+          "type": "boolean"
+        }
+      }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

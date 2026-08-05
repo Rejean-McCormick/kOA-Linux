@@ -490,7 +490,7 @@ Every active cross-component interaction identifies:
 The component model preserves these system separations:
 
 - Resource Governor remains separate from Governance Policy Runtime.
-- Publication Gateway remains separate from UCKK Dimension Gateway.
+- Publication Gateway authorizes disclosure before UCKK Publication Bridge performs UCKK-specific packaging and transport.
 - Kristal epistemic identity remains separate from workflow and interface state.
 - The user language runtime remains separate from the language-construction workbench.
 - SenTient remains optional, isolated, and non-authoritative.
@@ -507,7 +507,7 @@ The component model preserves these system separations:
 | `DEC-CONST-COMP-001` | Establishes component separation as a global constitutional property. |
 | `DEC-DATA-001` | Establishes logical data ownership independently of profile-dependent physical isolation. |
 | `DEC-GOV-001` | Separates Resource Governor authority from Governance Policy Runtime authority. |
-| `DEC-GATE-001` | Separates Publication Gateway from UCKK Dimension Gateway. |
+| `DEC-UCKK-EXT-001` | Requires Publication Gateway authorization before UCKK-specific packaging and transport. |
 | `DEC-AI-001` | Keeps native component authority free of generative AI and autonomous AI decision paths. |
 | `DEC-SENT-001` | Keeps SenTient optional, isolated, and non-authoritative. |
 | `DEC-PROFILE-001` | Establishes explicit primary profiles and overlays that own component membership conditions. |
@@ -563,7 +563,7 @@ This document is conformant when:
 23. Every critical transition maps to a test and evidence requirement.
 24. Component replacement prevents parallel active writers and preserves lineage.
 25. Resource Governor and Governance Policy Runtime remain separate.
-26. Publication Gateway and UCKK Dimension Gateway remain separate.
+26. UCKK publication requires gateway authorization followed by bridge transport.
 27. SenTient remains optional, isolated, and non-authoritative.
 28. External AI output remains candidate input until owner acceptance.
 29. Active prose is English and contains no unresolved-authority marker.
@@ -584,7 +584,7 @@ A PostgreSQL process is infrastructure rather than automatically being a compone
 
 > **Non-normative example:** This example illustrates gateway authority.
 
-The UCKK Dimension Gateway can validate and transfer user-selected media into UCKK. The UCKK Platform remains the owner of admitted UCKK media state, and the Publication Gateway remains the owner of cross-domain publication control.
+The UCKK Publication Bridge can validate, package, and transport an authorized representation to the external UCKK platform. The kOA Mediatheque remains the owner of local media state, Publication Gateway remains the disclosure authority, and UCKK owns only its separately accepted destination copy.
 
 > **Non-normative example:** This example illustrates derived data.
 

@@ -26,7 +26,8 @@
     "DEC-SYS-001",
     "DEC-AI-001",
     "DEC-SENT-001",
-    "DEC-UCKK-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001",
     "DEC-ARI-001",
     "DEC-PROFILE-001",
     "DEC-DATA-001",
@@ -68,8 +69,9 @@
     "LOCK-AI-001",
     "LOCK-AI-002",
     "LOCK-SENT-001",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-001",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
     "LOCK-DATA-001",
@@ -158,7 +160,7 @@ Standard user and developer profiles may use maintained desktop environments suc
 | `contracts/system.contract.json#/ai_boundary` | Native AI prohibition and approved external AI boundary |
 | `contracts/system.contract.json#/sentient_boundary` | SenTient role, availability, isolation, and admission rules |
 | `contracts/system.contract.json#/ariane` | Ariane local-navigation and external-voice capability levels |
-| `contracts/system.contract.json#/uckk` | Native deterministic UCKK operations and external-adapter workflow |
+| `contracts/system.contract.json#/koa_mediatheque` | Native deterministic kOA Mediatheque operations and external-adapter workflow |
 | `contracts/system.contract.json#/language_runtime` | Compiled language and knowledge runtime model |
 | `contracts/system.contract.json#/resource_governance` | Resource Governor and Governance Policy Runtime separation |
 | `contracts/system.contract.json#/offline_baseline` | Global offline behavior |
@@ -206,7 +208,7 @@ The baseline is not a universal appliance specification. It does not require Kub
 | Layer | Scope | Responsibility |
 | --- | --- | --- |
 | L0 — Constitutional principles | Global | Explicit authority, fail-closed behavior, offline continuity, safe degradation, separation, audit, recourse, portability, and cultural rights |
-| L1 — System baseline | Global | System context, modes, capabilities, boundaries, AI, Ariane, UCKK, language runtime, resource governance, degradation, and release identity |
+| L1 — System baseline | Global | System context, modes, capabilities, boundaries, AI, Ariane, kOA Mediatheque, language runtime, resource governance, degradation, and release identity |
 | L2 — Deployment profiles | Profile and overlay | Deployable compositions, conditional capabilities, component membership, hardware, security, offline guarantees, and conformance |
 | L3 — Component contracts | Component | Inputs, outputs, interfaces, events, states, failure behavior, and data boundaries |
 | L4 — Implementation recipes | Non-normative unless explicitly adopted | systemd, Quadlet, containers, desktop shells, storage, networking, and development commands |
@@ -234,7 +236,7 @@ An operating mode describes system activity. A deployment profile describes the 
 | `local_authoritative_operation` | `global_contract` | Authoritative local operations remain possible within the active profile's offline and security envelope. |
 | `deterministic_navigation` | `profile_activated` | Ariane local navigation works without external AI or voice services. |
 | `governed_knowledge_runtime` | `profile_activated` | Compiled knowledge and language artifacts are consumed locally without requiring build workbenches. |
-| `deterministic_media_management` | `profile_activated` | UCKK ingests, verifies, transforms, stores, exports, backs up, and restores media through deterministic local operations. |
+| `deterministic_media_management` | `profile_activated` | The kOA Mediatheque ingests, verifies, transforms, stores, exports, backs up, and restores media through deterministic local operations. |
 | `deterministic_resource_governance` | `global_baseline_component` | Resource Governor bounds CPU, memory, I/O, concurrency, queues, jobs, and processes. |
 | `profile_conditioned_policy_governance` | `profile_conditioned` | Governance Policy Runtime supplies authorization, disclosure, consent, privilege decisions, and governed exceptions where required by a profile. |
 | `controlled_external_integration` | `optional` | External services are explicitly classified, removable, capability-scoped, and unable to directly mutate authoritative state. |
@@ -253,9 +255,9 @@ The active component catalog is owned by `generated/component-catalog.json`. The
 | Orgo | Coordination, tasks, and orchestration defined by its contract | Does not become a universal workflow owner |
 | Kristal Runtime | Transversal consumption of canonical epistemic artifacts | Identity remains independent of tenant workflow and interface state |
 | Ariane Runtime | Local deterministic navigation and optional external voice admission | Local navigation remains independent of external voice |
-| UCKK Platform | Deterministic local media management | Native operations do not perform AI classification, routing, tagging, transcription, translation, or generation |
-| UCKK Dimension Gateway | User-selected media transfer and admission to a UCKK dimension | Does not authorize cross-domain publication |
-| Publication Gateway | Controlled disclosure and publication to external domains or audiences | Does not perform UCKK media admission |
+| kOA Mediatheque | Deterministic local media management | Native operations do not perform AI classification, routing, tagging, transcription, translation, or generation |
+| UCKK Publication Bridge | UCKK-specific packaging and transport after explicit publication authorization | Does not authorize disclosure or own local media |
+| Publication Gateway | Controlled disclosure and publication authorization across domains or audiences | Does not perform kOA Mediatheque-specific packaging or transport |
 | SemantiK Architect Runtime | Consumption and evaluation of compiled language artifacts | Does not compile or author runtime artifacts |
 | GF Wordbench | Language construction and compilation workbench | Not part of normal user runtime operation |
 | Resource Governor | CPU, memory, I/O, concurrency, queues, jobs, and process limits | Has no authorization, consent, disclosure, or privilege authority |
@@ -289,7 +291,7 @@ Approved external surfaces are limited to the entries in `contracts/integration-
 | Integration | Classification | Capability scope | Unavailable behavior |
 | --- | --- | --- | --- |
 | `chatgpt` | `external_ai_assistance` | user requested assistance, candidate text generation, candidate structured output, candidate analysis | The requested external assistance operation is unavailable; unrelated local capabilities remain operational. |
-| `suno` | `external_media_generation` | user requested audio generation, user requested music generation, candidate media artifact return | External media generation is unavailable; deterministic local UCKK operations remain operational. |
+| `suno` | `external_media_generation` | user requested audio generation, user requested music generation, candidate media artifact return | External media generation is unavailable; deterministic local kOA Mediatheque operations remain operational. |
 | `gamma` | `external_presentation_generation` | user requested presentation generation, candidate presentation artifact return | External presentation generation is unavailable; unrelated local capabilities remain operational. |
 | `ariane_voice_adapter` | `external_voice_capability` | voice input processing, candidate navigation intent return | Voice controls are unavailable; Ariane local keyboard, pointer, touch, menu, shortcut, and accessibility navigation remain operational. |
 
@@ -318,9 +320,9 @@ Profile contracts select the applicable envelope and may strengthen it. Measurem
 - **REQ-SYS-OVR-005 — SHALL:** Each component shall operate only within its registered responsibility, authoritative-data boundary, interfaces, and active profile membership.
 - **REQ-SYS-OVR-006 — SHALL NOT:** No component shall write directly to another component's authoritative source tables or acquire authority through caching, indexing, observation, or physical infrastructure sharing.
 - **REQ-SYS-OVR-007 — SHALL:** The Resource Governor shall manage deterministic resource allocation and scheduling independently from Governance Policy Runtime authorization, disclosure, consent, privilege, and exception decisions.
-- **REQ-SYS-OVR-008 — SHALL:** The Publication Gateway and UCKK Dimension Gateway shall remain separate contracts with separate authority over publication and media admission.
+- **REQ-SYS-OVR-008 — SHALL:** Publication Gateway shall authorize disclosure before the UCKK Publication Bridge packages and transports an approved publication to the external UCKK platform.
 - **REQ-SYS-OVR-009 — SHALL:** Ariane local navigation shall remain operational without AI, external voice, or network access within the active profile's local capability envelope.
-- **REQ-SYS-OVR-010 — SHALL:** The native UCKK pipeline shall perform only deterministic local ingestion, verification, transformation, storage, export, backup, and restore operations.
+- **REQ-SYS-OVR-010 — SHALL:** The native kOA Mediatheque pipeline shall perform only deterministic local ingestion, verification, transformation, storage, export, backup, and restore operations.
 - **REQ-SYS-OVR-011 — SHALL:** The user language runtime shall consume approved compiled language and knowledge artifacts, while construction and compilation remain assigned to designated workbenches.
 - **REQ-SYS-OVR-012 — SHALL:** The global baseline shall contain no native generative AI, classifier, summarizer, embedding model, autonomous routing model, autonomous agent, AI category generator, or AI ingestion decision.
 - **REQ-SYS-OVR-013 — SHALL:** Every external integration shall be explicitly registered, user-initiated, capability-scoped, transparent about transferred data, removable without core failure, and unable to write directly to authoritative state.
@@ -392,7 +394,7 @@ A startup failure does not permit partial authoritative activation. The deployme
 2. Mark remote-only capabilities unavailable.
 3. Preserve local authoritative state and local declared capabilities.
 4. Keep Ariane local navigation operational.
-5. Keep deterministic UCKK, language runtime, resource governance, backup, restore, and verified import available where the profile claims them.
+5. Keep deterministic kOA Mediatheque, language runtime, resource governance, backup, restore, and verified import available where the profile claims them.
 6. Queue only bounded, visible, idempotent remote work when the profile permits queuing.
 7. Do not activate an unregistered substitute.
 8. Record offline conformance or operational evidence when required.
@@ -451,13 +453,13 @@ Safe degradation never authorizes a broader capability than the normal operating
 | Domain coordination | Orgo or another owning domain | Authorized component | API, command, or event | Consumer acts only within its own contract |
 | Knowledge consumption | Kristal Runtime or artifact repository | Konnaxion, Orgo, language, or user-facing components | Versioned knowledge artifact | Artifact identity remains independent of consumer workflow |
 | Language build and runtime | GF Wordbench | SemantiK Architect Runtime and user-facing components | Compiled PGF, language pack, or runtime pack | Runtime consumes; it does not compile |
-| Media admission | UCKK Dimension Gateway | UCKK Platform | Controlled admission contract | UCKK owns admitted media state |
+| Local media management | kOA Mediatheque | kOA Mediatheque | Internal component contract | kOA Mediatheque owns local media state |
 | Cross-domain publication | Owning component | Publication Gateway | Publication request and receipt | Gateway controls disclosure without taking source ownership |
 | Resource control | Resource Governor | Components and task workers | Resource envelope and control interface | Resource limits do not grant policy authority |
 | Policy authorization | Governance Policy Runtime | Governed component, privileged broker, or Publication Gateway | Policy decision and receipt | Executor performs only the authorized action |
 | Selective evidence | Components | Audit Broker | Evidence event or authorized collection interface | Audit Broker owns evidence handling, not source operations |
 | External AI assistance | ChatGPT | Owning component or user workflow | Controlled export and import | Output remains candidate input |
-| External media generation | Suno or Gamma | UCKK or another owning component | Controlled export, re-import, provenance, and approval | External output has no direct authority |
+| External media generation | Suno or Gamma | kOA Mediatheque or another owning component | Controlled export, re-import, provenance, and approval | External output has no direct authority |
 | External voice | Ariane voice adapter | Ariane Runtime | Candidate navigation intent | Local deterministic validation decides execution |
 | Release production | Build Farm | Artifact registry and activation owner | Artifact, provenance, SBOM, tests, evidence, and Release Set | Authority begins only after required activation |
 | Node lifecycle | Control Plane or release process | kOA Node Agent | Deployment and activation contract | Node Agent cannot invent policy or component authority |
@@ -473,12 +475,12 @@ Every interaction has one producer responsibility, one consumer responsibility, 
 | `DEC-SYS-001` | kOA is a local-first modular operating environment rather than one universal appliance specification. |
 | `DEC-AI-001` | The authoritative native baseline contains no generative or autonomous AI. |
 | `DEC-SENT-001` | SenTient is optional, isolated, non-authoritative, and task-activated only in approved development or build profiles. |
-| `DEC-UCKK-001` | Native UCKK processing is deterministic; Suno and Gamma are explicit external adapters. |
+| `DEC-MEDIATHEQUE-001` | Native kOA Mediatheque processing is deterministic; Suno and Gamma are explicit external adapters. |
 | `DEC-ARI-001` | Ariane local navigation is non-AI; external voice is optional and removable. |
 | `DEC-PROFILE-001` | Deployments use seven primary profiles and three composable overlays. |
 | `DEC-DATA-001` | Logical component data ownership is mandatory and direct cross-component source writes are prohibited. |
 | `DEC-GOV-001` | Resource Governor and Governance Policy Runtime are separate authorities. |
-| `DEC-GATE-001` | Publication Gateway and UCKK Dimension Gateway are separate contracts. |
+| `DEC-UCKK-EXT-001` | Publication Gateway authorizes disclosure before the UCKK Publication Bridge performs target-specific packaging and transport. |
 | `DEC-SHELL-001` | Standard desktops are permitted; appliance shell restrictions are overlay-scoped. |
 | `DEC-CONTAINER-001` | Container-runtime choices are profile-scoped and not application authority. |
 | `DEC-K8S-001` | Kubernetes is not required on endpoints and is permitted only for approved infrastructure profiles. |
@@ -498,8 +500,8 @@ Every interaction has one producer responsibility, one consumer responsibility, 
 - Kristal is a universal workflow engine or operational database.
 - Resource Governor may authorize disclosure or privilege.
 - Governance Policy Runtime may schedule CPU or memory.
-- Publication Gateway may replace UCKK Dimension Gateway.
-- UCKK may silently invoke external AI or media-generation services.
+- UCKK Publication Bridge may bypass or replace Publication Gateway authorization.
+- kOA Mediatheque may silently invoke external AI or media-generation services.
 - Ariane voice failure disables local navigation.
 - External outputs are authoritative on receipt.
 - SenTient is part of the ordinary user baseline.
@@ -523,9 +525,9 @@ Every interaction has one producer responsibility, one consumer responsibility, 
 11. `TEST-SYS-OVR-001` validates one-primary-profile composition and overlay compatibility.
 12. `TEST-SYS-OVR-002` validates component ownership and rejects cross-component source-table writes.
 13. `TEST-SYS-OVR-003` verifies Resource Governor and Governance Policy Runtime separation.
-14. `TEST-SYS-OVR-004` verifies Publication Gateway and UCKK Dimension Gateway separation.
+14. `TEST-SYS-OVR-004` verifies that UCKK publication requires Publication Gateway authorization and target-specific bridge transport.
 15. `TEST-SYS-OVR-005` verifies Ariane local navigation without external voice or AI.
-16. `TEST-SYS-OVR-006` verifies deterministic UCKK behavior and absence of automatic external-adapter invocation.
+16. `TEST-SYS-OVR-006` verifies deterministic kOA Mediatheque behavior and absence of automatic external-integration invocation.
 17. `TEST-SYS-OVR-007` verifies the native AI prohibition and external-output candidate status.
 18. `TEST-SYS-OVR-008` verifies SenTient profile availability, task activation, isolation, and non-authority.
 19. `TEST-SYS-OVR-009` verifies each profile's declared offline envelope and capability-scoped degradation.
@@ -539,13 +541,13 @@ These criteria define required validation. They do not claim that implementation
 
 ## 11. Non-Normative Examples
 
-> **Non-normative example:** A `user_lightweight` deployment runs local navigation, Konnaxion, Orgo, Kristal Runtime, the language runtime, UCKK, and Resource Governor within its resource envelope. SenTient, build workbenches, and heavy search engines are absent or stopped. One heavy media task runs at a time.
+> **Non-normative example:** A `user_lightweight` deployment runs local navigation, Konnaxion, Orgo, Kristal Runtime, the language runtime, kOA Mediatheque, and Resource Governor within its resource envelope. SenTient, build workbenches, and heavy search engines are absent or stopped. One heavy media task runs at a time.
 
 > **Non-normative example:** A developer uses two branches of Konnaxion in separate workspaces. Each workspace has its own dependency environment, service namespace, ports, volumes, secrets, database identities, and resource budget. A shared download cache does not become a shared mutable environment.
 
 > **Non-normative example:** A user sends selected material to Gamma. The system discloses the outbound content, receives a candidate presentation, validates and re-imports it, records provenance, and requires approval before publication. Gamma never receives direct publication or authoritative-store access.
 
-> **Non-normative example:** Internet connectivity fails during local work. ChatGPT, Suno, Gamma, and Ariane external voice become unavailable. Local Ariane navigation, deterministic UCKK operations, local language artifacts, authoritative component data, and Resource Governor remain operational within the profile's offline envelope.
+> **Non-normative example:** Internet connectivity fails during local work. ChatGPT, Suno, Gamma, and Ariane external voice become unavailable. Local Ariane navigation, deterministic kOA Mediatheque operations, local language artifacts, authoritative component data, and Resource Governor remain operational within the profile's offline envelope.
 
 > **Non-normative example:** A new services-channel artifact is compatible with the active system, governance, and knowledge versions. Validation, integrity, signature, and recovery checks pass. The complete candidate is staged and activated atomically. A receipt records the transition and the prior version remains available for rollback.
 

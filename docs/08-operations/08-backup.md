@@ -261,8 +261,8 @@ The component registry currently assigns 84 authoritative data domains across 15
 | `resource_governor` | 6 | `active_resource_profiles`, `resource_quotas`, `resource_reservations`, `resource_scheduler_state`, `resource_pressure_observations`, `managed_job_state` |
 | `semantik_architect_runtime` | 4 | `active_language_pack_selection`, `language_runtime_compatibility_state`, `deterministic_render_cache`, `language_runtime_health_state` |
 | `sentient` | 4 | `sentient_isolated_workspaces`, `sentient_imported_candidate_corpora`, `sentient_candidate_resolution_outputs`, `sentient_research_provenance` |
-| `uckk_dimension_gateway` | 4 | `uckk_gateway_transfer_queue`, `uckk_gateway_upload_sessions`, `uckk_gateway_staging_metadata`, `uckk_gateway_transfer_receipts` |
-| `uckk_platform` | 9 | `uckk_media_objects`, `uckk_media_versions`, `uckk_collections`, `uckk_media_relationships`, `uckk_media_provenance`, `uckk_visibility_and_access_state`, `uckk_publication_state`, `uckk_distribution_state`, `uckk_archive_state` |
+| `uckk_publication_integration` | 4 | `uckk_publication_queue`, `uckk_upload_sessions`, `uckk_staging_metadata`, `uckk_publication_receipts` |
+| `koa_mediatheque` | 9 | `koa_media_objects`, `koa_media_versions`, `koa_media_collections`, `koa_media_relationships`, `koa_media_provenance`, `koa_media_rights_and_restrictions`, `koa_media_renditions`, `koa_media_lifecycle_state`, `koa_media_import_export_history` |
 
 A backup coverage report accounts for these domains without silently transferring ownership to the backup system.
 
@@ -833,7 +833,7 @@ A failed required check blocks or narrows the affected backup, restore-readiness
 
 ### 11.1 Nightly sovereign-node backup
 
-A sovereign node creates owner checkpoints for identity, governance, audit, Orgo, Konnaxion, Kristal, UCKK, active language, and publication state.
+A sovereign node creates owner checkpoints for identity, governance, audit, Orgo, Konnaxion, Kristal, the kOA Mediatheque, active language, and publication state, including queued UCKK packages and receipts but not remote UCKK authoritative storage.
 
 It assembles one encrypted backup set, writes it to local protected storage, and copies it to an offline device held separately.
 

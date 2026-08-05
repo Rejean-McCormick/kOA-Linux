@@ -269,7 +269,7 @@ The operational control foundation includes the applicable instances of:
 
 Application components are selected by the primary profile and node purpose.
 
-A node can host Konnaxion, Orgo, Kristal Runtime, SemantiK Architect Runtime, UCKK, Ariane Runtime, Publication Gateway, and other registered components only when profile membership and resources permit them.
+A node can host Konnaxion, Orgo, Kristal Runtime, SemantiK Architect Runtime, the kOA Mediatheque, Ariane Runtime, Publication Gateway, and other registered components when profile membership and resources permit them. UCKK remains an external Moodle platform reached only through its optional publication integration.
 
 SenTient and build-time language tooling remain optional and are not default sovereign-node requirements.
 
@@ -980,7 +980,7 @@ A valid signature does not override the failed compatibility check.
 
 ### 11.5 Storage pressure
 
-UCKK media processing and backup replication fill temporary storage.
+kOA Mediatheque media processing and backup replication fill temporary storage.
 
 Resource Governor stops new media jobs, pauses optional replication, and protects active workflow commits, identity, governance, audit, artifact verification, cancellation, and recovery.
 

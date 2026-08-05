@@ -1,0 +1,158 @@
+{
+  "$schema": "../../schemas/integration.schema.json",
+  "integration_id": "uckk-publication",
+  "title": "UCKK Publication",
+  "version": "1.0.0",
+  "status": "active",
+  "integration_type": "external_moodle_publication",
+  "role": "Optional governed publication of selected kOA Mediatheque records to an external UCKK Moodle platform.",
+  "authority": "non_authoritative_external_destination",
+  "undeclared_substitution": "prohibited",
+  "availability": "optional",
+  "direction": "outbound_publication",
+  "external_system": {
+    "system_id": "uckk",
+    "platform_type": "moodle",
+    "inside_koa_linux": false,
+    "owns_remote_state": true,
+    "owns_local_koa_media": false,
+    "documentation_mount_required": false
+  },
+  "canonical_refs": [
+    "contracts/components/koa-mediatheque.component.json",
+    "contracts/components/publication-gateway.component.json",
+    "contracts/components/identity-and-trust.component.json",
+    "contracts/components/governance-policy-runtime.component.json",
+    "contracts/components/audit-broker.component.json",
+    "contracts/artifact-contracts/uckk-publication-package.schema.json",
+    "contracts/artifact-contracts/uckk-publication-receipt.schema.json",
+    "04-components/uckk-publication-bridge.md",
+    "10-adrs/ADR-031-uckk-as-an-external-moodle-publication-target.md"
+  ],
+  "decision_ids": [
+    "DEC-UCKK-EXT-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-GATE-001",
+    "DEC-GOV-001",
+    "DEC-DATA-001",
+    "DEC-OFFLINE-001"
+  ],
+  "requirement_ids": [
+    "REQ-UCKK-PUB-001",
+    "REQ-UCKK-PUB-002",
+    "REQ-UCKK-PUB-003",
+    "REQ-UCKK-PUB-004",
+    "REQ-UCKK-PUB-005",
+    "REQ-UCKK-PUB-006",
+    "REQ-UCKK-PUB-007",
+    "REQ-UCKK-PUB-008",
+    "REQ-UCKK-PUB-009",
+    "REQ-UCKK-PUB-010",
+    "REQ-UCKK-PUB-011",
+    "REQ-UCKK-PUB-012"
+  ],
+  "lock_ids": [
+    "LOCK-UCKK-EXT-001",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-GATE-001",
+    "LOCK-DATA-001",
+    "LOCK-GOV-001",
+    "LOCK-OFFLINE-001"
+  ],
+  "boundary": {
+    "source_system": "koa-linux",
+    "source_component": "koa_mediatheque",
+    "authorization_component": "publication_gateway",
+    "destination_system": "uckk",
+    "destination_platform": "moodle",
+    "source_authority_preserved": true,
+    "destination_authority_separate": true,
+    "shared_database": false,
+    "direct_database_write": false,
+    "implicit_bidirectional_sync": false,
+    "publication_implies_authority_transfer": false
+  },
+  "publication_model": {
+    "selection": "explicit record-version selection",
+    "authorization": "Publication Gateway allow decision with resolved rights, restrictions, consent, purpose, audience, destination, and expiry.",
+    "package_contract_ref": "contracts/artifact-contracts/uckk-publication-package.schema.json",
+    "receipt_contract_ref": "contracts/artifact-contracts/uckk-publication-receipt.schema.json",
+    "idempotency": "A package and destination mapping use a stable idempotency key for retry-safe publication.",
+    "remote_mapping": "Remote course, section, activity, repository, collection, or other Moodle target identifiers remain destination references.",
+    "remote_result": "A validated publication receipt is attached to local export history.",
+    "remote_deletion": "No deletion or revocation guarantee is assumed unless the UCKK endpoint explicitly supports and acknowledges it."
+  },
+  "allowed_operations": [
+    "validate_destination_capability",
+    "authenticate",
+    "create_or_update_remote_representation",
+    "upload_content",
+    "attach_metadata",
+    "query_publication_status",
+    "receive_publication_receipt",
+    "send_supported_withdrawal_notice"
+  ],
+  "prohibited_operations": [
+    "direct UCKK database access",
+    "implicit publication of all local media",
+    "background bidirectional synchronization",
+    "remote mutation without an authorized package",
+    "replacement of local record identity by a remote identifier",
+    "treating UCKK acknowledgement as proof of local rights or semantic truth",
+    "using UCKK as a required dependency for local Mediatheque operation"
+  ],
+  "data_transfer": {
+    "minimum_necessary": true,
+    "content_transfer": "Only selected and authorized renditions or originals declared by the publication package.",
+    "metadata_transfer": "Only fields mapped and allowed for the declared destination and audience.",
+    "credentials": "Resolved from a dedicated secret store and never embedded in media records or packages.",
+    "restricted_data_default": "deny",
+    "ai_data_transfer": "not required"
+  },
+  "offline_behavior": {
+    "local_operation_continues": true,
+    "package_creation": "permitted only while authorization and source state remain verifiable locally",
+    "transmission": "queued",
+    "success_state": "not recorded until a remote receipt is validated",
+    "retry": "bounded, idempotent, and subject to authorization expiry and source-version consistency",
+    "queue_visibility": "required"
+  },
+  "failure_model": {
+    "authentication_failure": "block transmission and preserve the authorized package in a protected queued or failed state",
+    "destination_unavailable": "queue or fail according to retry policy without affecting local media availability",
+    "partial_publication": "record per-item outcomes and require review before retrying failed items",
+    "schema_or_mapping_failure": "block before transmission",
+    "rights_or_authorization_change": "cancel pending transmission and require a new decision",
+    "ambiguous_remote_result": "record unknown outcome and reconcile by idempotency key before retry"
+  },
+  "security_and_audit": {
+    "authentication_required": true,
+    "transport_security_required": true,
+    "destination_allowlist_required": true,
+    "credential_scope": "least privilege for the declared UCKK destination operations",
+    "publication_receipt_required": true,
+    "selective_audit": true,
+    "content_in_logs": false,
+    "rate_limits_required": true
+  },
+  "compatibility": {
+    "shared_mediatheque_frame": "The kOA and UCKK Mediatheques may implement compatible concepts, but compatibility does not create a shared authority domain.",
+    "mapping_version_required": true,
+    "moodle_api_version_required": true,
+    "unsupported_destination_behavior": "block the unsupported mapping; do not silently discard fields or restrictions",
+    "import": "Any future controlled import is a distinct integration and is not part of this contract."
+  },
+  "validation": {
+    "validator_ref": "tools/check_uckk_external_boundary.py",
+    "required_tests": [
+      "no direct database access",
+      "explicit authorization required",
+      "rights-restricted record denied",
+      "offline queue visible",
+      "idempotent retry",
+      "partial result receipt",
+      "source authority preserved",
+      "destination mapping version enforced"
+    ]
+  }
+}

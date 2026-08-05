@@ -27,7 +27,9 @@
     "generated/test-catalog.json",
     "generated/evidence-catalog.json",
     "contracts/ai-navigation.contract.json",
-    "schemas/impact-report.schema.json"
+    "schemas/impact-report.schema.json",
+    "contracts/components/koa-mediatheque.component.json",
+    "contracts/integrations/uckk-publication.integration.json"
   ],
   "decision_ids": [
     "DEC-DOC-002",
@@ -39,7 +41,9 @@
     "DEC-COMP-001",
     "DEC-GOV-001",
     "DEC-AI-001",
-    "DEC-LIFE-001"
+    "DEC-LIFE-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001"
   ],
   "requirement_ids": [
     "REQ-CONF-LOCK-001",
@@ -113,8 +117,6 @@
     "LOCK-AI-001",
     "LOCK-AI-002",
     "LOCK-SENT-001",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
     "LOCK-DATA-001",
@@ -130,7 +132,9 @@
     "LOCK-LIFE-001",
     "LOCK-LIFE-002",
     "LOCK-LIFE-003",
-    "LOCK-LIFE-004"
+    "LOCK-LIFE-004",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -280,7 +284,8 @@ A file is not validated in isolation when an applicable lock crosses its boundar
 | `LOCK-SYS-*` | System baseline and global behavior |
 | `LOCK-AI-*` | AI capability and external-surface boundaries |
 | `LOCK-SENT-*` | SenTient isolation and non-authority |
-| `LOCK-UCKK-*` | UCKK deterministic ingestion and integration boundaries |
+| `LOCK-MEDIA-*` | kOA Mediatheque local ownership, deterministic processing, offline continuity, and no hidden AI authority |
+| `LOCK-UCKK-PUB-*` | External UCKK Moodle publication remains explicit, optional, receipted, and separate from local Mediatheque authority |
 | `LOCK-ARI-*` | Ariane deterministic navigation and optional voice |
 | `LOCK-COMP-*` | Component identity, boundary, responsibility, and interaction |
 | `LOCK-DATA-*` | Authoritative data ownership and mutation |
@@ -607,7 +612,7 @@ It does not:
 - **REQ-CONF-LOCK-015 — SHALL:** Component and data locks reject duplicate component authority, direct cross-component authoritative writes, unregistered data ownership, boundary collapse, and undocumented mutation paths.
 - **REQ-CONF-LOCK-016 — SHALL:** Lifecycle locks verify independent release channels, exact artifact identity, publication and activation separation, compatibility, rollback, revocation, and evidence relationships.
 - **REQ-CONF-LOCK-017 — SHALL:** Development locks verify isolated mutable workspaces, fixed dependency metadata, frozen validation, explicit upgrades, and separation between toolchain environments and service-state isolation.
-- **REQ-CONF-LOCK-018 — SHALL:** AI, Ariane, UCKK, SenTient, gateway, governance, identity, privilege, privacy, and recovery locks evaluate their canonical boundary assertions and prohibited semantic values.
+- **REQ-CONF-LOCK-018 — SHALL:** AI, Ariane, kOA Mediatheque, external UCKK publication, SenTient, gateway, governance, identity, privilege, privacy, and recovery locks evaluate their canonical boundary assertions and prohibited semantic values.
 - **REQ-CONF-LOCK-019 — SHALL:** Generated-content locks compare canonical source identity, renderer identity, declared generated block identity, and deterministic semantic output.
 - **REQ-CONF-LOCK-021 — SHALL:** Graph assertions evaluate complete typed relationships among decisions, requirements, locks, profiles, components, documents, artifacts, tests, evidence, exceptions, releases, and conformance claims.
 - **REQ-CONF-LOCK-022 — SHALL:** Every changed canonical node produces direct and transitive impact analysis across all applicable dependency and lock relationships.

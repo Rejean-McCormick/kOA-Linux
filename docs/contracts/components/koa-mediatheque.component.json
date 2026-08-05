@@ -1,0 +1,459 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "component_id": "koa_mediatheque",
+  "component_kind": "service",
+  "version": "1.0.0",
+  "status": "active",
+  "language": "en",
+  "display_name": "kOA Mediatheque",
+  "aliases": [
+    "Mediatheque kOA"
+  ],
+  "purpose": "Provide the authoritative local catalog, managed-content, classification, provenance, rights, rendition, lifecycle, import, export, backup, and restore service for media and files owned by kOA-Linux Operating System.",
+  "scope": {
+    "kind": "component",
+    "identifier": "koa_mediatheque",
+    "global_behavior": true,
+    "profile_membership_owner_ref": "generated/profile-catalog.json",
+    "profile_specific_limits_owner": "the active deployment profile and active resource envelope artifacts",
+    "implementation_mechanism_owner": "the active profile and applicable storage and service toolchains"
+  },
+  "canonical_refs": [
+    "generated/authority-manifest.json",
+    "generated/decision-index.json",
+    "contracts/terminology.contract.json",
+    "contracts/system.contract.json",
+    "generated/component-catalog.json",
+    "contracts/components/publication-gateway.component.json",
+    "contracts/integrations/uckk-publication.integration.json",
+    "contracts/artifact-contracts/koa-media-record.schema.json",
+    "contracts/artifact-contracts/uckk-publication-package.schema.json",
+    "contracts/artifact-contracts/uckk-publication-receipt.schema.json",
+    "generated/profile-catalog.json",
+    "contracts/artifact-classes.contract.json",
+    "contracts/release-channels.contract.json",
+    "generated/requirements-index.json",
+    "generated/assertion-index.json",
+    "generated/traceability.json",
+    "generated/test-catalog.json",
+    "generated/evidence-catalog.json",
+    "generated/exception-index.json",
+    "02-system/12-koa-mediatheque-system-boundary.md",
+    "04-components/koa-mediatheque.md",
+    "10-adrs/ADR-030-koa-mediatheque-as-an-internal-component.md",
+    "10-adrs/ADR-031-uckk-as-an-external-moodle-publication-target.md"
+  ],
+  "decision_ids": [
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001",
+    "DEC-DATA-001",
+    "DEC-COMP-001",
+    "DEC-GOV-001",
+    "DEC-OFFLINE-001",
+    "DEC-LIFE-001",
+    "DEC-AUDIT-001"
+  ],
+  "requirement_ids": [
+    "REQ-MEDIATHEQUE-001",
+    "REQ-MEDIATHEQUE-002",
+    "REQ-MEDIATHEQUE-003",
+    "REQ-MEDIATHEQUE-004",
+    "REQ-MEDIATHEQUE-005",
+    "REQ-MEDIATHEQUE-006",
+    "REQ-MEDIATHEQUE-007",
+    "REQ-MEDIATHEQUE-008",
+    "REQ-MEDIATHEQUE-009",
+    "REQ-MEDIATHEQUE-010",
+    "REQ-UCKK-PUB-001",
+    "REQ-UCKK-PUB-002",
+    "REQ-UCKK-PUB-003"
+  ],
+  "lock_ids": [
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-MEDIATHEQUE-002",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-DATA-001",
+    "LOCK-COMP-001",
+    "LOCK-COMP-002",
+    "LOCK-GOV-001",
+    "LOCK-OFFLINE-001",
+    "LOCK-LIFE-001"
+  ],
+  "exception_ids": [],
+  "ownership": {
+    "owns": {
+      "media_record": "Canonical kOA-local identity and metadata for each managed media or file record.",
+      "media_version": "Version identity, integrity, storage binding, rendition relationships, and lifecycle state for each managed version.",
+      "local_content_binding": "The authoritative binding between a kOA media version and its managed local content or declared external reference.",
+      "classification": "Local collections, dimensions, tags, relationships, and classification assertions.",
+      "rights_and_restrictions": "Locally governed rights, restrictions, consent, cultural conditions, retention, disclosure, and AI-use constraints.",
+      "provenance": "Source, acquisition, creator, custodian, transformation, validation, and lineage records owned by the local Mediatheque.",
+      "rendition_state": "Derivation relationships and acceptance state for thumbnails, previews, normalized media, transcripts, and other renditions.",
+      "import_export_history": "Import, export, packaging, publication-request, and external-publication receipt references.",
+      "backup_restore_state": "Mediatheque-specific backup manifests, restore checkpoints, and verification results."
+    },
+    "does_not_own": [
+      {
+        "fact": "UCKK Moodle courses, modules, repositories, records, users, permissions, and UCKK Mediatheque state",
+        "owner_ref": "the external UCKK Moodle platform"
+      },
+      {
+        "fact": "authorization to disclose or publish across an authority boundary",
+        "owner_ref": "contracts/components/publication-gateway.component.json"
+      },
+      {
+        "fact": "external UCKK transport, destination mapping, and remote publication result",
+        "owner_ref": "contracts/integrations/uckk-publication.integration.json"
+      },
+      {
+        "fact": "identity, role, delegation, trust, and signer authority",
+        "owner_ref": "contracts/components/identity-and-trust.component.json"
+      },
+      {
+        "fact": "policy, consent, disclosure, cultural-rights, and exception decisions",
+        "owner_ref": "contracts/components/governance-policy-runtime.component.json"
+      },
+      {
+        "fact": "host storage implementation, mounts, encryption mechanism, and physical topology",
+        "owner_ref": "the active deployment profile and storage toolchain"
+      }
+    ]
+  },
+  "responsibilities": [
+    "Create and maintain stable local media-record and media-version identities.",
+    "Bind accepted versions to managed local content or explicit external references.",
+    "Verify content hashes before accepting or activating a version.",
+    "Maintain collections, dimensions, tags, relationships, provenance, rights, restrictions, and lifecycle state.",
+    "Generate bounded deterministic renditions through Resource Governor-controlled jobs.",
+    "Detect exact duplicates by verified content hash without silently merging distinct records or authority contexts.",
+    "Support local search and browsing without requiring UCKK, Internet access, or external AI.",
+    "Prepare governed export candidates without granting publication authority.",
+    "Preserve publication package and receipt references without making the external destination authoritative over the local source record.",
+    "Participate in backup, restore, portability, and credible-exit procedures.",
+    "Expose health, queue, storage-pressure, and integrity state without disclosing restricted media content."
+  ],
+  "non_responsibilities": [
+    "Operating or administering UCKK or any Moodle instance.",
+    "Owning the UCKK Mediatheque or its remote records.",
+    "Performing background bidirectional synchronization with UCKK.",
+    "Publishing content without an approved Publication Gateway decision.",
+    "Treating a successful UCKK publication as transfer of local source authority.",
+    "Inventing rights, consent, provenance, classification, or semantic truth from AI output.",
+    "Allowing XLSX, a search index, a generated catalog, or an external service to become the authoritative store.",
+    "Writing directly into another component or external platform database."
+  ],
+  "authority_boundary": {
+    "local_source_authority": "The kOA Mediatheque remains authoritative for its local records and managed versions.",
+    "external_destination_authority": "UCKK remains authoritative for records created inside the external Moodle platform.",
+    "compatibility_rule": "Compatible fields or a shared conceptual frame do not create shared storage or shared authority.",
+    "publication_rule": "Publication creates a governed external representation and receipt; it does not merge the source and destination Mediatheques.",
+    "import_rule": "Any future UCKK-to-kOA import is a separate explicitly authorized operation and is not implicit synchronization."
+  },
+  "data_model": {
+    "canonical_schema_ref": "contracts/artifact-contracts/koa-media-record.schema.json",
+    "primary_entities": [
+      "media_record",
+      "media_version",
+      "managed_content_binding",
+      "collection",
+      "dimension",
+      "tag",
+      "relationship",
+      "rights_policy_binding",
+      "provenance_event",
+      "rendition",
+      "lifecycle_transition",
+      "import_record",
+      "export_record",
+      "publication_reference",
+      "backup_checkpoint"
+    ],
+    "identity_rules": [
+      "Record identity is stable across versions.",
+      "Version identity changes when accepted content or canonical metadata changes according to the active versioning policy.",
+      "A content hash identifies bytes and does not alone identify a record, rights context, or semantic object.",
+      "External UCKK identifiers are destination references and never replace local record or version identifiers."
+    ]
+  },
+  "storage_model": {
+    "user_lightweight_baseline": {
+      "structured_state": "SQLite",
+      "content_storage": "managed local content storage",
+      "integrity": "SHA-256 or a stronger profile-approved digest",
+      "background_workers": "bounded and Resource Governor-controlled",
+      "external_dependencies_required": false
+    },
+    "authoritative_store_rules": [
+      "The authoritative structured store and managed-content root are component-owned.",
+      "Search indexes, thumbnails, previews, caches, spreadsheets, and publication packages are rebuildable projections or exchange artifacts.",
+      "Database and content backup checkpoints must be coordinated to preserve referential integrity.",
+      "Secrets and remote UCKK credentials are not stored in media records."
+    ]
+  },
+  "interfaces": {
+    "inbound": [
+      {
+        "interface_id": "media_record_command",
+        "operations": [
+          "create_record",
+          "add_version",
+          "update_metadata",
+          "classify",
+          "apply_rights",
+          "transition_lifecycle"
+        ],
+        "authentication_required": true,
+        "authorization_required": true,
+        "idempotency_required": true
+      },
+      {
+        "interface_id": "media_import",
+        "operations": [
+          "stage_import",
+          "verify_import",
+          "accept_import",
+          "reject_import"
+        ],
+        "authentication_required": true,
+        "quarantine_before_acceptance": true
+      },
+      {
+        "interface_id": "publication_result",
+        "artifact_contract_ref": "contracts/artifact-contracts/uckk-publication-receipt.schema.json",
+        "role": "Attach an external publication result to the local export history without changing source authority."
+      }
+    ],
+    "outbound": [
+      {
+        "interface_id": "media_record_query",
+        "artifact_contract_ref": "contracts/artifact-contracts/koa-media-record.schema.json",
+        "selective_disclosure_required": true
+      },
+      {
+        "interface_id": "publication_candidate",
+        "artifact_contract_ref": "contracts/artifact-contracts/uckk-publication-package.schema.json",
+        "authorization_owner_ref": "contracts/components/publication-gateway.component.json",
+        "direct_external_send_allowed": false
+      },
+      {
+        "interface_id": "backup_export",
+        "role": "Produce a verified component backup or portability package under active backup and disclosure policy."
+      }
+    ]
+  },
+  "events": [
+    "media_record_created",
+    "media_version_staged",
+    "media_version_accepted",
+    "media_version_quarantined",
+    "classification_changed",
+    "rights_changed",
+    "rendition_completed",
+    "lifecycle_changed",
+    "publication_candidate_created",
+    "publication_result_attached",
+    "integrity_failure_detected",
+    "backup_checkpoint_created",
+    "restore_verified"
+  ],
+  "state_model": {
+    "record_states": [
+      "draft",
+      "active",
+      "restricted",
+      "withdrawn",
+      "archived",
+      "deleted_tombstone"
+    ],
+    "version_states": [
+      "staged",
+      "quarantined",
+      "verified",
+      "accepted",
+      "superseded",
+      "withdrawn",
+      "corrupt"
+    ],
+    "publication_states": [
+      "not_requested",
+      "candidate",
+      "awaiting_authorization",
+      "queued",
+      "submitted",
+      "published",
+      "partially_published",
+      "failed",
+      "cancelled",
+      "revoked_notice_pending"
+    ],
+    "forbidden_transition_rules": [
+      "Unverified content cannot become accepted.",
+      "A denied publication cannot become submitted without a new authorization decision.",
+      "An external publication result cannot change a withdrawn local source record back to active.",
+      "Deletion does not falsify historical receipts or remote publication history."
+    ]
+  },
+  "workflows": {
+    "local_ingest": [
+      "stage content and metadata",
+      "validate structure and policy prerequisites",
+      "compute and verify integrity",
+      "detect exact duplicates",
+      "resolve record and version identity",
+      "accept or quarantine",
+      "schedule bounded renditions",
+      "emit receipt or evidence"
+    ],
+    "uckk_publication": [
+      "select explicit local record versions",
+      "resolve rights, restrictions, consent, and destination eligibility",
+      "request Publication Gateway authorization",
+      "build a versioned UCKK publication package",
+      "queue or transmit through the UCKK publication integration",
+      "validate the returned receipt",
+      "attach the receipt to local export history"
+    ],
+    "backup_restore": [
+      "quiesce or checkpoint the structured store",
+      "bind the content manifest to the database checkpoint",
+      "verify package integrity",
+      "restore into staging",
+      "reconcile references and permissions",
+      "verify before activation"
+    ]
+  },
+  "offline_model": {
+    "local_catalog_available": true,
+    "local_content_available": "when the accepted content is stored locally and not restricted by active policy",
+    "local_classification_available": true,
+    "local_rendition_jobs_available": "within active resource envelopes",
+    "uckk_publication_available": false,
+    "offline_publication_behavior": "Authorized packages may be queued locally with visible state and expiry; no success is recorded until an authenticated remote receipt is validated.",
+    "reconnection_behavior": "Retry uses the same package identity and idempotency key unless the authorization, content version, rights, destination, or package has changed."
+  },
+  "security_and_privacy": {
+    "least_privilege": true,
+    "direct_cross_domain_database_write": false,
+    "content_disclosure_default": "deny unless allowed by record policy and active publication authorization",
+    "credentials_in_media_records": false,
+    "restricted_metadata_selective_disclosure": true,
+    "cultural_rights_enforced": true,
+    "ai_output_authority": "candidate_only",
+    "audit_policy": "Record identity, action, policy, outcome, and evidence references while minimizing disclosed content."
+  },
+  "resource_model": {
+    "interactive_priority": "Catalog browsing, playback of local accepted content, rights checks, and record edits take precedence over background derivation and publication.",
+    "bounded_jobs": [
+      "hashing",
+      "metadata extraction",
+      "thumbnail generation",
+      "preview generation",
+      "transcoding",
+      "indexing",
+      "backup verification",
+      "publication packaging"
+    ],
+    "user_lightweight_default_concurrency": 1,
+    "pressure_behavior": "Pause or defer optional derivation and publication work before affecting interactive, policy, identity, audit, or recovery capabilities."
+  },
+  "observability_and_operations": {
+    "health_dimensions": [
+      "database",
+      "managed_content_root",
+      "integrity_queue",
+      "rendition_queue",
+      "publication_queue",
+      "backup_checkpoint",
+      "storage_pressure"
+    ],
+    "metrics_without_content": [
+      "record_count",
+      "version_count",
+      "queued_jobs",
+      "failed_jobs",
+      "bytes_managed",
+      "bytes_staged",
+      "publication_attempts",
+      "integrity_failures"
+    ],
+    "backup_required": true,
+    "restore_test_required": true,
+    "support_bundle_rule": "Diagnostics must not include media content or restricted metadata unless separately authorized."
+  },
+  "interactions": [
+    {
+      "peer": "publication_gateway",
+      "direction": "bidirectional_control",
+      "purpose": "Submit bounded publication requests and receive authorization outcomes.",
+      "direct_authoritative_write": false
+    },
+    {
+      "peer": "uckk-publication",
+      "peer_kind": "external_integration",
+      "direction": "outbound_publication_with_receipt",
+      "purpose": "Publish an authorized package to the external UCKK Moodle platform.",
+      "direct_authoritative_write": false
+    },
+    {
+      "peer": "resource_governor",
+      "direction": "resource_admission",
+      "purpose": "Admit and bound background media work.",
+      "direct_authoritative_write": false
+    },
+    {
+      "peer": "audit_broker",
+      "direction": "evidence_brokerage",
+      "purpose": "Preserve selective evidence for critical transitions.",
+      "direct_authoritative_write": false
+    }
+  ],
+  "artifacts": {
+    "inputs": [
+      "media import candidate",
+      "rights policy binding",
+      "classification update",
+      "publication authorization"
+    ],
+    "outputs": [
+      "contracts/artifact-contracts/koa-media-record.schema.json",
+      "contracts/artifact-contracts/uckk-publication-package.schema.json",
+      "contracts/artifact-contracts/uckk-publication-receipt.schema.json"
+    ]
+  },
+  "conformance": {
+    "required_claims": [
+      "local authority remains independent from UCKK",
+      "offline local operation does not require UCKK",
+      "content integrity is verified before acceptance",
+      "publication requires explicit authorization",
+      "external publication results are attached as receipts rather than imported as local authority",
+      "backup and restore preserve database-content consistency"
+    ],
+    "prohibited_claims": [
+      "UCKK is an internal kOA-Linux subsystem",
+      "the kOA Mediatheque is native to UCKK",
+      "a shared conceptual frame implies shared storage or authority",
+      "a remote UCKK identifier replaces the local record identifier",
+      "background bidirectional synchronization is implicit"
+    ]
+  },
+  "validation": {
+    "validators": [
+      "tools/check_uckk_external_boundary.py",
+      "tools/check_component_boundaries.py",
+      "tools/check_artifact_contracts.py",
+      "tools/check_document_graph.py"
+    ],
+    "minimum_tests": [
+      "local ingest and integrity acceptance",
+      "duplicate detection without authority merge",
+      "offline browsing and queued work",
+      "publication denied by rights policy",
+      "publication queued while offline",
+      "idempotent publication retry",
+      "partial remote failure receipt",
+      "backup and restore verification",
+      "rejection of direct UCKK database access"
+    ]
+  }
+}

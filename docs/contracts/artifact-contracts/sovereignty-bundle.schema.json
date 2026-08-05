@@ -966,8 +966,8 @@
                   "resource_governor",
                   "semantik_architect_runtime",
                   "sentient",
-                  "uckk_dimension_gateway",
-                  "uckk_platform"
+                  "uckk_publication_adapter",
+                  "koa_mediatheque"
                 ]
               },
               "minimum_version": {
@@ -1198,8 +1198,8 @@
             "resource_governor",
             "semantik_architect_runtime",
             "sentient",
-            "uckk_dimension_gateway",
-            "uckk_platform"
+            "uckk_publication_adapter",
+            "koa_mediatheque"
           ]
         },
         "data_domains": {
@@ -1460,8 +1460,8 @@
                       "resource_governor",
                       "semantik_architect_runtime",
                       "sentient",
-                      "uckk_dimension_gateway",
-                      "uckk_platform"
+                      "uckk_publication_adapter",
+                      "koa_mediatheque"
                     ]
                   },
                   "item_ids": {
@@ -2305,8 +2305,8 @@
             "resource_governor",
             "semantik_architect_runtime",
             "sentient",
-            "uckk_dimension_gateway",
-            "uckk_platform"
+            "uckk_publication_adapter",
+            "koa_mediatheque"
           ]
         },
         "data_domain": {

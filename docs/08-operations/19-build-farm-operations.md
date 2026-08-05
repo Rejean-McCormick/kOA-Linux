@@ -235,7 +235,8 @@ This document applies to build-farm jobs for:
 - policy bundles;
 - language and runtime packs;
 - knowledge artifacts;
-- UCKK and media artifacts;
+- kOA Mediatheque and media artifacts;
+- UCKK publication-package and adapter artifacts;
 - documentation packages;
 - generated catalogs and AI context packages;
 - offline bundles;

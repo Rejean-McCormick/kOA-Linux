@@ -15,7 +15,7 @@
     "contracts/system.contract.json#/ai_boundary",
     "generated/component-catalog.json#/components/ariane_runtime",
     "generated/component-catalog.json#/components/sentient",
-    "generated/component-catalog.json#/components/uckk_platform",
+    "generated/component-catalog.json#/components/koa_mediatheque",
     "contracts/integration-types.contract.json",
     "contracts/artifact-classes.contract.json",
     "generated/requirements-index.json",
@@ -29,7 +29,8 @@
     "DEC-AI-001",
     "DEC-ARI-001",
     "DEC-SENT-001",
-    "DEC-UCKK-001"
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001"
   ],
   "requirement_ids": [
     "REQ-AI-001",
@@ -69,8 +70,9 @@
     "LOCK-ARI-001",
     "LOCK-ARI-002",
     "LOCK-SENT-001",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-001",
     "LOCK-DATA-001",
     "LOCK-COMP-001",
     "LOCK-COMP-002",
@@ -95,7 +97,8 @@
     "offline-continuity",
     "ariane",
     "sentient",
-    "uckk",
+    "koa_mediatheque",
+    "uckk_publication",
     "data-minimization",
     "non-authoritative-output",
     "safe-degradation"
@@ -139,7 +142,7 @@ contracts/system.contract.json#/ai_boundary
 contracts/integration-types.contract.json
 generated/component-catalog.json#/components/ariane_runtime
 generated/component-catalog.json#/components/sentient
-generated/component-catalog.json#/components/uckk_platform
+generated/component-catalog.json#/components/koa_mediatheque
 contracts/artifact-classes.contract.json
 generated/requirements-index.json
 generated/assertion-index.json
@@ -155,7 +158,7 @@ Their ownership roles are:
 | Approved surface identity, capabilities, data classes, and provider behavior | `integrations.registry.json` |
 | Ariane Runtime responsibility | `components.registry.json#/components/ariane_runtime` |
 | SenTient responsibility and isolation | `components.registry.json#/components/sentient` |
-| UCKK deterministic core responsibility | `components.registry.json#/components/uckk_platform` |
+| kOA Mediatheque deterministic core responsibility | `components.registry.json#/components/koa_mediatheque` |
 | Receipt and package classes | `artifact-classes.registry.json` |
 | Normative obligations | `requirements.registry.json` |
 | Cross-file AI invariants | `locks.registry.json` |
@@ -177,7 +180,7 @@ The AI boundary has four zones:
 
 | Zone | Content | Authority |
 | --- | --- | --- |
-| Deterministic local core | Component runtimes, local navigation, UCKK core, rule execution, owned data | Normal component and system authority |
+| Deterministic local core | Component runtimes, local navigation, kOA Mediatheque core, rule execution, owned data | Normal component and system authority |
 | AI integration boundary | Context selection, policy checks, disclosure controls, provider request and response handling | Boundary enforcement only |
 | External AI surface | ChatGPT, Suno, Gamma, or the approved Ariane voice adapter | No kOA product authority |
 | Candidate review and import | Human or component validation of returned content | Owning user or component decides acceptance |
@@ -264,7 +267,7 @@ renderer=requirements-list-v1
 - **REQ-AI-022 — SHALL:** SenTient remain optional, isolated, task-activated, and non-authoritative.
 - **REQ-AI-023 — SHALL:** SenTient outputs remain candidate inputs until reviewed and imported through an owning component interface.
 - **REQ-AI-024 — SHALL NOT:** SenTient receive direct write access to another component's authoritative data store.
-- **REQ-AI-025 — SHALL:** UCKK Platform provide canonical ingestion, organization, deterministic transformation, packaging, retrieval, export, backup, and restore without an external AI dependency.
+- **REQ-AI-025 — SHALL:** kOA Mediatheque provide canonical ingestion, organization, deterministic transformation, packaging, retrieval, export, backup, and restore without an external AI dependency.
 - **REQ-AI-026 — SHALL NOT:** Removal of an optional AI integration prevent operation, export, restoration, or credible exit of the non-AI core.
 - **REQ-AI-027 — SHALL:** Every external AI integration declare retention, deletion, logging, regional processing, authentication, and provider-failure behavior.
 - **REQ-AI-028 — SHALL:** A governed AI transfer or accepted AI-assisted import emit a machine-readable receipt when the applicable policy classifies the transition as critical.
@@ -411,17 +414,17 @@ SenTient receives bounded copies, references, or imports allowed by its componen
 
 It does not share unrestricted credentials or direct write access with source components. Accepted output returns through the destination component's interface.
 
-### 8.5 UCKK
+### 8.5 kOA Mediatheque
 
-UCKK Platform owns deterministic media ingestion, storage, organization, transformation, packaging, retrieval, export, backup, and restore.
+kOA Mediatheque owns deterministic media ingestion, storage, organization, transformation, packaging, retrieval, export, backup, and restore.
 
-AI-assisted metadata or creative output can be imported only as candidate material. UCKK core operations remain available without it.
+AI-assisted metadata or creative output can be imported only as candidate material. kOA Mediatheque core operations remain available without it.
 
 ### 8.6 Publication
 
 Sending context to an approved AI provider is an external transfer and follows the integration's disclosure controls.
 
-It does not use UCKK Dimension Gateway as a substitute for disclosure policy and does not bypass Publication Gateway when the transfer is classified as governed cross-domain publication.
+It does not use UCKK Publication Bridge as a substitute for disclosure policy and does not bypass Publication Gateway when the transfer is classified as governed cross-domain publication.
 
 ### 8.7 Development and documentation
 
@@ -440,7 +443,7 @@ The following decisions are closed:
 - external providers do not own kOA state;
 - Ariane remains usable without voice or external AI;
 - SenTient is optional, isolated, task-activated, and non-authoritative;
-- UCKK core behavior is deterministic and independent of external AI;
+- kOA Mediatheque core behavior is deterministic and independent of external AI;
 - an AI-generated artifact follows the same lifecycle controls as a comparable non-AI artifact;
 - an AI integration can be removed without disabling export, restore, portability, or credible exit.
 
@@ -473,7 +476,7 @@ This document is conformant when:
 9. no external AI surface owns authoritative product state;
 10. Ariane local navigation remains independent of the voice adapter;
 11. SenTient remains optional, isolated, task-activated, and non-authoritative;
-12. UCKK core capabilities remain available without external AI;
+12. kOA Mediatheque core capabilities remain available without external AI;
 13. every governed transfer applies data classification, consent, cultural-rights, and disclosure controls;
 14. every accepted import uses the destination component's normal mutation path;
 15. untrusted output handling covers code, markup, links, files, and tool instructions;

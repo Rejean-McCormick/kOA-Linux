@@ -175,7 +175,7 @@ It applies to subjects held or referenced by:
 
 - Konnaxion;
 - Kristal Runtime and Kristal source workflows;
-- UCKK Platform and UCKK Dimension Gateway;
+- kOA Mediatheque and the external UCKK publication integration;
 - Orgo workflows that carry protected references;
 - Ariane presentation and navigation;
 - language and knowledge artifacts;
@@ -1100,9 +1100,9 @@ Kristal preserves epistemic identity and lineage.
 
 Cultural-rights policy controls discovery, query, rendering, distribution, and Runtime Pack composition without merging workflow state into Kristal content identity.
 
-### 8.8 UCKK Platform
+### 8.8 kOA Mediatheque and external UCKK publication
 
-UCKK preserves source and derivative media lineage.
+The kOA Mediatheque preserves source and derivative media lineage. Publication to external UCKK carries only authorized metadata, rights, restrictions, provenance, and content.
 
 Native processing remains deterministic.
 
@@ -1173,9 +1173,9 @@ Policy activation and subject import remain separate transitions.
 | `ADR-014` | Establishes the strict external AI boundary. |
 | `ADR-018` | Keeps SenTient isolated and advisory. |
 | `ADR-019` | Separates resource control from governance policy. |
-| `ADR-020` | Separates publication from UCKK ingestion. |
+| `ADR-030` | Establishes local kOA Mediatheque ownership. |
 | `ADR-021` | Keeps Ariane local operation independent from external voice. |
-| `ADR-022` | Keeps native UCKK processing deterministic and non-AI. |
+| `ADR-031` | Keeps UCKK external and publication explicit. |
 | `ADR-023` | Makes offline and high-assurance overlay behavior explicit. |
 | `ADR-024` | Preserves logical ownership across physical deployment forms. |
 
@@ -1336,7 +1336,7 @@ The AI action policy forbids summarization. The system does not send the text, a
 
 A community approves external transcription of selected non-sacred audio for one preservation purpose.
 
-The request uses an approved integration, sends only the selected audio, prohibits training and retention, records provenance, receives candidate text, and requires community review before acceptance into UCKK.
+The request uses an approved integration, sends only the selected audio, prohibits training and retention, records provenance, receives candidate text, and requires community review before acceptance into the kOA Mediatheque. Any later UCKK publication requires a separate rights and disclosure decision.
 
 ### 11.7 Publication through the gateway
 

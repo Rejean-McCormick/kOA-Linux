@@ -17,7 +17,7 @@
     "contracts/components/identity-and-trust.component.json",
     "contracts/components/audit-broker.component.json",
     "contracts/components/resource-governor.component.json",
-    "contracts/components/uckk-dimension-gateway.component.json",
+    "contracts/integrations/uckk-publication.integration.json",
     "contracts/artifact-classes.contract.json",
     "contracts/release-channels.contract.json",
     "generated/profile-catalog.json",
@@ -180,7 +180,7 @@ It does not define:
 - Orgo workflow execution or closure;
 - Konnaxion participation, discovery, or public-object persistence;
 - public-to-private Orgo intake;
-- UCKK local media ingestion;
+- kOA Mediatheque local media ingestion;
 - general document conversion;
 - native generative AI;
 - a direct database bridge;
@@ -202,7 +202,7 @@ A public signal moving into private operational work uses its own explicit intak
 | `contracts/components/identity-and-trust.component.json` | Human, role, organization, tenant, service, publisher, artifact, destination, and revocation identity. |
 | `contracts/components/audit-broker.component.json` | Classified publication, approval, withdrawal, supersession, and recovery evidence. |
 | `contracts/components/resource-governor.component.json` | Queue bounds, resource priority, cancellation, delivery limits, and degradation controls. |
-| `contracts/components/uckk-dimension-gateway.component.json` | Separate local media-ingestion boundary. |
+| `contracts/integrations/uckk-publication.integration.json` | Separate local media-ingestion boundary. |
 | `contracts/artifact-classes.contract.json` | Publication bundle, transformation record, receipt, and offline artifact contracts. |
 | `contracts/profiles/*.profile.json` | Component membership, activation, topology, resource, storage, network, and offline envelope. |
 | `generated/requirements-index.json` | Requirement statements displayed in section 5. |
@@ -426,11 +426,11 @@ Withdrawal and supersession do not erase required historical evidence.
 | `governance_policy_runtime` | `requests_disclosure_and_consent_decisions_from` | Apply audience, rights, redaction, approval, and exception policy. |
 | `audit_broker` | `emits_publication_and_withdrawal_receipts_to` | Preserve accountable publication evidence. |
 
-### 4.13 UCKK gateway separation
+### 4.13 UCKK publication bridge separation
 
 Publication Gateway controls cross-domain disclosure.
 
-UCKK Dimension Gateway controls user-selected local file and media transfer before UCKK admission.
+UCKK Publication Bridge performs UCKK-specific packaging and transport after Publication Gateway authorizes publication.
 
 They have separate:
 
@@ -488,7 +488,7 @@ Resource Governor prioritizes policy, confirmation, cancellation, withdrawal, an
 - **REQ-COMP-PUBGATE-002 — SHALL NOT:** Publication Gateway owns originating Orgo workflow state or accepted Konnaxion public state.
 - **REQ-COMP-PUBGATE-003 — SHALL:** Private-to-public disclosure follows the explicit Orgo to Publication Gateway to Konnaxion path.
 - **REQ-COMP-PUBGATE-004 — SHALL NOT:** Orgo publishes directly into Konnaxion persistence or bypasses Publication Gateway for a governed cross-domain disclosure.
-- **REQ-COMP-PUBGATE-005 — SHALL:** Publication Gateway remains separate from UCKK Dimension Gateway, including identity, stores, interfaces, events, responsibilities, and evidence.
+- **REQ-COMP-PUBGATE-005 — SHALL:** Publication Gateway authorize disclosure before invoking the UCKK publication integration; the integration shall not share authority state or own local media.
 - **REQ-COMP-PUBGATE-006 — SHALL:** Every publication candidate identifies its source object, source component, source workflow or decision context, correlation identity, requested audience, requested publication effect, and provenance.
 - **REQ-COMP-PUBGATE-007 — SHALL:** Every candidate passes schema, identity, scope, classification, provenance, and compatibility validation before disclosure evaluation.
 - **REQ-COMP-PUBGATE-008 — SHALL:** Unknown, conflicting, unsupported, or unverifiable data classification blocks publication.
@@ -713,7 +713,7 @@ External AI and optional integrations remain unavailable without blocking determ
 | Resource Governor | Controls queue bounds, priorities, concurrency, cancellation, and resource degradation. | Resource control does not decide disclosure. |
 | Publication artifacts | Carry immutable bundles, transformation records, receipts, and offline instructions. | Artifact presence does not equal approval or acceptance. |
 | External integrations and AI | Can return explicit candidate transformations or assistive material. | They cannot approve, deliver, withdraw, or write authoritative state directly. |
-| UCKK Dimension Gateway | Performs local user-selected media ingestion into UCKK. | It is not a publication or disclosure path. |
+| UCKK Publication Bridge | Performs UCKK-specific packaging and transport of an authorized representation. | It cannot authorize disclosure or own the local media record. |
 
 Every cross-component mutation uses an explicit API, command, event, gateway, or versioned artifact.
 
@@ -723,7 +723,7 @@ Every cross-component mutation uses an explicit API, command, event, gateway, or
 
 | Decision | Closed rule |
 | --- | --- |
-| `DEC-GATE-001` | Publication Gateway and UCKK Dimension Gateway are separate components and contracts. |
+| `DEC-UCKK-EXT-001` | Publication Gateway authorization precedes the UCKK publication integration. |
 | `DEC-DATA-001` | Publication Gateway owns only its registered publication, transformation, approval, receipt, withdrawal, and supersession domains. |
 | `DEC-COMP-001` | Cross-domain publication uses explicit component boundaries rather than shared persistence. |
 | `DEC-AUTH-001` | Disclosure, approval, publication, withdrawal, and supersession use explicit bounded authority. |
@@ -774,7 +774,7 @@ Additional validation confirms:
 
 1. the component identity, kind, documentation path, decisions, locks, and data domains match `generated/component-catalog.json`;
 2. every authoritative data domain has one owner;
-3. Publication Gateway and UCKK Dimension Gateway have separate identities and stores;
+3. Publication Gateway and UCKK publication integration have distinct identities, state, interfaces, and receipts;
 4. Orgo and Konnaxion direct writes are rejected;
 5. every interface has stable identity, direction, authorization, idempotency, and failure behavior;
 6. every state transition rejects invalid or partial changes;

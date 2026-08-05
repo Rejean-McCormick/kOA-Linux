@@ -185,7 +185,8 @@ This document applies globally to protected data handled by:
 - user-facing components;
 - identity and trust;
 - governance policy;
-- UCKK;
+- kOA Mediatheque;
+- external UCKK publication integration;
 - Ariane;
 - Kristal and language runtimes;
 - Konnaxion and Orgo;
@@ -433,7 +434,7 @@ The Publication Gateway controls:
 - commit state;
 - publication receipt.
 
-The UCKK Dimension Gateway controls user-selected dimension transfer and admission, not external audience publication.
+The kOA Mediatheque controls user-selected local media admission. Publication Gateway controls disclosure to external audiences, including UCKK, through destination-specific adapters.
 
 ### 4.9 Consent and cultural rights
 
@@ -605,7 +606,7 @@ The view is adapted to the actor and does not expose unrelated protected informa
 - **REQ-SEC-PRIV-009 — SHALL:** Every cross-component data request use a declared interface and return an authorized view rather than direct access to another component's authoritative source records.
 - **REQ-SEC-PRIV-010 — SHALL NOT:** A component, analytics process, indexer, workbench, integration, gateway, or auditor write directly to another component's authoritative source tables or convert a derived view into authoritative state without owner acceptance.
 - **REQ-SEC-PRIV-011 — SHALL:** Every external transfer identify the selected source objects, representations, data classes, destination, audience, purpose, integration identity, authority references, consent or rights context, expiry, and failure behavior.
-- **REQ-SEC-PRIV-012 — SHALL:** Publication Gateway control cross-domain disclosure, publication, and release to external audiences separately from UCKK Dimension Gateway admission.
+- **REQ-SEC-PRIV-012 — SHALL:** Publication Gateway control cross-domain disclosure, publication, and release to external audiences separately from kOA Mediatheque admission; UCKK publication shall use the authorized adapter and disclose only the approved package.
 - **REQ-SEC-PRIV-013 — SHALL NOT:** Successful transfer, upload, staging, or destination acceptance be reported as publication unless the Publication Gateway's authoritative commit state records completion.
 - **REQ-SEC-PRIV-014 — SHALL:** External AI operations require explicit user initiation, a registered integration, a bounded capability, declared transferred data, an approved destination, and candidate-output handling.
 - **REQ-SEC-PRIV-015 — SHALL NOT:** External AI outputs, voice-derived intents, enrichment results, or imported metadata become authoritative or trigger protected actions before provenance, validation, review, and owner acceptance.
@@ -846,9 +847,9 @@ Publication Gateway owns cross-domain publication decision, audience, destinatio
 
 It consumes selected representations rather than unrestricted source-table access.
 
-### 8.4 UCKK Dimension Gateway
+### 8.4 kOA Mediatheque admission and UCKK publication
 
-UCKK Dimension Gateway handles selected media transfer and controlled UCKK admission.
+The kOA Mediatheque handles selected local media admission. Publication Gateway with the UCKK adapter handles controlled external publication after rights, consent, audience, and disclosure checks.
 
 Its admission does not authorize public release.
 
@@ -898,7 +899,8 @@ This document closes the privacy and disclosure interpretation as follows:
 - identity, resource capacity, privilege, and reachability do not create disclosure authority;
 - cross-component access uses authorized views;
 - Publication Gateway owns external publication;
-- UCKK Dimension Gateway does not substitute for publication;
+- kOA Mediatheque admission does not substitute for publication;
+- the UCKK adapter does not substitute for Publication Gateway authorization;
 - external AI transfer is explicit and candidate-only on return;
 - consent and cultural rights are scoped and reevaluated at relevant boundaries;
 - derived data retains provenance and constraints;
@@ -945,7 +947,7 @@ This document is conformant when all of the following checks pass:
 10. identity, trust, privilege, network, and resource tests prove they do not create disclosure authority;
 11. cross-component tests reject direct source access and validate bounded views;
 12. Publication Gateway tests cover request, decision, transfer, destination response, commit, failure, cancellation, and reconciliation;
-13. gateway tests prove that UCKK admission does not create publication authority;
+13. tests prove that local Mediatheque admission does not create publication authority and that UCKK delivery requires explicit disclosure authorization;
 14. integration tests identify destination, data classes, purpose, credential, timeout, retry, failure, and removal;
 15. external AI tests require explicit user initiation and candidate-output handling;
 16. consent tests cover scope, representation, purpose, audience, destination, validity, revocation, attribution, reuse, and evidence;

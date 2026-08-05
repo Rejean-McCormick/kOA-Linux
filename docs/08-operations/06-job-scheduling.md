@@ -892,7 +892,7 @@ The scheduler stores references and required scheduling metadata rather than cop
 
 Build Farm uses isolated workers, clean execution, bounded queues, and exact candidate identities.
 
-Task-activated components such as SenTient, GF Wordbench, and intensive UCKK workers release resources after completion and remain non-authoritative outside their declared result contracts.
+Task-activated components such as SenTient, GF Wordbench, intensive kOA Mediatheque workers, and UCKK publication workers release resources after completion and remain non-authoritative outside their declared result contracts.
 
 ## 9. Decision Closure and Prohibited Assumptions
 

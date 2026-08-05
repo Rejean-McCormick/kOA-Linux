@@ -25,7 +25,8 @@
     "DEC-AI-001",
     "DEC-SENT-001",
     "DEC-ARI-001",
-    "DEC-UCKK-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001",
     "DEC-GOV-001"
   ],
   "requirement_ids": [
@@ -56,8 +57,9 @@
     "LOCK-AI-001",
     "LOCK-AI-002",
     "LOCK-SENT-001",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-001",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
     "LOCK-GOV-001",
@@ -255,7 +257,7 @@ It is oriented toward:
 - local applications and browser-based interfaces;
 - compiled and activated runtime artifacts;
 - Ariane local navigation;
-- Orgo, Konnaxion, Kristal, SemantiK runtime, and UCKK capabilities permitted by the active profile;
+- Orgo, Konnaxion, Kristal, SemantiK runtime, and kOA Mediatheque capabilities permitted by the active profile;
 - user-triggered external integrations;
 - bounded background work.
 
@@ -348,7 +350,7 @@ Mode-specific resource behavior includes:
 - isolating workspace budgets in development mode;
 - limiting retries and concurrency in service mode;
 - reserving capacity for maintenance and recovery;
-- serializing or deferring heavy UCKK media jobs on constrained hardware;
+- serializing or deferring heavy kOA Mediatheque media jobs on constrained hardware;
 - stopping optional heavy services when the active profile excludes them.
 
 The Governance Policy Runtime, when deployed, evaluates governance authorization. It remains separate from the Resource Governor.
@@ -514,11 +516,11 @@ Ariane presents mode and capability status to the user.
 
 Local navigation remains independent from external AI. External voice is an optional adapter. Failure of the voice path affects voice-dependent interaction only.
 
-### 8.2 UCKK
+### 8.2 kOA Mediatheque
 
-Native UCKK ingestion, routing, verification, queuing, and lifecycle behavior remain deterministic and non-AI.
+Native kOA Mediatheque ingestion, routing, verification, queuing, and lifecycle behavior remain deterministic and non-AI.
 
-Suno and Gamma are user-triggered external adapters. Their absence does not prevent native UCKK operation. Resource-intensive media work follows Resource Governor admission and scheduling.
+Suno and Gamma are user-triggered external adapters. Their absence does not prevent native kOA Mediatheque operation. Resource-intensive media work follows Resource Governor admission and scheduling.
 
 ### 8.3 SenTient
 
@@ -538,9 +540,9 @@ The Governance Policy Runtime controls governance authorization, disclosure, and
 
 Each component defines its own service-mode instances and internal states. The system mode model constrains how those states interact with profiles, authority, resources, connectivity, and lifecycle.
 
-### 8.7 Publication and UCKK Dimension gateways
+### 8.7 Publication and kOA Mediatheque Dimension gateways
 
-The Publication Gateway controls governed disclosure across domains. The UCKK Dimension Gateway controls user-selected ingestion into UCKK. Their mode state and authority remain separate.
+Publication Gateway controls governed disclosure across domains. After authorization, UCKK Publication Bridge performs target-specific packaging and transport to the external UCKK platform. Local Mediatheque operation remains independent.
 
 ### 8.8 Lifecycle services
 
@@ -599,7 +601,7 @@ This document is conformant when all of the following checks pass:
 11. offline tests prove that external-only capabilities fail truthfully while allowed local capabilities continue;
 12. degraded-mode tests prove capability containment;
 13. Ariane tests prove local navigation without external AI;
-14. UCKK tests prove deterministic native behavior without Suno or Gamma;
+14. kOA Mediatheque tests prove deterministic native behavior without Suno or Gamma;
 15. maintenance tests prove declared scope, completion checks, and rollback or repair;
 16. recovery tests prove isolation, verified inputs, integrity checks, and valid reactivation;
 17. break-glass tests prove human invocation, narrow scope, expiration, recording, and review;
@@ -631,7 +633,7 @@ resource_policy_authority_confusion
 
 ### 11.1 Lightweight user session
 
-A user starts kOA on a constrained computer. The session runs in `interactive_user` mode with `connected`, `nominal`, and `ordinary` overlays. SenTient, GF Wordbench, compilers, development containers, and external AI services are not started. A heavy UCKK preview job is queued behind interactive work by the Resource Governor.
+A user starts kOA on a constrained computer. The session runs in `interactive_user` mode with `connected`, `nominal`, and `ordinary` overlays. SenTient, GF Wordbench, compilers, development containers, and external AI services are not started. A heavy kOA Mediatheque preview job is queued behind interactive work by the Resource Governor.
 
 ### 11.2 Parallel development workspace
 
@@ -639,7 +641,7 @@ The same host keeps the user session active while a developer opens a registered
 
 ### 11.3 Disconnected operation
 
-Connectivity is lost. Local Ariane navigation, compiled language artifacts, local documents, and deterministic UCKK functions remain available within the profile's offline envelope. Suno, Gamma, external voice, and other external-only capabilities report unavailability rather than fabricated completion.
+Connectivity is lost. Local Ariane navigation, compiled language artifacts, local documents, and deterministic kOA Mediatheque functions remain available within the profile's offline envelope. Suno, Gamma, external voice, and other external-only capabilities report unavailability rather than fabricated completion.
 
 ### 11.4 Optional SenTient analysis
 

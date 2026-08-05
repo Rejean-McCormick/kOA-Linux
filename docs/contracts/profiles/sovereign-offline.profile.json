@@ -272,7 +272,7 @@
         "external_dependency_allowed": false
       },
       {
-        "component_id": "uckk_platform",
+        "component_id": "koa_mediatheque",
         "activation": "inherit_from_base_profile",
         "required_local_behavior": [
           "deterministic_ingestion",

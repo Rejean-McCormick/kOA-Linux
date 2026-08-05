@@ -21,7 +21,8 @@
     "DEC-HW-001",
     "DEC-PROFILE-001",
     "DEC-SENT-001",
-    "DEC-UCKK-001"
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001"
   ],
   "requirement_ids": [
     "REQ-OFFLINE-001",
@@ -63,8 +64,9 @@
     "LOCK-PROFILE-001",
     "LOCK-PROFILE-002",
     "LOCK-SENT-001",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002"
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -116,7 +118,7 @@ This document applies to:
 - local data stores, queues, caches, indexes, and artifact stores;
 - local authentication and trust evaluation;
 - Ariane guidance and automation;
-- UCKK ingestion, storage, versioning, and deterministic media processing;
+- kOA Mediatheque ingestion, storage, versioning, and deterministic media processing;
 - Kristal and language runtime consumption of installed artifacts;
 - local Orgo and Konnaxion capabilities;
 - Resource Governor decisions;
@@ -260,8 +262,8 @@ The following table describes the system-level offline envelope. Exact implement
 | Konnaxion | Continues local capabilities backed by installed modules, local data, and available local services. | Remote data and remote-only modules are not fabricated or silently substituted. |
 | SemantiK Architect Runtime | Continues rendering with installed compiled PGF and local runtime assets. | Missing languages or build outputs remain unavailable; runtime mode does not invoke compilers implicitly. |
 | GF Wordbench | Can operate only when its developer profile, local toolchain, sources, and dependencies are available. | It is not required for normal user-mode runtime operation. |
-| UCKK Platform | Continues local media storage, identity, versioning, provenance, visibility enforcement, collections, and deterministic local processing supported by installed tools. | It does not infer categories, summarize content, select publication channels, or invoke external AI automatically. |
-| UCKK Dimension Gateway | Continues local user-selected ingestion, durable queueing, resumable local transfer, metadata capture, verification, and draft creation. | Ingestion does not authorize publication or external transfer. |
+| kOA Mediatheque | Continues local media storage, identity, versioning, provenance, visibility enforcement, collections, and deterministic local processing supported by installed tools. | It does not infer categories, summarize content, select publication channels, or invoke external AI automatically. |
+| UCKK publication queue | Can preserve an explicitly requested publication draft and selected source references locally. | No external delivery occurs offline; authorization must be revalidated before bridge transport. |
 | Ariane Runtime | Continues Atlas-based observation, structured-goal selection, guidance, approved local automation, action verification, and local receipts. | External voice understanding is unavailable when its external path is unavailable. |
 | Governance Policy Runtime | Continues local authorization and disclosure evaluation only when the active profile deploys it with the required local policy artifacts. | If required policy authority cannot be evaluated, affected governed operations remain blocked. |
 | Publication Gateway | Continues local validation and preparation of publication requests where local authority is sufficient. | Delivery to an unavailable external target does not complete; queued requests require revalidation before release. |
@@ -329,9 +331,9 @@ Offline Ariane can use:
 
 The external voice path converts speech into a candidate structured command. It does not own the Atlas, authorize actions, or execute interface operations directly. When unavailable, the voice control is disabled without disabling local Ariane navigation.
 
-### 4.7 UCKK offline behavior
+### 4.7 kOA Mediatheque offline behavior
 
-UCKK remains user-directed and deterministic offline.
+kOA Mediatheque remains user-directed and deterministic offline.
 
 The local workflow can include:
 
@@ -340,7 +342,7 @@ user selects material
   -> user chooses category or unclassified state
   -> user chooses local visibility
   -> gateway verifies and transfers
-  -> UCKK creates media identity and initial version
+  -> kOA Mediatheque creates media identity and initial version
   -> original and provenance are preserved
   -> deterministic local derivatives are scheduled
   -> user receives local confirmation
@@ -360,7 +362,7 @@ Offline operation relies on activated local artifacts such as:
 - compiled PGF;
 - language runtime packs;
 - Ariane Atlases and Runtime Packs;
-- UCKK processing tools;
+- kOA Mediatheque processing tools;
 - profile contracts;
 - trust roots;
 - schemas;
@@ -449,8 +451,8 @@ A queued request records historical user intent. It is not permanent authorizati
 - **REQ-OFFLINE-007 — SHALL NOT:** kOA infer or activate a local AI substitute when ChatGPT, Suno, Gamma, the Ariane external voice path, or another external AI surface is unavailable.
 - **REQ-OFFLINE-008 — SHALL:** Ariane retain structured local guidance and authorized automation independently from external voice availability.
 - **REQ-OFFLINE-009 — SHALL NOT:** The Ariane external voice path authorize actions, execute interface operations directly, replace the Atlas, or disable structured local navigation when unavailable.
-- **REQ-OFFLINE-010 — SHALL:** UCKK retain local user-directed ingestion, identity, versioning, provenance, visibility enforcement, and deterministic processing supported by installed artifacts.
-- **REQ-OFFLINE-011 — SHALL NOT:** UCKK infer categories, summarize content, select channels, choose visibility, publish material, or invoke an external AI surface automatically during offline operation.
+- **REQ-OFFLINE-010 — SHALL:** kOA Mediatheque retain local user-directed ingestion, identity, versioning, provenance, visibility enforcement, and deterministic processing supported by installed artifacts.
+- **REQ-OFFLINE-011 — SHALL NOT:** kOA Mediatheque infer categories, summarize content, select channels, choose visibility, publish material, or invoke an external AI surface automatically during offline operation.
 - **REQ-OFFLINE-012 — SHALL:** SenTient remain optional, isolated, on demand, and non-authoritative, and its absence shall not remove a native baseline capability.
 - **REQ-OFFLINE-013 — SHALL:** Resource Governor continue deterministic local admission, prioritization, throttling, suspension, and resource protection while offline.
 - **REQ-OFFLINE-014 — SHALL NOT:** Resource Governor become a substitute for Governance Policy Runtime or make authorization, disclosure, consent, or privilege decisions.
@@ -513,7 +515,7 @@ During steady offline operation:
 2. Native services use local authoritative data and active installed artifacts.
 3. External-only operations remain unavailable, narrowed, or durably queued according to contract.
 4. Resource Governor protects interactive and critical local work.
-5. UCKK background derivatives can be delayed without blocking ingestion or local access.
+5. kOA Mediatheque background derivatives can be delayed without blocking ingestion or local access.
 6. SenTient remains stopped unless an allowed local profile explicitly activates it.
 7. Ariane uses structured local input and local Atlas execution.
 8. Backup, restore preparation, evidence capture, and diagnostics remain local.
@@ -604,7 +606,7 @@ Offline recovery:
 | One external provider unavailable | Only that integration narrows or stops. | Provider-dependent operation | Integration-state record |
 | External provider authentication fails | Local system continues and the integration reports authorization failure. | New transfer to that provider | Authentication failure record |
 | ChatGPT unavailable | Manual local workflow remains available. | ChatGPT-dependent external step | Integration-state record |
-| Suno unavailable | Local UCKK media management remains available. | Suno-dependent external generation step | Integration-state record |
+| Suno unavailable | Local kOA Mediatheque media management remains available. | Suno-dependent external generation step | Integration-state record |
 | Gamma unavailable | Local content and presentation artifacts remain available. | Gamma-dependent external generation step | Integration-state record |
 | Ariane voice path unavailable | Structured goals, commands, guidance, and approved automation remain available. | Voice input | Voice-path state record |
 | Atlas unavailable or incompatible | Ariane stops affected navigation safely. | Guidance or automation requiring that Atlas | Atlas validation result |
@@ -620,7 +622,7 @@ Offline recovery:
 | Offline bundle verification fails | Current active release continues. | Candidate activation | Verification evidence |
 | Backup target unavailable | Local work continues when local durability remains safe. | Backup completion claim | Backup failure record |
 | Local storage pressure rises | Resource Governor slows background work and protects critical writes. | New non-critical work when reserve would be violated | Resource decision |
-| UCKK derivative worker unavailable | Originals, versions, metadata, and visibility remain available. | New derivative generation | Worker-state record |
+| kOA Mediatheque derivative worker unavailable | Originals, versions, metadata, and visibility remain available. | New derivative generation | Worker-state record |
 | SenTient unavailable | Native baseline remains available. | Requested SenTient task | Optional-component state |
 | Remote support unavailable | Local diagnostics and support-bundle creation continue. | Remote session and upload | Support-state record |
 | Audit export unavailable | Local protected evidence continues to accumulate within limits. | Remote evidence submission | Evidence-queue record |
@@ -665,13 +667,13 @@ governance authorization
 
 A positive resource decision does not authorize an operation. A positive policy decision does not guarantee resource availability.
 
-### 8.3 Publication Gateway and UCKK Dimension Gateway
+### 8.3 Queued publication to UCKK
 
-UCKK Dimension Gateway admits user-selected material into the user’s UCKK dimension.
+When offline, a UCKK publication request may be queued locally but is not delivered. On reconnection, Publication Gateway revalidates authorization before UCKK Publication Bridge packages and transports the approved representation.
 
 Publication Gateway governs cross-domain release and external publication.
 
-Offline ingestion can complete locally while external publication remains unavailable. A queued publication request remains distinct from the UCKK media object and requires current revalidation before delivery.
+Offline ingestion can complete locally while external publication remains unavailable. A queued publication request remains distinct from the kOA Mediatheque media record and requires current revalidation before delivery.
 
 ### 8.4 Ariane and application components
 
@@ -737,7 +739,7 @@ The following assumptions are prohibited:
 7. SenTient is required for normal user operation.
 8. Voice availability defines Ariane availability.
 9. Ariane requires Internet for structured local navigation.
-10. UCKK requires AI to classify, summarize, or publish content.
+10. kOA Mediatheque requires AI to classify, summarize, or publish content.
 11. A thumbnail or transcode is AI analysis.
 12. Ingestion implies publication permission.
 13. A queued publication is already published.
@@ -777,7 +779,7 @@ This document is conformant when all of the following checks pass:
 10. The native baseline can initialize without Internet and without external AI.
 11. Loss of each optional external provider affects only its dependent capabilities.
 12. Ariane structured local navigation remains available when external voice is unavailable.
-13. UCKK local ingestion and deterministic processing do not invoke AI or publish automatically.
+13. kOA Mediatheque local ingestion and deterministic processing do not invoke AI or publish automatically.
 14. SenTient remains optional, isolated, on demand, and non-authoritative.
 15. Resource Governor remains deterministic and separate from Governance Policy Runtime.
 16. Component data ownership remains unchanged while offline.
@@ -801,11 +803,11 @@ This document is conformant when all of the following checks pass:
 
 ### 11.1 Internet outage during normal user work
 
-The Internet route fails while a user manages local Orgo tasks, reads installed Kristal content, organizes UCKK media, and uses Ariane guidance. Those local capabilities continue. ChatGPT controls and Ariane voice input show unavailable. No global system-failure state is reported.
+The Internet route fails while a user manages local Orgo tasks, reads installed Kristal content, organizes kOA Mediatheque media, and uses Ariane guidance. Those local capabilities continue. ChatGPT controls and Ariane voice input show unavailable. No global system-failure state is reported.
 
-### 11.2 Offline UCKK ingestion
+### 11.2 Offline kOA Mediatheque ingestion
 
-A user drops a video into UCKK, selects a category and private visibility, and confirms ingestion. The local gateway verifies the file, creates the initial version, stores provenance, and schedules a deterministic preview. It does not summarize the video, select a publication channel, or send it to an external service.
+A user imports a video into the kOA Mediatheque, selects local metadata and visibility, and confirms ingestion. The Mediatheque verifies the file, creates the initial version, stores provenance, and schedules a deterministic preview. It does not summarize the video, select a publication channel, or send it to an external service.
 
 ### 11.3 Ariane without voice
 
@@ -821,7 +823,7 @@ A local credential is present, but the requested high-impact operation requires 
 
 ### 11.6 Optional SenTient task
 
-A user requests an isolated SenTient task on a profile that supports it. The workbench cannot start because its local dependencies are missing. The task fails locally without affecting Orgo, Kristal, Konnaxion, UCKK, Ariane, the language runtime, or Resource Governor.
+A user requests an isolated SenTient task on a profile that supports it. The workbench cannot start because its local dependencies are missing. The task fails locally without affecting Orgo, Kristal, Konnaxion, kOA Mediatheque, Ariane, the language runtime, or Resource Governor.
 
 ### 11.7 Reconnection conflict
 
@@ -837,4 +839,4 @@ Remote support is unavailable during a local incident. The operator still runs l
 
 ### 11.10 Resource pressure while offline
 
-UCKK preview generation and a developer build create storage and CPU pressure. Resource Governor delays the preview job and lowers build resources while preserving local writes and Ariane responsiveness. It does not decide whether either operation is authorized.
+kOA Mediatheque preview generation and a developer build create storage and CPU pressure. Resource Governor delays the preview job and lowers build resources while preserving local writes and Ariane responsiveness. It does not decide whether either operation is authorized.

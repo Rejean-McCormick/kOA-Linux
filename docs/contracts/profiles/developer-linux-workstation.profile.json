@@ -335,12 +335,12 @@
       {
         "workbench_id": "uckk_development",
         "component_ids": [
-          "uckk_platform",
+          "koa_mediatheque",
           "uckk_dimension_gateway",
           "publication_gateway"
         ],
         "contract_refs": [
-          "contracts/components/uckk-platform.component.json",
+          "contracts/components/koa-mediatheque.component.json",
           "contracts/components/uckk-dimension-gateway.component.json",
           "contracts/components/publication-gateway.component.json"
         ],

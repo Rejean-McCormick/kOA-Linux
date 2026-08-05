@@ -9,17 +9,29 @@
     "global"
   ],
   "canonical_refs": [
+    "contracts/system.contract.json",
+    "contracts/terminology.contract.json",
     "contracts/ai-navigation.contract.json",
     "schemas/subsystem.schema.json"
   ],
-  "decision_ids": [],
+  "decision_ids": [
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001"
+  ],
   "requirement_ids": [],
-  "lock_ids": [],
+  "lock_ids": [
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-002"
+  ],
   "exception_ids": [],
   "depends_on": [],
   "tags": [
     "subsystems",
-    "documentation-boundary"
+    "documentation-boundary",
+    "external-platforms",
+    "uckk",
+    "mediatheque"
   ]
 }
 KOA:DOC-META:END -->
@@ -28,19 +40,29 @@ KOA:DOC-META:END -->
 
 ## 1. Purpose
 
-This document separates kOA operating-boundary documentation from authoritative internal subsystem documentation.
+This document separates kOA-Linux operating boundaries from the authoritative internal documentation of independently owned kOA ecosystem systems. It also distinguishes those systems from external platforms.
 
 ## 2. Scope
 
-It applies to Ariane, Konnaxion, Orgo, SenTient, SemantiK Architect, UCKK, and later independently documented subsystems.
+The subsystem documentation-mount model applies to Ariane, Konnaxion, Orgo, SenTient, and SemantiK Architect.
+
+UCKK is excluded from this model. UCKK is an external Moodle platform, not a native kOA-Linux subsystem. It has its own authority, storage, lifecycle, identity, access control, operations, and Mediatheque.
+
+The kOA Mediatheque is an internal kOA-Linux component and is documented through the component-contract model rather than through a subsystem mount.
 
 ## 3. Canonical References
 
-Subsystem boundary contracts are under `contracts/subsystems/`. Official documentation is exposed under `subsystems/`.
+Subsystem boundary contracts are under `contracts/subsystems/`. Their pinned official documentation can be exposed under `subsystems/` at the reserved paths declared by `contracts/ai-navigation.contract.json`.
+
+External-platform interactions are declared under `contracts/integrations/`. Publication from the kOA Mediatheque to UCKK is governed by the UCKK publication integration; it is not represented by `contracts/subsystems/uckk.subsystem.json` or `subsystems/uckk/`.
 
 ## 4. Model and Responsibilities
 
-kOA owns the operating-environment boundary. Each subsystem owns its internal domain model and behavior.
+kOA-Linux owns installation, activation, runtime dependencies, identity and authorization boundaries, data exchange, resources, health, offline availability, degradation, update compatibility, and backup or recovery boundaries.
+
+Each mounted subsystem owns its internal domain model and product behavior.
+
+The kOA Mediatheque owns local kOA media records and storage state. The UCKK Mediatheque owns its separate Moodle-side records and storage state. A compatible Mediatheque frame does not create shared authority or shared storage.
 
 ## 5. Applicable Normative Requirements
 
@@ -48,24 +70,52 @@ Executable assertions are carried by source contracts and validators rather than
 
 ## 6. Procedures or State Transitions
 
-A subsystem documentation link can be installed later at its reserved path without changing the kOA boundary model.
+A subsystem documentation link can be installed later at its reserved path without changing the kOA-Linux boundary model.
+
+Publishing to UCKK follows a separate controlled transition: explicit selection, disclosure authorization, rights and restriction checks, Moodle destination selection, package and manifest production, authenticated transfer, result handling, and publication receipt preservation.
+
+Controlled import from UCKK, when supported, is a separate explicitly authorized operation. It is not implicit bidirectional synchronization.
 
 ## 7. Failure States and Safe Degradation
 
-An absent documentation mount does not block preparation. Final alignment can require all mounts explicitly.
+An absent subsystem documentation mount does not block preparation unless final alignment is explicitly requested.
 
-## 8. Cross-Component Interactions
+Unavailable UCKK connectivity affects only UCKK publication or import. Local kOA Mediatheque operation remains available. Eligible outbound publication may be held in a bounded, visible, idempotent queue.
 
-Interactions use declared contracts. Direct writes to another subsystem's authoritative state are prohibited.
+## 8. Cross-Component and External Interactions
+
+Interactions use declared contracts. Direct writes to another subsystem's or external platform's authoritative database are prohibited.
+
+The Publication Gateway owns disclosure authorization. The UCKK Publication Bridge owns Moodle-specific packaging, transport, result handling, and receipts. Neither component transfers local source authority to UCKK.
 
 ## 9. Unknowns and Prohibited Assumptions
 
-Missing internal details are resolved in subsystem documentation, not recreated in kOA.
+Missing internal subsystem details are resolved in the owning subsystem documentation, not recreated in kOA-Linux.
+
+The following assumptions are prohibited:
+
+- UCKK is installed as a kOA-Linux subsystem;
+- UCKK is required by any kOA-Linux runtime profile;
+- UCKK owns local kOA media, rights, provenance, backup, or restore state;
+- the kOA Mediatheque and UCKK Mediatheque share one authoritative database;
+- a compatible Mediatheque frame creates shared ownership;
+- publication implies background bidirectional synchronization.
 
 ## 10. Validation Criteria
 
-Validation confirms reserved mount paths, unique identities, resolved boundary pages, and absence of duplicated internal catalogs.
+Validation confirms:
+
+- the five reserved subsystem identities and mount paths;
+- absence of an active UCKK subsystem contract or mount;
+- unique subsystem identities;
+- resolved boundary pages;
+- absence of duplicated internal subsystem catalogs;
+- kOA Mediatheque classification as an internal component;
+- UCKK classification as an external Moodle platform;
+- publication through a declared integration rather than direct database access.
 
 ## 11. Non-Normative Examples
 
-A kOA page can state that Ariane receives navigation input; Ariane documentation owns the detailed interaction model.
+A kOA-Linux page can state that Ariane receives navigation input; Ariane documentation owns the detailed interaction model.
+
+A user can select an item from the kOA Mediatheque and publish it to a UCKK course through an authorized bridge. The local record remains authoritative in kOA-Linux, while UCKK owns the separately published Moodle-side record.

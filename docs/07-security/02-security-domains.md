@@ -171,7 +171,8 @@ The model protects boundaries among:
 - governance policy;
 - resource governance;
 - publication;
-- UCKK dimension transfer;
+- kOA Mediatheque admission;
+- publication to external UCKK Moodle;
 - development workspaces;
 - nodes and privileged host control;
 - external integrations;
@@ -338,7 +339,8 @@ The model recognizes the following logical domain types:
 | Governance policy | Authorization, disclosure, consent, privilege, governed exceptions |
 | Resource governance | CPU, memory, I/O, queues, scheduling, and execution limits |
 | Publication | Cross-domain disclosure and destination commit |
-| UCKK dimension transfer | Target selection, transfer, quarantine, verification, and admission |
+| kOA Mediatheque admission | Local source selection, quarantine, verification, rights review, and admission |
+| External UCKK publication | Disclosure authorization, target selection, packaging, authenticated transfer, remote result, and receipt |
 | Workspace | Mutable development dependencies, services, secrets, data, ports, and resources |
 | Node and host privilege | System services, host mutation, privileged execution, and recovery |
 | External integration | External endpoint, credential, transfer, data class, and failure boundary |
@@ -428,11 +430,12 @@ A workload can be authorized and resource-constrained. It can also have availabl
 
 ### 4.8 Gateway domains
 
-The Publication Gateway and UCKK Dimension Gateway have different security-domain roles.
+The Publication Gateway and kOA Mediatheque admission boundary have different security-domain roles. The UCKK publication adapter operates only under Publication Gateway authorization.
 
 | Gateway | Owns |
 | --- | --- |
-| UCKK Dimension Gateway | User-selected target, transfer, integrity verification, quarantine, controlled admission |
+| kOA Mediatheque | User-selected local source, integrity verification, quarantine, controlled admission, rights, and provenance |
+| UCKK publication adapter | Authenticated external target, packaging, transfer, remote response, and receipt; no local data ownership |
 | Publication Gateway | Disclosure decision, audience, destination, publication transfer, commit result |
 
 One gateway does not act as the other.
@@ -543,7 +546,7 @@ A stronger physical level does not remove the lower-level logical requirements.
 - **REQ-SEC-DOM-007 — SHALL NOT:** One component write directly to another component's authoritative source tables, files, indexes, object records, or mutable state.
 - **REQ-SEC-DOM-008 — SHALL:** Cross-domain communication identify source domain, destination domain, subject identity, purpose, operation, data classes, authority references, trust context, correlation context, failure behavior, and retention.
 - **REQ-SEC-DOM-009 — SHALL:** Cross-domain data transfer minimize disclosed fields and use the narrowest declared interface and representation sufficient for the approved purpose.
-- **REQ-SEC-DOM-010 — SHALL:** Publication and UCKK dimension transfer remain separate gateway domains with separate decisions, state, receipts, and data paths.
+- **REQ-SEC-DOM-010 — SHALL:** Local kOA Mediatheque admission and external publication remain separate domains with separate decisions, state, receipts, and data paths; UCKK publication shall use the gateway-authorized adapter.
 - **REQ-SEC-DOM-011 — SHALL:** Identity and Trust establish subject and trust evidence while the owning component or Governance Policy Runtime evaluates action authority.
 - **REQ-SEC-DOM-012 — SHALL NOT:** Operating-system privilege, resource admission, network reachability, socket possession, successful authentication, or valid signature substitute for the required action authorization.
 - **REQ-SEC-DOM-013 — SHALL:** Resource Governor and Governance Policy Runtime remain separate domains for resource admission and governance authorization.
@@ -763,11 +766,11 @@ It receives domain attribution for tenant, component, workspace, node, or job. I
 
 Publication Gateway is the disclosure boundary for external audiences and destinations.
 
-It does not become a raw component-data store or UCKK admission gateway.
+It does not become a raw component-data store, a kOA Mediatheque admission interface, or a direct UCKK database gateway.
 
-### 8.5 UCKK Dimension Gateway
+### 8.5 kOA Mediatheque and UCKK publication adapter
 
-UCKK Dimension Gateway controls selected-dimension transfer, integrity verification, quarantine, and admission.
+The kOA Mediatheque controls selected local import, integrity verification, quarantine, rights review, and admission. The UCKK publication adapter controls only authenticated delivery of an already authorized publication package.
 
 It does not authorize public disclosure.
 
@@ -812,7 +815,8 @@ This document closes the security-domain interpretation as follows:
 - cross-component writes use declared contracts;
 - identity and authorization remain separate;
 - governance and resource decisions remain separate;
-- Publication Gateway and UCKK Dimension Gateway remain separate;
+- kOA Mediatheque admission and Publication Gateway remain separate;
+- the UCKK adapter cannot bypass Publication Gateway authorization;
 - external integrations use isolated identities and manifests;
 - external AI outputs remain candidates;
 - SenTient remains optional and isolated;
@@ -864,7 +868,7 @@ This document is conformant when all of the following checks pass:
 13. component tests prove that destination components apply their own invariants;
 14. identity tests prove that authentication and trust verification do not grant action authority;
 15. governance tests prove separation from Resource Governor;
-16. gateway tests prove separation between publication and UCKK admission;
+16. tests prove separation between local Mediatheque admission and external publication, including UCKK delivery;
 17. integration tests cover identity, credentials, endpoints, data, limits, failure, removal, and candidate treatment;
 18. SenTient tests prove optionality, isolation, and lack of authority;
 19. workspace tests prove isolation of dependencies, services, secrets, temporary data, networks, ports, databases, and resources;
@@ -923,7 +927,7 @@ A user explicitly sends selected content to an approved external AI surface. The
 
 ### 11.4 Cross-domain publication
 
-A UCKK rendition is valid inside its component domain. Publication Gateway evaluates the target audience and destination separately. A denied publication leaves the rendition locally valid and unpublished.
+A kOA Mediatheque rendition is valid inside its local component domain. Publication Gateway evaluates the target audience and external destination separately. A denied UCKK publication leaves the rendition locally valid and unpublished.
 
 ### 11.5 Offline sovereign import
 

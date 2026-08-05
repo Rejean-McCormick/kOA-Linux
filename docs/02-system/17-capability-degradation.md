@@ -35,7 +35,8 @@
     "DEC-PROFILE-001",
     "DEC-REL-001",
     "DEC-SENT-001",
-    "DEC-UCKK-001"
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001"
   ],
   "requirement_ids": [
     "REQ-DEG-001",
@@ -92,8 +93,9 @@
     "LOCK-PROFILE-001",
     "LOCK-PROFILE-002",
     "LOCK-SENT-001",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002"
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -319,9 +321,9 @@ renderer=requirements-list-v1
 - **REQ-DEG-023 — SHALL:** External AI failure preserve deterministic local workflows and authoritative local state.
 - **REQ-DEG-024 — SHALL:** Ariane voice unavailability remove voice interaction without changing non-vocal Ariane navigation authority.
 - **REQ-DEG-025 — SHALL:** SenTient resource, engine, or model failure remain isolated from required baseline operation.
-- **REQ-DEG-026 — SHALL:** UCKK transformation or background-worker failure preserve admitted source media and previously verified UCKK artifacts.
+- **REQ-DEG-026 — SHALL:** kOA Mediatheque transformation or background-worker failure preserve accepted local source media and previously verified outputs.
 - **REQ-DEG-027 — SHALL:** Publication Gateway failure queue or reject publication without changing source-domain authority or disclosing content.
-- **REQ-DEG-028 — SHALL:** UCKK Dimension Gateway failure reject or defer new media admission without affecting existing UCKK content.
+- **REQ-DEG-028 — SHALL:** UCKK Publication Bridge failure reject or defer new media publication without affecting existing kOA Mediatheque content.
 - **REQ-DEG-029 — SHALL:** Artifact verification, compatibility, signature, provenance, or activation failure leave the previous verified artifact authoritative.
 - **REQ-DEG-030 — SHALL NOT:** A failed Release Set activation create a partially active combination of system, services, governance, and knowledge channel versions.
 - **REQ-DEG-031 — SHALL:** Storage exhaustion or write-path failure prevent new authoritative writes before corrupting or silently truncating owned data.
@@ -479,9 +481,9 @@ A dependency becoming reachable is not sufficient evidence of recovery.
 | External AI assistance | Provider, network, or adapter unavailable | Disable only the requested AI-assisted capability; retain deterministic local workflows |
 | Ariane voice | Approved voice adapter unavailable | Voice unavailable; non-vocal Ariane navigation remains `normal` |
 | SenTient task | Engine, model, index, or resource failure | Pause, terminate, or block the isolated task; baseline operation continues |
-| UCKK background transformation | Worker or resource failure | Queue, pause, or reject transformation; admitted source media and verified outputs remain intact |
-| UCKK Platform core | Required local dependency unavailable | Affected UCKK capability degrades or blocks according to ownership and storage safety; unrelated components continue |
-| UCKK Dimension Gateway | Admission boundary unavailable | Reject or defer new admission; existing UCKK content remains available |
+| kOA Mediatheque background transformation | Worker or resource failure | Queue, pause, or reject transformation; accepted local source media and verified outputs remain intact |
+| kOA Mediatheque core | Required local dependency unavailable | Affected kOA Mediatheque capability degrades or blocks according to ownership and storage safety; unrelated components continue |
+| UCKK Publication Bridge | UCKK transport unavailable | Queue or reject new UCKK publication; existing kOA Mediatheque content remains available |
 | Publication Gateway | Publication boundary unavailable | Queue or reject publication; no disclosure occurs |
 | Governance Policy Runtime | Required policy authority unavailable | Governed decisions block; Resource Governor does not substitute |
 | Resource Governor | Enforcement unavailable | Heavy or unconstrained work blocks; Governance Policy Runtime does not substitute |
@@ -539,7 +541,7 @@ A resource allowance does not authorize an operation. A policy allowance does no
 
 Publication Gateway failure affects cross-domain publication.
 
-UCKK Dimension Gateway failure affects user-selected media admission.
+UCKK Publication Bridge failure affects only UCKK-specific packaging, transport, and destination receipt handling.
 
 Neither failure transfers responsibility to the other gateway, and neither gateway can bypass the missing boundary.
 
@@ -573,10 +575,10 @@ The following decisions are closed:
 - optional integrations do not become core dependencies;
 - the active profile owns its capability and offline envelope;
 - Resource Governor and Governance Policy Runtime remain separate authorities;
-- Publication Gateway and UCKK Dimension Gateway remain separate boundaries;
+- Publication Gateway authorization and UCKK-specific bridge transport remain distinct sequential boundaries;
 - Ariane voice loss does not disable non-vocal navigation;
 - SenTient failure does not disable the baseline;
-- UCKK background-work failure preserves admitted source media;
+- kOA Mediatheque background-work failure preserves accepted local source media;
 - failed artifact or Release Set activation preserves the previous verified state;
 - recovery includes revalidation and reconciliation before unrestricted mutation resumes.
 
@@ -613,7 +615,7 @@ This document is conformant when:
 10. unrelated capabilities remain available when their dependencies remain satisfied;
 11. queued work has durability, identity, expiry, retry, cancellation, and reevaluation rules;
 12. Resource Governor and Governance Policy Runtime remain distinct;
-13. Publication Gateway and UCKK Dimension Gateway remain distinct;
+13. UCKK publication requires both gateway authorization and bridge transport;
 14. external AI, Ariane voice, and SenTient failure behaviors match their canonical contracts;
 15. artifact activation and Release Set failure preserve the previous verified state;
 16. storage and receipt failures prevent unsafe commits;
@@ -640,11 +642,11 @@ ChatGPT is unavailable.
 
 The requested drafting capability becomes blocked or locally limited according to its integration contract. Local document access, deterministic workflows, non-vocal Ariane navigation, export, backup, and restore remain unaffected.
 
-### 11.2 Resource pressure during UCKK processing
+### 11.2 Resource pressure during kOA Mediatheque processing
 
-A large UCKK conversion reaches the active memory envelope.
+A large kOA Mediatheque conversion reaches the active memory envelope.
 
-Resource Governor lowers priority, reduces concurrency, and queues the conversion. Existing admitted media and previously verified outputs remain readable. The system does not terminate unrelated required services to finish the conversion.
+Resource Governor lowers priority, reduces concurrency, and queues the conversion. Existing accepted local media and previously verified outputs remain readable. The system does not terminate unrelated required services to finish the conversion.
 
 ### 11.3 Policy authority outage
 

@@ -178,7 +178,8 @@ This document applies globally to portability and exit involving:
 - identity and trust context;
 - governance policy;
 - cultural-rights and consent records;
-- UCKK objects and relationships;
+- kOA Mediatheque objects and relationships;
+- UCKK publication packages, mappings, and receipts without claiming remote platform ownership;
 - Ariane configuration and experience artifacts;
 - Kristal, PGF, Atlas, language, and knowledge artifacts;
 - system and service artifacts;

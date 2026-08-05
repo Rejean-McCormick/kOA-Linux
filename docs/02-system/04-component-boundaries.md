@@ -29,7 +29,8 @@
     "DEC-GOV-001",
     "DEC-GATE-001",
     "DEC-SENT-001",
-    "DEC-UCKK-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001",
     "DEC-AI-001",
     "DEC-PROFILE-001",
     "DEC-LANG-001",
@@ -43,8 +44,9 @@
     "LOCK-GOV-001",
     "LOCK-GATE-001",
     "LOCK-SENT-001",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-001",
     "LOCK-AI-001",
     "LOCK-AI-002",
     "LOCK-PROFILE-001",
@@ -196,8 +198,8 @@ The active set includes:
 | Resource Governor | Deterministic resource allocation, limits, scheduling constraints, and enforcement. |
 | SemantiK Architect Runtime | Runtime consumption of compiled language artifacts; it does not perform development-time grammar construction. |
 | SenTient | Optional, isolated, task-activated, non-authoritative research workbench. |
-| UCKK Dimension Gateway | User-selected ingestion into a UCKK dimension under the applicable ownership and policy contract. |
-| UCKK Platform | Deterministic native media identity, storage, processing, derived artifacts, export, backup, and restore. |
+| UCKK Publication Bridge | User-selected publication to an authorized external UCKK Moodle destination under the applicable ownership and policy contract. |
+| kOA Mediatheque | Deterministic native media identity, storage, processing, derived artifacts, export, backup, and restore. |
 
 The registry may evolve through accepted decisions and ADRs. Component identity is not inferred from repository names, processes, UI labels, or historical architecture.
 
@@ -314,13 +316,13 @@ Neither component owns the other's decisions.
 
 A policy decision may constrain resource use. Resource pressure does not create, modify, or bypass policy.
 
-#### Publication Gateway and UCKK Dimension Gateway
+#### Publication Gateway and UCKK Publication Bridge
 
 The Publication Gateway owns governed disclosure and publication across domains.
 
-The UCKK Dimension Gateway owns controlled ingestion of user-selected material into the applicable UCKK dimension.
+The UCKK Publication Bridge owns only UCKK-specific package, transfer, retry, and destination-receipt state after Publication Gateway authorization.
 
-Ingestion does not imply publication. Publication does not imply ownership of UCKK source media or dimensions.
+Ingestion does not imply publication. Publication does not imply ownership of kOA Mediatheque source media or dimensions.
 
 #### GF Wordbench and SemantiK Architect Runtime
 
@@ -417,10 +419,10 @@ This document does not create an independent component-requirement set. Product 
 | `LOCK-COMP-002` | Language construction remains separate from runtime consumption of compiled artifacts. |
 | `LOCK-DATA-001` | Direct writes to another component's authoritative source tables are prohibited. |
 | `LOCK-GOV-001` | Resource Governor and Governance Policy Runtime remain separate authorities. |
-| `LOCK-GATE-001` | Publication Gateway and UCKK Dimension Gateway remain separate contracts. |
+| `LOCK-UCKK-EXT-001` | UCKK publication transport cannot bypass Publication Gateway authorization or own local media. |
 | `LOCK-SENT-001` | SenTient remains optional, isolated, task-activated, and non-authoritative. |
-| `LOCK-UCKK-001` | Native UCKK processing remains deterministic and non-AI. |
-| `LOCK-UCKK-002` | Suno and Gamma remain optional, user-triggered external adapters. |
+| `LOCK-MEDIATHEQUE-001` | Native kOA Mediatheque processing remains deterministic and non-AI. |
+| `LOCK-UCKK-EXT-001` | Suno and Gamma remain optional, user-triggered external media integrations. |
 | `LOCK-AI-001` | The global baseline contains no native AI capability. |
 | `LOCK-AI-002` | External AI output remains candidate input and cannot directly mutate authoritative state. |
 | `LOCK-PROFILE-001` | Profile-specific rules do not become global implicitly. |
@@ -569,7 +571,7 @@ A component is retired only after:
 | Policy authority is unavailable | Policy-dependent actions are blocked; no local permission is inferred. |
 | Resource authority is unavailable | Work outside a previously valid declared envelope is denied or queued according to contract. |
 | Cross-domain publication fails | Local source state remains authoritative; publication is not claimed. |
-| UCKK ingestion fails | No publication is implied and no partial object becomes authoritative. |
+| kOA Mediatheque ingestion fails | No publication is implied and no partial object becomes authoritative. |
 | SenTient is unavailable | The mandatory local baseline continues without replacement. |
 | Derived projection is stale or unavailable | The source authority remains valid; the projection is regenerated or marked unavailable. |
 | Partial component replacement | The candidate remains non-authoritative; rollback or forward repair is used. |
@@ -611,11 +613,11 @@ The Publication Gateway verifies the governed publication conditions, produces e
 
 It does not become the owner of the source record.
 
-### 8.6 UCKK Dimension Gateway interactions
+### 8.6 UCKK Publication Bridge interactions
 
-The gateway accepts user-selected material and transfers it into the applicable UCKK ingestion contract.
+The gateway accepts user-selected material and transfers it into the applicable kOA Mediatheque ingestion contract.
 
-It does not publish the material across unrelated domains and does not become the owner of the resulting UCKK object.
+It does not publish the material across unrelated domains and does not become the owner of the resulting kOA Mediatheque record.
 
 ### 8.7 Ariane interactions
 
@@ -660,9 +662,9 @@ Their interactions use declared contracts and preserve their respective authorit
 | `DEC-COMP-001` | Establishes the expanded active first-class component inventory. |
 | `DEC-DATA-001` | Requires logical component ownership while permitting profile-dependent physical isolation or consolidation. |
 | `DEC-GOV-001` | Separates Resource Governor authority from Governance Policy Runtime authority. |
-| `DEC-GATE-001` | Separates Publication Gateway from UCKK Dimension Gateway. |
+| `DEC-UCKK-EXT-001` | Requires Publication Gateway authorization before UCKK-specific packaging and transport. |
 | `DEC-SENT-001` | Defines SenTient as isolated, optional, task-activated, and non-authoritative. |
-| `DEC-UCKK-001` | Keeps native UCKK processing deterministic and independent from AI-driven classification or routing. |
+| `DEC-MEDIATHEQUE-001` | Keeps native kOA Mediatheque processing deterministic and independent from AI-driven classification or routing. |
 | `DEC-AI-001` | Establishes the strict external-AI boundary and candidate-output treatment. |
 | `DEC-PROFILE-001` | Defines primary profiles and composable overlays without implicit inheritance. |
 | `DEC-LANG-001` | Separates development-time language construction from runtime compiled-artifact consumption. |
@@ -676,8 +678,8 @@ Their interactions use declared contracts and preserve their respective authorit
 | `ADR-009` | Defines the Governance Policy Runtime. |
 | `ADR-018` | Isolates SenTient as an optional workbench. |
 | `ADR-019` | Separates resource and policy authority. |
-| `ADR-020` | Separates publication and UCKK ingestion. |
-| `ADR-022` | Preserves deterministic native UCKK responsibilities. |
+| `ADR-020` | Separates publication and kOA Mediatheque ingestion. |
+| `ADR-022` | Preserves deterministic native kOA Mediatheque responsibilities. |
 | `ADR-024` | Preserves logical ownership across profile-dependent physical topologies. |
 
 ### 9.3 Prohibited assumptions
@@ -726,7 +728,7 @@ This document conforms when all of the following checks pass:
 17. profile-specific topology preserves global logical ownership;
 18. optional components can be removed from profiles that do not require them;
 19. Resource Governor and Governance Policy Runtime boundaries remain separate;
-20. Publication Gateway and UCKK Dimension Gateway boundaries remain separate;
+20. UCKK publication follows gateway authorization and bridge transport without authority collapse;
 21. GF Wordbench and SemantiK Architect Runtime boundaries remain separate;
 22. Ariane local navigation does not depend on external voice;
 23. SenTient is not an authority source or mandatory baseline dependency;
@@ -770,13 +772,13 @@ The same logical components use separate database services and service identitie
 
 Konnaxion owns a record. It requests a disclosure decision from the Governance Policy Runtime and submits the approved payload to the Publication Gateway. The gateway publishes the payload and issues a receipt. Konnaxion remains the source owner.
 
-### 11.4 UCKK ingestion
+### 11.4 kOA Mediatheque ingestion
 
-A user selects media in Ariane. Ariane sends a bounded command to the UCKK Dimension Gateway. The gateway invokes the UCKK ingestion contract. UCKK Platform verifies and stores the source object. Ariane and the gateway do not become media owners.
+A user selects local media in Ariane. Ariane sends a bounded command to the kOA Mediatheque, which verifies and stores the authoritative local record. A later request to publish that record to UCKK follows Publication Gateway authorization and UCKK Publication Bridge transport. Ariane and the bridge do not become media owners.
 
 ### 11.5 Resource pressure
 
-UCKK requests a transcode worker. The Resource Governor permits one low-priority worker. The Governance Policy Runtime is not asked to allocate CPU, and the Resource Governor does not authorize media disclosure.
+kOA Mediatheque requests a transcode worker. The Resource Governor permits one low-priority worker. The Governance Policy Runtime is not asked to allocate CPU, and the Resource Governor does not authorize media disclosure.
 
 ### 11.6 SenTient research result
 

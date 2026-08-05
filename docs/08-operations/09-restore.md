@@ -1196,7 +1196,7 @@ External AI is never a restore authority or required recovery dependency.
 | `DEC-PROFILE-001` | Restore topology, locality, assurance, and offline closure remain profile-specific |
 | `DEC-DATA-001` | Each component restores its own authoritative state; cross-component direct writes remain prohibited |
 | `DEC-GOV-001` | Policy and resource authority remain separate during recovery |
-| `DEC-GATE-001` | Publication and UCKK dimension admission remain separate after restore |
+| `DEC-GATE-001` | Local Mediatheque admission and cross-domain publication remain separate after restore; UCKK remains external |
 | `DEC-HW-001` | Sovereign-node recovery and backup targets are part of the profile hardware envelope |
 | `DEC-REL-001` | Exact compatible versions across four release channels are restored through Release Sets |
 | `DEC-AI-001` | External AI is not required for restore or recovery authority |
@@ -1208,7 +1208,7 @@ External AI is never a restore authority or required recovery dependency.
 | --- | --- |
 | `LOCK-DATA-001` | Restore cannot write foreign authoritative state |
 | `LOCK-GOV-001` | Policy and resource authorities remain separate |
-| `LOCK-GATE-001` | Restore does not merge publication and UCKK admission |
+| `LOCK-GATE-001` | Restore does not merge local media admission, publication state, or external UCKK authority |
 | `LOCK-PROFILE-001` | Profile-specific recovery rules do not become global |
 | `LOCK-AI-001`, `LOCK-AI-002` | No native or external AI authority enters restore |
 | `LOCK-LIFE-001` | Partial restored artifacts do not become active |

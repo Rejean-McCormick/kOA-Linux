@@ -30,7 +30,8 @@
     "DEC-SYS-AI-001",
     "DEC-SYS-RESOURCE-001",
     "DEC-ARI-001",
-    "DEC-UCKK-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001",
     "DEC-SENT-001"
   ],
   "requirement_ids": [
@@ -73,8 +74,9 @@
     "LOCK-AI-002",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-001",
     "LOCK-SENT-001",
     "LOCK-GOV-001",
     "LOCK-GATE-001",
@@ -147,7 +149,7 @@ This document applies globally to:
 - artifact production, verification, publication, and activation capabilities;
 - external integration adapters;
 - Ariane interaction capabilities;
-- UCKK platform and dimension-transfer capabilities;
+- kOA Mediatheque platform and dimension-transfer capabilities;
 - identity, trust, governance, audit, recourse, and resource-governance capabilities;
 - offline, degraded, deferred, and unavailable behavior;
 - capability discovery and presentation;
@@ -408,7 +410,7 @@ ChatGPT, Suno, Gamma, and the approved Ariane voice adapter are registered as op
 
 Ariane local non-voice navigation is native and independent of external AI. The approved voice adapter adds optional voice interaction without becoming the owner of navigation authority.
 
-Native UCKK capabilities remain deterministic and non-AI. Suno and Gamma can participate only through explicit external adapter capabilities.
+Native kOA Mediatheque capabilities remain deterministic and non-AI. Suno and Gamma can participate only through explicit external adapter capabilities.
 
 SenTient is an optional, isolated, non-authoritative developer or build workbench. Its presence does not expand the global baseline.
 
@@ -417,11 +419,11 @@ SenTient is an optional, isolated, non-authoritative developer or build workbenc
 The capability model preserves these non-interchangeable responsibilities:
 
 - Resource Governor and Governance Policy Runtime;
-- Publication Gateway and UCKK Dimension Gateway;
+- Publication Gateway and UCKK Publication Bridge;
 - component-owned authoritative state and cross-component workflow coordination;
 - native deterministic processing and optional external AI processing;
 - Ariane local navigation and optional external voice;
-- UCKK platform behavior and user-selected media transfer;
+- kOA Mediatheque platform behavior and user-selected media transfer;
 - runtime consumption and developer build workbenches.
 
 A composed feature can use both sides of a separation while retaining distinct capability identities, owners, contracts, evidence, and failure behavior.
@@ -453,8 +455,8 @@ A composed feature can use both sides of a separation while retaining distinct c
 - **REQ-SYS-CAP-022 — SHALL:** ChatGPT, Suno, Gamma, and the approved Ariane voice adapter be represented only as optional external integration capabilities.
 - **REQ-SYS-CAP-023 — SHALL NOT:** Output from an external AI surface become authoritative without explicit acceptance through the owning local workflow.
 - **REQ-SYS-CAP-024 — SHALL:** Ariane local non-voice navigation remain a native continuous capability independent of external AI and the approved voice adapter.
-- **REQ-SYS-CAP-025 — SHALL:** Native UCKK ingestion, routing, validation, local indexing, retrieval, and dimension transfer remain deterministic non-AI capabilities.
-- **REQ-SYS-CAP-026 — SHALL NOT:** The Publication Gateway and the UCKK Dimension Gateway be represented as one capability, one authority boundary, or interchangeable implementations.
+- **REQ-SYS-CAP-025 — SHALL:** Native kOA Mediatheque ingestion, organization, validation, local indexing, retrieval, export, backup, and restore remain deterministic non-AI capabilities.
+- **REQ-SYS-CAP-026 — SHALL NOT:** UCKK Publication Bridge bypass Publication Gateway authorization, own local media, or be represented as a substitute disclosure authority.
 - **REQ-SYS-CAP-027 — SHALL:** SenTient capabilities remain optional, isolated, non-authoritative, profile-scoped workbench capabilities limited to eligible development or build environments.
 - **REQ-SYS-CAP-028 — SHALL NOT:** A profile claim include a capability unless the profile contract explicitly enables or inherits it and all applicable dependencies, locks, tests, and evidence resolve.
 - **REQ-SYS-CAP-029 — SHALL:** Every active capability have traceability to its owner decision, requirements, locks, profiles, component contract, tests, and current evidence.
@@ -626,7 +628,7 @@ An exception cannot:
 - convert a profile capability into a global capability;
 - authorize direct cross-component writes;
 - merge Resource Governor with Governance Policy Runtime;
-- merge Publication Gateway with UCKK Dimension Gateway;
+- merge Publication Gateway with UCKK Publication Bridge;
 - introduce native AI into the baseline;
 - make external AI output authoritative;
 - make Ariane local navigation depend on external voice;
@@ -656,8 +658,8 @@ This document is conformant when validation confirms:
 13. the native baseline contains no AI dependency or AI capability claim;
 14. the four approved external AI surfaces remain optional adapters;
 15. Ariane local navigation remains available without external voice;
-16. native UCKK capabilities remain deterministic and non-AI;
-17. Publication Gateway and UCKK Dimension Gateway remain distinct;
+16. native kOA Mediatheque capabilities remain deterministic and non-AI;
+17. UCKK publication requires gateway authorization followed by target-specific bridge transport;
 18. SenTient remains optional, isolated, non-authoritative, and profile-scoped;
 19. cross-component capabilities use declared contracts and never direct writes;
 20. state-changing capabilities identify authority, policy, receipts, and evidence;
@@ -690,17 +692,17 @@ tools/check_no_unresolved_state.py
 
 `CAP-ARIANE-LOCAL-NAVIGATION` is owned by Ariane Runtime, classified as `navigation_and_interaction`, available in the user baseline, continuous offline, and independent of external AI. The approved voice adapter is a separate `external_adapter` capability.
 
-### 11.2 UCKK media ingestion
+### 11.2 kOA Mediatheque media ingestion
 
-`CAP-UCKK-LOCAL-INGESTION` validates and ingests user-selected local media through deterministic native processing. Optional Suno or Gamma operations use separate external adapter capabilities and return candidate outputs.
+`CAP-KOA-MEDIATHEQUE-LOCAL-INGESTION` validates and ingests user-selected local media through deterministic native processing. Optional Suno or Gamma operations use separate external adapter capabilities and return candidate outputs.
 
 ### 11.3 Governed publication
 
 A publication workflow coordinates a component-owned candidate, Governance Policy Runtime authorization, Publication Gateway disclosure, and Audit Broker evidence. Each stage retains its own capability identity and authority effect.
 
-### 11.4 UCKK dimension transfer
+### 11.4 UCKK Moodle destination transfer
 
-UCKK Dimension Gateway transfers user-selected media into the user's UCKK dimension. It is not the Publication Gateway and does not acquire general cross-domain disclosure authority.
+UCKK Publication Bridge packages and transports an authorized representation to the user's external UCKK Moodle destination. It does not own local media or acquire cross-domain disclosure authority.
 
 ### 11.5 Resource pressure
 

@@ -64,8 +64,9 @@
     "LOCK-DEV-003",
     "LOCK-DEV-004",
     "LOCK-DEV-005",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-001",
     "LOCK-DATA-001",
     "LOCK-GOV-001",
     "LOCK-LIFE-001",
@@ -158,7 +159,7 @@ This document applies to governed resource use by:
 - development workspaces;
 - unattended services;
 - workers and scheduled jobs;
-- UCKK processing;
+- kOA Mediatheque processing;
 - external-integration workers;
 - optional SenTient workbenches;
 - language-runtime and authoring processes;
@@ -230,7 +231,7 @@ Their ownership roles are:
 | `profiles/index.json` and profile contracts | Capacity, reservations, limits, overlays, and implementation-specific controls |
 | `components.registry.json` | Component identity and system boundary |
 | `requirements.registry.json` | Normative requirement text and validation ownership |
-| `locks.registry.json` | Governance separation, profile, workspace, UCKK, data, and lifecycle invariants |
+| `locks.registry.json` | Governance separation, profile, workspace, kOA Mediatheque, data, and lifecycle invariants |
 | `traceability.registry.json` | Requirement, lock, profile, component, test, and evidence relationships |
 | `evidence.registry.json` | Resource, pressure, scheduling, and conformance evidence |
 | `exceptions.registry.json` | Bounded deviations that cannot create authorization or unlimited resource use |
@@ -429,7 +430,7 @@ The lightweight profile protects interactive use.
 
 Typical behavior includes:
 
-- one concurrent heavy UCKK job as the maximum global baseline;
+- one concurrent heavy kOA Mediatheque job as the maximum global baseline;
 - serialized heavy media work;
 - deferrable background indexing;
 - stoppable optional workbenches;
@@ -526,7 +527,7 @@ Exact operation identifiers and fields belong to the component contract.
 - **REQ-COMP-RG-007 — SHALL:** Development workspace resource state remain isolated and attributable by workspace identity, including processes, services, queues, jobs, limits, and temporary storage.
 - **REQ-COMP-RG-008 — SHALL:** Unattended service workloads use bounded concurrency, retries, timeouts, queue capacity, process count, and restart behavior.
 - **REQ-COMP-RG-009 — SHALL:** Maintenance and recovery modes preserve declared capacity for diagnosis, restoration, rollback, forward repair, identity, receipts, and critical control functions.
-- **REQ-COMP-RG-010 — SHALL:** The user_lightweight profile admit no more than one concurrent heavy UCKK job unless a stricter active envelope applies.
+- **REQ-COMP-RG-010 — SHALL:** The user_lightweight profile admit no more than one concurrent heavy kOA Mediatheque job unless a stricter active envelope applies.
 - **REQ-COMP-RG-011 — SHALL:** Optional heavy services and workbenches be stoppable, suspendable, or absent without disabling the native lightweight baseline.
 - **REQ-COMP-RG-012 — SHALL NOT:** A governed workload use unbounded retries, unbounded queues, unbounded timeouts, unbounded concurrency, unbounded temporary storage, or unbounded process creation.
 - **REQ-COMP-RG-013 — SHALL:** Queueing and scheduling policies prevent one tenant, component, workspace, integration, or workload class from silently consuming capacity reserved for another protected class.
@@ -705,11 +706,11 @@ Identity and Trust establishes workload initiator, service, component, workspace
 
 The Resource Governor uses those identities for attribution and isolation. Identity success does not guarantee admission.
 
-### 8.3 UCKK Platform
+### 8.3 kOA Mediatheque
 
-UCKK jobs declare resource class, priority, timeout, retry limit, output class, and active profile.
+kOA Mediatheque jobs declare resource class, priority, timeout, retry limit, output class, and active profile.
 
-The Resource Governor admits, serializes, throttles, pauses, or rejects jobs. UCKK retains ownership of object, rendition, job-purpose, and result state. The lightweight profile limits concurrent heavy UCKK processing to one.
+The Resource Governor admits, serializes, throttles, pauses, or rejects jobs. kOA Mediatheque retains ownership of object, rendition, job-purpose, and result state. The lightweight profile limits concurrent heavy kOA Mediatheque processing to one.
 
 ### 8.4 Ariane Runtime
 
@@ -765,7 +766,7 @@ This document closes the component interpretation as follows:
 - interactive and control-critical capacity can be reserved;
 - development resources are workspace-scoped;
 - heavy and optional work can be deferred or stopped;
-- user-lightweight heavy UCKK concurrency is bounded at one;
+- user-lightweight heavy kOA Mediatheque concurrency is bounded at one;
 - queues, retries, timeouts, processes, temporary storage, and concurrency are bounded;
 - pressure produces explicit degradation;
 - the owning component retains workload-purpose, data, and result ownership;
@@ -784,7 +785,7 @@ The following assumptions are prohibited:
 - a heavy job can ignore interactive reservations;
 - an optional workbench must remain running;
 - one development workspace can borrow another's mutable resource state silently;
-- the Resource Governor owns UCKK objects or application results;
+- the Resource Governor owns kOA Mediatheque records or application results;
 - container limits are the only valid enforcement mechanism;
 - Kubernetes is required for resource governance;
 - Linux-specific controls apply to Windows development profiles;
@@ -811,7 +812,7 @@ This document is conformant when all of the following checks pass:
 12. interactive tests preserve responsiveness under declared heavy-load pressure;
 13. development tests prove workspace attribution and isolation;
 14. service tests prove bounded queues, retries, timeouts, process count, and concurrency;
-15. UCKK tests prove the lightweight single-heavy-job limit;
+15. kOA Mediatheque tests prove the lightweight single-heavy-job limit;
 16. SenTient and external-integration tests prove optional capability isolation;
 17. pressure tests prove backpressure and critical-capacity preservation;
 18. queue tests cover admission, ordering, bounds, age, expiry, cancellation, and reevaluation;
@@ -854,7 +855,7 @@ resource_component_conformance_evidence_incomplete
 
 ### 11.1 Lightweight media processing
 
-A user requests two heavy UCKK operations. The Resource Governor admits one and queues the other because the active lightweight envelope permits one concurrent heavy job. Ariane navigation and ordinary browsing retain protected capacity.
+A user requests two heavy kOA Mediatheque operations. The Resource Governor admits one and queues the other because the active lightweight envelope permits one concurrent heavy job. Ariane navigation and ordinary browsing retain protected capacity.
 
 ### 11.2 Authorized but capacity-constrained publication
 

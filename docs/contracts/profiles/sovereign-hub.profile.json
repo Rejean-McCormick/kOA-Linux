@@ -353,8 +353,8 @@
   ],
   "optional_components": [
     {
-      "component_id": "uckk_platform",
-      "contract_ref": "contracts/components/uckk-platform.component.json",
+      "component_id": "koa_mediatheque",
+      "contract_ref": "contracts/components/koa-mediatheque.component.json",
       "activation": "declared_capability"
     },
     {

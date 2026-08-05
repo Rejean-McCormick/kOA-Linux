@@ -141,7 +141,7 @@ This document applies globally to critical transitions involving:
 - governed publication and cross-domain disclosure;
 - controlled external data transfer;
 - external AI requests and authoritative acceptance of returned candidates;
-- UCKK admission, export, re-import, deletion, restoration, and publication handoff;
+- UCKK publication, export, re-import, deletion, restoration, and publication handoff;
 - artifact and release verification;
 - activation, rollback, forward repair, supersession, and recovery;
 - backup restoration;
@@ -318,8 +318,8 @@ Examples:
 - Publication Gateway produces its publication or disclosure decision and commit receipts;
 - a privileged broker produces host-mutation execution and commit receipts;
 - lifecycle services produce activation, rollback, repair, and recovery receipts;
-- UCKK Dimension Gateway produces transfer, quarantine, verification, and admission receipts within its boundary;
-- UCKK Platform produces object-lifecycle receipts within its boundary;
+- UCKK Publication Bridge produces package, transfer, retry, destination-response, and publication-result receipts within its boundary;
+- kOA Mediatheque produces object-lifecycle receipts within its boundary;
 - the owning component produces acceptance receipts for external candidate data;
 - documentation governance tooling produces authority-cutover receipts.
 
@@ -431,7 +431,7 @@ Integrity mechanisms can include:
 - **REQ-SYS-RCT-012 — SHALL:** Policy authorization, privilege grants and uses, break-glass activation and closure, governed publication, cross-domain disclosure, and controlled external data transfer be classified as critical transitions.
 - **REQ-SYS-RCT-013 — SHALL:** Artifact and release verification, activation, rollback, forward repair, supersession, and recovery be classified as critical transitions.
 - **REQ-SYS-RCT-014 — SHALL:** Backup restoration, authoritative data migration, trust-root or revocation change, governed host mutation, and documentation authority cutover be classified as critical transitions.
-- **REQ-SYS-RCT-015 — SHALL:** UCKK admission, external export, controlled re-import, publication handoff, deletion, and restoration produce receipts or registered equivalent evidence linked to the affected UCKK objects.
+- **REQ-SYS-RCT-015 — SHALL:** Local Mediatheque lifecycle changes and external UCKK publication transitions produce distinct receipts linked to the affected local record and external destination result.
 - **REQ-SYS-RCT-016 — SHALL:** External AI operations record explicit user initiation, transferred data classes, destination surface, purpose, returned candidate identity, provenance, and authoritative acceptance outcome when applicable.
 - **REQ-SYS-RCT-017 — SHALL NOT:** Routine reads, ordinary navigation, transient health sampling, internal debug events, or non-authoritative interface actions require constitutional transition receipts unless a canonical policy classifies the specific action as critical.
 - **REQ-SYS-RCT-018 — SHALL:** A transition spanning multiple components use a shared correlation identifier while each component emits the receipt for the decision or commit it owns.
@@ -616,9 +616,9 @@ The Publication Gateway produces receipts for disclosure decisions, transfer pre
 
 The source component retains ownership of its canonical source state.
 
-### 8.5 UCKK Platform and Dimension Gateway
+### 8.5 kOA Mediatheque and UCKK publication integration
 
-The Dimension Gateway records transfer, quarantine, integrity verification, and admission decisions. The UCKK Platform records object creation, rendition registration, external candidate acceptance, deletion, restoration, and lifecycle changes.
+kOA Mediatheque records local object creation, version and rendition registration, candidate acceptance, deletion, restoration, and lifecycle changes. After Publication Gateway authorization, UCKK Publication Bridge records package creation, transport attempts, destination responses, and publication results.
 
 Publication remains with the Publication Gateway.
 
@@ -695,7 +695,7 @@ This document is conformant when all of the following checks pass:
 13. restricted-evidence access produces accountable access records;
 14. lifecycle tests cover verification, activation, rollback, forward repair, supersession, restore, and recovery;
 15. publication tests cover selection, disclosure decision, transfer, commit, denial, failure, and reconciliation;
-16. UCKK tests cover admission, external transfer, re-import, acceptance, deletion, and restoration;
+16. kOA Mediatheque tests cover local ingestion, candidate acceptance, deletion, restoration, export, and import; UCKK integration tests separately cover authorization, package transport, and destination receipts;
 17. external AI tests record explicit initiation, transferred data, destination, provenance, candidate state, and acceptance outcome;
 18. break-glass tests cover grant, use, expiration, review, and closure;
 19. offline tests cover durable local append, bounded buffering, synchronization, and exhaustion;
@@ -729,7 +729,7 @@ transition_commit_partial
 
 ### 11.1 Denied publication
 
-A user requests publication of a UCKK rendition. The Publication Gateway records a denied disclosure decision. No publication commit receipt exists, and the rendition remains locally available.
+A user requests publication of a kOA Mediatheque rendition. The Publication Gateway records a denied disclosure decision. No publication commit receipt exists, and the rendition remains locally available.
 
 ### 11.2 Failed service activation
 

@@ -28,7 +28,8 @@
   "decision_ids": [
     "DEC-AI-001",
     "DEC-SENT-001",
-    "DEC-UCKK-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001",
     "DEC-ARI-001",
     "DEC-PROFILE-001",
     "DEC-DATA-001",
@@ -93,8 +94,9 @@
     "LOCK-AI-001",
     "LOCK-AI-002",
     "LOCK-SENT-001",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-MEDIATHEQUE-002",
+    "LOCK-UCKK-EXT-001",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
     "LOCK-DATA-001",
@@ -404,7 +406,8 @@ Security authority is distributed among registered owners.
 | CPU, memory, I/O, queue, and concurrency admission | Resource Governor |
 | Privileged node-operation coordination | kOA Node Agent and registered privileged boundary |
 | Cross-domain external publication | Publication Gateway |
-| UCKK dimension admission | UCKK Dimension Gateway |
+| kOA Mediatheque admission | kOA Mediatheque |
+| Publication to external UCKK Moodle | Publication Gateway with UCKK publication adapter |
 | Artifact identity and lifecycle | Artifact class and release contracts |
 | Integration permissions and data classes | Integration registry and manifest |
 | Selective evidence handling | Audit Broker and evidence contracts |
@@ -514,7 +517,8 @@ Typical domains include:
 - Kristal Runtime;
 - SemantiK Architect Runtime;
 - Ariane Runtime;
-- UCKK Platform;
+- kOA Mediatheque;
+- external UCKK Moodle publication integration;
 - Governance Policy Runtime;
 - Identity and Trust;
 - Audit Broker;
@@ -951,7 +955,7 @@ Their operations remain:
 - non-authoritative;
 - unable to write directly to canonical stores.
 
-Suno and Gamma remain user-triggered external adapters for controlled UCKK workflows.
+Suno and Gamma remain user-triggered external adapters for candidate media workflows. Candidate output is admitted to the kOA Mediatheque before any separately authorized publication to UCKK.
 
 Ariane external voice remains optional and separate from local navigation.
 
@@ -1257,7 +1261,7 @@ They exclude secret values and unrestricted protected payloads.
 - **REQ-SEC-BASE-035 — SHALL:** External AI and SenTient outputs remain candidate inputs until provenance, review, controlled import, destination validation, and explicit authoritative acceptance complete.
 - **REQ-SEC-BASE-036 — SHALL NOT:** AI output grant privilege, activate releases, create policy authority, determine final consent or cultural rights, publish binding results, or become the only path to core correctness or recovery.
 - **REQ-SEC-BASE-037 — SHALL:** Cultural rights, consent, privacy, audience, purpose, and disclosure constraints be enforced at every applicable ingest, read, export, render, publication, integration, AI, backup, and restore boundary.
-- **REQ-SEC-BASE-038 — SHALL:** Publication Gateway remain the controlled cross-domain publication boundary and remain separate from policy evaluation and UCKK dimension admission.
+- **REQ-SEC-BASE-038 — SHALL:** Publication Gateway remain the controlled cross-domain publication boundary and remain separate from policy evaluation and kOA Mediatheque admission; UCKK publication shall use a destination-specific adapter under that gateway.
 - **REQ-SEC-BASE-039 — SHALL:** Audit be selective, classified, access-controlled, minimized, integrity-protected, and separated into public receipts, tenant audit, restricted evidence, privacy records, and security audit as applicable.
 - **REQ-SEC-BASE-040 — SHALL NOT:** Audit, observability, support, diagnostics, or evidence systems become unrestricted replicas of application data, secrets, private content, or protected cultural material.
 - **REQ-SEC-BASE-041 — SHALL:** Access to restricted evidence, secret material, recovery authority, quarantine, and high-impact administrative functions itself produce protected audit evidence.
@@ -1451,7 +1455,8 @@ They exclude secret values and unrestricted protected payloads.
 | External AI is unavailable | Disable that assistance capability | Native local operation | External AI assistance |
 | External response fails validation | Reject or quarantine candidate | Destination authoritative state | Adoption |
 | Publication Gateway is unavailable | Block new external publication | Source-owned state and internal workflows | Publication |
-| UCKK Dimension Gateway is unavailable | Block new dimension admission | Existing UCKK state and unrelated media capability | New dimension admission |
+| kOA Mediatheque admission is unavailable | Block new local media admission | Existing local media reads, export, backup, and unrelated capability | New local admission |
+| External UCKK is unavailable | Queue or reject authorized publication according to policy | Local kOA Mediatheque operation | New remote delivery |
 | Audit path is unavailable | Apply evidence policy and block receipt-critical transitions | Existing state and locally buffered evidence where permitted | Evidence-required critical transition |
 | Storage encryption key is unavailable | Mark affected data inaccessible and start recovery | Unaffected domains | Access or restore of affected data |
 | Artifact verification fails | Quarantine artifact | Active known-good artifact | Staging or activation |
@@ -1539,13 +1544,13 @@ It verifies disclosure authority and obligations, prepares the permitted represe
 
 It does not decide governance policy or own source data.
 
-### 8.7 UCKK Dimension Gateway
+### 8.7 kOA Mediatheque admission and UCKK publication
 
-UCKK Dimension Gateway controls explicit selected-media admission to a declared UCKK dimension.
+The kOA Mediatheque controls explicit selected-media admission into its own local authority domain.
 
-It does not publish externally, invoke Suno or Gamma, infer consent, or write directly to UCKK authoritative storage.
+It does not publish externally, invoke Suno or Gamma, infer consent, or write directly to external UCKK storage.
 
-UCKK Platform remains the final admission authority.
+For external publication, Publication Gateway authorizes disclosure and the UCKK adapter performs authenticated Moodle delivery. UCKK remains the final authority for acceptance into its own separate platform.
 
 ### 8.8 Ariane Runtime
 
@@ -1587,12 +1592,13 @@ Security validation confirms both without turning profile implementation or repo
 | --- | --- |
 | `DEC-AI-001` | No native AI baseline; approved external surfaces are explicit, removable, and non-authoritative |
 | `DEC-SENT-001` | SenTient is an optional isolated workbench outside the user baseline |
-| `DEC-UCKK-001` | Native UCKK behavior is deterministic and local |
+| `DEC-MEDIATHEQUE-001` | kOA Mediatheque behavior is deterministic and local |
+| `DEC-UCKK-EXT-001` | UCKK is an external Moodle publication target |
 | `DEC-ARI-001` | Ariane local navigation is independent of optional external voice |
 | `DEC-PROFILE-001` | Security strengthening and implementation remain profile-specific |
 | `DEC-DATA-001` | Component data ownership is exclusive and cross-component source writes are prohibited |
 | `DEC-GOV-001` | Governance Policy Runtime and Resource Governor are separate authorities |
-| `DEC-GATE-001` | Publication Gateway and UCKK Dimension Gateway remain separate |
+| `DEC-GATE-001` | Local Mediatheque admission and external publication remain separate |
 | `DEC-CONTAINER-001` | Container choices remain profile-scoped |
 | `DEC-K8S-001` | Kubernetes is not an endpoint requirement |
 | `DEC-REL-001` | Four release channels retain independent identity and Release Set compatibility |
@@ -1604,11 +1610,12 @@ Security validation confirms both without turning profile implementation or repo
 | --- | --- |
 | `LOCK-AI-001`, `LOCK-AI-002` | No native AI authority and no direct authoritative mutation by external AI |
 | `LOCK-SENT-001` | SenTient remains optional, isolated, and non-authoritative |
-| `LOCK-UCKK-001`, `LOCK-UCKK-002` | Native UCKK remains deterministic; Suno and Gamma remain explicit external adapters |
+| `LOCK-MEDIATHEQUE-001`, `LOCK-MEDIATHEQUE-002` | kOA Mediatheque remains deterministic; Suno and Gamma remain explicit candidate-producing adapters |
+| `LOCK-UCKK-EXT-001` | UCKK publication remains explicit, external, and unable to claim local authority |
 | `LOCK-ARI-001`, `LOCK-ARI-002` | Local navigation remains independent of voice |
 | `LOCK-DATA-001` | No direct foreign authoritative write |
 | `LOCK-GOV-001` | Resource and policy authority remain separate |
-| `LOCK-GATE-001` | Publication and UCKK dimension admission remain separate |
+| `LOCK-GATE-001` | Local media admission and cross-domain publication remain separate |
 | `LOCK-COMP-001`, `LOCK-COMP-002` | Kristal identity and language build/runtime boundaries remain intact |
 | `LOCK-PROFILE-001` | Profile strengthening does not become global |
 | `LOCK-DEV-001` to `LOCK-DEV-005` | Development dependencies and mutable state remain isolated |
@@ -1643,7 +1650,7 @@ The following assumptions are invalid:
 - prompts are sufficient security boundaries;
 - local AI would automatically be safer or authoritative;
 - SenTient can update canonical stores because it is local;
-- Suno or Gamma can be called automatically by UCKK;
+- Suno or Gamma can be called automatically by kOA Mediatheque ingestion or UCKK publication;
 - Ariane voice can silently replace local navigation;
 - audit requires total transparency;
 - logs can contain secrets because access is restricted;
@@ -1702,7 +1709,7 @@ This document is conformant when:
 35. candidate-output adoption remains controlled;
 36. AI cannot grant privilege or release authority;
 37. privacy, disclosure, consent, and cultural-rights controls apply at each relevant boundary;
-38. Publication Gateway remains separate from policy and UCKK admission;
+38. Publication Gateway remains separate from policy and local Mediatheque admission, and UCKK delivery uses its controlled adapter;
 39. audit remains selective and classified;
 40. evidence stores do not replicate unrestricted application content;
 41. restricted-evidence access is audited;
@@ -1793,7 +1800,7 @@ The destination component reviews and accepts or rejects it.
 
 Loss of the external service preserves all native workflows.
 
-### 11.4 UCKK and Suno
+### 11.4 kOA Mediatheque, UCKK, and Suno
 
 A user selects a media item and explicitly requests a Suno workflow.
 
@@ -1803,7 +1810,7 @@ The returned output is untrusted candidate media.
 
 It enters controlled re-import and user approval.
 
-Native UCKK ingestion never calls Suno automatically.
+kOA Mediatheque ingestion never calls Suno automatically. Publication to UCKK is a separate explicit operation.
 
 ### 11.5 Ariane voice failure
 

@@ -141,7 +141,7 @@ This document applies to publication between:
 - a sovereign hub and a configured federation peer;
 - a local component and an approved external destination;
 - Orgo and Konnaxion;
-- UCKK and a public or restricted destination;
+- the kOA Mediatheque and an external destination, including UCKK;
 - Kristal and an application distribution domain;
 - one geographic or community audience and another;
 - one confidentiality class and a less restrictive class;
@@ -172,7 +172,7 @@ The following operations remain distinct:
 
 | Operation | Security meaning |
 | --- | --- |
-| Ingestion | Admission of material into a component or UCKK dimension. |
+| Ingestion | Admission of material into an owning local component, including the kOA Mediatheque. |
 | Storage | Retention within an owning component’s authority. |
 | Access | Reading within an already authorized domain. |
 | Internal processing | Use without changing the audience or authority domain. |
@@ -207,7 +207,7 @@ This document does not:
 - grant cultural authority;
 - grant consent;
 - determine legal ownership;
-- define UCKK admission;
+- define local Mediatheque admission or remote UCKK acceptance;
 - replace identity and trust;
 - replace Governance Policy Runtime;
 - replace Audit Broker;
@@ -244,7 +244,8 @@ Related explanatory authority includes:
 - `01-constitution/12-cultural-rights-and-consent.md`;
 - `04-components/03-component-integration-boundaries.md`;
 - `07-security/08-network-boundaries.md`;
-- `10-adrs/ADR-020-publication-gateway-and-uckk-dimension-gateway-separation.md`.
+- `10-adrs/ADR-030-koa-mediatheque-as-an-internal-component.md`;
+- `10-adrs/ADR-031-uckk-as-an-external-moodle-publication-target.md`.
 
 The machine-readable contracts own the artifact fields and lifecycle values. This document explains the security model and required controls.
 
@@ -492,8 +493,8 @@ Remote publication work can be queued only when the request contract permits it.
 - **REQ-SEC-PUB-010 — SHALL:** Required attribution, anonymity, context, language, access, duration, geographic, redistribution, and cultural restrictions remain attached to the representation.
 - **REQ-SEC-PUB-011 — SHALL NOT:** A transformation execute without explicit transformation authority and receiving-component acceptance.
 - **REQ-SEC-PUB-012 — SHALL NOT:** External AI, external creative services, external translation, external voice, or SenTient output become authoritative publication content without controlled component acceptance.
-- **REQ-SEC-PUB-013 — SHALL:** Publication Gateway and UCKK Dimension Gateway remain separate identities, authorities, routes, decisions, data stores, and receipt producers.
-- **REQ-SEC-PUB-014 — SHALL NOT:** Successful UCKK admission authorize publication or successful publication authorize UCKK admission.
+- **REQ-SEC-PUB-013 — SHALL:** Publication Gateway and kOA Mediatheque admission remain separate identities, authorities, routes, decisions, data stores, and receipt producers; the UCKK adapter shall operate only within an authorized publication request.
+- **REQ-SEC-PUB-014 — SHALL NOT:** Successful local Mediatheque admission authorize publication, successful UCKK delivery alter local authority, or remote UCKK acceptance be treated as local admission.
 - **REQ-SEC-PUB-015 — SHALL:** Publication delivery use a declared integration and authenticated destination identity.
 - **REQ-SEC-PUB-016 — SHALL NOT:** Internal network location, loopback, shared host, container network, cluster membership, valid certificate, or valid signature be treated as sufficient publication authorization.
 - **REQ-SEC-PUB-017 — SHALL:** Every mutation-capable publication request use a stable request identity and idempotency key.
@@ -705,11 +706,11 @@ Orgo prepares a bounded source representation or approves one prepared under its
 
 Neither component writes the other’s database.
 
-### 8.2 UCKK to a public domain
+### 8.2 kOA Mediatheque to external UCKK Moodle
 
-UCKK Platform owns accepted media objects, versions, collections, provenance, and access rules.
+The kOA Mediatheque owns local accepted media objects, versions, collections, provenance, rights, and access rules. The external UCKK Moodle platform independently owns only the content it accepts into its own domain.
 
-UCKK Dimension Gateway controls admission into UCKK. Publication Gateway separately controls release from UCKK to a public, restricted, federation, or external domain.
+Publication Gateway authorizes release from the kOA Mediatheque. The UCKK publication adapter packages and delivers the approved material to the authenticated external Moodle target and records its result. It does not write UCKK databases directly or merge authorities.
 
 Admission receipts do not replace publication decisions.
 
@@ -779,8 +780,8 @@ The following assumptions are prohibited:
 8. An administrator possesses publication authority by default.
 9. A source component can publish directly because it owns the source.
 10. A destination can retrieve private source data directly.
-11. UCKK admission is a publication decision.
-12. Publication is an UCKK admission decision.
+11. Local Mediatheque admission is automatically a UCKK publication decision.
+12. Successful UCKK delivery becomes local Mediatheque admission or transfers local authority.
 13. Internal network location establishes trust.
 14. A valid certificate or signature establishes complete publication authority.
 15. A successful send is a successful publication.
@@ -828,7 +829,7 @@ This document is conformant when:
 20. Every staged representation is bounded and inactive before execution.
 21. Every transformation resolves to authority and acceptance evidence.
 22. External and SenTient output remains candidate material until accepted.
-23. Publication Gateway and UCKK Dimension Gateway separation tests pass.
+23. Local Mediatheque admission and external UCKK publication-boundary tests pass.
 24. Direct source or destination database writes fail.
 25. Every execution uses stable request identity and idempotency.
 26. Destination acknowledgement is required for a published result.
@@ -850,9 +851,9 @@ This document is conformant when:
 
 Orgo owns a private case. A human approves a redacted summary for a public Konnaxion audience. Publication Gateway binds the source version, verifies consent and policy, stages the approved summary, delivers it to Konnaxion, receives acceptance, and issues a receipt.
 
-### 11.2 UCKK admission without publication
+### 11.2 Local admission without UCKK publication
 
-A user imports a photograph into a private UCKK dimension. The admission succeeds. No publication occurs because there is no publication request, audience, destination, or allow decision.
+A user imports a photograph into a private kOA Mediatheque collection. Local admission succeeds. No UCKK publication occurs because there is no publication request, target, disclosure decision, or allow result.
 
 ### 11.3 Translation for a restricted audience
 

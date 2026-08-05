@@ -32,7 +32,8 @@
     "DEC-PROFILE-001",
     "DEC-REL-001",
     "DEC-SENT-001",
-    "DEC-UCKK-001"
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001"
   ],
   "requirement_ids": [
     "REQ-CONST-001",
@@ -85,8 +86,9 @@
     "LOCK-PROFILE-001",
     "LOCK-PROFILE-002",
     "LOCK-SENT-001",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002"
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -203,7 +205,7 @@ The constitutional model contains these invariant families:
 | Separation | Component boundaries, data ownership, cross-domain mediation | system, components, locks |
 | Rights | Consent, selective audit, recourse, portability, credible exit | system, requirements, traceability |
 | AI boundary | No native AI dependency, optional external surfaces, non-authoritative AI | system, integrations, components |
-| Runtime roles | Ariane, UCKK, Kristal, Resource Governor, policy and gateway separation | system, components, locks |
+| Runtime roles | Ariane, kOA Mediatheque, Kristal, Resource Governor, policy, and external-publication boundaries | system, components, locks |
 | Lifecycle | Atomic activation, rollback, receipts, release compatibility | artifact classes, release channels, requirements |
 | Scope | Global rules separated from profile, overlay, component, toolchain, and recipe rules | profiles, documentation, requirements |
 
@@ -259,12 +261,12 @@ renderer=requirements-list-v1
 - **REQ-CONST-019 — SHALL:** Ariane Runtime provide deterministic non-vocal navigation without an external AI service.
 - **REQ-CONST-020 — SHALL:** Ariane voice interaction become unavailable without changing local navigation authority when the approved Ariane voice adapter is unavailable or not authorized.
 - **REQ-CONST-021 — SHALL:** SenTient remain optional, isolated, task-activated, and non-authoritative unless a future accepted owner decision explicitly changes one of those properties.
-- **REQ-CONST-022 — SHALL:** UCKK Platform provide its canonical ingestion, organization, transformation, packaging, and retrieval pipeline without requiring an external AI service.
+- **REQ-CONST-022 — SHALL:** kOA Mediatheque provide its canonical ingestion, organization, transformation, packaging, and retrieval pipeline without requiring an external AI service.
 - **REQ-CONST-023 — SHALL NOT:** Kristal Runtime become a workflow engine, a universal operational database, or an owner of component-specific transactional state.
 - **REQ-CONST-024 — SHALL:** Resource Governor enforce deterministic resource envelopes, priorities, concurrency, and degradation without becoming an authorization or disclosure-policy authority.
 - **REQ-CONST-025 — SHALL:** Governance Policy Runtime remain distinct from Resource Governor and decide governed authorization, disclosure, and privilege only within its declared deployment scope.
 - **REQ-CONST-026 — SHALL:** Publication Gateway exclusively mediate governed publication across authority or security boundaries.
-- **REQ-CONST-027 — SHALL:** UCKK Dimension Gateway exclusively mediate user-selected media ingestion into the applicable UCKK dimension and not perform cross-domain publication.
+- **REQ-CONST-027 — SHALL:** The UCKK Publication Bridge package and transport only explicitly authorized publication packages to an external UCKK Moodle destination; Publication Gateway remains the disclosure authority.
 - **REQ-CONST-028 — SHALL:** Activation of a published artifact avoid partial authoritative state and define class-appropriate rollback, rejection, recreation, revocation, or forward-repair behavior.
 - **REQ-CONST-029 — SHALL:** Policy changes, privileged mutations, artifact activations, publications, release activations, and other declared critical transitions emit machine-readable receipts.
 - **REQ-CONST-030 — SHALL:** Every external integration declare its capability scope, data boundary, authentication mode, failure behavior, and removal behavior.
@@ -328,12 +330,12 @@ publication request
 → publication receipt
 ```
 
-Media ingestion into UCKK follows a separate path:
+Publication to the external UCKK platform follows this controlled path:
 
 ```text
 user media selection
-→ UCKK Dimension Gateway admission
-→ UCKK Platform ingestion
+→ UCKK Publication Bridge packaging and transport
+→ external UCKK receipt and separately owned destination copy
 → provenance record
 ```
 
@@ -379,7 +381,7 @@ Removal of an optional integration follows:
 | Governance Policy Runtime unavailable where required | Deny governed mutations or use a declared read-only mode | Unprivileged local access allowed by existing authority |
 | Resource Governor unavailable | Block resource-intensive or unconstrained work | Low-risk local reading and inspection |
 | Publication Gateway unavailable | Queue or reject publication requests | Source-domain data and local use |
-| UCKK Dimension Gateway unavailable | Reject or defer media admission | Existing UCKK content |
+| UCKK Publication Bridge unavailable | Queue or reject new UCKK publication | Existing kOA Mediatheque content remains available |
 | Receipt persistence failure | Do not commit a transition that requires a receipt | Previous authoritative state |
 | Artifact rollback target unavailable | Block activation before authority changes | Current active artifact |
 | Restore verification failure | Keep restored state inactive | Last verified active state |
@@ -409,9 +411,9 @@ Ariane Runtime owns deterministic local navigation behavior.
 
 The approved Ariane voice adapter is an optional external interaction path. Its absence removes voice capability without changing Ariane's local navigation state or authority.
 
-### 8.4 UCKK and publication
+### 8.4 kOA Mediatheque and UCKK publication
 
-UCKK Dimension Gateway admits user-selected media into an authorized UCKK dimension.
+After Publication Gateway authorization, the UCKK Publication Bridge packages and transports selected kOA Mediatheque records to an authorized external UCKK Moodle destination.
 
 Publication Gateway controls release across authority or security boundaries.
 
@@ -438,9 +440,9 @@ This document closes the following assumptions:
 - external AI is optional and non-authoritative;
 - SenTient is not part of the required baseline;
 - Ariane navigation does not depend on voice;
-- UCKK core behavior does not depend on external AI;
+- kOA Mediatheque core behavior does not depend on external AI;
 - Resource Governor and Governance Policy Runtime are separate authorities;
-- Publication Gateway and UCKK Dimension Gateway are separate gateways;
+- Publication Gateway authorizes disclosure, while the UCKK Publication Bridge performs target-specific packaging and transport;
 - Kristal is transversal but not a universal operational store;
 - shared infrastructure does not imply shared data ownership;
 - a recipe does not become a requirement through repetition;
@@ -494,7 +496,7 @@ python docs/tools/validate_docs.py
 
 ChatGPT is unavailable during a local user session.
 
-The user continues to browse local content, use non-vocal Ariane navigation, manage existing UCKK content, and perform deterministic component workflows. Only the capability that explicitly requested ChatGPT becomes unavailable.
+The user continues to browse local content, use non-vocal Ariane navigation, manage existing kOA Mediatheque content, and perform deterministic component workflows. Only the capability that explicitly requested ChatGPT becomes unavailable.
 
 ### 11.2 Publication policy failure
 

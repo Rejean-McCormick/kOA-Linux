@@ -25,7 +25,8 @@
     "DEC-SYS-OFFLINE-001",
     "DEC-SYS-AI-001",
     "DEC-ARI-001",
-    "DEC-UCKK-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001",
     "DEC-SENT-001"
   ],
   "requirement_ids": [
@@ -54,8 +55,9 @@
     "LOCK-AI-001",
     "LOCK-AI-002",
     "LOCK-SENT-001",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-001",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
     "LOCK-DATA-001",
@@ -75,7 +77,8 @@
     "external-integrations",
     "ai-boundary",
     "ariane",
-    "uckk",
+    "koa_mediatheque",
+    "uckk_publication",
     "sentient",
     "resilience"
   ]
@@ -104,7 +107,7 @@ This document applies globally to:
 - external integrations and federation peers;
 - external AI surfaces;
 - Ariane navigation and voice capabilities;
-- UCKK ingestion, routing, indexing, retrieval, and external adapters;
+- kOA Mediatheque ingestion, routing, indexing, retrieval, and external adapters;
 - SenTient when installed in an eligible profile;
 - pending work, synchronization, recovery, and reconciliation;
 - resource governance and capability degradation;
@@ -190,11 +193,11 @@ Every integration declares:
 
 The approved external AI surfaces are user-triggered adapters. Their outputs remain candidate inputs until accepted through an authoritative local workflow.
 
-### 4.5 Ariane, UCKK, and SenTient
+### 4.5 Ariane, kOA Mediatheque, and SenTient
 
 Ariane local navigation is independent of external voice and external AI. Loss of the approved voice adapter removes voice capability but not local navigation.
 
-Native UCKK behavior remains deterministic and non-AI. Suno and Gamma are optional user-triggered external adapters and do not define UCKK authority.
+Native kOA Mediatheque behavior remains deterministic and non-AI. Suno and Gamma are optional user-triggered integrations and do not define local media authority.
 
 SenTient is an optional, isolated, non-authoritative workbench available only in eligible profiles. It is not part of the default user baseline and is not a continuity dependency.
 
@@ -238,7 +241,7 @@ No transition to `completed` occurs before the external effect and local reconci
 - **REQ-CONST-OFFLINE-009 — SHALL NOT:** Reconnection or synchronization silently overwrite divergent authoritative state, discard a conflict, or choose a winner without the applicable conflict policy.
 - **REQ-CONST-OFFLINE-010 — SHALL:** ChatGPT, Suno, Gamma, and the approved Ariane voice adapter remain optional external surfaces whose unavailability does not disable the local core.
 - **REQ-CONST-OFFLINE-011 — SHALL:** Ariane provide local non-voice navigation without Internet access, external AI, or the approved external voice adapter.
-- **REQ-CONST-OFFLINE-012 — SHALL:** Native UCKK ingestion, routing, local indexing, and local retrieval remain deterministic and non-AI within the capability envelope of the active profile.
+- **REQ-CONST-OFFLINE-012 — SHALL:** Native kOA Mediatheque ingestion, routing, local indexing, and local retrieval remain deterministic and non-AI within the capability envelope of the active profile.
 - **REQ-CONST-OFFLINE-013 — SHALL NOT:** SenTient be required for the default user baseline, offline continuity, authoritative routing, policy evaluation, or activation of core kOA capabilities.
 - **REQ-CONST-OFFLINE-014 — SHALL NOT:** Offline fallback copy credentials, secrets, tokens, private keys, or unrestricted sensitive payloads into ordinary logs, receipts, queues, diagnostics, or exports.
 - **REQ-CONST-OFFLINE-015 — SHALL:** Cached authorization and trust material have explicit scope, provenance, validity limits, and revocation behavior; sensitive operations fail closed when current authorization cannot be established.
@@ -388,7 +391,7 @@ This document is conformant when validation confirms:
 3. every optional integration has tested removal behavior;
 4. the four approved external AI surfaces remain optional and non-authoritative;
 5. Ariane local navigation passes without Internet, AI, or external voice;
-6. native UCKK paths remain deterministic and non-AI;
+6. native kOA Mediatheque paths remain deterministic and non-AI;
 7. SenTient is absent from the default user baseline and is not a continuity dependency;
 8. local authoritative reads and protected mutations follow declared access and policy behavior;
 9. deferred operations preserve identity, provenance, state, expiry, and cancellation;
@@ -423,9 +426,9 @@ tools/check_traceability.py
 
 A user loses Internet connectivity while navigating local applications. Ariane continues to expose local non-voice navigation. The external voice control is shown as unavailable. No local navigation capability is reported as failed.
 
-### 11.2 UCKK local ingestion
+### 11.2 kOA Mediatheque local ingestion
 
-A user imports a local media file. Native UCKK validation, ingestion, routing, indexing, and retrieval continue through deterministic local paths. A request to use Suno or Gamma remains unavailable until the user reconnects and explicitly invokes the adapter.
+A user imports a local media file. Native kOA Mediatheque validation, ingestion, routing, indexing, and retrieval continue through deterministic local paths. A request to use Suno or Gamma remains unavailable until the user reconnects and explicitly invokes the adapter.
 
 ### 11.3 Deferred publication
 
@@ -437,7 +440,7 @@ A locally authenticated user requests a sensitive mutation, but the required cur
 
 ### 11.5 Optional workbench removal
 
-SenTient is removed from a developer workspace. Core kOA services, Ariane local navigation, UCKK deterministic paths, and authoritative component data continue. Features provided only by SenTient become unavailable without changing system authority.
+SenTient is removed from a developer workspace. Core kOA services, Ariane local navigation, deterministic kOA Mediatheque paths, and authoritative component data continue. Features provided only by SenTient become unavailable without changing system authority.
 
 ### 11.6 Reconnection conflict
 

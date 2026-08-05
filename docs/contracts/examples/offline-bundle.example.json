@@ -44,7 +44,8 @@
     "DEC-KRISTAL-001",
     "DEC-LANG-001",
     "DEC-ARI-001",
-    "DEC-UCKK-001"
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001"
   ],
   "requirement_ids": [
     "REQ-ART-OFFLINE-001",
@@ -220,8 +221,8 @@
       "orgo",
       "kristal-runtime",
       "semantik-architect-runtime",
-      "uckk-platform",
-      "uckk-dimension-gateway",
+      "koa-mediatheque",
+      "uckk-publication-adapter",
       "publication-gateway"
     ],
     "outside_scope_behavior": "reject"
@@ -387,7 +388,7 @@
         "entry.services-runtime-pack",
         "entry.orgo-migration",
         "entry.konnaxion-migration",
-        "entry.uckk-migration"
+        "entry.mediatheque-migration"
       ]
     },
     {
@@ -548,17 +549,17 @@
       "dependencies": []
     },
     {
-      "entry_id": "entry.uckk-migration",
-      "path": "payload/migrations/uckk-platform-services-2026.08.03.json",
-      "artifact_id": "migration.uckk-platform.2026-08-03",
+      "entry_id": "entry.mediatheque-migration",
+      "path": "payload/migrations/koa-mediatheque-services-2026.08.03.json",
+      "artifact_id": "migration.koa-mediatheque.2026-08-03",
       "artifact_class": "migration",
       "release_channel": "services",
       "version": "2026.8.3",
       "size_bytes": 393216,
       "required": true,
       "activation_role": "component_owned_migration",
-      "owner_component_id": "uckk-platform",
-      "signature_ref": "signature.uckk-migration",
+      "owner_component_id": "koa-mediatheque",
+      "signature_ref": "signature.mediatheque-migration",
       "dependencies": []
     },
     {
@@ -678,8 +679,8 @@
       },
       {
         "order": 30,
-        "component_id": "uckk-platform",
-        "migration_artifact_id": "migration.uckk-platform.2026-08-03",
+        "component_id": "koa-mediatheque",
+        "migration_artifact_id": "migration.koa-mediatheque.2026-08-03",
         "phase": "expand_migrate_verify",
         "rollback_eligibility": "not_eligible_use_forward_repair",
         "failure_behavior": "retain_staged_state_inactive_and_enter_recovery_review"
@@ -775,7 +776,7 @@
       "schema and migration completion",
       "Governance Policy Runtime decision test",
       "Ariane local non-voice navigation",
-      "UCKK deterministic local operation",
+      "kOA Mediatheque deterministic local operation",
       "offline capability envelope",
       "critical receipt durability",
       "last-known-good and recovery readiness"
@@ -803,8 +804,8 @@
         "restore_contract_ref": "contracts/components/orgo.component.json#/backup_restore_and_exit"
       },
       {
-        "component_id": "uckk-platform",
-        "restore_contract_ref": "contracts/components/uckk-platform.component.json#/backup_restore_and_exit"
+        "component_id": "koa-mediatheque",
+        "restore_contract_ref": "contracts/components/koa-mediatheque.component.json#/backup_restore_and_exit"
       }
     ],
     "forward_repair": {
@@ -840,13 +841,14 @@
       "Orgo local operation",
       "Kristal runtime artifact loading",
       "SemantiK runtime artifact loading",
-      "UCKK deterministic ingestion and processing",
+      "kOA Mediatheque deterministic ingestion and processing",
       "Publication Gateway local or offline destinations",
       "backup",
       "restore",
       "rollback",
       "recovery",
-      "controlled export"
+      "controlled export",
+      "UCKK publication queue persistence without remote execution"
     ],
     "remote_capabilities_expected_unavailable": [
       "ChatGPT",
@@ -854,7 +856,8 @@
       "Gamma",
       "external Ariane voice",
       "remote synchronization",
-      "remote publication destinations"
+      "remote publication destinations",
+      "external UCKK Moodle publication"
     ],
     "result": "pass",
     "evidence_refs": [
@@ -1246,9 +1249,9 @@
       "signature_value": "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
     },
     {
-      "signature_id": "signature.uckk-migration",
-      "artifact_id": "migration.uckk-platform.2026-08-03",
-      "signer_role": "uckk-release-publisher",
+      "signature_id": "signature.mediatheque-migration",
+      "artifact_id": "migration.koa-mediatheque.2026-08-03",
+      "signer_role": "koa-mediatheque-release-publisher",
       "algorithm": "Ed25519",
       "signature_value": "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
     },

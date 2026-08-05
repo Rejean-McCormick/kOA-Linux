@@ -13,7 +13,9 @@
     "generated/assertion-index.json",
     "generated/traceability.json",
     "generated/test-catalog.json",
-    "generated/evidence-catalog.json"
+    "generated/evidence-catalog.json",
+    "contracts/components/koa-mediatheque.component.json",
+    "contracts/integrations/uckk-publication.integration.json"
   ],
   "decision_ids": [
     "DEC-PROFILE-001",
@@ -25,7 +27,9 @@
     "DEC-AI-001",
     "DEC-SENT-001",
     "DEC-CONTAINER-001",
-    "DEC-K8S-001"
+    "DEC-K8S-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001"
   ],
   "requirement_ids": [
     "REQ-CONF-PROF-001",
@@ -78,7 +82,9 @@
     "LOCK-DEV-004",
     "LOCK-DEV-005",
     "LOCK-LIFE-003",
-    "LOCK-LIFE-004"
+    "LOCK-LIFE-004",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -194,7 +200,7 @@ Profile testing covers:
 - offline continuity;
 - identity, trust, governance, and audit;
 - security and network boundaries;
-- publication and UCKK gateway separation;
+- kOA Mediatheque ownership and optional UCKK publication-boundary separation;
 - backup, restore, exit, update, rollback, and migration;
 - workspace and toolchain isolation;
 - tenant isolation;
@@ -316,7 +322,7 @@ Every base profile includes these common families:
 | `PF-COMMON-COMPONENT` | Component boundaries | Required components exist; non-responsibilities and data ownership are preserved. |
 | `PF-COMMON-SECURITY` | Security baseline | Identity, least privilege, network boundaries, secret handling, and safe denial. |
 | `PF-COMMON-GOVERNANCE` | Governance boundary | Governance Policy Runtime remains distinct from Resource Governor and application authority. |
-| `PF-COMMON-GATEWAY` | Gateway separation | Publication Gateway and UCKK Dimension Gateway remain distinct and non-bypassable. |
+| `PF-COMMON-GATEWAY` | Gateway separation | Publication Gateway authorizes disclosure; the UCKK publication adapter performs target-specific packaging and transport; neither owns kOA Mediatheque source records. |
 | `PF-COMMON-OFFLINE` | Local continuity | Minimum local operation continues without Internet or upstream control plane. |
 | `PF-COMMON-LIFECYCLE` | Lifecycle | Update, rollback, backup, restore, migration, removal, and exit behavior. |
 | `PF-COMMON-EVIDENCE` | Evidence validity | Evidence scope, producer, result, release, profile, and freshness are valid. |
@@ -350,7 +356,7 @@ Legend:
 | Public/private/governance zone separation | C | C | C | C | R | C | R |
 | Federation trust and reconciliation | C | C | C | C | R | C | R |
 | Publication execution and receipts | C | C | C | C | R | C | C |
-| UCKK admission separation | C | C | C | C | R | C | C |
+| kOA Mediatheque / UCKK publication separation | C | C | C | C | R | C | C |
 | Backup and isolated restore | R | C | C | R | R | C | R |
 | Credible exit and removal | R | R | R | R | R | R | R |
 | Capacity and saturation evidence | C | R | R | R | R | R | R |
@@ -373,7 +379,7 @@ The user-lightweight profile emphasizes:
 - local startup and user-visible health;
 - operation without external AI;
 - Ariane local navigation independent from external voice;
-- deterministic local UCKK behavior;
+- deterministic local kOA Mediatheque behavior;
 - bounded resources and safe optional-service absence;
 - local identity and governance;
 - offline continuity;
@@ -404,7 +410,7 @@ The developer Linux profile includes profile-declared tests such as:
 
 The catalog owns the procedures and outcomes for these identities.
 
-The matrix covers per-workspace `.venv`, isolated ports, services, data, secrets, databases, resource budgets, parallel worktrees, rootless-container behavior where selected, native-process equivalence, deterministic UCKK, optional SenTient isolation, and candidate-artifact publication.
+The matrix covers per-workspace `.venv`, isolated ports, services, data, secrets, databases, resource budgets, parallel worktrees, rootless-container behavior where selected, native-process equivalence, deterministic kOA Mediatheque processing, optional UCKK publication only when selected, optional SenTient isolation, and candidate-artifact publication.
 
 ### 4.8 Developer Windows and WSL matrix
 
@@ -434,7 +440,7 @@ The sovereign Linux node matrix emphasizes:
 - data migrations;
 - local identity, governance, audit, and administration;
 - network boundaries;
-- bounded local publication and UCKK admission where selected;
+- bounded local Mediatheque operation and optional queued UCKK publication where selected;
 - offline operation;
 - hardware and storage health;
 - node removal and data export.
@@ -591,7 +597,7 @@ Evidence from another matrix composition is reusable only when the test catalog 
 - **REQ-CONF-PROF-017 — SHALL:** Every profile validate minimum local operation without Internet and without an upstream control plane according to its profile contract.
 - **REQ-CONF-PROF-018 — SHALL NOT:** External AI, SenTient, containers, Kubernetes, federation, a GPU, or remote services become implicit prerequisites when the active profile does not require them.
 - **REQ-CONF-PROF-019 — SHALL:** Profile tests verify component data ownership and reject direct cross-component authoritative writes.
-- **REQ-CONF-PROF-020 — SHALL:** Profile tests verify Publication Gateway and UCKK Dimension Gateway separation wherever either gateway is selected.
+- **REQ-CONF-PROF-020 — SHALL:** Profile tests verify that kOA Mediatheque remains the local media authority, Publication Gateway authorizes disclosure, and the optional UCKK publication adapter performs only target-specific packaging and transport without direct Moodle database writes or ownership transfer.
 - **REQ-CONF-PROF-021 — SHALL:** Lifecycle coverage include applicable update, rollback, backup, restore, migration, removal, exit, and recovery tests.
 - **REQ-CONF-PROF-022 — SHALL:** Resource and capacity tests cover declared limits, protected reserves, queues, heavy-work admission, saturation, containment, and cleanup.
 - **REQ-CONF-PROF-023 — SHALL:** Security tests cover identity, trust, authorization, network boundaries, secrets, privileged operations, selective evidence, and safe denial.

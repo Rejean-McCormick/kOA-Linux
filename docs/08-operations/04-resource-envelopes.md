@@ -776,7 +776,7 @@ Offline mode preserves:
 
 - local admission;
 - local interactive work;
-- deterministic local UCKK processing;
+- deterministic local kOA Mediatheque processing;
 - local Orgo and Konnaxion operation;
 - Ariane local navigation;
 - local receipts;
@@ -1176,7 +1176,7 @@ A required validator that cannot run produces `blocked`, not `pass`.
 
 A four-core, sixteen-GiB user endpoint runs the validated minimum-host envelope.
 
-Six GiB remains reserved for user workload. No heavy worker starts at boot. A restore-validation job can receive the single heavy-job slot while an additional UCKK transcode waits with a visible reason.
+Six GiB remains reserved for user workload. No heavy worker starts at boot. A restore-validation job can receive the single heavy-job slot while an additional kOA Mediatheque transcode waits with a visible reason.
 
 ### Example 2 — Background work under memory pressure
 
@@ -1188,11 +1188,11 @@ The target pauses synchronization and index work, reduces derivative processing,
 
 Free storage approaches the fifteen-percent floor.
 
-UCKK Dimension Gateway stops new large imports. Derivative expansion pauses. Owning components can prune reproducible caches through their retention contracts. Originals, Release Set metadata, receipts, and recovery material remain protected.
+The kOA Mediatheque stops new large imports. Derivative expansion pauses. Owning components can prune reproducible caches through their retention contracts. Originals, Release Set metadata, publication receipts, and recovery material remain protected.
 
 ### Example 4 — Governance and capacity separation
 
-Governance Policy Runtime allows an authorized UCKK conversion.
+Governance Policy Runtime allows an authorized kOA Mediatheque conversion.
 
 Resource Governor defers it because another heavy job is active. The request remains authorized but not admitted. When the slot becomes free, Resource Governor reevaluates capacity without changing the prior policy result.
 
@@ -1200,7 +1200,7 @@ Resource Governor defers it because another heavy job is active. The request rem
 
 The endpoint enters offline mode while local Orgo work continues.
 
-A synchronization worker is deferred because its declared remote dependency is unavailable. Local tasks, UCKK processing, Ariane navigation, receipts, backup, and restore remain operational.
+A synchronization or UCKK publication worker is deferred because its declared remote dependency is unavailable. Local tasks, kOA Mediatheque processing, Ariane navigation, receipts, backup, and restore remain operational.
 
 ### Example 6 — Recovery priority
 

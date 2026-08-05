@@ -284,7 +284,7 @@
         ]
       },
       {
-        "component_id": "uckk_platform",
+        "component_id": "koa_mediatheque",
         "constraints": [
           "Restricted and no-AI content cannot be exported to external AI surfaces.",
           "Original media and provenance are preserved.",

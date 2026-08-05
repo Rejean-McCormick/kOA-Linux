@@ -1,9 +1,9 @@
 {
   "$schema": "../schemas/system.contract.schema.json",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "status": "active",
   "language": "en",
-  "effective_at": "2026-08-03T15:14:00-04:00",
+  "effective_at": "2026-08-04T20:59:00-04:00",
   "scope": {
     "kind": "global",
     "applies_to": "all kOA deployments, profiles, overlays, components, contracts, and releases"
@@ -12,7 +12,8 @@
     "DEC-SYS-001",
     "DEC-AI-001",
     "DEC-SENT-001",
-    "DEC-UCKK-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001",
     "DEC-ARI-001",
     "DEC-PROFILE-001",
     "DEC-DATA-001",
@@ -32,8 +33,9 @@
     "LOCK-AI-001",
     "LOCK-AI-002",
     "LOCK-SENT-001",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-002",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
     "LOCK-DATA-001",
@@ -50,10 +52,11 @@
     "LOCK-IMPL-002"
   ],
   "system": {
-    "system_id": "koa_operating_environment",
-    "name": "kOA Operating Environment",
-    "system_class": "local_first_modular_operating_environment",
-    "purpose": "Provide a local-first, offline-capable, modular environment for governed knowledge, coordination, language, media, navigation, publication, and sovereign deployment.",
+    "system_id": "koa_linux_operating_system",
+    "name": "kOA-Linux Operating System",
+    "product_family": "kOA",
+    "system_class": "sovereign_local_operating_system",
+    "purpose": "Provide the sovereign local operating system for governed knowledge, coordination, language, media, navigation, publication, and offline-capable kOA ecosystem workloads.",
     "architectural_style": [
       "explicit_authority",
       "component_separation",
@@ -74,7 +77,10 @@
       "embedding native generative AI in the baseline",
       "sharing authoritative source tables across components",
       "turning Kristal into a universal workflow engine or operational database",
-      "making recipes authoritative through implementation prevalence"
+      "making recipes authoritative through implementation prevalence",
+      "embedding UCKK as a native kOA-Linux subsystem",
+      "merging kOA Mediatheque authority with UCKK Mediatheque authority",
+      "requiring UCKK for local media management or offline operation"
     ]
   },
   "architectural_layers": [
@@ -105,7 +111,8 @@
         "global_boundaries",
         "ai_boundary",
         "ariane",
-        "uckk",
+        "koa_mediatheque",
+        "external_platform_integrations",
         "language_runtime",
         "resource_governance",
         "offline_behavior",
@@ -172,7 +179,7 @@
         "local_authority",
         "non_ai_navigation",
         "compiled_language_artifact_consumption",
-        "deterministic_media_pipeline",
+        "koa_mediatheque",
         "bounded_background_work"
       ]
     },
@@ -315,7 +322,7 @@
     {
       "capability_id": "deterministic_media_management",
       "availability": "profile_activated",
-      "description": "UCKK ingests, verifies, transforms, stores, exports, backs up, and restores media through deterministic local operations."
+      "description": "kOA Mediatheque ingests, verifies, transforms, stores, exports, backs up, and restores local media through deterministic operations."
     },
     {
       "capability_id": "deterministic_resource_governance",
@@ -495,54 +502,101 @@
       "silent_substitution": false
     }
   },
-  "uckk": {
-    "decision_id": "DEC-UCKK-001",
-    "native_pipeline": {
-      "execution_model": "deterministic_local",
-      "operations": [
-        "file_ingestion",
-        "content_integrity_verification",
-        "user_supplied_metadata_capture",
-        "thumbnail_generation",
-        "preview_generation",
-        "transcoding",
-        "deterministic_text_extraction",
-        "storage",
-        "export",
-        "backup",
-        "restore"
+  "koa_mediatheque": {
+    "decision_id": "DEC-MEDIATHEQUE-001",
+    "system_role": "internal_media_library_and_management_component",
+    "component_ref": "generated/component-catalog.json#/components/koa_mediatheque",
+    "authority": {
+      "owns_local_media_records": true,
+      "owns_file_versions": true,
+      "owns_local_storage_references": true,
+      "owns_hashes_and_integrity_state": true,
+      "owns_collections_dimensions_tags_and_relationships": true,
+      "owns_rights_restrictions_and_provenance": true,
+      "owns_renditions_and_lifecycle_state": true,
+      "owns_import_export_backup_and_restore_state": true
+    },
+    "native_local_baseline": {
+      "structured_state": "sqlite",
+      "content_storage": "managed_local_storage",
+      "integrity": "deterministic_hashing",
+      "exchange": "explicit_manifests",
+      "offline_operation": true,
+      "worker_model": "bounded_local_workers"
+    },
+    "deterministic_operations": [
+      "file_ingestion",
+      "content_integrity_verification",
+      "user_supplied_metadata_capture",
+      "thumbnail_generation",
+      "preview_generation",
+      "transcoding",
+      "deterministic_text_extraction",
+      "storage",
+      "export",
+      "backup",
+      "restore"
+    ],
+    "external_interfaces_are_authoritative": {
+      "xlsx": false,
+      "ai_services": false,
+      "external_publishing_platforms": false
+    },
+    "ai_boundary": {
+      "native_ai_operations": [],
+      "candidate_only_operations": [
+        "classification",
+        "summarization",
+        "tagging",
+        "transcription",
+        "translation",
+        "descriptive_text"
       ],
-      "native_ai_operations": []
+      "candidate_acceptance_requires_component_workflow": true
+    }
+  },
+  "uckk_external_platform": {
+    "decision_id": "DEC-UCKK-EXT-001",
+    "classification": "external_moodle_platform",
+    "part_of_koa_linux": false,
+    "native_subsystem": false,
+    "runtime_profile_membership": "prohibited",
+    "documentation_mount": null,
+    "required_for_local_operation": false,
+    "required_for_offline_operation": false,
+    "mediatheque": {
+      "exists_in_uckk": true,
+      "authority_is_separate_from_koa_mediatheque": true,
+      "storage_is_separate_from_koa_mediatheque": true,
+      "lifecycle_is_separate_from_koa_mediatheque": true,
+      "identity_and_access_control_are_separate": true,
+      "compatible_frame_may_be_used": true,
+      "compatibility_transfers_authority": false
     },
-    "prohibited_native_ai_operations": [
-      "ai_classification",
-      "ai_summarization",
-      "ai_generated_categories",
-      "ai_routing",
-      "ai_tagging",
-      "ai_transcription",
-      "ai_translation",
-      "ai_content_generation"
-    ],
-    "external_media_adapter_workflow": [
-      "explicit_user_selection",
-      "controlled_export",
-      "external_processing",
-      "controlled_reimport",
-      "provenance_receipt",
-      "user_approval",
-      "optional_publication"
-    ],
-    "automatic_external_adapter_invocation_by": {
-      "ingestion": false,
-      "indexing": false,
-      "classification": false,
-      "routing": false
+    "publication_boundary": {
+      "integration_ref": "contracts/integrations/uckk-publication.integration.json",
+      "disclosure_authorization_owner_ref": "generated/component-catalog.json#/components/publication_gateway",
+      "packaging_and_transport_owner": "uckk_publication_bridge",
+      "workflow": [
+        "explicit_user_or_governed_selection",
+        "publication_eligibility_validation",
+        "rights_and_restriction_checks",
+        "moodle_destination_selection",
+        "package_and_manifest_production",
+        "authentication",
+        "transfer",
+        "publication_result_handling",
+        "receipt_preservation"
+      ],
+      "offline_behavior": "bounded_visible_idempotent_queue",
+      "direct_uckk_database_write": false,
+      "silent_bulk_synchronization": false,
+      "local_source_authority_transferred": false
     },
-    "gateway_separation": {
-      "uckk_dimension_gateway_ref": "generated/component-catalog.json#/components/uckk_dimension_gateway",
-      "publication_gateway_ref": "generated/component-catalog.json#/components/publication_gateway",
-      "contracts_are_distinct": true
+    "controlled_import": {
+      "same_operation_as_publication": false,
+      "requires_separate_explicit_contract": true,
+      "background_bidirectional_synchronization": false
     }
   },
   "language_runtime": {
@@ -616,7 +670,17 @@
     ],
     "optional_integration_removal_breaks_core": false,
     "direct_external_mutation_of_authoritative_state": false,
-    "automatic_scope_expansion": false
+    "automatic_scope_expansion": false,
+    "external_platforms": [
+      {
+        "platform_id": "uckk",
+        "classification": "external_moodle_platform",
+        "integration_ref": "contracts/integrations/uckk-publication.integration.json",
+        "optional": true,
+        "direct_authoritative_store_write": false,
+        "removal_breaks_core": false
+      }
+    ]
   },
   "offline_baseline": {
     "core_rule": "Every active profile declares and tests its offline capability envelope.",
@@ -762,6 +826,7 @@
       "artifact_activation",
       "release_activation",
       "cross_domain_publication",
+      "external_platform_publication",
       "privileged_host_mutation"
     ],
     "additional_receipts_may_be_required_by": [

@@ -207,7 +207,7 @@ This document applies globally to offline import of:
 - Kristal artifacts;
 - language artifacts;
 - Ariane artifacts;
-- UCKK-related artifacts;
+- kOA Mediatheque artifacts and UCKK publication-package artifacts;
 - migration packages;
 - test and validation packs;
 - recovery runtime packs;
@@ -823,9 +823,9 @@ Audit Broker records:
 
 Evidence excludes unrestricted payload content and secret values.
 
-### 8.8 Publication Gateway and UCKK Dimension Gateway
+### 8.8 kOA Mediatheque and external UCKK publication
 
-Offline media admission into UCKK remains governed by UCKK Dimension Gateway and UCKK Platform contracts.
+Offline media admission remains governed by the kOA Mediatheque component contract. An offline bundle may carry a queued UCKK publication package, but remote delivery occurs only through Publication Gateway and the UCKK adapter after connectivity, revalidation, and authorization.
 
 Governed publication remains controlled by Publication Gateway.
 

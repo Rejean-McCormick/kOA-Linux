@@ -13,7 +13,7 @@
     "contracts/system.contract.json#/resource_governance",
     "contracts/system.contract.json#/degradation_baseline",
     "contracts/system.contract.json#/sentient_boundary",
-    "contracts/system.contract.json#/uckk",
+    "contracts/system.contract.json#/koa_mediatheque",
     "generated/profile-catalog.json",
     "generated/component-catalog.json",
     "contracts/artifact-classes.contract.json",
@@ -28,7 +28,8 @@
     "DEC-PROFILE-001",
     "DEC-GOV-001",
     "DEC-SENT-001",
-    "DEC-UCKK-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001",
     "DEC-REL-001",
     "DEC-CONTAINER-001"
   ],
@@ -59,12 +60,14 @@
     "LOCK-PROFILE-002",
     "LOCK-GOV-001",
     "LOCK-SENT-001",
-    "LOCK-UCKK-001",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001",
     "LOCK-LIFE-001",
     "LOCK-LIFE-002",
     "LOCK-LIFE-003",
     "LOCK-IMPL-001",
-    "LOCK-IMPL-002"
+    "LOCK-IMPL-002",
+    "LOCK-UCKK-EXT-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -134,7 +137,7 @@ A profile contract owns the selection of an envelope. A component contract owns 
 | `contracts/system.contract.json#/resource_governance` | Resource Governor and Governance Policy Runtime responsibilities |
 | `contracts/system.contract.json#/degradation_baseline` | Resource-pressure degradation order |
 | `contracts/system.contract.json#/sentient_boundary` | SenTient availability, isolation, and resource limits |
-| `contracts/system.contract.json#/uckk` | Native UCKK operations subject to bounded scheduling |
+| `contracts/system.contract.json#/koa_mediatheque` | Native kOA Mediatheque operations subject to bounded scheduling |
 | `generated/profile-catalog.json` | Primary profiles, overlays, profile groups, and profile-to-envelope references |
 | `generated/component-catalog.json` | Component identities and responsibilities |
 | `contracts/artifact-classes.contract.json` | Resource-envelope and evidence artifact classes |
@@ -184,7 +187,7 @@ Hardware validation shall classify work into at least these workload classes:
 | --- | --- | --- |
 | Core interactive | Local navigation, ordinary component reads and writes, compiled language runtime use | Continuously available within the profile claim |
 | Core background | Bounded indexing, ordinary queues, housekeeping, receipt handling | Limited and preemptible |
-| Heavy task | UCKK transcoding, large preview generation, restore verification, large export | Explicitly scheduled and concurrency-limited |
+| Heavy task | kOA Mediatheque transcoding, large preview generation, restore verification, large export | Explicitly scheduled and concurrency-limited |
 | Development workspace | Build, test, database, service, and container activity for one workspace | Isolated and workspace-scoped |
 | Optional workbench | SenTient, GF Wordbench, large analysis or enrichment tools | Task-activated and absent from ordinary user baseline |
 | Build worker | Reproducible compilation, packaging, signing, scanning, and test execution | Clean, isolated, and evidence-producing |
@@ -278,7 +281,7 @@ The artifact cache may be shared. Mutable build environments and unverified work
 - **REQ-SYS-HW-002 — SHALL NOT:** A hardware envelope shall not be treated as a universal system requirement outside the profiles that reference it.
 - **REQ-SYS-HW-003 — SHALL:** Hardware-envelope conformance shall be evaluated using the active profile composition, enabled components, workload class, connectivity state, and declared concurrency.
 - **REQ-SYS-HW-004 — SHALL:** The `user_lightweight` envelope shall support at least four modern CPU cores, 16 GiB of memory, a 512 GB SSD, integrated graphics, zram, and no more than one concurrent heavy job.
-- **REQ-SYS-HW-005 — SHALL:** The recommended `user_lightweight` target shall be six modern CPU cores, 32 GiB of memory, and a 1 TB SSD where the deployment stores substantial UCKK media or runs frequent heavy tasks.
+- **REQ-SYS-HW-005 — SHALL:** The recommended `user_lightweight` target shall be six modern CPU cores, 32 GiB of memory, and a 1 TB SSD where the deployment stores substantial kOA Mediatheque media or runs frequent heavy tasks.
 - **REQ-SYS-HW-006 — SHALL:** The `developer_workstation` envelope shall provide at least eight modern CPU cores, 32 GiB of memory, and a 1 TB SSD.
 - **REQ-SYS-HW-007 — SHALL:** The recommended `developer_workstation` memory target shall be 64 GiB, and the default maximum shall be two concurrent heavy workspaces unless measured evidence authorizes a different limit.
 - **REQ-SYS-HW-008 — SHALL:** The `sovereign_linux_node` envelope shall provide at least eight modern CPU cores, 32 GiB of memory, and a 1 TB encrypted SSD.
@@ -287,7 +290,7 @@ The artifact cache may be shared. Mutable build environments and unverified work
 - **REQ-SYS-HW-011 — SHALL:** Resource Governor shall enforce profile and component limits for CPU, memory, I/O, concurrency, queues, jobs, and processes.
 - **REQ-SYS-HW-012 — SHALL:** Heavy optional workbenches and workers shall be stopped by default or task-activated when they are not required by the current operation.
 - **REQ-SYS-HW-013 — SHALL:** SenTient, heavy Java search services, development workbenches, and equivalent high-consumption services shall remain absent or inactive in the default `user_lightweight` baseline.
-- **REQ-SYS-HW-014 — SHALL:** UCKK transcoding, thumbnail generation, preview generation, text extraction, indexing, backup, and synchronization shall use bounded concurrency and profile-defined scheduling.
+- **REQ-SYS-HW-014 — SHALL:** kOA Mediatheque transcoding, thumbnail generation, preview generation, text extraction, indexing, backup, and synchronization shall use bounded concurrency and profile-defined scheduling.
 - **REQ-SYS-HW-015 — SHALL:** Resource pressure shall defer background work, reduce worker concurrency, stop task-activated heavy services, and preserve authoritative data integrity and core control.
 - **REQ-SYS-HW-016 — SHALL NOT:** An implementation shall not claim hardware-envelope conformance using configuration values alone without measurements from the declared workload and profile composition.
 - **REQ-SYS-HW-017 — SHALL:** A performance or capacity claim shall identify the hardware, profile, overlays, component set, dataset, workload, concurrency, connectivity state, software versions, and measurement procedure.
@@ -399,7 +402,7 @@ A lower-scope object may strengthen an envelope but may not silently weaken it.
 | Profile contract | Deployment tooling | Selected hardware envelope and strengthened constraints | Deployment tooling cannot infer a different envelope |
 | Component contract | Resource Governor | Component resource envelope and task classes | Resource Governor enforces but does not redefine component behavior |
 | Resource Governor | Component | Admission, limit, pressure, and scheduling decisions | Resource control does not grant application or policy authority |
-| UCKK Platform | Resource Governor | Transcoding, thumbnail, preview, extraction, indexing, backup, and synchronization jobs | UCKK owns task correctness; Resource Governor owns scheduling |
+| kOA Mediatheque | Resource Governor | Transcoding, thumbnail, preview, extraction, indexing, backup, and synchronization jobs | kOA Mediatheque owns task correctness; Resource Governor owns scheduling |
 | SenTient | Resource Governor | Explicit task resource request | SenTient remains optional and non-authoritative |
 | Developer workspace | Resource Governor | Workspace identity, processes, services, ports, and resource budget | One workspace cannot consume another workspace's mutable allocation |
 | Build worker | Build Farm controller | Capacity, cleanliness, cache, build, test, and evidence state | Worker output gains release authority only after validation |
@@ -417,7 +420,7 @@ A lower-scope object may strengthen an envelope but may not silently weaken it.
 | `DEC-PROFILE-001` | Profiles and overlays select conditional deployment requirements explicitly. |
 | `DEC-GOV-001` | Resource Governor owns resource control and remains separate from policy authority. |
 | `DEC-SENT-001` | SenTient is optional, isolated, task-activated, and absent from the default user baseline. |
-| `DEC-UCKK-001` | Native UCKK processing is deterministic and heavy media work may be scheduled and bounded. |
+| `DEC-MEDIATHEQUE-001` | Native kOA Mediatheque processing is deterministic and heavy media work may be scheduled and bounded. |
 | `DEC-REL-001` | Releases and Release Sets require compatibility and evidence across affected channels. |
 | `DEC-CONTAINER-001` | Container-runtime choices remain profile-scoped and do not define the hardware envelope globally. |
 
@@ -462,7 +465,7 @@ A lower-scope object may strengthen an envelope but may not silently weaken it.
 14. `TEST-SYS-HW-007` measures heavy-task admission, scheduling, completion, and worker shutdown.
 15. `TEST-SYS-HW-008` verifies safe degradation under CPU, memory, I/O, and storage pressure.
 16. `TEST-SYS-HW-009` verifies that optional workbenches remain inactive by default where required.
-17. `TEST-SYS-HW-010` verifies bounded UCKK task concurrency.
+17. `TEST-SYS-HW-010` verifies bounded kOA Mediatheque task concurrency.
 18. `TEST-SYS-HW-011` verifies workspace resource isolation and the declared concurrent-workspace limit.
 19. `TEST-SYS-HW-012` verifies backup and restore capacity for profiles claiming recovery.
 20. `TEST-SYS-HW-013` verifies release resource regression against every supported envelope.
@@ -483,6 +486,6 @@ These criteria define required validation. They do not claim that implementation
 
 > **Non-normative example:** A build-farm worker has sufficient raw resources but contains mutable state from a previous build. The worker is rejected for reproducible release evidence until it is returned to a verified clean state.
 
-> **Non-normative example:** A new UCKK release increases peak memory during transcoding. The release process reruns representative-load and pressure tests for every supported envelope. Activation is blocked when the new version exceeds the selected envelope without an accepted profile or component change.
+> **Non-normative example:** A new kOA Mediatheque release increases peak memory during transcoding. The release process reruns representative-load and pressure tests for every supported envelope. Activation is blocked when the new version exceeds the selected envelope without an accepted profile or component change.
 
 > **Non-normative example:** A profile adopts a stronger storage requirement because of local media retention. That profile updates its own contract and evidence. The stronger storage value does not become a global requirement for unrelated profiles.

@@ -33,7 +33,8 @@
   "decision_ids": [
     "DEC-AI-001",
     "DEC-SENT-001",
-    "DEC-UCKK-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001",
     "DEC-ARI-001",
     "DEC-PROFILE-001",
     "DEC-DATA-001",
@@ -90,8 +91,9 @@
     "LOCK-AI-001",
     "LOCK-AI-002",
     "LOCK-SENT-001",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-MEDIATHEQUE-002",
+    "LOCK-UCKK-EXT-001",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
     "LOCK-DATA-001",
@@ -233,7 +235,7 @@ This document does not classify as external integrations:
 - Resource Governor;
 - Governance Policy Runtime;
 - Publication Gateway;
-- UCKK Dimension Gateway;
+- UCKK publication adapter;
 - local Ariane navigation;
 - GF Wordbench;
 - SemantiK Architect Runtime;
@@ -828,11 +830,11 @@ Output returns as candidate material.
 
 #### Suno
 
-Suno can process explicitly selected UCKK-related material through a controlled export.
+Suno can process explicitly selected kOA Mediatheque material through a controlled export.
 
 Returned media remains candidate material.
 
-Native UCKK does not invoke Suno automatically.
+The kOA Mediatheque does not invoke Suno automatically.
 
 #### Gamma
 
@@ -840,7 +842,7 @@ Gamma can process explicitly selected material for a declared external presentat
 
 Returned output remains candidate material.
 
-Native UCKK does not invoke Gamma automatically.
+The kOA Mediatheque does not invoke Gamma automatically.
 
 #### Ariane external voice
 
@@ -886,11 +888,11 @@ A provider adapter does not bypass Publication Gateway.
 
 An external AI candidate workflow is not publication unless a later separate publication request is accepted.
 
-### 4.22 UCKK integration classification
+### 4.22 kOA Mediatheque and UCKK integration classification
 
-Native UCKK operation is local and deterministic.
+kOA Mediatheque operation is local and deterministic.
 
-UCKK Dimension Gateway handles explicit admission to UCKK dimensions.
+The UCKK publication adapter handles explicit authenticated delivery of authorized packages to the external Moodle platform. It does not own local media admission or remote UCKK acceptance.
 
 Publication Gateway handles external publication.
 
@@ -929,7 +931,7 @@ The system preserves:
 - local policy;
 - local Ariane navigation;
 - local language runtime;
-- native UCKK;
+- local kOA Mediatheque;
 - local component workflows;
 - local artifacts;
 - recovery.
@@ -1128,7 +1130,7 @@ Native core operation is verified after removal.
 - **REQ-SEC-INT-034 — SHALL:** Federated integrations preserve tenant, domain, identity, provenance, policy, revocation, and conflict boundaries defined by the federation contract.
 - **REQ-SEC-INT-035 — SHALL NOT:** A federation peer gain transitive trust, local machine privilege, foreign tenant authority, or unrestricted write access from network membership alone.
 - **REQ-SEC-INT-036 — SHALL:** Publication Gateway remain the only registered cross-domain publication executor for workflows classified as external publication.
-- **REQ-SEC-INT-037 — SHALL:** UCKK Dimension Gateway remain separate from Publication Gateway and from Suno or Gamma external-processing adapters.
+- **REQ-SEC-INT-037 — SHALL:** kOA Mediatheque admission remain separate from Publication Gateway, and the UCKK publication adapter remain subordinate to gateway authorization and separate from Suno or Gamma candidate-processing adapters.
 - **REQ-SEC-INT-038 — SHALL:** Every integration produce the request, transfer, provider-result, candidate, adoption, publication, or failure receipts required by its classification without placing raw payloads in receipts by default.
 - **REQ-SEC-INT-039 — SHALL:** Integration observability identify operation, profile, endpoint reference, result, duration, retry state, candidate or action reference, and correlation identity while minimizing sensitive content.
 - **REQ-SEC-INT-040 — SHALL:** Every integration define lifecycle states for registration, enablement, disablement, degradation, revocation, replacement, and retirement as applicable.
@@ -1375,9 +1377,9 @@ Provider-specific transport can exist behind its registered adapter boundary.
 
 A direct provider call from a source component is not a valid publication path.
 
-### 8.7 UCKK Dimension Gateway
+### 8.7 UCKK publication adapter
 
-UCKK Dimension Gateway owns explicit media admission to UCKK.
+The UCKK publication adapter owns packaging, authenticated transfer, remote result handling, and receipt production for explicitly authorized publication to UCKK. It owns neither local media nor remote Moodle content.
 
 Suno and Gamma adapters own external request and candidate-return behavior only.
 
@@ -1417,12 +1419,13 @@ Provider configuration changes do not bypass lifecycle validation.
 | --- | --- |
 | `DEC-AI-001` | Approved external AI surfaces are explicit, removable, user-triggered, and non-authoritative |
 | `DEC-SENT-001` | SenTient is a local optional workbench rather than an external integration |
-| `DEC-UCKK-001` | Native UCKK is deterministic and local; Suno and Gamma remain explicit external adapters |
+| `DEC-MEDIATHEQUE-001` | kOA Mediatheque is deterministic and local; Suno and Gamma remain explicit external adapters |
+| `DEC-UCKK-EXT-001` | UCKK is an external Moodle target reached only through explicit publication |
 | `DEC-ARI-001` | Ariane local navigation remains independent of optional external voice |
 | `DEC-PROFILE-001` | Integration applicability remains profile-specific |
 | `DEC-DATA-001` | Integrations cannot write directly to foreign authoritative state |
 | `DEC-GOV-001` | Policy and resource authority remain outside provider adapters |
-| `DEC-GATE-001` | Publication Gateway and UCKK Dimension Gateway remain separate |
+| `DEC-GATE-001` | Local media admission and Publication Gateway remain separate; the UCKK adapter executes only gateway-authorized delivery |
 
 ### 9.2 Protected locks
 
@@ -1431,13 +1434,14 @@ Provider configuration changes do not bypass lifecycle validation.
 | `LOCK-AI-001` | No native external-AI dependency enters the baseline |
 | `LOCK-AI-002` | External AI output remains candidate input |
 | `LOCK-SENT-001` | SenTient remains optional, local, isolated, and non-authoritative |
-| `LOCK-UCKK-001` | Native UCKK remains deterministic |
-| `LOCK-UCKK-002` | Suno and Gamma remain user-triggered external adapters |
+| `LOCK-MEDIATHEQUE-001` | kOA Mediatheque remains deterministic and locally authoritative |
+| `LOCK-MEDIATHEQUE-002` | Suno and Gamma remain user-triggered candidate-producing adapters |
+| `LOCK-UCKK-EXT-001` | UCKK publication remains explicit, external, and separately receipted |
 | `LOCK-ARI-001` | Local Ariane navigation remains non-AI |
 | `LOCK-ARI-002` | Voice failure does not disable local navigation |
 | `LOCK-DATA-001` | No direct foreign authoritative write |
 | `LOCK-GOV-001` | Provider adapters do not merge policy and resource authority |
-| `LOCK-GATE-001` | External publication and UCKK dimension admission remain separate |
+| `LOCK-GATE-001` | Local media admission and external publication remain separate |
 | `LOCK-PROFILE-001` | Profile-specific integration rules do not become global |
 | `LOCK-LIFE-001` | Adapter and manifest artifacts do not activate partially |
 | `LOCK-LIFE-003` | Release Set compatibility remains explicit |
@@ -1466,11 +1470,11 @@ The following assumptions are invalid:
 - `sovereign_offline` can queue Internet requests indefinitely;
 - a local AI model is an automatic fallback;
 - ChatGPT can run background classification;
-- Suno or Gamma can run from native UCKK ingestion;
+- Suno or Gamma can run automatically from kOA Mediatheque ingestion or UCKK publication;
 - Ariane voice can replace local navigation silently;
 - SenTient is an external provider;
 - Publication Gateway is merely one optional HTTP adapter;
-- UCKK Dimension Gateway can perform publication;
+- the UCKK adapter can perform publication without Publication Gateway authorization;
 - external support services can receive unrestricted logs;
 - provider terms can be assumed unchanged;
 - test credentials can be reused in production;
@@ -1518,7 +1522,7 @@ This document is conformant when:
 30. federation preserves tenant, domain, trust, conflict, and withdrawal boundaries;
 31. federation does not create transitive trust or privilege;
 32. Publication Gateway remains the publication executor;
-33. UCKK admission, external processing, and publication remain separate;
+33. kOA Mediatheque admission, external candidate processing, and UCKK publication remain separate;
 34. receipts are complete and minimized;
 35. observability excludes sensitive payloads;
 36. lifecycle state and removal behavior resolve;
@@ -1559,7 +1563,7 @@ TEST-SEC-INT-020  Provider terms and retention resolution
 TEST-SEC-INT-021  Sensitive-content consent and disclosure controls
 TEST-SEC-INT-022  Federation trust and tenant isolation
 TEST-SEC-INT-023  Publication Gateway enforcement
-TEST-SEC-INT-024  UCKK gateway and external-adapter separation
+TEST-SEC-INT-024  kOA Mediatheque, UCKK publication, and external-candidate adapter separation
 TEST-SEC-INT-025  Receipt and observability minimization
 TEST-SEC-INT-026  Revocation, removal, and identifier reservation
 ```
@@ -1596,11 +1600,11 @@ Classification:
 - result authority: candidate media;
 - direction: request-response;
 - trigger: explicit user action;
-- source: explicit UCKK selection;
-- destination: controlled UCKK re-import;
+- source: explicit kOA Mediatheque selection;
+- destination: controlled kOA Mediatheque candidate admission;
 - publication: separate later workflow.
 
-Native UCKK ingestion remains deterministic and local.
+kOA Mediatheque ingestion remains deterministic and local.
 
 ### 11.3 Ariane external voice
 
@@ -1660,7 +1664,7 @@ An Internet-dependent integration is registered but disabled by the active overl
 
 The UI reports unavailable status.
 
-Local navigation, UCKK, language runtime, governance, recovery, and native workflows remain available.
+Local navigation, kOA Mediatheque, language runtime, governance, recovery, and native workflows remain available. UCKK publication may be unavailable without affecting the local core.
 
 No request is silently redirected to another provider.
 
@@ -1674,9 +1678,9 @@ The valid path creates a candidate and invokes Konnaxion's controlled import and
 
 ### 11.9 Invalid background AI
 
-A scheduled job sends every new UCKK file to an external AI service for automatic classification.
+A scheduled job sends every new kOA Mediatheque file to an external AI service for automatic classification.
 
-The design is invalid because external AI must be explicitly user-triggered and native UCKK ingestion remains deterministic and non-AI.
+The design is invalid because external AI must be explicitly user-triggered and kOA Mediatheque ingestion remains deterministic and non-AI.
 
 ### 11.10 Invalid integration removal
 

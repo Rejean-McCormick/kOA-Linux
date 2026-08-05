@@ -760,7 +760,7 @@ It acts through owner and profile contracts and does not gain direct domain-data
 
 ### 8.7 Publication and ingestion gateways
 
-Cross-domain publication and UCKK ingestion use their separate gateways.
+kOA Mediatheque admission uses the local component boundary. Cross-domain publication, including publication to external UCKK, uses Publication Gateway and a destination-specific adapter.
 
 Shared storage paths do not bypass disclosure, admission, rights, provenance, or target-owner validation.
 

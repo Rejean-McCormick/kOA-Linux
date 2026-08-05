@@ -25,7 +25,9 @@
     "generated/exception-index.json",
     "contracts/ai-navigation.contract.json",
     "generated/test-catalog.json",
-    "generated/evidence-catalog.json"
+    "generated/evidence-catalog.json",
+    "contracts/components/koa-mediatheque.component.json",
+    "contracts/integrations/uckk-publication.integration.json"
   ],
   "decision_ids": [
     "DEC-CONF-AICTX-001",
@@ -35,7 +37,9 @@
     "DEC-PROFILE-INHERIT-001",
     "DEC-SYS-COMP-001",
     "DEC-INT-001",
-    "DEC-SENT-001"
+    "DEC-SENT-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001"
   ],
   "requirement_ids": [
     "REQ-CONF-AICTX-001",
@@ -106,7 +110,9 @@
     "LOCK-SENT-001",
     "LOCK-GOV-001",
     "LOCK-GATE-001",
-    "LOCK-IMPL-001"
+    "LOCK-IMPL-001",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -753,9 +759,9 @@ Boundary checks preserve:
 - component data ownership;
 - no direct cross-component authoritative writes;
 - Resource Governor and Governance Policy Runtime separation;
-- Publication Gateway and UCKK Dimension Gateway separation;
+- kOA Mediatheque ownership and external UCKK publication-boundary separation;
 - Ariane local navigation without AI;
-- deterministic native UCKK;
+- deterministic local kOA Mediatheque operation;
 - optional isolated non-authoritative SenTient;
 - approved external AI surfaces only;
 - controlled export and reimport;
@@ -1185,7 +1191,7 @@ A task bundle contains one compatible sovereign primary profile, the `sovereign_
 
 ### 11.3 Component package
 
-The `uckk_dimension_gateway` package includes user-selected transfer, source ownership, quarantine, provenance, destination admission, Publication Gateway separation, deterministic native behavior, and failure states. It does not summarize the gateway as unrestricted media ingestion.
+The `uckk_publication` integration package includes explicit user-selected publication, kOA Mediatheque source ownership, disclosure authorization, rights and restriction checks, target-specific packaging, manifest integrity, external Moodle transport, result receipts, queued offline state, and failure behavior. It explicitly excludes UCKK from local subsystem ownership and does not describe publication as background synchronization or unrestricted media ingestion.
 
 ### 11.4 Omitted object
 

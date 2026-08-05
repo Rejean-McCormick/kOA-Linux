@@ -28,21 +28,24 @@
     "generated/traceability.json",
     "generated/exception-index.json",
     "generated/test-catalog.json",
-    "generated/evidence-catalog.json"
+    "generated/evidence-catalog.json",
+    "contracts/components/koa-mediatheque.component.json",
+    "contracts/integrations/uckk-publication.integration.json"
   ],
   "decision_ids": [
     "DEC-PROFILE-001",
     "DEC-HW-001",
     "DEC-AI-001",
     "DEC-SENT-001",
-    "DEC-UCKK-001",
     "DEC-ARI-001",
     "DEC-DATA-001",
     "DEC-GOV-001",
     "DEC-CONTAINER-001",
     "DEC-K8S-001",
     "DEC-SHELL-001",
-    "DEC-REL-001"
+    "DEC-REL-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001"
   ],
   "requirement_ids": [
     "REQ-CONF-USER-001",
@@ -82,8 +85,6 @@
     "LOCK-AI-001",
     "LOCK-AI-002",
     "LOCK-SENT-001",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
     "LOCK-DATA-001",
@@ -93,7 +94,9 @@
     "LOCK-LIFE-003",
     "LOCK-LIFE-004",
     "LOCK-IMPL-001",
-    "LOCK-DOC-002"
+    "LOCK-DOC-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -194,7 +197,7 @@ This document applies to:
 - profile-specific hardware and resource assertions;
 - component and capability membership;
 - local navigation and accessibility;
-- deterministic local UCKK behavior;
+- deterministic local kOA Mediatheque behavior;
 - optional external artificial-intelligence surfaces;
 - absence of SenTient;
 - optional container use;
@@ -228,7 +231,7 @@ This document does not:
 | `contracts/artifact-contracts/resource-envelope.schema.json` | Defines resource-envelope evidence used by profile resource validation. |
 | `contracts/release-channels.contract.json` and artifact contracts | Own artifact identity, release channels, verification, compatibility, and lifecycle context. |
 | `generated/requirements-index.json` | Owns the normative statements displayed in Section 5. |
-| `generated/assertion-index.json` | Owns profile, artificial-intelligence, Ariane, UCKK, SenTient, data, governance, lifecycle, and implementation assertions. |
+| `generated/assertion-index.json` | Owns profile, artificial-intelligence, Ariane, kOA Mediatheque, optional UCKK publication, SenTient, data, governance, lifecycle, and implementation assertions. |
 | `generated/traceability.json` | Owns decision, profile, requirement, lock, component, test, and evidence relationships. |
 | `generated/test-catalog.json` | Owns test identities, applicability, methods, subjects, environments, and expected results. |
 | `generated/evidence-catalog.json` | Owns evidence identities, producers, subjects, outcomes, provenance, retention, and claim relationships. |
@@ -342,7 +345,7 @@ The local core includes only capabilities selected by the profile and their appl
 Relevant conformance properties include:
 
 - deterministic local navigation;
-- deterministic native UCKK processing;
+- deterministic native kOA Mediatheque processing;
 - no native artificial-intelligence authority;
 - local component data ownership;
 - bounded resource use;
@@ -420,9 +423,9 @@ The evidence package supports the claim. It does not alter the profile contract.
 - **REQ-CONF-USER-016 — SHALL:** Ariane local navigation remains usable through deterministic local input and accessibility controls without requiring the external voice capability.
 - **REQ-CONF-USER-017 — SHALL:** Loss or non-selection of Ariane external voice preserves applicable local navigation and core profile capability without activating an undeclared substitute.
 - **REQ-CONF-USER-018 — SHALL:** Every permitted external artificial-intelligence operation is explicitly user initiated, capability scoped, explicit about transferred data, removable from core operation, unable to write directly to authoritative stores, and recorded through the applicable provenance or decision receipt.
-- **REQ-CONF-USER-019 — SHALL:** Native UCKK ingestion and media processing remain deterministic and local for the capabilities selected by the user_lightweight profile.
-- **REQ-CONF-USER-020 — SHALL NOT:** Native UCKK ingestion, indexing, classification, or routing automatically invokes Suno, Gamma, external voice, or another external artificial-intelligence surface.
-- **REQ-CONF-USER-021 — SHALL:** A user-selected external media workflow uses controlled export, external processing, controlled re-import, provenance, user approval, and component-level acceptance before authoritative use.
+- **REQ-CONF-USER-019 — SHALL:** Native kOA Mediatheque ingestion and media processing remain deterministic and local for the capabilities selected by the user_lightweight profile.
+- **REQ-CONF-USER-020 — SHALL NOT:** Native kOA Mediatheque ingestion, indexing, classification, rendition, or routing automatically invokes Suno, Gamma, external voice, UCKK, or another external artificial-intelligence or publication surface.
+- **REQ-CONF-USER-021 — SHALL:** A user-selected UCKK publication workflow uses a kOA Mediatheque owner-authorized export, Publication Gateway disclosure authorization, the optional UCKK Publication Adapter, provenance, manifest integrity, a publication receipt, and no transfer of local source authority; any controlled import is a separate explicit operation.
 - **REQ-CONF-USER-022 — SHALL:** A shared PostgreSQL process is permitted only when each component retains a separate database or schema, separate database identity, and exclusive logical ownership.
 - **REQ-CONF-USER-023 — SHALL NOT:** Any component, observability service, conformance tool, operator workflow, or shared database identity writes directly to another component's authoritative source tables.
 - **REQ-CONF-USER-024 — SHALL:** Resource Governor is present as a baseline authority and Governance Policy Runtime is required only when another active profile or overlay claim introduces its governance obligations.
@@ -535,7 +538,7 @@ Impact analysis determines which previous evidence remains reusable.
 | SenTient is installed or active | Report prohibited component membership | Other profile components | Base conformance | `prohibited_component_present` |
 | External voice failure breaks local navigation | Report capability coupling | Local navigation evidence | Experience conformance | `optional_voice_dependency` |
 | External artificial-intelligence action is automatic | Block the affected workflow | Local deterministic core | Artificial-intelligence boundary claim | `external_ai_not_user_initiated` |
-| UCKK automatically invokes an external surface | Block the affected workflow | Local native processing | UCKK conformance | `external_processing_auto_invocation` |
+| kOA Mediatheque automatically invokes an external AI or publication surface | Block the affected workflow | Local native processing | Mediatheque conformance | `external_processing_auto_invocation` |
 | Components share a database identity | Report data-boundary failure | Unaffected component data | Data conformance | `component_database_identity_shared` |
 | Cross-component direct write is detected | Stop the write path and fail the claim | Source-component ownership | Data and component claims | `direct_cross_component_write` |
 | Overlay applicability is unresolved | Exclude the overlay from active claim and report blocked composition | Base profile claim | Composed-profile claim | `overlay_applicability_unresolved` |
@@ -591,7 +594,8 @@ Conformance reporting cannot reinterpret a failed, blocked, stale, or out-of-sco
 | `DEC-HW-001` | Owns the user-lightweight hardware envelope and heavy-job limit. |
 | `DEC-AI-001` | Excludes native artificial-intelligence authority and controls approved external surfaces. |
 | `DEC-SENT-001` | Excludes SenTient from `user_lightweight`. |
-| `DEC-UCKK-001` | Keeps native UCKK multimedia behavior deterministic and local. |
+| `DEC-MEDIATHEQUE-001` | Establishes kOA Mediatheque as the internal local media authority with deterministic offline-capable processing. |
+| `DEC-UCKK-EXT-001` | Establishes UCKK as an optional external Moodle publication target with separate authority and storage. |
 | `DEC-ARI-001` | Separates local Ariane navigation from optional external voice. |
 | `DEC-DATA-001` | Permits profile-scoped process sharing while preserving databases, identities, and no-direct-write boundaries. |
 | `DEC-GOV-001` | Keeps Resource Governor in the baseline and profile-scopes Governance Policy Runtime. |
@@ -612,7 +616,8 @@ Conformance reporting cannot reinterpret a failed, blocked, stale, or out-of-sco
 - SenTient is optional within `user_lightweight`;
 - external voice is required for Ariane navigation;
 - an unavailable external service can be replaced silently;
-- native UCKK includes artificial-intelligence classification or summarization;
+- native kOA Mediatheque includes automatic external artificial-intelligence classification or summarization;
+- UCKK is required for local Mediatheque operation or owns local kOA media after publication;
 - a shared database process permits shared component credentials;
 - Resource Governor and Governance Policy Runtime are interchangeable;
 - an operational installation proves data-boundary conformance;
@@ -645,7 +650,7 @@ This document is conformant when:
 18. Native artificial-intelligence authority is absent.
 19. Ariane local navigation passes without external voice.
 20. External operations are user initiated, controlled, receipted, and non-authoritative until accepted.
-21. Native UCKK processing remains deterministic and local.
+21. Native kOA Mediatheque processing remains deterministic and local; optional UCKK publication is explicit, queued when offline, separately authorized, and does not transfer local ownership.
 22. Shared PostgreSQL use preserves component database or schema and identity separation.
 23. No direct cross-component write path exists.
 24. Resource Governor baseline behavior passes and Governance Policy Runtime applicability matches the effective composition.

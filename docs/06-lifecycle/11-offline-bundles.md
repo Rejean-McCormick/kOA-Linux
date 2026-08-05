@@ -36,7 +36,8 @@
     "DEC-GOV-001",
     "DEC-AI-001",
     "DEC-ARI-001",
-    "DEC-UCKK-001"
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001"
   ],
   "requirement_ids": [
     "REQ-LIFE-OFF-001",
@@ -83,8 +84,9 @@
     "LOCK-AI-002",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002"
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-MEDIATHEQUE-002",
+    "LOCK-UCKK-EXT-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -228,7 +230,7 @@ It does not define one mandatory physical medium. Removable disks, optical media
 | `generated/test-catalog.json` | Parser, archive, trust, replay, compatibility, staging, interruption, cleanup, and activation-separation tests. |
 | `generated/evidence-catalog.json` | Bundle creation, verification, import, rejection, staging, activation, rollback, recovery, and export evidence. |
 | `generated/requirements-index.json` | Normative statements displayed in Section 5. |
-| `generated/assertion-index.json` | Activation, release-channel, component, data, profile, AI, Ariane, and UCKK invariants. |
+| `generated/assertion-index.json` | Activation, release-channel, component, data, profile, AI, Ariane, kOA Mediatheque, and UCKK publication invariants. |
 | `generated/traceability.json` | Links among bundles, payloads, decisions, profiles, requirements, tests, evidence, and lifecycle documents. |
 | `generated/exception-index.json` | Approved bounded deviations and compensating controls. |
 
@@ -758,7 +760,7 @@ The owning component validates:
 
 The generic importer does not write component databases directly.
 
-### 4.22 AI, Ariane, and UCKK boundaries
+### 4.22 AI, Ariane, kOA Mediatheque, and UCKK publication boundaries
 
 Offline transfer does not weaken the global AI boundary.
 
@@ -766,7 +768,7 @@ External AI outputs can appear only as candidate artifacts carrying provenance, 
 
 Ariane local-navigation artifacts remain deterministic and independent from external voice. Voice credentials and external provider authority are not hidden inside local-navigation payloads.
 
-Native UCKK payloads preserve deterministic ingestion and media lineage. Suno and Gamma results remain explicit external candidates with controlled re-import and user approval.
+kOA Mediatheque payloads preserve deterministic ingestion and media lineage. Suno and Gamma results remain explicit external candidates with controlled local admission and user approval. UCKK publication packages remain separately authorized outbound artifacts.
 
 ### 4.23 Result return
 
@@ -861,7 +863,7 @@ A conformance claim for envelope import does not imply conformance of every payl
 - **REQ-LIFE-OFF-020 — SHALL:** Migration payloads shall remain blocked until required backups, checkpoints, source and target versions, resource limits, and rollback or forward-repair conditions are verified.
 - **REQ-LIFE-OFF-021 — SHALL:** Trust and revocation payloads shall use a dedicated high-impact transition with replay protection, monotonic state, scope validation, recovery behavior, and independent evidence.
 - **REQ-LIFE-OFF-022 — SHALL NOT:** An offline bundle shall introduce native AI authority, silently invoke an external AI surface, or convert external AI output into authoritative payload content without the owning component's accepted workflow.
-- **REQ-LIFE-OFF-023 — SHALL:** Native UCKK payload import shall remain deterministic and shall preserve source, derivative, export, and external-candidate provenance.
+- **REQ-LIFE-OFF-023 — SHALL:** kOA Mediatheque payload import shall remain deterministic and preserve source, derivative, export, and external-candidate provenance; queued UCKK publication packages shall preserve authorization and source references without becoming local authority.
 - **REQ-LIFE-OFF-024 — SHALL:** Ariane local-navigation payloads shall remain usable without external voice, and loss of the approved voice integration shall not invalidate unrelated local payloads.
 - **REQ-LIFE-OFF-025 — SHALL:** Interrupted import and extraction shall be restartable or safely discardable without creating partial authoritative state.
 - **REQ-LIFE-OFF-026 — SHALL:** Quarantine, staging, decrypted work areas, replay ledgers, and receipt stores shall have explicit owners, storage classes, quotas, retention, cleanup, backup, and recovery behavior.
@@ -1148,9 +1150,9 @@ Ariane receives verified deterministic local-navigation artifacts.
 
 External voice remains an optional integration and has separate credentials, availability, and failure behavior.
 
-### 8.12 UCKK Platform
+### 8.12 kOA Mediatheque and external UCKK target
 
-UCKK receives deterministic native artifacts, source exports, recovery inputs, or approved external candidate material through declared import contracts.
+The kOA Mediatheque receives deterministic local artifacts, source exports, recovery inputs, or approved external candidate material through declared import contracts. UCKK receives only separately authorized publication packages after connectivity returns.
 
 The bundle importer does not perform AI classification, summarization, tagging, routing, transcription, translation, or generation.
 
@@ -1167,7 +1169,8 @@ The bundle importer does not perform AI classification, summarization, tagging, 
 | `DEC-GOV-001` | Separates resource controls from governance-policy decisions. |
 | `DEC-AI-001` | Prevents offline bundles from becoming a hidden native AI delivery path. |
 | `DEC-ARI-001` | Preserves Ariane local navigation independently from external voice. |
-| `DEC-UCKK-001` | Preserves deterministic native UCKK behavior and explicit external-candidate provenance. |
+| `DEC-MEDIATHEQUE-001` | Preserves deterministic kOA Mediatheque behavior and explicit external-candidate provenance. |
+| `DEC-UCKK-EXT-001` | Keeps UCKK publication external, explicit, and independently receipted. |
 
 ### 9.2 Related ADRs
 
@@ -1180,7 +1183,8 @@ The bundle importer does not perform AI classification, summarization, tagging, 
 | `ADR-014` | Defines the strict external AI boundary. |
 | `ADR-019` | Separates resource and policy authority. |
 | `ADR-021` | Keeps Ariane local navigation operational without external voice. |
-| `ADR-022` | Keeps native UCKK processing deterministic and non-AI. |
+| `ADR-030` | Establishes the kOA Mediatheque as the local media authority. |
+| `ADR-031` | Establishes UCKK as an external Moodle publication target. |
 | `ADR-023` | Defines explicit profile overlays. |
 | `ADR-024` | Preserves logical data ownership across physical deployment forms. |
 | `ADR-026` | Blocks lifecycle authority that depends on missing decisions. |
@@ -1209,7 +1213,7 @@ The following assumptions are prohibited:
 - a bundle importer can write component databases directly;
 - an offline bundle can carry hidden native AI authority;
 - an Ariane local artifact can require external voice;
-- a signed Suno or Gamma result becomes native UCKK authority;
+- a signed Suno or Gamma result becomes authoritative local media or an authorized UCKK publication without admission and review;
 - successful activation can be inferred when the result receipt is missing;
 - interrupted non-idempotent work can be repeated blindly;
 - cleanup can delete quarantine by filename pattern alone;
@@ -1259,7 +1263,7 @@ This document conforms when all of the following checks pass:
 38. result bundles preserve correlation, integrity, confidentiality, and provenance;
 39. external AI boundaries remain intact;
 40. Ariane local behavior remains independent from voice;
-41. native UCKK payload behavior remains deterministic;
+41. kOA Mediatheque payload behavior remains deterministic and queued UCKK publication remains external;
 42. complete conformance evidence is present;
 43. active content is English;
 44. placeholder and unresolved-authority markers are absent.
@@ -1357,11 +1361,11 @@ A bundle contains a verified Ariane local-navigation artifact.
 
 The external voice integration is unavailable on the target. The local-navigation payload remains compatible and can activate. No alternate voice provider is selected.
 
-### 11.8 UCKK external candidate
+### 11.8 External media candidate and optional UCKK publication
 
-A bundle carries an externally generated Suno result as a candidate artifact with provenance and a declared UCKK re-import purpose.
+A bundle carries an externally generated Suno result as a candidate artifact with provenance and a declared kOA Mediatheque admission purpose.
 
-The generic importer verifies and stages the candidate. UCKK presents it for explicit user approval. It does not become native source media or published content automatically.
+The generic importer verifies and stages the candidate. The kOA Mediatheque presents it for explicit user approval. It does not become authoritative local media or UCKK-published content automatically.
 
 ### 11.9 Result return
 

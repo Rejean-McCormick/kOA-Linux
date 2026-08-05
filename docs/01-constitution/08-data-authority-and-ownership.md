@@ -309,9 +309,9 @@ Its responsibility includes the publication boundary, applicable authorization, 
 
 The Publication Gateway does not become the owner of the source domain merely because it transports or releases source data.
 
-### 4.9 UCKK Dimension Gateway
+### 4.9 UCKK publication integration
 
-The UCKK Dimension Gateway controls user-selected media admission into a UCKK dimension.
+The UCKK Publication Bridge packages and transports explicitly selected kOA Mediatheque records to an authorized external UCKK Moodle destination after Publication Gateway authorization.
 
 Its responsibility includes:
 
@@ -322,7 +322,7 @@ Its responsibility includes:
 - transfer result;
 - applicable receipt or evidence.
 
-The UCKK Dimension Gateway does not replace the Publication Gateway and does not acquire all UCKK platform authority merely because it performs ingestion.
+The UCKK Publication Bridge does not replace the Publication Gateway, does not own local kOA Mediatheque records, and does not acquire authority over the external UCKK platform merely because it performs transport.
 
 ### 4.10 Profiles and topology
 
@@ -399,8 +399,8 @@ These changes receive major semantic-change treatment because they alter who can
 - **REQ-CONST-DATA-011 — SHALL:** Every component contract declare owned data domains, accepted inputs, produced outputs, mutable state, derived state, deletion behavior, export behavior, and recovery responsibility.
 - **REQ-CONST-DATA-012 — SHALL:** Every cross-domain transfer preserve provenance sufficient to identify the source owner, transfer contract, initiating authority, destination owner, and result.
 - **REQ-CONST-DATA-013 — SHALL:** Cross-domain disclosure and publication use the Publication Gateway contract.
-- **REQ-CONST-DATA-014 — SHALL:** User-selected media admission into UCKK use the UCKK Dimension Gateway contract.
-- **REQ-CONST-DATA-015 — SHALL NOT:** The Publication Gateway and UCKK Dimension Gateway substitute for one another or merge their authority boundaries.
+- **REQ-CONST-DATA-014 — SHALL:** Explicit publication of selected kOA Mediatheque records to the external UCKK platform use the UCKK publication integration after Publication Gateway authorization.
+- **REQ-CONST-DATA-015 — SHALL NOT:** The UCKK Publication Bridge bypass, replace, or create the disclosure authority owned by Publication Gateway.
 - **REQ-CONST-DATA-016 — SHALL:** A deployment profile preserve logical data ownership when it changes process placement, database topology, storage topology, network topology, or resource allocation.
 - **REQ-CONST-DATA-017 — SHALL NOT:** Administrative, database, host, backup, or infrastructure privilege grant an application component authority over another component's data.
 - **REQ-CONST-DATA-018 — SHALL:** Backup, restore, rollback, replication, and migration procedures preserve component ownership boundaries and prevent mixed-version authoritative state.
@@ -509,7 +509,7 @@ A partial restore does not create partial authority.
 | Shared credentials cross boundaries | Block activation and credential use | Properly separated identities | Undeclared foreign mutation | Identity and permission audit |
 | Restore versions are incompatible | Block restore activation or use forward repair | Existing active release | Mixed-version authoritative state | Restore compatibility report |
 | Publication policy fails | Reject publication | Source-domain authority | External disclosure | Publication failure receipt |
-| UCKK admission validation fails | Reject admission | Original media and UCKK existing state | New UCKK admission | Admission failure receipt |
+| UCKK publication validation fails | Reject or queue publication | Original kOA Mediatheque record and prior receipts | New external UCKK copy | Publication failure receipt |
 | Validation tooling cannot execute | Mark validation blocked | Previous valid release | New release activation | Blocked validation report |
 
 Safe degradation is capability-scoped.
@@ -599,7 +599,7 @@ It does not erase the producer and consumer owners.
 
 The Publication Gateway mediates publication and disclosure.
 
-The UCKK Dimension Gateway mediates selected-media admission into UCKK.
+The UCKK Publication Bridge performs target-specific packaging and transport of an authorized publication package to the external UCKK platform.
 
 A gateway can validate, transform, transport, queue, or record a transfer within its contract. It cannot silently absorb the source domain or destination domain.
 
@@ -618,14 +618,14 @@ Infrastructure access does not create application ownership, business authority,
 | Decision ID | Effect on this document |
 | --- | --- |
 | `DEC-DATA-001` | Establishes mandatory logical data ownership, permits profile-controlled physical sharing, and prohibits direct writes into another component's authoritative source tables |
-| `DEC-GATE-001` | Keeps Publication Gateway and UCKK Dimension Gateway as separate contracts with separate authority boundaries |
+| `DEC-UCKK-EXT-001` | Keeps disclosure authorization in Publication Gateway and UCKK-specific transport in the external integration |
 
 ### 9.2 Protected alignment locks
 
 | Lock ID | Protected relationship |
 | --- | --- |
 | `LOCK-DATA-001` | No component writes directly to another component's authoritative source tables |
-| `LOCK-GATE-001` | Publication Gateway and UCKK Dimension Gateway remain separate |
+| `LOCK-UCKK-EXT-001` | UCKK publication transport cannot bypass Publication Gateway authorization or own local media |
 | `LOCK-PROFILE-001` | Profile-specific topology and isolation choices do not become global authority |
 | `LOCK-IMPL-001` | A recipe or example does not redefine data authority |
 
@@ -645,7 +645,7 @@ The following assumptions are invalid:
 - the sender of a command owns the resulting state;
 - an event consumer can revise the producer's source event;
 - a gateway owns every domain whose data passes through it;
-- the Publication Gateway and UCKK Dimension Gateway are interchangeable;
+- the Publication Gateway and UCKK Publication Bridge are interchangeable;
 - a development shortcut is acceptable in production authority;
 - a recipe can authorize direct database writes;
 - a missing contract has an obvious default;
@@ -674,7 +674,7 @@ This document is conformant when all applicable criteria below pass.
 12. Every cross-component mutation path resolves to an active versioned contract.
 13. Direct cross-component source-store mutation is rejected by `LOCK-DATA-001`.
 14. Publication flows resolve to the Publication Gateway contract.
-15. Selected-media admission into UCKK resolves to the UCKK Dimension Gateway contract.
+15. Explicit publication to the external UCKK platform resolves to the UCKK publication integration and requires prior Publication Gateway authorization.
 16. `LOCK-GATE-001` confirms that the two gateway contracts remain distinct.
 17. Profile contracts do not transfer logical ownership through topology declarations.
 18. Derived stores declare source lineage and rebuild behavior.
@@ -723,7 +723,7 @@ PostgreSQL process
 ├── database or schema: ariane
 │   └── identity: ariane_runtime
 └── database or schema: uckk
-    └── identity: uckk_platform
+    └── identity: uckk_external_platform
 ```
 
 Each identity can mutate only its own authoritative namespace.
@@ -748,11 +748,11 @@ The Publication Gateway evaluates the active disclosure contract, creates the ap
 
 The source component remains the owner of its internal source data. The destination receives authority only according to its own admission and ownership contract.
 
-### 11.4 UCKK admission
+### 11.4 Publication to UCKK
 
-A user selects a local media file and invokes the UCKK Dimension Gateway.
+A user selects a local kOA Mediatheque record and requests publication to UCKK.
 
-The gateway verifies the media, target dimension, transfer authority, and admission contract. The UCKK Platform then decides how the admitted object is represented within its domain.
+Publication Gateway verifies disclosure authority, rights, restrictions, audience, and consent. The UCKK Publication Bridge then packages and transports the approved representation. The kOA Mediatheque retains the local source record; UCKK owns only the separately accepted destination copy.
 
 This flow is not treated as general cross-domain publication.
 

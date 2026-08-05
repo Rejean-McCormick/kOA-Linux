@@ -636,7 +636,7 @@ Cross-component writes remain prohibited.
 Recovery classifies pending:
 
 - publication requests;
-- UCKK transfers;
+- queued or in-flight UCKK publication transfers;
 - external exports;
 - imports;
 - activation requests;

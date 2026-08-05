@@ -799,7 +799,7 @@ Resource pressure can stop optional work or reject activation. It cannot select 
 
 Activation does not change component data ownership.
 
-Publication Gateway and UCKK Dimension Gateway remain separate from lifecycle activation. Activating a component or artifact does not authorize publication or UCKK transfer.
+The Publication Gateway and the kOA Mediatheque admission boundary remain separate from lifecycle activation. Activating a component or artifact does not authorize cross-domain publication or transfer to the external UCKK platform.
 
 ## 10. Exceptions and Validation
 

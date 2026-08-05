@@ -23,7 +23,8 @@
     "DEC-GATE-001",
     "DEC-AI-001",
     "DEC-SENT-001",
-    "DEC-UCKK-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001",
     "DEC-OFFLINE-001",
     "DEC-REL-001",
     "DEC-CONTAINER-001"
@@ -67,8 +68,9 @@
     "LOCK-AI-001",
     "LOCK-AI-002",
     "LOCK-SENT-001",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-001",
     "LOCK-OFFLINE-001",
     "LOCK-LIFE-001",
     "LOCK-LIFE-002",
@@ -167,7 +169,7 @@ The following patterns are outside the integration model:
 - network reachability treated as authorization;
 - a valid signature treated as sufficient authority;
 - direct publication that bypasses Publication Gateway;
-- direct UCKK admission that bypasses UCKK Dimension Gateway;
+- direct UCKK publication that bypasses Publication Gateway authorization or the UCKK publication integration;
 - external-service output written directly into authoritative data;
 - a message broker used as an undeclared universal database;
 - a cache used as authoritative state;
@@ -343,7 +345,7 @@ Gateways mediate authority transitions.
 
 Publication Gateway mediates governed release from one disclosure or authority domain to another.
 
-UCKK Dimension Gateway mediates controlled admission of user-selected media into a UCKK dimension.
+UCKK Publication Bridge packages and transports explicitly authorized kOA Mediatheque representations to an external UCKK Moodle destination.
 
 The gateways can exchange references or receipts, but their responsibilities, data, decisions, and execution paths remain separate.
 
@@ -420,8 +422,8 @@ Administrative access does not grant application data authority or cultural auth
 - **REQ-COMP-INT-017 — SHALL:** Unrelated component capabilities continue when a bounded integration fails and continued operation is safe.
 - **REQ-COMP-INT-018 — SHALL:** Queued operations be revalidated after reconnection or material authority change before transmission, acceptance, publication, or activation.
 - **REQ-COMP-INT-019 — SHALL:** Publication Gateway mediate governed cross-domain publication.
-- **REQ-COMP-INT-020 — SHALL:** UCKK Dimension Gateway mediate controlled admission into UCKK.
-- **REQ-COMP-INT-021 — SHALL NOT:** Publication Gateway and UCKK Dimension Gateway share authority state, substitute for one another, or be bypassed through direct component integration.
+- **REQ-COMP-INT-020 — SHALL:** UCKK Publication Bridge perform target-specific packaging and transport only after Publication Gateway authorization.
+- **REQ-COMP-INT-021 — SHALL NOT:** UCKK Publication Bridge bypass Publication Gateway authorization, own local kOA Mediatheque records, or perform implicit synchronization.
 - **REQ-COMP-INT-022 — SHALL:** Governance Policy Runtime and Resource Governor remain separate authorities even when one integration depends on both.
 - **REQ-COMP-INT-023 — SHALL NOT:** External AI, external creative services, or SenTient write authoritative component data directly.
 - **REQ-COMP-INT-024 — SHALL:** Administrative interfaces remain separate from application interfaces and use narrow authenticated, authorized, and audited operations.
@@ -566,7 +568,7 @@ Removal proceeds through:
 | Governance runtime unavailable | Block governed operations. | Ungoverned local functions where safe | New governed decision |
 | Resource Governor unavailable | Apply declared safe static limits or block heavy activation. | Essential bounded services | Uncontrolled heavy work |
 | Publication Gateway unavailable | Keep publication unexecuted. | Source editing and storage | Cross-domain publication |
-| UCKK Dimension Gateway unavailable | Preserve existing UCKK content. | Read, export, backup | New governed admission |
+| UCKK Publication Bridge unavailable | Preserve existing kOA Mediatheque content. | Read, export, backup | New UCKK publication transport |
 | External service unavailable | Disable that integration only. | Native local capability | External assistance |
 | External result invalid | Quarantine or reject. | Original authoritative data | Authoritative import |
 | Reconnection changes authority | Keep queued request blocked or cancelled. | Local state and evidence | Automatic release |
@@ -604,11 +606,11 @@ Ariane produces bounded navigation or action requests through approved applicati
 
 The receiving application validates the request and commits its own data. Ariane does not gain direct database access and does not become the application’s authorization authority.
 
-### 8.5 UCKK Platform and its gateways
+### 8.5 kOA Mediatheque and its gateways
 
-UCKK Dimension Gateway validates controlled admission into UCKK.
+UCKK Publication Bridge validates and transports the authorized package to the external UCKK platform.
 
-UCKK Platform owns accepted media objects, versions, collections, provenance, access rules, and component-owned derivatives.
+kOA Mediatheque owns accepted media objects, versions, collections, provenance, access rules, and component-owned derivatives.
 
 Publication Gateway separately mediates release to another domain or audience.
 
@@ -664,8 +666,8 @@ The following assumptions are prohibited:
 14. A candidate import is authoritative because it passed syntax validation.
 15. External AI output is authoritative.
 16. SenTient output is accepted knowledge.
-17. UCKK admission authorizes publication.
-18. Publication authorizes UCKK admission.
+17. UCKK publication authorizes publication.
+18. Publication authorizes UCKK publication.
 19. Governance Policy Runtime controls resources.
 20. Resource Governor decides consent or disclosure.
 21. Offline queueing preserves authorization indefinitely.
@@ -708,7 +710,7 @@ This document is conformant when:
 23. Identity, tenant, authority, purpose, and correlation context are validated where applicable.
 24. Data minimization and confidentiality checks pass.
 25. External and SenTient outputs remain non-authoritative until accepted.
-26. Publication Gateway and UCKK Dimension Gateway separation tests pass.
+26. UCKK publication authorization, transport, receipt, and local-authority separation tests pass.
 27. Governance Policy Runtime and Resource Governor separation tests pass.
 28. Offline queues do not release automatically after reconnection.
 29. Integration removal preserves component-owned data and unrelated capabilities.

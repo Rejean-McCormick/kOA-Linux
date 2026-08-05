@@ -451,7 +451,7 @@ Examples include:
 
 - Ariane local navigation continuing without external voice;
 - Konnaxion continuing without Orgo;
-- deterministic UCKK processing continuing without Suno or Gamma;
+- deterministic kOA Mediatheque processing continuing without Suno or Gamma;
 - core runtime continuing without SenTient;
 - local reads continuing while the Publication Gateway is unavailable.
 
@@ -1059,11 +1059,11 @@ Ariane exposes local-navigation readiness separately from external voice readine
 
 Voice loss does not remove local deterministic navigation.
 
-### 8.11 UCKK
+### 8.11 kOA Mediatheque and UCKK publication
 
-UCKK exposes source storage, deterministic processing, derivative, export, backup, restore, and gateway health separately.
+The kOA Mediatheque exposes local source storage, deterministic processing, derivative, export, backup, restore, and admission health separately. The UCKK publication integration exposes queue, authentication, transfer, remote-result, and receipt health.
 
-Suno and Gamma status remains an external integration state and does not define native UCKK health.
+Suno, Gamma, and UCKK status remain external integration states and do not define local kOA Mediatheque health.
 
 ### 8.12 SenTient
 
@@ -1120,7 +1120,8 @@ A worker process being alive does not prove that it is clean or job-ready.
 | `ADR-018` | Keeps SenTient optional and independently observable. |
 | `ADR-019` | Separates resource health from governance authority. |
 | `ADR-021` | Preserves Ariane local readiness without external voice. |
-| `ADR-022` | Preserves deterministic native UCKK readiness without external AI. |
+| `ADR-030` | Preserves deterministic kOA Mediatheque readiness without external AI. |
+| `ADR-031` | Keeps external UCKK availability separate from local readiness. |
 | `ADR-023` | Makes offline and high-assurance health effects explicit through overlays. |
 | `ADR-024` | Preserves logical boundaries across physical consolidation. |
 
@@ -1284,7 +1285,7 @@ The external voice integration is unavailable. The local-navigation state remain
 
 ### 11.5 Resource constraint
 
-A UCKK background derivative queue reaches its soft resource limit.
+A kOA Mediatheque background derivative queue reaches its soft resource limit.
 
 Source reads remain healthy. New optional derivative jobs queue, background-work readiness becomes constrained, and authoritative source state is unchanged.
 

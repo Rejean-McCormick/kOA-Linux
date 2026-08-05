@@ -26,7 +26,8 @@
     "DEC-REL-001",
     "DEC-SENT-001",
     "DEC-SHELL-001",
-    "DEC-UCKK-001"
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001"
   ],
   "requirement_ids": [
     "REQ-CONST-SCOPE-001",
@@ -65,8 +66,9 @@
     "LOCK-PROFILE-001",
     "LOCK-PROFILE-002",
     "LOCK-SENT-001",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002"
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -273,11 +275,11 @@ SenTient is an optional isolated research and enrichment workbench. It is not pa
 
 Its dependencies, storage, service identity, temporary data, network access, and resource use remain isolated. Its outputs require provenance, review, controlled import, and component-level acceptance.
 
-### 4.6 UCKK boundary
+### 4.6 kOA Mediatheque and external UCKK boundary
 
-The native UCKK pipeline is deterministic and local. Its baseline responsibilities include controlled ingestion, integrity verification where the artifact contract requires it, user-supplied metadata, deterministic media processing, storage, export, backup, and restoration.
+The native kOA Mediatheque pipeline is deterministic and local. Its baseline responsibilities include controlled ingestion, integrity verification where the artifact contract requires it, user-supplied metadata, deterministic media processing, storage, export, backup, and restoration.
 
-Native UCKK behavior does not include AI classification, AI summarization, AI-generated categories, AI routing, AI tagging, AI transcription, AI translation, or AI content generation.
+Native kOA Mediatheque behavior does not include AI classification, AI summarization, AI-generated categories, AI routing, AI tagging, AI transcription, AI translation, or AI content generation.
 
 Suno and Gamma are optional external adapters. They are not automatic ingestion or routing dependencies.
 
@@ -295,7 +297,7 @@ A shared physical database process may be permitted by a lightweight profile, bu
 
 Resource Governor controls deterministic resource allocation and scheduling. Governance Policy Runtime controls authorization, disclosure, consent, privilege, and governed exceptions in profiles that deploy it. Neither authority substitutes for the other.
 
-Publication Gateway controls cross-domain disclosure and publication. UCKK Dimension Gateway controls user-selected media transfer and admission into UCKK. Neither contract substitutes for the other.
+Publication Gateway authorizes cross-domain disclosure. After that authorization, the UCKK Publication Bridge packages and transports explicitly selected kOA Mediatheque records to the external UCKK Moodle platform. The bridge cannot bypass or replace the gateway.
 
 ### 4.9 Implementation boundary
 
@@ -320,12 +322,12 @@ Matching version numbers, recency, or co-installation do not prove compatibility
 - **REQ-CONST-SCOPE-006 — SHALL:** Core user operation remain available without any external AI surface.
 - **REQ-CONST-SCOPE-007 — SHALL NOT:** An external AI output directly mutate authoritative component state or become authoritative without explicit acceptance.
 - **REQ-CONST-SCOPE-008 — SHALL:** SenTient remain optional, isolated, non-authoritative, and absent from the default user-lightweight baseline.
-- **REQ-CONST-SCOPE-009 — SHALL:** Native UCKK ingestion, routing, metadata handling, and deterministic media processing operate without AI.
+- **REQ-CONST-SCOPE-009 — SHALL:** Native kOA Mediatheque ingestion, routing, metadata handling, and deterministic media processing operate without AI.
 - **REQ-CONST-SCOPE-010 — SHALL:** Ariane local navigation remain available when the optional external voice capability is unavailable.
 - **REQ-CONST-SCOPE-011 — SHALL:** Every component retain explicit logical ownership of its authoritative data.
 - **REQ-CONST-SCOPE-012 — SHALL NOT:** A component write directly to another component’s authoritative source tables.
 - **REQ-CONST-SCOPE-013 — SHALL:** Resource Governor and Governance Policy Runtime remain separate authorities with non-overlapping canonical responsibilities.
-- **REQ-CONST-SCOPE-014 — SHALL:** Publication Gateway and UCKK Dimension Gateway remain separate contracts with distinct disclosure and ingestion responsibilities.
+- **REQ-CONST-SCOPE-014 — SHALL:** Publication Gateway authorize disclosure before the UCKK Publication Bridge performs target-specific packaging and transport; the bridge shall not create publication authority.
 - **REQ-CONST-SCOPE-015 — SHALL NOT:** Kubernetes be required by a single-node user or developer endpoint baseline.
 - **REQ-CONST-SCOPE-016 — SHALL NOT:** A specific desktop shell, service manager, container runtime, or host layout become a global requirement unless an accepted global decision activates it.
 - **REQ-CONST-SCOPE-017 — SHALL:** Failure or removal of an optional integration leave unrelated core capabilities operational.
@@ -416,7 +418,7 @@ Where a profile deploys Governance Policy Runtime, governed authorization preced
 
 ### 8.4 Publication and ingestion gateways
 
-Publication Gateway mediates outward or cross-domain disclosure. UCKK Dimension Gateway mediates user-selected transfer into UCKK. Data crossing either boundary retains explicit provenance and acceptance state.
+Publication Gateway mediates outward or cross-domain disclosure. The UCKK Publication Bridge then performs authorized target-specific packaging and transport to the external UCKK platform. The local source remains owned by the kOA Mediatheque, and the transfer retains provenance and receipt state.
 
 ### 8.5 External services
 
@@ -437,11 +439,11 @@ The following assumptions are prohibited:
 3. An optional integration becomes core because many users enable it.
 4. External AI is native because the interface is presented inside a kOA workflow.
 5. SenTient belongs to the default user installation.
-6. UCKK ingestion performs AI analysis because optional external media tools exist.
+6. kOA Mediatheque ingestion performs AI analysis because optional external media tools exist.
 7. Ariane requires voice or AI to provide navigation.
 8. Physical database consolidation permits cross-component writes.
 9. Resource Governor and Governance Policy Runtime are interchangeable.
-10. Publication Gateway and UCKK Dimension Gateway are interchangeable.
+10. Publication Gateway and UCKK Publication Bridge are interchangeable.
 11. A container runtime is a deployment profile.
 12. Kubernetes is required because it is permitted in control-plane or build profiles.
 13. A recipe defines architecture because it works in one deployment.
@@ -469,7 +471,7 @@ This document is conformant when all of the following checks pass:
 12. No recipe or implementation choice is represented as universal architecture.
 13. Optional external services are not represented as native or required.
 14. SenTient is not represented as default, authoritative, always active, or required for offline core operation.
-15. Native UCKK behavior is represented as deterministic and non-AI.
+15. Native kOA Mediatheque behavior is represented as deterministic and non-AI.
 16. Ariane local navigation is represented as independent of external voice availability.
 17. Direct cross-component writes are prohibited.
 18. Conditional scope and overlay composition remain explicit.
@@ -485,7 +487,7 @@ A sovereign Linux node may adopt an immutable signed operating-system image, roo
 
 ### 11.2 Correct optional integration behavior
 
-A user explicitly exports selected content to Gamma, receives a result, reviews it, and imports the accepted result with provenance. Gamma remains removable, and UCKK continues local ingestion and storage when Gamma is unavailable.
+A user explicitly exports selected content to Gamma, receives a result, reviews it, and imports the accepted result with provenance. Gamma remains removable, and the kOA Mediatheque continues local ingestion and storage when Gamma is unavailable.
 
 ### 11.3 Correct component ownership
 

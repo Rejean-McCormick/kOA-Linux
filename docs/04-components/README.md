@@ -29,7 +29,8 @@
     "DEC-GOV-001",
     "DEC-GATE-001",
     "DEC-SENT-001",
-    "DEC-UCKK-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001",
     "DEC-ARI-001",
     "DEC-PROFILE-BASELINE-001"
   ],
@@ -41,8 +42,9 @@
     "LOCK-GOV-001",
     "LOCK-GATE-001",
     "LOCK-SENT-001",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-001",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
     "LOCK-PROFILE-001",
@@ -191,11 +193,11 @@ The Governance Policy Runtime evaluates authorization, disclosure, consent, priv
 
 Resource pressure does not create policy authority. Policy decisions do not allocate CPU or memory.
 
-### 7.2 Publication Gateway and UCKK Dimension Gateway
+### 7.2 Publication Gateway and UCKK publication integration
 
 The Publication Gateway controls cross-domain disclosure and publication.
 
-The UCKK Dimension Gateway controls user-selected ingestion into a UCKK dimension.
+After Publication Gateway authorization, the UCKK Publication Bridge packages and transports selected representations to an authorized external UCKK Moodle destination.
 
 Ingestion is not publication. Publication does not transfer source ownership.
 

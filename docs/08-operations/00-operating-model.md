@@ -392,7 +392,8 @@ Operational roles coordinate existing owners.
 | Privileged node operations | kOA Node Agent and registered privileged boundary |
 | Artifact and release lifecycle | Artifact and release owners |
 | External publication | Publication Gateway |
-| UCKK dimension admission | UCKK Dimension Gateway and UCKK Platform |
+| kOA Mediatheque admission | kOA Mediatheque |
+| External UCKK publication | Publication Gateway with UCKK publication adapter |
 | Security controls and incident containment | Security owner with affected owners |
 | Backup and restore of component state | Owning component and profile recovery contract |
 | Evidence handling | Audit Broker and evidence owner |
@@ -492,7 +493,8 @@ Examples include:
 - Konnaxion read or update capability;
 - active Kristal query;
 - policy evaluation;
-- UCKK local operation;
+- kOA Mediatheque local operation;
+- optional external UCKK publication;
 - publication;
 - release activation;
 - rollback;
@@ -866,7 +868,7 @@ Integration operation includes:
 
 External AI remains optional and user-triggered.
 
-Suno and Gamma remain explicit external UCKK-related adapters.
+Suno and Gamma remain explicit external candidate-media adapters. UCKK remains a separate external Moodle publication target.
 
 Ariane external voice remains separate from local navigation.
 
@@ -1288,11 +1290,11 @@ Publication Gateway owns external publication execution.
 
 An operator cannot publish directly from a source component or bypass disclosure controls during an incident or maintenance window.
 
-### 8.7 UCKK Dimension Gateway
+### 8.7 kOA Mediatheque and UCKK publication bridge
 
-UCKK Dimension Gateway controls explicit admission into UCKK dimensions.
+The kOA Mediatheque controls explicit local media admission. Publication Gateway with the UCKK adapter controls explicit external publication to UCKK.
 
-Operations do not substitute Publication Gateway, Suno, Gamma, or direct UCKK storage access for that admission contract.
+Operations do not substitute Publication Gateway, Suno, Gamma, or direct UCKK storage access for local Mediatheque admission. They do not bypass gateway authorization for UCKK delivery.
 
 ### 8.8 Component owners
 
@@ -1345,7 +1347,7 @@ Operations preserve native core independence and candidate-adoption boundaries.
 | `DEC-PROFILE-001` | Operating topology, resources, implementation, and strengthening remain profile-specific |
 | `DEC-DATA-001` | Operations preserve exclusive component data ownership |
 | `DEC-GOV-001` | Resource Governor and Governance Policy Runtime remain separate authorities |
-| `DEC-GATE-001` | Publication Gateway and UCKK Dimension Gateway remain separate |
+| `DEC-GATE-001` | Local Mediatheque admission and cross-domain publication remain separate; the UCKK adapter is publication-only |
 | `DEC-AI-001` | External AI remains optional, explicit, removable, and non-authoritative |
 | `DEC-SENT-001` | SenTient remains an optional isolated developer and build workbench |
 | `DEC-CONTAINER-001` | Container runtime choices remain profile-scoped |
@@ -1362,7 +1364,7 @@ Operations preserve native core independence and candidate-adoption boundaries.
 | `LOCK-SENT-001` | SenTient failure or prevalence does not change core operation |
 | `LOCK-DATA-001` | Operators and tools cannot write foreign authoritative state |
 | `LOCK-GOV-001` | Policy and resource operations remain separate |
-| `LOCK-GATE-001` | Publication and UCKK admission operations remain separate |
+| `LOCK-GATE-001` | Local media admission and external publication operations remain separate |
 | `LOCK-PROFILE-001` | Profile-specific operating choices do not become global |
 | `LOCK-DEV-001` to `LOCK-DEV-005` | Operational development and test workspaces remain isolated |
 | `LOCK-LIFE-001` to `LOCK-LIFE-004` | Activation, recovery, Release Sets, and channel compatibility remain controlled |
@@ -1567,7 +1569,7 @@ ChatGPT becomes unavailable.
 
 The integration reports unavailable status and reconciles any pending request.
 
-Konnaxion, Orgo, local Ariane navigation, native UCKK, and the local language runtime continue.
+Konnaxion, Orgo, local Ariane navigation, the kOA Mediatheque, and the local language runtime continue. UCKK publication may be unavailable without affecting local operation.
 
 No alternate provider or local model starts automatically.
 

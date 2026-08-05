@@ -67,7 +67,7 @@
       "tenant_workflow_state",
       "orgo_workflow_state",
       "konnaxion_domain_state",
-      "uckk_media_state",
+      "koa_mediatheque_record_state",
       "ariane_interface_state",
       "component_business_state",
       "universal_operational_storage",
@@ -224,15 +224,15 @@
       "audit_broker",
       "governance_policy_runtime",
       "identity_and_trust",
-      "konnaxion",
+      "koa_mediatheque",
       "koa_node_agent",
+      "konnaxion",
       "orgo",
       "publication_gateway",
       "resource_governor",
       "semantik_architect_runtime",
       "sentient",
-      "uckk_dimension_gateway",
-      "uckk_platform"
+      "uckk_publication_bridge"
     ]
   },
   "interfaces": [

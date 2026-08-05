@@ -974,7 +974,7 @@ The recovery environment selects the declared last-known-good image, verifies co
 
 Orgo storage is damaged while other component stores remain valid.
 
-Orgo restores its own state into staging, applies its migration contract, validates external Kristal, UCKK, identity, policy, publication, and evidence references, then activates the recovered Orgo state. Other components are not rewritten by the recovery coordinator.
+Orgo restores its own state into staging, applies its migration contract, validates external Kristal, kOA Mediatheque, identity, policy, publication, UCKK publication-receipt, and evidence references, then activates the recovered Orgo state. Other components and the external UCKK platform are not rewritten by the recovery coordinator.
 
 ### Example 4 — Unsafe rollback
 
@@ -998,7 +998,7 @@ The target enters `recovered_restricted`. Operators can preserve evidence, inspe
 
 A restored backup predates an external publication withdrawal.
 
-Recovery reconciles the restored UCKK and Orgo state with retained publication receipts. The withdrawn material remains blocked and is not re-exposed merely because the backup contained an older visible state.
+Recovery reconciles restored kOA Mediatheque and Orgo state with retained publication receipts, including receipts for external UCKK delivery. The withdrawn material remains blocked and is not re-exposed or republished merely because the backup contained an older visible state.
 
 ### Example 8 — Protected exit
 

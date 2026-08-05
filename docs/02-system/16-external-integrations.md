@@ -15,7 +15,7 @@
     "contracts/integration-types.contract.json",
     "generated/component-catalog.json",
     "contracts/components/publication-gateway.component.json",
-    "contracts/components/uckk-dimension-gateway.component.json",
+    "contracts/integrations/uckk-publication.integration.json",
     "contracts/subsystems/ariane.subsystem.json",
     "generated/profile-catalog.json",
     "contracts/artifact-classes.contract.json",
@@ -33,7 +33,8 @@
     "DEC-SYS-COMP-001",
     "DEC-DATA-DISCLOSURE-001",
     "DEC-ARI-001",
-    "DEC-UCKK-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001",
     "DEC-SENT-001"
   ],
   "requirement_ids": [
@@ -77,8 +78,9 @@
     "LOCK-GATE-001",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-001",
     "LOCK-SENT-001",
     "LOCK-COMP-001",
     "LOCK-COMP-002",
@@ -120,7 +122,7 @@
     "offline-continuity",
     "safe-degradation",
     "publication-gateway",
-    "uckk-dimension-gateway",
+    "uckk-publication",
     "ariane-voice",
     "federation",
     "removability"
@@ -185,7 +187,7 @@ Canonical ownership is distributed as follows:
 | Integration identity, classification, scope, data flows, and removal behavior | `contracts/integration-types.contract.json` |
 | Component identity, responsibility, and data ownership | `generated/component-catalog.json` |
 | Publication Gateway behavior | `contracts/components/publication-gateway.component.json` |
-| UCKK Dimension Gateway behavior | `contracts/components/uckk-dimension-gateway.component.json` |
+| UCKK Publication Bridge behavior | `contracts/integrations/uckk-publication.integration.json` |
 | Ariane Runtime and local navigation | `contracts/components/ariane-runtime.component.json` |
 | Profile enablement and deployment conditions | `contracts/profiles/*.profile.json` |
 | Artifact classes transferred across boundaries | `contracts/artifact-classes.contract.json` |
@@ -457,18 +459,18 @@ local authoritative action
 
 The external result remains candidate material until the local owning workflow accepts it.
 
-ChatGPT can support user-selected external assistance. Suno and Gamma can support user-selected UCKK-related creative or presentation workflows. The approved Ariane voice adapter adds optional voice processing while local non-voice navigation remains native and available without it.
+ChatGPT can support user-selected external assistance. Suno and Gamma can support user-selected kOA Mediatheque-related creative or presentation workflows. The approved Ariane voice adapter adds optional voice processing while local non-voice navigation remains native and available without it.
 
 No additional provider becomes approved through common usage, installed software, a recipe, a user account, or an implementation shortcut.
 
 ### 4.13 Gateway separation
 
-The Publication Gateway and UCKK Dimension Gateway are distinct.
+Publication Gateway authorizes disclosure; UCKK Publication Bridge performs UCKK-specific packaging and transport after authorization.
 
 | Gateway | Responsibility |
 | --- | --- |
 | Publication Gateway | Governs disclosure or publication across an authority boundary |
-| UCKK Dimension Gateway | Transfers user-selected media into the user's UCKK dimension |
+| UCKK Publication Bridge | Packages and transports explicitly authorized kOA Mediatheque representations to an external UCKK Moodle destination |
 
 A workflow can invoke both gateways. Their identities, owners, policies, data flows, receipts, failures, and tests remain separate.
 
@@ -506,9 +508,9 @@ SenTient, OpenRefine, search engines, language models, build tools, and similar 
 - **REQ-SYS-INT-023 — SHALL:** Use of an approved external AI surface require an explicit user or authorized workflow trigger, controlled export, provenance-preserving return, controlled re-import, and local acceptance.
 - **REQ-SYS-INT-024 — SHALL NOT:** Output from ChatGPT, Suno, Gamma, or the approved Ariane voice adapter become authoritative, executable, published, activated, or policy-effective without the owning local workflow's explicit acceptance.
 - **REQ-SYS-INT-025 — SHALL:** Ariane local non-voice navigation remain available without Internet access, external AI, or the approved external voice adapter.
-- **REQ-SYS-INT-026 — SHALL:** Native UCKK ingestion, validation, routing, local indexing, retrieval, and dimension transfer remain deterministic and non-AI.
-- **REQ-SYS-INT-027 — SHALL:** Suno and Gamma interact with UCKK only through optional user-triggered external adapter capabilities and return candidate material with provenance.
-- **REQ-SYS-INT-028 — SHALL NOT:** The Publication Gateway and the UCKK Dimension Gateway share an integration identity, authority boundary, or interchangeable responsibility.
+- **REQ-SYS-INT-026 — SHALL:** Native kOA Mediatheque ingestion, validation, organization, local indexing, retrieval, export, backup, and restore remain deterministic and non-AI.
+- **REQ-SYS-INT-027 — SHALL:** Suno and Gamma interact with kOA Mediatheque only through optional user-triggered external adapter capabilities and return candidate material with provenance.
+- **REQ-SYS-INT-028 — SHALL NOT:** UCKK Publication Bridge bypass Publication Gateway authorization, own local media, or perform background bidirectional synchronization.
 - **REQ-SYS-INT-029 — SHALL:** Federation peers authenticate their identity, negotiate compatible contracts, declare trust and authority scope, and preserve local ownership before exchanging governed data or artifacts.
 - **REQ-SYS-INT-030 — SHALL:** Controlled offline import and export validate manifests, integrity, compatibility, provenance, policy, and target ownership before activation or authoritative acceptance.
 - **REQ-SYS-INT-031 — SHALL:** Integration conformance claims remain profile-scoped and include current tests and evidence for security controls, data flows, offline behavior, removal, and authority boundaries.
@@ -685,9 +687,9 @@ Replacement is a separate registered integration or a compatible versioned evolu
 | Integrity verification fails | Reject or quarantine the object and prevent activation. |
 | External AI surface unavailable | Disable only the associated optional adapter capability. |
 | Ariane voice unavailable | Preserve Ariane local non-voice navigation. |
-| Suno or Gamma unavailable | Preserve native UCKK ingestion, routing, indexing, retrieval, and dimension transfer. |
-| Publication Gateway unavailable | Block or defer governed publication without affecting UCKK dimension transfer. |
-| UCKK Dimension Gateway unavailable | Block or defer dimension transfer without granting Publication Gateway replacement authority. |
+| Suno or Gamma unavailable | Preserve native kOA Mediatheque ingestion, organization, indexing, retrieval, export, backup, and restore. |
+| Publication Gateway unavailable | Block or defer every new UCKK publication request before packaging or transport. |
+| UCKK Publication Bridge unavailable | Block or defer UCKK publication transport without granting Publication Gateway replacement authority. |
 | Federation peer unavailable | Preserve local authority and queue only operations registered as safely deferrable. |
 | Offline media invalid | Reject import without changing active local state. |
 | Removal test fails | Block the removal or profile conformance claim until the dependency is eliminated. |
@@ -748,7 +750,7 @@ An exception cannot:
 - permit secrets in ordinary data flows;
 - remove controlled import, export, provenance, or acceptance for external AI;
 - make optional provider failure disable the local core;
-- merge Publication Gateway with UCKK Dimension Gateway;
+- merge Publication Gateway with UCKK Publication Bridge;
 - make Ariane local navigation depend on external voice;
 - make SenTient authoritative;
 - authorize a false conformance claim.
@@ -793,8 +795,8 @@ This document is conformant when validation confirms:
 17. the approved external AI surface set contains exactly ChatGPT, Suno, Gamma, and the approved Ariane voice adapter;
 18. external AI use is user-triggered, controlled, provenance-preserving, and non-authoritative before local acceptance;
 19. Ariane local navigation operates without external AI or voice;
-20. native UCKK behavior remains deterministic and non-AI;
-21. Publication Gateway and UCKK Dimension Gateway remain separate;
+20. native kOA Mediatheque behavior remains deterministic and non-AI;
+21. UCKK publication requires gateway authorization followed by bridge packaging and transport;
 22. federation peers use explicit identity, compatibility, scope, and revocation;
 23. offline imports and exports validate manifests, integrity, provenance, and compatibility;
 24. profile claims match active integration records and current evidence;
@@ -825,13 +827,13 @@ tools/check_no_unresolved_state.py
 
 A user selects local text and invokes the registered ChatGPT adapter. The export is minimized and records purpose and provenance. The returned text is candidate material. The user edits and explicitly accepts it before the owning component records a local authoritative version.
 
-### 11.2 Suno in a UCKK workflow
+### 11.2 Suno in a kOA Mediatheque workflow
 
-A user selects an eligible UCKK media object and invokes Suno. Native UCKK retains ownership of the source object and its local metadata. The returned audio is imported as candidate content with provider provenance and is accepted separately.
+A user selects an eligible kOA Mediatheque media record and invokes Suno. Native kOA Mediatheque retains ownership of the source object and its local metadata. The returned audio is imported as candidate content with provider provenance and is accepted separately.
 
 ### 11.3 Gamma presentation generation
 
-A user exports selected, authorized material to Gamma for a presentation draft. Gamma does not gain access to unrelated UCKK or component data. The returned presentation remains a candidate artifact until locally reviewed and accepted.
+A user exports selected, authorized material to Gamma for a presentation draft. Gamma does not gain access to unrelated kOA Mediatheque or component data. The returned presentation remains a candidate artifact until locally reviewed and accepted.
 
 ### 11.4 Ariane voice loss
 
@@ -841,9 +843,9 @@ The approved Ariane voice adapter becomes unavailable. Voice interaction is disa
 
 A component requests governed publication. The Publication Gateway evaluates the applicable disclosure path and records the external effect. It does not become the owner of the component's source content.
 
-### 11.6 UCKK Dimension Gateway
+### 11.6 UCKK Publication Bridge
 
-A user selects local media for transfer into the user's UCKK dimension. The UCKK Dimension Gateway validates and transfers that media. It does not acquire general publication authority.
+A user selects a local kOA Mediatheque record for publication to an external UCKK Moodle destination. Publication Gateway authorizes the disclosure, then UCKK Publication Bridge validates, packages, and transports the approved representation. It does not own local media or acquire general publication authority.
 
 ### 11.7 Federation retry
 

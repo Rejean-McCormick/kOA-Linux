@@ -184,7 +184,7 @@ This document applies to registered artifact classes, including:
 - knowledge packages;
 - Kristal artifacts;
 - Ariane artifacts;
-- UCKK and media artifacts;
+- kOA Mediatheque artifacts and retained UCKK publication packages or receipts;
 - offline bundles;
 - sovereignty bundles;
 - Release Sets;

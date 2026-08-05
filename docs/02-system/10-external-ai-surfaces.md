@@ -12,7 +12,7 @@
     "contracts/system.contract.json#/ai_boundary",
     "contracts/system.contract.json#/sentient_boundary",
     "contracts/system.contract.json#/ariane",
-    "contracts/system.contract.json#/uckk",
+    "contracts/system.contract.json#/koa_mediatheque",
     "contracts/system.contract.json#/external_integrations",
     "contracts/integration-types.contract.json",
     "generated/profile-catalog.json",
@@ -26,7 +26,8 @@
   "decision_ids": [
     "DEC-AI-001",
     "DEC-SENT-001",
-    "DEC-UCKK-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001",
     "DEC-ARI-001",
     "DEC-PROFILE-001",
     "DEC-DATA-001"
@@ -57,8 +58,9 @@
     "LOCK-AI-001",
     "LOCK-AI-002",
     "LOCK-SENT-001",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-001",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
     "LOCK-DATA-001",
@@ -127,7 +129,7 @@ SenTient remains a separate optional, isolated, non-authoritative research and e
 | `contracts/system.contract.json#/ai_boundary` | Native AI prohibition, approved external surfaces, and candidate-input rule |
 | `contracts/system.contract.json#/sentient_boundary` | SenTient separation from the global baseline |
 | `contracts/system.contract.json#/ariane` | Local navigation and optional external voice behavior |
-| `contracts/system.contract.json#/uckk` | Deterministic native UCKK pipeline and external media-adapter workflow |
+| `contracts/system.contract.json#/koa_mediatheque` | Deterministic native kOA Mediatheque pipeline and external media-adapter workflow |
 | `contracts/system.contract.json#/external_integrations` | Global external-integration requirements |
 | `contracts/integration-types.contract.json#/policy` | Explicit allowlist, default authority, activation, transfer, and removal rules |
 | `contracts/integrations/chatgpt.integration.json` | ChatGPT classification, capability scope, transfer, authority, provenance, failure, and removal |
@@ -137,7 +139,7 @@ SenTient remains a separate optional, isolated, non-authoritative research and e
 | `generated/profile-catalog.json#/external_integrations` | Profile-level availability and default enablement |
 | `generated/component-catalog.json` | Owning component identity and authoritative data ownership |
 | `generated/requirements-index.json` | Exact normative statements projected in Section 5 |
-| `generated/assertion-index.json` | Cross-file AI, UCKK, Ariane, data, profile, and lifecycle invariants |
+| `generated/assertion-index.json` | Cross-file AI, kOA Mediatheque, Ariane, data, profile, and lifecycle invariants |
 | `generated/traceability.json` | Links among decisions, requirements, locks, components, profiles, tests, and evidence |
 | `generated/test-catalog.json` | Registered conformance tests |
 | `generated/evidence-catalog.json` | Registered evidence supporting conformance claims |
@@ -169,7 +171,7 @@ The external service owns only remote processing. It does not own kOA data, poli
 | Integration | Classification | Authority class | Capability scope | Unavailable behavior |
 | --- | --- | --- | --- | --- |
 | `chatgpt` | `external_ai_assistance` | `non_authoritative_candidate_source` | user requested assistance, candidate text generation, candidate structured output, candidate analysis | The requested external assistance operation is unavailable; unrelated local capabilities remain operational. |
-| `suno` | `external_media_generation` | `non_authoritative_candidate_source` | user requested audio generation, user requested music generation, candidate media artifact return | External media generation is unavailable; deterministic local UCKK operations remain operational. |
+| `suno` | `external_media_generation` | `non_authoritative_candidate_source` | user requested audio generation, user requested music generation, candidate media artifact return | External media generation is unavailable; deterministic local kOA Mediatheque operations remain operational. |
 | `gamma` | `external_presentation_generation` | `non_authoritative_candidate_source` | user requested presentation generation, candidate presentation artifact return | External presentation generation is unavailable; unrelated local capabilities remain operational. |
 | `ariane_voice_adapter` | `external_voice_capability` | `non_authoritative_candidate_command_source` | voice input processing, candidate navigation intent return | Voice controls are unavailable; Ariane local keyboard, pointer, touch, menu, shortcut, and accessibility navigation remain operational. |
 
@@ -406,7 +408,7 @@ A failure in an external surface never grants broader authority than a successfu
 | Interaction | Initiator | External surface | Local owner | Authority boundary |
 | --- | --- | --- | --- | --- |
 | Candidate text assistance | User-facing component or user | ChatGPT | Requesting owning component | ChatGPT returns candidate content only |
-| Candidate media generation | User through UCKK or another approved workflow | Suno | UCKK or another registered owning component | Suno does not decide ingestion, routing, tagging, or publication |
+| Candidate media generation | User through kOA Mediatheque or another approved workflow | Suno | kOA Mediatheque or another registered owning component | Suno does not decide ingestion, routing, tagging, or publication |
 | Candidate presentation generation | User through an approved workflow | Gamma | Requesting owning component | Gamma does not activate, publish, or own the accepted artifact |
 | Candidate voice intent | Ariane voice session | Ariane voice adapter | Ariane Runtime | Adapter cannot execute local commands |
 | Controlled export | Owning component | Approved surface | Owning component | Export does not transfer ownership |
@@ -427,7 +429,7 @@ Direct provider-to-database, provider-to-publication, provider-to-privilege, pro
 | --- | --- |
 | `DEC-AI-001` | Native AI is excluded from the global baseline; only registered external surfaces are permitted. |
 | `DEC-SENT-001` | SenTient is an isolated optional workbench rather than a native or external baseline AI authority. |
-| `DEC-UCKK-001` | Native UCKK processing is deterministic; Suno and Gamma are explicit user-triggered adapters. |
+| `DEC-MEDIATHEQUE-001` | Native kOA Mediatheque processing is deterministic; Suno and Gamma are explicit user-triggered adapters. |
 | `DEC-ARI-001` | Ariane local navigation is non-AI; external voice is optional and locally validated. |
 | `DEC-PROFILE-001` | External-surface availability is profile-scoped and does not imply universal enablement. |
 | `DEC-DATA-001` | External services and adapters cannot write directly to component authoritative stores. |
@@ -489,7 +491,7 @@ These criteria define required validation. They do not claim that implementation
 
 > **Non-normative example:** A user selects a paragraph and asks ChatGPT for a candidate rewrite. The interface shows the selected paragraph will be transferred. The returned text appears in a review surface. Nothing is written to the authoritative component until the user accepts it and the owning component validates the change.
 
-> **Non-normative example:** A user selects media references and requests a Suno generation. The export contains only the selected prompt and inputs. The returned audio is quarantined as a candidate artifact, scanned and validated, assigned provenance, reviewed by the user, and admitted to UCKK only after approval.
+> **Non-normative example:** A user selects media references and requests a Suno generation. The export contains only the selected prompt and inputs. The returned audio is quarantined as a candidate artifact, scanned and validated, assigned provenance, reviewed by the user, and admitted to kOA Mediatheque only after approval.
 
 > **Non-normative example:** Gamma returns a presentation draft. The draft is imported into a component workspace and may be edited locally. Publication remains a separate request through the Publication Gateway.
 
@@ -497,4 +499,4 @@ These criteria define required validation. They do not claim that implementation
 
 > **Non-normative example:** Internet connectivity disappears during a voice session. Voice becomes unavailable, but keyboard, pointer, touch, menu, shortcut, accessibility, and deterministic local commands continue.
 
-> **Non-normative example:** ChatGPT is disabled from a profile. Existing locally accepted text remains part of the owning component's state with its existing provenance. No local editing, navigation, storage, UCKK, language runtime, or resource-governance capability fails.
+> **Non-normative example:** ChatGPT is disabled from a profile. Existing locally accepted text remains part of the owning component's state with its existing provenance. No local editing, navigation, storage, kOA Mediatheque, language runtime, or resource-governance capability fails.

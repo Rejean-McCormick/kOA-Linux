@@ -136,7 +136,7 @@ Capacity planning covers:
 | Processes and services | Process counts, container counts, service instances, file descriptors, sockets. |
 | Queues | Pending work, age, throughput, retry volume, dead-letter volume, reconciliation backlog. |
 | Databases | Connections, transactions, locks, table and index growth, maintenance capacity, replication lag. |
-| Gateways | Publication, UCKK admission, import, export, receipt, validation, and remediation capacity. |
+| Gateways | Publication, UCKK delivery, import, export, receipt, validation, and remediation capacity. |
 | Identity and governance | Authentication, trust, policy evaluation, consent lookup, audit-event processing. |
 | Human operations | Review queues, incident response, approval workload, maintenance staffing, recovery execution. |
 | External dependencies | Provider quotas, rate limits, transfer limits, availability windows, contractual ceilings. |
@@ -402,7 +402,7 @@ Examples include:
 - large search indexes;
 - OpenRefine;
 - full browser matrices;
-- intensive UCKK processing;
+- intensive kOA Mediatheque processing;
 - large migration jobs;
 - bulk export;
 - broad federation reconciliation.
@@ -808,11 +808,11 @@ Publication capacity includes request validation, representation staging, transf
 
 Publication remains blocked when receipt or remediation capacity is unavailable for a required operation.
 
-### 8.5 UCKK Dimension Gateway and UCKK Platform
+### 8.5 kOA Mediatheque and UCKK publication integration
 
-UCKK capacity includes admission, validation, media storage, preview generation, transformation, indexing, provenance, and export.
+kOA Mediatheque capacity includes admission, validation, media storage, preview generation, transformation, indexing, provenance, backup, restore, and export. UCKK integration capacity includes packaging, queued delivery, authentication, remote responses, retries, and receipts.
 
-Intensive media processing uses explicit heavy-work admission. UCKK admission and publication reserves remain separate.
+Intensive local media processing uses explicit heavy-work admission. Local Mediatheque capacity and external UCKK publication reserves remain separate.
 
 ### 8.6 Identity and Trust
 

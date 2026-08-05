@@ -222,8 +222,8 @@ renderer=glossary-by-category-v1
 | **Resource Governor** | `resource_governor` | The deterministic authority for CPU, memory, I/O, concurrency, queues, scheduling, and process limits. | `global` | `generated/component-catalog.json#/components/resource_governor` |
 | **SemantiK Architect Runtime** | `semantik_architect_runtime` | The runtime that executes compiled language artifacts and does not perform language construction. | `global` | `generated/component-catalog.json#/components/semantik_architect_runtime` |
 | **SenTient** | `sentient` | An optional isolated research and enrichment workbench whose outputs remain candidate inputs until explicitly reviewed and imported. | `global` | `generated/component-catalog.json#/components/sentient` |
-| **UCKK Dimension Gateway** | `uckk_dimension_gateway` | The controlled boundary that imports user-selected media into a declared UCKK dimension. | `global` | `generated/component-catalog.json#/components/uckk_dimension_gateway` |
-| **UCKK Platform** | `uckk_platform` | The authoritative media platform for deterministic ingestion, storage, transformation, export, backup, and restore. | `global` | `generated/component-catalog.json#/components/uckk_platform` |
+| **UCKK Publication Bridge** | `uckk_publication_bridge` | The external integration that packages and transports explicitly authorized kOA Mediatheque records to an external UCKK Moodle destination. | `global` | `generated/integration-catalog.json#/integrations/uckk_publication` |
+| **kOA Mediatheque** | `koa_mediatheque` | The internal authoritative component for deterministic local media ingestion, storage, versions, metadata, rights, provenance, transformation, export, backup, and restore. | `global` | `generated/component-catalog.json#/components/koa_mediatheque` |
 
 ### Development
 
@@ -350,9 +350,9 @@ renderer=terminology-distinction-table-v1
 | Rule | Left term | Right term | Required distinction |
 | --- | --- | --- | --- |
 | `TERM-DIST-001` | **Resource Governor** | **Governance Policy Runtime** | Resource control is separate from authorization, disclosure, consent, and governed privilege. |
-| `TERM-DIST-002` | **Publication Gateway** | **UCKK Dimension Gateway** | Cross-domain publication is separate from selected-media ingestion into UCKK. |
+| `TERM-DIST-002` | **Publication Gateway** | **UCKK Publication Bridge** | Publication Gateway authorizes disclosure; the bridge performs UCKK-specific packaging and transport after authorization. |
 | `TERM-DIST-003` | **Ariane Runtime** | **approved Ariane voice adapter** | Local deterministic navigation is separate from the optional external voice capability. |
-| `TERM-DIST-004` | **UCKK Platform** | **UCKK Dimension Gateway** | Media-platform authority is separate from its controlled ingestion boundary. |
+| `TERM-DIST-004` | **kOA Mediatheque** | **UCKK Publication Bridge** | The local Mediatheque owns local media; the bridge owns only UCKK-specific packaging and transport state. |
 | `TERM-DIST-005` | **Kristal Runtime** | **GF Wordbench** | Runtime consumption is separate from language construction. |
 | `TERM-DIST-006` | **SemantiK Architect Runtime** | **GF Wordbench** | Execution of compiled language artifacts is separate from language build sessions. |
 | `TERM-DIST-007` | **deployment profile** | **profile overlay** | A complete deployment identity is separate from a composable strengthening or restriction. |
@@ -391,8 +391,8 @@ renderer=terminology-alias-table-v1
 | **SemantiK Architect Runtime** | `SemantiK Runtime` | None | None |
 | **Software Bill of Materials** | `SBOM` | None | None |
 | **sovereign offline overlay** | `sovereign offline` | None | None |
-| **UCKK Dimension Gateway** | None | None | `UCKK gateway` |
-| **UCKK Platform** | `UCKK` | None | None |
+| **UCKK Publication Bridge** | None | None | `UCKK publication bridge` |
+| **kOA Mediatheque** | None | None | `Mediatheque kOA` |
 | **UV** | `uv` | None | None |
 <!-- GENERATED:ALIASES:END -->
 
@@ -547,10 +547,10 @@ An implementation technology mentioned by a sovereign, development, appliance, o
 Component aliases do not merge components. In particular:
 
 - Resource Governor remains separate from Governance Policy Runtime;
-- Publication Gateway remains separate from UCKK Dimension Gateway;
+- Publication Gateway authorizes disclosure before the UCKK Publication Bridge performs target-specific transport;
 - Ariane Runtime remains separate from the approved Ariane voice adapter;
 - GF Wordbench remains separate from SemantiK Architect Runtime;
-- UCKK Platform remains separate from its ingestion gateway.
+- kOA Mediatheque remains authoritative for local media and separate from every external publication integration.
 
 ## 13. Failure Behavior and Safe Degradation
 
@@ -635,19 +635,19 @@ The governance runtime handles both resource limits and authorization.
 
 The incorrect wording collapses two separate authorities.
 
-### 16.2 UCKK gateway wording
+### 16.2 UCKK publication bridge wording
 
 Correct:
 
 ```text
-UCKK Dimension Gateway admits selected media into a UCKK dimension.
+UCKK Publication Bridge packages and transports explicitly authorized media to an external UCKK Moodle destination.
 Publication Gateway releases approved information across a domain boundary.
 ```
 
 Incorrect:
 
 ```text
-The UCKK gateway publishes data externally.
+The UCKK publication bridge publishes data externally.
 ```
 
 The incorrect wording is ambiguous and assigns publication responsibility to the wrong gateway.

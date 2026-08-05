@@ -31,7 +31,9 @@
     "contracts/artifact-contracts/offline-bundle.schema.json",
     "contracts/artifact-contracts/policy-bundle.schema.json",
     "contracts/artifact-contracts/runtime-pack.schema.json",
-    "contracts/artifact-contracts/language-pack.schema.json"
+    "contracts/artifact-contracts/language-pack.schema.json",
+    "contracts/components/koa-mediatheque.component.json",
+    "contracts/integrations/uckk-publication.integration.json"
   ],
   "decision_ids": [
     "DEC-REL-001",
@@ -40,7 +42,9 @@
     "DEC-PROFILE-001",
     "DEC-GOV-001",
     "DEC-GATE-001",
-    "DEC-AI-001"
+    "DEC-AI-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001"
   ],
   "requirement_ids": [
     "REQ-CONF-REL-001",
@@ -93,7 +97,9 @@
     "LOCK-LIFE-001",
     "LOCK-LIFE-002",
     "LOCK-LIFE-003",
-    "LOCK-LIFE-004"
+    "LOCK-LIFE-004",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -205,7 +211,7 @@ This document applies globally to release evidence for:
 - language runtime packs;
 - approved knowledge packages;
 - Ariane runtime and experience artifacts;
-- UCKK-related release artifacts;
+- kOA Mediatheque release artifacts and optional UCKK publication-adapter integration artifacts;
 - integration manifests;
 - resource envelopes;
 - migrations;

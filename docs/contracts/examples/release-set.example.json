@@ -22,7 +22,7 @@
       "artifact_refs": [
         "contracts/releases/artifacts/services/koa-node-agent-2.3.1.json",
         "contracts/releases/artifacts/services/publication-gateway-2.3.1.json",
-        "contracts/releases/artifacts/services/uckk-dimension-gateway-2.3.1.json"
+        "contracts/releases/artifacts/services/koa-mediatheque-2.3.1.json"
       ]
     },
     {
@@ -43,7 +43,7 @@
       "channel_version": "5.1.0",
       "manifest_ref": "contracts/releases/manifests/knowledge-5.1.0.manifest.json",
       "artifact_refs": [
-        "contracts/releases/artifacts/knowledge/uckk-runtime-pack-5.1.0.json",
+        "contracts/releases/artifacts/knowledge/koa-mediatheque-classification-pack-5.1.0.json",
         "contracts/releases/artifacts/knowledge/terminology-pack-5.1.0.json"
       ]
     }

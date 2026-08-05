@@ -31,7 +31,7 @@
       "cultural_authority",
       "consent_grant",
       "destination_component_authoritative_data",
-      "uckk_admission",
+      "uckk_destination_state",
       "external_service_authority",
       "release_channel_identity"
     ],
@@ -59,7 +59,7 @@
     "component_documentation": "04-components/publication-gateway.md",
     "security_documentation": "07-security/17-cross-domain-publication.md",
     "cultural_rights_documentation": "01-constitution/12-cultural-rights-and-consent.md",
-    "separation_adr": "10-adrs/ADR-020-publication-gateway-and-uckk-dimension-gateway-separation.md"
+    "separation_adr": "10-adrs/ADR-031-uckk-as-an-external-moodle-publication-target.md"
   },
   "decision_ids": [
     "DEC-GATE-001",
@@ -181,7 +181,7 @@
     "Determining semantic truth or editorial quality.",
     "Assigning cultural authority or community membership.",
     "Granting consent.",
-    "Admitting user media into UCKK.",
+    "Performing UCKK-specific packaging, transport, or destination acceptance; those belong to the UCKK publication integration.",
     "Editing source component records directly.",
     "Replacing Governance Policy Runtime.",
     "Replacing Identity and Trust.",
@@ -224,10 +224,11 @@
       "direct_data_write_allowed": false
     },
     {
-      "component_id": "uckk_platform",
-      "contract_ref": "contracts/components/uckk-platform.component.json",
-      "role": "media_source_domain",
-      "direct_data_write_allowed": false
+      "component_id": "koa_mediatheque",
+      "contract_ref": "contracts/components/koa-mediatheque.component.json",
+      "role": "local_media_source_domain",
+      "direct_data_write_allowed": false,
+      "boundary": "Publication Gateway may authorize disclosure of selected representations but does not mutate kOA Mediatheque records."
     },
     {
       "component_id": "kristal_runtime",
@@ -237,14 +238,14 @@
     }
   ],
   "gateway_separation": {
-    "uckk_dimension_gateway_ref": "contracts/components/uckk-dimension-gateway.component.json",
-    "publication_gateway_responsibility": "Governed release from one authority or disclosure domain to another.",
-    "uckk_dimension_gateway_responsibility": "Controlled admission of user-selected media into a UCKK dimension.",
-    "admission_implies_publication_authority": false,
-    "publication_implies_uckk_admission_authority": false,
-    "shared_implementation_process_allowed": false,
-    "shared_authority_state_allowed": false,
-    "direct_gateway_bypass_allowed": false
+    "uckk_publication_integration_ref": "contracts/integrations/uckk-publication.integration.json",
+    "publication_gateway_responsibility": "Authorize governed cross-domain disclosure, audience, rights, consent, representation, and evidence.",
+    "uckk_publication_bridge_responsibility": "After authorization, package and transport the approved representation to the external UCKK Moodle platform and return destination receipts.",
+    "bridge_may_authorize_publication": false,
+    "publication_gateway_performs_uckk_transport": false,
+    "local_media_authority_remains_with": "koa_mediatheque",
+    "external_destination_authority_remains_with": "uckk_external_platform",
+    "background_bidirectional_sync": "prohibited"
   },
   "authoritative_data": {
     "logical_owner": "publication_gateway",
@@ -749,7 +750,7 @@
     "Ingestion or storage authorizes publication.",
     "The uploader holds every publication or cultural right.",
     "A source component may bypass Publication Gateway.",
-    "UCKK Dimension Gateway can authorize cross-domain publication.",
+    "The UCKK Publication Bridge can authorize cross-domain publication.",
     "Publication Gateway may write into source or destination authoritative databases.",
     "An internal network location establishes trust.",
     "A valid signature alone authorizes publication.",

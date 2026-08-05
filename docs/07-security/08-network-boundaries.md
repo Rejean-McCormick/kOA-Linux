@@ -110,7 +110,8 @@ The network model is designed to:
 - minimize exposed services and transferred data;
 - preserve component data ownership;
 - prevent direct database and internal-state access across component boundaries;
-- keep publication and UCKK admission behind their distinct gateways;
+- keep local Mediatheque admission internal and external publication behind Publication Gateway;
+- permit UCKK delivery only through the gateway-authorized UCKK adapter;
 - constrain outbound communication and external integrations;
 - preserve local operation during Internet or upstream failure;
 - make degraded connectivity and blocked authority visible;
@@ -347,7 +348,7 @@ An external response remains candidate input until accepted by the owning compon
 
 Publication Gateway mediates governed cross-domain publication.
 
-UCKK Dimension Gateway mediates controlled admission of user-selected media into UCKK.
+The kOA Mediatheque mediates controlled local admission of user-selected media. Publication Gateway with the UCKK adapter mediates controlled outbound publication to the external Moodle platform.
 
 The gateways have distinct routes, identities, contracts, decisions, data, and receipts. A component cannot bypass either gateway through direct network access.
 
@@ -424,8 +425,8 @@ When a remote route is unavailable:
 - **REQ-SEC-NET-016 — SHALL NOT:** Components have unrestricted external egress by default or silently select a substitute external provider.
 - **REQ-SEC-NET-017 — SHALL:** External AI and creative-service communication be explicit, user- or workflow-triggered as authorized, attributable, and non-authoritative until component acceptance.
 - **REQ-SEC-NET-018 — SHALL:** Publication Gateway mediate governed cross-domain publication.
-- **REQ-SEC-NET-019 — SHALL:** UCKK Dimension Gateway mediate controlled admission into UCKK.
-- **REQ-SEC-NET-020 — SHALL NOT:** Publication Gateway and UCKK Dimension Gateway share authority routes, substitute for one another, or be bypassed through direct networking.
+- **REQ-SEC-NET-019 — SHALL:** kOA Mediatheque mediate controlled local media admission, and Publication Gateway with the UCKK adapter mediate controlled outbound publication to UCKK.
+- **REQ-SEC-NET-020 — SHALL NOT:** Publication Gateway, kOA Mediatheque admission, or the UCKK adapter substitute for one another or be bypassed through direct networking or direct Moodle database access.
 - **REQ-SEC-NET-021 — SHALL:** Component databases, queues, object stores, internal files, and storage administration interfaces bind only to the minimum required identities and network scopes.
 - **REQ-SEC-NET-022 — SHALL:** Every development workspace have a separate network namespace or equivalent isolation and collision-checked host-port allocation.
 - **REQ-SEC-NET-023 — SHALL NOT:** Development services bind to public interfaces by default or receive production credentials or production user data by default.
@@ -601,7 +602,8 @@ Route removal proceeds through:
 | External provider unavailable | Disable that capability only. | Native local capability | External integration |
 | External response invalid | Quarantine or reject it. | Existing authoritative data | Candidate acceptance |
 | Publication Gateway unavailable | Keep publication unexecuted. | Source storage and editing | Cross-domain publication |
-| UCKK Dimension Gateway unavailable | Preserve existing UCKK content. | Read, export, backup | New admission |
+| kOA Mediatheque admission unavailable | Preserve existing local media. | Read, export, backup | New local admission |
+| External UCKK unavailable | Preserve local media and queued publication intent. | Local read, export, backup | Remote delivery |
 | DNS unavailable | Use declared local resolution and mark remote names unavailable. | Local services | Unresolved remote route |
 | Trusted time unavailable | Block time-sensitive authority. | Non-time-sensitive local functions | Expiry-sensitive operation |
 | Certificate expires | Reject new sessions and expose repair state. | Existing unrelated routes | Invalid certificate route |
@@ -629,9 +631,9 @@ Source components send bounded publication requests to Publication Gateway.
 
 Publication Gateway resolves identity, trust, consent, policy, audience, destination, and representation. It sends only the approved representation to the declared destination and records a receipt.
 
-### 8.3 UCKK Dimension Gateway
+### 8.3 kOA Mediatheque admission and external UCKK publication
 
-User-selected media enters UCKK through UCKK Dimension Gateway.
+User-selected media enters the kOA Mediatheque through its local admission boundary. Only separately selected and authorized media is published to external UCKK through Publication Gateway and the UCKK adapter.
 
 The admission route is distinct from publication routes and from external creative-service routes.
 
@@ -704,8 +706,8 @@ The following assumptions are prohibited:
 19. Reconnection authorizes queued transmission.
 20. A queued request remains valid indefinitely.
 21. Publication can bypass Publication Gateway on a trusted LAN.
-22. UCKK admission can bypass UCKK Dimension Gateway locally.
-23. Publication Gateway and UCKK Dimension Gateway can share one authority route.
+22. Local media admission can bypass the kOA Mediatheque boundary or UCKK publication can bypass Publication Gateway.
+23. Publication Gateway, local Mediatheque admission, and the UCKK adapter can share or substitute authority routes.
 24. External AI is a native network dependency.
 25. An unavailable external provider can be replaced silently.
 26. Development services can bind publicly because the host is personal.
@@ -743,7 +745,7 @@ This document is conformant when:
 21. Privileged interfaces reject arbitrary operations and parameters.
 22. Federation routes remain disabled without explicit peer scopes.
 23. External egress is destination-specific and data-minimized.
-24. Publication Gateway and UCKK Dimension Gateway separation tests pass.
+24. Local Mediatheque admission and UCKK publication-boundary separation tests pass.
 25. Development workspaces have isolated networks or equivalent controls and unique host ports.
 26. Public DNS and Internet loss do not break minimum local operation.
 27. Time uncertainty blocks time-sensitive authority.

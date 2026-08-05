@@ -37,7 +37,8 @@
     "DEC-LIFE-001",
     "DEC-GATE-001",
     "DEC-SENT-001",
-    "DEC-UCKK-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001",
     "DEC-ARI-001",
     "DEC-LANG-001",
     "DEC-KRISTAL-001",
@@ -108,7 +109,9 @@
     "LOCK-GATE-001",
     "LOCK-SENT-001",
     "LOCK-ARI-001",
-    "LOCK-UCKK-001",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-MEDIATHEQUE-002",
+    "LOCK-UCKK-EXT-001",
     "LOCK-PROFILE-001",
     "LOCK-PROFILE-002"
   ],
@@ -182,7 +185,7 @@ The threat model covers:
 
 - endpoints, sovereign nodes, hubs, build farms, and control planes;
 - human, service, workload, node, publisher, signer, artifact, tenant, and authority identities;
-- Konnaxion, Orgo, Kristal, UCKK, Ariane, SemantiK, GF Wordbench, SenTient, gateways, governance, identity, audit, resource, and node-control components;
+- Konnaxion, Orgo, Kristal, the kOA Mediatheque, Ariane, SemantiK, GF Wordbench, SenTient, gateways, governance, identity, audit, resource, and node-control components, plus external integrations such as UCKK;
 - public, private, tenant, community, evidence, build, signing, and recovery domains;
 - online, offline, removable-media, federation, mirror, backup, export, and restore paths;
 - system, services, governance, and knowledge release channels;
@@ -249,7 +252,7 @@ The architecture prioritizes these objectives in order of safety relevance rathe
 | `ASSET-SEC-004` | Private operational state | Orgo cases, evidence, tasks, decisions, protected communications, and restricted workflows. | critical |
 | `ASSET-SEC-005` | Public accountability state | Konnaxion public records, participation, discovery, decision integrity, and public receipts. | high |
 | `ASSET-SEC-006` | Epistemic integrity | Kristal content, provenance, validation, recognition, status, lineage, query contracts, and Runtime Packs. | critical |
-| `ASSET-SEC-007` | Media and cultural material | UCKK originals, transformations, identities, rights, consent, audience, attribution, and withdrawal state. | critical |
+| `ASSET-SEC-007` | Media and cultural material | kOA Mediatheque originals, transformations, identities, rights, consent, audience, attribution, and withdrawal state; UCKK publication packages and receipts where applicable. | critical |
 | `ASSET-SEC-008` | Language and navigation artifacts | Compiled language packs, SemantiK runtime state, Ariane Atlases, drivers, and deterministic guidance. | high |
 | `ASSET-SEC-009` | Release and supply-chain integrity | Source identity, toolchains, artifacts, SBOMs, provenance, signatures, releases, Release Sets, and revocations. | critical |
 | `ASSET-SEC-010` | Keys and trust roots | Signing, authority, node, workload, encryption, audit, recovery, and trust-delegation material. | critical |
@@ -343,7 +346,8 @@ The adversary model includes actors with valid credentials and actors operating 
 | Evidence storage and protected-evidence access | Audit Broker contract |
 | Resource quotas, queues, priorities, pressure behavior, and heavy-job activation | Resource Governor contract |
 | Private-to-public disclosure | Publication Gateway contract |
-| Local media-ingestion boundary | UCKK Dimension Gateway contract |
+| Local media-ingestion boundary | kOA Mediatheque component contract |
+| External UCKK publication boundary | UCKK publication integration contract |
 | Recovery, backup, restore, support, and incident execution | Operations documents and applicable component contracts |
 | Test definitions and executed results | Test Catalog and Evidence registries |
 
@@ -415,8 +419,8 @@ These assumptions narrow claims. They do not grant authority.
 - **REQ-SEC-THREAT-014 — SHALL:** Supply-chain controls reject identity collision, substitution, downgrade, signature stripping, manifest replacement, trust-root substitution, and incomplete evidence.
 - **REQ-SEC-THREAT-015 — SHALL:** Offline and removable-media imports use quarantine, bounded parsing, complete inventory checks, trust verification, revocation context, compatibility checks, and no automatic execution or activation.
 - **REQ-SEC-THREAT-016 — SHALL:** Public-to-private and private-to-public information flows use explicit domain gateways and preserve source, destination, classification, transformation, approval, and receipt identity.
-- **REQ-SEC-THREAT-017 — SHALL:** Publication Gateway remains separate from UCKK Dimension Gateway and neither gateway becomes a generic bypass around component ownership.
-- **REQ-SEC-THREAT-018 — SHALL:** Native core correctness, authorization, policy, activation, deterministic rendering, UCKK ingestion, recovery, and offline operation remain independent of generative AI.
+- **REQ-SEC-THREAT-017 — SHALL:** Publication Gateway remain separate from kOA Mediatheque admission, and its UCKK publication adapter shall not become a generic bypass around component ownership, disclosure policy, or external-destination authorization.
+- **REQ-SEC-THREAT-018 — SHALL:** Native core correctness, authorization, policy, activation, deterministic rendering, kOA Mediatheque ingestion, recovery, and offline operation remain independent of generative AI and of UCKK availability.
 - **REQ-SEC-THREAT-019 — SHALL:** External AI use remains explicit, removable, data-class constrained, provenance-bearing, non-authoritative, and unable to mutate authority or privileged state directly.
 - **REQ-SEC-THREAT-020 — SHALL:** No-AI, consent, cultural-rights, audience, attribution, export, withdrawal, and steward-authority restrictions are enforced at ingest, storage, query, render, publication, synchronization, backup, export, federation, and AI boundaries.
 - **REQ-SEC-THREAT-021 — SHALL:** SenTient remains optional, isolated, task activated, resource bounded, and non-authoritative.
@@ -669,7 +673,8 @@ It does not claim that previously copied public data can always be recovered.
 | --- | --- | --- |
 | Konnaxion → Orgo | Untrusted public input, Sybil abuse, cross-domain mutation | Explicit intake, classification, provenance, authorization, rate limits, no shared store |
 | Orgo → Publication Gateway → Konnaxion | Private-data leakage, redaction failure, duplicate publication | Exact candidate, policy, transformation, approval, idempotent delivery, receiving receipt, withdrawal |
-| Local files → UCKK Dimension Gateway → UCKK | Parser abuse, path traversal, malicious media, rights loss | User selection, quarantine, bounded parsing, original preservation, rights, separate gateway |
+| Local files → kOA Mediatheque admission | Parser abuse, path traversal, malicious media, rights loss | User selection, quarantine, bounded parsing, original preservation, and rights review |
+| kOA Mediatheque → Publication Gateway + UCKK adapter → external UCKK Moodle | Unauthorized disclosure, destination confusion, credential theft, replay, remote rejection | Explicit publication request, disclosure authorization, authenticated destination, manifest, idempotency, and receipt |
 | GF Wordbench → SemantiK | Toolchain contamination, runtime mutation, incompatible language artifact | Fixed build, validation, immutable pack, independent runtime verification and activation |
 | SenTient → owning review workflow | Candidate laundering, hidden authority, resource exhaustion | Isolated task, candidate status, provenance, uncertainty, human review, no direct writes |
 | External AI → local owner | Sensitive-data exfiltration, hallucinated authority, provider lock-in | Explicit initiation, data eligibility, no-AI policy, provenance, candidate status, removability |
@@ -698,9 +703,10 @@ Every interaction inherits the owner component's detailed contract.
 | `DEC-PRIV-001` | Accountability uses selective disclosure, classified evidence, minimization, rights, and recourse rather than unrestricted transparency. |
 | `DEC-AI-001` | AI remains optional, explicit, removable, non-authoritative, and unable to grant privilege or authority directly. |
 | `DEC-LIFE-001` | Artifact verification, release, activation, rollback, revocation, and evidence remain separate across independent channels. |
-| `DEC-GATE-001` | Publication Gateway and UCKK Dimension Gateway are separate security boundaries. |
+| `DEC-GATE-001` | Local media admission and cross-domain publication are separate security boundaries; the UCKK adapter is subordinate to Publication Gateway authorization. |
 | `DEC-SENT-001` | SenTient remains isolated, task activated, and non-authoritative. |
-| `DEC-UCKK-001` | UCKK native ingestion and identity remain deterministic and preserve original media. |
+| `DEC-MEDIATHEQUE-001` | kOA Mediatheque ingestion and identity remain deterministic and preserve original media. |
+| `DEC-UCKK-EXT-001` | UCKK remains an external Moodle publication target with separate authority and storage. |
 | `DEC-ARI-001` | Ariane guidance and automation remain deterministic, user-controlled, and independent of optional voice. |
 | `DEC-LANG-001` | GF Wordbench build authority remains separate from SemantiK runtime activation. |
 | `DEC-KRISTAL-001` | Kristal is an epistemic foundation, not a workflow authority or universal operational database. |

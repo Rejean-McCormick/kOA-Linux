@@ -133,7 +133,7 @@ The artifact model provides a common lifecycle for:
 - language runtime packs;
 - approved knowledge packages;
 - Ariane runtime material;
-- UCKK-related releasable packages;
+- kOA Mediatheque packages and optional UCKK publication packages;
 - offline bundles;
 - release manifests;
 - migration packages;
@@ -809,11 +809,11 @@ Kristal, PGF, Atlases, language runtime packs, and approved knowledge packages b
 
 The owning component validates semantic or runtime suitability in addition to generic artifact verification.
 
-### 8.6 UCKK
+### 8.6 kOA Mediatheque and UCKK publication
 
-UCKK can store, export, import, back up, or restore class-approved content packages.
+The kOA Mediatheque can store, export, import, back up, or restore class-approved local content packages. UCKK receives only explicitly authorized publication packages through the external publication bridge.
 
-UCKK object identity does not replace release-artifact identity. External Suno or Gamma results remain candidates until accepted and published through the applicable artifact workflow.
+A kOA Mediatheque object identity does not replace release-artifact identity. External Suno or Gamma results remain candidates until accepted into the kOA Mediatheque; publication to UCKK is a separate governed operation.
 
 ### 8.7 Publication Gateway
 

@@ -43,7 +43,7 @@
       "component:audit_broker",
       "component:publication_gateway",
       "component:resource_governor",
-      "component:uckk_platform"
+      "component:koa_mediatheque"
     ],
     "capability_refs": [
       "capability:governance_authorization",
@@ -183,7 +183,7 @@
         "resource_classes": [
           "content_object",
           "knowledge_artifact",
-          "uckk_rendition"
+          "mediatheque_rendition"
         ]
       },
       "conditions": [

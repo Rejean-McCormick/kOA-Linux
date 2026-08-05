@@ -1,9 +1,9 @@
 {
   "$schema": "../schemas/terminology.contract.schema.json",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "status": "active",
   "language": "en",
-  "effective_at": "2026-08-03T15:13:00-04:00",
+  "effective_at": "2026-08-04T20:59:00-04:00",
   "purpose": "Own the canonical names, identifiers, definitions, aliases, replacements, capitalization, and distinction rules used by the active kOA documentation corpus.",
   "language_policy": {
     "active_documentation_language": "en",
@@ -271,8 +271,8 @@
     {
       "rule_id": "TERM-DIST-002",
       "left_term_id": "TERM-COMP-PUBLICATION-GATEWAY",
-      "right_term_id": "TERM-COMP-UCKK-DIMENSION-GATEWAY",
-      "required_distinction": "Cross-domain publication is separate from selected-media ingestion into UCKK."
+      "right_term_id": "TERM-INTEGRATION-UCKK-PUBLICATION-BRIDGE",
+      "required_distinction": "The Publication Gateway owns disclosure authorization; the UCKK Publication Bridge owns Moodle-specific packaging, transport, result handling, and receipts."
     },
     {
       "rule_id": "TERM-DIST-003",
@@ -282,9 +282,9 @@
     },
     {
       "rule_id": "TERM-DIST-004",
-      "left_term_id": "TERM-COMP-UCKK-PLATFORM",
-      "right_term_id": "TERM-COMP-UCKK-DIMENSION-GATEWAY",
-      "required_distinction": "Media-platform authority is separate from its controlled ingestion boundary."
+      "left_term_id": "TERM-COMP-KOA-MEDIATHEQUE",
+      "right_term_id": "TERM-MEDIA-UCKK-MEDIATHEQUE",
+      "required_distinction": "The kOA Mediatheque and the UCKK Mediatheque use separate authority, storage, lifecycle, identity, access control, and operational ownership even when they use a compatible frame."
     },
     {
       "rule_id": "TERM-DIST-005",
@@ -798,6 +798,25 @@
       "first_use_rule": "use_full_name_then_registered_alias"
     },
     {
+      "term_id": "TERM-COMP-KOA-MEDIATHEQUE",
+      "canonical_name": "kOA Mediatheque",
+      "canonical_identifier": "koa_mediatheque",
+      "category": "component",
+      "definition": "The internal kOA-Linux component that owns local media records, file versions, managed storage references, integrity state, collections, dimensions, rights, provenance, renditions, lifecycle, and local backup and restore state.",
+      "semantic_owner_ref": "generated/component-catalog.json#/components/koa_mediatheque",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [
+        "the kOA Mediatheque"
+      ],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_full_name_then_registered_alias"
+    },
+    {
       "term_id": "TERM-COMP-KOA-NODE-AGENT",
       "canonical_name": "kOA Node Agent",
       "canonical_identifier": "koa_node_agent",
@@ -945,38 +964,36 @@
       "canonical_name": "UCKK Dimension Gateway",
       "canonical_identifier": "uckk_dimension_gateway",
       "category": "component",
-      "definition": "The controlled boundary that imports user-selected media into a declared UCKK dimension.",
-      "semantic_owner_ref": "generated/component-catalog.json#/components/uckk_dimension_gateway",
+      "definition": "Superseded identifier from the former internal UCKK model. The active boundary is the external UCKK Publication Bridge.",
+      "semantic_owner_ref": "contracts/integrations/uckk-publication.integration.json",
       "scope": [
         "global"
       ],
       "case_sensitive": true,
       "accepted_aliases": [],
       "deprecated_aliases": [],
-      "forbidden_aliases": [
-        "UCKK gateway"
-      ],
-      "status": "active",
-      "first_use_rule": "use_full_name_then_registered_alias"
+      "forbidden_aliases": [],
+      "status": "superseded",
+      "first_use_rule": "use_full_name_then_registered_alias",
+      "replacement_term_id": "TERM-INTEGRATION-UCKK-PUBLICATION-BRIDGE"
     },
     {
       "term_id": "TERM-COMP-UCKK-PLATFORM",
       "canonical_name": "UCKK Platform",
       "canonical_identifier": "uckk_platform",
       "category": "component",
-      "definition": "The authoritative media platform for deterministic ingestion, storage, transformation, export, backup, and restore.",
-      "semantic_owner_ref": "generated/component-catalog.json#/components/uckk_platform",
+      "definition": "Superseded identifier from the former model that treated UCKK as a native kOA-Linux component. The active UCKK term classifies it as an external Moodle platform.",
+      "semantic_owner_ref": "contracts/system.contract.json#/uckk_external_platform",
       "scope": [
         "global"
       ],
       "case_sensitive": true,
-      "accepted_aliases": [
-        "UCKK"
-      ],
+      "accepted_aliases": [],
       "deprecated_aliases": [],
       "forbidden_aliases": [],
-      "status": "active",
-      "first_use_rule": "use_full_name_then_registered_alias"
+      "status": "superseded",
+      "first_use_rule": "use_full_name_then_registered_alias",
+      "replacement_term_id": "TERM-INTEGRATION-UCKK"
     },
     {
       "term_id": "TERM-DEV-DOCKER",
@@ -1800,6 +1817,91 @@
       "first_use_rule": "use_exact_name"
     },
     {
+      "term_id": "TERM-INTEGRATION-UCKK",
+      "canonical_name": "UCKK",
+      "canonical_identifier": "uckk",
+      "category": "external_platform",
+      "definition": "An external Moodle platform outside kOA-Linux, with its own authority, storage, lifecycle, identity, access control, operations, and Mediatheque.",
+      "semantic_owner_ref": "contracts/system.contract.json#/uckk_external_platform",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [
+        "the UCKK Moodle platform"
+      ],
+      "deprecated_aliases": [
+        "UCKK Platform"
+      ],
+      "forbidden_aliases": [
+        "UCKK Platform component",
+        "native UCKK subsystem"
+      ],
+      "status": "active",
+      "first_use_rule": "use_exact_name"
+    },
+    {
+      "term_id": "TERM-INTEGRATION-UCKK-PUBLICATION-BRIDGE",
+      "canonical_name": "UCKK Publication Bridge",
+      "canonical_identifier": "uckk_publication_bridge",
+      "category": "external_integration",
+      "definition": "The controlled integration that packages and publishes explicitly authorized kOA content to UCKK, handles Moodle transport results, and preserves publication receipts without transferring local source authority.",
+      "semantic_owner_ref": "contracts/integrations/uckk-publication.integration.json",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [
+        "the UCKK bridge"
+      ],
+      "deprecated_aliases": [
+        "UCKK Dimension Gateway"
+      ],
+      "forbidden_aliases": [
+        "UCKK synchronization service"
+      ],
+      "status": "active",
+      "first_use_rule": "use_full_name_then_registered_alias"
+    },
+    {
+      "term_id": "TERM-MEDIA-SHARED-MEDIATHEQUE-FRAME",
+      "canonical_name": "shared Mediatheque frame",
+      "canonical_identifier": "shared_mediatheque_frame",
+      "category": "data_model",
+      "definition": "A portable conceptual frame for media identity, versions, hashes, dimensions, collections, metadata, rights, restrictions, provenance, publication eligibility, manifests, and receipts. Using the frame does not merge implementation authority or storage.",
+      "semantic_owner_ref": "contracts/system.contract.json#/uckk_external_platform/mediatheque",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [
+        "shared Mediatheque database"
+      ],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-MEDIA-UCKK-MEDIATHEQUE",
+      "canonical_name": "UCKK Mediatheque",
+      "canonical_identifier": "uckk_mediatheque",
+      "category": "external_platform_surface",
+      "definition": "The Mediatheque operated inside the external UCKK Moodle platform. It may use a frame compatible with the kOA Mediatheque while retaining separate authority, storage, lifecycle, identity, access control, and operational ownership.",
+      "semantic_owner_ref": "contracts/system.contract.json#/uckk_external_platform/mediatheque",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [
+        "the UCKK Mediatheque"
+      ],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "use_full_name_then_registered_alias"
+    },
+    {
       "term_id": "TERM-OPS-BREAK-GLASS",
       "canonical_name": "break-glass operation",
       "canonical_identifier": "break_glass_operation",
@@ -1839,7 +1941,7 @@
       "canonical_identifier": "koa",
       "category": "product_name",
       "definition": "The exact product-family name used in prose for the kOA ecosystem.",
-      "semantic_owner_ref": "contracts/system.contract.json#/identity/product_family",
+      "semantic_owner_ref": "contracts/system.contract.json#/system/product_family",
       "scope": [
         "global"
       ],
@@ -1855,26 +1957,49 @@
       "first_use_rule": "use_exact_name"
     },
     {
-      "term_id": "TERM-PROD-KOA-OPERATING-ENVIRONMENT",
-      "canonical_name": "kOA Operating Environment",
-      "canonical_identifier": "koa_operating_environment",
+      "term_id": "TERM-PROD-KOA-LINUX-OPERATING-SYSTEM",
+      "canonical_name": "kOA-Linux Operating System",
+      "canonical_identifier": "koa_linux_operating_system",
       "category": "product_name",
-      "definition": "The current global operating environment that defines the common kOA system baseline.",
-      "semantic_owner_ref": "contracts/system.contract.json#/identity/product_name",
+      "definition": "The sovereign local operating system that provides execution, isolation, trust, storage, recovery, offline operation, resource governance, verified activation, and controlled integration for kOA ecosystem workloads.",
+      "semantic_owner_ref": "contracts/system.contract.json#/system/name",
       "scope": [
         "global"
       ],
       "case_sensitive": true,
       "accepted_aliases": [
+        "kOA-Linux",
+        "the operating system"
+      ],
+      "deprecated_aliases": [
+        "kOA Operating Environment",
         "the operating environment"
       ],
-      "deprecated_aliases": [],
       "forbidden_aliases": [
+        "kOA Linux Foundation",
         "kOA OS",
-        "KOA Operating Environment"
+        "KOA-Linux Operating System"
       ],
       "status": "active",
-      "first_use_rule": "use_full_name_then_contextual_short_form"
+      "first_use_rule": "use_full_name_then_registered_alias"
+    },
+    {
+      "term_id": "TERM-PROD-KOA-OPERATING-ENVIRONMENT",
+      "canonical_name": "kOA Operating Environment",
+      "canonical_identifier": "koa_operating_environment",
+      "category": "product_name",
+      "definition": "Superseded former product name for kOA-Linux Operating System.",
+      "semantic_owner_ref": "contracts/system.contract.json#/system/name",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "superseded",
+      "first_use_rule": "use_full_name_then_contextual_short_form",
+      "replacement_term_id": "TERM-PROD-KOA-LINUX-OPERATING-SYSTEM"
     },
     {
       "term_id": "TERM-PROFILE-APPLIANCE-SHELL",

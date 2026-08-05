@@ -30,7 +30,8 @@
     "contracts/profiles/high-assurance.profile.json",
     "contracts/subsystems/sentient.subsystem.json",
     "contracts/subsystems/ariane.subsystem.json",
-    "contracts/subsystems/uckk.subsystem.json",
+    "contracts/components/koa-mediatheque.component.json",
+    "contracts/integrations/uckk-publication.integration.json",
     "contracts/subsystems/semantik-architect.subsystem.json",
     "contracts/components/governance-policy-runtime.component.json",
     "contracts/components/identity-and-trust.component.json",
@@ -48,7 +49,8 @@
     "DEC-AI-001",
     "DEC-SENT-001",
     "DEC-ARI-001",
-    "DEC-UCKK-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001",
     "DEC-LANG-001",
     "DEC-KRISTAL-001",
     "DEC-AUTH-001",
@@ -107,8 +109,9 @@
     "LOCK-AI-001",
     "LOCK-AI-002",
     "LOCK-SENT-001",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-MEDIATHEQUE-002",
+    "LOCK-UCKK-EXT-001",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
     "LOCK-DATA-001",
@@ -224,7 +227,8 @@ It does not define:
 | `generated/component-catalog.json` | Component identities, data ownership, relationships, and global cross-component boundaries. |
 | `contracts/components/sentient.component.json` | SenTient isolation, profiles, stores, interfaces, states, workflows, resources, candidate output, and evidence. |
 | `contracts/components/ariane-runtime.component.json` | Local navigation, optional voice candidate, confirmation, authorization, execution, failure, and evidence. |
-| `contracts/components/uckk-platform.component.json` | Deterministic media ingestion, original preservation, metadata, rights, and controlled external candidate import. |
+| `contracts/components/koa-mediatheque.component.json` | Deterministic local media ingestion, original preservation, metadata, rights, and controlled external-candidate admission. |
+| `contracts/integrations/uckk-publication.integration.json` | Explicit authorized publication from kOA Mediatheque to the external UCKK Moodle platform. |
 | `contracts/components/gf-wordbench.component.json` | Reviewed language-source admission and deterministic compilation. |
 | `contracts/components/semantik-architect-runtime.component.json` | Deterministic language-pack verification, activation, and rendering. |
 | `contracts/components/governance-policy-runtime.component.json` | Data-transfer, tool, publication, exception, consent, rights, and capability decisions. |
@@ -270,7 +274,7 @@ Examples include:
 - grammar compilation;
 - SemantiK rendering;
 - Ariane local navigation;
-- UCKK ingestion and transcoding;
+- kOA Mediatheque ingestion and transcoding;
 - bounded workflow routing based on declared rules.
 
 ### 4.2 Approved external surfaces
@@ -283,7 +287,7 @@ This document displays its accepted projection:
 | Surface | Intended assistive role | Entry condition | Return role | Boundary |
 | --- | --- | --- | --- | --- |
 | ChatGPT | External user assistance for drafting, planning, analysis, or candidate content. | Entry condition | Explicit user action; manual use or registered integration. | Return role | Candidate text or structured artifact. | Boundary | No implicit system-data upload or authoritative write. |
-| Suno | External candidate audio or music generation. | Entry condition | Explicit user selection and controlled export. | Return role | Candidate media artifact. | Boundary | No automatic UCKK invocation, identity assignment, publication, or rights decision. |
+| Suno | External candidate audio or music generation. | Entry condition | Explicit user selection and controlled export. | Return role | Candidate media artifact. | Boundary | No automatic kOA Mediatheque admission, UCKK publication, identity assignment, or rights decision. |
 | Gamma | External candidate presentation or visual-content generation. | Entry condition | Explicit user selection and controlled export. | Return role | Candidate presentation or visual artifact. | Boundary | No automatic workflow, publication, or canonical-content admission. |
 | Approved Ariane voice adapter | Optional speech capture and candidate transcript or intent generation. | Entry condition | Explicit voice-mode activation and scoped audio transfer. | Return role | Candidate transcript or structured command. | Boundary | Local Ariane performs deterministic resolution, confirmation, authorization, and execution. |
 <!-- GENERATED:EXTERNAL-AI-SURFACES:END -->
@@ -301,7 +305,7 @@ A named surface without a registered automated integration can be used only thro
 | `AI-CAP-003` | Candidate translation | Permitted candidate result | Required admission owner | GF Wordbench or owning content workflow |
 | `AI-CAP-004` | Candidate extraction | Permitted candidate result | Required admission owner | Owning component admission |
 | `AI-CAP-005` | Candidate reconciliation | Permitted candidate result | Required admission owner | SenTient or owning review workflow |
-| `AI-CAP-006` | Candidate media generation | Permitted candidate result | Required admission owner | UCKK controlled import and rights review |
+| `AI-CAP-006` | Candidate media generation | Permitted candidate result | Required admission owner | kOA Mediatheque controlled admission and rights review |
 | `AI-CAP-007` | Voice candidate | Permitted candidate result | Required admission owner | Ariane local deterministic resolution |
 | `AI-CAP-008` | Development assistance | Permitted candidate result | Required admission owner | Repository owner review and validation |
 
@@ -498,10 +502,10 @@ The controlled pattern is:
 5. controlled re-import;
 6. provenance receipt;
 7. user or owner review;
-8. UCKK or other owning-component admission;
+8. kOA Mediatheque or other owning-component admission;
 9. optional publication through its separate contract.
 
-Their output does not receive UCKK identity, rights, category, publication, or canonical status until local admission.
+Their output does not receive kOA Mediatheque identity, rights, category, publication, or canonical status until local admission. UCKK publication requires a later independent authorization.
 
 ### 4.14 Ariane voice boundary
 
@@ -604,7 +608,7 @@ An AI agent does not convert prose into new architecture by assumption.
 
 <!-- GENERATED:REQUIREMENTS:BEGIN ids=REQ-SEC-AI-001,REQ-SEC-AI-002,REQ-SEC-AI-003,REQ-SEC-AI-004,REQ-SEC-AI-005,REQ-SEC-AI-006,REQ-SEC-AI-007,REQ-SEC-AI-008,REQ-SEC-AI-009,REQ-SEC-AI-010,REQ-SEC-AI-011,REQ-SEC-AI-012,REQ-SEC-AI-013,REQ-SEC-AI-014,REQ-SEC-AI-015,REQ-SEC-AI-016,REQ-SEC-AI-017,REQ-SEC-AI-018,REQ-SEC-AI-019,REQ-SEC-AI-020,REQ-SEC-AI-021,REQ-SEC-AI-022,REQ-SEC-AI-023,REQ-SEC-AI-024,REQ-SEC-AI-025,REQ-SEC-AI-026,REQ-SEC-AI-027,REQ-SEC-AI-028,REQ-SEC-AI-029,REQ-SEC-AI-030,REQ-SEC-AI-031,REQ-SEC-AI-032,REQ-SEC-AI-033,REQ-SEC-AI-034,REQ-SEC-AI-035,REQ-SEC-AI-036,REQ-SEC-AI-037,REQ-SEC-AI-038,REQ-SEC-AI-039,REQ-SEC-AI-040,REQ-SEC-AI-041,REQ-SEC-AI-042 -->
 - **REQ-SEC-AI-001 — SHALL:** The global kOA baseline contains no native generative model, classifier, summarizer, embedding model, autonomous routing model, autonomous agent, AI category generator, or AI ingestion decision.
-- **REQ-SEC-AI-002 — SHALL:** Core authorization, governance, privilege, identity, artifact verification, activation, rollback, recovery, deterministic rendering, UCKK ingestion, and minimum offline operation remain independent of AI availability.
+- **REQ-SEC-AI-002 — SHALL:** Core authorization, governance, privilege, identity, artifact verification, activation, rollback, recovery, deterministic rendering, kOA Mediatheque ingestion, and minimum offline operation remain independent of AI and UCKK availability.
 - **REQ-SEC-AI-003 — SHALL:** The canonical external-AI allowlist is owned by `contracts/system.contract.json#/ai_boundary/allowed_external_surfaces`.
 - **REQ-SEC-AI-004 — SHALL NOT:** An external AI provider, model, local model runtime, or AI-capable integration is enabled merely because software, credentials, network access, or a compatible API is present.
 - **REQ-SEC-AI-005 — SHALL:** Every external AI operation is initiated by an explicit user or accountable workflow action after the exact purpose, provider, data, destination, output use, and material risks are presented.
@@ -629,7 +633,7 @@ An AI agent does not convert prose into new architecture by assumption.
 - **REQ-SEC-AI-024 — SHALL:** A provider or integration can be disabled and removed without loss of authoritative data, core workflows, local navigation, deterministic media ingestion, active language rendering, recovery, or credible exit.
 - **REQ-SEC-AI-025 — SHALL:** ChatGPT use remains user initiated and external, and system data transfer occurs only through an explicit registered integration or a manual user-mediated process.
 - **REQ-SEC-AI-026 — SHALL:** Suno and Gamma remain user-triggered external adapters whose outputs return through controlled re-import, provenance, review, and owning-component admission.
-- **REQ-SEC-AI-027 — SHALL NOT:** Suno or Gamma is invoked automatically by UCKK ingestion, indexing, classification, tagging, category generation, routing, publication, backup, or restore.
+- **REQ-SEC-AI-027 — SHALL NOT:** Suno or Gamma be invoked automatically by kOA Mediatheque ingestion, indexing, classification, tagging, category generation, routing, publication, backup, or restore, or by UCKK publication.
 - **REQ-SEC-AI-028 — SHALL:** The approved Ariane voice adapter returns a transcript or structured-command candidate that is resolved and authorized by local deterministic Ariane controls.
 - **REQ-SEC-AI-029 — SHALL:** Ariane voice failure leaves keyboard, pointer, touch, menu, shortcut, accessibility, and deterministic local command operation available.
 - **REQ-SEC-AI-030 — SHALL:** Sensitive Ariane actions require action-specific local confirmation after the candidate command is displayed or otherwise made reviewable.
@@ -731,7 +735,7 @@ An AI agent does not convert prose into new architecture by assumption.
 4. the user confirms.
 5. the external provider creates candidate output.
 6. the system imports the output through a controlled artifact path.
-7. UCKK or another owner captures provenance, rights, and user metadata.
+7. kOA Mediatheque or another local owner captures provenance, rights, and user metadata.
 8. the user reviews and admits or rejects it.
 9. publication, if any, follows Publication Gateway or the applicable artifact lifecycle.
 
@@ -867,7 +871,7 @@ Provider-specific conveniences disappear without creating a core-data migration 
 | User or accountable workflow → external AI | Explicit purpose, selected data, preview, confirmation, scoped provider and capability | Candidate response only |
 | External AI → owning component | Controlled import, provenance, schema and policy validation | Admit, reject, quarantine, or request review |
 | ChatGPT → local workflow | Manual import or registered integration | Candidate text or structured artifact |
-| Suno or Gamma → UCKK | Controlled media re-import, original preservation, rights and metadata | Candidate media receives UCKK identity only after admission |
+| Suno or Gamma → kOA Mediatheque | Controlled candidate admission, original preservation, rights and metadata | Candidate media receives local identity only after admission; UCKK publication remains separate |
 | Ariane voice adapter → Ariane Runtime | Candidate transcript or command | Local deterministic resolution, confirmation, authorization, and execution |
 | SenTient → Orgo or Kristal admission | Isolated research candidate with alternatives and provenance | Accountable review or independent artifact admission |
 | External AI → GF Wordbench | Candidate grammar, terminology, or translation | Human linguistic review and new source revision |
@@ -889,7 +893,8 @@ Provider-specific conveniences disappear without creating a core-data migration 
 | `DEC-AI-001` | The baseline has no native AI dependency; approved external AI is explicit, optional, removable, and non-authoritative. |
 | `DEC-SENT-001` | SenTient is an optional isolated task-activated workbench and not a canonical authority. |
 | `DEC-ARI-001` | Ariane local navigation is deterministic; external voice is optional and returns a candidate command. |
-| `DEC-UCKK-001` | Native UCKK ingestion is deterministic; Suno and Gamma are user-triggered external adapters. |
+| `DEC-MEDIATHEQUE-001` | kOA Mediatheque ingestion is deterministic; Suno and Gamma are user-triggered external adapters. |
+| `DEC-UCKK-EXT-001` | UCKK is an external publication target and never an AI admission owner. |
 | `DEC-LANG-001` | AI language suggestions remain candidate source; GF Wordbench compilation and SemantiK runtime stay deterministic and separate. |
 | `DEC-KRISTAL-001` | AI-extracted or reconciled claims remain candidates until explicit epistemic review and recognition. |
 | `DEC-AUTH-001` | AI cannot infer or grant authority, privilege, publication, release, activation, exception, or recovery rights. |
@@ -943,7 +948,7 @@ A new implementation-affecting AI capability remains inactive until canonical ow
 | Data, privacy, rights, and audit | `TEST-SEC-005`, `TEST-SEC-009`, `TEST-SEC-011`, `TEST-SEC-012`, `TEST-SEC-013`, `TEST-SEC-014`, `TEST-OPS-002`, `TEST-OPS-007`, `TEST-OPS-009` |
 | Authority and component boundaries | `TEST-SYS-004`, `TEST-SYS-011`, `TEST-SYS-013`, `TEST-CROSS-004`, `TEST-CROSS-007`, `TEST-CROSS-008`, `TEST-CROSS-009`, `TEST-CROSS-013`, `TEST-CROSS-014`, `TEST-CROSS-015`, `TEST-SEC-001`, `TEST-SEC-002`, `TEST-SEC-003`, `TEST-SEC-006` |
 | Ariane voice boundary | `TEST-SYS-006`, `TEST-CROSS-011`, `TEST-COMP-ARIANE-004`, `TEST-COMP-ARIANE-005`, `TEST-COMP-ARIANE-006`, `TEST-COMP-ARIANE-007`, `TEST-COMP-ARIANE-008`, `TEST-COMP-ARIANE-009` |
-| UCKK, Suno, and Gamma boundary | `TEST-SYS-007`, `TEST-SYS-008`, `TEST-CROSS-003`, `TEST-CROSS-012`, `TEST-COMP-UCKK-004`, `TEST-COMP-UCKK-005`, `TEST-COMP-UCKK-007`, `TEST-COMP-UCKK-008`, `TEST-COMP-UCKK-009` |
+| kOA Mediatheque, UCKK, Suno, and Gamma boundary | `TEST-SYS-007`, `TEST-SYS-008`, `TEST-CROSS-003`, `TEST-CROSS-012`, `TEST-COMP-MEDIA-004`, `TEST-COMP-MEDIA-005`, `TEST-COMP-MEDIA-007`, `TEST-INT-UCKK-001`, `TEST-INT-UCKK-002` |
 | SenTient isolation | `TEST-CROSS-006`, `TEST-PROF-004`, `TEST-PROF-005`, `TEST-PROF-006`, `TEST-PROF-008`, `TEST-PROF-010`, `TEST-OPS-003`, `TEST-OPS-006`, `TEST-OPS-010`, `TEST-COMP-SENTIENT-003`, `TEST-COMP-SENTIENT-004`, `TEST-COMP-SENTIENT-005`, `TEST-COMP-SENTIENT-006`, `TEST-COMP-SENTIENT-007`, `TEST-COMP-SENTIENT-008`, `TEST-COMP-SENTIENT-009` |
 | Language and deterministic runtime | `TEST-SYS-009`, `TEST-CROSS-005`, `TEST-COMP-GFWB-004`, `TEST-COMP-GFWB-005`, `TEST-COMP-GFWB-007`, `TEST-COMP-GFWB-009`, `TEST-COMP-SEMANTIK-004`, `TEST-COMP-SEMANTIK-005`, `TEST-COMP-SEMANTIK-007`, `TEST-COMP-SEMANTIK-009` |
 | Supply chain, recovery, and exit | `TEST-SEC-008`, `TEST-SEC-015`, `TEST-LIFE-003`, `TEST-LIFE-004`, `TEST-LIFE-005`, `TEST-LIFE-007`, `TEST-LIFE-008`, `TEST-LIFE-015`, `TEST-OPS-004`, `TEST-OPS-005`, `TEST-OPS-008`, `TEST-EXIT-001`, `TEST-EXIT-002`, `TEST-EXIT-003`, `TEST-EXIT-005`, `TEST-EXIT-006`, `TEST-EXIT-007` |
@@ -962,7 +967,7 @@ AI-boundary validation additionally confirms:
 9. permitted tool calls use separate local authorization and bounded schemas;
 10. ChatGPT, Suno, Gamma, and Ariane voice use their declared boundaries;
 11. Ariane local navigation works without voice;
-12. UCKK ingestion remains deterministic and does not invoke Suno or Gamma automatically;
+12. kOA Mediatheque ingestion remains deterministic and does not invoke Suno or Gamma automatically; UCKK publication remains independently authorized;
 13. SenTient profile membership, isolation, resource limits, candidate status, and idle shutdown resolve;
 14. GF Wordbench and SemantiK remain deterministic and separate;
 15. provider drift, credential compromise, quota, network loss, and removal preserve core local operation;
@@ -1001,7 +1006,7 @@ No system database or private evidence is uploaded automatically.
 
 A user selects eligible lyrics and a generation purpose.
 
-UCKK exports only the approved material after rights review. Suno returns an audio candidate. UCKK imports the file, preserves the returned original, captures provenance and rights metadata, and waits for user admission.
+The kOA Mediatheque exports only approved material after rights review. Suno returns an audio candidate. The kOA Mediatheque imports the file, preserves the returned original, captures provenance and rights metadata, and waits for user admission. A later UCKK publication, if requested, follows the separate bridge.
 
 The candidate is not public merely because it was generated.
 
@@ -1055,4 +1060,4 @@ New requests stop. Existing admitted local artifacts remain valid under their ow
 
 An organization disables all external AI integrations.
 
-Credentials, endpoints, queues, and provider-specific retained data are removed according to policy. Local navigation, UCKK ingestion, SemantiK rendering, Kristal query, Orgo workflow, governance, artifact verification, backup, restore, and export continue.
+Credentials, endpoints, queues, and provider-specific retained data are removed according to policy. Local navigation, kOA Mediatheque ingestion, SemantiK rendering, Kristal query, Orgo workflow, governance, artifact verification, backup, restore, and export continue. UCKK publication becomes unavailable without affecting local media.

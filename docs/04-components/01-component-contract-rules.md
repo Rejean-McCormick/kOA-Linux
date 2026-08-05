@@ -378,7 +378,7 @@ Implementation classes and packages remain outside the canonical component contr
 - **REQ-COMP-CONTRACT-035 — SHALL:** Every component with durable authoritative state declare backup scope, excluded regenerable state, consistency mechanism, encryption, retention, restore validation, and independent restore behavior.
 - **REQ-COMP-CONTRACT-036 — SHALL:** Every component contract declare startup, shutdown, upgrade, deactivation, schema or data migration, and recovery behavior.
 - **REQ-COMP-CONTRACT-037 — SHALL:** Every cross-component interaction identify direction, contract, purpose, authority effect, ownership boundary, failure behavior, and prohibition of direct database access.
-- **REQ-COMP-CONTRACT-038 — SHALL:** Component contracts preserve the separation of Resource Governor from Governance Policy Runtime and Publication Gateway from UCKK Dimension Gateway.
+- **REQ-COMP-CONTRACT-038 — SHALL:** Component and integration contracts preserve Resource Governor separation from Governance Policy Runtime and require Publication Gateway authorization before UCKK publication transport.
 - **REQ-COMP-CONTRACT-039 — SHALL:** Component conformance trace to accepted decisions, requirements, locks, profiles, artifact and integration contracts, tests, and current evidence.
 - **REQ-COMP-CONTRACT-040 — SHALL:** Component-contract validation include schema conformance, unique identity, ownership conflict detection, interface closure, transition completeness, failure safety, offline behavior, security, resources, lifecycle, reference resolution, and absence of prohibited open-state markers.
 <!-- GENERATED:REQUIREMENTS:END -->
@@ -786,10 +786,10 @@ All component contracts preserve these system separations:
 
 - authoritative component state from workflow coordination;
 - Resource Governor from Governance Policy Runtime;
-- Publication Gateway from UCKK Dimension Gateway;
+- Publication Gateway authorization from UCKK-specific packaging and transport;
 - local deterministic capabilities from optional external AI;
 - Ariane local navigation from external voice;
-- UCKK native processing from external Suno or Gamma adapters;
+- kOA Mediatheque native processing from external Suno or Gamma adapters;
 - runtime artifact consumption from language construction workbenches;
 - ordinary component behavior from privileged host mutation;
 - public transparency receipts from restricted evidence.
@@ -925,7 +925,7 @@ A failed component-contract check blocks activation of the affected contract and
 
 ### 11.1 Correct data authority
 
-A media platform owns admitted media records. Its gateway validates and transports candidate input but does not own the destination records.
+kOA Mediatheque owns accepted local media records. An external publication integration may validate and transport an authorized representation, but it does not own the local record or create disclosure authority.
 
 ### 11.2 Incorrect data authority
 

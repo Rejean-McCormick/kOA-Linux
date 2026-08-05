@@ -136,17 +136,17 @@
       "semantik-architect-runtime",
       "orgo",
       "konnaxion",
-      "uckk-platform",
-      "uckk-dimension-gateway",
+      "koa-mediatheque",
+      "uckk-publication-adapter",
       "publication-gateway",
       "audit-broker"
     ],
     "worker_ids": [
-      "uckk-thumbnail-worker",
-      "uckk-preview-worker",
-      "uckk-text-extraction-worker",
-      "uckk-transcode-worker",
-      "uckk-index-update-worker",
+      "mediatheque-thumbnail-worker",
+      "mediatheque-preview-worker",
+      "mediatheque-text-extraction-worker",
+      "mediatheque-transcode-worker",
+      "mediatheque-index-update-worker",
       "backup-worker",
       "restore-validation-worker",
       "synchronization-worker"
@@ -249,7 +249,7 @@
   "resource_classes": [
     {
       "class_id": "interactive",
-      "description": "Direct user-facing navigation, command acknowledgement, active media interaction, and UCKK admission progress.",
+      "description": "Direct user-facing navigation, command acknowledgement, active media interaction, and kOA Mediatheque operation and optional publication progress.",
       "priority_rank": 10,
       "cpu_weight": 1000,
       "cpu_hard_ceiling_millicores": 2500,
@@ -399,7 +399,7 @@
       "pressure_behavior": "retain_local_reads_defer_noncritical_updates"
     },
     {
-      "component_id": "uckk-platform",
+      "component_id": "koa-mediatheque",
       "resource_class": "service",
       "activation": "resident_core_workers_on_demand",
       "cpu_hard_ceiling_millicores": 1000,
@@ -409,14 +409,14 @@
       "pressure_behavior": "retain_originals_and_navigation_pause_derivatives"
     },
     {
-      "component_id": "uckk-dimension-gateway",
+      "component_id": "uckk-publication-adapter",
       "resource_class": "interactive",
       "activation": "on_demand",
       "cpu_hard_ceiling_millicores": 700,
       "memory_hard_limit_mib": 768,
       "process_limit": 32,
       "queue_limit_items": 256,
-      "pressure_behavior": "stop_new_large_imports_preserve_active_safe_transfer"
+      "pressure_behavior": "stop_new_external_publications_preserve_queued_manifests_and_receipts"
     },
     {
       "component_id": "publication-gateway",
@@ -441,8 +441,8 @@
   ],
   "worker_envelopes": [
     {
-      "worker_id": "uckk-thumbnail-worker",
-      "owner_component_id": "uckk-platform",
+      "worker_id": "mediatheque-thumbnail-worker",
+      "owner_component_id": "koa-mediatheque",
       "resource_class": "background",
       "job_weight": "light",
       "maximum_parallel_instances": 1,
@@ -453,8 +453,8 @@
       "pressure_order": 40
     },
     {
-      "worker_id": "uckk-preview-worker",
-      "owner_component_id": "uckk-platform",
+      "worker_id": "mediatheque-preview-worker",
+      "owner_component_id": "koa-mediatheque",
       "resource_class": "background",
       "job_weight": "moderate",
       "maximum_parallel_instances": 1,
@@ -465,8 +465,8 @@
       "pressure_order": 30
     },
     {
-      "worker_id": "uckk-text-extraction-worker",
-      "owner_component_id": "uckk-platform",
+      "worker_id": "mediatheque-text-extraction-worker",
+      "owner_component_id": "koa-mediatheque",
       "resource_class": "background",
       "job_weight": "moderate",
       "maximum_parallel_instances": 1,
@@ -477,8 +477,8 @@
       "pressure_order": 35
     },
     {
-      "worker_id": "uckk-transcode-worker",
-      "owner_component_id": "uckk-platform",
+      "worker_id": "mediatheque-transcode-worker",
+      "owner_component_id": "koa-mediatheque",
       "resource_class": "heavy_compute",
       "job_weight": "heavy",
       "maximum_parallel_instances": 1,
@@ -489,8 +489,8 @@
       "pressure_order": 20
     },
     {
-      "worker_id": "uckk-index-update-worker",
-      "owner_component_id": "uckk-platform",
+      "worker_id": "mediatheque-index-update-worker",
+      "owner_component_id": "koa-mediatheque",
       "resource_class": "background",
       "job_weight": "moderate",
       "maximum_parallel_instances": 1,
@@ -562,8 +562,8 @@
       "drop_permitted": false
     },
     {
-      "queue_id": "queue.uckk-derivatives",
-      "owner_component_id": "uckk-platform",
+      "queue_id": "queue.mediatheque-derivatives",
+      "owner_component_id": "koa-mediatheque",
       "resource_class": "background",
       "maximum_items": 4096,
       "maximum_bytes": 67108864,
@@ -902,8 +902,8 @@
     ],
     "active_background_jobs": [
       {
-        "job_id": "job.uckk-index-update.2026-08-03.002",
-        "worker_id": "uckk-index-update-worker",
+        "job_id": "job.mediatheque-index-update.2026-08-03.002",
+        "worker_id": "mediatheque-index-update-worker",
         "resource_class": "background",
         "admission_decision_id": "resource-decision.002",
         "effective_cpu_millicores": 400,
@@ -940,11 +940,11 @@
     },
     {
       "decision_id": "resource-decision.002",
-      "request_id": "resource-request.uckk-index-update.002",
+      "request_id": "resource-request.mediatheque-index-update.002",
       "envelope_id": "resource-envelope.user-lightweight.minimum-host",
       "envelope_version": "1.0.0",
-      "requesting_component_id": "uckk-platform",
-      "job_or_process_id": "job.uckk-index-update.2026-08-03.002",
+      "requesting_component_id": "koa-mediatheque",
+      "job_or_process_id": "job.mediatheque-index-update.2026-08-03.002",
       "resource_class": "background",
       "result": "admitted_with_limits",
       "effective_limits": {
@@ -959,15 +959,15 @@
         "reduced_io_weight_while_heavy_job_active"
       ],
       "decided_at": "2026-08-03T18:01:00-04:00",
-      "correlation_id": "corr.uckk-index-update.002"
+      "correlation_id": "corr.mediatheque-index-update.002"
     },
     {
       "decision_id": "resource-decision.003",
-      "request_id": "resource-request.uckk-transcode.003",
+      "request_id": "resource-request.mediatheque-transcode.003",
       "envelope_id": "resource-envelope.user-lightweight.minimum-host",
       "envelope_version": "1.0.0",
-      "requesting_component_id": "uckk-platform",
-      "job_or_process_id": "job.uckk-transcode.2026-08-03.003",
+      "requesting_component_id": "koa-mediatheque",
+      "job_or_process_id": "job.mediatheque-transcode.2026-08-03.003",
       "resource_class": "heavy_compute",
       "result": "deferred",
       "effective_limits": null,
@@ -978,7 +978,7 @@
       "queue_position_when_applicable": 1,
       "recheck_condition_when_applicable": "active_heavy_jobs_equals_zero",
       "decided_at": "2026-08-03T18:02:00-04:00",
-      "correlation_id": "corr.uckk-transcode.003"
+      "correlation_id": "corr.mediatheque-transcode.003"
     }
   ],
   "safe_degradation": {

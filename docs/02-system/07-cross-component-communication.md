@@ -152,7 +152,7 @@ This document applies globally to every interaction in which one component commu
 - another first-class kOA component;
 - a component-owned worker or adapter;
 - Publication Gateway;
-- UCKK Dimension Gateway;
+- UCKK Publication Bridge;
 - Governance Policy Runtime;
 - Resource Governor;
 - Audit Broker;
@@ -365,7 +365,7 @@ An artifact can carry data or executable content without granting itself authori
 A gateway or broker is an explicit boundary component, not a universal bypass.
 
 - Publication Gateway governs declared cross-domain disclosure and publication.
-- UCKK Dimension Gateway governs user-selected verified media admission into a UCKK dimension.
+- UCKK Publication Bridge packages and transports Publication-Gateway-authorized media to an external UCKK Moodle destination.
 - The privileged broker path performs allowlisted host mutations for applicable profiles.
 - Integration adapters isolate external providers.
 - A coordinator may orchestrate a multi-component workflow but does not become the owner of participating components' state.
@@ -391,7 +391,7 @@ The permitted topology for a concrete profile is declared by profile and compone
 - **REQ-SYS-COMM-010 — SHALL:** A cross-component query return a documented projection, snapshot, reference, or controlled read model without transferring ownership of the source data.
 - **REQ-SYS-COMM-011 — SHALL:** Every derived read model declare its source owners, freshness semantics, rebuild procedure, authorization boundary, and non-authoritative status unless a separate accepted decision assigns it authority.
 - **REQ-SYS-COMM-012 — SHALL:** Cross-domain disclosure and publication pass through Publication Gateway when the active contracts classify the transfer as governed publication.
-- **REQ-SYS-COMM-013 — SHALL NOT:** UCKK Dimension Gateway substitute for Publication Gateway or grant publication authority merely because it admitted media into a UCKK dimension.
+- **REQ-SYS-COMM-013 — SHALL NOT:** UCKK Publication Bridge substitute for Publication Gateway, create disclosure authority, or own local kOA Mediatheque records.
 - **REQ-SYS-COMM-014 — SHALL:** Resource scheduling requests and governance authorization requests use separate component contracts and preserve the authority separation between Resource Governor and Governance Policy Runtime.
 - **REQ-SYS-COMM-015 — SHALL:** An external integration remain capability-scoped, data-transfer-scoped, explicitly authenticated, removable, and isolated from unrelated core communication paths.
 - **REQ-SYS-COMM-016 — SHALL NOT:** External AI output directly mutate authoritative state, grant privilege, activate an artifact, authorize disclosure, or publish governed content.
@@ -622,7 +622,7 @@ Use Publication Gateway when information crosses a governed disclosure or public
 
 The source owner selects or authorizes the content. Governance Policy Runtime may return a disclosure decision where deployed. Publication Gateway validates the transfer contract, applies the declared publication controls, and records the result.
 
-UCKK Dimension Gateway remains the media-admission boundary and does not replace this pattern.
+UCKK Publication Bridge remains the target-specific packaging and transport boundary and does not replace the governed publication pattern.
 
 ### 8.8 Privileged-host-mutation pattern
 
@@ -678,7 +678,7 @@ The following assumptions are prohibited:
 - a service mesh, queue, API gateway, database, or workflow engine becomes a policy authority;
 - physical database consolidation removes logical ownership boundaries;
 - physical separation creates new semantic boundaries not present in contracts;
-- Publication Gateway and UCKK Dimension Gateway are interchangeable;
+- Publication Gateway and UCKK Publication Bridge are interchangeable;
 - Resource Governor can grant authorization or Governance Policy Runtime can allocate resources;
 - external integration success creates authority;
 - external AI output is trusted component output;
@@ -707,7 +707,7 @@ This document is conformant when all of the following checks pass:
 11. Asynchronous interfaces declare and test delivery, ordering, retry, expiration, cancellation, duplicate, and terminal-failure behavior.
 12. Domain events map to committed publisher facts and do not replace mutation authorization.
 13. Read models declare source ownership, freshness, rebuild, authorization, and non-authoritative status.
-14. Publication Gateway and UCKK Dimension Gateway remain separate in contracts, routing, tests, and evidence.
+14. UCKK publication tests prove Publication Gateway authorization, bridge transport, destination receipt handling, and preservation of local source authority.
 15. Resource Governor and Governance Policy Runtime remain separate in interfaces and authority.
 16. External integrations remain removable and data-transfer-scoped.
 17. External AI outputs cannot directly mutate authoritative state.
@@ -759,9 +759,9 @@ Orgo sends a versioned command to Konnaxion with actor, scope, correlation, and 
 
 Konnaxion validates the request and changes only Konnaxion-owned state. Orgo records the result in Orgo-owned workflow state. Neither component writes directly to the other's tables.
 
-### Example 2 — UCKK publishes a committed media event
+### Example 2 — kOA Mediatheque publishes a committed media event
 
-UCKK commits a deterministic media-ingestion result and emits a versioned domain event.
+kOA Mediatheque commits a deterministic media-ingestion result and emits a versioned domain event.
 
 A consumer validates the event and updates its own index. Replaying the event rebuilds the consumer's derived state but does not re-ingest or republish the source media.
 
@@ -773,15 +773,15 @@ Konnaxion and Orgo still use separate logical ownership boundaries. A declared r
 
 ### Example 4 — Publication boundary
 
-A user selects UCKK media for governed publication.
+A user selects kOA Mediatheque media for governed publication.
 
-UCKK Dimension Gateway previously admitted the media into the UCKK domain. Publication Gateway independently evaluates the publication transfer under its contract and records the result. Admission does not imply publication authorization.
+Publication Gateway first evaluates and records the disclosure authorization. UCKK Publication Bridge then packages and transports the approved representation to the external UCKK platform. The local kOA Mediatheque record remains authoritative and separate from the destination copy.
 
 ### Example 5 — Resource-sensitive job
 
-UCKK submits a thumbnail job to its own worker and requests scheduling from Resource Governor.
+kOA Mediatheque submits a thumbnail job to its own worker and requests scheduling from Resource Governor.
 
-Resource Governor controls resource allocation. UCKK owns the job, result, and authoritative derivative relationship. Governance Policy Runtime is consulted only when a policy decision is required.
+Resource Governor controls resource allocation. kOA Mediatheque owns the job, result, and authoritative derivative relationship. Governance Policy Runtime is consulted only when a policy decision is required.
 
 ### Example 6 — External AI candidate output
 

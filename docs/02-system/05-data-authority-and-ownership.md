@@ -116,7 +116,7 @@ This document applies to:
 - user content and user-controlled collections;
 - identity, credential, trust, and authorization data;
 - policy, configuration, resource, and deployment state;
-- UCKK media, metadata, dimensions, derived representations, and ingestion state;
+- kOA Mediatheque media, metadata, dimensions, derived representations, and ingestion state;
 - Kristal artifacts and epistemic identity;
 - Orgo workflow and orchestration state;
 - Konnaxion domain state;
@@ -257,7 +257,7 @@ User authority does not permit bypassing component invariants. Component ownersh
 - **REQ-SYS-DATA-011 — SHALL:** A deployment profile may strengthen physical separation, encryption, tenancy, locality, or replication controls without redefining global logical ownership.
 - **REQ-SYS-DATA-012 — SHALL NOT:** A profile-specific storage topology, database technology, filesystem layout, container boundary, or service arrangement is represented as a universal system ownership rule.
 - **REQ-SYS-DATA-013 — SHALL:** Cross-domain disclosure and publication pass through the Publication Gateway or another explicitly accepted disclosure contract with policy evaluation and required evidence.
-- **REQ-SYS-DATA-014 — SHALL:** User-selected media ingestion into a UCKK dimension passes through the UCKK Dimension Gateway and does not imply permission for external publication.
+- **REQ-SYS-DATA-014 — SHALL:** Publication of selected kOA Mediatheque records to an external UCKK Moodle destination require Publication Gateway authorization and UCKK Publication Bridge transport.
 - **REQ-SYS-DATA-015 — SHALL:** The Governance Policy Runtime evaluates authorization, disclosure, and privilege policy without becoming the owner of the governed application data.
 - **REQ-SYS-DATA-016 — SHALL:** The Resource Governor controls resource allocation, scheduling, and degradation without acquiring authority over application data, disclosure, or business state.
 - **REQ-SYS-DATA-017 — SHALL NOT:** Kristal is used as a universal operational database, universal workflow state store, or replacement for component-owned authoritative data.
@@ -352,7 +352,7 @@ An ownership transfer:
 | Derived source is unknown or stale | Quarantine, invalidate, or rebuild | Authoritative source | Use of derived result as current state | Derivation-state evidence |
 | Replica is behind or partitioned | Mark consistency state and restrict operations | Owner's authoritative state | Operations requiring unavailable consistency | Replication health record |
 | Publication policy cannot be evaluated | Keep publication unavailable | Source-domain data | Cross-domain disclosure | Gateway or policy failure |
-| UCKK ingestion fails | Preserve source media and existing UCKK state | Source and existing dimension | New ingestion transition | Failed-ingestion receipt |
+| kOA Mediatheque ingestion fails | Preserve source media and existing kOA Mediatheque state | Source and existing dimension | New ingestion transition | Failed-ingestion receipt |
 | SenTient is unavailable | Keep analysis unavailable | All source components | SenTient analysis | Workbench health state |
 | Backup compatibility is unknown | Do not restore into active authority | Current active state | Incompatible restore | Restore validation record |
 | Ownership transfer is incomplete | Keep the cutover blocked or execute declared recovery | Last valid owner according to cutover state | Parallel writing or partial activation | Migration and cutover evidence |
@@ -379,7 +379,7 @@ An ownership transfer:
 
 The Publication Gateway controls disclosure outside an existing domain.
 
-The UCKK Dimension Gateway controls user-authorized ingestion into the user's UCKK dimension.
+The UCKK Publication Bridge controls target-specific package creation, transport, retry, and destination receipt handling after Publication Gateway authorization.
 
 A successful ingestion does not authorize publication. A successful publication does not transfer ownership of upstream authoritative data unless an accepted ownership-transfer contract says otherwise.
 
@@ -408,7 +408,7 @@ They do not become writers to the originating component's authoritative state an
 | `DEC-SYS-DATA-003` | Establishes controlled export, import, replication, disclosure, and gateway behavior. |
 | `DEC-SYS-DATA-004` | Establishes atomic canonical-ownership transfer and predecessor deactivation. |
 | `DEC-SYS-GOV-001` | Separates Governance Policy Runtime authority from Resource Governor authority. |
-| `DEC-SYS-GATE-001` | Separates Publication Gateway authority from UCKK Dimension Gateway authority. |
+| `DEC-UCKK-EXT-001` | Keeps disclosure authorization in Publication Gateway and UCKK-specific transport in the external integration. |
 | `DEC-SYS-SENT-001` | Keeps SenTient optional, isolated, and non-authoritative. |
 | `DEC-SYS-KRISTAL-001` | Keeps Kristal transversal without making it a universal operational store. |
 
@@ -446,7 +446,7 @@ This document is conformant when:
 9. Every derived-data class declares source, purpose, synchronization state, and invalidation behavior.
 10. No cache, index, replica, analytical store, AI context, export, or evidence record is classified as authoritative without an accepted ownership decision.
 11. Profile contracts can strengthen physical controls without changing global logical ownership.
-12. Publication Gateway and UCKK Dimension Gateway remain separate.
+12. UCKK publication requires gateway authorization before bridge transport.
 13. Resource Governor and Governance Policy Runtime remain separate.
 14. SenTient remains optional, isolated, and non-authoritative.
 15. Kristal is not assigned universal operational database or workflow ownership.
@@ -475,7 +475,7 @@ SenTient can receive an authorized export, build an index, and produce annotatio
 
 > **Non-normative example:** This example illustrates one valid implementation. It does not redefine canonical ownership.
 
-A UCKK thumbnail is derived from authoritative user media. The thumbnail can be deleted and rebuilt. It does not replace the original media or acquire independent publication permission.
+A kOA Mediatheque thumbnail is derived from authoritative user media. The thumbnail can be deleted and rebuilt. It does not replace the original media or acquire independent publication permission.
 
 > **Non-normative example:** This example illustrates one valid implementation. It does not redefine canonical ownership.
 
@@ -483,4 +483,4 @@ The Audit Broker can store a receipt that Orgo completed a critical transition. 
 
 > **Non-normative example:** This example illustrates one valid implementation. It does not redefine canonical ownership.
 
-A sovereign profile can place identity data, UCKK data, and component operational data in separate encrypted volumes. A lightweight profile can use one encrypted volume with separate service identities and namespaces. The logical owners remain the same in both profiles.
+A sovereign profile can place identity data, kOA Mediatheque data, and component operational data in separate encrypted volumes. A lightweight profile can use one encrypted volume with separate service identities and namespaces. The logical owners remain the same in both profiles.
