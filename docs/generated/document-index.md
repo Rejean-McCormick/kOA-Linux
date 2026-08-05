@@ -60,6 +60,8 @@
 | DOC-SYS-018 | 02-system/18-hardware-envelopes.md | active | normative_markdown |
 | DOC-SYS-019 | 02-system/19-release-and-artifact-identity.md | active | normative_markdown |
 | DOC-SYS-020 | 02-system/20-receipts-and-critical-transitions.md | active | normative_markdown |
+| DOC-SYS-021 | 02-system/21-koa-spaces-experience-layer.md | active | normative_markdown |
+| DOC-SYS-022 | 02-system/22-koa-spaces-interface-composition.md | active | normative_markdown |
 | DOC-PRO-000 | 03-profiles/00-profile-model.md | active | normative_markdown |
 | DOC-PROFILE-001 | 03-profiles/01-profile-composition-and-overlays.md | active | normative_markdown |
 | DOC-PROFILE-002 | 03-profiles/02-profile-inheritance.md | active | normative_markdown |
@@ -74,6 +76,7 @@
 | DOC-PROF-011 | 03-profiles/11-high-assurance.md | active | normative_markdown |
 | DOC-PROFILE-012 | 03-profiles/12-sovereign-offline.md | active | normative_markdown |
 | DOC-PROFILE-013 | 03-profiles/13-appliance-shell.md | active | normative_markdown |
+| DOC-PROFILE-014 | 03-profiles/14-koa-spaces-deployment.md | active | explanatory_markdown |
 | DOC-COMP-000 | 04-components/00-component-model.md | active | normative_markdown |
 | DOC-COMP-001 | 04-components/01-component-contract-rules.md | active | normative_markdown |
 | DOC-COMP-002 | 04-components/02-component-data-ownership.md | active | normative_markdown |
@@ -89,6 +92,7 @@
 | DOC-COMP-README | 04-components/README.md | active | explanatory_markdown |
 | DOC-COMP-RG-001 | 04-components/resource-governor.md | active | normative_markdown |
 | DOC-SUB-ARIANE | 04-components/subsystems/ariane.md | active | explanatory_markdown |
+| DOC-SUB-KOA-SPACES | 04-components/subsystems/koa-spaces.md | active | explanatory_markdown |
 | DOC-SUB-KONNAXION | 04-components/subsystems/konnaxion.md | active | explanatory_markdown |
 | DOC-SUB-ORGO | 04-components/subsystems/orgo.md | active | explanatory_markdown |
 | DOC-COMP-SUBSYSTEMS-README | 04-components/subsystems/README.md | active | explanatory_markdown |
@@ -251,6 +255,8 @@
 | RECIPE-SOV-LINUX-001 | 11-recipes/sovereign-linux/systemd-layout.md | active | non_normative_recipe |
 | DOC-RECIPE-ULW-BAS-001 | 11-recipes/user-lightweight/browser-based-application-shell.md | active | implementation_recipe |
 | RECIPE-USER-LIGHT-MEDIATHEQUE-001 | 11-recipes/user-lightweight/koa-mediatheque-local.md | active | recipe |
+| DOC-REC-KOA-SPACES-001 | 11-recipes/user-lightweight/koa-spaces-activation.md | active | recipe |
+| DOC-REC-KOA-SPACES-002 | 11-recipes/user-lightweight/koa-spaces-school-example.md | active | non_normative_recipe |
 | RECIPE-USER-LIGHT-003 | 11-recipes/user-lightweight/media-job-scheduling.md | active | non_normative_recipe |
 | DOC-RECIPE-UL-001 | 11-recipes/user-lightweight/minimal-installation.md | active | recipe |
 | DOC-RECIPE-USER-002 | 11-recipes/user-lightweight/service-activation.md | active | recipe |

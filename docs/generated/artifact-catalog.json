@@ -51,6 +51,13 @@
       "version": null
     },
     {
+      "id": "https://schemas.koa.local/artifact-contracts/module-interface-manifest.schema.json",
+      "path": "contracts/artifact-contracts/module-interface-manifest.schema.json",
+      "title": "kOA Spaces Module Interface Manifest",
+      "status": null,
+      "version": null
+    },
+    {
       "id": "https://schemas.koa.local/artifact-contracts/node-profile.schema.json",
       "path": "contracts/artifact-contracts/node-profile.schema.json",
       "title": "kOA Node Profile Artifact",
@@ -107,6 +114,13 @@
       "version": null
     },
     {
+      "id": "https://schemas.koa.local/artifact-contracts/route-contribution.schema.json",
+      "path": "contracts/artifact-contracts/route-contribution.schema.json",
+      "title": "kOA Spaces Route Contribution",
+      "status": null,
+      "version": null
+    },
+    {
       "id": "https://schemas.koa.local/artifact-contracts/runtime-pack.schema.json",
       "path": "contracts/artifact-contracts/runtime-pack.schema.json",
       "title": "kOA Runtime Pack",
@@ -121,9 +135,37 @@
       "version": null
     },
     {
+      "id": "https://schemas.koa.local/artifact-contracts/sidebar-navigation.schema.json",
+      "path": "contracts/artifact-contracts/sidebar-navigation.schema.json",
+      "title": "kOA Spaces Sidebar Navigation",
+      "status": null,
+      "version": null
+    },
+    {
       "id": "https://schemas.koa.local/artifact-contracts/sovereignty-bundle.schema.json",
       "path": "contracts/artifact-contracts/sovereignty-bundle.schema.json",
       "title": "kOA Sovereignty Bundle Schema",
+      "status": null,
+      "version": null
+    },
+    {
+      "id": "https://schemas.koa.local/artifact-contracts/space-activation-receipt.schema.json",
+      "path": "contracts/artifact-contracts/space-activation-receipt.schema.json",
+      "title": "kOA Space Activation Receipt",
+      "status": null,
+      "version": null
+    },
+    {
+      "id": "https://schemas.koa.local/artifact-contracts/space-definition.schema.json",
+      "path": "contracts/artifact-contracts/space-definition.schema.json",
+      "title": "kOA Space Definition",
+      "status": null,
+      "version": null
+    },
+    {
+      "id": "https://schemas.koa.local/artifact-contracts/topbar-widget.schema.json",
+      "path": "contracts/artifact-contracts/topbar-widget.schema.json",
+      "title": "kOA Spaces Top-Bar Widget",
       "status": null,
       "version": null
     },

@@ -2515,6 +2515,24 @@
       ]
     },
     {
+      "path": "02-system/21-koa-spaces-experience-layer.md",
+      "doc_id": "DOC-SYS-021",
+      "document_class": "normative_markdown",
+      "status": "active",
+      "requirement_ids": [],
+      "assertion_ids": [],
+      "decision_ids": []
+    },
+    {
+      "path": "02-system/22-koa-spaces-interface-composition.md",
+      "doc_id": "DOC-SYS-022",
+      "document_class": "normative_markdown",
+      "status": "active",
+      "requirement_ids": [],
+      "assertion_ids": [],
+      "decision_ids": []
+    },
+    {
       "path": "03-profiles/00-profile-model.md",
       "doc_id": "DOC-PRO-000",
       "document_class": "normative_markdown",
@@ -3415,6 +3433,15 @@
       ]
     },
     {
+      "path": "03-profiles/14-koa-spaces-deployment.md",
+      "doc_id": "DOC-PROFILE-014",
+      "document_class": "explanatory_markdown",
+      "status": "active",
+      "requirement_ids": [],
+      "assertion_ids": [],
+      "decision_ids": []
+    },
+    {
       "path": "04-components/00-component-model.md",
       "doc_id": "DOC-COMP-000",
       "document_class": "normative_markdown",
@@ -4185,6 +4212,15 @@
     {
       "path": "04-components/subsystems/ariane.md",
       "doc_id": "DOC-SUB-ARIANE",
+      "document_class": "explanatory_markdown",
+      "status": "active",
+      "requirement_ids": [],
+      "assertion_ids": [],
+      "decision_ids": []
+    },
+    {
+      "path": "04-components/subsystems/koa-spaces.md",
+      "doc_id": "DOC-SUB-KOA-SPACES",
       "document_class": "explanatory_markdown",
       "status": "active",
       "requirement_ids": [],
@@ -13955,6 +13991,24 @@
         "DEC-GOV-001",
         "DEC-OFFLINE-001"
       ]
+    },
+    {
+      "path": "11-recipes/user-lightweight/koa-spaces-activation.md",
+      "doc_id": "DOC-REC-KOA-SPACES-001",
+      "document_class": "recipe",
+      "status": "active",
+      "requirement_ids": [],
+      "assertion_ids": [],
+      "decision_ids": []
+    },
+    {
+      "path": "11-recipes/user-lightweight/koa-spaces-school-example.md",
+      "doc_id": "DOC-REC-KOA-SPACES-002",
+      "document_class": "non_normative_recipe",
+      "status": "active",
+      "requirement_ids": [],
+      "assertion_ids": [],
+      "decision_ids": []
     },
     {
       "path": "11-recipes/user-lightweight/media-job-scheduling.md",

@@ -1,0 +1,156 @@
+{
+  "$schema": "../artifact-contracts/space-definition.schema.json",
+  "example": true,
+  "authority": "non_authoritative_example",
+  "space_id": "isolated_school",
+  "title": "Isolated School",
+  "version": "1.0.0",
+  "description": "Example Space for local learning, media, schoolwork, guidance, and restricted administration.",
+  "default_module_id": "space_home",
+  "module_instances": [
+    {
+      "module_id": "space_home",
+      "manifest_ref": "manifests/space-home.module-interface.json",
+      "enabled": true,
+      "required": true,
+      "order": 0,
+      "public_label": "Home",
+      "public_icon_ref": "icons/home.svg",
+      "home_route_override": null
+    },
+    {
+      "module_id": "uckk_learning",
+      "manifest_ref": "manifests/uckk-learning.module-interface.json",
+      "enabled": true,
+      "required": true,
+      "order": 10,
+      "public_label": "Learn",
+      "public_icon_ref": "icons/learn.svg",
+      "home_route_override": null
+    },
+    {
+      "module_id": "koa_mediatheque",
+      "manifest_ref": "manifests/koa-mediatheque.module-interface.json",
+      "enabled": true,
+      "required": true,
+      "order": 20,
+      "public_label": "Library",
+      "public_icon_ref": "icons/library.svg",
+      "home_route_override": null
+    },
+    {
+      "module_id": "orgo_schoolwork",
+      "manifest_ref": "manifests/orgo-schoolwork.module-interface.json",
+      "enabled": true,
+      "required": false,
+      "order": 30,
+      "public_label": "Assignments",
+      "public_icon_ref": "icons/assignments.svg",
+      "home_route_override": null
+    },
+    {
+      "module_id": "ariane",
+      "manifest_ref": "manifests/ariane.module-interface.json",
+      "enabled": true,
+      "required": false,
+      "order": 40,
+      "public_label": "Guidance",
+      "public_icon_ref": "icons/guidance.svg",
+      "home_route_override": null
+    },
+    {
+      "module_id": "koa_administration",
+      "manifest_ref": "manifests/koa-administration.module-interface.json",
+      "enabled": true,
+      "required": false,
+      "order": 50,
+      "public_label": "Administration",
+      "public_icon_ref": "icons/administration.svg",
+      "home_route_override": null
+    }
+  ],
+  "global_topbar": [
+    {
+      "widget_id": "global.search",
+      "module_id": null,
+      "scope": "global",
+      "slot": "primary",
+      "kind": "search",
+      "label": "Search",
+      "label_key": "global.search",
+      "icon_ref": "icons/search.svg",
+      "priority": 10,
+      "required_capabilities": [],
+      "offline_behavior": "available",
+      "compact_only": true,
+      "activation": {
+        "kind": "route",
+        "route_id": "global.search",
+        "command_ref": null,
+        "status_provider_ref": null
+      }
+    },
+    {
+      "widget_id": "global.network_state",
+      "module_id": null,
+      "scope": "global",
+      "slot": "status",
+      "kind": "status",
+      "label": "Network state",
+      "label_key": "global.network_state",
+      "icon_ref": "icons/network.svg",
+      "priority": 20,
+      "required_capabilities": [],
+      "offline_behavior": "available",
+      "compact_only": true,
+      "activation": {
+        "kind": "status_provider",
+        "route_id": null,
+        "command_ref": null,
+        "status_provider_ref": "koa://network/state"
+      }
+    },
+    {
+      "widget_id": "global.ariane",
+      "module_id": null,
+      "scope": "global",
+      "slot": "secondary",
+      "kind": "action",
+      "label": "Ariane",
+      "label_key": "global.ariane",
+      "icon_ref": "icons/ariane.svg",
+      "priority": 30,
+      "required_capabilities": [
+        "ariane_access"
+      ],
+      "offline_behavior": "degraded",
+      "compact_only": true,
+      "activation": {
+        "kind": "route",
+        "route_id": "ariane.home",
+        "command_ref": null,
+        "status_provider_ref": null
+      }
+    }
+  ],
+  "appearance": {
+    "theme_ref": "themes/school-default.json",
+    "density": "touch",
+    "logo_ref": "branding/school-logo.svg",
+    "accent_token": "school-blue",
+    "allow_module_accent": true
+  },
+  "offline_policy": {
+    "shell_available": true,
+    "retain_last_validated_definition": true,
+    "unavailable_module_behavior": "show_declared_fallback",
+    "network_state_indicator": true
+  },
+  "assignment_scope": "organization",
+  "authority_boundary": {
+    "presentation_only": true,
+    "may_grant_capabilities": false,
+    "contains_business_state": false,
+    "contains_executable_extension": false
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "$schema": "../../schemas/subsystem.schema.json",
+  "subsystem_id": "koa_spaces",
+  "title": "kOA Spaces",
+  "status": "active",
+  "version": "1.0.0",
+  "activation_state": "proposal_pending_core_registration",
+  "relationship_to_koa": "integrated_subsystem",
+  "optional": true,
+  "replaceable": true,
+  "offline_capable": true,
+  "koa_role": "Independent contextual experience subsystem that composes navigation and interface contributions without owning business authority.",
+  "official_documentation": {
+    "mount_path": "subsystems/koa-spaces",
+    "mount_kind": "directory_junction_or_symbolic_link",
+    "required_for_final_alignment": true,
+    "authority": "subsystem_internal_documentation"
+  },
+  "koa_owns": [
+    "deployment profile membership",
+    "process lifecycle and activation",
+    "resource envelope",
+    "identity and capability assertions exposed to the subsystem",
+    "network and storage exposure",
+    "artifact admission for Space definitions and interface manifests",
+    "health integration",
+    "backup coordination for presentation state",
+    "safe degradation and removal behavior"
+  ],
+  "koa_does_not_own": [
+    "kOA Spaces internal implementation",
+    "business data represented by interface modules",
+    "subsystem workflow or state",
+    "course and learning progress authority",
+    "media authority",
+    "authorization decisions",
+    "module-specific page implementation",
+    "direct cross-subsystem writes"
+  ],
+  "presentation_model": {
+    "public_name": "kOA Spaces",
+    "module_selector_position": "upper_left",
+    "topbar_alignment": "same_horizontal_band_as_module_selector",
+    "sidebar_source": "active_module_manifest",
+    "main_surface": "single_shared_page_surface",
+    "sidebar_visible_depth": 2,
+    "public_module_aliases_allowed": true,
+    "stable_module_ids_required": true
+  },
+  "artifact_contracts": [
+    "contracts/artifact-contracts/space-definition.schema.json",
+    "contracts/artifact-contracts/module-interface-manifest.schema.json",
+    "contracts/artifact-contracts/sidebar-navigation.schema.json",
+    "contracts/artifact-contracts/topbar-widget.schema.json",
+    "contracts/artifact-contracts/route-contribution.schema.json",
+    "contracts/artifact-contracts/space-activation-receipt.schema.json"
+  ],
+  "boundary_rules": {
+    "direct_cross_subsystem_writes": "prohibited",
+    "undeclared_substitution": "prohibited",
+    "internal_behavior_duplication": "prohibited",
+    "presentation_grants_authority": false,
+    "menu_visibility_is_authorization": false,
+    "remote_executable_extensions_from_space_definitions": "prohibited",
+    "official_documentation_mount": "subsystems/koa-spaces"
+  },
+  "documentation": {
+    "koa_boundary_document": "04-components/subsystems/koa-spaces.md",
+    "system_layer_document": "02-system/21-koa-spaces-experience-layer.md",
+    "composition_document": "02-system/22-koa-spaces-interface-composition.md",
+    "activation_recipe": "11-recipes/user-lightweight/koa-spaces-activation.md"
+  }
+}
