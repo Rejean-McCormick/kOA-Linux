@@ -1,125 +1,124 @@
 <!-- KOA:DOC-META:BEGIN GENERATED
 {
-  "doc_id": "DOC-RECIPE-ULW-BAS-001",
-  "document_class": "implementation_recipe",
-  "status": "active",
-  "language": "en",
-  "layer": "recipe",
-  "scope": [
-    "user_lightweight"
-  ],
-  "canonical_refs": [
-    "contracts/system.contract.json#/global_boundaries",
-    "contracts/system.contract.json#/offline_baseline",
-    "contracts/system.contract.json#/degradation_baseline",
-    "contracts/system.contract.json#/resource_governance",
-    "contracts/system.contract.json#/ariane",
-    "contracts/system.contract.json#/ai_boundary",
-    "contracts/system.contract.json#/release_and_artifact_identity",
-    "generated/profile-catalog.json#/primary_profiles/user_lightweight",
-    "contracts/profiles/user-lightweight.profile.json",
-    "contracts/artifact-contracts/resource-envelope.schema.json#/envelopes/user_lightweight",
-    "generated/component-catalog.json",
-    "contracts/integration-types.contract.json",
-    "contracts/artifact-classes.contract.json",
-    "contracts/artifact-contracts/node-profile.schema.json",
-    "generated/requirements-index.json",
-    "generated/assertion-index.json",
-    "generated/test-catalog.json",
-    "generated/evidence-catalog.json",
-    "generated/traceability.json"
-  ],
-  "decision_ids": [
-    "DEC-SYS-001",
-    "DEC-PROFILE-001",
-    "DEC-DATA-001",
-    "DEC-GOV-001",
-    "DEC-SHELL-001",
-    "DEC-CONTAINER-001",
-    "DEC-K8S-001",
-    "DEC-HW-001",
-    "DEC-REL-001",
-    "DEC-AI-001",
-    "DEC-SENT-001",
-    "DEC-UCKK-001",
-    "DEC-ARI-001"
-  ],
-  "requirement_ids": [
-    "REQ-RECIPE-ULW-BAS-001",
-    "REQ-RECIPE-ULW-BAS-002",
-    "REQ-RECIPE-ULW-BAS-003",
-    "REQ-RECIPE-ULW-BAS-004",
-    "REQ-RECIPE-ULW-BAS-005",
-    "REQ-RECIPE-ULW-BAS-006",
-    "REQ-RECIPE-ULW-BAS-007",
-    "REQ-RECIPE-ULW-BAS-008",
-    "REQ-RECIPE-ULW-BAS-009",
-    "REQ-RECIPE-ULW-BAS-010",
-    "REQ-RECIPE-ULW-BAS-011",
-    "REQ-RECIPE-ULW-BAS-012",
-    "REQ-RECIPE-ULW-BAS-013",
-    "REQ-RECIPE-ULW-BAS-014",
-    "REQ-RECIPE-ULW-BAS-015",
-    "REQ-RECIPE-ULW-BAS-016",
-    "REQ-RECIPE-ULW-BAS-017",
-    "REQ-RECIPE-ULW-BAS-018",
-    "REQ-RECIPE-ULW-BAS-019",
-    "REQ-RECIPE-ULW-BAS-020",
-    "REQ-RECIPE-ULW-BAS-021",
-    "REQ-RECIPE-ULW-BAS-022",
-    "REQ-RECIPE-ULW-BAS-023",
-    "REQ-RECIPE-ULW-BAS-024"
-  ],
-  "lock_ids": [
-    "LOCK-SYS-001",
-    "LOCK-SYS-002",
-    "LOCK-SYS-003",
-    "LOCK-SYS-004",
-    "LOCK-PROFILE-001",
-    "LOCK-PROFILE-002",
-    "LOCK-DATA-001",
-    "LOCK-GOV-001",
-    "LOCK-COMP-001",
-    "LOCK-COMP-002",
-    "LOCK-LIFE-001",
-    "LOCK-LIFE-002",
-    "LOCK-LIFE-003",
-    "LOCK-LIFE-004",
-    "LOCK-AI-001",
-    "LOCK-AI-002",
-    "LOCK-SENT-001",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
-    "LOCK-ARI-001",
-    "LOCK-ARI-002",
-    "LOCK-IMPL-001",
-    "LOCK-IMPL-002"
-  ],
-  "exception_ids": [],
-  "depends_on": [
-    "DOC-CONST-003",
-    "DOC-SYS-000",
-    "DOC-SYS-010",
-    "DOC-SEC-010",
-    "DOC-OPS-007",
-    "DOC-OPS-017",
-    "DOC-ADR-012",
-    "DOC-ADR-025"
-  ],
-  "tags": [
-    "recipe",
-    "user-lightweight",
-    "browser-shell",
-    "local-first",
-    "loopback",
-    "offline",
-    "service-worker",
-    "accessibility",
-    "resource-governance",
-    "same-origin",
-    "component-boundaries",
-    "non-authoritative-ui"
-  ]
+ "doc_id": "DOC-RECIPE-ULW-BAS-001",
+ "document_class": "implementation_recipe",
+ "status": "active",
+ "language": "en",
+ "layer": "recipe",
+ "scope": [
+ "user_lightweight"
+ ],
+ "canonical_refs": [
+ "contracts/system.contract.json#/global_boundaries",
+ "contracts/system.contract.json#/offline_baseline",
+ "contracts/system.contract.json#/degradation_baseline",
+ "contracts/system.contract.json#/resource_governance",
+ "contracts/system.contract.json#/ariane",
+ "contracts/system.contract.json#/ai_boundary",
+ "contracts/system.contract.json#/release_and_artifact_identity",
+ "generated/profile-catalog.json#/primary_profiles/user_lightweight",
+ "contracts/profiles/user-lightweight.profile.json",
+ "contracts/artifact-contracts/resource-envelope.schema.json#/envelopes/user_lightweight",
+ "generated/component-catalog.json",
+ "contracts/integration-types.contract.json",
+ "contracts/artifact-classes.contract.json",
+ "contracts/artifact-contracts/node-profile.schema.json",
+ "generated/requirements-index.json",
+ "generated/assertion-index.json",
+ "generated/test-catalog.json",
+ "generated/evidence-catalog.json",
+ "generated/traceability.json"
+ ],
+ "decision_ids": [
+ "DEC-SYS-001",
+ "DEC-PROFILE-001",
+ "DEC-DATA-001",
+ "DEC-GOV-001",
+ "DEC-SHELL-001",
+ "DEC-CONTAINER-001",
+ "DEC-K8S-001",
+ "DEC-HW-001",
+ "DEC-REL-001",
+ "DEC-AI-001",
+ "DEC-SENT-001",
+ "DEC-UCKK-EXT-001",
+ "DEC-ARI-001"
+ ],
+ "requirement_ids": [
+ "REQ-RECIPE-ULW-BAS-001",
+ "REQ-RECIPE-ULW-BAS-002",
+ "REQ-RECIPE-ULW-BAS-003",
+ "REQ-RECIPE-ULW-BAS-004",
+ "REQ-RECIPE-ULW-BAS-005",
+ "REQ-RECIPE-ULW-BAS-006",
+ "REQ-RECIPE-ULW-BAS-007",
+ "REQ-RECIPE-ULW-BAS-008",
+ "REQ-RECIPE-ULW-BAS-009",
+ "REQ-RECIPE-ULW-BAS-010",
+ "REQ-RECIPE-ULW-BAS-011",
+ "REQ-RECIPE-ULW-BAS-012",
+ "REQ-RECIPE-ULW-BAS-013",
+ "REQ-RECIPE-ULW-BAS-014",
+ "REQ-RECIPE-ULW-BAS-015",
+ "REQ-RECIPE-ULW-BAS-016",
+ "REQ-RECIPE-ULW-BAS-017",
+ "REQ-RECIPE-ULW-BAS-018",
+ "REQ-RECIPE-ULW-BAS-019",
+ "REQ-RECIPE-ULW-BAS-020",
+ "REQ-RECIPE-ULW-BAS-021",
+ "REQ-RECIPE-ULW-BAS-022",
+ "REQ-RECIPE-ULW-BAS-023",
+ "REQ-RECIPE-ULW-BAS-024"
+ ],
+ "lock_ids": [
+ "LOCK-SYS-001",
+ "LOCK-SYS-002",
+ "LOCK-SYS-003",
+ "LOCK-SYS-004",
+ "LOCK-PROFILE-001",
+ "LOCK-PROFILE-002",
+ "LOCK-DATA-001",
+ "LOCK-GOV-001",
+ "LOCK-COMP-001",
+ "LOCK-COMP-002",
+ "LOCK-LIFE-001",
+ "LOCK-LIFE-002",
+ "LOCK-LIFE-003",
+ "LOCK-LIFE-004",
+ "LOCK-AI-001",
+ "LOCK-AI-002",
+ "LOCK-SENT-001",
+ "LOCK-MEDIATHEQUE-001",
+ "LOCK-MEDIATHEQUE-002",
+ "LOCK-ARI-001",
+ "LOCK-ARI-002",
+ "LOCK-IMPL-001",
+ "LOCK-IMPL-002"
+ ],
+ "exception_ids": [],
+ "depends_on": [
+ "DOC-CONST-003",
+ "DOC-SYS-000",
+ "DOC-SYS-010",
+ "DOC-SEC-010",
+ "DOC-OPS-007",
+ "DOC-OPS-017",
+ "DOC-ADR-012"
+ ],
+ "tags": [
+ "recipe",
+ "user-lightweight",
+ "browser-shell",
+ "local-first",
+ "loopback",
+ "offline",
+ "service-worker",
+ "accessibility",
+ "resource-governance",
+ "same-origin",
+ "component-boundaries",
+ "non-authoritative-ui"
+ ]
 }
 KOA:DOC-META:END -->
 
@@ -178,30 +177,29 @@ The default design is local-only. Remote browser access is a separate profile ex
 | `docs/08-operations/07-capability-degradation.md` | Capability state and restoration model |
 | `docs/07-security/10-data-at-rest.md` | Browser cache, temporary data, logs, and credential protection |
 | `docs/10-adrs/ADR-012-single-narrow-privileged-broker.md` | Privileged host-operation boundary |
-| `docs/10-adrs/ADR-025-english-only-active-documentation.md` | English canonical documentation and separate runtime localization |
 
 ## 4. Model and Responsibilities
 
 ### 4.1 Reference topology
 
-```text
+`text
 maintained browser
-    |
-    | same-origin HTTP requests
-    v
+ |
+ | same-origin HTTP requests
+ v
 local shell origin on loopback
-    |-- versioned static assets
-    |-- session endpoints
-    |-- capability discovery
-    `-- allowlisted browser-facing routes
-            |
-            +--> Konnaxion API
-            +--> Orgo API
-            +--> Kristal Runtime API
-            +--> UCKK API
-            +--> task and health APIs
-            +--> explicit integration adapters
-```
+ |-- versioned static assets
+ |-- session endpoints
+ |-- capability discovery
+ `-- allowlisted browser-facing routes
+ |
+ +--> Konnaxion API
+ +--> Orgo API
+ +--> Kristal Runtime API
+ +--> UCKK API
+ +--> task and health APIs
+ +--> explicit integration adapters
+`
 
 The shell origin can be a small native service or a rootless container. Component services can run natively or in containers according to the profile.
 
@@ -382,7 +380,7 @@ Runtime interface localization is permitted through separate localization artifa
 
 Canonical route IDs, operation IDs, capability states, stable error codes, component IDs, and source-document links remain unchanged.
 
-The active recipe remains English according to `ADR-025`.
+The active recipe remains English according to .
 
 ## 5. Applicable Normative Requirements
 
@@ -445,7 +443,7 @@ The active recipe remains English according to `ADR-025`.
 
 Use a policy equivalent to:
 
-```text
+`text
 default-src 'self';
 script-src 'self';
 style-src 'self';
@@ -458,7 +456,7 @@ frame-ancestors 'none';
 form-action 'self';
 manifest-src 'self';
 worker-src 'self' blob:;
-```
+`
 
 The selected implementation can tighten this policy further.
 
@@ -608,7 +606,7 @@ A frontend display failure does not roll back or reinterpret a completed compone
 | `DEC-REL-001` | Shell assets and gateway versions use compatible non-partial activation and recovery. |
 | `DEC-AI-001` | External AI remains explicit and non-authoritative; native AI is absent. |
 | `DEC-SENT-001` | SenTient is excluded from the default user installation. |
-| `DEC-UCKK-001` | Native UCKK interactions remain deterministic and local. |
+| `DEC-UCKK-EXT-001` | Local Mediatheque interaction and accepted UCKK learning packages remain available without implicit online synchronization. |
 | `DEC-ARI-001` | Local navigation remains independent of voice and external AI. |
 
 ### Prohibited assumptions
@@ -680,59 +678,59 @@ These criteria define the recipe validation target. They do not claim that a par
 
 The following example illustrates one local deployment. It is not a canonical profile or release artifact.
 
-```yaml
+`yaml
 shell:
-  profile: user_lightweight
-  listen:
-    addresses:
-      - 127.0.0.1
-      - ::1
-    port: 8765
-    remote_access: false
-  assets:
-    version: example-shell-1.0.0
-    manifest: /usr/share/koa-shell/asset-manifest.json
-    previous_version_retained: true
-  session:
-    cookie_name: koa_shell_session
-    http_only: true
-    same_site: strict
-    lifetime_minutes: 30
-    request_forgery_protection: true
-  browser_storage:
-    local_storage:
-      allowed:
-        - theme
-        - reduced_motion
-    indexed_db:
-      quota_mib: 128
-      authoritative: false
-    cache_storage:
-      quota_mib: 256
-      versioned_namespaces: true
-  service_worker:
-    enabled: true
-    cache_mutations: false
-    cache_external_integrations: false
-  resources:
-    memory_limit_mib: 384
-    worker_concurrency: 2
-    heavy_job_concurrency: 1
-  routes:
-    - component_id: konnaxion
-      route: /apps/konnaxion
-      offline: declared_by_component
-    - component_id: orgo
-      route: /apps/orgo
-      offline: declared_by_component
-    - component_id: uckk
-      route: /apps/uckk
-      offline: declared_by_component
-  external_integrations:
-    automatic_invocation: false
-    require_data_preview: true
-  telemetry:
-    external_export_enabled: false
-```
+ profile: user_lightweight
+ listen:
+ addresses:
+ - 127.0.0.1
+ - ::1
+ port: 8765
+ remote_access: false
+ assets:
+ version: example-shell-1.0.0
+ manifest: /usr/share/koa-shell/asset-manifest.json
+ previous_version_retained: true
+ session:
+ cookie_name: koa_shell_session
+ http_only: true
+ same_site: strict
+ lifetime_minutes: 30
+ request_forgery_protection: true
+ browser_storage:
+ local_storage:
+ allowed:
+ - theme
+ - reduced_motion
+ indexed_db:
+ quota_mib: 128
+ authoritative: false
+ cache_storage:
+ quota_mib: 256
+ versioned_namespaces: true
+ service_worker:
+ enabled: true
+ cache_mutations: false
+ cache_external_integrations: false
+ resources:
+ memory_limit_mib: 384
+ worker_concurrency: 2
+ heavy_job_concurrency: 1
+ routes:
+ - component_id: konnaxion
+ route: /apps/konnaxion
+ offline: declared_by_component
+ - component_id: orgo
+ route: /apps/orgo
+ offline: declared_by_component
+ - component_id: uckk
+ route: /apps/uckk
+ offline: declared_by_component
+ external_integrations:
+ automatic_invocation: false
+ require_data_preview: true
+ telemetry:
+ external_export_enabled: false
+`
 
 A desktop launcher can open `http://127.0.0.1:8765/` in application mode. The exact port, browser, service manager, framework, and packaging mechanism remain profile and implementation choices.

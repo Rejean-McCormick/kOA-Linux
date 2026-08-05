@@ -179,8 +179,8 @@ Infrastructure services remain inside their declared authority:
 | --- | --- | --- |
 | Resource Governor | Resource measurement, quotas, priorities, scheduling, and deterministic degradation | Disclosure policy, identity policy, business authorization, and component data ownership |
 | Governance Policy Runtime | Authorization, disclosure, privilege, and policy evaluation | Resource scheduling, component implementation, and direct host mutation |
-| Publication Gateway | Controlled cross-domain disclosure and publication | UCKK media ingestion and ownership of source-domain data |
-| UCKK Dimension Gateway | User-authorized ingestion into a UCKK dimension | External publication and ownership of upstream source data |
+| Publication Gateway | Controlled outbound cross-domain disclosure and publication authorization | Inbound UCKK import, target-specific transport, and ownership of source-domain data |
+| UCKK Import Bridge | User-selected retrieval, quarantine, and validation of UCKK learning packages | Outbound publication authorization and ownership of either remote or accepted local state |
 | Audit Broker | Receipt intake, integrity-preserving evidence handling, and authorized audit views | Mutation of source component state |
 | Identity and Trust | Identity, credential, trust, and signature verification | Ownership of application business state |
 | Kristal Runtime | Epistemic artifact identity and runtime consumption | Universal workflow, universal operational storage, and component business authority |
@@ -209,7 +209,7 @@ Circular runtime dependencies are rejected unless an accepted decision and activ
 - **REQ-CONST-COMP-005 — SHALL NOT:** A consuming component broadens, delegates, or reinterprets authority received through an interface beyond the authority granted by the owning component and applicable policy.
 - **REQ-CONST-COMP-006 — SHALL:** A component validates the identity, contract version, scope, and authorization of every authority-bearing cross-component request before changing authoritative state.
 - **REQ-CONST-COMP-007 — SHALL:** The Resource Governor and the Governance Policy Runtime remain separate authorities: the former controls deterministic resource allocation and scheduling, while the latter evaluates authorization, disclosure, and privilege policy.
-- **REQ-CONST-COMP-008 — SHALL:** The Publication Gateway and the UCKK Dimension Gateway remain separate contracts: the former controls cross-domain publication, while the latter ingests user-selected media into the user's UCKK dimension.
+- **REQ-CONST-COMP-008 — SHALL:** Publication Gateway, UCKK Publication Bridge, and UCKK Import Bridge remain separate contracts: the gateway authorizes outbound disclosure, the publication bridge performs UCKK-specific outbound transport, and the import bridge retrieves and quarantines inbound packages before kOA Mediatheque acceptance.
 - **REQ-CONST-COMP-009 — SHALL NOT:** Kristal becomes a universal operational database, workflow engine, or substitute for component-owned authoritative state.
 - **REQ-CONST-COMP-010 — SHALL:** SenTient remains an optional isolated workbench that consumes authorized exports and does not become native system authority or a direct writer to component-owned authoritative state.
 - **REQ-CONST-COMP-011 — SHALL NOT:** Failure, unavailability, or removal of an optional component transfers its authority to another component by implication.
@@ -276,7 +276,7 @@ A component that creates a cache, index, projection, or analytical copy:
 | Governance policy service is unavailable for a policy-gated action | Fail closed for the gated action | Operations not requiring that policy decision | Policy-gated mutation, disclosure, or privilege | Policy-resolution failure |
 | Optional SenTient workbench is unavailable | Keep the analysis capability unavailable without replacing it implicitly | Source components and ordinary system operation | SenTient analysis | Workbench health state |
 | Publication Gateway is unavailable | Keep external publication unavailable | Source-domain data and internal operations | Cross-domain publication | Gateway health and failed publication record |
-| UCKK Dimension Gateway is unavailable | Keep UCKK ingestion unavailable | Source media and existing UCKK state | New ingestion through the gateway | Gateway health and failed-ingestion record |
+| UCKK Import Bridge is unavailable | Keep new UCKK import unavailable | Existing local records and previously accepted learning packages | New online retrieval and package intake | Bridge health, quarantine state, and failed-import receipt |
 
 ## 8. Cross-Component Interactions
 
@@ -318,7 +318,7 @@ Direct database writes, private queue injection, private file mutation, and undo
 | `DEC-CONST-COMP-001` | Establishes component separation as a global constitutional property. |
 | `DEC-SYS-DATA-001` | Establishes logical data ownership independently of profile-dependent physical isolation. |
 | `DEC-SYS-GOV-001` | Separates Resource Governor authority from Governance Policy Runtime authority. |
-| `DEC-SYS-GATE-001` | Separates Publication Gateway from UCKK Dimension Gateway. |
+| `DEC-SYS-GATE-001` | Separates outbound disclosure authorization, UCKK publication transport, and inbound UCKK import acceptance. |
 | `DEC-SYS-SENT-001` | Classifies SenTient as an optional isolated workbench without native authority. |
 | `DEC-SYS-KRISTAL-001` | Preserves Kristal as a transversal epistemic foundation without universal operational ownership. |
 
@@ -350,7 +350,7 @@ This document is conformant when all of the following checks pass:
 7. Every authoritative data declaration resolves to one owning component or registry.
 8. No active component contract authorizes direct writes to another component's private authoritative storage.
 9. Resource Governor and Governance Policy Runtime responsibilities do not overlap.
-10. Publication Gateway and UCKK Dimension Gateway responsibilities do not overlap.
+10. Publication Gateway, UCKK Publication Bridge, and UCKK Import Bridge responsibilities do not overlap.
 11. SenTient is optional, isolated, and absent from native authority paths.
 12. Kristal is not designated as a universal operational database or workflow engine.
 13. Every cross-component mutation path references an active observable contract.
@@ -362,9 +362,9 @@ This document is conformant when all of the following checks pass:
 
 The validation entry point is:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 ## 11. Non-Normative Examples
 
@@ -378,7 +378,7 @@ The Governance Policy Runtime can return an authorization decision to a narrow p
 
 > **Non-normative example:** This example illustrates one valid implementation or scenario. It does not redefine the canonical contract.
 
-The UCKK Dimension Gateway can accept user-selected media and create an ingestion request for UCKK. Publishing that media outside the user's domain requires a separate Publication Gateway interaction.
+The UCKK Import Bridge can retrieve a selected UCKK learning package and create a quarantined local import candidate. Publishing any local or adapted material to UCKK requires a separate Publication Gateway decision and UCKK Publication Bridge operation.
 
 > **Non-normative example:** This example illustrates one valid implementation or scenario. It does not redefine the canonical contract.
 

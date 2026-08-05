@@ -132,12 +132,12 @@ These are different objects and transitions.
 
 The primary rule is:
 
-```text
+`text
 accepted owner decision
-    + complete impact disposition
-    + passing authority-graph validation
-    = eligible for activation
-```
+ + complete impact disposition
+ + passing authority-graph validation
+ = eligible for activation
+`
 
 Acceptance alone does not activate authority.
 
@@ -151,9 +151,9 @@ When an active behavior depends on a decision that cannot be verified, the affec
 
 The canonical decision records belong to:
 
-```text
+`text
 generated/decision-index.json
-```
+`
 
 This document owns the conformance interpretation and validation procedure for decision closure. It does not become a second owner of decision outcomes.
 
@@ -210,7 +210,7 @@ It validates decision relationships used by:
 
 It applies during:
 
-```text
+`text
 decision proposal
 decision review
 decision acceptance
@@ -223,7 +223,7 @@ supersession
 migration
 retirement
 historical interpretation
-```
+`
 
 It does not require a new decision for a demonstrably non-semantic editorial correction.
 
@@ -321,14 +321,14 @@ Activation records that the accepted outcome and every affected authoritative ob
 
 The sequence is:
 
-```text
+`text
 proposed
 reviewed
 accepted
 implemented in canonical objects
 validated as a complete graph
 activated through authority registry
-```
+`
 
 The repository does not publish partially applied authority.
 
@@ -480,30 +480,30 @@ Transitive impact follows the canonical relationship graph.
 
 Examples include:
 
-```text
+`text
 decision
-  → component ownership
-  → component contract
-  → profile membership
-  → deployment topology
-  → integration contract
-  → health checks
-  → tests
-  → evidence
-  → conformance claim
-```
+ → component ownership
+ → component contract
+ → profile membership
+ → deployment topology
+ → integration contract
+ → health checks
+ → tests
+ → evidence
+ → conformance claim
+`
 
 and:
 
-```text
+`text
 decision
-  → artifact class
-  → artifact schema
-  → release channel
-  → Release Set
-  → activation procedure
-  → rollback evidence
-```
+ → artifact class
+ → artifact schema
+ → release channel
+ → Release Set
+ → activation procedure
+ → rollback evidence
+`
 
 Validation continues until no required dependent remains without a disposition.
 
@@ -666,11 +666,11 @@ The ADR owns:
 - operational implications;
 - follow-up triggers.
 
-A major decision requires an accepted ADR.
+A decision requires an ADR only when it protects a non-obvious, workaround-based, or regression-prone implementation choice.
 
 Decision and ADR records reference each other and have compatible scope and lifecycle.
 
-An accepted ADR linked only to a proposed or missing decision does not activate authority.
+An ADR never activates authority; it only preserves the rationale for an already accepted non-obvious choice.
 
 A decision can remain accepted after its ADR is superseded only when the decision registry explicitly records the surviving rationale relationship and validation permits it.
 
@@ -851,8 +851,8 @@ Blocked authority does not imply that the entire system must stop when the affec
 - **REQ-CONF-DEC-011 — SHALL:** Every active requirement, lock, normative document, profile, profile overlay, component contract, artifact contract, toolchain contract, release claim, exception mechanism, and conformance claim shall declare the accepted decisions on which its authority depends.
 - **REQ-CONF-DEC-012 — SHALL:** Every active requirement shall reference an accepted source decision, and the requirement statement shall not introduce an architectural outcome absent from that decision.
 - **REQ-CONF-DEC-013 — SHALL:** Every active alignment lock shall reference the accepted decision that authorizes its invariant and shall follow that decision's mutation and supersession path.
-- **REQ-CONF-DEC-014 — SHALL:** Every major decision shall have an accepted ADR that records context, alternatives, rationale, consequences, compatibility, migration, and recovery implications while leaving the owner decision as the canonical outcome.
-- **REQ-CONF-DEC-015 — SHALL:** Decision-to-ADR relationships shall be bidirectional, scope-compatible, lifecycle-compatible, and complete for every decision class that requires an ADR.
+- **REQ-CONF-DEC-014 — SHALL:** An accepted ADR shall exist only when a choice is non-obvious, workaround-based, or likely to be reverted accidentally; it shall remain short and leave the owner decision and current system contracts as the canonical outcome.
+- **REQ-CONF-DEC-015 — SHALL:** When an ADR exists, its decision references shall be scope-compatible and shall resolve to accepted current authority.
 - **REQ-CONF-DEC-016 — SHALL:** Every accepted decision shall classify its semantic change and shall apply the versioning, migration, release, compatibility, and evidence obligations required by that class.
 - **REQ-CONF-DEC-017 — SHALL:** Decision validation shall calculate direct and transitive impact across canonical registries, schemas, requirements, locks, profiles, components, artifacts, toolchains, documents, ADRs, tests, evidence, exceptions, releases, migration records, and generated contexts.
 - **REQ-CONF-DEC-018 — SHALL:** Every affected object in a decision impact set shall have an explicit disposition of changed, validated unchanged, superseded, retired, migrated, regenerated, or not applicable with rationale.
@@ -1090,7 +1090,7 @@ Cutover validation:
 | Active requirement lacks an accepted source decision | The requirement is invalid for active conformance. |
 | Requirement adds an outcome absent from its decision | Decision closure fails and the obligation returns to owner review. |
 | Lock lacks an accepted source decision | The lock is invalid and affected activation remains blocked. |
-| Major decision lacks an accepted ADR | Closure remains incomplete. |
+| A regression-prone non-obvious choice lacks the required ADR rationale | Review remains incomplete. |
 | ADR and decision scope differ incompatibly | The relationship is rejected and the major decision remains incomplete. |
 | Impact analysis omits a direct dependent | Closure fails and the missing disposition is reported. |
 | Transitive impact traversal is incomplete | Activation remains blocked even when edited files pass. |
@@ -1217,14 +1217,7 @@ The migration system cannot carry undecided source behavior into the active dest
 | ADR | Relevance |
 | --- | --- |
 | `ADR-000` | Establishes canonical registries, authority order, generated projections, and alignment controls. |
-| `ADR-006` | Requires explicit first-class component decisions and boundaries. |
-| `ADR-008` | Preserves independent release-channel authority. |
-| `ADR-013` | Separates global behavior from profile-specific decisions. |
-| `ADR-016` | Keeps generated documentation and AI contexts non-authoritative. |
-| `ADR-023` | Makes overlay effects explicit. |
 | `ADR-024` | Preserves logical ownership across physical deployment forms. |
-| `ADR-025` | Governs canonical cutover and deprecated-authority retirement. |
-| `ADR-026` | Blocks active authority that depends on a missing implementation decision. |
 
 ### 9.3 Prohibited assumptions
 
@@ -1246,7 +1239,7 @@ The following assumptions are prohibited:
 - a missing security rule means permission;
 - a missing profile value can be copied from a similar profile;
 - a proposed decision supports temporary active implementation;
-- an accepted ADR replaces an owner decision;
+- an ADR replaces or duplicates the current system description;
 - a merged code change changes authority automatically;
 - a passing edited-file test proves complete closure;
 - an exception can define an absent baseline;
@@ -1286,9 +1279,9 @@ This document conforms when all of the following checks pass:
 17. no active object depends on an inactive or missing decision;
 18. requirement source-decision relationships are complete and scope-compatible;
 19. locks reference accepted decisions and compatible scope;
-20. every major decision has an accepted ADR;
-21. decision-to-ADR relationships are bidirectional;
-22. decision and ADR scopes and lifecycle states are compatible;
+20. every ADR is justified by a non-obvious regression-prone choice;
+21. every ADR points to accepted current authority;
+22. ADR scope is compatible with the protected choice;
 23. semantic change classes are valid;
 24. direct impact covers every explicitly affected object;
 25. transitive impact traversal reaches every dependent authority object;
@@ -1317,7 +1310,7 @@ This document conforms when all of the following checks pass:
 
 The validator reports focused failures, including:
 
-```text
+`text
 decision_identifier_missing
 decision_identifier_collision
 decision_version_invalid
@@ -1357,7 +1350,7 @@ decision_activation_before_acceptance
 decision_activation_before_validation
 decision_evidence_missing
 decision_orphaned
-```
+`
 
 ## 11. Non-Normative Examples
 
@@ -1401,11 +1394,11 @@ A proposed requirement also mandates a specific container runtime, although the 
 
 Decision closure rejects the requirement because it introduces a new architectural outcome.
 
-### 11.6 Major decision without ADR
+### 11.6 Non-obvious choice without a protective ADR
 
 A decision changes trust-root custody and recovery authority.
 
-The decision record is accepted, but no accepted ADR records alternatives, consequences, and migration.
+The current decision is accepted, but the implementation uses a surprising workaround or separation that a future maintainer could reasonably remove and thereby recreate the original problem. Add a short ADR focused only on that risk.
 
 Closure remains incomplete because the decision class requires an ADR.
 

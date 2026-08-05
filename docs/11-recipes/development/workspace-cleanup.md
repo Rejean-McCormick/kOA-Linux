@@ -32,7 +32,7 @@ KOA:DOC-META:END -->
 
 # Workspace Cleanup
 
-> **Recipe status:** Active, non-authoritative implementation guidance.  
+> **Recipe status:** Active, non-authoritative implementation guidance.
 > **Canonical boundary:** This recipe does not define workspace identity, ownership, retention, profile behavior, component data boundaries, or lifecycle requirements. Resolve those facts from the active workspace, profile, component, toolchain, and data-owner contracts before applying any command.
 
 ## 1. Purpose
@@ -95,40 +95,40 @@ For `retire`, also confirm that no uncommitted or untracked work is being discar
 
 Set the values from the local workspace registry and profile-owned allocation records. These are operator inputs, not architecture defaults.
 
-```bash
+`bash
 export WORKSPACE_ID='koa-workspace-id-from-local-registry'
 export WORKSPACE_ROOT='/absolute/path/to/the/workspace'
-export CLEANUP_LEVEL='suspend'  # suspend | reset_transient | retire
+export CLEANUP_LEVEL='suspend' # suspend | reset_transient | retire
 export CLEANUP_RECORD_DIR="$HOME/.local/state/koa/workspace-cleanup/$WORKSPACE_ID"
-export APPLY_CHANGES='0'        # 0 = inspect only, 1 = execute approved local removals
-```
+export APPLY_CHANGES='0' # 0 = inspect only, 1 = execute approved local removals
+`
 
 Create a protected local record directory:
 
-```bash
+`bash
 umask 077
 mkdir -p -- "$CLEANUP_RECORD_DIR"
 printf '%s\n' "$WORKSPACE_ID" > "$CLEANUP_RECORD_DIR/workspace_id.txt"
 printf '%s\n' "$WORKSPACE_ROOT" > "$CLEANUP_RECORD_DIR/workspace_root.txt"
 printf '%s\n' "$CLEANUP_LEVEL" > "$CLEANUP_RECORD_DIR/cleanup_level.txt"
 date -u +'%Y-%m-%dT%H:%M:%SZ' > "$CLEANUP_RECORD_DIR/started_at.txt"
-```
+`
 
 Validate the path before proceeding:
 
-```bash
+`bash
 python - "$WORKSPACE_ROOT" <<'PY'
 from pathlib import Path
 import sys
 
-root = Path(sys.argv[1]).expanduser().resolve(strict=True)
-if root == Path('/') or root == Path.home().resolve():
-    raise SystemExit(f'refusing unsafe workspace root: {root}')
-if not (root / '.git').exists() and not (root / '.git').is_file():
-    raise SystemExit(f'workspace root does not appear to be a Git checkout or worktree: {root}')
+root = Path(sys.argv[1]).expanduser.resolve(strict=True)
+if root == Path('/') or root == Path.home.resolve:
+ raise SystemExit(f'refusing unsafe workspace root: {root}')
+if not (root / '.git').exists and not (root / '.git').is_file:
+ raise SystemExit(f'workspace root does not appear to be a Git checkout or worktree: {root}')
 print(root)
 PY
-```
+`
 
 Stop if the resolved path does not match the local workspace registry.
 
@@ -138,27 +138,27 @@ Record resource identities, not secret values.
 
 ### 6.1 Source and checkout state
 
-```bash
+`bash
 cd -- "$WORKSPACE_ROOT"
 git rev-parse --show-toplevel > "$CLEANUP_RECORD_DIR/git_toplevel.txt"
 git rev-parse --git-common-dir > "$CLEANUP_RECORD_DIR/git_common_dir.txt"
 git rev-parse --verify HEAD > "$CLEANUP_RECORD_DIR/git_head.txt"
 git status --porcelain=v1 --untracked-files=all > "$CLEANUP_RECORD_DIR/git_status.txt"
 git worktree list --porcelain > "$CLEANUP_RECORD_DIR/git_worktrees.txt"
-```
+`
 
 Review `git_status.txt` before any retirement action.
 
 ### 6.2 Python and UV state
 
-```bash
+`bash
 {
-  command -v uv || true
-  uv --version 2>/dev/null || true
-  python --version 2>/dev/null || true
-  test -d .venv && printf '%s\n' "$WORKSPACE_ROOT/.venv"
+ command -v uv || true
+ uv --version 2>/dev/null || true
+ python --version 2>/dev/null || true
+ test -d .venv && printf '%s\n' "$WORKSPACE_ROOT/.venv"
 } > "$CLEANUP_RECORD_DIR/python_environment.txt"
-```
+`
 
 Do not run a host-wide `uv cache clean` as part of workspace cleanup. The shared UV download cache is not the workspace’s installed mutable environment.
 
@@ -166,11 +166,11 @@ Do not run a host-wide `uv cache clean` as part of workspace cleanup. The shared
 
 List candidate services without stopping them:
 
-```bash
+`bash
 systemctl --user list-units --all --no-legend --plain 2>/dev/null \
-  | grep -F -- "$WORKSPACE_ID" \
-  > "$CLEANUP_RECORD_DIR/systemd_user_units.txt" || true
-```
+ | grep -F -- "$WORKSPACE_ID" \
+ > "$CLEANUP_RECORD_DIR/systemd_user_units.txt" || true
+`
 
 Only units whose identity is bound to this workspace belong in the action plan.
 
@@ -178,23 +178,23 @@ Only units whose identity is bound to this workspace belong in the action plan.
 
 When Podman is used, prefer workspace labels over name matching:
 
-```bash
+`bash
 podman ps -a --filter "label=koa.workspace_id=$WORKSPACE_ID" \
-  --format '{{.ID}}\t{{.Names}}\t{{.Status}}' \
-  > "$CLEANUP_RECORD_DIR/podman_containers.txt" 2>/dev/null || true
+ --format '{{.ID}}\t{{.Names}}\t{{.Status}}' \
+ > "$CLEANUP_RECORD_DIR/podman_containers.txt" 2>/dev/null || true
 
 podman pod ps --filter "label=koa.workspace_id=$WORKSPACE_ID" \
-  --format '{{.ID}}\t{{.Name}}\t{{.Status}}' \
-  > "$CLEANUP_RECORD_DIR/podman_pods.txt" 2>/dev/null || true
+ --format '{{.ID}}\t{{.Name}}\t{{.Status}}' \
+ > "$CLEANUP_RECORD_DIR/podman_pods.txt" 2>/dev/null || true
 
 podman network ls --filter "label=koa.workspace_id=$WORKSPACE_ID" \
-  --format '{{.ID}}\t{{.Name}}' \
-  > "$CLEANUP_RECORD_DIR/podman_networks.txt" 2>/dev/null || true
+ --format '{{.ID}}\t{{.Name}}' \
+ > "$CLEANUP_RECORD_DIR/podman_networks.txt" 2>/dev/null || true
 
 podman volume ls --filter "label=koa.workspace_id=$WORKSPACE_ID" \
-  --format '{{.Name}}' \
-  > "$CLEANUP_RECORD_DIR/podman_volumes.txt" 2>/dev/null || true
-```
+ --format '{{.Name}}' \
+ > "$CLEANUP_RECORD_DIR/podman_volumes.txt" 2>/dev/null || true
+`
 
 If the local runtime does not label resources, use the profile-owned workspace manifest. Name matching alone is insufficient for destructive removal.
 
@@ -202,13 +202,13 @@ If the local runtime does not label resources, use the profile-owned workspace m
 
 Use bounded inspection. Do not export full process environments.
 
-```bash
+`bash
 pgrep -af -- "$WORKSPACE_ROOT" \
-  > "$CLEANUP_RECORD_DIR/process_candidates.txt" 2>/dev/null || true
+ > "$CLEANUP_RECORD_DIR/process_candidates.txt" 2>/dev/null || true
 
 lsof +D "$WORKSPACE_ROOT" \
-  > "$CLEANUP_RECORD_DIR/open_files.txt" 2>/dev/null || true
-```
+ > "$CLEANUP_RECORD_DIR/open_files.txt" 2>/dev/null || true
+`
 
 `lsof +D` can be expensive on a large tree. Skip it when the workspace manifest already provides complete process ownership.
 
@@ -216,9 +216,9 @@ lsof +D "$WORKSPACE_ROOT" \
 
 Record ports from the workspace allocation registry. Use socket inspection only to confirm ownership:
 
-```bash
+`bash
 ss -lntup 2>/dev/null > "$CLEANUP_RECORD_DIR/listening_sockets.txt" || true
-```
+`
 
 Do not terminate a process solely because it uses a port formerly associated with the workspace. Confirm process, service, and workspace identity together.
 
@@ -226,7 +226,7 @@ Do not terminate a process solely because it uses a port formerly associated wit
 
 Create an inventory from component-owned service manifests and local workspace allocation records:
 
-```text
+`text
 database or schema identity
 queue or topic identity
 bucket or object-store namespace
@@ -235,7 +235,7 @@ workspace-owned volume identity
 secret namespace and credential reference identifiers
 retention or export requirement
 owning component operation for reset, export, archive, or removal
-```
+`
 
 Record identifiers and operation names in `owned_resources.txt`. Do not record secret material.
 
@@ -245,30 +245,30 @@ Before `reset_transient` or `retire`, preserve local work as applicable.
 
 ### 7.1 Patch tracked changes
 
-```bash
+`bash
 cd -- "$WORKSPACE_ROOT"
 git diff --binary > "$CLEANUP_RECORD_DIR/tracked_changes.patch"
 git diff --binary --staged > "$CLEANUP_RECORD_DIR/staged_changes.patch"
-```
+`
 
 ### 7.2 Archive untracked files
 
 Review the untracked list first:
 
-```bash
+`bash
 git ls-files --others --exclude-standard \
-  > "$CLEANUP_RECORD_DIR/untracked_files.txt"
-```
+ > "$CLEANUP_RECORD_DIR/untracked_files.txt"
+`
 
 To archive the listed files after review:
 
-```bash
+`bash
 if test -s "$CLEANUP_RECORD_DIR/untracked_files.txt"; then
-  tar -C "$WORKSPACE_ROOT" \
-    -czf "$CLEANUP_RECORD_DIR/untracked_files.tar.gz" \
-    -T "$CLEANUP_RECORD_DIR/untracked_files.txt"
+ tar -C "$WORKSPACE_ROOT" \
+ -czf "$CLEANUP_RECORD_DIR/untracked_files.tar.gz" \
+ -T "$CLEANUP_RECORD_DIR/untracked_files.txt"
 fi
-```
+`
 
 Do not archive known secret paths. Remove those entries from the reviewed list and preserve them only through the approved secret backend or recovery process.
 
@@ -294,30 +294,30 @@ Queueing does not require eventual execution. Retirement cancels or transfers qu
 
 Review the unit list and stop only confirmed workspace-owned units:
 
-```bash
+`bash
 while IFS= read -r line; do
-  unit=${line%% *}
-  test -n "$unit" || continue
-  printf 'would stop and disable: %s\n' "$unit"
+ unit=${line%% *}
+ test -n "$unit" || continue
+ printf 'would stop and disable: %s\n' "$unit"
 done < "$CLEANUP_RECORD_DIR/systemd_user_units.txt"
-```
+`
 
 After review, replace the inspection loop with explicit unit names:
 
-```bash
+`bash
 WORKSPACE_UNITS=(
-  # Add only confirmed workspace-owned unit names from the inventory.
+ # Add only confirmed workspace-owned unit names from the inventory.
 )
 
 if test "$APPLY_CHANGES" = '1'; then
-  for unit in "${WORKSPACE_UNITS[@]}"; do
-    systemctl --user stop -- "$unit"
-    if test "$CLEANUP_LEVEL" = 'retire'; then
-      systemctl --user disable -- "$unit" 2>/dev/null || true
-    fi
-  done
+ for unit in "${WORKSPACE_UNITS[@]}"; do
+ systemctl --user stop -- "$unit"
+ if test "$CLEANUP_LEVEL" = 'retire'; then
+ systemctl --user disable -- "$unit" 2>/dev/null || true
+ fi
+ done
 fi
-```
+`
 
 An empty array is safe and performs no action.
 
@@ -325,23 +325,23 @@ An empty array is safe and performs no action.
 
 Preview:
 
-```bash
+`bash
 podman ps -a --filter "label=koa.workspace_id=$WORKSPACE_ID" \
-  --format 'would stop container {{.ID}} {{.Names}}' 2>/dev/null || true
+ --format 'would stop container {{.ID}} {{.Names}}' 2>/dev/null || true
 podman pod ps --filter "label=koa.workspace_id=$WORKSPACE_ID" \
-  --format 'would stop pod {{.ID}} {{.Name}}' 2>/dev/null || true
-```
+ --format 'would stop pod {{.ID}} {{.Name}}' 2>/dev/null || true
+`
 
 Apply only after label ownership is confirmed:
 
-```bash
+`bash
 if test "$APPLY_CHANGES" = '1'; then
-  podman ps -aq --filter "label=koa.workspace_id=$WORKSPACE_ID" \
-    | xargs -r podman stop --time 30
-  podman pod ps -q --filter "label=koa.workspace_id=$WORKSPACE_ID" \
-    | xargs -r podman pod stop --time 30
+ podman ps -aq --filter "label=koa.workspace_id=$WORKSPACE_ID" \
+ | xargs -r podman stop --time 30
+ podman pod ps -q --filter "label=koa.workspace_id=$WORKSPACE_ID" \
+ | xargs -r podman pod stop --time 30
 fi
-```
+`
 
 Do not use broad name patterns such as `podman rm -a` or remove all unused volumes.
 
@@ -371,58 +371,58 @@ For `reset_transient`, remove only workspace-owned transient state after service
 
 A guarded local-path removal helper:
 
-```bash
-remove_workspace_path() {
-  target=$1
-  python - "$WORKSPACE_ROOT" "$target" <<'PY'
+`bash
+remove_workspace_path {
+ target=$1
+ python - "$WORKSPACE_ROOT" "$target" <<'PY'
 from pathlib import Path
 import sys
 
-root = Path(sys.argv[1]).expanduser().resolve(strict=True)
-target = Path(sys.argv[2]).expanduser().resolve(strict=False)
+root = Path(sys.argv[1]).expanduser.resolve(strict=True)
+target = Path(sys.argv[2]).expanduser.resolve(strict=False)
 try:
-    target.relative_to(root)
+ target.relative_to(root)
 except ValueError:
-    raise SystemExit(f'refusing path outside workspace: {target}')
+ raise SystemExit(f'refusing path outside workspace: {target}')
 if target == root:
-    raise SystemExit('refusing to remove workspace root')
+ raise SystemExit('refusing to remove workspace root')
 print(target)
 PY
-  if test "$APPLY_CHANGES" = '1'; then
-    rm -rf --one-file-system -- "$target"
-  else
-    printf 'would remove: %s\n' "$target"
-  fi
+ if test "$APPLY_CHANGES" = '1'; then
+ rm -rf --one-file-system -- "$target"
+ else
+ printf 'would remove: %s\n' "$target"
+ fi
 }
-```
+`
 
 Candidate workspace-local transient paths can include only paths confirmed by the workspace and toolchain contracts:
 
-```bash
+`bash
 for path in \
-  "$WORKSPACE_ROOT/.venv" \
-  "$WORKSPACE_ROOT/.pytest_cache" \
-  "$WORKSPACE_ROOT/.mypy_cache" \
-  "$WORKSPACE_ROOT/.ruff_cache" \
-  "$WORKSPACE_ROOT/.coverage" \
-  "$WORKSPACE_ROOT/htmlcov" \
-  "$WORKSPACE_ROOT/build" \
-  "$WORKSPACE_ROOT/dist"
+ "$WORKSPACE_ROOT/.venv" \
+ "$WORKSPACE_ROOT/.pytest_cache" \
+ "$WORKSPACE_ROOT/.mypy_cache" \
+ "$WORKSPACE_ROOT/.ruff_cache" \
+ "$WORKSPACE_ROOT/.coverage" \
+ "$WORKSPACE_ROOT/htmlcov" \
+ "$WORKSPACE_ROOT/build" \
+ "$WORKSPACE_ROOT/dist"
 do
-  test -e "$path" || continue
-  remove_workspace_path "$path"
+ test -e "$path" || continue
+ remove_workspace_path "$path"
 done
-```
+`
 
 Do not assume every generated directory has one of these names. Add a path only after confirming ownership and retention.
 
 Recreate Python state from the declared lockfile rather than copying another workspace’s environment:
 
-```bash
+`bash
 cd -- "$WORKSPACE_ROOT"
 uv venv .venv
 uv sync --frozen
-```
+`
 
 Use the profile and toolchain contract when a different approved UV command is required.
 
@@ -445,18 +445,18 @@ For `retire`, perform every `reset_transient` action plus the following, in owne
 
 Preview labels and identities first. After approval:
 
-```bash
+`bash
 if test "$APPLY_CHANGES" = '1' && test "$CLEANUP_LEVEL" = 'retire'; then
-  podman ps -aq --filter "label=koa.workspace_id=$WORKSPACE_ID" \
-    | xargs -r podman rm -f
-  podman pod ps -q --filter "label=koa.workspace_id=$WORKSPACE_ID" \
-    | xargs -r podman pod rm -f
-  podman network ls -q --filter "label=koa.workspace_id=$WORKSPACE_ID" \
-    | xargs -r podman network rm
-  podman volume ls -q --filter "label=koa.workspace_id=$WORKSPACE_ID" \
-    | xargs -r podman volume rm
+ podman ps -aq --filter "label=koa.workspace_id=$WORKSPACE_ID" \
+ | xargs -r podman rm -f
+ podman pod ps -q --filter "label=koa.workspace_id=$WORKSPACE_ID" \
+ | xargs -r podman pod rm -f
+ podman network ls -q --filter "label=koa.workspace_id=$WORKSPACE_ID" \
+ | xargs -r podman network rm
+ podman volume ls -q --filter "label=koa.workspace_id=$WORKSPACE_ID" \
+ | xargs -r podman volume rm
 fi
-```
+`
 
 A removal failure remains visible. Do not follow it with broad pruning.
 
@@ -464,18 +464,18 @@ A removal failure remains visible. Do not follow it with broad pruning.
 
 Only after the workspace cleanup record is complete:
 
-```bash
+`bash
 GIT_COMMON_DIR=$(git -C "$WORKSPACE_ROOT" rev-parse --path-format=absolute --git-common-dir)
 printf 'Git common directory: %s\n' "$GIT_COMMON_DIR"
 printf 'Workspace to remove: %s\n' "$WORKSPACE_ROOT"
-```
+`
 
 From another checkout of the same repository:
 
-```bash
+`bash
 git worktree remove -- "$WORKSPACE_ROOT"
 git worktree prune --expire now
-```
+`
 
 Use `--force` only after independently confirming that required uncommitted work has been preserved and the remaining cleanup is intentional.
 
@@ -543,14 +543,14 @@ Run verification before marking cleanup complete.
 
 ### 14.1 Process and service verification
 
-```bash
+`bash
 systemctl --user list-units --all --no-legend --plain 2>/dev/null \
-  | grep -F -- "$WORKSPACE_ID" || true
+ | grep -F -- "$WORKSPACE_ID" || true
 
 podman ps -a --filter "label=koa.workspace_id=$WORKSPACE_ID" 2>/dev/null || true
 podman pod ps --filter "label=koa.workspace_id=$WORKSPACE_ID" 2>/dev/null || true
 pgrep -af -- "$WORKSPACE_ROOT" 2>/dev/null || true
-```
+`
 
 For `retire`, no workspace-owned service or process should remain active.
 
@@ -558,9 +558,9 @@ For `retire`, no workspace-owned service or process should remain active.
 
 Compare the workspace port allocation record with current listening sockets:
 
-```bash
+`bash
 ss -lntup 2>/dev/null > "$CLEANUP_RECORD_DIR/listening_sockets_after.txt" || true
-```
+`
 
 A released allocation and a closed socket are separate checks.
 
@@ -594,16 +594,16 @@ Confirm at least:
 
 Record the terminal result:
 
-```bash
+`bash
 date -u +'%Y-%m-%dT%H:%M:%SZ' > "$CLEANUP_RECORD_DIR/completed_at.txt"
 printf '%s\n' 'complete' > "$CLEANUP_RECORD_DIR/cleanup_status.txt"
-```
+`
 
 Use `cleanup_incomplete` instead when any owned resource, credential, route, process, queue, or namespace cannot be reconciled:
 
-```bash
+`bash
 printf '%s\n' 'cleanup_incomplete' > "$CLEANUP_RECORD_DIR/cleanup_status.txt"
-```
+`
 
 An incomplete workspace identity remains reserved. Record the remaining owner, resource identity, reason, safe state, and next bounded action.
 
@@ -659,7 +659,7 @@ A WSL distribution shutdown is a suspension mechanism, not proof of per-workspac
 
 The following sequence is intentionally conservative:
 
-```text
+`text
 resolve workspace identity
 choose cleanup level
 create protected cleanup record
@@ -675,7 +675,7 @@ release ports and namespaces
 verify no cross-workspace impact
 record complete or cleanup_incomplete
 remove the Git worktree last when retiring
-```
+`
 
 ## 20. Completion Checklist
 

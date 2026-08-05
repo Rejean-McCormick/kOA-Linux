@@ -212,7 +212,7 @@ Common node classes include:
 
 Common edge meanings include:
 
-```text
+`text
 decision authorizes requirement
 requirement is explained by document
 requirement is constrained by lock
@@ -226,7 +226,7 @@ artifact contract satisfies requirement
 exception affects requirement
 decision supersedes decision
 object contributes to generated projection
-```
+`
 
 Exact edge identifiers and fields remain registry-owned.
 
@@ -234,19 +234,19 @@ Exact edge identifiers and fields remain registry-owned.
 
 A complete basic chain is:
 
-```text
+`text
 accepted decision
-    ↓
+ ↓
 active requirement
-    ↓
+ ↓
 applicable lock
-    ↓
+ ↓
 validation test or manual control
-    ↓
+ ↓
 evidence
-    ↓
+ ↓
 conformance, profile, or release claim
-```
+`
 
 Documents, profiles, components, artifact contracts, and exceptions add scope and implementation relationships around this chain.
 
@@ -258,11 +258,11 @@ Relationship direction preserves meaning.
 
 For example:
 
-```text
+`text
 DEC-DOC-004 authorizes REQ-CONF-TRACE-023
 REQ-CONF-TRACE-023 validated_by TEST-CONF-TRACE-023
 TEST-CONF-TRACE-023 produces EVID-CONF-TRACE-023
-```
+`
 
 Reverse indexes support questions such as:
 
@@ -356,21 +356,21 @@ An exception is a first-class traceability object.
 
 It links:
 
-```text
+`text
 accepted exception decision
-    ↓
+ ↓
 exception record
-    ↓
+ ↓
 affected requirement and lock
-    ↓
+ ↓
 bounded scope and validity
-    ↓
+ ↓
 compensating control
-    ↓
+ ↓
 test and evidence
-    ↓
+ ↓
 review, expiry, revocation, or closure
-```
+`
 
 An exception records a controlled deviation. It does not edit the original requirement or lock.
 
@@ -669,9 +669,9 @@ This document is conformant when:
 
 The validation entry point is:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 ## 11. Non-Normative Examples
 

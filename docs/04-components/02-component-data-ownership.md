@@ -21,7 +21,11 @@
     "generated/traceability.json",
     "generated/exception-index.json",
     "generated/test-catalog.json",
-    "generated/evidence-catalog.json"
+    "generated/evidence-catalog.json",
+    "contracts/components/koa-mediatheque.component.json",
+    "contracts/integrations/uckk-publication.integration.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json"
   ],
   "decision_ids": [
     "DEC-COMP-001",
@@ -37,7 +41,9 @@
     "DEC-INTEGRATION-001",
     "DEC-AI-001",
     "DEC-PROFILE-001",
-    "DEC-KRISTAL-001"
+    "DEC-KRISTAL-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001"
   ],
   "requirement_ids": [
     "REQ-COMP-DATA-001",
@@ -63,7 +69,11 @@
     "REQ-COMP-DATA-021",
     "REQ-COMP-DATA-022",
     "REQ-COMP-DATA-023",
-    "REQ-COMP-DATA-024"
+    "REQ-COMP-DATA-024",
+    "REQ-COMP-DATA-025",
+    "REQ-COMP-DATA-026",
+    "REQ-COMP-DATA-027",
+    "REQ-COMP-DATA-028"
   ],
   "lock_ids": [
     "LOCK-COMP-001",
@@ -86,7 +96,10 @@
     "LOCK-SEC-002",
     "LOCK-PORT-001",
     "LOCK-IMPL-001",
-    "LOCK-IMPL-002"
+    "LOCK-IMPL-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -191,9 +204,9 @@ This document does not prescribe one database engine, one storage system, one pr
 
 The related system communication model is:
 
-```text
+`text
 02-system/07-cross-component-communication.md
-```
+`
 
 Component-specific data ownership remains canonical in each component contract.
 
@@ -310,7 +323,11 @@ A read model never becomes a shared write surface.
 
 Publication Gateway controls governed disclosure and publication across authority domains.
 
-UCKK Publication Bridge owns target-specific packaging, transport, retry, and destination receipt state for an authorized UCKK publication.
+UCKK Publication Bridge owns target-specific packaging, transport, retry, and destination-receipt state for an authorized outbound UCKK publication.
+
+UCKK Import Bridge owns selected source retrieval or offline-bundle intake, transport, quarantine-transfer state, source validation, and import-receipt production. It does not own acceptance into the local catalog.
+
+The kOA Mediatheque owns local import acceptance, local record and version identities, local rights enforcement, local lifecycle, and offline availability. The online UCKK Mediatheque remains authoritative for the remote source object. The shared frame preserves mappings without merging either authority.
 
 Governance Policy Runtime owns applicable policy decisions.
 
@@ -353,6 +370,8 @@ The synchronization contract records:
 
 Authority-sensitive conflicts are never resolved from arrival order or local clock preference alone.
 
+UCKK interchange is not implemented through this generic synchronization model. `publish_to_uckk` and `import_from_uckk` are separate controlled transfers. A remote version becomes an update candidate; it does not overwrite an accepted local version automatically. Local progress, annotations, and adaptations are not uploaded merely because connectivity returns.
+
 ### 4.10 Privacy, retention, and audit
 
 The source owner defines classification, retention, deletion, export, disclosure, and consent behavior for its domain.
@@ -363,7 +382,7 @@ Audit and evidence paths record accountability with minimized payloads. Recordin
 
 ## 5. Applicable Normative Requirements
 
-<!-- GENERATED:REQUIREMENTS:BEGIN ids=REQ-COMP-DATA-001,REQ-COMP-DATA-002,REQ-COMP-DATA-003,REQ-COMP-DATA-004,REQ-COMP-DATA-005,REQ-COMP-DATA-006,REQ-COMP-DATA-007,REQ-COMP-DATA-008,REQ-COMP-DATA-009,REQ-COMP-DATA-010,REQ-COMP-DATA-011,REQ-COMP-DATA-012,REQ-COMP-DATA-013,REQ-COMP-DATA-014,REQ-COMP-DATA-015,REQ-COMP-DATA-016,REQ-COMP-DATA-017,REQ-COMP-DATA-018,REQ-COMP-DATA-019,REQ-COMP-DATA-020,REQ-COMP-DATA-021,REQ-COMP-DATA-022,REQ-COMP-DATA-023,REQ-COMP-DATA-024 -->
+<!-- GENERATED:REQUIREMENTS:BEGIN ids=REQ-COMP-DATA-001,REQ-COMP-DATA-002,REQ-COMP-DATA-003,REQ-COMP-DATA-004,REQ-COMP-DATA-005,REQ-COMP-DATA-006,REQ-COMP-DATA-007,REQ-COMP-DATA-008,REQ-COMP-DATA-009,REQ-COMP-DATA-010,REQ-COMP-DATA-011,REQ-COMP-DATA-012,REQ-COMP-DATA-013,REQ-COMP-DATA-014,REQ-COMP-DATA-015,REQ-COMP-DATA-016,REQ-COMP-DATA-017,REQ-COMP-DATA-018,REQ-COMP-DATA-019,REQ-COMP-DATA-020,REQ-COMP-DATA-021,REQ-COMP-DATA-022,REQ-COMP-DATA-023,REQ-COMP-DATA-024,REQ-COMP-DATA-025,REQ-COMP-DATA-026,REQ-COMP-DATA-027,REQ-COMP-DATA-028 -->
 - **REQ-COMP-DATA-001 — SHALL:** Every authoritative data domain have exactly one active owning component identified in the components registry and the owning component contract.
 - **REQ-COMP-DATA-002 — SHALL:** The owning component define the domain's identity, schema, state transitions, mutation rules, retention, correction, export, restore, and evidence behavior.
 - **REQ-COMP-DATA-003 — SHALL NOT:** A component write directly to another component's authoritative tables, files, private queues, mutable object-store paths, internal caches, or undocumented runtime state.
@@ -388,6 +407,10 @@ Audit and evidence paths record accountability with minimized payloads. Recordin
 - **REQ-COMP-DATA-022 — SHALL:** Critical ownership, migration, restore, publication, revocation, and destructive-transition operations produce machine-readable receipts or evidence records.
 - **REQ-COMP-DATA-023 — SHALL:** Logs, metrics, traces, dead-letter records, and evidence references minimize governed payload data and follow the source owner's classification, retention, disclosure, and consent rules.
 - **REQ-COMP-DATA-024 — SHALL:** A component data-ownership conformance claim pass only when ownership uniqueness, access isolation, contract routing, reference integrity, migration safety, restore behavior, and evidence tests all pass.
+- **REQ-COMP-DATA-025 — SHALL:** UCKK Import Bridge preserve remote source identity, version, integrity, license, rights, restrictions, provenance, and mapping evidence while keeping every package non-authoritative in quarantine.
+- **REQ-COMP-DATA-026 — SHALL:** The kOA Mediatheque create separate local identities only after explicit acceptance of a validated UCKK candidate.
+- **REQ-COMP-DATA-027 — SHALL NOT:** The shared Mediatheque frame or directional interchange create shared data ownership, a shared database, direct remote mutation, last-writer-wins conflict resolution, or implicit synchronization.
+- **REQ-COMP-DATA-028 — SHALL:** Publication and import maintain separate authorization, credentials, queues, packages, receipts, retry state, and failure ownership.
 <!-- GENERATED:REQUIREMENTS:END -->
 
 ## 6. Ownership Registration and Change Procedure
@@ -516,24 +539,24 @@ Safe degradation never invents a new owner, promotes a derived copy, bypasses a 
 
 A caller requests mutation from the owning component.
 
-```text
+`text
 caller
-  -> owner command contract
-  -> owner validates identity, authority, policy, version, and payload
-  -> owner commits owned state
-  -> result, event, and required receipt
-```
+ -> owner command contract
+ -> owner validates identity, authority, policy, version, and payload
+ -> owner commits owned state
+ -> result, event, and required receipt
+`
 
 ### 8.2 Query and projection
 
 A consumer requests a projection from the owner.
 
-```text
+`text
 consumer
-  -> owner query contract
-  -> owner applies authorization and redaction
-  -> projection with source and freshness context
-```
+ -> owner query contract
+ -> owner applies authorization and redaction
+ -> projection with source and freshness context
+`
 
 The consumer can store a declared read model without acquiring source ownership.
 
@@ -591,6 +614,10 @@ Each owner returns a scoped package. The coordinator assembles a manifest. A cle
 An accepted decision moves a domain from one component to another.
 
 The target is staged and validated. Cutover activates the target and disables source mutation as one controlled transition. Redirects and disposition records preserve lineage.
+
+### 8.11 Directional kOA–UCKK interchange
+
+Outbound publication preserves kOA source ownership and creates a separately owned UCKK destination object. Inbound import preserves UCKK source provenance and creates a separately owned local kOA object only after acceptance. The common frame maps fields; it does not transfer ownership by itself.
 
 ## 9. Decision Closure and Prohibited Assumptions
 
@@ -661,7 +688,7 @@ This document is conformant when:
 
 Applicable failure codes include:
 
-```text
+`text
 authoritative_owner_missing
 duplicate_authoritative_owner
 component_contract_owner_mismatch
@@ -684,7 +711,7 @@ parallel_active_owner
 ownership_cutover_incomplete
 ownership_receipt_missing
 governed_payload_overexposure
-```
+`
 
 A required validator that cannot run produces `blocked`, not `pass`.
 
@@ -732,7 +759,11 @@ A portability package contains separate exports for Orgo, Konnaxion, kOA Mediath
 
 Each owner restores its own state through its contract. The coordinator cannot load all tables directly into a shared database and claim success.
 
-### Example 8 — Ownership transfer
+### Example 8 — UCKK learning-package import
+
+A school imports a selected UCKK course. The package remains quarantined until source, license, integrity, completeness, provenance, and mapping checks pass. Local acceptance creates new kOA identities; the UCKK identifiers remain source references, and a later remote release is only an update candidate.
+
+### Example 9 — Ownership transfer
 
 An accepted decision moves a distribution-status domain from Orgo to another component.
 

@@ -163,8 +163,8 @@ KOA:DOC-META:END -->
 
 # Development Security
 
-> **Document status:** Normative development architecture.  
-> **Security objective:** Permit rapid, parallel, reproducible development without granting undeclared authority or weakening production, component, data, identity, or release boundaries.  
+> **Document status:** Normative development architecture.
+> **Security objective:** Permit rapid, parallel, reproducible development without granting undeclared authority or weakening production, component, data, identity, or release boundaries.
 > **Authority rule:** Profiles, toolchains, component contracts, artifact classes, integrations, and canonical registries own structured values. This document defines the development-security behavior they must preserve.
 
 ## 1. Purpose
@@ -263,7 +263,7 @@ This document owns the required security outcome, not one universal mechanism.
 
 The relevant trust boundaries are:
 
-```text
+`text
 developer actor
 → local host and profile
 → workspace
@@ -273,7 +273,7 @@ developer actor
 → candidate artifact boundary
 → build and signing authorities
 → release and production authorities
-```
+`
 
 Crossing a boundary requires the contract and authority applicable to that boundary.
 
@@ -316,14 +316,14 @@ Ordinary development uses:
 
 A sensitive host mutation follows:
 
-```text
+`text
 identified request
 → applicable policy decision
 → narrow privileged mechanism
 → bounded mutation
 → postcondition verification
 → required receipt
-```
+`
 
 Persistent unrestricted administrative shells are not an architectural development dependency.
 
@@ -400,12 +400,12 @@ A container is not a complete security boundary when host mounts, sockets, privi
 
 The preferred order is:
 
-```text
+`text
 synthetic data
 → generated representative fixtures
 → de-identified or minimized data
 → explicitly authorized sensitive data as a last resort
-```
+`
 
 Sensitive development data has:
 
@@ -626,7 +626,7 @@ The request follows:
 
 Candidate production follows:
 
-```text
+`text
 clean source revision
 → locked dependencies
 → declared toolchain
@@ -637,7 +637,7 @@ clean source revision
 → candidate integrity material
 → evidence bundle
 → candidate publication to the development boundary
-```
+`
 
 The candidate remains inactive until downstream authorities complete admission and release procedures.
 
@@ -814,7 +814,7 @@ Development security validates when:
 
 Applicable checks include:
 
-```bash
+`bash
 python docs/tools/check_ai_boundary.py
 python docs/tools/check_component_boundaries.py
 python docs/tools/check_canonical_ownership.py
@@ -822,7 +822,7 @@ python docs/tools/check_profile_composition.py
 python docs/tools/check_interfile_locks.py
 python docs/tools/check_traceability.py
 python docs/tools/validate_docs.py
-```
+`
 
 ## 11. Non-Normative Examples
 

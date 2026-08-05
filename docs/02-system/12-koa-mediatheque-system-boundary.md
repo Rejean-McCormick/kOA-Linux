@@ -15,12 +15,16 @@
     "contracts/artifact-contracts/koa-media-record.schema.json",
     "contracts/artifact-contracts/uckk-publication-package.schema.json",
     "contracts/artifact-contracts/uckk-publication-receipt.schema.json",
+    "contracts/artifact-contracts/offline-bundle.schema.json",
     "contracts/components/publication-gateway.component.json",
     "generated/profile-catalog.json",
     "generated/component-catalog.json",
     "generated/integration-catalog.json",
-    "10-adrs/ADR-030-koa-mediatheque-as-an-internal-component.md",
-    "10-adrs/ADR-031-uckk-as-an-external-moodle-publication-target.md"
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json",
+    "04-components/uckk-import-bridge.md"
   ],
   "decision_ids": [
     "DEC-MEDIATHEQUE-001",
@@ -35,12 +39,19 @@
     "REQ-MEDIATHEQUE-002",
     "REQ-MEDIATHEQUE-003",
     "REQ-UCKK-PUB-001",
-    "REQ-UCKK-PUB-002"
+    "REQ-UCKK-PUB-002",
+    "REQ-UCKK-IMPORT-001",
+    "REQ-UCKK-IMPORT-002",
+    "REQ-UCKK-IMPORT-003",
+    "REQ-UCKK-IMPORT-004",
+    "REQ-UCKK-IMPORT-005",
+    "REQ-UCKK-IMPORT-006"
   ],
   "lock_ids": [
     "LOCK-MEDIATHEQUE-001",
     "LOCK-MEDIATHEQUE-002",
     "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-002",
     "LOCK-DATA-001",
     "LOCK-COMP-001",
     "LOCK-COMP-002",
@@ -55,7 +66,8 @@
     "DOC-SYS-007",
     "DOC-SYS-008",
     "DOC-SYS-015",
-    "DOC-SYS-016"
+    "DOC-SYS-016",
+    "DOC-COMP-UCKK-IMPORT-001"
   ],
   "tags": [
     "mediatheque",
@@ -65,113 +77,152 @@
     "uckk",
     "moodle",
     "external-integration",
-    "publication-boundary"
+    "publication-boundary",
+    "import-from-uckk",
+    "offline-learning"
   ]
 }
 KOA:DOC-META:END -->
 
-# kOA Mediatheque System Boundary
+# kOA and UCKK Mediatheque System Boundary
 
 ## 1. Purpose
 
-This document defines the system boundary for the **kOA Mediatheque**, the native local media and file-management capability of kOA-Linux Operating System.
+This document defines the relationship between the **kOA Mediatheque**, the private local and offline media authority of kOA-Linux Operating System, and the **UCKK Mediatheque**, the online media and learning-content authority inside the external UCKK Moodle platform.
 
-The kOA Mediatheque owns its local catalog, media records, file versions, managed-content bindings, classification, rights, restrictions, provenance, renditions, lifecycle state, import and export history, and backup and restore state.
-
-UCKK is a separate external Moodle platform. UCKK may expose its own Mediatheque using a compatible conceptual frame, but that compatibility does not create shared storage, shared identity, shared lifecycle, or shared authority.
+The two surfaces use the same shared Mediatheque frame or compatible frame versions. They remain separate systems with separate records, storage, identities, access control, lifecycle, and authority.
 
 ## 2. System Boundary
 
 ```text
 kOA-Linux Operating System
-  └── kOA Mediatheque
-        ├── local authoritative records
-        ├── local managed content
-        ├── rights and provenance
-        ├── offline browsing and processing
-        └── governed export candidates
-              ↓
-        Publication Gateway decision
-              ↓
-        UCKK publication bridge
-              ↓
+└── kOA Mediatheque
+    ├── private local records and versions
+    ├── local instructions and organization-specific knowledge
+    ├── downloaded courses and learning paths
+    ├── rights, restrictions, provenance, and local lifecycle
+    └── offline browsing, backup, restore, and deterministic processing
+
+            publish_to_uckk ↓       ↑ import_from_uckk
+
+Governed UCKK interchange boundary
+├── outbound disclosure authorization and publication transport
+├── inbound source, license, integrity, compatibility, and quarantine checks
+├── directional queues and receipts
+└── no implicit synchronization
+
 External UCKK Moodle platform
-  └── UCKK Mediatheque and Moodle-owned records
+└── UCKK Mediatheque
+    ├── online courses and learning paths
+    ├── activities and educational resources
+    ├── UCKK users, roles, permissions, and destinations
+    └── remote records, versions, publication, and lifecycle
 ```
 
-The boundary has four independent authorities:
+## 3. Authorities
 
-1. the kOA Mediatheque owns local source records and managed versions;
-2. Governance Policy Runtime and Publication Gateway own authorization and disclosure decisions;
-3. the UCKK publication integration owns target mapping, transport, retry, and remote-result handling;
-4. the external UCKK platform owns the destination records it creates or updates.
+1. The kOA Mediatheque owns local records, local versions, managed local content, local rights state, local provenance, import and export history, and local backup and restore state.
+2. Publication Gateway owns outbound disclosure authorization from kOA to UCKK.
+3. UCKK-specific outbound transport owns package mapping, transmission, retry, remote-result normalization, and receipt preservation; it does not own disclosure authority.
+4. The controlled inbound path owns retrieval, quarantine, source and license checks, integrity and compatibility validation, and delivery to the kOA Mediatheque acceptance workflow.
+5. The external UCKK platform owns its courses, learning paths, activities, permissions, remote media records, UCKK Mediatheque state, and online lifecycle.
 
-## 3. Invariants
+## 4. Shared Mediatheque Frame
 
-- **REQ-MEDIATHEQUE-001 — MUST:** The kOA Mediatheque MUST remain usable without UCKK and without Internet access for locally available records and content.
-- **REQ-MEDIATHEQUE-002 — MUST:** Local media identity, version identity, rights, restrictions, provenance, and lifecycle MUST remain authoritative in the kOA Mediatheque.
-- **REQ-MEDIATHEQUE-003 — MUST NOT:** A remote UCKK identifier MUST NOT replace a local kOA record or version identifier.
-- **REQ-UCKK-PUB-001 — MUST:** Publication to UCKK MUST require explicit selection and an allow decision from the Publication Gateway.
-- **REQ-UCKK-PUB-002 — MUST NOT:** kOA-Linux MUST NOT write directly into UCKK database tables or treat UCKK as an internal subsystem.
-- A shared Mediatheque frame describes compatible exchange concepts; it does not assign ownership.
-- Local backup and restore cover kOA Mediatheque data, local queues, packages, manifests, and receipts. They do not claim to back up the external UCKK authority domain.
+The shared frame covers compatible concepts such as:
 
-## 4. Native Local Capability
+- stable object identity;
+- version identity;
+- content hashes and integrity;
+- media type and renditions;
+- metadata, dimensions, collections, tags, and relationships;
+- language and accessibility information;
+- rights, licenses, restrictions, consent, and cultural conditions;
+- provenance and derivation;
+- lifecycle state;
+- package manifests and transfer receipts.
 
-The local baseline is:
+A shared frame is an interchange contract. It is not a shared database, shared identifier namespace, shared access-control system, shared lifecycle, or shared authority.
 
-- SQLite for structured component-owned state;
-- managed local content storage;
-- deterministic content hashing;
-- explicit record and version identities;
-- bounded local media workers;
-- local search and browsing;
-- local import, export, backup, and restore;
-- no required external AI or cloud service.
+A mapping that cannot preserve a required right, restriction, provenance field, or lifecycle condition blocks the affected transfer or requires explicit review. It is never silently discarded.
 
-The active profile may replace physical mechanisms while preserving the same ownership and behavior.
+## 5. Outbound: `publish_to_uckk`
 
-## 5. Shared Frame and Compatibility
+1. A user or governed workflow selects exact local record versions.
+2. The kOA Mediatheque produces a bounded candidate representation.
+3. Publication Gateway evaluates identity, purpose, audience, rights, restrictions, consent, destination, and expiry.
+4. An approved UCKK publication package is created.
+5. UCKK-specific transport maps and sends only the approved representation.
+6. UCKK accepts, rejects, or partially accepts the remote operation.
+7. A validated receipt is attached to local export history.
 
-The kOA and UCKK Mediatheques may share concepts such as media identity, version, hash, collection, dimension, rights, restrictions, provenance, publication eligibility, manifest, and receipt.
+The local source remains authoritative in kOA. The UCKK object is a separate remote object under UCKK authority.
 
-Compatibility is expressed through versioned schemas and mapping contracts. Unsupported fields, rights, or restrictions block publication or require review; they are not silently discarded.
+## 6. Inbound: `import_from_uckk`
 
-## 6. Publication to UCKK
+1. A user or governed workflow selects an UCKK course, learning path, instruction set, manual, or resource for local use.
+2. The system resolves the source endpoint, remote object identity, version, license, and required resource graph.
+3. A transfer package is downloaded or received through a supported offline bundle path.
+4. The package enters quarantine.
+5. Signatures, hashes, manifest completeness, licenses, restrictions, provenance, compatibility, and required resources are validated.
+6. The user or authorized local workflow explicitly accepts or rejects the package.
+7. The kOA Mediatheque creates a local record and version with preserved UCKK provenance.
+8. The installed content becomes available within the local profile's offline consultation capability.
 
-Publication is a controlled external operation:
+The imported local copy is governed by kOA authority. The UCKK source remains governed by UCKK. A later remote version is a new import candidate.
 
-1. a user or governed workflow selects exact local record versions;
-2. the kOA Mediatheque produces a bounded candidate representation;
-3. Publication Gateway resolves identity, purpose, rights, restrictions, consent, audience, destination, and expiry;
-4. an approved `uckk-publication-package` is created;
-5. the bridge maps the package to the declared UCKK Moodle destination;
-6. transmission is authenticated, bounded, and idempotent;
-7. the returned `uckk-publication-receipt` is validated and attached to local export history.
+## 7. Offline Learning Use
 
-A successful publication means that an external representation was accepted. It does not transfer local source authority.
+The local system can hold private instructions or downloaded learning material without remaining connected to UCKK.
 
-## 7. Offline Behavior
+Valid use cases include:
 
-Local cataloging, classification, rights management, browsing, and bounded media work continue when required local services and content are available.
+- the complete kOA-Linux user and administrator manual;
+- an organization's private administrative procedures;
+- local safety and maintenance instructions;
+- a school curriculum for an isolated environment;
+- professional learning paths;
+- practical “univers-cité” collections such as bread making, agriculture, construction, or equipment repair.
 
-UCKK publication is unavailable while disconnected. An already authorized package may be queued if its authorization, source version, rights, destination, and expiry remain locally verifiable. The interface must show `queued`, not `published`, until a remote receipt is validated.
+The local installation is not required to accept the public UCKK catalog. It may contain only private or explicitly selected content.
 
-## 8. Failure and Recovery
+## 8. Offline and Reconnection Behavior
 
-- Integrity failure quarantines the affected version.
-- Rights or authorization changes cancel pending publication and require a new decision.
+While disconnected:
+
+- local cataloging, browsing, search, rights management, backup, restore, and deterministic processing continue;
+- accepted UCKK-derived packages remain available locally;
+- new UCKK discovery and live downloads are unavailable;
+- outbound publication delivery is deferred;
+- complete transferred packages may be validated offline when all required evidence is locally available;
+- incomplete packages remain quarantined.
+
+On reconnection, outbound and inbound queues are evaluated separately. Authorization, rights, versions, destinations, licenses, integrity, compatibility, and expiry are revalidated as applicable. No last-writer-wins or background synchronization rule is inferred.
+
+## 9. Failure and Recovery
+
+- Integrity failure quarantines the affected local or transferred version.
+- Rights or authorization changes cancel pending outbound publication and require a new decision.
+- License or compatibility failure rejects inbound acceptance.
 - Destination unavailability does not degrade local Mediatheque authority.
 - Ambiguous remote outcomes require reconciliation by idempotency key before retry.
-- Restore activates only after database, content, manifest, permissions, and queue references reconcile.
+- Restore activates only after database, content, manifest, permissions, queue, package, and receipt references reconcile.
 
-## 9. Prohibited Architecture
+## 10. Prohibited Architecture
 
 The following models are prohibited:
 
-- UCKK as a native kOA-Linux subsystem;
+- UCKK as a native kOA-Linux component or required local subsystem;
 - the kOA Mediatheque as a module owned by UCKK;
-- a required `docs/subsystems/uckk` mount;
-- direct UCKK database access;
+- direct reads or writes to UCKK database tables;
+- shared authoritative storage between the two Mediatheques;
+- replacing local identities with UCKK identifiers;
+- treating a downloaded package as accepted before validation;
+- treating an outbound receipt as local rights or semantic authority;
 - implicit background bidirectional synchronization;
-- treating an external publication receipt as local semantic or rights authority.
+- silent remote overwrite of a local copy;
+- silent local overwrite of an UCKK source.
+
+## 11. Conformance Direction
+
+The current outbound publication contract remains one direction of the boundary. Full bidirectional conformance additionally requires dedicated inbound package, import-receipt, quarantine, acceptance, and conflict contracts. Until those artifacts exist and validate, an implementation may claim outbound UCKK publication conformance but not complete UCKK Mediatheque interchange conformance.

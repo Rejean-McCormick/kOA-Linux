@@ -2,10 +2,11 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.koa.local/artifact-contracts/koa-media-record.schema.json",
   "title": "kOA Media Record",
-  "description": "Canonical exchange representation of a record and selected version owned by the kOA Mediatheque. External publication identifiers are references and do not replace local identity.",
+  "description": "Canonical local record and version representation owned by the private offline kOA Mediatheque. It carries the shared Mediatheque frame for controlled UCKK interchange while retaining local identity and authority.",
   "type": "object",
   "additionalProperties": false,
   "required": [
+    "shared_frame",
     "record_id",
     "version_id",
     "title",
@@ -415,6 +416,9 @@
           }
         }
       }
+    },
+    "shared_frame": {
+      "$ref": "./shared-mediatheque-frame.schema.json"
     }
   },
   "$defs": {

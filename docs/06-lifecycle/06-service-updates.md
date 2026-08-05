@@ -148,9 +148,9 @@ KOA:DOC-META:END -->
 
 # Service Updates
 
-> **Document status:** Normative lifecycle architecture.  
-> **Release channel:** `services`  
-> **Activation rule:** A service update becomes authoritative only after admission, compatibility, staging, activation, and verification succeed.  
+> **Document status:** Normative lifecycle architecture.
+> **Release channel:** `services`
+> **Activation rule:** A service update becomes authoritative only after admission, compatibility, staging, activation, and verification succeed.
 > **Authority rule:** Component contracts own component behavior; profile contracts own deployment-specific service topology; release contracts own publication and activation.
 
 ## 1. Purpose
@@ -251,12 +251,12 @@ A strategy is conformant only when it preserves the same admission, compatibilit
 
 ### 3.2 Release-channel references
 
-```text
+`text
 contracts/release-channels.contract.json#/channels/system
 contracts/release-channels.contract.json#/channels/services
 contracts/release-channels.contract.json#/channels/governance
 contracts/release-channels.contract.json#/channels/knowledge
-```
+`
 
 ### 3.3 Artifact references
 
@@ -302,7 +302,7 @@ A service release identifies:
 
 The service-update lifecycle uses:
 
-```text
+`text
 candidate
 → admitted
 → staged
@@ -311,18 +311,18 @@ candidate
 → activating
 → verifying
 → active
-```
+`
 
 Alternative terminal and recovery states are:
 
-```text
+`text
 rejected
 blocked
 degraded
 restoring
 rolled_back
 forward_repair
-```
+`
 
 These states describe the update process. Runtime capability health continues to use the global `normal`, `degraded`, `blocked`, and `restoring` capability states.
 
@@ -363,12 +363,12 @@ If a capability requires several processes to remain compatible, their update is
 
 A Release Set binds exact compatible versions across:
 
-```text
+`text
 system
 services
 governance
 knowledge
-```
+`
 
 A services-channel update can proceed independently only when the release contract proves that the candidate services version remains compatible with the active versions of all other channels.
 
@@ -430,12 +430,12 @@ Forward repair advances from a failed or partially completed transition to a new
 
 Every update declares one of:
 
-```text
+`text
 rollback_safe
 rollback_safe_before_migration_commit
 forward_repair_required_after_migration_commit
 no_activation_until_manual_recovery_plan_approved
-```
+`
 
 The exact field encoding remains owned by the lifecycle registry and service release contract.
 
@@ -852,14 +852,14 @@ Service-update conformance validates when:
 
 Applicable checks include:
 
-```bash
+`bash
 python docs/tools/check_component_boundaries.py
 python docs/tools/check_profile_composition.py
 python docs/tools/check_canonical_ownership.py
 python docs/tools/check_interfile_locks.py
 python docs/tools/check_traceability.py
 python docs/tools/validate_docs.py
-```
+`
 
 ## 11. Non-Normative Examples
 

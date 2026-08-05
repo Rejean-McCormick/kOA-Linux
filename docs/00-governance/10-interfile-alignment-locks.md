@@ -73,8 +73,8 @@
     "LOCK-AI-001",
     "LOCK-AI-002",
     "LOCK-SENT-001",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-MEDIATHEQUE-002",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
     "LOCK-DATA-001",
@@ -139,13 +139,13 @@ The lock system does not compare prose for superficial similarity. It verifies c
 
 This document applies to every active Interfile Alignment Lock registered in:
 
-```text
+`text
 generated/assertion-index.json
-```
+`
 
 It also governs the interaction between locks and:
 
-```text
+`text
 generated/authority-manifest.json
 generated/decision-index.json
 generated/document-index.json
@@ -163,7 +163,7 @@ contracts/artifact-contracts/
 schemas/
 generated/
 tools/
-```
+`
 
 The lock model applies to:
 
@@ -185,69 +185,69 @@ A lock does not replace the canonical fact it protects. The fact remains owned b
 
 The canonical lock registry is:
 
-```text
+`text
 generated/assertion-index.json
-```
+`
 
 Its schema is:
 
-```text
-```
+`text
+`
 
 Lock-linked requirements are owned by:
 
-```text
+`text
 generated/requirements-index.json
-```
+`
 
 Lock-linked decisions are owned by:
 
-```text
+`text
 generated/decision-index.json
-```
+`
 
 Affected document metadata and semantic dependencies are owned by:
 
-```text
+`text
 generated/document-index.json
-```
+`
 
 Cross-object traceability is owned by:
 
-```text
+`text
 generated/traceability.json
-```
+`
 
 Approved deviations are owned by:
 
-```text
+`text
 generated/exception-index.json
-```
+`
 
 The active lock-registry path, version, and status are activated by:
 
-```text
+`text
 generated/authority-manifest.json
-```
+`
 
 Generated lock catalogs and impact reports are written under:
 
-```text
+`text
 generated/locks-index.md
 generated/impact/
 generated/matrices/
 generated/ai-context/
-```
+`
 
 Lock validation is implemented by:
 
-```text
+`text
 tools/check_interfile_locks.py
 tools/compute_impact.py
 tools/check_traceability.py
 tools/check_generated_content.py
 tools/validate_docs.py
-```
+`
 
 ## 4. Model and Responsibilities
 
@@ -298,18 +298,18 @@ For example:
 
 Lock identifiers use:
 
-```text
+`text
 LOCK-<DOMAIN>-<NUMBER>
-```
+`
 
 Examples:
 
-```text
+`text
 LOCK-DOC-004
 LOCK-AI-001
 LOCK-DEV-002
 LOCK-LIFE-003
-```
+`
 
 The identifier is permanent.
 
@@ -317,32 +317,32 @@ A retired lock identifier is never reused.
 
 A replacement lock receives a new identifier and records:
 
-```json
+`json
 {
-  "supersedes": ["LOCK-OLD-001"]
+ "supersedes": ["LOCK-OLD-001"]
 }
-```
+`
 
 The retired lock records:
 
-```json
+`json
 {
-  "replaced_by": "LOCK-NEW-001"
+ "replaced_by": "LOCK-NEW-001"
 }
-```
+`
 
 ### 4.4 Lock lifecycle
 
 A lock uses one of these lifecycle states:
 
-```text
+`text
 draft
 review
 active
 deprecated
 superseded
 archived
-```
+`
 
 Only `active` locks participate in current validation and conformance.
 
@@ -384,85 +384,85 @@ The prefix supports discovery and context generation. It does not limit a lock t
 
 A complete lock object has this general form:
 
-```json
+`json
 {
-  "lock_id": "LOCK-DEV-001",
-  "version": 1,
-  "status": "active",
-  "title": "Installed dependency environment isolation",
-  "scope": {
-    "kind": "profile",
-    "profiles": [
-      "developer_linux_workstation",
-      "developer_windows_wsl"
-    ]
-  },
-  "statement": "Each development workspace has a distinct mutable dependency environment.",
-  "canonical_refs": [
-    "contracts/toolchains/python-uv.toolchain.json#/environment_isolation"
-  ],
-  "applies_to": {
-    "document_ids": [
-      "DOC-DEV-002",
-      "DOC-DEV-003",
-      "DOC-DEV-004",
-      "DOC-DEV-005"
-    ],
-    "tags": [
-      "development",
-      "dependency-isolation",
-      "python",
-      "uv"
-    ],
-    "profiles": [
-      "developer_linux_workstation",
-      "developer_windows_wsl"
-    ],
-    "components": [],
-    "artifact_classes": []
-  },
-  "decision_ids": [
-    "DEC-DEV-001"
-  ],
-  "requirement_ids": [
-    "REQ-DEV-UV-001",
-    "REQ-DEV-UV-002"
-  ],
-  "exception_ids": [],
-  "assertions": [
-    {
-      "assertion_id": "LOCK-DEV-001-A01",
-      "type": "json_pointer_equals",
-      "ref": "contracts/toolchains/python-uv.toolchain.json#/environment_isolation/per_workspace_venv",
-      "expected": true
-    },
-    {
-      "assertion_id": "LOCK-DEV-001-A02",
-      "type": "forbidden_semantic_value",
-      "selector": {
-        "tags": ["development"]
-      },
-      "semantic_value": "shared_mutable_dependency_environment"
-    }
-  ],
-  "change_policy": {
-    "semantic_class": "major",
-    "requires_owner_decision": true,
-    "requires_adr": true,
-    "requires_impact_report": true,
-    "requires_full_validation": true,
-    "exception_policy": "explicit_registered_exception_only"
-  },
-  "owner": "development-architecture",
-  "rationale": "Shared mutable dependency environments create cross-workspace drift and non-reproducible builds.",
-  "validation_evidence": [
-    {
-      "test_id": "TEST-DEV-UV-001",
-      "evidence_class": "repository_check"
-    }
-  ]
+ "lock_id": "LOCK-DEV-001",
+ "version": 1,
+ "status": "active",
+ "title": "Installed dependency environment isolation",
+ "scope": {
+ "kind": "profile",
+ "profiles": [
+ "developer_linux_workstation",
+ "developer_windows_wsl"
+ ]
+ },
+ "statement": "Each development workspace has a distinct mutable dependency environment.",
+ "canonical_refs": [
+ "contracts/toolchains/python-uv.toolchain.json#/environment_isolation"
+ ],
+ "applies_to": {
+ "document_ids": [
+ "DOC-DEV-002",
+ "DOC-DEV-003",
+ "DOC-DEV-004",
+ "DOC-DEV-005"
+ ],
+ "tags": [
+ "development",
+ "dependency-isolation",
+ "python",
+ "uv"
+ ],
+ "profiles": [
+ "developer_linux_workstation",
+ "developer_windows_wsl"
+ ],
+ "components": [],
+ "artifact_classes": []
+ },
+ "decision_ids": [
+ "DEC-DEV-001"
+ ],
+ "requirement_ids": [
+ "REQ-DEV-UV-001",
+ "REQ-DEV-UV-002"
+ ],
+ "exception_ids": [],
+ "assertions": [
+ {
+ "assertion_id": "LOCK-DEV-001-A01",
+ "type": "json_pointer_equals",
+ "ref": "contracts/toolchains/python-uv.toolchain.json#/environment_isolation/per_workspace_venv",
+ "expected": true
+ },
+ {
+ "assertion_id": "LOCK-DEV-001-A02",
+ "type": "forbidden_semantic_value",
+ "selector": {
+ "tags": ["development"]
+ },
+ "semantic_value": "shared_mutable_dependency_environment"
+ }
+ ],
+ "change_policy": {
+ "semantic_class": "major",
+ "requires_owner_decision": true,
+ "requires_adr": false,
+ "requires_impact_report": true,
+ "requires_full_validation": true,
+ "exception_policy": "explicit_registered_exception_only"
+ },
+ "owner": "development-architecture",
+ "rationale": "Shared mutable dependency environments create cross-workspace drift and non-reproducible builds.",
+ "validation_evidence": [
+ {
+ "test_id": "TEST-DEV-UV-001",
+ "evidence_class": "repository_check"
+ }
+ ]
 }
-```
+`
 
 ### 4.7 Required fields
 
@@ -493,7 +493,7 @@ An empty list is represented explicitly when a field permits no entries.
 
 A lock scope uses one of:
 
-```text
+`text
 global
 profile
 profile_overlay
@@ -501,36 +501,36 @@ component
 artifact_class
 development_toolchain
 migration_only
-```
+`
 
 Examples:
 
-```json
+`json
 {
-  "kind": "global"
+ "kind": "global"
 }
-```
+`
 
-```json
+`json
 {
-  "kind": "profile",
-  "profiles": ["user_lightweight"]
+ "kind": "profile",
+ "profiles": ["user_lightweight"]
 }
-```
+`
 
-```json
+`json
 {
-  "kind": "component",
-  "components": ["uckk_platform", "publication_gateway"]
+ "kind": "component",
+ "components": ["koa_mediatheque", "publication_gateway"]
 }
-```
+`
 
-```json
+`json
 {
-  "kind": "development_toolchain",
-  "toolchains": ["python_uv"]
+ "kind": "development_toolchain",
+ "toolchains": ["python_uv"]
 }
-```
+`
 
 A profile-scoped lock does not apply globally unless another active global lock explicitly requires that property.
 
@@ -540,7 +540,7 @@ The `applies_to` object supports explicit and derived selectors.
 
 Supported selectors include:
 
-```text
+`text
 document_ids
 registry_paths
 canonical_refs
@@ -556,7 +556,7 @@ adr_ids
 test_ids
 evidence_ids
 generated_outputs
-```
+`
 
 Explicit identifiers provide exact coverage.
 
@@ -586,12 +586,12 @@ Each assertion has:
 
 An assertion result is:
 
-```text
+`text
 pass
 fail
 blocked
 not_applicable
-```
+`
 
 `not_applicable` is valid only when the lock scope excludes the evaluated object.
 
@@ -603,7 +603,7 @@ The lock validator supports at least the following assertion classes.
 
 #### Canonical-reference assertions
 
-```text
+`text
 json_pointer_exists
 json_pointer_equals
 json_pointer_not_equals
@@ -611,20 +611,20 @@ json_pointer_in_set
 json_pointer_not_in_set
 json_pointer_type
 json_pointer_matches_schema
-```
+`
 
 #### Ownership assertions
 
-```text
+`text
 canonical_owner_equals
 canonical_owner_unique
 canonical_owner_registered
 no_duplicate_canonical_claim
-```
+`
 
 #### Document assertions
 
-```text
+`text
 document_registered
 document_class_equals
 document_scope_contains
@@ -634,11 +634,11 @@ document_does_not_depend_on
 document_tag_contains
 document_language_equals
 document_path_matches
-```
+`
 
 #### Requirement assertions
 
-```text
+`text
 requirement_exists
 requirement_active
 requirement_scope_equals
@@ -646,20 +646,20 @@ requirement_strength_equals
 requirement_has_decision
 requirement_has_validation
 requirement_links_lock
-```
+`
 
 #### Decision assertions
 
-```text
+`text
 decision_exists
 decision_status_equals
 decision_supersedes
 active_object_has_accepted_decision
-```
+`
 
 #### Profile assertions
 
-```text
+`text
 profile_exists
 profile_inherits
 profile_does_not_inherit
@@ -668,22 +668,22 @@ profile_capability_disabled
 profile_requirement_included
 profile_requirement_excluded
 profile_overlay_compatible
-```
+`
 
 #### Component-boundary assertions
 
-```text
+`text
 component_exists
 component_owner_equals
 component_data_owner_unique
 component_direct_write_forbidden
 component_contract_reference_exists
 component_interface_declared
-```
+`
 
 #### Generated-content assertions
 
-```text
+`text
 generated_source_exists
 generated_source_matches
 generated_renderer_matches
@@ -691,38 +691,38 @@ generated_content_matches
 generated_file_unmodified
 ai_context_source_matches
 ai_context_scope_matches
-```
+`
 
 #### Graph assertions
 
-```text
+`text
 dependency_graph_acyclic
 traceability_path_exists
 impact_disposition_complete
 no_orphan_active_object
 no_unregistered_active_file
-```
+`
 
 #### Semantic prohibition assertions
 
-```text
+`text
 forbidden_pattern
 forbidden_semantic_value
 forbidden_reference
 forbidden_scope_promotion
 forbidden_direct_write
 forbidden_parallel_authority
-```
+`
 
 #### Migration assertions
 
-```text
+`text
 legacy_file_has_disposition
 legacy_requirement_has_disposition
 legacy_adr_has_disposition
 legacy_schema_has_disposition
 cutover_manifest_matches
-```
+`
 
 ### 4.12 Manual controls
 
@@ -730,17 +730,17 @@ A manual control is permitted only when the property cannot be evaluated reliabl
 
 A manual control includes:
 
-```json
+`json
 {
-  "assertion_id": "LOCK-SEC-010-A01",
-  "type": "manual_control",
-  "control_id": "CTRL-SEC-010",
-  "reviewer_role": "security-architecture",
-  "evidence_type": "signed_review_record",
-  "expiration_policy": "per_release",
-  "failure_code": "manual_control_missing"
+ "assertion_id": "LOCK-SEC-010-A01",
+ "type": "manual_control",
+ "control_id": "CTRL-SEC-010",
+ "reviewer_role": "security-architecture",
+ "evidence_type": "signed_review_record",
+ "expiration_policy": "per_release",
+ "failure_code": "manual_control_missing"
 }
-```
+`
 
 Manual controls are:
 
@@ -756,11 +756,11 @@ A prose statement such as “review manually” is not a valid control.
 
 Assertions use:
 
-```text
+`text
 error
 warning
 information
-```
+`
 
 An `error` blocks activation, merge, release, or conformance as defined by the lock.
 
@@ -776,7 +776,7 @@ Failure codes are stable machine-readable identifiers.
 
 Examples:
 
-```text
+`text
 canonical_ownership_conflict
 canonical_reference_not_found
 interfile_alignment_lock_failed
@@ -787,7 +787,7 @@ direct_authoritative_write_detected
 workspace_isolation_violation
 impact_disposition_incomplete
 parallel_active_documentation_detected
-```
+`
 
 A failure message may change for clarity. The failure code remains stable unless versioned as a breaking validator change.
 
@@ -801,15 +801,15 @@ A lock preserves agreement across the objects that express, implement, validate,
 
 Example:
 
-```text
+`text
 REQ-DEV-UV-002
 Two workspaces do not share the same mutable .venv.
-```
+`
 
-```text
+`text
 LOCK-DEV-002
 All profile contracts, toolchain contracts, development documents, tests, and AI contexts agree that each Python workspace owns a distinct UV-managed virtual environment.
-```
+`
 
 One requirement may participate in multiple locks.
 
@@ -833,9 +833,9 @@ When a lock statement changes meaning, the change requires:
 
 Exceptions are explicit, narrow, time-bounded, and registered in:
 
-```text
+`text
 generated/exception-index.json
-```
+`
 
 An exception contains:
 
@@ -856,9 +856,9 @@ An expired exception is treated as absent.
 
 No exception is permitted for locks whose `exception_policy` is:
 
-```text
+`text
 none
-```
+`
 
 ### 4.18 Impact graph
 
@@ -884,7 +884,7 @@ The graph includes nodes for:
 
 Edges include:
 
-```text
+`text
 owns
 references
 depends_on
@@ -898,7 +898,7 @@ supersedes
 inherits
 includes
 excludes
-```
+`
 
 Impact traversal begins at every changed canonical node and follows applicable outgoing and reverse dependency edges.
 
@@ -906,13 +906,13 @@ Impact traversal begins at every changed canonical node and follows applicable o
 
 Every affected object receives one disposition:
 
-```text
+`text
 updated
 reviewed_no_change
 regenerated
 deprecated
 blocked
-```
+`
 
 Meaning:
 
@@ -978,8 +978,8 @@ renderer=lock-catalog-v1
 - `LOCK-AI-001` — The global baseline contains no native generative AI, classifier, summarizer, embedding model, autonomous routing model, or autonomous agent.
 - `LOCK-AI-002` — External AI outputs are candidate inputs and cannot directly mutate authoritative state.
 - `LOCK-SENT-001` — SenTient is optional, isolated, non-authoritative, and absent from the default user baseline.
-- `LOCK-UCKK-001` — Native UCKK ingestion and routing are deterministic and non-AI.
-- `LOCK-UCKK-002` — Suno and Gamma are user-triggered external adapters only.
+- `LOCK-MEDIATHEQUE-001` — Local kOA Mediatheque ingestion, validation, and processing are deterministic and non-AI.
+- `LOCK-MEDIATHEQUE-002` — External AI and creative-media adapters remain explicit, candidate-producing, and non-authoritative.
 - `LOCK-ARI-001` — Ariane local navigation functions without AI.
 - `LOCK-ARI-002` — Ariane external voice is optional and its failure does not disable local navigation.
 
@@ -987,7 +987,7 @@ renderer=lock-catalog-v1
 
 - `LOCK-DATA-001` — No component writes directly to another component’s authoritative source tables.
 - `LOCK-GOV-001` — Resource Governor and Governance Policy Runtime remain separate authorities.
-- `LOCK-GATE-001` — UCKK Dimension Gateway and Publication Gateway remain separate contracts.
+- `LOCK-GATE-001` — Publication Gateway authorization remains separate from UCKK-specific publication transport and from inbound UCKK import acceptance.
 - `LOCK-COMP-001` — Kristal identity remains independent of tenant workflow and interface state.
 - `LOCK-COMP-002` — The user language runtime consumes compiled artifacts; build activity belongs to the designated language workbench.
 
@@ -1142,29 +1142,29 @@ A general statement such as “temporary exception” has no effect.
 
 `compute_impact.py` creates:
 
-```text
+`text
 generated/impact/IMPACT-<date>-<decision-id>.json
-```
+`
 
 The report includes:
 
-```json
+`json
 {
-  "impact_id": "IMPACT-20260803-DEC-DEV-001",
-  "decision_ids": ["DEC-DEV-001"],
-  "changed_refs": [],
-  "affected_lock_ids": [],
-  "affected_document_ids": [],
-  "affected_profile_ids": [],
-  "affected_component_ids": [],
-  "affected_requirement_ids": [],
-  "affected_test_ids": [],
-  "affected_evidence_ids": [],
-  "affected_generated_outputs": [],
-  "dispositions": {},
-  "status": "complete"
+ "impact_id": "IMPACT-20260803-DEC-DEV-001",
+ "decision_ids": ["DEC-DEV-001"],
+ "changed_refs": [],
+ "affected_lock_ids": [],
+ "affected_document_ids": [],
+ "affected_profile_ids": [],
+ "affected_component_ids": [],
+ "affected_requirement_ids": [],
+ "affected_test_ids": [],
+ "affected_evidence_ids": [],
+ "affected_generated_outputs": [],
+ "dispositions": {},
+ "status": "complete"
 }
-```
+`
 
 The report is complete only when every affected object has a disposition.
 
@@ -1193,9 +1193,9 @@ The agent does not suppress a lock because it conflicts with the requested chang
 
 Failure code:
 
-```text
+`text
 lock_schema_validation_failed
-```
+`
 
 Effect:
 
@@ -1207,9 +1207,9 @@ Effect:
 
 Failure code:
 
-```text
+`text
 lock_missing_accepted_decision
-```
+`
 
 Effect:
 
@@ -1221,9 +1221,9 @@ Effect:
 
 Failure code:
 
-```text
+`text
 lock_canonical_reference_not_found
-```
+`
 
 Effect:
 
@@ -1235,9 +1235,9 @@ Effect:
 
 Failure code:
 
-```text
+`text
 lock_has_no_validation_control
-```
+`
 
 Effect:
 
@@ -1248,9 +1248,9 @@ Effect:
 
 Failure code:
 
-```text
+`text
 interfile_alignment_lock_failed
-```
+`
 
 Effect:
 
@@ -1262,9 +1262,9 @@ Effect:
 
 Failure code:
 
-```text
+`text
 impact_disposition_incomplete
-```
+`
 
 Effect:
 
@@ -1276,9 +1276,9 @@ Effect:
 
 Failure code:
 
-```text
+`text
 lock_exception_expired
-```
+`
 
 Effect:
 
@@ -1290,9 +1290,9 @@ Effect:
 
 Failure code:
 
-```text
+`text
 manual_control_evidence_missing
-```
+`
 
 Effect:
 
@@ -1303,9 +1303,9 @@ Effect:
 
 Failure code:
 
-```text
+`text
 generated_lock_catalog_stale
-```
+`
 
 Effect:
 
@@ -1317,9 +1317,9 @@ Effect:
 
 Failure code:
 
-```text
+`text
 ai_context_lock_set_stale
-```
+`
 
 Effect:
 
@@ -1485,30 +1485,30 @@ This document is satisfied when:
 
 Validation commands include:
 
-```bash
+`bash
 python docs/tools/check_interfile_locks.py
 python docs/tools/compute_impact.py --check-clean
 python docs/tools/check_traceability.py
 python docs/tools/check_generated_content.py
 python docs/tools/build_ai_context.py --check
 python docs/tools/validate_docs.py
-```
+`
 
 A deterministic lock-validation report includes:
 
-```json
+`json
 {
-  "registry_version": "1.0.0",
-  "registry_version": "1.0.0",
-  "evaluated_lock_ids": [],
-  "passed_lock_ids": [],
-  "failed_lock_ids": [],
-  "blocked_lock_ids": [],
-  "exceptions_applied": [],
-  "evidence_refs": [],
-  "result": "pass"
+ "registry_version": "1.0.0",
+ "registry_version": "1.0.0",
+ "evaluated_lock_ids": [],
+ "passed_lock_ids": [],
+ "failed_lock_ids": [],
+ "blocked_lock_ids": [],
+ "exceptions_applied": [],
+ "evidence_refs": [],
+ "result": "pass"
 }
-```
+`
 
 ## 11. Non-Normative Examples
 
@@ -1516,18 +1516,18 @@ A deterministic lock-validation report includes:
 
 Canonical source:
 
-```text
+`text
 contracts/profiles/user-lightweight.profile.json#/hardware/memory_min_gib
-```
+`
 
 Affected projections:
 
-```text
+`text
 03-profiles/04-user-lightweight.md
 02-system/18-hardware-envelopes.md
 generated/profile-catalog.md
 generated/ai-context/user-lightweight.json
-```
+`
 
 A lock verifies that every visible value is generated from the same canonical pointer.
 
@@ -1561,7 +1561,7 @@ A recipe showing a direct cross-database write would fail validation even when l
 
 `LOCK-DEV-002` connects:
 
-```text
+`text
 contracts/toolchains/python-uv.toolchain.json
 contracts/profiles/developer-linux-workstation.profile.json
 contracts/profiles/developer-windows-wsl.profile.json
@@ -1569,7 +1569,7 @@ contracts/profiles/developer-windows-wsl.profile.json
 11-recipes/development/python-uv-workspace.md
 generated/ai-context/developer-linux-workstation.json
 generated/ai-context/developer-windows-wsl.json
-```
+`
 
 The lock verifies that every workspace owns its own mutable `.venv` while the UV download cache may remain shared.
 
@@ -1577,12 +1577,12 @@ The lock verifies that every workspace owns its own mutable `.venv` while the UV
 
 `LOCK-LIFE-003` protects the four release channels:
 
-```text
+`text
 system
 services
 governance
 knowledge
-```
+`
 
 The lock verifies that:
 

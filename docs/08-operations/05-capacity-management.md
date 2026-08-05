@@ -11,7 +11,10 @@
   "canonical_refs": [
     "contracts/system.contract.json",
     "generated/component-catalog.json",
-    "generated/profile-catalog.json"
+    "generated/profile-catalog.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json"
   ],
   "decision_ids": [
     "DEC-PROFILE-001",
@@ -255,14 +258,14 @@ Operational dashboards, reports, forecasts, and runbooks are projections and pro
 
 Operational planning uses the following relationship conceptually:
 
-```text
+`text
 admissible capacity
-  = available capacity
-  - protected reserves
-  - committed workload
-  - failure allowance
-  - measurement uncertainty
-```
+ = available capacity
+ - protected reserves
+ - committed workload
+ - failure allowance
+ - measurement uncertainty
+`
 
 The terms are measured in resource-specific units. They are not combined into one universal score unless a bounded model explains the conversion.
 
@@ -610,16 +613,16 @@ A review includes:
 
 Admission follows:
 
-```text
+`text
 requested
-  -> classified
-  -> authority_checked
-  -> capacity_evaluated
-  -> admitted | queued | reduced | denied
-  -> active
-  -> completed | cancelled | failed
-  -> resources_released
-```
+ -> classified
+ -> authority_checked
+ -> capacity_evaluated
+ -> admitted | queued | reduced | denied
+ -> active
+ -> completed | cancelled | failed
+ -> resources_released
+`
 
 The capacity decision records:
 
@@ -808,11 +811,11 @@ Publication capacity includes request validation, representation staging, transf
 
 Publication remains blocked when receipt or remediation capacity is unavailable for a required operation.
 
-### 8.5 kOA Mediatheque and UCKK publication integration
+### 8.5 kOA and UCKK Mediatheque interchange
 
-kOA Mediatheque capacity includes admission, validation, media storage, preview generation, transformation, indexing, provenance, backup, restore, and export. UCKK integration capacity includes packaging, queued delivery, authentication, remote responses, retries, and receipts.
+kOA Mediatheque capacity includes admission, validation, media storage, offline retrieval, preview generation, transformation, indexing, provenance, backup, restore, and export. Outbound UCKK capacity includes authorized packaging, queued delivery, authentication, remote responses, retries, and publication receipts. Inbound UCKK capacity includes retrieval, offline-carrier intake, quarantine, malware and integrity checks, licence and rights validation, frame-compatibility checks, acceptance staging, and import receipts.
 
-Intensive local media processing uses explicit heavy-work admission. Local Mediatheque capacity and external UCKK publication reserves remain separate.
+Intensive local media processing uses explicit heavy-work admission. Local Mediatheque capacity, outbound publication reserves, and inbound quarantine or validation reserves remain separate. Reconnection does not allocate an unbounded synchronization sweep.
 
 ### 8.6 Identity and Trust
 

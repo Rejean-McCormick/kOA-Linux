@@ -133,14 +133,14 @@ Ariane provides the local interaction and navigation experience for applicable k
 
 The lifecycle model keeps these concerns distinct:
 
-```text
+`text
 local runtime
 local experience definition
 language and locale dependencies
 profile-specific shell integration
 optional external voice integration
 deployment activation state
-```
+`
 
 Ariane artifacts exist to make local interaction reproducible, verifiable, accessible, recoverable, and independent from external AI availability.
 
@@ -202,7 +202,7 @@ Exact artifact classes and payload contracts belong to `contracts/artifact-class
 
 The canonical sources for this document are:
 
-```text
+`text
 generated/authority-manifest.json
 generated/decision-index.json
 contracts/system.contract.json#/ariane
@@ -221,7 +221,7 @@ generated/traceability.json
 generated/test-catalog.json
 generated/evidence-catalog.json
 generated/exception-index.json
-```
+`
 
 Their ownership roles are:
 
@@ -308,7 +308,7 @@ The runtime does not include a native AI model.
 
 An Ariane experience pack contains or references:
 
-```text
+`text
 navigation graph
 stable screen and destination identifiers
 menu identifiers
@@ -322,7 +322,7 @@ profile applicability
 locale-independent labels or label keys
 component targets
 compatibility declarations
-```
+`
 
 The navigation graph determines reachable local destinations. It does not grant business authority to those destinations.
 
@@ -379,7 +379,7 @@ The manifest contains no provider credential. It does not make the provider loca
 
 The logical voice flow is:
 
-```text
+`text
 explicit user voice action
 local capture under active policy
 controlled transfer to approved adapter
@@ -390,7 +390,7 @@ target and authority evaluation
 user-visible confirmation where required
 local execution through the owning component
 receipt for critical transition
-```
+`
 
 The external response does not directly invoke a privileged or authoritative mutation.
 
@@ -413,7 +413,7 @@ It avoids external AI dependencies and unnecessary external content.
 
 Every Ariane artifact follows the global artifact identity model:
 
-```text
+`text
 artifact_id
 artifact_class
 artifact_version
@@ -425,7 +425,7 @@ manifest_identity
 provenance_reference
 compatibility_declaration
 target_profiles
-```
+`
 
 A filename, URL, package-manager name, container tag, web origin, or display label is not sufficient identity.
 
@@ -465,18 +465,18 @@ An Ariane-only services update still produces a new effective Release Set contex
 
 Artifact state can include:
 
-```text
+`text
 available
 verified
 rejected
 revoked
 superseded
 retired
-```
+`
 
 Deployment activation state can include:
 
-```text
+`text
 not_present
 cached
 staged
@@ -486,7 +486,7 @@ degraded
 failed
 rollback_available
 recovery_required
-```
+`
 
 Voice capability can be degraded while the same runtime and experience artifacts remain active.
 
@@ -885,7 +885,7 @@ This document is conformant when all of the following checks pass:
 
 Expected validator failure codes include:
 
-```text
+`text
 ariane_artifact_identity_incomplete
 ariane_artifact_class_unknown
 ariane_services_channel_invalid
@@ -912,7 +912,7 @@ ariane_offline_false_voice_status
 ariane_receipt_missing
 ariane_secret_or_recording_exposure
 ariane_retention_violation
-```
+`
 
 ## 11. Non-Normative Examples
 

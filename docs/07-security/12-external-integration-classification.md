@@ -102,7 +102,8 @@
     "LOCK-PROFILE-001",
     "LOCK-LIFE-001",
     "LOCK-LIFE-003",
-    "LOCK-IMPL-001"
+    "LOCK-IMPL-001",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -174,27 +175,27 @@ The classification model makes that separation machine-readable.
 
 The canonical registry is:
 
-```text
+`text
 contracts/integration-types.contract.json
-```
+`
 
 The human-readable model is:
 
-```text
+`text
 registry classification
-        ↓
+ ↓
 profile applicability
-        ↓
+ ↓
 validated integration manifest
-        ↓
+ ↓
 bounded adapter and network path
-        ↓
+ ↓
 request or transfer
-        ↓
+ ↓
 untrusted result or bounded external action
-        ↓
+ ↓
 destination validation and receipts
-```
+`
 
 An integration remains unavailable until every required classification and authority field resolves.
 
@@ -235,7 +236,7 @@ This document does not classify as external integrations:
 - Resource Governor;
 - Governance Policy Runtime;
 - Publication Gateway;
-- UCKK publication adapter;
+- UCKK Publication Bridge;
 - local Ariane navigation;
 - GF Wordbench;
 - SemantiK Architect Runtime;
@@ -288,11 +289,11 @@ Native local operation remains available without them.
 
 ### 3.1 Integration authority
 
-```text
+`text
 contracts/integration-types.contract.json
 contracts/artifact-contracts/integration-manifest.schema.json
 contracts/examples/integration-manifest.example.yaml
-```
+`
 
 The registry owns integration identity, class, capability, authority role, profile applicability, and required controls.
 
@@ -302,26 +303,26 @@ The example is non-authoritative.
 
 ### 3.2 System authority
 
-```text
+`text
 contracts/system.contract.json#/external_integrations
 contracts/system.contract.json#/ai_boundary
 contracts/system.contract.json#/global_boundaries
 contracts/system.contract.json#/data_authority
 contracts/system.contract.json#/degradation_baseline
-```
+`
 
 ### 3.3 Components and profiles
 
-```text
+`text
 generated/component-catalog.json
 generated/component-catalog.json
 generated/profile-catalog.json
 contracts/profiles/*.profile.json
-```
+`
 
 ### 3.4 Security and lifecycle authority
 
-```text
+`text
 generated/requirements-index.json
 generated/assertion-index.json
 generated/traceability.json
@@ -330,11 +331,11 @@ generated/evidence-catalog.json
 generated/exception-index.json
 contracts/release-channels.contract.json
 contracts/artifact-classes.contract.json
-```
+`
 
 ### 3.5 Related documents
 
-```text
+`text
 02-system/09-ai-boundary.md
 02-system/10-external-ai-surfaces.md
 02-system/16-external-integrations.md
@@ -346,7 +347,7 @@ contracts/artifact-classes.contract.json
 07-security/14-cultural-rights-and-consent.md
 07-security/15-selective-audit.md
 07-security/17-cross-domain-publication.md
-```
+`
 
 ## 4. Model and Responsibilities
 
@@ -683,21 +684,21 @@ It enters the owning component through a registered interface.
 
 Candidate-producing integrations use this flow:
 
-```text
+`text
 authorized source selection
-        ↓
+ ↓
 minimized controlled export
-        ↓
+ ↓
 external processing
-        ↓
+ ↓
 untrusted candidate + provenance
-        ↓
+ ↓
 controlled import
-        ↓
+ ↓
 destination validation and review
-        ↓
+ ↓
 explicit acceptance or rejection
-```
+`
 
 The destination component owns:
 
@@ -872,17 +873,17 @@ An integration operation that releases content to an external audience is classi
 
 The controlled path is:
 
-```text
+`text
 source component
-        ↓
+ ↓
 disclosure policy and consent
-        ↓
+ ↓
 Publication Gateway
-        ↓
+ ↓
 external destination
-        ↓
+ ↓
 publication receipt
-```
+`
 
 A provider adapter does not bypass Publication Gateway.
 
@@ -892,7 +893,7 @@ An external AI candidate workflow is not publication unless a later separate pub
 
 kOA Mediatheque operation is local and deterministic.
 
-The UCKK publication adapter handles explicit authenticated delivery of authorized packages to the external Moodle platform. It does not own local media admission or remote UCKK acceptance.
+The UCKK Publication Bridge handles explicit authenticated delivery of authorized packages to the external Moodle platform. It does not own local media admission or remote UCKK acceptance.
 
 Publication Gateway handles external publication.
 
@@ -1043,7 +1044,7 @@ The schema owns exact field names and enums.
 
 An integration lifecycle can include:
 
-```text
+`text
 registered
 configured
 enabled
@@ -1052,7 +1053,7 @@ disabled
 revoked
 superseded
 retired
-```
+`
 
 The registry owns canonical states.
 
@@ -1130,7 +1131,7 @@ Native core operation is verified after removal.
 - **REQ-SEC-INT-034 — SHALL:** Federated integrations preserve tenant, domain, identity, provenance, policy, revocation, and conflict boundaries defined by the federation contract.
 - **REQ-SEC-INT-035 — SHALL NOT:** A federation peer gain transitive trust, local machine privilege, foreign tenant authority, or unrestricted write access from network membership alone.
 - **REQ-SEC-INT-036 — SHALL:** Publication Gateway remain the only registered cross-domain publication executor for workflows classified as external publication.
-- **REQ-SEC-INT-037 — SHALL:** kOA Mediatheque admission remain separate from Publication Gateway, and the UCKK publication adapter remain subordinate to gateway authorization and separate from Suno or Gamma candidate-processing adapters.
+- **REQ-SEC-INT-037 — SHALL:** kOA Mediatheque admission remain separate from Publication Gateway, and the UCKK Publication Bridge remain subordinate to gateway authorization and separate from Suno or Gamma candidate-processing adapters.
 - **REQ-SEC-INT-038 — SHALL:** Every integration produce the request, transfer, provider-result, candidate, adoption, publication, or failure receipts required by its classification without placing raw payloads in receipts by default.
 - **REQ-SEC-INT-039 — SHALL:** Integration observability identify operation, profile, endpoint reference, result, duration, retry state, candidate or action reference, and correlation identity while minimizing sensitive content.
 - **REQ-SEC-INT-040 — SHALL:** Every integration define lifecycle states for registration, enablement, disablement, degradation, revocation, replacement, and retirement as applicable.
@@ -1377,9 +1378,9 @@ Provider-specific transport can exist behind its registered adapter boundary.
 
 A direct provider call from a source component is not a valid publication path.
 
-### 8.7 UCKK publication adapter
+### 8.7 UCKK Publication Bridge
 
-The UCKK publication adapter owns packaging, authenticated transfer, remote result handling, and receipt production for explicitly authorized publication to UCKK. It owns neither local media nor remote Moodle content.
+The UCKK Publication Bridge owns packaging, authenticated transfer, remote result handling, and receipt production for explicitly authorized publication to UCKK. It owns neither local media nor remote Moodle content.
 
 Suno and Gamma adapters own external request and candidate-return behavior only.
 
@@ -1420,12 +1421,12 @@ Provider configuration changes do not bypass lifecycle validation.
 | `DEC-AI-001` | Approved external AI surfaces are explicit, removable, user-triggered, and non-authoritative |
 | `DEC-SENT-001` | SenTient is a local optional workbench rather than an external integration |
 | `DEC-MEDIATHEQUE-001` | kOA Mediatheque is deterministic and local; Suno and Gamma remain explicit external adapters |
-| `DEC-UCKK-EXT-001` | UCKK is an external Moodle target reached only through explicit publication |
+| `DEC-UCKK-EXT-001` | UCKK is an external online Moodle target reached through separate explicit publication and import integrations |
 | `DEC-ARI-001` | Ariane local navigation remains independent of optional external voice |
 | `DEC-PROFILE-001` | Integration applicability remains profile-specific |
 | `DEC-DATA-001` | Integrations cannot write directly to foreign authoritative state |
 | `DEC-GOV-001` | Policy and resource authority remain outside provider adapters |
-| `DEC-GATE-001` | Local media admission and Publication Gateway remain separate; the UCKK adapter executes only gateway-authorized delivery |
+| `DEC-GATE-001` | Local media admission, UCKK import quarantine, Publication Gateway authorization, and UCKK publication delivery remain separate authority boundaries |
 
 ### 9.2 Protected locks
 
@@ -1436,7 +1437,7 @@ Provider configuration changes do not bypass lifecycle validation.
 | `LOCK-SENT-001` | SenTient remains optional, local, isolated, and non-authoritative |
 | `LOCK-MEDIATHEQUE-001` | kOA Mediatheque remains deterministic and locally authoritative |
 | `LOCK-MEDIATHEQUE-002` | Suno and Gamma remain user-triggered candidate-producing adapters |
-| `LOCK-UCKK-EXT-001` | UCKK publication remains explicit, external, and separately receipted |
+| `LOCK-UCKK-EXT-001` | UCKK publication and import remain explicit, directional, authority-separated, and separately receipted |
 | `LOCK-ARI-001` | Local Ariane navigation remains non-AI |
 | `LOCK-ARI-002` | Voice failure does not disable local navigation |
 | `LOCK-DATA-001` | No direct foreign authoritative write |
@@ -1539,34 +1540,34 @@ This document is conformant when:
 
 Expected test coverage includes:
 
-```text
-TEST-SEC-INT-001  Integration registry and owner resolution
-TEST-SEC-INT-002  Provider capability and result-authority separation
-TEST-SEC-INT-003  Manifest schema and registry alignment
-TEST-SEC-INT-004  Explicit trigger classification
-TEST-SEC-INT-005  Outbound data minimization
-TEST-SEC-INT-006  Prohibited data rejection
-TEST-SEC-INT-007  Inbound untrusted-result handling
-TEST-SEC-INT-008  Candidate adoption boundary
-TEST-SEC-INT-009  Direct authoritative-write rejection
-TEST-SEC-INT-010  External AI explicit user trigger
-TEST-SEC-INT-011  No automatic ChatGPT, Suno, Gamma, or voice invocation
-TEST-SEC-INT-012  Profile and overlay applicability
-TEST-SEC-INT-013  Sovereign-offline prohibition
-TEST-SEC-INT-014  Capability-scoped degradation
-TEST-SEC-INT-015  No silent provider or local AI fallback
-TEST-SEC-INT-016  Bounded timeout, retry, queue, and concurrency
-TEST-SEC-INT-017  Default-deny endpoint policy
-TEST-SEC-INT-018  Callback authentication, replay, and idempotency
-TEST-SEC-INT-019  Credential isolation and secret exclusion
-TEST-SEC-INT-020  Provider terms and retention resolution
-TEST-SEC-INT-021  Sensitive-content consent and disclosure controls
-TEST-SEC-INT-022  Federation trust and tenant isolation
-TEST-SEC-INT-023  Publication Gateway enforcement
-TEST-SEC-INT-024  kOA Mediatheque, UCKK publication, and external-candidate adapter separation
-TEST-SEC-INT-025  Receipt and observability minimization
-TEST-SEC-INT-026  Revocation, removal, and identifier reservation
-```
+`text
+TEST-SEC-INT-001 Integration registry and owner resolution
+TEST-SEC-INT-002 Provider capability and result-authority separation
+TEST-SEC-INT-003 Manifest schema and registry alignment
+TEST-SEC-INT-004 Explicit trigger classification
+TEST-SEC-INT-005 Outbound data minimization
+TEST-SEC-INT-006 Prohibited data rejection
+TEST-SEC-INT-007 Inbound untrusted-result handling
+TEST-SEC-INT-008 Candidate adoption boundary
+TEST-SEC-INT-009 Direct authoritative-write rejection
+TEST-SEC-INT-010 External AI explicit user trigger
+TEST-SEC-INT-011 No automatic ChatGPT, Suno, Gamma, or voice invocation
+TEST-SEC-INT-012 Profile and overlay applicability
+TEST-SEC-INT-013 Sovereign-offline prohibition
+TEST-SEC-INT-014 Capability-scoped degradation
+TEST-SEC-INT-015 No silent provider or local AI fallback
+TEST-SEC-INT-016 Bounded timeout, retry, queue, and concurrency
+TEST-SEC-INT-017 Default-deny endpoint policy
+TEST-SEC-INT-018 Callback authentication, replay, and idempotency
+TEST-SEC-INT-019 Credential isolation and secret exclusion
+TEST-SEC-INT-020 Provider terms and retention resolution
+TEST-SEC-INT-021 Sensitive-content consent and disclosure controls
+TEST-SEC-INT-022 Federation trust and tenant isolation
+TEST-SEC-INT-023 Publication Gateway enforcement
+TEST-SEC-INT-024 kOA Mediatheque, UCKK publication, and external-candidate adapter separation
+TEST-SEC-INT-025 Receipt and observability minimization
+TEST-SEC-INT-026 Revocation, removal, and identifier reservation
+`
 
 The test catalog and evidence registry own executable controls and evidence definitions.
 

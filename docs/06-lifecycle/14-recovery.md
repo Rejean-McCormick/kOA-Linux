@@ -256,7 +256,7 @@ This document does not prescribe one recovery operating system, boot mechanism, 
 
 The adjacent lifecycle documents are:
 
-```text
+`text
 06-lifecycle/04-release-sets.md
 06-lifecycle/05-system-image-updates.md
 06-lifecycle/06-service-updates.md
@@ -267,13 +267,13 @@ The adjacent lifecycle documents are:
 06-lifecycle/16-forward-repair.md
 06-lifecycle/17-contract-evolution-and-removal.md
 06-lifecycle/19-artifact-retention.md
-```
+`
 
 Portability and restore obligations are also defined by:
 
-```text
+`text
 01-constitution/11-portability-restore-and-exit.md
-```
+`
 
 ## 4. Recovery Model and Responsibilities
 
@@ -923,7 +923,7 @@ This document is conformant when:
 
 Applicable failure codes include:
 
-```text
+`text
 recovery_envelope_missing
 recovery_target_identity_missing
 recovery_path_unresolved
@@ -952,7 +952,7 @@ recovery_receipt_missing
 recovery_objective_missed
 recovery_cleanup_incomplete
 recovery_test_expired
-```
+`
 
 A required validator that cannot run produces `blocked`, not `pass`.
 
@@ -974,7 +974,7 @@ The recovery environment selects the declared last-known-good image, verifies co
 
 Orgo storage is damaged while other component stores remain valid.
 
-Orgo restores its own state into staging, applies its migration contract, validates external Kristal, kOA Mediatheque, identity, policy, publication, UCKK publication-receipt, and evidence references, then activates the recovered Orgo state. Other components and the external UCKK platform are not rewritten by the recovery coordinator.
+Orgo restores its own state into staging, applies its migration contract, validates external Kristal, kOA Mediatheque, identity, policy, publication, UCKK publication-receipt, UCKK import-receipt, source-mapping, and evidence references, then activates the recovered Orgo state. Other components and the external UCKK platform are not rewritten by the recovery coordinator.
 
 ### Example 4 — Unsafe rollback
 
@@ -998,7 +998,7 @@ The target enters `recovered_restricted`. Operators can preserve evidence, inspe
 
 A restored backup predates an external publication withdrawal.
 
-Recovery reconciles restored kOA Mediatheque and Orgo state with retained publication receipts, including receipts for external UCKK delivery. The withdrawn material remains blocked and is not re-exposed or republished merely because the backup contained an older visible state.
+Recovery reconciles restored kOA Mediatheque and Orgo state with retained directional receipts, including external UCKK publication results, inbound package validation, local acceptance, and source mappings. Withdrawn material remains blocked and is not re-exposed, re-imported, republished, or synchronized merely because the backup contained an older visible state.
 
 ### Example 8 — Protected exit
 

@@ -308,6 +308,12 @@
       "id": "LOCK-LIFE-004"
     },
     {
+      "id": "LOCK-MEDIATHEQUE-001"
+    },
+    {
+      "id": "LOCK-MEDIATHEQUE-002"
+    },
+    {
       "id": "LOCK-OFFLINE-001"
     },
     {
@@ -419,10 +425,10 @@
       "id": "LOCK-SYS-RES-004"
     },
     {
-      "id": "LOCK-UCKK-001"
+      "id": "LOCK-UCKK-EXT-001"
     },
     {
-      "id": "LOCK-UCKK-002"
+      "id": "LOCK-UCKK-EXT-002"
     },
     {
       "id": "LOCK-USER-001"

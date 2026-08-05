@@ -6,3 +6,5 @@
 | chatgpt | contracts/integrations/chatgpt.integration.json | active | 1.0.0 |
 | gamma | contracts/integrations/gamma.integration.json | active | 1.0.0 |
 | suno | contracts/integrations/suno.integration.json | active | 1.0.0 |
+| uckk-import | contracts/integrations/uckk-import.integration.json | active | 1.0.0 |
+| uckk-publication | contracts/integrations/uckk-publication.integration.json | active | 1.0.0 |

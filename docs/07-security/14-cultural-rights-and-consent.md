@@ -155,9 +155,9 @@ It preserves the distinction between:
 
 The canonical machine-readable contract is:
 
-```text
+`text
 contracts/artifact-contracts/cultural-rights-policy.schema.json
-```
+`
 
 A policy that conforms to that schema can be packaged as a module of a governance policy bundle, as a standalone signed policy, or as an embedded object policy where the owning component contract permits it.
 
@@ -446,7 +446,7 @@ A research use can be approved while commercial use remains prohibited.
 
 Consent records bind:
 
-```text
+`text
 authority
 subject
 action
@@ -457,7 +457,7 @@ effective interval
 withdrawal state
 evidence
 receipt
-```
+`
 
 The supported consent models are individual, collective, institutional, multi-party, delegated, jurisdictional, and combined.
 
@@ -1165,18 +1165,8 @@ Policy activation and subject import remain separate transitions.
 
 | ADR | Relevance |
 | --- | --- |
-| `ADR-006` | Preserves first-class component boundaries. |
-| `ADR-008` | Separates governance and knowledge release channels. |
-| `ADR-009` | Establishes policy-runtime evaluation for authorization, consent, disclosure, and recourse. |
-| `ADR-010` | Preserves selective audit and private proof. |
-| `ADR-013` | Separates global rules from profile implementation. |
-| `ADR-014` | Establishes the strict external AI boundary. |
-| `ADR-018` | Keeps SenTient isolated and advisory. |
 | `ADR-019` | Separates resource control from governance policy. |
-| `ADR-030` | Establishes local kOA Mediatheque ownership. |
 | `ADR-021` | Keeps Ariane local operation independent from external voice. |
-| `ADR-031` | Keeps UCKK external and publication explicit. |
-| `ADR-023` | Makes offline and high-assurance overlay behavior explicit. |
 | `ADR-024` | Preserves logical ownership across physical deployment forms. |
 
 ### 9.3 Prohibited assumptions
@@ -1267,7 +1257,7 @@ This document conforms when all of the following checks pass:
 
 The validator reports focused failures, including:
 
-```text
+`text
 cultural_policy_schema_invalid
 cultural_policy_identity_collision
 cultural_subject_owner_missing
@@ -1298,7 +1288,7 @@ cultural_policy_activation_partial
 cultural_receipt_private_data_exposed
 cultural_offline_freshness_missing
 cultural_rights_check_bypassed
-```
+`
 
 ## 11. Non-Normative Examples
 

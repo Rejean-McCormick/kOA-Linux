@@ -325,7 +325,7 @@ A privileged executor running as root remains constrained by its operation contr
 
 Least privilege is expressed as a tuple:
 
-```text
+`text
 service identity
 operation identity
 target identity
@@ -337,7 +337,7 @@ time window
 required artifacts
 operating-system permissions
 audit class
-```
+`
 
 Changing any tuple element creates a distinct authorization and validation context.
 
@@ -467,7 +467,7 @@ Debugging helpers remain profile-scoped and excluded from production claims.
 
 A privileged request includes:
 
-```text
+`text
 operation
 request_id
 idempotency_id
@@ -484,7 +484,7 @@ resource_admission_ref
 correlation_id
 requested_at
 deadline_at
-```
+`
 
 Only operation-specific fields permitted by the active contract can appear.
 
@@ -494,7 +494,7 @@ Secret values remain outside the request. Managed references identify required c
 
 Admission proceeds through:
 
-```text
+`text
 request_received
 transport_peer_verified
 service_identity_verified
@@ -508,7 +508,7 @@ expected_state_verified
 artifact_and_trust_verified
 resource_admission_verified
 request_accepted
-```
+`
 
 A failed stage blocks the privileged effect.
 
@@ -542,7 +542,7 @@ For authoritative effects, commit uses an atomic mechanism or validated equivale
 
 Examples include:
 
-```text
+`text
 atomic pointer
 transactional journal
 boot slot
@@ -550,7 +550,7 @@ atomic configuration swap
 verified service-group transition
 hardware-backed key generation switch
 validated equivalent
-```
+`
 
 After commit, the executor verifies actual state rather than assuming adapter success.
 
@@ -558,7 +558,7 @@ After commit, the executor verifies actual state rather than assuming adapter su
 
 The result distinguishes:
 
-```text
+`text
 completed
 blocked
 rejected
@@ -568,7 +568,7 @@ conflicted
 expired
 rolled_back
 recovery_required
-```
+`
 
 Completion requires:
 
@@ -846,13 +846,13 @@ This document is conformant when validation confirms:
 
 The principal validation entry point is:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 Supporting checks include:
 
-```text
+`text
 tools/check_component_boundaries.py
 tools/check_privilege_boundaries.py
 tools/check_interfile_locks.py
@@ -862,7 +862,7 @@ tools/check_ai_boundary.py
 tools/check_traceability.py
 tools/check_decision_closure.py
 tools/check_no_unresolved_state.py
-```
+`
 
 A failed privilege-boundary check blocks the affected operation, component, profile, release activation, or conformance claim.
 

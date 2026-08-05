@@ -171,8 +171,8 @@ KOA:DOC-META:END -->
 
 # Software Supply Chain
 
-> **Document status:** Normative security architecture.  
-> **Security objective:** Preserve exact identity, provenance, integrity, review, authority, and compatibility from source admission through artifact activation.  
+> **Document status:** Normative security architecture.
+> **Security objective:** Preserve exact identity, provenance, integrity, review, authority, and compatibility from source admission through artifact activation.
 > **Authority rule:** No single repository, builder, registry, signer, verifier, release service, or operator owns the complete promotion chain.
 
 ## 1. Purpose
@@ -280,12 +280,12 @@ Examples:
 
 The release channels are:
 
-```text
+`text
 system
 services
 governance
 knowledge
-```
+`
 
 Software supply-chain evidence follows the artifact it describes but does not become an additional release channel.
 
@@ -313,7 +313,7 @@ Their formats remain owned by applicable artifact, trust, and release contracts.
 
 The canonical stages are:
 
-```text
+`text
 source admission
 → dependency and toolchain resolution
 → clean build
@@ -325,7 +325,7 @@ source admission
 → Release Set compatibility binding
 → transfer and staging
 → activation verification
-```
+`
 
 A stage can reject a candidate without changing the active artifact.
 
@@ -490,7 +490,7 @@ An admitted artifact remains inactive until release and activation procedures co
 
 Promotion preserves one exact artifact identity through:
 
-```text
+`text
 builder output
 → verified candidate
 → signed artifact
@@ -500,7 +500,7 @@ builder output
 → offline or connected transfer
 → staged artifact
 → active artifact
-```
+`
 
 Rebuilding from the same source creates a new build result unless reproducibility proves equivalent bytes and the owning release contract permits reuse of the same content identity.
 
@@ -880,7 +880,7 @@ Software supply-chain conformance validates when:
 
 Applicable checks include:
 
-```bash
+`bash
 python docs/tools/check_artifact_contracts.py
 python docs/tools/check_component_boundaries.py
 python docs/tools/check_profile_composition.py
@@ -889,7 +889,7 @@ python docs/tools/check_canonical_ownership.py
 python docs/tools/check_interfile_locks.py
 python docs/tools/check_traceability.py
 python docs/tools/validate_docs.py
-```
+`
 
 ## 11. Non-Normative Examples
 

@@ -21,7 +21,12 @@
     "contracts/integration-types.contract.json",
     "generated/test-catalog.json",
     "generated/evidence-catalog.json",
-    "schemas/component-contract.schema.json"
+    "schemas/component-contract.schema.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json",
+    "04-components/uckk-import-bridge.md"
   ],
   "decision_ids": [
     "DEC-COMP-001",
@@ -34,7 +39,14 @@
     "DEC-ARI-001",
     "DEC-PROFILE-BASELINE-001"
   ],
-  "requirement_ids": [],
+  "requirement_ids": [
+    "REQ-UCKK-IMPORT-001",
+    "REQ-UCKK-IMPORT-002",
+    "REQ-UCKK-IMPORT-003",
+    "REQ-UCKK-IMPORT-004",
+    "REQ-UCKK-IMPORT-005",
+    "REQ-UCKK-IMPORT-006"
+  ],
   "lock_ids": [
     "LOCK-COMP-001",
     "LOCK-COMP-002",
@@ -44,18 +56,19 @@
     "LOCK-SENT-001",
     "LOCK-MEDIATHEQUE-001",
     "LOCK-UCKK-EXT-001",
-    "LOCK-UCKK-EXT-001",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
     "LOCK-PROFILE-001",
-    "LOCK-PROFILE-002"
+    "LOCK-PROFILE-002",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
     "DOC-SYS-004",
     "DOC-SYS-005",
     "DOC-SYS-006",
-    "DOC-PRO-000"
+    "DOC-PRO-000",
+    "DOC-COMP-UCKK-IMPORT-001"
   ],
   "tags": [
     "components",
@@ -63,7 +76,9 @@
     "component-contracts",
     "data-ownership",
     "integration-boundaries",
-    "read-order"
+    "read-order",
+    "import-from-uckk",
+    "offline-learning"
   ]
 }
 KOA:DOC-META:END -->
@@ -193,15 +208,17 @@ The Governance Policy Runtime evaluates authorization, disclosure, consent, priv
 
 Resource pressure does not create policy authority. Policy decisions do not allocate CPU or memory.
 
-### 7.2 Publication Gateway and UCKK publication integration
+### 7.2 Publication Gateway and UCKK Publication Bridge
 
-The Publication Gateway controls cross-domain disclosure and publication.
+Publication Gateway owns outbound disclosure authorization. After an allow decision, the UCKK Publication Bridge maps and transports the bounded package to the online UCKK Mediatheque. Neither owns the local source record or remote UCKK state.
 
-After Publication Gateway authorization, the UCKK Publication Bridge packages and transports selected representations to an authorized external UCKK Moodle destination.
+### 7.3 UCKK Import Bridge and kOA Mediatheque Acceptance
 
-Ingestion is not publication. Publication does not transfer source ownership.
+The UCKK Import Bridge owns inbound retrieval, quarantine, and validation transport. The kOA Mediatheque owns local acceptance and resulting local identities; Governance Policy Runtime evaluates policy when required. Imported packages preserve UCKK provenance and remain separate local objects.
 
-### 7.3 GF Wordbench and SemantiK Architect Runtime
+The publication and import bridges share a Mediatheque frame but never share authorization, queue state, receipts, credentials, or authority by implication.
+
+### 7.4 GF Wordbench and SemantiK Architect Runtime
 
 GF Wordbench creates and validates language artifacts during development and build activity.
 
@@ -209,7 +226,7 @@ SemantiK Architect Runtime loads and uses verified compiled artifacts during run
 
 Runtime consumption does not silently become grammar development.
 
-### 7.4 Ariane Runtime and external voice
+### 7.5 Ariane Runtime and external voice
 
 Ariane Runtime owns deterministic local navigation and interaction orchestration.
 
@@ -217,7 +234,7 @@ An approved external voice path can supply optional voice input through an integ
 
 Loss of external voice does not disable local navigation and does not activate a silent substitute.
 
-### 7.5 SenTient and authoritative components
+### 7.6 SenTient and authoritative components
 
 SenTient produces isolated candidate output.
 

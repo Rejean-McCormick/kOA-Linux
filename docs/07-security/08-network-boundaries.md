@@ -111,7 +111,8 @@ The network model is designed to:
 - preserve component data ownership;
 - prevent direct database and internal-state access across component boundaries;
 - keep local Mediatheque admission internal and external publication behind Publication Gateway;
-- permit UCKK delivery only through the gateway-authorized UCKK adapter;
+- permit outbound UCKK delivery only through the gateway-authorized publication adapter;
+- permit inbound UCKK learning packages only through the declared import endpoint or approved offline-bundle intake into quarantine;
 - constrain outbound communication and external integrations;
 - preserve local operation during Internet or upstream failure;
 - make degraded connectivity and blocked authority visible;
@@ -466,17 +467,17 @@ A route is registered through:
 
 The connection flow is:
 
-```text
+`text
 route_resolved
-  -> network_policy_checked
-  -> transport_authenticated
-  -> application_identity_validated
-  -> authorization_validated
-  -> contract_negotiated
-  -> request_accepted | denied | blocked
-  -> operation_executed
-  -> receipt_or_response_recorded
-```
+ -> network_policy_checked
+ -> transport_authenticated
+ -> application_identity_validated
+ -> authorization_validated
+ -> contract_negotiated
+ -> request_accepted | denied | blocked
+ -> operation_executed
+ -> receipt_or_response_recorded
+`
 
 A transport connection that fails application validation closes or remains restricted without executing the operation.
 
@@ -633,7 +634,7 @@ Publication Gateway resolves identity, trust, consent, policy, audience, destina
 
 ### 8.3 kOA Mediatheque admission and external UCKK publication
 
-User-selected media enters the kOA Mediatheque through its local admission boundary. Only separately selected and authorized media is published to external UCKK through Publication Gateway and the UCKK adapter.
+User-selected media enters the kOA Mediatheque through its local admission boundary. Only separately selected and authorized media is published to online UCKK through Publication Gateway and the publication adapter. Selected UCKK learning packages return through a separate allowlisted import path into quarantine and cannot reach the local catalog directly.
 
 The admission route is distinct from publication routes and from external creative-service routes.
 

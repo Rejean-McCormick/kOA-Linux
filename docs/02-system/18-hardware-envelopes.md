@@ -67,7 +67,7 @@
     "LOCK-LIFE-003",
     "LOCK-IMPL-001",
     "LOCK-IMPL-002",
-    "LOCK-UCKK-EXT-001"
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [

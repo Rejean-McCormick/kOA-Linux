@@ -149,12 +149,12 @@ This document defines the kOA Release Set model.
 
 A Release Set is the complete, compatible release identity activated on a target. It binds the four independent release channels into one explicit operational composition:
 
-```text
+`text
 system
 services
 governance
 knowledge
-```
+`
 
 The channels can evolve independently, but a deployment never activates a channel in isolation from the compatibility evaluation of the resulting complete set.
 
@@ -220,7 +220,7 @@ This document does not prescribe one packaging technology, repository implementa
 
 The adjacent lifecycle documents are:
 
-```text
+`text
 06-lifecycle/00-artifact-model.md
 06-lifecycle/01-artifact-classes.md
 06-lifecycle/02-release-model.md
@@ -240,7 +240,7 @@ The adjacent lifecycle documents are:
 06-lifecycle/17-contract-evolution-and-removal.md
 06-lifecycle/18-sbom-provenance-and-signing.md
 06-lifecycle/19-artifact-retention.md
-```
+`
 
 ## 4. Release Set Model and Responsibilities
 
@@ -834,7 +834,7 @@ This document is conformant when:
 
 Applicable failure codes include:
 
-```text
+`text
 release_set_identity_missing
 release_channel_identity_missing
 implicit_release_identity
@@ -858,7 +858,7 @@ release_set_evidence_path_unavailable
 release_set_receipt_missing
 release_set_restore_target_undefined
 release_set_claim_incomplete
-```
+`
 
 A required validator that cannot run produces `blocked`, not `pass`.
 

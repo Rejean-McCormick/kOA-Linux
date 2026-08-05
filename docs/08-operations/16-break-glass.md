@@ -162,8 +162,8 @@ KOA:DOC-META:END -->
 
 # Break-Glass Operations
 
-> **Document status:** Normative operations architecture.  
-> **Definition:** A break-glass operation is a narrowly controlled emergency operation requiring explicit authorization, evidence, and post-event review.  
+> **Document status:** Normative operations architecture.
+> **Definition:** A break-glass operation is a narrowly controlled emergency operation requiring explicit authorization, evidence, and post-event review.
 > **Authority rule:** Break-glass temporarily enables one already-defined capability; it does not create new architectural authority.
 
 ## 1. Purpose
@@ -241,7 +241,7 @@ Break-glass is not used for:
 
 This document owns the operational lifecycle of a break-glass action:
 
-```text
+`text
 request
 → approve
 → grant
@@ -251,7 +251,7 @@ request
 → revoke
 → restore
 → review
-```
+`
 
 Security contracts own identity assurance, credential protection, cryptographic controls, privileged-path mechanisms, and security classifications.
 
@@ -329,7 +329,7 @@ Evidence references exact operation identities rather than duplicating authorita
 
 The lifecycle states are:
 
-```text
+`text
 requested
 → validating
 → approved
@@ -339,17 +339,17 @@ requested
 → revoked
 → restoring
 → closed
-```
+`
 
 Alternative terminal or recovery states are:
 
-```text
+`text
 denied
 expired
 failed
 rolled_back
 forward_repair
-```
+`
 
 `approved` means policy has allowed the request.
 
@@ -396,7 +396,7 @@ Approval quorum, observation, credentials, and duration can increase with impact
 
 A complete request includes:
 
-```text
+`text
 request_id
 incident_id
 requester_identity
@@ -412,11 +412,11 @@ maximum_duration
 stop_conditions
 restoration_plan
 evidence_plan
-```
+`
 
 It also references:
 
-```text
+`text
 component_contract
 profile
 current_release_set
@@ -424,7 +424,7 @@ policy
 resource_envelope
 exception
 repair_or_rollback_plan
-```
+`
 
 where applicable.
 
@@ -470,14 +470,14 @@ Automation can enforce or execute a grant but cannot act as the required indepen
 
 The preferred execution model is capability-based:
 
-```text
+`text
 approved request
 → bounded temporary grant
 → narrow broker or owner interface
 → exact operation
 → verified result
 → automatic expiry or explicit revocation
-```
+`
 
 A full administrative shell is used only when no narrower active contract can resolve the emergency and the profile explicitly permits that action class.
 
@@ -912,7 +912,7 @@ Break-glass conformance validates when:
 
 Applicable checks include:
 
-```bash
+`bash
 python docs/tools/check_component_boundaries.py
 python docs/tools/check_profile_composition.py
 python docs/tools/check_artifact_contracts.py
@@ -921,7 +921,7 @@ python docs/tools/check_canonical_ownership.py
 python docs/tools/check_interfile_locks.py
 python docs/tools/check_traceability.py
 python docs/tools/validate_docs.py
-```
+`
 
 ## 11. Non-Normative Examples
 

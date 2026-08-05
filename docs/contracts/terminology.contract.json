@@ -49,8 +49,7 @@
     },
     {
       "object": "adr",
-      "pattern": "^ADR-[0-9]{3}$",
-      "example": "ADR-025"
+      "pattern": "^ADR-[0-9]{3}$"
     },
     {
       "object": "test",
@@ -963,36 +962,40 @@
       "term_id": "TERM-COMP-UCKK-DIMENSION-GATEWAY",
       "canonical_name": "UCKK Dimension Gateway",
       "canonical_identifier": "uckk_dimension_gateway",
-      "category": "component",
-      "definition": "Superseded identifier from the former internal UCKK model. The active boundary is the external UCKK Publication Bridge.",
+      "category": "external_integration",
+      "definition": "Retired name from the former internal UCKK model. Active documentation uses either UCKK Publication Bridge for outbound publication or UCKK Import Bridge for inbound retrieval and quarantine.",
       "semantic_owner_ref": "contracts/integrations/uckk-publication.integration.json",
       "scope": [
         "global"
       ],
       "case_sensitive": true,
       "accepted_aliases": [],
-      "deprecated_aliases": [],
+      "deprecated_aliases": [
+        "UCKK Dimension Gateway"
+      ],
       "forbidden_aliases": [],
       "status": "superseded",
-      "first_use_rule": "use_full_name_then_registered_alias",
-      "replacement_term_id": "TERM-INTEGRATION-UCKK-PUBLICATION-BRIDGE"
+      "first_use_rule": "do_not_use_in_active_documentation",
+      "replacement_term_id": "TERM-INTEGRATION-UCKK-IMPORT-BRIDGE"
     },
     {
       "term_id": "TERM-COMP-UCKK-PLATFORM",
       "canonical_name": "UCKK Platform",
       "canonical_identifier": "uckk_platform",
-      "category": "component",
-      "definition": "Superseded identifier from the former model that treated UCKK as a native kOA-Linux component. The active UCKK term classifies it as an external Moodle platform.",
+      "category": "external_platform",
+      "definition": "Retired component identifier from the former internal UCKK model. It may appear only in migration or supersession material; active documentation uses UCKK for the external Moodle platform.",
       "semantic_owner_ref": "contracts/system.contract.json#/uckk_external_platform",
       "scope": [
         "global"
       ],
       "case_sensitive": true,
       "accepted_aliases": [],
-      "deprecated_aliases": [],
+      "deprecated_aliases": [
+        "UCKK Platform"
+      ],
       "forbidden_aliases": [],
       "status": "superseded",
-      "first_use_rule": "use_full_name_then_registered_alias",
+      "first_use_rule": "do_not_use_in_active_documentation",
       "replacement_term_id": "TERM-INTEGRATION-UCKK"
     },
     {
@@ -1821,7 +1824,7 @@
       "canonical_name": "UCKK",
       "canonical_identifier": "uckk",
       "category": "external_platform",
-      "definition": "An external Moodle platform outside kOA-Linux, with its own authority, storage, lifecycle, identity, access control, operations, and Mediatheque.",
+      "definition": "The external online Moodle platform and UCKK Mediatheque. kOA-Linux may publish selected local content to it and import selected learning packages from it through separate governed directional integrations.",
       "semantic_owner_ref": "contracts/system.contract.json#/uckk_external_platform",
       "scope": [
         "global"
@@ -1852,11 +1855,9 @@
       ],
       "case_sensitive": true,
       "accepted_aliases": [
-        "the UCKK bridge"
+        "the UCKK Publication Bridge"
       ],
-      "deprecated_aliases": [
-        "UCKK Dimension Gateway"
-      ],
+      "deprecated_aliases": [],
       "forbidden_aliases": [
         "UCKK synchronization service"
       ],
@@ -1868,8 +1869,8 @@
       "canonical_name": "shared Mediatheque frame",
       "canonical_identifier": "shared_mediatheque_frame",
       "category": "data_model",
-      "definition": "A portable conceptual frame for media identity, versions, hashes, dimensions, collections, metadata, rights, restrictions, provenance, publication eligibility, manifests, and receipts. Using the frame does not merge implementation authority or storage.",
-      "semantic_owner_ref": "contracts/system.contract.json#/uckk_external_platform/mediatheque",
+      "definition": "The versioned portable interchange frame implemented by both the private offline kOA Mediatheque and the online UCKK Mediatheque for identity references, versions, integrity, media description, rights, provenance, lifecycle, mappings, packages, and receipts. Frame compatibility never merges authority, storage, identifiers, access control, or lifecycle.",
+      "semantic_owner_ref": "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
       "scope": [
         "global"
       ],
@@ -2283,6 +2284,84 @@
       "forbidden_aliases": [],
       "status": "active",
       "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-INTEGRATION-UCKK-IMPORT-BRIDGE",
+      "canonical_name": "UCKK Import Bridge",
+      "canonical_identifier": "uckk_import_bridge",
+      "category": "external_integration",
+      "definition": "The controlled inbound integration that retrieves selected UCKK learning packages, places them in quarantine, validates source, license, integrity, provenance, and shared-frame compatibility, and presents them for explicit local acceptance.",
+      "semantic_owner_ref": "contracts/integrations/uckk-import.integration.json",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [
+        "the UCKK Import Bridge"
+      ],
+      "deprecated_aliases": [
+        "UCKK Dimension Gateway"
+      ],
+      "forbidden_aliases": [
+        "UCKK synchronization service"
+      ],
+      "status": "active",
+      "first_use_rule": "use_full_name_then_registered_alias"
+    },
+    {
+      "term_id": "TERM-OP-PUBLISH-TO-UCKK",
+      "canonical_name": "publish_to_uckk",
+      "canonical_identifier": "publish_to_uckk",
+      "category": "operation",
+      "definition": "The explicit outbound operation that obtains Publication Gateway authorization and sends a bounded selected representation to the online UCKK Mediatheque.",
+      "semantic_owner_ref": "contracts/integrations/uckk-publication.integration.json",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [
+        "sync_to_uckk"
+      ],
+      "status": "active",
+      "first_use_rule": "use_exact_name"
+    },
+    {
+      "term_id": "TERM-OP-IMPORT-FROM-UCKK",
+      "canonical_name": "import_from_uckk",
+      "canonical_identifier": "import_from_uckk",
+      "category": "operation",
+      "definition": "The explicit inbound operation that retrieves or receives a selected UCKK learning package, validates it in quarantine, and creates separate local kOA records only after acceptance.",
+      "semantic_owner_ref": "contracts/integrations/uckk-import.integration.json",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [
+        "sync_from_uckk"
+      ],
+      "status": "active",
+      "first_use_rule": "use_exact_name"
+    },
+    {
+      "term_id": "TERM-ART-UCKK-LEARNING-PACKAGE",
+      "canonical_name": "UCKK learning package",
+      "canonical_identifier": "uckk_learning_package",
+      "category": "artifact",
+      "definition": "A selected, complete, verifiable package of UCKK learning structure and shared-frame resources prepared for controlled local and offline use.",
+      "semantic_owner_ref": "contracts/artifact-contracts/uckk-learning-package.schema.json",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
     }
   ],
   "validation": {
@@ -2304,7 +2383,19 @@
     "unknown_term_result": "blocked",
     "alias_collision_result": "fail",
     "deprecated_term_in_active_prose_result": "fail",
-    "forbidden_alias_result": "fail"
+    "forbidden_alias_result": "fail",
+    "prohibited_active_identifiers": [
+      "uckk_platform",
+      "uckk_dimension_gateway",
+      "uckk-platform",
+      "uckk-dimension-gateway",
+      "sync_mediatheques"
+    ],
+    "required_active_identifiers": [
+      "koa_mediatheque",
+      "uckk",
+      "uckk_publication_bridge"
+    ]
   },
   "contract_id": "terminology.registry",
   "contract_type": "terminology_registry"

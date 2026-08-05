@@ -207,9 +207,9 @@ A storage resource also has a `resource_id` that is stable inside the workspace.
 
 The conceptual resource identity is:
 
-```text
+`text
 workspace_id + resource_id
-```
+`
 
 An implementation can transform this identity to meet platform naming limits, but the transformation remains deterministic and collision-resistant.
 
@@ -316,7 +316,7 @@ The source checkout is not used as an implicit home for all mutable service stat
 
 Recommended separation is conceptual:
 
-```text
+`text
 workspace source
 workspace runtime state
 workspace persistent component data
@@ -326,7 +326,7 @@ workspace temporary data
 workspace build output
 workspace backup staging
 workspace restore staging
-```
+`
 
 Generated output that can be reproduced from source and declared inputs remains distinct from authoritative data.
 
@@ -466,19 +466,19 @@ Restore is verified before activation.
 
 The preferred flow is:
 
-```text
+`text
 backup
-    ↓
+ ↓
 isolated restore target
-    ↓
+ ↓
 integrity and compatibility validation
-    ↓
+ ↓
 migration when declared
-    ↓
+ ↓
 representative read and write tests
-    ↓
+ ↓
 activation or rejection
-```
+`
 
 A failed restore target remains non-authoritative.
 
@@ -849,10 +849,8 @@ Their removal does not delete or redefine core component data.
 | ADR | Relevance |
 | --- | --- |
 | `ADR-005` | Supports profile-scoped rootless container and volume implementation without universal runtime coupling. |
-| `ADR-013` | Separates global component and data semantics from profile topology. |
 | `ADR-015` | Establishes isolated development workspaces and permitted shared download caches. |
 | `ADR-019` | Separates resource control from governance policy. |
-| `ADR-023` | Keeps overlay effects explicit. |
 | `ADR-024` | Preserves logical ownership across profile-dependent physical isolation. |
 
 ### 9.3 Prohibited assumptions
@@ -919,7 +917,7 @@ This document conforms when all of the following checks pass:
 
 The validator reports actionable failures, including:
 
-```text
+`text
 workspace_storage_manifest_missing
 workspace_storage_owner_missing
 workspace_storage_class_missing
@@ -941,7 +939,7 @@ workspace_migration_missing_forward_repair
 workspace_orphan_disposition_missing
 workspace_storage_quota_unenforced
 workspace_storage_degradation_inaccurate
-```
+`
 
 ## 11. Non-Normative Examples
 
@@ -949,10 +947,10 @@ workspace_storage_degradation_inaccurate
 
 Two worktrees use:
 
-```text
+`text
 konnaxion-main-a31f
 konnaxion-feature-voting-92cd
-```
+`
 
 Each receives separate database state, upload storage, logs, temporary files, and service volumes. They can share the verified UV download cache but not a `.venv` or PostgreSQL data directory.
 

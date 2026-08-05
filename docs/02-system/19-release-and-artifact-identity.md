@@ -381,7 +381,7 @@ Artifact existence and artifact authority are separate.
 
 A typical lifecycle is:
 
-```text
+`text
 candidate
 -> received
 -> parsed
@@ -392,11 +392,11 @@ candidate
 -> authorized
 -> activating
 -> active
-```
+`
 
 Alternative states include:
 
-```text
+`text
 rejected
 quarantined
 incompatible
@@ -406,7 +406,7 @@ rollback_pending
 rolled_back
 repair_required
 archived
-```
+`
 
 Only the active state participates in current runtime authority.
 

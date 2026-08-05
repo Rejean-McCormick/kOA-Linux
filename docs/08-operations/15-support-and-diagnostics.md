@@ -616,23 +616,23 @@ Case creation proceeds through:
 
 The case progresses through:
 
-```text
+`text
 open
-  -> triaged
-  -> collecting
-  -> analyzing
-  -> action_proposed
-  -> action_authorized
-  -> correcting
-  -> verifying
-  -> resolved | unresolved | transferred
-  -> closing
-  -> closed
-```
+ -> triaged
+ -> collecting
+ -> analyzing
+ -> action_proposed
+ -> action_authorized
+ -> correcting
+ -> verifying
+ -> resolved | unresolved | transferred
+ -> closing
+ -> closed
+`
 
 Possible interruption states include:
 
-```text
+`text
 blocked
 awaiting_user
 awaiting_authority
@@ -640,7 +640,7 @@ awaiting_provider
 evidence_quarantined
 access_revoked
 cleanup_incomplete
-```
+`
 
 A state transition records actor, time, reason, scope, and evidence.
 

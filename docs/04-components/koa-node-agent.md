@@ -231,20 +231,20 @@ A new operation class requires canonical contract, security, profile, requiremen
 
 A canonical request contains:
 
-```json
+`json
 {
-  "operation": "activate_service_bundle",
-  "request_id": "uuid",
-  "caller_identity": "component-or-operator-identity",
-  "profile_context_ref": "contracts/profiles/sovereign-linux-node.profile.json",
-  "policy_decision_ref_when_required": "decision-receipt-reference",
-  "artifact_or_target_refs": ["artifact-reference"],
-  "expected_current_state": {"active_release_set": "release-set-reference"},
-  "parameters": {},
-  "deadline_or_timeout": "declared-limit",
-  "correlation_id": "correlation-reference"
+ "operation": "activate_service_bundle",
+ "request_id": "uuid",
+ "caller_identity": "component-or-operator-identity",
+ "profile_context_ref": "contracts/profiles/sovereign-linux-node.profile.json",
+ "policy_decision_ref_when_required": "decision-receipt-reference",
+ "artifact_or_target_refs": ["artifact-reference"],
+ "expected_current_state": {"active_release_set": "release-set-reference"},
+ "parameters": {},
+ "deadline_or_timeout": "declared-limit",
+ "correlation_id": "correlation-reference"
 }
-```
+`
 
 The canonical request body is used for idempotency and replay protection. An equivalent repeat returns the recorded result. Reusing the identity with different content is rejected.
 

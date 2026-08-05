@@ -27,7 +27,10 @@
     "contracts/artifact-contracts/release-set.schema.json",
     "contracts/artifact-contracts/offline-bundle.schema.json",
     "contracts/artifact-contracts/sovereignty-bundle.schema.json",
-    "contracts/artifact-contracts/provenance-receipt.schema.json"
+    "contracts/artifact-contracts/provenance-receipt.schema.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json"
   ],
   "decision_ids": [
     "DEC-PROFILE-001",
@@ -156,25 +159,25 @@ Restore is not file copying.
 
 A complete restore reconstructs a compatible authority system:
 
-```text
+`text
 verified recovery source
-        ↓
+ ↓
 clean compatible target
-        ↓
+ ↓
 trust, policy, artifacts, and keys
-        ↓
+ ↓
 component-owned authoritative data
-        ↓
+ ↓
 migrations and forward repair
-        ↓
+ ↓
 rebuild of derived state
-        ↓
+ ↓
 readiness and critical workflow validation
-        ↓
+ ↓
 atomic return to normal authority
-        ↓
+ ↓
 restore evidence and recovery closure
-```
+`
 
 A restore source can be complete, readable, and correctly decrypted while still being unusable because:
 
@@ -291,57 +294,57 @@ A disaster declaration does not weaken identity, ownership, policy, or evidence 
 
 ### 3.1 Authority and change
 
-```text
+`text
 generated/authority-manifest.json
 generated/decision-index.json
 generated/requirements-index.json
 generated/assertion-index.json
 generated/decision-index.json
-```
+`
 
 ### 3.2 Components and data authority
 
-```text
+`text
 contracts/system.contract.json
 generated/component-catalog.json
 generated/component-catalog.json
 contracts/components/*.component.json
-```
+`
 
 Component contracts own restore interfaces, data domains, migrations, readiness, and recovery behavior.
 
 ### 3.3 Profiles
 
-```text
+`text
 generated/profile-catalog.json
 contracts/profiles/*.profile.json
-```
+`
 
 Profiles own topology, assurance, locality, resource envelopes, offline closure, and control separation.
 
 ### 3.4 Artifact and release lifecycle
 
-```text
+`text
 contracts/release-channels.contract.json
 contracts/artifact-classes.contract.json
 contracts/artifact-contracts/release-set.schema.json
 contracts/artifact-contracts/offline-bundle.schema.json
 contracts/artifact-contracts/sovereignty-bundle.schema.json
 contracts/artifact-contracts/provenance-receipt.schema.json
-```
+`
 
 ### 3.5 Evidence and exceptions
 
-```text
+`text
 generated/traceability.json
 generated/test-catalog.json
 generated/evidence-catalog.json
 generated/exception-index.json
-```
+`
 
 ### 3.6 Related documents
 
-```text
+`text
 06-lifecycle/04-release-sets.md
 06-lifecycle/12-artifact-verification.md
 06-lifecycle/13-activation-and-verification.md
@@ -351,7 +354,7 @@ generated/exception-index.json
 07-security/01-security-baseline.md
 07-security/18-offline-import-security.md
 08-operations/00-operating-model.md
-```
+`
 
 ## 4. Model and Responsibilities
 
@@ -1196,7 +1199,7 @@ External AI is never a restore authority or required recovery dependency.
 | `DEC-PROFILE-001` | Restore topology, locality, assurance, and offline closure remain profile-specific |
 | `DEC-DATA-001` | Each component restores its own authoritative state; cross-component direct writes remain prohibited |
 | `DEC-GOV-001` | Policy and resource authority remain separate during recovery |
-| `DEC-GATE-001` | Local Mediatheque admission and cross-domain publication remain separate after restore; UCKK remains external |
+| `DEC-GATE-001` | Local Mediatheque admission, outbound publication, and inbound UCKK quarantine or acceptance remain separate after restore; UCKK remains external |
 | `DEC-HW-001` | Sovereign-node recovery and backup targets are part of the profile hardware envelope |
 | `DEC-REL-001` | Exact compatible versions across four release channels are restored through Release Sets |
 | `DEC-AI-001` | External AI is not required for restore or recovery authority |
@@ -1208,7 +1211,8 @@ External AI is never a restore authority or required recovery dependency.
 | --- | --- |
 | `LOCK-DATA-001` | Restore cannot write foreign authoritative state |
 | `LOCK-GOV-001` | Policy and resource authorities remain separate |
-| `LOCK-GATE-001` | Restore does not merge local media admission, publication state, or external UCKK authority |
+| `LOCK-GATE-001` | Restore does not merge local media admission, publication state, import quarantine or acceptance state, or external UCKK authority |
+| `LOCK-UCKK-EXT-002` | Restore does not start bidirectional synchronization or overwrite local accepted content from remote state |
 | `LOCK-PROFILE-001` | Profile-specific recovery rules do not become global |
 | `LOCK-AI-001`, `LOCK-AI-002` | No native or external AI authority enters restore |
 | `LOCK-LIFE-001` | Partial restored artifacts do not become active |
@@ -1319,36 +1323,36 @@ This document is conformant when:
 
 Expected test coverage includes:
 
-```text
-TEST-OPS-RESTORE-001  Restore scope and owner resolution
-TEST-OPS-RESTORE-002  Restore authority separation
-TEST-OPS-RESTORE-003  Component-owned restore interface
-TEST-OPS-RESTORE-004  Direct foreign-write rejection
-TEST-OPS-RESTORE-005  Backup identity and inventory validation
-TEST-OPS-RESTORE-006  Clean compatible target
-TEST-OPS-RESTORE-007  Recovery-secret isolation
-TEST-OPS-RESTORE-008  Profile-conditioned restore topology
-TEST-OPS-RESTORE-009  Release Set dependency closure
-TEST-OPS-RESTORE-010  Artifact trust and compatibility verification
-TEST-OPS-RESTORE-011  Trust and revocation restoration
-TEST-OPS-RESTORE-012  Policy and exception compatibility
-TEST-OPS-RESTORE-013  Tenant and security-domain isolation
-TEST-OPS-RESTORE-014  Component migration and forward repair
-TEST-OPS-RESTORE-015  Derived-state rebuild
-TEST-OPS-RESTORE-016  Contract readiness acceptance
-TEST-OPS-RESTORE-017  Partial restore isolation
-TEST-OPS-RESTORE-018  Failed restore cleanup or recovery path
-TEST-OPS-RESTORE-019  Restore evidence completeness
-TEST-OPS-RESTORE-020  No false pass for incomplete checks
-TEST-OPS-RESTORE-021  RPO measurement
-TEST-OPS-RESTORE-022  RTO measurement
-TEST-OPS-RESTORE-023  Offline local restore closure
-TEST-OPS-RESTORE-024  Sovereignty Bundle independent restore
-TEST-OPS-RESTORE-025  Recovery control separation
-TEST-OPS-RESTORE-026  Bounded idempotent automation
-TEST-OPS-RESTORE-027  Temporary authority cleanup
-TEST-OPS-RESTORE-028  Post-restore inventory reconciliation
-```
+`text
+TEST-OPS-RESTORE-001 Restore scope and owner resolution
+TEST-OPS-RESTORE-002 Restore authority separation
+TEST-OPS-RESTORE-003 Component-owned restore interface
+TEST-OPS-RESTORE-004 Direct foreign-write rejection
+TEST-OPS-RESTORE-005 Backup identity and inventory validation
+TEST-OPS-RESTORE-006 Clean compatible target
+TEST-OPS-RESTORE-007 Recovery-secret isolation
+TEST-OPS-RESTORE-008 Profile-conditioned restore topology
+TEST-OPS-RESTORE-009 Release Set dependency closure
+TEST-OPS-RESTORE-010 Artifact trust and compatibility verification
+TEST-OPS-RESTORE-011 Trust and revocation restoration
+TEST-OPS-RESTORE-012 Policy and exception compatibility
+TEST-OPS-RESTORE-013 Tenant and security-domain isolation
+TEST-OPS-RESTORE-014 Component migration and forward repair
+TEST-OPS-RESTORE-015 Derived-state rebuild
+TEST-OPS-RESTORE-016 Contract readiness acceptance
+TEST-OPS-RESTORE-017 Partial restore isolation
+TEST-OPS-RESTORE-018 Failed restore cleanup or recovery path
+TEST-OPS-RESTORE-019 Restore evidence completeness
+TEST-OPS-RESTORE-020 No false pass for incomplete checks
+TEST-OPS-RESTORE-021 RPO measurement
+TEST-OPS-RESTORE-022 RTO measurement
+TEST-OPS-RESTORE-023 Offline local restore closure
+TEST-OPS-RESTORE-024 Sovereignty Bundle independent restore
+TEST-OPS-RESTORE-025 Recovery control separation
+TEST-OPS-RESTORE-026 Bounded idempotent automation
+TEST-OPS-RESTORE-027 Temporary authority cleanup
+TEST-OPS-RESTORE-028 Post-restore inventory reconciliation
+`
 
 The test catalog and evidence registry own executable controls and evidence definitions.
 

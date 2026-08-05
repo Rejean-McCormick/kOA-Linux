@@ -229,22 +229,22 @@ A trigger changes only the capabilities whose declared dependencies or authority
 
 A machine-readable degradation record contains:
 
-```json
+`json
 {
-  "capability_id": "artifact_activation",
-  "profile_ref": "contracts/profiles/sovereign-linux-node.profile.json",
-  "previous_state": "enabled",
-  "current_state": "blocked",
-  "trigger": "recovery_path_invalid",
-  "preserved_behavior": ["inspection", "current_release_operation"],
-  "blocked_behavior": ["new_activation"],
-  "queued_operation_refs": [],
-  "detected_at": "date-time",
-  "recheck_condition": "validated recovery path becomes available",
-  "receipt_refs": [],
-  "evidence_refs": []
+ "capability_id": "artifact_activation",
+ "profile_ref": "contracts/profiles/sovereign-linux-node.profile.json",
+ "previous_state": "enabled",
+ "current_state": "blocked",
+ "trigger": "recovery_path_invalid",
+ "preserved_behavior": ["inspection", "current_release_operation"],
+ "blocked_behavior": ["new_activation"],
+ "queued_operation_refs": [],
+ "detected_at": "date-time",
+ "recheck_condition": "validated recovery path becomes available",
+ "receipt_refs": [],
+ "evidence_refs": []
 }
-```
+`
 
 The record contains no secrets and does not become authority for another component.
 

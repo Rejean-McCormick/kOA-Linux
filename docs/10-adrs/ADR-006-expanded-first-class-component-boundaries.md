@@ -60,7 +60,7 @@ This ADR records rationale and consequences. The linked owner decision authorize
 
 kOA recognizes a complete set of first-class components rather than modeling the system as only two principal product planes.
 
-Konnaxion and Orgo remain co-principal product domains in the user-facing knowledge-to-action loop, but they are two members of a broader architectural component set. Identity and Trust, Governance Policy Runtime, Resource Governor, Publication Gateway, UCKK Platform, UCKK Dimension Gateway, Kristal Runtime, the language workbench and runtime, Ariane Runtime, Audit Broker, kOA Node Agent, SenTient, and the other registered components retain independent responsibility, interface, lifecycle, observability, and authoritative-data boundaries.
+Konnaxion and Orgo remain co-principal product domains in the user-facing knowledge-to-action loop, but they are two members of a broader architectural component set. Identity and Trust, Governance Policy Runtime, Resource Governor, Publication Gateway, kOA Mediatheque, UCKK Publication Bridge, UCKK Import Bridge, Kristal Runtime, the language workbench and runtime, Ariane Runtime, Audit Broker, kOA Node Agent, SenTient, and the other registered components or integrations retain independent responsibility, interface, lifecycle, observability, and authoritative-data boundaries. The online UCKK platform itself remains an external authority, not a local component.
 
 The selected model treats a component as a logical authority unit, not as a synonym for a repository, executable, container, database server, screen, workspace, team, or deployment process.
 
@@ -161,7 +161,7 @@ Requirements derived from `DEC-COMP-001` are owned by `generated/requirements-in
 
 - `ADR-007` — Kristal remains a transversal foundation without becoming a universal workflow engine.
 - `ADR-019` — Resource Governor and Governance Policy Runtime remain separate authorities.
-- `ADR-020` — Publication Gateway and UCKK Dimension Gateway remain separate contracts.
+- `ADR-032` — Directional UCKK publication and import remain separate contracts with distinct authority.
 
 ### 3.8 Related exceptions
 
@@ -251,10 +251,10 @@ The decision is constrained by these architectural rules:
 - optionality remains explicit;
 - failure of one optional component does not transfer its authority;
 - Resource Governor and Governance Policy Runtime remain separate;
-- Publication Gateway and UCKK Dimension Gateway remain separate;
+- Publication Gateway, UCKK Publication Bridge, and UCKK Import Bridge remain separate;
 - GF Wordbench and SemantiK Architect Runtime remain separate;
 - SenTient remains optional and non-authoritative;
-- native UCKK processing remains deterministic;
+- local kOA Mediatheque processing and UCKK package validation remain deterministic;
 - Ariane local navigation remains independent from external voice;
 - external AI providers remain integrations rather than native first-class components;
 - the four release channels remain independent;
@@ -430,8 +430,8 @@ The component registry owns the active set. The set established by this decision
 | `resource_governor` | Resource Governor | Deterministic resource envelopes, allocation, limits, queues, concurrency, and enforcement. | Resource state does not create authorization, consent, disclosure, or privilege. |
 | `semantik_architect_runtime` | SemantiK Architect Runtime | Runtime loading and deterministic use of compiled language artifacts. | Development-time grammar construction remains in GF Wordbench. |
 | `sentient` | SenTient | Optional, isolated, task-activated research and enrichment workbench. | It is non-authoritative and absent from the native baseline. |
-| `uckk_dimension_gateway` | UCKK Dimension Gateway | Controlled ingestion of explicitly selected material into an applicable UCKK dimension. | It does not perform cross-domain publication. |
-| `uckk_platform` | UCKK Platform | Deterministic media identity, storage, native processing, derivatives, export, backup, and restore. | External AI surfaces remain optional integrations and candidate sources. |
+| `uckk_import_bridge` | UCKK Import Bridge | Controlled retrieval, quarantine, and validation of explicitly selected UCKK learning packages. | It does not authorize outbound publication or own accepted local records. |
+| `koa_mediatheque` | kOA Mediatheque | Private local identity, storage, deterministic processing, accepted imports, export, backup, restore, and offline learning availability. | The online UCKK Mediatheque remains a separate authority reached through directional integrations. |
 
 The table is explanatory. `generated/component-catalog.json#/components` remains the canonical inventory.
 
@@ -514,7 +514,7 @@ Representative domains include:
 - Identity and Trust identity, credential, trust, and revocation records assigned by its contract;
 - Governance Policy Runtime policy evaluation inputs, configured policy artifacts, and decision receipts assigned by its contract;
 - Resource Governor resource-envelope state, allocations, queues, and enforcement observations assigned by its contract;
-- UCKK Platform media identities, sources, deterministic derivatives, exports, backups, and restore state;
+- kOA Mediatheque local identities, sources, deterministic derivatives, accepted imports, exports, backups, and restore state;
 - Publication Gateway publication intents or execution records assigned by its contract;
 - kOA Node Agent node-lifecycle and bounded host-operation state assigned by its contract.
 
@@ -1048,7 +1048,7 @@ Negative-path validation rejects:
 - Resource Governor returning policy authorization;
 - Governance Policy Runtime allocating resources;
 - Publication Gateway performing UCKK dimension ingestion;
-- UCKK Dimension Gateway publishing cross-domain content;
+- UCKK Import Bridge authorizing or executing outbound publication;
 - GF Wordbench being required at language runtime;
 - SenTient writing authoritative product state;
 - external AI appearing as native authority;

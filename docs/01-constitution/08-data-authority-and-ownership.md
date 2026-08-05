@@ -17,11 +17,18 @@
     "generated/requirements-index.json",
     "generated/assertion-index.json",
     "generated/traceability.json",
-    "generated/exception-index.json"
+    "generated/exception-index.json",
+    "contracts/integrations/uckk-publication.integration.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json"
   ],
   "decision_ids": [
     "DEC-DATA-001",
-    "DEC-GATE-001"
+    "DEC-GATE-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001"
   ],
   "requirement_ids": [
     "REQ-CONST-DATA-001",
@@ -47,13 +54,20 @@
     "REQ-CONST-DATA-021",
     "REQ-CONST-DATA-022",
     "REQ-CONST-DATA-023",
-    "REQ-CONST-DATA-024"
+    "REQ-CONST-DATA-024",
+    "REQ-CONST-DATA-025",
+    "REQ-CONST-DATA-026",
+    "REQ-CONST-DATA-027",
+    "REQ-CONST-DATA-028"
   ],
   "lock_ids": [
     "LOCK-DATA-001",
     "LOCK-GATE-001",
     "LOCK-PROFILE-001",
-    "LOCK-IMPL-001"
+    "LOCK-IMPL-001",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -311,20 +325,32 @@ The Publication Gateway does not become the owner of the source domain merely be
 
 ### 4.9 UCKK publication integration
 
-The UCKK Publication Bridge packages and transports explicitly selected kOA Mediatheque records to an authorized external UCKK Moodle destination after Publication Gateway authorization.
+The UCKK Publication Bridge implements the outbound `publish_to_uckk` direction. It packages and transports only the representation explicitly authorized by Publication Gateway to a declared online UCKK Moodle destination.
 
 Its responsibility includes:
 
-- the selected-media transfer;
-- dimension targeting;
+- destination and course-context mapping;
+- shared-Mediatheque-frame mapping evidence;
+- package and manifest production;
 - integrity verification;
-- controlled admission;
-- transfer result;
-- applicable receipt or evidence.
+- authenticated transport;
+- bounded retry and reconciliation;
+- remote result handling;
+- publication receipts.
 
-The UCKK Publication Bridge does not replace the Publication Gateway, does not own local kOA Mediatheque records, and does not acquire authority over the external UCKK platform merely because it performs transport.
+The bridge does not replace Publication Gateway, own local kOA Mediatheque records, or acquire authority over the online UCKK Mediatheque. UCKK creates and owns a separate destination object after accepting the package.
 
-### 4.10 Profiles and topology
+### 4.10 UCKK import integration
+
+The UCKK Import Bridge implements the inbound `import_from_uckk` direction. It retrieves or receives an explicitly selected UCKK course, learning path, instruction collection, manual, or resource graph and places the complete package in quarantine.
+
+Its responsibility includes source and endpoint validation, package retrieval or offline-bundle intake, integrity and completeness checks, license and restriction evaluation, provenance preservation, shared-frame compatibility checks, and import-receipt production.
+
+The UCKK Import Bridge does not accept authoritative local state. The kOA Mediatheque accepts or rejects the validated candidate, creates separate local record and version identities, and preserves the UCKK source and version as provenance. A later UCKK version remains an update candidate until another explicit local decision.
+
+The two integrations do not share queue state, credentials, receipts, retry decisions, or conflict policy by implication. Connectivity restoration never authorizes automatic upload, download, overwrite, deletion, or bidirectional synchronization.
+
+### 4.11 Profiles and topology
 
 A profile owns conditional deployment behavior, including:
 
@@ -348,7 +374,7 @@ Examples:
 
 These choices alter containment and operational risk. They do not alter the owning component unless the canonical ownership registry changes.
 
-### 4.11 Backup, restore, and rollback
+### 4.12 Backup, restore, and rollback
 
 Backup ownership and data ownership are distinct.
 
@@ -366,7 +392,7 @@ A restore operation preserves:
 
 A restore that would create mixed incompatible authoritative state remains blocked or uses an approved forward-repair process.
 
-### 4.12 Data-authority changes
+### 4.13 Data-authority changes
 
 The following changes affect constitutional data authority:
 
@@ -385,7 +411,7 @@ These changes receive major semantic-change treatment because they alter who can
 
 ## 5. Applicable Normative Requirements
 
-<!-- GENERATED:REQUIREMENTS:BEGIN ids=REQ-CONST-DATA-001,REQ-CONST-DATA-002,REQ-CONST-DATA-003,REQ-CONST-DATA-004,REQ-CONST-DATA-005,REQ-CONST-DATA-006,REQ-CONST-DATA-007,REQ-CONST-DATA-008,REQ-CONST-DATA-009,REQ-CONST-DATA-010,REQ-CONST-DATA-011,REQ-CONST-DATA-012,REQ-CONST-DATA-013,REQ-CONST-DATA-014,REQ-CONST-DATA-015,REQ-CONST-DATA-016,REQ-CONST-DATA-017,REQ-CONST-DATA-018,REQ-CONST-DATA-019,REQ-CONST-DATA-020,REQ-CONST-DATA-021,REQ-CONST-DATA-022,REQ-CONST-DATA-023,REQ-CONST-DATA-024 -->
+<!-- GENERATED:REQUIREMENTS:BEGIN ids=REQ-CONST-DATA-001,REQ-CONST-DATA-002,REQ-CONST-DATA-003,REQ-CONST-DATA-004,REQ-CONST-DATA-005,REQ-CONST-DATA-006,REQ-CONST-DATA-007,REQ-CONST-DATA-008,REQ-CONST-DATA-009,REQ-CONST-DATA-010,REQ-CONST-DATA-011,REQ-CONST-DATA-012,REQ-CONST-DATA-013,REQ-CONST-DATA-014,REQ-CONST-DATA-015,REQ-CONST-DATA-016,REQ-CONST-DATA-017,REQ-CONST-DATA-018,REQ-CONST-DATA-019,REQ-CONST-DATA-020,REQ-CONST-DATA-021,REQ-CONST-DATA-022,REQ-CONST-DATA-023,REQ-CONST-DATA-024,REQ-CONST-DATA-025,REQ-CONST-DATA-026,REQ-CONST-DATA-027,REQ-CONST-DATA-028 -->
 - **REQ-CONST-DATA-001 — SHALL:** Every authoritative data domain have exactly one owning component.
 - **REQ-CONST-DATA-002 — SHALL:** Every owning component declare its authoritative data domains in `generated/component-catalog.json` and its active component contract.
 - **REQ-CONST-DATA-003 — SHALL NOT:** A component write directly to another component's authoritative source tables, files, object stores, queues, indexes, or mutable internal state.
@@ -410,6 +436,10 @@ These changes receive major semantic-change treatment because they alter who can
 - **REQ-CONST-DATA-022 — SHALL:** A failed cross-component transfer preserve the last valid authoritative state and report an explicit failure result to the initiating actor or component.
 - **REQ-CONST-DATA-023 — SHALL:** Critical cross-domain mutation, disclosure, publication, activation, restore, and migration operations produce machine-readable receipts or evidence records.
 - **REQ-CONST-DATA-024 — SHALL:** Any approved exception to a data-authority requirement be explicit, narrowly scoped, registered, time-bounded or condition-bounded, supported by compensating controls, and evidenced.
+- **REQ-CONST-DATA-025 — SHALL:** Explicit import of selected UCKK learning material use the registered UCKK import integration, quarantine the complete package, and require kOA Mediatheque acceptance before local authoritative use.
+- **REQ-CONST-DATA-026 — SHALL NOT:** Shared-Mediatheque-frame compatibility merge kOA and UCKK identifiers, storage, access control, lifecycle, retention, deletion authority, or data ownership.
+- **REQ-CONST-DATA-027 — SHALL NOT:** Connectivity restoration or remote-version availability trigger automatic upload, download, overwrite, deletion, progress transfer, or bidirectional synchronization between the kOA and UCKK Mediatheques.
+- **REQ-CONST-DATA-028 — SHALL:** Every accepted UCKK import receive separate local identities and preserve source identity, source version, integrity, license, restrictions, provenance, mapping evidence, and the local acceptance decision.
 <!-- GENERATED:REQUIREMENTS:END -->
 
 ## 6. Procedures or State Transitions
@@ -510,6 +540,7 @@ A partial restore does not create partial authority.
 | Restore versions are incompatible | Block restore activation or use forward repair | Existing active release | Mixed-version authoritative state | Restore compatibility report |
 | Publication policy fails | Reject publication | Source-domain authority | External disclosure | Publication failure receipt |
 | UCKK publication validation fails | Reject or queue publication | Original kOA Mediatheque record and prior receipts | New external UCKK copy | Publication failure receipt |
+| UCKK import validation fails | Keep the package quarantined or reject it | Existing local catalog and accepted offline content | New or updated local copy | Import failure receipt and quarantine evidence |
 | Validation tooling cannot execute | Mark validation blocked | Previous valid release | New release activation | Blocked validation report |
 
 Safe degradation is capability-scoped.
@@ -599,7 +630,9 @@ It does not erase the producer and consumer owners.
 
 The Publication Gateway mediates publication and disclosure.
 
-The UCKK Publication Bridge performs target-specific packaging and transport of an authorized publication package to the external UCKK platform.
+The UCKK Publication Bridge performs target-specific packaging and transport of an authorized publication package to the online UCKK platform.
+
+The UCKK Import Bridge retrieves or receives a selected UCKK learning package, quarantines it, and produces validation evidence. The kOA Mediatheque remains the only local acceptance authority.
 
 A gateway can validate, transform, transport, queue, or record a transfer within its contract. It cannot silently absorb the source domain or destination domain.
 
@@ -618,7 +651,7 @@ Infrastructure access does not create application ownership, business authority,
 | Decision ID | Effect on this document |
 | --- | --- |
 | `DEC-DATA-001` | Establishes mandatory logical data ownership, permits profile-controlled physical sharing, and prohibits direct writes into another component's authoritative source tables |
-| `DEC-UCKK-EXT-001` | Keeps disclosure authorization in Publication Gateway and UCKK-specific transport in the external integration |
+| `DEC-UCKK-EXT-001` | Establishes separate governed publication and import directions between the private kOA and online UCKK Mediatheques |
 
 ### 9.2 Protected alignment locks
 
@@ -626,6 +659,7 @@ Infrastructure access does not create application ownership, business authority,
 | --- | --- |
 | `LOCK-DATA-001` | No component writes directly to another component's authoritative source tables |
 | `LOCK-UCKK-EXT-001` | UCKK publication transport cannot bypass Publication Gateway authorization or own local media |
+| `LOCK-UCKK-EXT-002` | UCKK import remains quarantined and non-authoritative until explicit local acceptance; no shared authority or implicit synchronization is permitted |
 | `LOCK-PROFILE-001` | Profile-specific topology and isolation choices do not become global authority |
 | `LOCK-IMPL-001` | A recipe or example does not redefine data authority |
 
@@ -645,7 +679,9 @@ The following assumptions are invalid:
 - the sender of a command owns the resulting state;
 - an event consumer can revise the producer's source event;
 - a gateway owns every domain whose data passes through it;
-- the Publication Gateway and UCKK Publication Bridge are interchangeable;
+- Publication Gateway, UCKK Publication Bridge, and UCKK Import Bridge are interchangeable;
+- the shared Mediatheque frame creates a shared database, identifier namespace, or authority domain;
+- reconnecting authorizes automatic UCKK upload, download, overwrite, deletion, or progress transfer;
 - a development shortcut is acceptable in production authority;
 - a recipe can authorize direct database writes;
 - a missing contract has an obvious default;
@@ -674,7 +710,10 @@ This document is conformant when all applicable criteria below pass.
 12. Every cross-component mutation path resolves to an active versioned contract.
 13. Direct cross-component source-store mutation is rejected by `LOCK-DATA-001`.
 14. Publication flows resolve to the Publication Gateway contract.
-15. Explicit publication to the external UCKK platform resolves to the UCKK publication integration and requires prior Publication Gateway authorization.
+15. Explicit publication to the online UCKK platform resolves to the UCKK publication integration and requires prior Publication Gateway authorization.
+16. Explicit import from UCKK resolves to the UCKK import integration, enters quarantine, and requires local kOA Mediatheque acceptance.
+17. Shared-frame compatibility does not merge authority, identifiers, storage, lifecycle, or access control.
+18. Reconnection does not authorize implicit synchronization or overwrite.
 16. `LOCK-GATE-001` confirms that the two gateway contracts remain distinct.
 17. Profile contracts do not transfer logical ownership through topology declarations.
 18. Derived stores declare source lineage and rebuild behavior.
@@ -689,20 +728,20 @@ This document is conformant when all applicable criteria below pass.
 
 Expected validation coverage includes:
 
-```text
-TEST-CONST-DATA-001  Unique authoritative owner per data domain
-TEST-CONST-DATA-002  Component-contract ownership coverage
-TEST-CONST-DATA-003  Direct foreign source-store write rejection
-TEST-CONST-DATA-004  Shared infrastructure logical separation
-TEST-CONST-DATA-005  Cross-component transfer contract resolution
-TEST-CONST-DATA-006  Derived-store source and rebuild declaration
-TEST-CONST-DATA-007  Gateway separation
-TEST-CONST-DATA-008  Profile topology does not transfer ownership
-TEST-CONST-DATA-009  Restore and migration compatibility
-TEST-CONST-DATA-010  Receipt and evidence coverage
-TEST-CONST-DATA-011  Decision and impact closure
-TEST-CONST-DATA-012  Exception and traceability completeness
-```
+`text
+TEST-CONST-DATA-001 Unique authoritative owner per data domain
+TEST-CONST-DATA-002 Component-contract ownership coverage
+TEST-CONST-DATA-003 Direct foreign source-store write rejection
+TEST-CONST-DATA-004 Shared infrastructure logical separation
+TEST-CONST-DATA-005 Cross-component transfer contract resolution
+TEST-CONST-DATA-006 Derived-store source and rebuild declaration
+TEST-CONST-DATA-007 Gateway separation
+TEST-CONST-DATA-008 Profile topology does not transfer ownership
+TEST-CONST-DATA-009 Restore and migration compatibility
+TEST-CONST-DATA-010 Receipt and evidence coverage
+TEST-CONST-DATA-011 Decision and impact closure
+TEST-CONST-DATA-012 Exception and traceability completeness
+`
 
 The test catalog and evidence registry own test and evidence definitions. This document does not claim that those tests have already run.
 
@@ -714,17 +753,17 @@ The test catalog and evidence registry own test and evidence definitions. This d
 
 A lightweight profile uses one PostgreSQL process.
 
-```text
+`text
 PostgreSQL process
 ├── database or schema: orgo
-│   └── identity: orgo_runtime
+│ └── identity: orgo_runtime
 ├── database or schema: konnaxion
-│   └── identity: konnaxion_runtime
+│ └── identity: konnaxion_runtime
 ├── database or schema: ariane
-│   └── identity: ariane_runtime
+│ └── identity: ariane_runtime
 └── database or schema: uckk
-    └── identity: uckk_external_platform
-```
+ └── identity: uckk_external_platform
+`
 
 Each identity can mutate only its own authoritative namespace.
 
@@ -756,13 +795,19 @@ Publication Gateway verifies disclosure authority, rights, restrictions, audienc
 
 This flow is not treated as general cross-domain publication.
 
-### 11.5 Sovereign profile
+### 11.5 Import from UCKK for offline use
+
+A school selects an UCKK learning path and exact source version. The UCKK Import Bridge retrieves or receives the complete package, places it in quarantine, and verifies source, integrity, license, restrictions, provenance, required resources, and shared-frame compatibility.
+
+After explicit local acceptance, the kOA Mediatheque creates separate local identities and keeps the accepted material available offline. UCKK remains the source authority for the online object; local adaptations, progress, and private procedures remain local unless separately selected for publication.
+
+### 11.6 Sovereign profile
 
 A sovereign profile deploys each component with a separate database instance and storage identity.
 
 The stronger physical separation provides additional assurance. The logical owners remain the same component owners defined in `generated/component-catalog.json`.
 
-### 11.6 Invalid direct write
+### 11.7 Invalid direct write
 
 A recipe suggests that Orgo update a Konnaxion table with a shared database credential.
 

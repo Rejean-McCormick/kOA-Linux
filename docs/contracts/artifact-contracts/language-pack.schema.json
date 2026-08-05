@@ -1433,7 +1433,7 @@
         },
         "consumer_contract_ref": {
           "type": "string",
-          "const": "contracts/components/semantik-architect-runtime.component.json"
+          "const": "contracts/subsystems/semantik-architect.subsystem.json"
         },
         "consumer_contract_versions": {
           "$ref": "#/$defs/versionInterval"

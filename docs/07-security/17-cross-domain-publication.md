@@ -244,8 +244,6 @@ Related explanatory authority includes:
 - `01-constitution/12-cultural-rights-and-consent.md`;
 - `04-components/03-component-integration-boundaries.md`;
 - `07-security/08-network-boundaries.md`;
-- `10-adrs/ADR-030-koa-mediatheque-as-an-internal-component.md`;
-- `10-adrs/ADR-031-uckk-as-an-external-moodle-publication-target.md`.
 
 The machine-readable contracts own the artifact fields and lifecycle values. This document explains the security model and required controls.
 
@@ -571,14 +569,14 @@ Staging proceeds through:
 
 Execution proceeds through:
 
-```text
+`text
 approved
-  -> staging
-  -> ready
-  -> publishing
-  -> published | partially_delivered | failed
-  -> remediating | closed
-```
+ -> staging
+ -> ready
+ -> publishing
+ -> published | partially_delivered | failed
+ -> remediating | closed
+`
 
 Before delivery:
 
@@ -708,9 +706,9 @@ Neither component writes the other’s database.
 
 ### 8.2 kOA Mediatheque to external UCKK Moodle
 
-The kOA Mediatheque owns local accepted media objects, versions, collections, provenance, rights, and access rules. The external UCKK Moodle platform independently owns only the content it accepts into its own domain.
+The kOA Mediatheque owns local accepted media objects, versions, collections, provenance, rights, and access rules. The online UCKK Moodle platform independently owns only the content it accepts into its own domain. The reverse import direction is governed by a separate contract and never weakens this publication boundary.
 
-Publication Gateway authorizes release from the kOA Mediatheque. The UCKK publication adapter packages and delivers the approved material to the authenticated external Moodle target and records its result. It does not write UCKK databases directly or merge authorities.
+Publication Gateway authorizes release from the kOA Mediatheque. The UCKK Publication Bridge packages and delivers the approved material to the authenticated external Moodle target and records its result. It does not write UCKK databases directly or merge authorities.
 
 Admission receipts do not replace publication decisions.
 

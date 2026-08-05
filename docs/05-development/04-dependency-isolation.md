@@ -188,11 +188,11 @@ A shared cache never becomes the installed environment. Eviction of a cache may 
 
 Every Python workspace contains:
 
-```text
+`text
 pyproject.toml
 uv.lock
 .venv/
-```
+`
 
 The Python version is declared by the repository or active toolchain contract.
 
@@ -200,9 +200,9 @@ The workspace-local `.venv` contains installed mutable state. It is not committe
 
 Frozen validation uses:
 
-```bash
+`bash
 uv sync --frozen
-```
+`
 
 A content-addressed UV cache may be shared. Global application dependency installation is outside the development contract.
 

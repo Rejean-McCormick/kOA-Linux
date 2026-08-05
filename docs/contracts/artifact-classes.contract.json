@@ -1441,6 +1441,177 @@
         "LOCK-DEV-004",
         "LOCK-LIFE-002"
       ]
+    },
+    "shared_mediatheque_frame": {
+      "artifact_class_id": "ART-CLASS-017",
+      "canonical_name": "shared Mediatheque frame record",
+      "description": "Portable authority-preserving interchange record used by the kOA and UCKK Mediatheques.",
+      "category": "interchange_record",
+      "schema_ref": "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
+      "example_refs": [],
+      "lifecycle_profile": "versioned_configuration",
+      "identity_model": "authority_domain_object_and_version",
+      "release_channel_refs": [
+        "contracts/release-channels.contract.json#/channels/governance"
+      ],
+      "allowed_scopes": [
+        "component",
+        "artifact_class"
+      ],
+      "producer_roles": [
+        "koa_mediatheque",
+        "uckk_mediatheque"
+      ],
+      "consumer_roles": [
+        "uckk_publication_bridge",
+        "uckk_import_bridge",
+        "koa_mediatheque"
+      ],
+      "verification": {
+        "schema_validation": "required",
+        "signature": "context_dependent",
+        "provenance_receipt": "required_for_transfer",
+        "sbom": "not_applicable"
+      },
+      "activation": {
+        "model": "accepted_with_owner_authority",
+        "partial_activation_allowed": false,
+        "preconditions": [
+          "frame_version_supported",
+          "rights_preserved",
+          "provenance_preserved"
+        ]
+      },
+      "recovery": {
+        "strategy": "retain_prior_authoritative_version",
+        "forward_repair_allowed": true,
+        "failed_activation_effect": "candidate_remains_inactive"
+      },
+      "retention": {
+        "active_versions": "owner_policy",
+        "historical_versions": "retain_with_transfer_receipts"
+      },
+      "lock_refs": [
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
+        "LOCK-UCKK-EXT-002"
+      ]
+    },
+    "uckk_learning_package": {
+      "artifact_class_id": "ART-CLASS-018",
+      "canonical_name": "UCKK learning package",
+      "description": "Selected UCKK course, learning path, instruction collection, manual, or resource graph prepared for controlled local and offline use.",
+      "category": "offline_import_package",
+      "schema_ref": "contracts/artifact-contracts/uckk-learning-package.schema.json",
+      "example_refs": [],
+      "lifecycle_profile": "transfer_package",
+      "identity_model": "package_id_and_version",
+      "release_channel_refs": [],
+      "allowed_scopes": [
+        "component",
+        "artifact_class"
+      ],
+      "producer_roles": [
+        "uckk_export_surface"
+      ],
+      "consumer_roles": [
+        "uckk_import_bridge",
+        "koa_mediatheque"
+      ],
+      "verification": {
+        "schema_validation": "required",
+        "signature": "required_or_equivalent_source_evidence",
+        "provenance_receipt": "required",
+        "sbom": "not_applicable"
+      },
+      "activation": {
+        "model": "quarantine_validate_accept",
+        "partial_activation_allowed": false,
+        "preconditions": [
+          "manifest_complete",
+          "integrity_verified",
+          "license_resolved",
+          "frame_compatible",
+          "local_acceptance"
+        ]
+      },
+      "recovery": {
+        "strategy": "reject_or_remove_quarantine",
+        "forward_repair_allowed": true,
+        "failed_activation_effect": "no_local_authoritative_record_created"
+      },
+      "retention": {
+        "active_versions": "accepted_local_policy",
+        "historical_versions": "retain_source_and_receipt_evidence"
+      },
+      "lock_refs": [
+        "LOCK-UCKK-EXT-001",
+        "LOCK-UCKK-EXT-002",
+        "LOCK-OFFLINE-001"
+      ]
+    },
+    "uckk_import_receipt": {
+      "artifact_class_id": "ART-CLASS-019",
+      "canonical_name": "UCKK import receipt",
+      "description": "Immutable evidence of UCKK learning-package retrieval, validation, acceptance, rejection, and local identity creation.",
+      "category": "receipt",
+      "schema_ref": "contracts/artifact-contracts/uckk-import-receipt.schema.json",
+      "example_refs": [],
+      "lifecycle_profile": "immutable_receipt",
+      "identity_model": "unique_receipt_id",
+      "release_channel_refs": [],
+      "allowed_scopes": [
+        "component",
+        "artifact_class"
+      ],
+      "producer_roles": [
+        "uckk_import_bridge",
+        "koa_mediatheque"
+      ],
+      "consumer_roles": [
+        "audit_broker",
+        "evidence_collector",
+        "conformance_validator"
+      ],
+      "verification": {
+        "schema_validation": "required",
+        "signature": "required_for_cross_domain_import",
+        "provenance_receipt": "not_applicable",
+        "sbom": "not_applicable"
+      },
+      "activation": {
+        "model": "not_activated",
+        "partial_activation_allowed": false,
+        "preconditions": []
+      },
+      "recovery": {
+        "strategy": "append_corrective_receipt",
+        "forward_repair_allowed": true,
+        "failed_activation_effect": "import_success_not_claimed"
+      },
+      "retention": {
+        "active_versions": "not_applicable",
+        "historical_versions": "retain_with_imported_or_rejected_package evidence"
+      },
+      "lock_refs": [
+        "LOCK-UCKK-EXT-001",
+        "LOCK-UCKK-EXT-002",
+        "LOCK-LIFE-002"
+      ]
+    },
+    "kristal_artifact": {
+      "title": "Kristal Artifact",
+      "schema_ref": "contracts/artifact-contracts/kristal-artifact.schema.json",
+      "release_channel_refs": [
+        "contracts/release-channels.contract.json#/channels/knowledge"
+      ],
+      "authority_effect": "epistemic_content_only",
+      "activation": "through_kristal_runtime_verification",
+      "lock_refs": [
+        "LOCK-LIFE-001",
+        "LOCK-LIFE-002",
+        "LOCK-LIFE-004"
+      ]
     }
   },
   "validation": {

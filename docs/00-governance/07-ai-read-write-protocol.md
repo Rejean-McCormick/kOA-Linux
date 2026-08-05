@@ -147,7 +147,7 @@ This protocol does not grant authority to an AI agent. It defines how an AI agen
 
 The following files define the authority used by this protocol:
 
-```text
+`text
 generated/decision-index.json
 generated/authority-manifest.json
 generated/document-index.json
@@ -160,11 +160,11 @@ generated/decision-index.json
 generated/traceability.json
 generated/exception-index.json
 contracts/ai-navigation.contract.json
-```
+`
 
 The following governance documents explain the protocol environment:
 
-```text
+`text
 00-governance/00-documentation-architecture.md
 00-governance/01-authority.md
 00-governance/02-documentation-contract.md
@@ -172,11 +172,11 @@ The following governance documents explain the protocol environment:
 00-governance/04-change-protocol.md
 00-governance/05-decision-closure-and-prohibited-ambiguity.md
 00-governance/06-source-provenance.md
-```
+`
 
 The following generated artifacts may be used as derived context:
 
-```text
+`text
 generated/authority-summary.md
 generated/document-index.md
 generated/decision-index.md
@@ -184,7 +184,7 @@ generated/requirements-index.md
 generated/locks-index.md
 generated/traceability-matrix.md
 generated/ai-context/*.json
-```
+`
 
 Generated artifacts are convenience projections. They are not independent authority.
 
@@ -224,7 +224,7 @@ The recognized owner approves decisions that establish or change architectural a
 An owner decision is represented through:
 
 - an accepted entry in `generated/decision-index.json`; or
-- an accepted ADR registered and activated through the authority system.
+- a short accepted ADR when the choice is non-obvious and regression-prone under `10-adrs/README.md`.
 
 Conversation history may provide drafting context, but it is not active authority until recorded canonically.
 
@@ -299,17 +299,17 @@ A context package contains a scoped projection of active authority. The agent re
 
 Before loading domain documentation, the agent identifies:
 
-```json
+`json
 {
-  "operation": "read|explain|review|modify|generate|validate|migrate|conformance",
-  "scope_kind": "global|profile|profile_overlay|component|artifact_class|development_toolchain|migration_only",
-  "profiles": [],
-  "components": [],
-  "artifact_classes": [],
-  "toolchains": [],
-  "requested_outputs": []
+ "operation": "read|explain|review|modify|generate|validate|migrate|conformance",
+ "scope_kind": "global|profile|profile_overlay|component|artifact_class|development_toolchain|migration_only",
+ "profiles": [],
+ "components": [],
+ "artifact_classes": [],
+ "toolchains": [],
+ "requested_outputs": []
 }
-```
+`
 
 If the user does not state a profile, the agent determines whether the request can be answered from global authority alone.
 
@@ -319,10 +319,10 @@ The agent does not assume `sovereign_linux_node`, `user_lightweight`, or a devel
 
 The agent reads:
 
-```text
+`text
 generated/decision-index.json
 generated/authority-manifest.json
-```
+`
 
 The agent verifies:
 
@@ -339,9 +339,9 @@ If the authority registry is absent, invalid, or internally inconsistent, the ta
 
 The preferred context source is the applicable package under:
 
-```text
+`text
 generated/ai-context/
-```
+`
 
 Before use, the agent verifies:
 
@@ -488,15 +488,15 @@ Examples:
 
 If active implementation depends on an absent accepted decision, the agent returns:
 
-```json
+`json
 {
-  "validation_status": "blocked",
-  "reason": "missing_owner_decision",
-  "affected_objects": [],
-  "required_decision_scope": "",
-  "prohibited_inference": true
+ "validation_status": "blocked",
+ "reason": "missing_owner_decision",
+ "affected_objects": [],
+ "required_decision_scope": "",
+ "prohibited_inference": true
 }
-```
+`
 
 The agent may draft a proposed decision, but it does not treat the proposal as active.
 
@@ -569,16 +569,16 @@ For each changed fact, the agent records exactly one canonical owner.
 
 Example:
 
-```json
+`json
 {
-  "fact": "Python dependency manager",
-  "canonical_owner": "contracts/toolchains/python-uv.toolchain.json#/dependency_manager",
-  "secondary_documents": [
-    "05-development/05-python-uv.md",
-    "03-profiles/05-developer-linux-workstation.md"
-  ]
+ "fact": "Python dependency manager",
+ "canonical_owner": "contracts/toolchains/python-uv.toolchain.json#/dependency_manager",
+ "secondary_documents": [
+ "05-development/05-python-uv.md",
+ "03-profiles/05-developer-linux-workstation.md"
+ ]
 }
-```
+`
 
 If ownership is ambiguous, the write is blocked until canonical ownership is corrected.
 
@@ -586,9 +586,9 @@ If ownership is ambiguous, the write is blocked until canonical ownership is cor
 
 The agent runs or reproduces the behavior of:
 
-```bash
+`bash
 python docs/tools/compute_impact.py
-```
+`
 
 The impact analysis includes direct and transitive effects.
 
@@ -646,10 +646,10 @@ The agent does not manually duplicate canonical lists or enums.
 
 The agent runs:
 
-```bash
+`bash
 python docs/tools/generate_docs.py
 python docs/tools/build_ai_context.py
-```
+`
 
 Affected outputs may include:
 
@@ -681,7 +681,7 @@ The agent executes all required checks.
 
 A minimum semantic-change validation includes:
 
-```bash
+`bash
 python docs/tools/generate_docs.py --check
 python docs/tools/check_normative_language.py
 python docs/tools/check_language.py
@@ -695,7 +695,7 @@ python docs/tools/check_no_unresolved_state.py
 python docs/tools/compute_impact.py --check-clean
 python docs/tools/build_ai_context.py --check
 python docs/tools/validate_docs.py
-```
+`
 
 Domain-specific checks are also required when applicable.
 
@@ -703,10 +703,10 @@ Domain-specific checks are also required when applicable.
 
 After validation succeeds, the agent updates:
 
-```text
+`text
 generated/authority-manifest.json
 CHANGELOG.md
-```
+`
 
 The authority registry update activates the new paths, versions, and statuses.
 
@@ -718,28 +718,28 @@ Before that update, the changed objects remain proposed repository state rather 
 
 Every semantic documentation change produced by an AI agent includes this summary:
 
-```json
+`json
 {
-  "operation": "modify",
-  "change_class": "patch|minor|major",
-  "decision_ids": [],
-  "modified_canonical_refs": [],
-  "affected_document_ids": [],
-  "profile_ids": [],
-  "component_ids": [],
-  "requirement_ids": [],
-  "lock_ids": [],
-  "exception_ids": [],
-  "adr_ids": [],
-  "test_ids": [],
-  "evidence_ids": [],
-  "generated_outputs": [],
-  "commands_run": [],
-  "failed_checks": [],
-  "blocked_items": [],
-  "validation_status": "pass|fail|blocked"
+ "operation": "modify",
+ "change_class": "patch|minor|major",
+ "decision_ids": [],
+ "modified_canonical_refs": [],
+ "affected_document_ids": [],
+ "profile_ids": [],
+ "component_ids": [],
+ "requirement_ids": [],
+ "lock_ids": [],
+ "exception_ids": [],
+ "adr_ids": [],
+ "test_ids": [],
+ "evidence_ids": [],
+ "generated_outputs": [],
+ "commands_run": [],
+ "failed_checks": [],
+ "blocked_items": [],
+ "validation_status": "pass|fail|blocked"
 }
-```
+`
 
 The summary is factual.
 
@@ -803,7 +803,7 @@ When reviewing a proposed change, the AI agent checks the following order.
 - Are AI outputs treated as candidate inputs?
 - Is SenTient still isolated and non-authoritative?
 - Does Ariane local navigation remain functional without external voice?
-- Is native UCKK ingestion deterministic and non-AI?
+- Are kOA Mediatheque processing and UCKK package validation deterministic and non-AI by default?
 
 ### 10.8 Validation honesty
 
@@ -883,7 +883,7 @@ The agent must preserve:
 The agent must not collapse:
 
 - Resource Governor into Governance Policy Runtime;
-- Publication Gateway into UCKK Dimension Gateway;
+- Publication Gateway into UCKK Publication Bridge, or UCKK Import Bridge into Publication Gateway;
 - Kristal identity into tenant workflow state;
 - GF Wordbench into the user language runtime;
 - external AI output into authoritative component state.
@@ -932,18 +932,18 @@ This document is conformant when:
 
 Recommended dedicated tests:
 
-```text
-TEST-AI-DOC-001  AI task classification requires explicit scope.
-TEST-AI-DOC-002  Stale context packages are rejected.
-TEST-AI-DOC-003  Missing decisions block semantic writes.
-TEST-AI-DOC-004  Markdown-only canonical changes are rejected.
-TEST-AI-DOC-005  Generated-file manual edits are rejected.
-TEST-AI-DOC-006  Profile rules are not generalized.
-TEST-AI-DOC-007  Claimed validation commands require execution evidence.
-TEST-AI-DOC-008  Required change summaries contain all applicable identifiers.
-TEST-AI-DOC-009  Retired identifiers cannot be reused.
-TEST-AI-DOC-010  Conflicting canonical sources block dependent output.
-```
+`text
+TEST-AI-DOC-001 AI task classification requires explicit scope.
+TEST-AI-DOC-002 Stale context packages are rejected.
+TEST-AI-DOC-003 Missing decisions block semantic writes.
+TEST-AI-DOC-004 Markdown-only canonical changes are rejected.
+TEST-AI-DOC-005 Generated-file manual edits are rejected.
+TEST-AI-DOC-006 Profile rules are not generalized.
+TEST-AI-DOC-007 Claimed validation commands require execution evidence.
+TEST-AI-DOC-008 Required change summaries contain all applicable identifiers.
+TEST-AI-DOC-009 Retired identifiers cannot be reused.
+TEST-AI-DOC-010 Conflicting canonical sources block dependent output.
+`
 
 ---
 
@@ -953,9 +953,9 @@ TEST-AI-DOC-010  Conflicting canonical sources block dependent output.
 
 Request:
 
-```text
+`text
 Can the lightweight user profile run SenTient?
-```
+`
 
 Correct process:
 
@@ -976,9 +976,9 @@ Incorrect process:
 
 Request:
 
-```text
+`text
 Replace UV with another Python dependency manager.
-```
+`
 
 Correct process:
 
@@ -1001,9 +1001,9 @@ Incorrect process:
 
 Request:
 
-```text
+`text
 Correct a spelling error without changing meaning.
-```
+`
 
 Correct process:
 
@@ -1019,22 +1019,22 @@ A new owner decision is not required for a purely editorial correction.
 
 Request:
 
-```text
+`text
 Add a new mandatory AI provider.
-```
+`
 
 No accepted decision exists.
 
 Correct result:
 
-```json
+`json
 {
-  "validation_status": "blocked",
-  "reason": "missing_owner_decision",
-  "required_decision_scope": "global AI integration boundary",
-  "prohibited_inference": true
+ "validation_status": "blocked",
+ "reason": "missing_owner_decision",
+ "required_decision_scope": "global AI integration boundary",
+ "prohibited_inference": true
 }
-```
+`
 
 The agent may draft a proposed decision but cannot update active integrations or profiles as though the provider were approved.
 

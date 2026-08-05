@@ -201,7 +201,7 @@ It applies to:
 
 It covers the lifecycle of:
 
-```text
+`text
 identity record
 credential request
 credential issuance
@@ -218,7 +218,7 @@ replacement
 recovery
 destruction
 evidence retention
-```
+`
 
 It does not make an identity result sufficient for a policy-bound action.
 
@@ -390,7 +390,7 @@ Common trust domains include:
 
 A trust path is evaluated against all applicable dimensions:
 
-```text
+`text
 issuer
 credential or signer class
 object type
@@ -406,7 +406,7 @@ revocation
 sequence or epoch
 downgrade floor
 required evidence
-```
+`
 
 A root trusted for one domain does not acquire authority in another domain through technical reuse.
 
@@ -504,7 +504,7 @@ Enrollment records the relying purpose and requested scope rather than issuing a
 
 Credential lifecycle states can include:
 
-```text
+`text
 requested
 proofed
 approved
@@ -517,7 +517,7 @@ expired
 revoked
 destroyed
 rejected
-```
+`
 
 The credential contract owns the permitted transitions.
 
@@ -598,7 +598,7 @@ Signature input includes a domain that prevents valid bytes from being reused as
 
 A conceptual signing context is:
 
-```text
+`text
 kOA domain
 object type
 contract version
@@ -607,7 +607,7 @@ scope
 canonical object identity
 payload integrity
 anti-replay context
-```
+`
 
 The exact encoding belongs to the signed-object contract.
 
@@ -1239,15 +1239,9 @@ Their credentials, data transfers, availability, failure behavior, and trust sco
 
 | ADR | Relevance |
 | --- | --- |
-| `ADR-002` | Requires signed immutable system images in applicable profiles. |
-| `ADR-008` | Establishes four independently signed release channels. |
-| `ADR-009` | Separates governance policy decisions from identity verification. |
-| `ADR-010` | Preserves selective audit and private proof. |
 | `ADR-012` | Keeps privileged host execution inside one narrow broker boundary. |
-| `ADR-013` | Separates global identity semantics from profile-specific trust and custody implementation. |
 | `ADR-015` | Requires isolated development workspaces and credentials. |
 | `ADR-019` | Separates Resource Governor and Governance Policy Runtime authority. |
-| `ADR-023` | Makes high-assurance and offline overlay effects explicit. |
 
 ### 9.3 Prohibited assumptions
 
@@ -1331,7 +1325,7 @@ This document conforms when all of the following checks pass:
 
 The validator reports focused failures, including:
 
-```text
+`text
 identity_identifier_collision
 identity_type_missing
 identity_issuer_missing
@@ -1368,7 +1362,7 @@ signature_used_as_approval
 signature_used_as_activation
 recovery_authority_not_isolated
 key_destruction_unverified
-```
+`
 
 ## 11. Non-Normative Examples
 

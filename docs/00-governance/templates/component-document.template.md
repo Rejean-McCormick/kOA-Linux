@@ -58,37 +58,37 @@ Instructions for AI agents:
 
 <!-- KOA:TARGET-DOC-META:BEGIN
 {
-  "doc_id": "<DOC-COMP-NNN>",
-  "document_class": "normative_markdown",
-  "status": "active",
-  "language": "en",
-  "layer": "component",
-  "scope": [
-    "component:<component_id>"
-  ],
-  "canonical_refs": [
-    "generated/component-catalog.json#/components/<component_id>",
-    "contracts/components/<component-slug>.component.json"
-  ],
-  "decision_ids": [
-    "<DEC-COMP-NNN>"
-  ],
-  "requirement_ids": [
-    "<REQ-COMP-NNN>"
-  ],
-  "lock_ids": [
-    "<LOCK-COMP-NNN>"
-  ],
-  "exception_ids": [],
-  "depends_on": [
-    "DOC-COMP-000",
-    "<DOC-SYS-NNN>"
-  ],
-  "tags": [
-    "component",
-    "<component-slug>",
-    "<domain-tag>"
-  ]
+ "doc_id": "<DOC-COMP-NNN>",
+ "document_class": "normative_markdown",
+ "status": "active",
+ "language": "en",
+ "layer": "component",
+ "scope": [
+ "component:<component_id>"
+ ],
+ "canonical_refs": [
+ "generated/component-catalog.json#/components/<component_id>",
+ "contracts/components/<component-slug>.component.json"
+ ],
+ "decision_ids": [
+ "<DEC-COMP-NNN>"
+ ],
+ "requirement_ids": [
+ "<REQ-COMP-NNN>"
+ ],
+ "lock_ids": [
+ "<LOCK-COMP-NNN>"
+ ],
+ "exception_ids": [],
+ "depends_on": [
+ "DOC-COMP-000",
+ "<DOC-SYS-NNN>"
+ ],
+ "tags": [
+ "component",
+ "<component-slug>",
+ "<domain-tag>"
+ ]
 }
 KOA:TARGET-DOC-META:END -->
 
@@ -169,42 +169,42 @@ Absence or deactivation of this component causes <defined capability impact> and
 
 ### 3.1 Primary canonical references
 
-```text
+`text
 generated/component-catalog.json#/components/<component_id>
 contracts/components/<component-slug>.component.json
-```
+`
 
 ### 3.2 Related profile contracts
 
-```text
+`text
 contracts/profiles/<profile>.profile.json
-```
+`
 
 ### 3.3 Related artifact contracts
 
-```text
+`text
 contracts/artifact-contracts/<artifact>.schema.json
-```
+`
 
 ### 3.4 Related integration contracts
 
-```text
+`text
 contracts/integration-types.contract.json#/integrations/<integration_id>
-```
+`
 
 ### 3.5 Related decisions and ADRs
 
-```text
+`text
 DEC-<DOMAIN>-<NUMBER>
 ADR-<NUMBER>
-```
+`
 
 ### 3.6 Related requirements and locks
 
-```text
+`text
 REQ-<DOMAIN>-<NUMBER>
 LOCK-<DOMAIN>-<NUMBER>
-```
+`
 
 ---
 
@@ -806,7 +806,7 @@ The component remains separate from:
 
 Cross-domain publication uses the Publication Gateway.
 
-User-selected media ingestion into UCKK uses the UCKK Dimension Gateway.
+Selected local media publication to UCKK uses Publication Gateway authorization followed by the UCKK Publication Bridge. Selected UCKK learning packages enter kOA through the separate UCKK Import Bridge.
 
 These contracts are not interchangeable.
 
@@ -879,22 +879,22 @@ The component document is conformant when:
 
 Recommended component tests:
 
-```text
-TEST-COMP-<NNN>-001  Component registry and contract identity match.
-TEST-COMP-<NNN>-002  Canonical references resolve.
-TEST-COMP-<NNN>-003  Data ownership has no conflict.
-TEST-COMP-<NNN>-004  Cross-component direct writes are rejected.
-TEST-COMP-<NNN>-005  Interfaces reference valid contracts.
-TEST-COMP-<NNN>-006  State transitions are complete.
-TEST-COMP-<NNN>-007  Failure states define safe behavior.
-TEST-COMP-<NNN>-008  Applicable profile envelopes exist.
-TEST-COMP-<NNN>-009  Requirements map to tests or manual controls.
-TEST-COMP-<NNN>-010  Generated projections are current.
-```
+`text
+TEST-COMP-<NNN>-001 Component registry and contract identity match.
+TEST-COMP-<NNN>-002 Canonical references resolve.
+TEST-COMP-<NNN>-003 Data ownership has no conflict.
+TEST-COMP-<NNN>-004 Cross-component direct writes are rejected.
+TEST-COMP-<NNN>-005 Interfaces reference valid contracts.
+TEST-COMP-<NNN>-006 State transitions are complete.
+TEST-COMP-<NNN>-007 Failure states define safe behavior.
+TEST-COMP-<NNN>-008 Applicable profile envelopes exist.
+TEST-COMP-<NNN>-009 Requirements map to tests or manual controls.
+TEST-COMP-<NNN>-010 Generated projections are current.
+`
 
 Recommended commands:
 
-```bash
+`bash
 python docs/tools/generate_docs.py --check
 python docs/tools/check_canonical_ownership.py
 python docs/tools/check_interfile_locks.py
@@ -905,7 +905,7 @@ python docs/tools/check_generated_content.py
 python docs/tools/check_document_graph.py
 python docs/tools/build_ai_context.py --check
 python docs/tools/validate_docs.py
-```
+`
 
 ---
 
@@ -913,43 +913,43 @@ python docs/tools/validate_docs.py
 
 ### 17.1 Correct authority statement
 
-```text
-UCKK Platform is authoritative for admitted UCKK media state.
-```
+`text
+kOA Mediatheque is authoritative for accepted local media records and their offline availability.
+`
 
-This statement is valid only when the canonical component contract assigns that ownership.
+This statement is valid only when the canonical component contract assigns that local ownership. Remote UCKK authority belongs to the online UCKK Mediatheque and is described by integration contracts rather than reassigned to a local component.
 
 ### 17.2 Incorrect authority statement
 
-```text
-UCKK Dimension Gateway owns all UCKK media because it imports media.
-```
+`text
+UCKK Import Bridge owns accepted local media because it transports a package.
+`
 
 An ingestion gateway may transfer and validate candidate input without owning the destination's authoritative state.
 
 ### 17.3 Correct external AI boundary
 
-```text
+`text
 An external AI result is stored as a candidate artifact with provenance and requires controlled acceptance.
-```
+`
 
 ### 17.4 Incorrect external AI boundary
 
-```text
+`text
 The external AI result is written directly into canonical component records.
-```
+`
 
 ### 17.5 Correct profile scoping
 
-```text
+`text
 The component is task-activated in user_lightweight and may be always-on in build_farm.
-```
+`
 
 ### 17.6 Incorrect profile scoping
 
-```text
+`text
 The component is always-on because one deployment runs it continuously.
-```
+`
 
 ---
 

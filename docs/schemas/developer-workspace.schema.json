@@ -1074,7 +1074,7 @@
                   "elasticsearch",
                   "openrefine",
                   "model_runtime",
-                  "intensive_uckk_job"
+                  "uckk_package_validation_job"
                 ]
               }
             }

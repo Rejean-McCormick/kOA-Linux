@@ -151,9 +151,9 @@ A successful build does not itself authorize release activation, deployment, pub
 
 This document applies to instances whose selected primary profile is:
 
-```text
+`text
 build_farm
-```
+`
 
 It governs:
 
@@ -229,9 +229,9 @@ This document explains the build-farm contract. It does not become the owner of 
 
 The canonical profile identifier is:
 
-```text
+`text
 build_farm
-```
+`
 
 It is a primary profile.
 
@@ -329,21 +329,21 @@ Every worker has:
 
 The default worker lifecycle is:
 
-```text
+`text
 provisioned
-    ↓
+ ↓
 verified
-    ↓
+ ↓
 assigned
-    ↓
+ ↓
 running
-    ↓
+ ↓
 collecting
-    ↓
+ ↓
 sanitized
-    ↓
+ ↓
 destroyed
-```
+`
 
 A worker is not reused as a trusted clean worker until reset and verification pass. A reset that cannot be proved results in destruction or quarantine.
 
@@ -1093,16 +1093,10 @@ The build farm returns artifacts and evidence. It does not become the owner of c
 
 | ADR | Relevance |
 | --- | --- |
-| `ADR-001` | Maintained Linux kernel for applicable Linux profiles. |
 | `ADR-005` | Profile-scoped rootless container guidance without universal runtime coupling. |
-| `ADR-008` | Four independent release channels. |
-| `ADR-011` | Kubernetes is permitted for the build farm but not required on endpoints. |
-| `ADR-013` | System baseline and profile requirements remain separate. |
-| `ADR-014` | Strict external AI boundary. |
+| `ADR-005` | Kubernetes is permitted for the build farm but not required on endpoints. |
 | `ADR-015` | Isolated reproducible workspaces with UV. |
-| `ADR-018` | SenTient as an isolated optional workbench. |
 | `ADR-019` | Resource Governor and Governance Policy Runtime separation. |
-| `ADR-023` | Explicit profile overlays. |
 | `ADR-024` | Logical data ownership with profile-dependent physical isolation. |
 
 ### 9.3 Prohibited assumptions
@@ -1176,7 +1170,7 @@ This document conforms when all of the following checks pass:
 
 The validator reports actionable failures, including:
 
-```text
+`text
 build_farm_profile_contract_missing
 build_farm_job_contract_incomplete
 build_farm_source_revision_unresolved
@@ -1198,7 +1192,7 @@ build_farm_resource_limit_unenforced
 build_farm_ai_input_not_reviewed
 build_farm_cleanup_unverified
 build_farm_claim_missing_evidence
-```
+`
 
 ## 11. Non-Normative Examples
 

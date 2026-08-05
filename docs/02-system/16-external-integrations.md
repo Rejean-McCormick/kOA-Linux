@@ -24,7 +24,12 @@
     "generated/traceability.json",
     "generated/test-catalog.json",
     "generated/evidence-catalog.json",
-    "generated/exception-index.json"
+    "generated/exception-index.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json",
+    "04-components/uckk-import-bridge.md"
   ],
   "decision_ids": [
     "DEC-INT-001",
@@ -69,7 +74,16 @@
     "REQ-SYS-INT-029",
     "REQ-SYS-INT-030",
     "REQ-SYS-INT-031",
-    "REQ-SYS-INT-032"
+    "REQ-SYS-INT-032",
+    "REQ-UCKK-IMPORT-001",
+    "REQ-UCKK-IMPORT-002",
+    "REQ-UCKK-IMPORT-003",
+    "REQ-UCKK-IMPORT-004",
+    "REQ-UCKK-IMPORT-005",
+    "REQ-UCKK-IMPORT-006",
+    "REQ-SYS-INT-033",
+    "REQ-SYS-INT-034",
+    "REQ-SYS-INT-035"
   ],
   "lock_ids": [
     "LOCK-AI-001",
@@ -80,12 +94,12 @@
     "LOCK-ARI-002",
     "LOCK-MEDIATHEQUE-001",
     "LOCK-UCKK-EXT-001",
-    "LOCK-UCKK-EXT-001",
     "LOCK-SENT-001",
     "LOCK-COMP-001",
     "LOCK-COMP-002",
     "LOCK-PROFILE-001",
-    "LOCK-PROFILE-002"
+    "LOCK-PROFILE-002",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -110,7 +124,8 @@
     "DOC-SYS-012",
     "DOC-SYS-013",
     "DOC-SYS-014",
-    "DOC-SYS-015"
+    "DOC-SYS-015",
+    "DOC-COMP-UCKK-IMPORT-001"
   ],
   "tags": [
     "external-integrations",
@@ -125,7 +140,9 @@
     "uckk-publication",
     "ariane-voice",
     "federation",
-    "removability"
+    "removability",
+    "import-from-uckk",
+    "offline-learning"
   ]
 }
 KOA:DOC-META:END -->
@@ -188,6 +205,8 @@ Canonical ownership is distributed as follows:
 | Component identity, responsibility, and data ownership | `generated/component-catalog.json` |
 | Publication Gateway behavior | `contracts/components/publication-gateway.component.json` |
 | UCKK Publication Bridge behavior | `contracts/integrations/uckk-publication.integration.json` |
+| UCKK Import Bridge behavior | `contracts/integrations/uckk-import.integration.json` |
+| Shared Mediatheque frame | `contracts/artifact-contracts/shared-mediatheque-frame.schema.json` |
 | Ariane Runtime and local navigation | `contracts/components/ariane-runtime.component.json` |
 | Profile enablement and deployment conditions | `contracts/profiles/*.profile.json` |
 | Artifact classes transferred across boundaries | `contracts/artifact-classes.contract.json` |
@@ -328,14 +347,14 @@ Each data flow identifies:
 
 The authority effect uses an explicit value such as:
 
-```text
+`text
 none
 candidate_input_only
 controlled_import_pending_acceptance
 transport_only
 evidence_only
 authoritative_after_explicit_acceptance
-```
+`
 
 `authoritative_after_explicit_acceptance` means that the owning local component evaluates and accepts the object through its canonical contract. It does not grant direct external write authority.
 
@@ -343,7 +362,7 @@ authoritative_after_explicit_acceptance
 
 The integration registry can classify data as:
 
-```text
+`text
 public
 internal
 personal
@@ -355,7 +374,7 @@ artifact
 candidate_content
 provenance
 evidence
-```
+`
 
 Credentials and secret material remain outside ordinary data flows. Managed references identify the credentials required for authentication.
 
@@ -437,16 +456,16 @@ A removable integration cannot be a hidden prerequisite for unrelated core behav
 
 The approved external AI surface set is:
 
-```text
+`text
 ChatGPT
 Suno
 Gamma
 approved Ariane voice adapter
-```
+`
 
 These surfaces are optional and user-triggered. Their common control path is:
 
-```text
+`text
 local selection
 local authorization
 controlled export
@@ -455,7 +474,7 @@ provenance-preserving return
 controlled re-import
 local review or policy-authorized acceptance
 local authoritative action
-```
+`
 
 The external result remains candidate material until the local owning workflow accepts it.
 
@@ -463,16 +482,19 @@ ChatGPT can support user-selected external assistance. Suno and Gamma can suppor
 
 No additional provider becomes approved through common usage, installed software, a recipe, a user account, or an implementation shortcut.
 
-### 4.13 Gateway separation
+### 4.13 UCKK directional interchange
 
-Publication Gateway authorizes disclosure; UCKK Publication Bridge performs UCKK-specific packaging and transport after authorization.
+The online UCKK Mediatheque and the private offline kOA Mediatheque use the same declared shared frame or compatible versions. Directional integrations remain separate.
 
-| Gateway | Responsibility |
+| Boundary | Responsibility |
 | --- | --- |
-| Publication Gateway | Governs disclosure or publication across an authority boundary |
-| UCKK Publication Bridge | Packages and transports explicitly authorized kOA Mediatheque representations to an external UCKK Moodle destination |
+| Publication Gateway | Authorizes outbound disclosure across the authority boundary |
+| UCKK Publication Bridge | Packages and transports only the authorized representation to UCKK |
+| UCKK Import Bridge | Retrieves selected UCKK learning packages and places them in quarantine |
+| kOA Mediatheque | Accepts or rejects validated inbound candidates and creates local identities |
+| Governance Policy Runtime | Evaluates import or publication policy when required |
 
-A workflow can invoke both gateways. Their identities, owners, policies, data flows, receipts, failures, and tests remain separate.
+`publish_to_uckk` and `import_from_uckk` have separate selections, credentials, queues, packages, receipts, retries, and reconciliation. Frame compatibility does not create shared authority or background synchronization.
 
 ### 4.14 SenTient and developer tools
 
@@ -482,7 +504,7 @@ SenTient, OpenRefine, search engines, language models, build tools, and similar 
 
 ## 5. Applicable Normative Requirements
 
-<!-- GENERATED:REQUIREMENTS:BEGIN ids=REQ-SYS-INT-001,REQ-SYS-INT-002,REQ-SYS-INT-003,REQ-SYS-INT-004,REQ-SYS-INT-005,REQ-SYS-INT-006,REQ-SYS-INT-007,REQ-SYS-INT-008,REQ-SYS-INT-009,REQ-SYS-INT-010,REQ-SYS-INT-011,REQ-SYS-INT-012,REQ-SYS-INT-013,REQ-SYS-INT-014,REQ-SYS-INT-015,REQ-SYS-INT-016,REQ-SYS-INT-017,REQ-SYS-INT-018,REQ-SYS-INT-019,REQ-SYS-INT-020,REQ-SYS-INT-021,REQ-SYS-INT-022,REQ-SYS-INT-023,REQ-SYS-INT-024,REQ-SYS-INT-025,REQ-SYS-INT-026,REQ-SYS-INT-027,REQ-SYS-INT-028,REQ-SYS-INT-029,REQ-SYS-INT-030,REQ-SYS-INT-031,REQ-SYS-INT-032 -->
+<!-- GENERATED:REQUIREMENTS:BEGIN ids=REQ-SYS-INT-001,REQ-SYS-INT-002,REQ-SYS-INT-003,REQ-SYS-INT-004,REQ-SYS-INT-005,REQ-SYS-INT-006,REQ-SYS-INT-007,REQ-SYS-INT-008,REQ-SYS-INT-009,REQ-SYS-INT-010,REQ-SYS-INT-011,REQ-SYS-INT-012,REQ-SYS-INT-013,REQ-SYS-INT-014,REQ-SYS-INT-015,REQ-SYS-INT-016,REQ-SYS-INT-017,REQ-SYS-INT-018,REQ-SYS-INT-019,REQ-SYS-INT-020,REQ-SYS-INT-021,REQ-SYS-INT-022,REQ-SYS-INT-023,REQ-SYS-INT-024,REQ-SYS-INT-025,REQ-SYS-INT-026,REQ-SYS-INT-027,REQ-SYS-INT-028,REQ-SYS-INT-029,REQ-SYS-INT-030,REQ-SYS-INT-031,REQ-SYS-INT-032,REQ-UCKK-IMPORT-001,REQ-UCKK-IMPORT-002,REQ-UCKK-IMPORT-003,REQ-UCKK-IMPORT-004,REQ-UCKK-IMPORT-005,REQ-UCKK-IMPORT-006,REQ-SYS-INT-033,REQ-SYS-INT-034,REQ-SYS-INT-035 -->
 - **REQ-SYS-INT-001 — SHALL:** Every active external or cross-boundary integration have one stable integration identifier and one canonical record in the integrations registry.
 - **REQ-SYS-INT-002 — SHALL NOT:** An unregistered endpoint, provider, peer, device adapter, developer tool, import path, export path, or external AI surface participate in an active kOA capability.
 - **REQ-SYS-INT-003 — SHALL:** Every integration declare exactly one classification from external AI surface, external voice adapter, external service, federation peer, device adapter, controlled import, controlled export, developer tool, or migration source.
@@ -515,6 +537,9 @@ SenTient, OpenRefine, search engines, language models, build tools, and similar 
 - **REQ-SYS-INT-030 — SHALL:** Controlled offline import and export validate manifests, integrity, compatibility, provenance, policy, and target ownership before activation or authoritative acceptance.
 - **REQ-SYS-INT-031 — SHALL:** Integration conformance claims remain profile-scoped and include current tests and evidence for security controls, data flows, offline behavior, removal, and authority boundaries.
 - **REQ-SYS-INT-032 — SHALL:** External-integration conformance include validation of approved surfaces, unique identities, explicit classifications, resolvable references, minimized data flows, managed secrets, safe failure, removal without core failure, non-authoritative external outputs, and no unresolved state.
+- **REQ-SYS-INT-033 — SHALL:** UCKK import use the registered `uckk-import` integration, quarantine every package before local acceptance, and preserve source, version, license, rights, provenance, and shared-frame mapping evidence.
+- **REQ-SYS-INT-034 — SHALL:** Accepted UCKK learning packages receive separate kOA identities and remain available offline within their rights and runtime constraints.
+- **REQ-SYS-INT-035 — SHALL NOT:** Connectivity restoration, remote update availability, or shared-frame compatibility authorize automatic upload, download, overwrite, deletion, or bidirectional synchronization.
 <!-- GENERATED:REQUIREMENTS:END -->
 
 ## 6. Procedures and State Transitions
@@ -560,7 +585,7 @@ Provider connectivity alone does not establish enablement.
 
 A governed outbound operation follows:
 
-```text
+`text
 requested
 scope_checked
 destination_checked
@@ -574,11 +599,11 @@ provider_acknowledged
 external_effect_verified
 locally_reconciled
 completed
-```
+`
 
 Alternative states include:
 
-```text
+`text
 blocked
 cancelled
 deferred
@@ -586,7 +611,7 @@ expired
 failed
 conflicted
 revoked
-```
+`
 
 A provider acknowledgement does not skip verification or local reconciliation.
 
@@ -594,7 +619,7 @@ A provider acknowledgement does not skip verification or local reconciliation.
 
 A governed inbound operation follows:
 
-```text
+`text
 received
 source_authenticated
 quarantined
@@ -606,11 +631,11 @@ owner_reviewed
 accepted
 authoritative_action_executed
 evidence_recorded
-```
+`
 
 Alternative states include:
 
-```text
+`text
 rejected
 duplicate
 incompatible
@@ -618,7 +643,7 @@ expired
 quarantined
 withdrawn
 failed
-```
+`
 
 The owning component determines authoritative acceptance.
 
@@ -805,13 +830,13 @@ This document is conformant when validation confirms:
 
 The principal validation entry point is:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 Supporting checks include:
 
-```text
+`text
 tools/check_ai_boundary.py
 tools/check_component_boundaries.py
 tools/check_interfile_locks.py
@@ -819,7 +844,7 @@ tools/check_profile_inheritance.py
 tools/check_artifact_contracts.py
 tools/check_traceability.py
 tools/check_no_unresolved_state.py
-```
+`
 
 ## 11. Non-Normative Examples
 
@@ -847,18 +872,22 @@ A component requests governed publication. The Publication Gateway evaluates the
 
 A user selects a local kOA Mediatheque record for publication to an external UCKK Moodle destination. Publication Gateway authorizes the disclosure, then UCKK Publication Bridge validates, packages, and transports the approved representation. It does not own local media or acquire general publication authority.
 
-### 11.7 Federation retry
+### 11.7 UCKK Import Bridge
+
+A school selects an UCKK course for offline use. The UCKK Import Bridge retrieves or receives a complete learning package, quarantines it, verifies source, license, integrity, provenance, required resources, and frame compatibility, then presents it for local acceptance. The kOA Mediatheque creates separate local identities and keeps the accepted material available without Internet access.
+
+### 11.8 Federation retry
 
 A federation request times out after submission. The local system preserves the unknown remote outcome and reconciles by idempotency identifier before retrying. It does not report success or submit a duplicate effect blindly.
 
-### 11.8 Offline import bundle
+### 11.9 Offline import bundle
 
 A sovereign offline node receives a signed transfer bundle. The controlled import validates the manifest, integrity, compatibility, provenance, and target ownership before any local activation.
 
-### 11.9 Provider removal
+### 11.10 Provider removal
 
 An optional notification provider is removed. Pending notifications are cancelled or exported according to policy, credentials are revoked, and local authoritative records remain intact. Unrelated local capabilities continue.
 
-### 11.10 Developer tool
+### 11.11 Developer tool
 
 A developer profile uses an external analysis tool. The tool receives only workspace-scoped data, cannot write to runtime authoritative stores, and produces candidate findings that require local review.

@@ -71,7 +71,6 @@
     "LOCK-SENT-001",
     "LOCK-MEDIATHEQUE-001",
     "LOCK-UCKK-EXT-001",
-    "LOCK-UCKK-EXT-001",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
     "LOCK-DATA-001",
@@ -85,7 +84,8 @@
     "LOCK-LIFE-004",
     "LOCK-PROFILE-001",
     "LOCK-IMPL-001",
-    "LOCK-IMPL-002"
+    "LOCK-IMPL-002",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -186,7 +186,7 @@ Repository-relative paths and JSON Pointers are the canonical reference mechanis
 
 ### 4.1 System identity
 
-The canonical system identifier is `koa_operating_environment`. Its system class is `local_first_modular_operating_environment`.
+The canonical system identifier is `koa_linux_operating_system`. Its system class is `sovereign_local_operating_system`.
 
 The architectural style combines:
 
@@ -236,7 +236,9 @@ An operating mode describes system activity. A deployment profile describes the 
 | `local_authoritative_operation` | `global_contract` | Authoritative local operations remain possible within the active profile's offline and security envelope. |
 | `deterministic_navigation` | `profile_activated` | Ariane local navigation works without external AI or voice services. |
 | `governed_knowledge_runtime` | `profile_activated` | Compiled knowledge and language artifacts are consumed locally without requiring build workbenches. |
-| `deterministic_media_management` | `profile_activated` | The kOA Mediatheque ingests, verifies, transforms, stores, exports, backs up, and restores media through deterministic local operations. |
+| `deterministic_media_management` | `profile_activated` | The kOA Mediatheque ingests, verifies, transforms, stores, exports, backs up, and restores private local media and imported learning content through deterministic local operations. |
+| `offline_learning_content` | `profile_activated` | Verified courses, learning paths, instructions, manuals, and resources accepted into the kOA Mediatheque remain consultable without a live UCKK connection. |
+| `governed_uckk_interchange` | `optional` | Explicit outbound publication and inbound acquisition use separate authorization, validation, queue, receipt, and conflict rules. |
 | `deterministic_resource_governance` | `global_baseline_component` | Resource Governor bounds CPU, memory, I/O, concurrency, queues, jobs, and processes. |
 | `profile_conditioned_policy_governance` | `profile_conditioned` | Governance Policy Runtime supplies authorization, disclosure, consent, privilege decisions, and governed exceptions where required by a profile. |
 | `controlled_external_integration` | `optional` | External services are explicitly classified, removable, capability-scoped, and unable to directly mutate authoritative state. |
@@ -255,9 +257,11 @@ The active component catalog is owned by `generated/component-catalog.json`. The
 | Orgo | Coordination, tasks, and orchestration defined by its contract | Does not become a universal workflow owner |
 | Kristal Runtime | Transversal consumption of canonical epistemic artifacts | Identity remains independent of tenant workflow and interface state |
 | Ariane Runtime | Local deterministic navigation and optional external voice admission | Local navigation remains independent of external voice |
-| kOA Mediatheque | Deterministic local media management | Native operations do not perform AI classification, routing, tagging, transcription, translation, or generation |
-| UCKK Publication Bridge | UCKK-specific packaging and transport after explicit publication authorization | Does not authorize disclosure or own local media |
-| Publication Gateway | Controlled disclosure and publication authorization across domains or audiences | Does not perform kOA Mediatheque-specific packaging or transport |
+| kOA Mediatheque | Private local and offline media, instruction, manual, and learning-content management | Owns local copies and local lifecycle; does not own UCKK records |
+| UCKK online platform | Moodle courses, learning paths, activities, online dissemination, and UCKK Mediatheque | External authority; not required for local operation |
+| UCKK Publication Bridge | Outbound UCKK-specific packaging and transport after explicit publication authorization | Does not authorize disclosure, perform inbound acceptance, or own either Mediatheque |
+| Controlled UCKK import path | Inbound package retrieval, quarantine, source/license/integrity checks, and delivery to the kOA Mediatheque acceptance workflow | Does not overwrite local state or grant kOA authority over the UCKK source |
+| Publication Gateway | Controlled disclosure and publication authorization across domains or audiences | Governs outbound disclosure; does not authorize inbound local acceptance |
 | SemantiK Architect Runtime | Consumption and evaluation of compiled language artifacts | Does not compile or author runtime artifacts |
 | GF Wordbench | Language construction and compilation workbench | Not part of normal user runtime operation |
 | Resource Governor | CPU, memory, I/O, concurrency, queues, jobs, and process limits | Has no authorization, consent, disclosure, or privilege authority |
@@ -320,7 +324,7 @@ Profile contracts select the applicable envelope and may strengthen it. Measurem
 - **REQ-SYS-OVR-005 — SHALL:** Each component shall operate only within its registered responsibility, authoritative-data boundary, interfaces, and active profile membership.
 - **REQ-SYS-OVR-006 — SHALL NOT:** No component shall write directly to another component's authoritative source tables or acquire authority through caching, indexing, observation, or physical infrastructure sharing.
 - **REQ-SYS-OVR-007 — SHALL:** The Resource Governor shall manage deterministic resource allocation and scheduling independently from Governance Policy Runtime authorization, disclosure, consent, privilege, and exception decisions.
-- **REQ-SYS-OVR-008 — SHALL:** Publication Gateway shall authorize disclosure before the UCKK Publication Bridge packages and transports an approved publication to the external UCKK platform.
+- **REQ-SYS-OVR-008 — SHALL:** Publication Gateway shall authorize disclosure before the UCKK Publication Bridge packages and transports an approved publication; the separate UCKK Import Bridge shall retrieve selected learning packages into quarantine for deterministic validation and explicit local acceptance, and neither direction shall create implicit synchronization.
 - **REQ-SYS-OVR-009 — SHALL:** Ariane local navigation shall remain operational without AI, external voice, or network access within the active profile's local capability envelope.
 - **REQ-SYS-OVR-010 — SHALL:** The native kOA Mediatheque pipeline shall perform only deterministic local ingestion, verification, transformation, storage, export, backup, and restore operations.
 - **REQ-SYS-OVR-011 — SHALL:** The user language runtime shall consume approved compiled language and knowledge artifacts, while construction and compilation remain assigned to designated workbenches.
@@ -375,18 +379,15 @@ A startup failure does not permit partial authoritative activation. The deployme
 7. Preserve provenance and traceability.
 8. Reject direct cross-component source-state mutation.
 
-### 6.4 External integration operation
+### 6.4 UCKK and other external integration operations
 
-1. Confirm that the integration is active and permitted by the profile.
-2. Require explicit user initiation.
-3. Disclose the selected outbound data.
-4. Transfer only the admitted payload.
-5. Receive the result as candidate content, media, presentation material, or navigation intent.
-6. Validate the result locally.
-7. Import through the owning component's controlled workflow.
-8. Obtain user or policy acceptance when required.
-9. Record provenance or a receipt.
-10. Continue local operation when the external service fails or is removed.
+An external operation begins only after the user or a governed workflow selects the exact direction, data, purpose, and destination.
+
+For `publish_to_uckk`, Publication Gateway evaluates disclosure, rights, consent, audience, representation, and expiry before UCKK-specific packaging and transport.
+
+For `import_from_uckk`, the system verifies UCKK source identity, license, manifest, integrity, compatibility, and local acceptance conditions before creating a local kOA record and version.
+
+The system records the exact external effect or a visible pending, rejected, failed, quarantined, or reconciliation-required state. It never reports generic synchronization success.
 
 ### 6.5 Offline transition
 

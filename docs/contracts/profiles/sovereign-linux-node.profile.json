@@ -41,7 +41,8 @@
     "DEC-INTEGRATION-001",
     "DEC-AI-001",
     "DEC-COMP-001",
-    "DEC-UCKK-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001",
     "DEC-ARI-001",
     "DEC-LANG-001",
     "DEC-KRISTAL-001"
@@ -90,8 +91,10 @@
     "LOCK-GATE-001",
     "LOCK-AI-001",
     "LOCK-AI-002",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-MEDIATHEQUE-002",
+    "LOCK-UCKK-EXT-002",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
     "LOCK-LIFE-001",
@@ -159,7 +162,6 @@
   },
   "composition": {
     "base_model": "contracts/system.contract.json",
-    "inherits_from_primary_profile": null,
     "default_overlays": [],
     "overlay_compatibility": [
       {
@@ -377,14 +379,9 @@
         "role": "Runtime consumption of verified precompiled language artifacts."
       },
       {
-        "component_id": "koa-mediatheque",
+        "component_id": "koa_mediatheque",
         "activation": "always_on",
-        "role": "Local deterministic UCKK authority and processing."
-      },
-      {
-        "component_id": "uckk-dimension-gateway",
-        "activation": "always_on",
-        "role": "Verified user-selected media admission into UCKK."
+        "role": "Authoritative local media records, managed content, metadata, rights, provenance, deterministic renditions, export, backup, and restore."
       },
       {
         "component_id": "publication-gateway",
@@ -463,25 +460,25 @@
     "always_on_policy": "Only components required for local authority, governance, evidence, navigation, core data, and node safety remain resident.",
     "task_activated_workers": [
       {
-        "worker_id": "uckk-thumbnail-worker",
+        "worker_id": "koa-mediatheque-thumbnail-worker",
         "maximum_parallel_instances": 2,
         "priority": "low",
         "auto_stop_after_task": true
       },
       {
-        "worker_id": "uckk-preview-worker",
+        "worker_id": "koa-mediatheque-preview-worker",
         "maximum_parallel_instances": 2,
         "priority": "low",
         "auto_stop_after_task": true
       },
       {
-        "worker_id": "uckk-text-extraction-worker",
+        "worker_id": "koa-mediatheque-text-extraction-worker",
         "maximum_parallel_instances": 2,
         "priority": "low",
         "auto_stop_after_task": true
       },
       {
-        "worker_id": "uckk-transcode-worker",
+        "worker_id": "koa-mediatheque-transcode-worker",
         "maximum_parallel_instances": 1,
         "priority": "low",
         "auto_stop_after_task": true
@@ -551,7 +548,7 @@
         "immutable artifacts",
         "controlled read models",
         "Publication Gateway",
-        "UCKK Dimension Gateway"
+        "authorized UCKK publication package and receipt"
       ]
     },
     "physical_isolation": {
@@ -616,7 +613,10 @@
       "provenance aware",
       "auditable when critical"
     ],
-    "remote_dependency_failure": "Disable only the dependent capability, preserve local authoritative operation, and do not select an undeclared provider."
+    "remote_dependency_failure": "Disable only the dependent capability, preserve local authoritative operation, and do not select an undeclared provider.",
+    "optional_integrations": [
+      "uckk-publication"
+    ]
   },
   "ai_boundary": {
     "native_ai_runtime_present": false,
@@ -663,31 +663,6 @@
       "silent provider substitution"
     ]
   },
-  "uckk_behavior": {
-    "native_pipeline": "local_deterministic",
-    "required_local_capabilities": [
-      "verified user-selected ingestion",
-      "source and artifact identity validation",
-      "metadata capture",
-      "authoritative storage",
-      "deterministic derivatives",
-      "controlled export",
-      "backup",
-      "restore",
-      "offline processing"
-    ],
-    "publication_requires_publication_gateway": true,
-    "dimension_admission_requires_uckk_dimension_gateway": true,
-    "not_native_capabilities": [
-      "AI classification",
-      "AI summarization",
-      "AI tagging",
-      "AI routing",
-      "AI transcription",
-      "AI translation",
-      "content generation"
-    ]
-  },
   "ariane_behavior": {
     "local_navigation_required": true,
     "local_navigation_requires_ai": false,
@@ -725,7 +700,7 @@
       "Orgo local authoritative operation",
       "Kristal runtime use of installed artifacts",
       "SemantiK runtime use of installed artifacts",
-      "UCKK deterministic ingestion and processing",
+      "kOA Mediatheque deterministic ingestion and processing",
       "Publication Gateway to local or offline destinations",
       "system and service health monitoring",
       "backup",
@@ -742,7 +717,8 @@
       "external Ariane voice",
       "remote synchronization",
       "remote publication destinations",
-      "remote artifact retrieval not present in verified bundles"
+      "remote artifact retrieval not present in verified bundles",
+      "UCKK publication transport"
     ],
     "offline_update": {
       "verified_bundle_required": true,
@@ -1088,7 +1064,7 @@
       },
       {
         "test_id": "TEST-PROFILE-SOV-014",
-        "intent": "Validate deterministic UCKK, separate gateways, and local Ariane navigation."
+        "intent": "Validate deterministic kOA Mediatheque processing, UCKK external-publication authorization and transport separation, and local Ariane navigation."
       },
       {
         "test_id": "TEST-PROFILE-SOV-015",
@@ -1122,7 +1098,7 @@
     "A successful signature check alone proves complete Release Set compatibility.",
     "A mutable package update on the active system slot is equivalent to atomic image activation.",
     "A shared database process permits shared ownership or cross-component writes.",
-    "Publication Gateway and UCKK Dimension Gateway may be merged.",
+    "UCKK publication transport may bypass Publication Gateway authorization or become local media authority.",
     "Resource Governor may authorize actions or Governance Policy Runtime may allocate resources.",
     "External AI output may directly enter authoritative state.",
     "Internet loss permits policy bypass or undeclared provider substitution.",
@@ -1143,5 +1119,55 @@
     "offline_and_recovery_validation_required": true,
     "test_and_evidence_update_required": true,
     "authority_registry_updated_last": true
+  },
+  "mediatheque_and_uckk_publication": {
+    "local_mediatheque_pipeline": "local_deterministic",
+    "required_local_capabilities": [
+      "verified user-selected ingestion",
+      "source and artifact identity validation",
+      "metadata capture",
+      "authoritative storage",
+      "deterministic derivatives",
+      "controlled export",
+      "backup",
+      "restore",
+      "offline processing"
+    ],
+    "heavy_processing": {},
+    "not_native_capabilities": [
+      "AI classification",
+      "AI summarization",
+      "AI tagging",
+      "AI routing",
+      "AI transcription",
+      "AI translation",
+      "content generation"
+    ],
+    "uckk_publication": {
+      "integration_id": "uckk-publication",
+      "classification": "optional_external_moodle_publication",
+      "requires_publication_gateway_authorization": true,
+      "required_for_local_operation": false,
+      "background_bidirectional_synchronization_allowed": false
+    }
+  },
+  "external_integrations": {
+    "uckk_publication": {
+      "integration_id": "uckk-publication",
+      "contract_ref": "contracts/integrations/uckk-publication.integration.json",
+      "availability": "optional",
+      "direction": "outbound",
+      "required_for_local_operation": false,
+      "required_for_offline_operation": false
+    },
+    "uckk_import": {
+      "integration_id": "uckk-import",
+      "contract_ref": "contracts/integrations/uckk-import.integration.json",
+      "availability": "optional",
+      "direction": "inbound",
+      "offline_bundle_supported": true,
+      "accepted_content_available_offline": true,
+      "automatic_sync": false
+    }
   }
 }

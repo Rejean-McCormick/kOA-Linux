@@ -243,7 +243,7 @@ This document does not prescribe one secret-store product, hardware module, oper
 
 Related security documents are:
 
-```text
+`text
 07-security/00-threat-model.md
 07-security/01-security-baseline.md
 07-security/02-security-domains.md
@@ -259,13 +259,13 @@ Related security documents are:
 07-security/18-offline-import-security.md
 07-security/19-software-supply-chain.md
 07-security/20-break-glass-security.md
-```
+`
 
 Development-specific secret handling is further described by:
 
-```text
+`text
 05-development/09-secrets-and-local-identities.md
-```
+`
 
 ## 4. Model and Responsibilities
 
@@ -862,7 +862,7 @@ This document is conformant when:
 
 Applicable failure codes include:
 
-```text
+`text
 secret_owner_missing
 secret_purpose_missing
 shared_environment_credential
@@ -891,7 +891,7 @@ privileged_broker_secret_exposure
 integration_credential_reuse
 secret_destruction_unverified
 secret_lifecycle_receipt_missing
-```
+`
 
 A required validator that cannot run produces `blocked`, not `pass`.
 
@@ -931,7 +931,7 @@ The node removes trust in a withdrawn artifact-signing key before evaluating a r
 
 A user enables an external creative service.
 
-The adapter receives a provider-specific token scoped to the development or user environment and declared capability. Removing the integration revokes that token without affecting local UCKK, Orgo, Ariane, or Kristal operation.
+The adapter receives a provider-specific token scoped to the development or user environment and declared capability. Removing the integration revokes that token without affecting the local kOA Mediatheque, accepted offline learning material, Orgo, Ariane, or Kristal operation.
 
 ### Example 7 — Break-glass access
 

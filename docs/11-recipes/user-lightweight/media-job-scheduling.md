@@ -131,7 +131,7 @@ This recipe is non-normative. The active user-lightweight profile, component con
 
 The target result is:
 
-```text
+`text
 interactive work remains responsive
 + background media work is bounded
 + queued intent is durable
@@ -139,7 +139,7 @@ interactive work remains responsive
 + interrupted work is resumable or safely restartable
 + external services are optional
 + final artifacts are validated before acceptance
-```
+`
 
 ## 2. Use This Recipe When
 
@@ -182,46 +182,46 @@ The node needs:
 
 A practical component-owned layout is:
 
-```text
+`text
 var/lib/koa-media/
-  jobs/
-    queue.sqlite3
-    receipts/
-  staging/
-    inputs/
-    work/
-    outputs/
-  accepted/
-  quarantine/
-  cache/
-```
+ jobs/
+ queue.sqlite3
+ receipts/
+ staging/
+ inputs/
+ work/
+ outputs/
+ accepted/
+ quarantine/
+ cache/
+`
 
 Example local identities:
 
-```bash
+`bash
 export KOA_PROFILE_ID="user_lightweight"
 export KOA_COMPONENT_ID="media_library"
 export KOA_INSTANCE_ID="appinst_media_01"
 export KOA_JOB_ROOT="${HOME}/.local/share/koa-media"
 export KOA_JOB_DB="${KOA_JOB_ROOT}/jobs/queue.sqlite3"
-```
+`
 
 The example path is suitable for a user-scoped implementation. A system-scoped implementation uses the paths and ownership defined by its component and profile contracts.
 
 Create the directories with restrictive default permissions:
 
-```bash
+`bash
 umask 077
 
 install -d -m 700 \
-  "${KOA_JOB_ROOT}/jobs/receipts" \
-  "${KOA_JOB_ROOT}/staging/inputs" \
-  "${KOA_JOB_ROOT}/staging/work" \
-  "${KOA_JOB_ROOT}/staging/outputs" \
-  "${KOA_JOB_ROOT}/accepted" \
-  "${KOA_JOB_ROOT}/quarantine" \
-  "${KOA_JOB_ROOT}/cache"
-```
+ "${KOA_JOB_ROOT}/jobs/receipts" \
+ "${KOA_JOB_ROOT}/staging/inputs" \
+ "${KOA_JOB_ROOT}/staging/work" \
+ "${KOA_JOB_ROOT}/staging/outputs" \
+ "${KOA_JOB_ROOT}/accepted" \
+ "${KOA_JOB_ROOT}/quarantine" \
+ "${KOA_JOB_ROOT}/cache"
+`
 
 The worker identity receives access only to its component-owned paths.
 
@@ -233,29 +233,29 @@ A submitted job request is immutable.
 
 A practical request contains:
 
-```json
+`json
 {
-  "job_id": "mediajob_01J4G6RRM2QJMX1Y9A0N8K3C7F",
-  "job_type": "thumbnail_set",
-  "component_id": "media_library",
-  "application_instance_id": "appinst_media_01",
-  "profile_id": "user_lightweight",
-  "priority_class": "user_visible_background",
-  "source_artifact_ref": "media/items/item_01J4G4D6/source",
-  "source_version": "7",
-  "source_expected_state": "accepted",
-  "output_class": "media_preview_set",
-  "parameters": {
-    "widths": [256, 512, 1024],
-    "format": "webp",
-    "quality": 82
-  },
-  "resource_class": "media_light",
-  "deadline_at": "2026-08-04T02:00:00-04:00",
-  "idempotency_id": "idem_media_preview_item_01J4G4D6_v7",
-  "requested_at": "2026-08-03T19:52:00-04:00"
+ "job_id": "mediajob_01J4G6RRM2QJMX1Y9A0N8K3C7F",
+ "job_type": "thumbnail_set",
+ "component_id": "media_library",
+ "application_instance_id": "appinst_media_01",
+ "profile_id": "user_lightweight",
+ "priority_class": "user_visible_background",
+ "source_artifact_ref": "media/items/item_01J4G4D6/source",
+ "source_version": "7",
+ "source_expected_state": "accepted",
+ "output_class": "media_preview_set",
+ "parameters": {
+ "widths": [256, 512, 1024],
+ "format": "webp",
+ "quality": 82
+ },
+ "resource_class": "media_light",
+ "deadline_at": "2026-08-04T02:00:00-04:00",
+ "idempotency_id": "idem_media_preview_item_01J4G4D6_v7",
+ "requested_at": "2026-08-03T19:52:00-04:00"
 }
-```
+`
 
 The request contains references and bounded parameters. It does not contain:
 
@@ -293,12 +293,12 @@ The request cannot select an arbitrary binary or add arbitrary command-line argu
 
 Use a small stable priority vocabulary:
 
-```text
+`text
 interactive_follow_up
 user_visible_background
 maintenance
 bulk_deferred
-```
+`
 
 `interactive_follow_up` is for short work that completes an action the user is waiting to inspect.
 
@@ -329,7 +329,7 @@ Do not convert an admission denial into a lower-quality output silently. Submit 
 
 Use explicit states:
 
-```text
+`text
 queued
 admission_pending
 admitted
@@ -345,7 +345,7 @@ failed
 expired
 quarantined
 recovery_required
-```
+`
 
 `completed_candidate` means the adapter produced output.
 
@@ -378,17 +378,17 @@ Do not let the worker traverse another component's filesystem.
 
 Before queueing a job that creates output, estimate:
 
-```text
+`text
 input staging size
 + temporary work size
 + final candidate size
 + receipt and journal reserve
 + profile recovery reserve
-```
+`
 
 Example local check:
 
-```bash
+`bash
 uv run python - <<'PY'
 from __future__ import annotations
 
@@ -404,20 +404,20 @@ recovery_reserve_bytes = 2 * 1024 * 1024 * 1024
 
 free_bytes = shutil.disk_usage(root).free
 required_bytes = (
-    input_bytes
-    + estimated_work_bytes
-    + estimated_output_bytes
-    + recovery_reserve_bytes
+ input_bytes
+ + estimated_work_bytes
+ + estimated_output_bytes
+ + recovery_reserve_bytes
 )
 
 if free_bytes < required_bytes:
-    raise SystemExit(
-        f"Insufficient storage: free={free_bytes}, required={required_bytes}"
-    )
+ raise SystemExit(
+ f"Insufficient storage: free={free_bytes}, required={required_bytes}"
+ )
 
 print("Storage preflight passed.")
 PY
-```
+`
 
 The component's real estimator should derive values from the media and adapter contract rather than fixed numbers.
 
@@ -425,7 +425,7 @@ The component's real estimator should derive values from the media and adapter c
 
 Write the immutable request atomically:
 
-```bash
+`bash
 export KOA_JOB_ID="mediajob_01J4G6RRM2QJMX1Y9A0N8K3C7F"
 export KOA_JOB_REQUEST="${KOA_JOB_ROOT}/staging/work/${KOA_JOB_ID}.request.json"
 
@@ -434,31 +434,31 @@ temp_request="${KOA_JOB_REQUEST}.tmp"
 
 cat > "${temp_request}" <<'JSON'
 {
-  "job_id": "mediajob_01J4G6RRM2QJMX1Y9A0N8K3C7F",
-  "job_type": "thumbnail_set",
-  "component_id": "media_library",
-  "application_instance_id": "appinst_media_01",
-  "profile_id": "user_lightweight",
-  "priority_class": "user_visible_background",
-  "source_artifact_ref": "media/items/item_01J4G4D6/source",
-  "source_version": "7",
-  "source_expected_state": "accepted",
-  "output_class": "media_preview_set",
-  "parameters": {
-    "widths": [256, 512, 1024],
-    "format": "webp",
-    "quality": 82
-  },
-  "resource_class": "media_light",
-  "deadline_at": "2026-08-04T02:00:00-04:00",
-  "idempotency_id": "idem_media_preview_item_01J4G4D6_v7",
-  "requested_at": "2026-08-03T19:52:00-04:00"
+ "job_id": "mediajob_01J4G6RRM2QJMX1Y9A0N8K3C7F",
+ "job_type": "thumbnail_set",
+ "component_id": "media_library",
+ "application_instance_id": "appinst_media_01",
+ "profile_id": "user_lightweight",
+ "priority_class": "user_visible_background",
+ "source_artifact_ref": "media/items/item_01J4G4D6/source",
+ "source_version": "7",
+ "source_expected_state": "accepted",
+ "output_class": "media_preview_set",
+ "parameters": {
+ "widths": [256, 512, 1024],
+ "format": "webp",
+ "quality": 82
+ },
+ "resource_class": "media_light",
+ "deadline_at": "2026-08-04T02:00:00-04:00",
+ "idempotency_id": "idem_media_preview_item_01J4G4D6_v7",
+ "requested_at": "2026-08-03T19:52:00-04:00"
 }
 JSON
 
 chmod 600 "${temp_request}"
 mv "${temp_request}" "${KOA_JOB_REQUEST}"
-```
+`
 
 The queue submission command validates the schema before inserting the job.
 
@@ -466,10 +466,10 @@ The queue submission command validates the schema before inserting the job.
 
 Example:
 
-```bash
+`bash
 uv run python -m media_jobs.cli submit \
-  --request "${KOA_JOB_REQUEST}"
-```
+ --request "${KOA_JOB_REQUEST}"
+`
 
 `media_jobs.cli` is an illustrative component-owned command name. Use the command registered by the active media component.
 
@@ -491,7 +491,7 @@ Equivalent retry returns the existing job identity without creating another effe
 
 A scheduler cycle performs:
 
-```text
+`text
 load durable queue
 recover nonterminal jobs
 expire overdue queued jobs
@@ -503,7 +503,7 @@ start or resume one worker
 observe progress and checkpoints
 accept, pause, cancel, fail, or quarantine
 persist state and receipt
-```
+`
 
 The queue does not need a busy polling loop. A local event, timer, or bounded wake interval is sufficient.
 
@@ -553,7 +553,7 @@ A user-scoped service can run a single scheduler process.
 
 Example `~/.config/systemd/user/koa-media-scheduler.service`:
 
-```ini
+`ini
 [Unit]
 Description=kOA lightweight media scheduler
 After=default.target
@@ -576,16 +576,16 @@ RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
 
 [Install]
 WantedBy=default.target
-```
+`
 
 The exact hardening and executable path are profile-owned.
 
 Enable only after verifying the installed command and paths:
 
-```bash
+`bash
 systemctl --user daemon-reload
 systemctl --user enable --now koa-media-scheduler.service
-```
+`
 
 A profile without systemd user services can use its registered local service manager.
 
@@ -658,11 +658,11 @@ Cancelling an accepted artifact is a component lifecycle operation, not deletion
 
 Example:
 
-```bash
+`bash
 uv run python -m media_jobs.cli cancel \
-  --job-id "mediajob_01J4G6RRM2QJMX1Y9A0N8K3C7F" \
-  --reason "user_cancelled"
-```
+ --job-id "mediajob_01J4G6RRM2QJMX1Y9A0N8K3C7F" \
+ --reason "user_cancelled"
+`
 
 ### 7.4 Restart recovery
 
@@ -795,10 +795,10 @@ Do not place media payloads, credentials, raw private evidence, or unrestricted 
 
 Example:
 
-```bash
+`bash
 uv run python -m media_jobs.cli list \
-  --states queued,admission_pending,admitted,running,paused,recovery_required
-```
+ --states queued,admission_pending,admitted,running,paused,recovery_required
+`
 
 A user-facing view should show:
 
@@ -818,11 +818,11 @@ Do not show secret paths or sensitive source details outside the authorized UI.
 
 Example:
 
-```bash
+`bash
 uv run python -m media_jobs.cli pause-all \
-  --classes media_medium,media_heavy \
-  --reason "user_active"
-```
+ --classes media_medium,media_heavy \
+ --reason "user_active"
+`
 
 This changes scheduler intent. It does not kill processes without checkpoint handling.
 
@@ -830,9 +830,9 @@ This changes scheduler intent. It does not kill processes without checkpoint han
 
 Example:
 
-```bash
+`bash
 uv run python -m media_jobs.cli resume-eligible
-```
+`
 
 Resource Governor re-evaluates each job.
 
@@ -885,11 +885,11 @@ Cleanup selects files by exact job identity and owned path.
 
 Example:
 
-```bash
+`bash
 uv run python -m media_jobs.cli cleanup \
-  --job-id "mediajob_01J4G6RRM2QJMX1Y9A0N8K3C7F" \
-  --scope disposable-work
-```
+ --job-id "mediajob_01J4G6RRM2QJMX1Y9A0N8K3C7F" \
+ --scope disposable-work
+`
 
 The cleanup command verifies:
 

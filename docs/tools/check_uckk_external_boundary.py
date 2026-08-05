@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-"""Validate the kOA Mediatheque / external UCKK boundary.
+"""Validate directional interchange between the private kOA and online UCKK Mediatheques.
 
-The check is intentionally structural and conservative. It rejects active source
-objects that model UCKK as an internal subsystem, component, profile member, or
-local media authority. Historical ADRs are allowed only when marked superseded,
-retired, deprecated, or archived.
+The check rejects UCKK-as-internal models, merged authority or storage, implicit
+bidirectional synchronization, publication without Publication Gateway authority,
+and import without quarantine and explicit local acceptance.
 """
 from __future__ import annotations
 
@@ -17,7 +16,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 TOOL_ID = "check_uckk_external_boundary"
-TOOL_VERSION = "1.0.0"
+TOOL_VERSION = "2.0.0"
 META_RE = re.compile(
     r"\A<!-- KOA:DOC-META:BEGIN GENERATED\n(?P<payload>.*?)\nKOA:DOC-META:END -->",
     re.DOTALL,
@@ -26,14 +25,17 @@ INACTIVE = {"superseded", "retired", "deprecated", "archived"}
 REQUIRED = (
     "contracts/components/koa-mediatheque.component.json",
     "contracts/integrations/uckk-publication.integration.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
     "contracts/artifact-contracts/koa-media-record.schema.json",
     "contracts/artifact-contracts/uckk-publication-package.schema.json",
     "contracts/artifact-contracts/uckk-publication-receipt.schema.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json",
     "02-system/12-koa-mediatheque-system-boundary.md",
     "04-components/koa-mediatheque.md",
     "04-components/uckk-publication-bridge.md",
-    "10-adrs/ADR-030-koa-mediatheque-as-an-internal-component.md",
-    "10-adrs/ADR-031-uckk-as-an-external-moodle-publication-target.md",
+    "04-components/uckk-import-bridge.md",
 )
 PROHIBITED_ACTIVE_PATHS = (
     "contracts/subsystems/uckk.subsystem.json",
@@ -63,6 +65,9 @@ PROHIBITED_PROSE = (
     re.compile(r"\buckk\s+is\s+an?\s+internal\s+(?:koa-linux\s+)?subsystem\b", re.I),
     re.compile(r"\buckk\s+platform\s+is\s+part\s+of\s+the\s+koa(?:-linux)?\s+runtime\b", re.I),
     re.compile(r"\buckk\s+owns\s+(?:the\s+)?local\s+koa\s+(?:media|files?)\b", re.I),
+    re.compile(r"\b(?:automatic|implicit|background)\s+bidirectional\s+synchroni[sz]ation\s+(?:is\s+)?(?:enabled|required|the\s+default)\b", re.I),
+    re.compile(r"\bshared\s+(?:authoritative\s+)?(?:database|storage)\s+between\s+(?:the\s+)?(?:koa|uckk)\s+mediatheques\b", re.I),
+    re.compile(r"\bremote\s+uckk\s+(?:changes?|versions?)\s+automatically\s+overwrite\s+local\b", re.I),
 )
 
 
@@ -116,6 +121,34 @@ def walk_strings(value: Any, path: str = "$") -> Iterable[tuple[str, str]]:
         yield path, value
 
 
+NEGATIVE_JSON_KEYS = {
+    "deprecated_aliases",
+    "forbidden_aliases",
+    "prohibited_active_identifiers",
+    "prohibited_identifiers",
+    "prohibited_references",
+    "prohibited_claims",
+    "prohibited_assumptions",
+    "non_responsibilities",
+}
+
+
+def walk_active_strings(value: Any, path: str = "$") -> Iterable[tuple[str, str]]:
+    """Yield strings from active assertions, excluding retired and negative-policy objects."""
+    if isinstance(value, dict):
+        if str(value.get("status", "active")).lower() in INACTIVE:
+            return
+        for key, child in value.items():
+            if key in NEGATIVE_JSON_KEYS:
+                continue
+            yield from walk_active_strings(child, f"{path}.{key}")
+    elif isinstance(value, list):
+        for index, child in enumerate(value):
+            yield from walk_active_strings(child, f"{path}[{index}]")
+    elif isinstance(value, str):
+        yield path, value
+
+
 def check_required(root: Path, findings: list[Finding]) -> None:
     for rel in REQUIRED:
         if not (root / rel).is_file():
@@ -141,12 +174,49 @@ def check_json_sources(root: Path, findings: list[Finding]) -> None:
             continue
         if not active(path):
             continue
-        for json_path, text in walk_strings(value):
+        for json_path, text in walk_active_strings(value):
             if text in PROHIBITED_IDENTIFIERS:
                 findings.append(Finding(rel, "PROHIBITED_INTERNAL_IDENTIFIER", f"{json_path} contains {text!r}."))
             normalized = text.replace("\\", "/").rstrip("/")
             if normalized in PROHIBITED_REFERENCES:
                 findings.append(Finding(rel, "PROHIBITED_INTERNAL_REFERENCE", f"{json_path} contains {text!r}."))
+
+
+NEGATIVE_CONTEXT_MARKERS = (
+    "shall not", "must not", "does not", "do not", "cannot", "may not",
+    "prohibited", "forbidden", "invalid", "incorrect", "reject", "rejected",
+    "must reject", "validator", "detection pattern", "non-responsibil",
+)
+NEGATIVE_SECTION_MARKERS = (
+    "prohibited", "forbidden", "invalid", "incorrect", "negative example",
+    "non-responsibil", "rejected claim", "validation fixture", "detection",
+)
+
+
+def prose_claim_lines(text: str) -> Iterable[tuple[int, str]]:
+    """Yield active prose lines while excluding code and explicit negative examples."""
+    in_fence = False
+    section = ""
+    for number, raw in enumerate(text.splitlines(), start=1):
+        stripped = raw.strip()
+        if stripped.startswith("```") or stripped.startswith("~~~"):
+            in_fence = not in_fence
+            continue
+        if in_fence:
+            continue
+        if stripped.startswith("#"):
+            section = stripped.lstrip("#").strip().casefold()
+            continue
+        if not stripped or stripped.startswith("<!--") or stripped.startswith(">"):
+            continue
+        # Remove inline-code examples before prose matching.
+        candidate = re.sub(r"`[^`]*`", "", raw)
+        context = f"{section} {candidate}".casefold()
+        if any(marker in context for marker in NEGATIVE_SECTION_MARKERS):
+            continue
+        if any(marker in candidate.casefold() for marker in NEGATIVE_CONTEXT_MARKERS):
+            continue
+        yield number, candidate
 
 
 def check_markdown_sources(root: Path, findings: list[Finding]) -> None:
@@ -165,11 +235,11 @@ def check_markdown_sources(root: Path, findings: list[Finding]) -> None:
                 normalized = value.replace("\\", "/").rstrip("/")
                 if normalized in PROHIBITED_REFERENCES:
                     findings.append(Finding(rel, "PROHIBITED_METADATA_REFERENCE", f"{json_path} contains {value!r}."))
-        for pattern in PROHIBITED_PROSE:
-            match = pattern.search(text)
-            if match:
-                line = text.count("\n", 0, match.start()) + 1
-                findings.append(Finding(rel, "PROHIBITED_OWNERSHIP_CLAIM", f"line {line}: {match.group(0)!r}"))
+        for line_number, line in prose_claim_lines(text):
+            for pattern in PROHIBITED_PROSE:
+                match = pattern.search(line)
+                if match:
+                    findings.append(Finding(rel, "PROHIBITED_OWNERSHIP_CLAIM", f"line {line_number}: {match.group(0)!r}"))
 
 
 def check_corrected_contracts(root: Path, findings: list[Finding]) -> None:
@@ -193,6 +263,7 @@ def check_corrected_contracts(root: Path, findings: list[Finding]) -> None:
             boundary = integration.get("boundary", {})
             expected = {
                 "integration_id": integration.get("integration_id") == "uckk-publication",
+                "authority": integration.get("authority") == "non_authoritative",
                 "inside_koa_linux": external.get("inside_koa_linux") is False,
                 "owns_local_koa_media": external.get("owns_local_koa_media") is False,
                 "shared_database": boundary.get("shared_database") is False,
@@ -206,9 +277,50 @@ def check_corrected_contracts(root: Path, findings: list[Finding]) -> None:
         except Exception as exc:
             findings.append(Finding(integration_path.relative_to(root).as_posix(), "INTEGRATION_CONTRACT_INVALID", str(exc)))
 
+    import_path = root / "contracts/integrations/uckk-import.integration.json"
+    if import_path.is_file():
+        try:
+            integration = parse_json(import_path)
+            external = integration.get("external_system", {})
+            boundary = integration.get("boundary", {})
+            model = integration.get("import_model", {})
+            expected = {
+                "integration_id": integration.get("integration_id") == "uckk-import",
+                "direction": integration.get("direction") == "inbound_import",
+                "authority": integration.get("authority") == "non_authoritative",
+                "inside_koa_linux": external.get("inside_koa_linux") is False,
+                "owns_local_koa_media": external.get("owns_local_koa_media") is False,
+                "shared_database": boundary.get("shared_database") is False,
+                "direct_database_write": boundary.get("direct_database_write") is False,
+                "implicit_bidirectional_sync": boundary.get("implicit_bidirectional_sync") is False,
+                "remote_overwrite": boundary.get("remote_change_implies_local_overwrite") is False,
+                "source_authority_preserved": boundary.get("source_authority_preserved") is True,
+                "local_copy_authority_separate": boundary.get("local_copy_authority_separate") is True,
+                "quarantine": model.get("quarantine") == "required before local acceptance",
+            }
+            for field, ok in expected.items():
+                if not ok:
+                    findings.append(Finding(import_path.relative_to(root).as_posix(), "IMPORT_BOUNDARY_INVALID", f"Required boundary assertion failed: {field}."))
+        except Exception as exc:
+            findings.append(Finding(import_path.relative_to(root).as_posix(), "IMPORT_CONTRACT_INVALID", str(exc)))
+
+    frame_path = root / "contracts/artifact-contracts/shared-mediatheque-frame.schema.json"
+    if frame_path.is_file():
+        try:
+            frame = parse_json(frame_path)
+            props = frame.get("properties", {})
+            if props.get("frame_id", {}).get("const") != "koa-uckk-shared-mediatheque-frame":
+                findings.append(Finding(frame_path.relative_to(root).as_posix(), "SHARED_FRAME_INVALID", "frame_id constant is missing or incorrect."))
+            required = set(frame.get("required", []))
+            for field in {"object_identity", "version_identity", "integrity", "media", "rights", "provenance", "lifecycle"}:
+                if field not in required:
+                    findings.append(Finding(frame_path.relative_to(root).as_posix(), "SHARED_FRAME_INVALID", f"Required shared-frame field is missing: {field}."))
+        except Exception as exc:
+            findings.append(Finding(frame_path.relative_to(root).as_posix(), "SHARED_FRAME_INVALID", str(exc)))
+
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Validate the kOA Mediatheque and external UCKK boundary")
+    parser = argparse.ArgumentParser(description="Validate the kOA and UCKK Mediatheque directional interchange boundary")
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[1])
     parser.add_argument("--json", action="store_true", help="Emit a JSON result")
     args = parser.parse_args()

@@ -23,7 +23,13 @@
     "generated/traceability.json",
     "generated/exception-index.json",
     "generated/test-catalog.json",
-    "generated/evidence-catalog.json"
+    "generated/evidence-catalog.json",
+    "contracts/components/koa-mediatheque.component.json",
+    "contracts/integrations/uckk-publication.integration.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json"
   ],
   "decision_ids": [
     "DEC-PROFILE-001",
@@ -35,7 +41,9 @@
     "DEC-PRIV-001",
     "DEC-LIFE-001",
     "DEC-AI-001",
-    "DEC-DATA-001"
+    "DEC-DATA-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001"
   ],
   "requirement_ids": [
     "REQ-PROF-HA-001",
@@ -77,7 +85,11 @@
     "REQ-PROF-HA-037",
     "REQ-PROF-HA-038",
     "REQ-PROF-HA-039",
-    "REQ-PROF-HA-040"
+    "REQ-PROF-HA-040",
+    "REQ-PROF-HA-041",
+    "REQ-PROF-HA-042",
+    "REQ-PROF-HA-043",
+    "REQ-PROF-HA-044"
   ],
   "lock_ids": [
     "LOCK-PROFILE-001",
@@ -95,7 +107,10 @@
     "LOCK-LIFE-004",
     "LOCK-AI-001",
     "LOCK-AI-002",
-    "LOCK-COMP-001"
+    "LOCK-COMP-001",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -170,21 +185,21 @@ The overlay changes the assurance posture of a deployment. It does not change th
 
 The machine-readable owner of overlay compatibility, composition, controls, requirements, tests, and evidence expectations is:
 
-```text
+`text
 contracts/profiles/high-assurance.profile.json
-```
+`
 
 ## 2. Scope
 
 The overlay applies to a composed deployment consisting of:
 
-```text
+`text
 one compatible primary profile
 +
 high_assurance
 +
 zero or more compatible overlays
-```
+`
 
 Compatible primary profiles are:
 
@@ -303,9 +318,9 @@ An unresolved composition conflict does not produce an active deployment claim.
 
 The overlay creates the claim:
 
-```text
+`text
 CLAIM-PROFILE-HIGH-ASSURANCE
-```
+`
 
 The claim applies to the composed deployment, not to the overlay file alone.
 
@@ -458,7 +473,7 @@ kOA Node Agent performs bounded privileged operations.
 
 Normal privileged flow is:
 
-```text
+`text
 schema-bound request
 -> authenticated subject and target
 -> active governance decision
@@ -468,7 +483,7 @@ schema-bound request
 -> before-and-after verification
 -> protected receipt
 -> review when required
-```
+`
 
 Arbitrary shell, package-manager, file-copy, container, service-control, and key-export surfaces remain outside normal kOA privilege.
 
@@ -554,7 +569,11 @@ Their use depends on:
 
 Restricted and no-AI data remain outside these surfaces unless an explicit compatible policy permits the exact transfer.
 
-External output remains a non-authoritative candidate.
+UCKK publication and UCKK import remain separately enabled integrations. Outbound publication requires exact-object selection, Publication Gateway authorization, minimized packaging, destination-scoped credentials, and protected receipts. Inbound packages require an allowlisted source, complete-package quarantine, integrity and source verification, license and restriction evaluation, shared-frame mapping review, and explicit local acceptance.
+
+Accepted UCKK learning material can remain available offline. Local progress, annotations, private procedures, and adaptations are not uploaded automatically. A remote version is an update candidate and cannot replace an accepted local version without a new decision.
+
+External output remains a non-authoritative candidate until the owning local workflow accepts it.
 
 ### 4.14 Recovery and resilience
 
@@ -624,15 +643,19 @@ The deployment retains locally available identity, policy, audit, artifact, and 
 - Automation stops on stale observation, ambiguity, missing authority, or failed verification.
 - Diagnostic capture is bounded and classified.
 
-#### `uckk_platform`
+#### `koa_mediatheque` and UCKK interchange
 
-- Restricted and no-AI content cannot be exported to external AI surfaces.
-- Original media and provenance are preserved.
-- Audience and rights restrictions apply to previews, search, exports, caches, and derivatives.
+- The kOA Mediatheque remains the private local authority and preserves original media, provenance, rights, restrictions, and local identities.
+- The online UCKK Mediatheque remains an external authority; no direct Moodle database access is permitted.
+- Outbound UCKK publication requires Publication Gateway authorization and a destination-scoped publication package.
+- Inbound UCKK learning packages remain quarantined until source, integrity, license, restrictions, completeness, provenance, malware, and frame-mapping checks pass.
+- Local acceptance creates separate identities; remote identifiers remain provenance references.
+- Audience and rights restrictions apply to previews, search, imports, exports, caches, derivatives, and offline use.
+- Reconnection does not authorize automatic upload, download, overwrite, deletion, progress transfer, or bidirectional synchronization.
 
 ## 5. Applicable Normative Requirements
 
-<!-- GENERATED:REQUIREMENTS:BEGIN ids=REQ-PROF-HA-001,REQ-PROF-HA-002,REQ-PROF-HA-003,REQ-PROF-HA-004,REQ-PROF-HA-005,REQ-PROF-HA-006,REQ-PROF-HA-007,REQ-PROF-HA-008,REQ-PROF-HA-009,REQ-PROF-HA-010,REQ-PROF-HA-011,REQ-PROF-HA-012,REQ-PROF-HA-013,REQ-PROF-HA-014,REQ-PROF-HA-015,REQ-PROF-HA-016,REQ-PROF-HA-017,REQ-PROF-HA-018,REQ-PROF-HA-019,REQ-PROF-HA-020,REQ-PROF-HA-021,REQ-PROF-HA-022,REQ-PROF-HA-023,REQ-PROF-HA-024,REQ-PROF-HA-025,REQ-PROF-HA-026,REQ-PROF-HA-027,REQ-PROF-HA-028,REQ-PROF-HA-029,REQ-PROF-HA-030,REQ-PROF-HA-031,REQ-PROF-HA-032,REQ-PROF-HA-033,REQ-PROF-HA-034,REQ-PROF-HA-035,REQ-PROF-HA-036,REQ-PROF-HA-037,REQ-PROF-HA-038,REQ-PROF-HA-039,REQ-PROF-HA-040 -->
+<!-- GENERATED:REQUIREMENTS:BEGIN ids=REQ-PROF-HA-001,REQ-PROF-HA-002,REQ-PROF-HA-003,REQ-PROF-HA-004,REQ-PROF-HA-005,REQ-PROF-HA-006,REQ-PROF-HA-007,REQ-PROF-HA-008,REQ-PROF-HA-009,REQ-PROF-HA-010,REQ-PROF-HA-011,REQ-PROF-HA-012,REQ-PROF-HA-013,REQ-PROF-HA-014,REQ-PROF-HA-015,REQ-PROF-HA-016,REQ-PROF-HA-017,REQ-PROF-HA-018,REQ-PROF-HA-019,REQ-PROF-HA-020,REQ-PROF-HA-021,REQ-PROF-HA-022,REQ-PROF-HA-023,REQ-PROF-HA-024,REQ-PROF-HA-025,REQ-PROF-HA-026,REQ-PROF-HA-027,REQ-PROF-HA-028,REQ-PROF-HA-029,REQ-PROF-HA-030,REQ-PROF-HA-031,REQ-PROF-HA-032,REQ-PROF-HA-033,REQ-PROF-HA-034,REQ-PROF-HA-035,REQ-PROF-HA-036,REQ-PROF-HA-037,REQ-PROF-HA-038,REQ-PROF-HA-039,REQ-PROF-HA-040,REQ-PROF-HA-041,REQ-PROF-HA-042,REQ-PROF-HA-043,REQ-PROF-HA-044 -->
 - **REQ-PROF-HA-001 — SHALL:** The overlay is composed with exactly one compatible primary profile.
 - **REQ-PROF-HA-002 — SHALL:** The composed deployment establishes a verified boot chain and measured active system identity.
 - **REQ-PROF-HA-003 — SHALL:** Node and workload identities use hardware-bound or equivalently protected keys.
@@ -673,6 +696,10 @@ The deployment retains locally available identity, policy, audit, artifact, and 
 - **REQ-PROF-HA-038 — SHALL:** Conformance evidence is current for the active authority release, target environment, profile composition, and artifact set.
 - **REQ-PROF-HA-039 — SHALL:** A failed required control, test, or evidence check suspends the high-assurance claim.
 - **REQ-PROF-HA-040 — SHALL:** The high-assurance claim has complete decision, requirement, lock, test, evidence, exception, component, profile, and release traceability.
+- **REQ-PROF-HA-041 — SHALL:** High-assurance UCKK publication use destination-scoped credentials, exact-object authorization, protected package integrity, Publication Gateway approval, and protected receipts.
+- **REQ-PROF-HA-042 — SHALL:** High-assurance UCKK import use an allowlisted source, protected quarantine, bounded parsing, source and integrity verification, license and restriction evaluation, shared-frame mapping evidence, and explicit local acceptance.
+- **REQ-PROF-HA-043 — SHALL:** Accepted UCKK learning packages preserve separate local identities and remain offline-usable only within verified rights, policy, and runtime constraints.
+- **REQ-PROF-HA-044 — SHALL NOT:** The high-assurance overlay permit direct UCKK database access, shared authoritative storage, implicit synchronization, automatic remote overwrite, or automatic upload of local progress or adaptations.
 <!-- GENERATED:REQUIREMENTS:END -->
 
 ## 6. Procedures or State Transitions
@@ -1012,11 +1039,11 @@ The high-assurance claim activates only after `pass`.
 
 A sovereign Linux node composes:
 
-```text
+`text
 sovereign_linux_node
 +
 high_assurance
-```
+`
 
 The primary profile provides signed system activation, offline bundles, recovery, storage, and node topology.
 

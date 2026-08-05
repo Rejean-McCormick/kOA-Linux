@@ -23,6 +23,13 @@
       "version": "1.0.0"
     },
     {
+      "id": "koa_mediatheque",
+      "path": "contracts/components/koa-mediatheque.component.json",
+      "title": "kOA Mediatheque",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    {
       "id": "koa_node_agent",
       "path": "contracts/components/koa-node-agent.component.json",
       "title": "kOA Node Agent",
@@ -47,13 +54,6 @@
       "id": "resource_governor",
       "path": "contracts/components/resource-governor.component.json",
       "title": "Resource Governor",
-      "status": "active",
-      "version": "1.0.0"
-    },
-    {
-      "id": "uckk_dimension_gateway",
-      "path": "contracts/components/uckk-dimension-gateway.component.json",
-      "title": "UCKK Dimension Gateway Component Contract",
       "status": "active",
       "version": "1.0.0"
     }

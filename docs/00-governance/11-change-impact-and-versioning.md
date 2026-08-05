@@ -150,7 +150,7 @@ Purely local notes, scratch files, and untracked drafts remain outside active au
 
 The canonical references for change impact and versioning are:
 
-```text
+`text
 generated/authority-manifest.json
 generated/decision-index.json
 generated/document-index.json
@@ -163,7 +163,7 @@ contracts/ai-navigation.contract.json
 schemas/impact-report.schema.json
 generated/impact/
 generated/manifests/
-```
+`
 
 | Concern | Canonical owner |
 | --- | --- |
@@ -172,7 +172,7 @@ generated/manifests/
 | Document versions, paths, and dependencies | `documentation.registry.json` |
 | Requirement versions and statements | `requirements.registry.json` |
 | Lock versions and mutation policies | `locks.registry.json` |
-| ADR lifecycle | `adrs.registry.json` |
+| ADR rationale, when required | `10-adrs/README.md` and the applicable active ADR |
 | Cross-object relationships | `traceability.registry.json` |
 | Approved deviations | `exceptions.registry.json` |
 | Context-package definitions | `ai-context.registry.json` |
@@ -188,15 +188,15 @@ The impact report is generated. It records analysis and dispositions but does no
 
 Every controlled change has a stable change identity:
 
-```text
+`text
 CHG-<YEAR>-<SEQUENCE>
-```
+`
 
 Example:
 
-```text
+`text
 CHG-2026-0042
-```
+`
 
 A change object records its title, accepted decisions, semantic class, state, requester, and canonical targets.
 
@@ -204,7 +204,7 @@ A change object records its title, accepted decisions, semantic class, state, re
 
 Controlled changes use these states:
 
-```text
+`text
 draft
 analyzing
 blocked
@@ -216,7 +216,7 @@ active
 rolled_back
 superseded
 abandoned
-```
+`
 
 | State | Meaning |
 | --- | --- |
@@ -282,9 +282,9 @@ A documentation release is an atomic set containing:
 
 Recommended identity:
 
-```text
+`text
 KOA-DOC-RELEASE-<major>.<minor>.<patch>
-```
+`
 
 ### 4.6 Impact graph
 
@@ -336,7 +336,7 @@ Impact resolution traverses outgoing dependency edges from every changed canonic
 - **REQ-CHG-026 — SHALL:** A replacement identifier declare `supersedes`, and the retired identifier declare `replaced_by`.
 - **REQ-CHG-027 — SHALL:** A lock mutation follow the lock’s declared mutation policy.
 - **REQ-CHG-028 — SHALL:** A lock weakening, scope change, assertion change, or retirement be classified as major.
-- **REQ-CHG-029 — SHALL:** A major documentation change include an accepted ADR when it changes architecture, authority, scope, compatibility, or validation policy.
+- **REQ-CHG-029 — SHALL:** A change include an ADR only when it introduces or changes a non-obvious, workaround-based, or regression-prone implementation choice that cannot be adequately protected by the canonical current-system description alone.
 - **REQ-CHG-030 — SHALL:** Validation run from a clean repository state against the complete proposed documentation release.
 - **REQ-CHG-031 — SHALL NOT:** A failed, skipped, unavailable, or incomplete required validation be reported as passed.
 - **REQ-CHG-032 — SHALL:** Activation record exact paths, versions, statuses, validation results, and evidence references.
@@ -353,35 +353,35 @@ Impact resolution traverses outgoing dependency edges from every changed canonic
 
 ### 6.1 Standard semantic-change procedure
 
-```text
+`text
 accepted decision
-    ↓
+ ↓
 change object created
-    ↓
+ ↓
 semantic class selected
-    ↓
+ ↓
 canonical targets identified
-    ↓
+ ↓
 impact graph resolved
-    ↓
+ ↓
 impact report reviewed
-    ↓
+ ↓
 canonical sources modified
-    ↓
+ ↓
 dependent contracts modified
-    ↓
+ ↓
 normative and explanatory documents modified
-    ↓
+ ↓
 generated content rebuilt
-    ↓
+ ↓
 tests and evidence updated
-    ↓
+ ↓
 complete validation
-    ↓
+ ↓
 authority manifest updated
-    ↓
+ ↓
 atomic activation
-```
+`
 
 ### 6.2 Impact-analysis procedure
 
@@ -405,9 +405,9 @@ It resolves:
 
 The output is written to:
 
-```text
+`text
 generated/impact/IMPACT-<date>-<change-id>.json
-```
+`
 
 ### 6.3 Impact-report structure
 
@@ -435,7 +435,7 @@ A minor change includes compatibility review, dependent-context review, generate
 
 ### 6.7 Major-change procedure
 
-A major change includes an accepted owner decision, accepted ADR, full transitive impact report, migration plan, compatibility statement, rollback or forward-repair plan, full validation, major increments for incompatible canonical objects, and a major documentation-release increment when the authority contract changes incompatibly.
+A major change includes an accepted owner decision, a full transitive impact report, a migration plan, a compatibility statement, a rollback or forward-repair plan, full validation, major increments for incompatible canonical objects, and a major documentation-release increment when the authority contract changes incompatibly. Add a short ADR only when the change meets the criteria in `10-adrs/README.md`.
 
 ### 6.8 Lock-mutation procedure
 
@@ -538,15 +538,15 @@ A change touching a protected canonical reference automatically includes the loc
 
 Traceability expands impact from architecture into validation:
 
-```text
+`text
 decision
-  → requirement
-  → profile
-  → component
-  → test
-  → evidence
-  → conformance claim
-```
+ → requirement
+ → profile
+ → component
+ → test
+ → evidence
+ → conformance claim
+`
 
 ### 8.6 AI context registry
 
@@ -679,27 +679,27 @@ Moving `rootless Podman required` from `sovereign_linux_node` to global scope is
 
 A change to:
 
-```text
+`text
 contracts/toolchains/python-uv.toolchain.json#/environment_isolation
-```
+`
 
 may directly affect `REQ-DEV-UV-001`, `LOCK-DEV-001`, `DOC-DEV-003`, and the developer profile. It may transitively affect development conformance, generated AI context, workspace recipes, evidence, and release gates.
 
 ### 11.5 Valid reviewed-no-change disposition
 
-```json
+`json
 {
-  "object_type": "document",
-  "object_id": "DOC-OPS-004",
-  "disposition": "reviewed_no_change",
-  "review": {
-    "reviewer": "operations-architecture",
-    "reviewed_on": "2026-08-03",
-    "source_version": "2.1.0",
-    "rationale": "The document resolves limits dynamically from the profile registry."
-  }
+ "object_type": "document",
+ "object_id": "DOC-OPS-004",
+ "disposition": "reviewed_no_change",
+ "review": {
+ "reviewer": "operations-architecture",
+ "reviewed_on": "2026-08-03",
+ "source_version": "2.1.0",
+ "rationale": "The document resolves limits dynamically from the profile registry."
+ }
 }
-```
+`
 
 ### 11.6 Invalid reviewed-no-change disposition
 
@@ -707,19 +707,19 @@ A disposition containing only an object ID and `reviewed_no_change` is invalid b
 
 ### 11.7 Valid blocked result
 
-```json
+`json
 {
-  "change_id": "CHG-2026-0042",
-  "status": "blocked",
-  "blockers": [
-    {
-      "type": "missing_test_evidence",
-      "requirement_id": "REQ-DEV-UV-001",
-      "test_id": "TEST-DEV-UV-001"
-    }
-  ]
+ "change_id": "CHG-2026-0042",
+ "status": "blocked",
+ "blockers": [
+ {
+ "type": "missing_test_evidence",
+ "requirement_id": "REQ-DEV-UV-001",
+ "test_id": "TEST-DEV-UV-001"
+ }
+ ]
 }
-```
+`
 
 ### 11.8 Invalid activation
 
@@ -727,7 +727,7 @@ Updating Markdown and switching the authority registry before generated contexts
 
 ### 11.9 Valid authority activation sequence
 
-```text
+`text
 canonical registries
 → schemas
 → requirements and locks
@@ -737,4 +737,4 @@ canonical registries
 → AI contexts
 → complete validation
 → authority registry
-```
+`

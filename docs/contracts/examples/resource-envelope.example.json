@@ -970,7 +970,6 @@
       "job_or_process_id": "job.mediatheque-transcode.2026-08-03.003",
       "resource_class": "heavy_compute",
       "result": "deferred",
-      "effective_limits": null,
       "reason_codes": [
         "heavy_job_concurrency_limit_reached",
         "active_restore_validation_has_higher_priority"

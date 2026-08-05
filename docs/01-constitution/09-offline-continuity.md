@@ -57,11 +57,11 @@
     "LOCK-SENT-001",
     "LOCK-MEDIATHEQUE-001",
     "LOCK-UCKK-EXT-001",
-    "LOCK-UCKK-EXT-001",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
     "LOCK-DATA-001",
-    "LOCK-PROFILE-001"
+    "LOCK-PROFILE-001",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -89,7 +89,7 @@ KOA:DOC-META:END -->
 
 ## 1. Purpose
 
-This document establishes offline continuity as a global constitutional property of the kOA operating environment.
+This document establishes offline continuity as a global constitutional property of the kOA-Linux Operating System.
 
 Offline continuity means that loss of Internet access, external providers, remote peers, external AI surfaces, or optional network services does not collapse the local core. The system continues to expose the locally available capabilities that its active profile classifies as continuous, while unavailable or unsafe operations become explicitly degraded, deferred, or blocked.
 
@@ -107,7 +107,7 @@ This document applies globally to:
 - external integrations and federation peers;
 - external AI surfaces;
 - Ariane navigation and voice capabilities;
-- kOA Mediatheque ingestion, routing, indexing, retrieval, and external adapters;
+- kOA Mediatheque ingestion, indexing, retrieval, downloaded learning packages, and governed UCKK interchange;
 - SenTient when installed in an eligible profile;
 - pending work, synchronization, recovery, and reconciliation;
 - resource governance and capability degradation;
@@ -180,32 +180,34 @@ A component does not write directly to another component's authoritative source 
 
 ### 4.4 External integrations
 
-Every integration declares:
+Every integration declares whether it is optional or profile-conditional, which capability it provides, which data crosses the boundary, whether work can be queued, how credentials are referenced, how failure is presented, and what local behavior remains after removal.
 
-- whether it is optional or profile-conditional;
-- which capabilities it provides;
-- which data crosses the boundary;
-- whether work can be queued;
-- how credentials are referenced;
-- how failure is presented;
-- how the integration is removed;
-- what local behavior remains after removal.
+UCKK is an optional online Moodle learning and dissemination platform. Its unavailability does not disable the kOA Mediatheque or any already accepted local package.
 
-The approved external AI surfaces are user-triggered adapters. Their outputs remain candidate inputs until accepted through an authoritative local workflow.
+Two UCKK directions are classified separately:
 
-### 4.5 Ariane, kOA Mediatheque, and SenTient
+- `publish_to_uckk` is a deferred external disclosure operation that requires current Publication Gateway authorization before delivery;
+- `import_from_uckk` is a controlled acquisition operation that requires explicit selection, source and license verification, integrity and compatibility checks, quarantine, and local acceptance.
+
+The approved external AI surfaces remain user-triggered adapters. Their outputs remain candidate inputs until accepted through an authoritative local workflow.
+
+### 4.5 Ariane, the two Mediatheques, and SenTient
 
 Ariane local navigation is independent of external voice and external AI. Loss of the approved voice adapter removes voice capability but not local navigation.
 
-Native kOA Mediatheque behavior remains deterministic and non-AI. Suno and Gamma are optional user-triggered integrations and do not define local media authority.
+The kOA Mediatheque is the local, private-by-default, offline authority. It can preserve locally authored instructions and imported UCKK learning packages for disconnected use.
+
+The UCKK Mediatheque is the online authority for UCKK courses, learning paths, activities, permissions, and remote content lifecycle. A shared Mediatheque frame makes explicit exchange possible but does not merge storage, identity, access control, lifecycle, or authority.
+
+Suno and Gamma remain optional user-triggered integrations and do not define local media authority.
 
 SenTient is an optional, isolated, non-authoritative workbench available only in eligible profiles. It is not part of the default user baseline and is not a continuity dependency.
 
 ### 4.6 Pending operations and reconciliation
 
-A deferred operation has an explicit lifecycle:
+A deferred operation has an explicit lifecycle. Outbound UCKK publication and inbound UCKK acquisition use separate records, queues, receipts, and reconciliation rules; they are never collapsed into a generic synchronization state:
 
-```text
+`text
 requested
 recorded_pending
 eligible_for_retry
@@ -213,17 +215,17 @@ submitted
 externally_confirmed
 locally_reconciled
 completed
-```
+`
 
 It may instead end as:
 
-```text
+`text
 cancelled
 expired
 rejected
 conflicted
 failed
-```
+`
 
 No transition to `completed` occurs before the external effect and local reconciliation are verified.
 
@@ -405,20 +407,20 @@ This document is conformant when validation confirms:
 
 The principal validation entry point is:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 Supporting checks include:
 
-```text
+`text
 tools/check_interfile_locks.py
 tools/check_ai_boundary.py
 tools/check_component_boundaries.py
 tools/check_profile_inheritance.py
 tools/check_release_sets.py
 tools/check_traceability.py
-```
+`
 
 ## 11. Non-Normative Examples
 
@@ -430,9 +432,9 @@ A user loses Internet connectivity while navigating local applications. Ariane c
 
 A user imports a local media file. Native kOA Mediatheque validation, ingestion, routing, indexing, and retrieval continue through deterministic local paths. A request to use Suno or Gamma remains unavailable until the user reconnects and explicitly invokes the adapter.
 
-### 11.3 Deferred publication
+### 11.3 Deferred UCKK publication
 
-A user prepares a publication while the destination service is unavailable. The local candidate remains stored by its owning component. A minimized publication request is recorded as pending. The interface does not report publication as complete. After reconnection, policy, compatibility, consent, and destination state are revalidated before submission.
+A user prepares a learning resource for UCKK while the online platform is unavailable. The local source remains private and authoritative in the kOA Mediatheque. A minimized publication request is recorded as pending, not published. After reconnection, rights, consent, authorization, source version, destination, and expiry are revalidated before packaging and delivery.
 
 ### 11.4 Authorization uncertainty
 
@@ -442,6 +444,7 @@ A locally authenticated user requests a sensitive mutation, but the required cur
 
 SenTient is removed from a developer workspace. Core kOA services, Ariane local navigation, deterministic kOA Mediatheque paths, and authoritative component data continue. Features provided only by SenTient become unavailable without changing system authority.
 
-### 11.6 Reconnection conflict
+### 11.6 Isolated-school learning package
 
-Two disconnected peers modify related records. Reconnection detects divergence and preserves the conflicting states. The owning component's conflict policy determines whether the records are merged, selected, rejected, or referred for review. No silent last-writer-wins rule is inferred.
+An isolated school receives a verified UCKK course bundle by intermittent network or removable media. The system validates the source, license, manifest, signatures, hashes, compatibility, and required local resources. The kOA Mediatheque accepts a local copy with preserved UCKK provenance. Students consult the installed course offline. Later UCKK changes are presented as a new import candidate and never overwrite the local copy silently.
+

@@ -330,7 +330,7 @@ Publication is distinct from ingestion, storage, local use, and internal transfe
 
 Publication Gateway mediates governed release to another domain or external audience. It evaluates the active publication request, consent and authority records, audience, purpose, restrictions, required transformations, evidence, and applicable exceptions before release.
 
-UCKK Dimension Gateway controls user-selected media ingestion and admission into UCKK. Admission into UCKK does not authorize publication or external transfer.
+The UCKK Import Bridge controls retrieval and quarantine of user-selected UCKK learning packages. Local acceptance does not authorize publication or external transfer of local content.
 
 A component that stores or processes material cannot bypass Publication Gateway by invoking an external integration directly.
 
@@ -432,7 +432,7 @@ An AI system may assist with drafting, indexing, comparison, or validation under
 - **REQ-CULT-010 — SHALL:** Required attribution, anonymity, contextual notes, language restrictions, audience restrictions, and transformation restrictions remain attached to governed material and its authorized derivatives.
 - **REQ-CULT-011 — SHALL:** Publication be authorized independently from ingestion, storage, local access, internal processing, and backup.
 - **REQ-CULT-012 — SHALL:** Publication Gateway mediate governed cross-domain disclosure and external publication.
-- **REQ-CULT-013 — SHALL NOT:** UCKK Dimension Gateway, a component runtime, a recipe, or an external integration substitute for Publication Gateway authorization.
+- **REQ-CULT-013 — SHALL NOT:** UCKK Import Bridge, UCKK Publication Bridge, a component runtime, a recipe, or another external integration substitute for Publication Gateway authorization of outbound disclosure.
 - **REQ-CULT-014 — SHALL:** External processing disclose the external surface, transferred material, purpose, expected output, retention conditions, provider-reuse conditions, and acceptance workflow before transfer.
 - **REQ-CULT-015 — SHALL NOT:** An external service, AI system, automated classifier, translator, summarizer, or generator become a cultural authority, consent grantor, final reviewer, or canonical data owner.
 - **REQ-CULT-016 — SHALL:** Selective audit permit proof of authorization, scope, execution, review, and policy application without indiscriminate disclosure of protected material or identities.
@@ -549,14 +549,14 @@ The dispute workflow is:
 
 The conceptual state progression is:
 
-```text
+`text
 unrecorded
-  -> proposed
-  -> granted | refused
-  -> active
-  -> suspended
-  -> revoked | expired | superseded
-```
+ -> proposed
+ -> granted | refused
+ -> active
+ -> suspended
+ -> revoked | expired | superseded
+`
 
 A dispute may move an affected grant into `suspended`. A replacement grant uses a new version and preserves lineage. Refused, revoked, expired, suspended, or superseded authority does not authorize a new governed operation.
 
@@ -610,9 +610,9 @@ Publication Gateway receives a bounded publication request, resolves the applica
 
 It does not ingest user media into UCKK, own the source material, or silently broaden the approved audience.
 
-### 8.4 UCKK Dimension Gateway
+### 8.4 UCKK Import Bridge
 
-UCKK Dimension Gateway receives user-selected media for controlled admission into UCKK. It preserves source provenance and applicable cultural-rights references.
+UCKK Import Bridge receives selected UCKK learning packages for quarantine and controlled local acceptance. It preserves source provenance, license, restrictions, consent references, and applicable cultural-rights conditions.
 
 It does not authorize publication, external processing, training, commercial use, or unrelated transformation.
 
@@ -663,7 +663,7 @@ The following assumptions are prohibited:
 15. An AI output can identify cultural authority or community membership conclusively.
 16. Automated translation preserves contextual meaning without review.
 17. Attribution is unnecessary when provenance exists privately.
-18. Publication Gateway and UCKK Dimension Gateway are interchangeable.
+18. Publication Gateway, UCKK Publication Bridge, and UCKK Import Bridge are interchangeable.
 19. A component may publish directly because it owns the source data.
 20. Audit requires full disclosure of protected material.
 21. A private evidence record may be made public to simplify conformance.
@@ -694,7 +694,7 @@ This document is conformant when all of the following checks pass:
 14. Collective authority depends on an explicit decision rule.
 15. Cultural identity and authority are not assigned through automated inference.
 16. Publication remains separate from ingestion, storage, backup, and local processing.
-17. Publication Gateway cannot be bypassed by a component, UCKK Dimension Gateway, recipe, or external integration.
+17. Publication Gateway cannot be bypassed by a component, UCKK Publication Bridge, UCKK Import Bridge, recipe, or external integration when outbound disclosure is requested.
 18. External processing is separately authorized and fully disclosed before transfer.
 19. External outputs remain non-authoritative until accepted by the responsible component.
 20. Selective audit can prove authorization without exposing protected content indiscriminately.

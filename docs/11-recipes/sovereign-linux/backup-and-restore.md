@@ -26,7 +26,10 @@
     "contracts/artifact-contracts/node-profile.schema.json",
     "generated/test-catalog.json",
     "generated/evidence-catalog.json",
-    "generated/traceability.json"
+    "generated/traceability.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json"
   ],
   "decision_ids": [
     "DEC-SYS-001",
@@ -38,7 +41,7 @@
     "DEC-HW-001",
     "DEC-REL-001",
     "DEC-AI-001",
-    "DEC-UCKK-001"
+    "DEC-UCKK-EXT-001"
   ],
   "requirement_ids": [
     "REQ-RECIPE-SLN-BAR-001",
@@ -83,8 +86,8 @@
     "LOCK-LIFE-004",
     "LOCK-AI-001",
     "LOCK-AI-002",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-MEDIATHEQUE-002",
     "LOCK-IMPL-001",
     "LOCK-IMPL-002"
   ],
@@ -99,7 +102,6 @@
     "DOC-SEC-010",
     "DOC-OPS-007",
     "DOC-OPS-018",
-    "DOC-ADR-002",
     "DOC-ADR-012"
   ],
   "tags": [
@@ -171,7 +173,6 @@ It does not treat a filesystem snapshot, storage replica, RAID set, synchronized
 | `contracts/components/koa-node-agent.component.json` | Encrypted-volume, recovery-target, rollback, repair, and evidence operations |
 | `docs/07-security/10-data-at-rest.md` | Encryption, key authority, backups, restore, retention, and erasure |
 | `docs/08-operations/07-capability-degradation.md` | Failure containment and restoration validation |
-| `docs/10-adrs/ADR-002-immutable-signed-os-image.md` | Reconstructable system image and independent recovery environment |
 | `docs/10-adrs/ADR-012-single-narrow-privileged-broker.md` | Closed privileged recovery operations |
 | `docs/06-lifecycle/17-contract-evolution-and-removal.md` | Schema, data, trust, profile, release, and recovery compatibility |
 
@@ -192,7 +193,7 @@ A single “restore everything” action cannot hide different data owners, sche
 | Governance policies | Policy owner | Critical when deployed | Active and previous accepted policy-bundle identities, source artifacts, receipts, and compatibility. | Reinstall verified bundles and validate policy state. |
 | Konnaxion and Orgo state | Owning component | Critical | Component-owned database export or consistent snapshot, migrations, attachments, and transaction boundary. | Restore through the component contract and test ordinary workflows. |
 | Kristal and language artifacts | Owning language component | Important or critical by deployment | Admitted compiled artifacts, source references, provenance, and compatibility metadata. | Reconstruct from verified artifacts when independent availability is proven. |
-| UCKK media and rights state | UCKK and rights authority | Critical by collection | Media, metadata, rights, consent, cultural authority, provenance, export restrictions, and retention. | Restore with rights and disclosure validation before access. |
+| kOA Mediatheque media, rights, accepted learning packages, and UCKK mappings | kOA Mediatheque and applicable rights authority | Critical by collection | Local media, metadata, rights, consent, provenance, accepted offline learning content, source mappings, export restrictions, and retention. Remote UCKK state is excluded. | Restore with rights, provenance, mapping, and local acceptance validation before access. |
 | Audit receipts and evidence | Audit Broker and evidence owners | Critical by policy | Authorized receipt classes, evidence manifests, integrity, retention, and selective-disclosure metadata. | Restore without widening audit visibility. |
 | Node Agent state | kOA Node Agent | Critical | Idempotency records, operation receipts, staging manifests, active and previous release identities, recovery tokens, encrypted-volume state, and rebuild configuration. | Rebuild from verified artifacts plus protected state. |
 | System and release artifacts | Release owners | Reconstructable | Exact image, bundle, manifest, signature, provenance, SBOM, Release Set, and compatibility identities. | Reference independent verified storage or include bytes when independence is not guaranteed. |
@@ -217,7 +218,7 @@ The independent target is not in the same physical failure domain as the active 
 | Objective class | Examples | Objective rule | Required test |
 | --- | --- | --- | --- |
 | Class A — authority foundation | Identity, trust continuity, active governance, Node Agent recovery state, required receipts | Lowest tolerated data loss and fastest required recovery for the deployment. | Full isolated restore and authority tests. |
-| Class B — active authoritative work | Konnaxion, Orgo, protected UCKK state, active operational records | Deployment-specific bounded loss and recovery based on workflow criticality. | Component restore plus read, write, authorization, and workflow tests. |
+| Class B — active authoritative work | Konnaxion, Orgo, protected kOA Mediatheque state, accepted offline UCKK learning content, and active operational records | Deployment-specific bounded loss and recovery based on workflow criticality. | Component restore plus read, write, authorization, offline-learning, and workflow tests. |
 | Class C — retained authoritative history | Archives, historical evidence, inactive collections, retained exports | Longer recovery can be accepted when retention and integrity remain satisfied. | Sampled or full restore according to retention and risk. |
 | Class D — reconstructable state | Indexes, caches, previews, independently retained immutable artifacts | No backup objective when deterministic reconstruction is proven. | Reconstruction test and source-availability proof. |
 
@@ -260,22 +261,22 @@ The immutable signed operating-system image and other release artifacts can be r
 
 ### 4.9 Topology
 
-```text
+`text
 component-owned consistent state
-        |
-        v
+ |
+ v
 encrypted local staging
-        |
-        +--> independent protected online target
-        |
-        `--> isolated or offline recovery copy
-                    |
-                    v
-            clean recovery target
-                    |
-                    v
-        validated complete activation
-```
+ |
+ +--> independent protected online target
+ |
+ `--> isolated or offline recovery copy
+ |
+ v
+ clean recovery target
+ |
+ v
+ validated complete activation
+`
 
 Staging is temporary and does not replace an independent recovery copy.
 
@@ -457,7 +458,7 @@ A restore candidate remains isolated until required validation completes.
 | Governance Policy Runtime | Authorizes protected lifecycle and exceptions where deployed | Backup software does not create policy |
 | Konnaxion and Orgo | Produce consistent exports and validate restored workflows | Backup process cannot write source tables directly |
 | Kristal and language components | Export or reference admitted artifacts and provenance | Reconstructable artifacts retain exact identity |
-| UCKK | Exports media, metadata, rights, consent, and provenance | Storage access does not grant cultural or publication authority |
+| kOA Mediatheque and UCKK integrations | Export local media, accepted learning packages, source mappings, quarantine dispositions, directional queues, and receipts | Backup excludes authoritative remote UCKK storage; storage access grants neither cultural, publication, import-acceptance, nor remote authority |
 | Audit Broker | Registers selected evidence | Audit does not become source owner |
 | kOA Node Agent | Performs protected volume, recovery-target, rollback, repair, key, and evidence operations | No arbitrary privileged recovery shell |
 | Artifact repositories | Retain exact immutable artifacts | Repository presence does not approve activation |
@@ -480,7 +481,7 @@ A restore candidate remains isolated until required validation completes.
 | `DEC-HW-001` | Sovereign hardware includes encrypted storage, verified backup, and recovery targets. |
 | `DEC-REL-001` | Recovery uses exact compatible artifacts and complete activation. |
 | `DEC-AI-001` | AI cannot authorize or activate recovery. |
-| `DEC-UCKK-001` | UCKK recovery remains deterministic and rights-aware. |
+| `DEC-UCKK-EXT-001` | kOA Mediatheque recovery and UCKK transfer receipts remain deterministic, rights-aware, and authority-separated. |
 
 ### Prohibited assumptions
 
@@ -547,62 +548,62 @@ These criteria define the target and do not claim that a particular repository, 
 
 ## 11. Non-Normative Example Configuration
 
-```yaml
+`yaml
 backup:
-  profile: sovereign_linux_node
-  coordinator:
-    identity: koa-backup
-    external_ai_authority: false
-  objectives:
-    authority_foundation:
-      maximum_data_loss: 15m
-      maximum_recovery_time: 2h
-      restore_test_frequency: monthly
-    active_component_state:
-      maximum_data_loss: 1h
-      maximum_recovery_time: 8h
-      restore_test_frequency: quarterly
-    retained_history:
-      maximum_data_loss: 24h
-      maximum_recovery_time: 72h
-      restore_test_frequency: semiannual
-  targets:
-    staging:
-      path: /var/lib/koa-backup/staging
-      counts_as_independent_copy: false
-    independent_online:
-      target_id: backup-vault-a
-      separate_credentials: true
-      encryption: required
-      retention_days: 90
-    isolated:
-      target_id: offline-vault-b
-      continuously_writable: false
-      refresh_frequency: weekly
-    recovery:
-      target_id: koa-recovery
-      isolated_restore: true
-  artifact_policy:
-    immutable_system_image:
-      include_bytes: false
-      require_independent_repository: true
-      require_signature: true
-      require_reconstruction_test: true
-  private_signing_keys:
-    include: false
-  resource_limits:
-    backup_concurrency: 1
-    verification_concurrency: 2
-    pause_on_storage_pressure: true
-  retention:
-    legal_hold_check: true
-    rights_and_consent_check: true
-    cryptographic_erasure_supported: true
-  receipts:
-    backup: required
-    restore: required
-    activation: required
-    deletion: required
-```
+ profile: sovereign_linux_node
+ coordinator:
+ identity: koa-backup
+ external_ai_authority: false
+ objectives:
+ authority_foundation:
+ maximum_data_loss: 15m
+ maximum_recovery_time: 2h
+ restore_test_frequency: monthly
+ active_component_state:
+ maximum_data_loss: 1h
+ maximum_recovery_time: 8h
+ restore_test_frequency: quarterly
+ retained_history:
+ maximum_data_loss: 24h
+ maximum_recovery_time: 72h
+ restore_test_frequency: semiannual
+ targets:
+ staging:
+ path: /var/lib/koa-backup/staging
+ counts_as_independent_copy: false
+ independent_online:
+ target_id: backup-vault-a
+ separate_credentials: true
+ encryption: required
+ retention_days: 90
+ isolated:
+ target_id: offline-vault-b
+ continuously_writable: false
+ refresh_frequency: weekly
+ recovery:
+ target_id: koa-recovery
+ isolated_restore: true
+ artifact_policy:
+ immutable_system_image:
+ include_bytes: false
+ require_independent_repository: true
+ require_signature: true
+ require_reconstruction_test: true
+ private_signing_keys:
+ include: false
+ resource_limits:
+ backup_concurrency: 1
+ verification_concurrency: 2
+ pause_on_storage_pressure: true
+ retention:
+ legal_hold_check: true
+ rights_and_consent_check: true
+ cryptographic_erasure_supported: true
+ receipts:
+ backup: required
+ restore: required
+ activation: required
+ deletion: required
+`
 
 The values are illustrative. Application exports, database backup tools, filesystem snapshots, content-addressed repositories, encrypted object storage, removable media, or combinations can implement the contract.

@@ -1,202 +1,201 @@
 <!-- KOA:DOC-META:BEGIN GENERATED
 {
-  "doc_id": "DOC-RECIPE-SLN-004",
-  "document_class": "recipe",
-  "status": "active",
-  "language": "en",
-  "layer": "implementation_recipe",
-  "recipe_id": "RECIPE-SLN-004",
-  "recipe_version": "1.0.0",
-  "scope": [
-    "profile:sovereign_linux_node",
-    "overlay:high_assurance",
-    "overlay:sovereign_offline",
-    "sovereign_linux_storage_layout"
-  ],
-  "canonical_refs": [
-    "generated/authority-manifest.json",
-    "generated/decision-index.json",
-    "generated/document-index.json",
-    "contracts/terminology.contract.json",
-    "contracts/system.contract.json",
-    "generated/component-catalog.json",
-    "contracts/profiles/sovereign-linux-node.profile.json",
-    "contracts/profiles/high-assurance.profile.json",
-    "contracts/profiles/sovereign-offline.profile.json",
-    "contracts/artifact-classes.contract.json",
-    "contracts/release-channels.contract.json",
-    "generated/requirements-index.json",
-    "generated/assertion-index.json",
-    "generated/traceability.json",
-    "generated/exception-index.json",
-    "generated/test-catalog.json",
-    "generated/evidence-catalog.json",
-    "schemas/deployment-profile.schema.json",
-    "schemas/test-evidence.schema.json"
-  ],
-  "decision_ids": [
-    "DEC-DATA-001",
-    "DEC-GOV-001",
-    "DEC-HW-001",
-    "DEC-PROFILE-001",
-    "DEC-REL-001"
-  ],
-  "requirement_ids": [
-    "REQ-SEC-STOR-001",
-    "REQ-SEC-STOR-002",
-    "REQ-SEC-STOR-003",
-    "REQ-SEC-STOR-004",
-    "REQ-SEC-STOR-005",
-    "REQ-SEC-STOR-006",
-    "REQ-SEC-STOR-007",
-    "REQ-SEC-STOR-008",
-    "REQ-SEC-STOR-009",
-    "REQ-SEC-STOR-010",
-    "REQ-SEC-STOR-011",
-    "REQ-SEC-STOR-012",
-    "REQ-SEC-STOR-013",
-    "REQ-SEC-STOR-014",
-    "REQ-SEC-STOR-015",
-    "REQ-SEC-STOR-016",
-    "REQ-SEC-STOR-017",
-    "REQ-SEC-STOR-018",
-    "REQ-SEC-STOR-019",
-    "REQ-SEC-STOR-020",
-    "REQ-SEC-STOR-021",
-    "REQ-SEC-STOR-022",
-    "REQ-SEC-STOR-023",
-    "REQ-SEC-STOR-024",
-    "REQ-SEC-STOR-025",
-    "REQ-SEC-STOR-026",
-    "REQ-SEC-STOR-027",
-    "REQ-SEC-STOR-028",
-    "REQ-SEC-STOR-029",
-    "REQ-SEC-STOR-030",
-    "REQ-SEC-STOR-031",
-    "REQ-SEC-STOR-032",
-    "REQ-SEC-STOR-033",
-    "REQ-SEC-STOR-034",
-    "REQ-SEC-STOR-035",
-    "REQ-SEC-STOR-036",
-    "REQ-SEC-STOR-037",
-    "REQ-SEC-STOR-038",
-    "REQ-SEC-STOR-039",
-    "REQ-SEC-STOR-040",
-    "REQ-SEC-STOR-041",
-    "REQ-SEC-STOR-042",
-    "REQ-SEC-STOR-043",
-    "REQ-SEC-STOR-044",
-    "REQ-SEC-STOR-045",
-    "REQ-SEC-STOR-046",
-    "REQ-SEC-STOR-047",
-    "REQ-SEC-STOR-048",
-    "REQ-SEC-STOR-049",
-    "REQ-SEC-STOR-050",
-    "REQ-SEC-STOR-051",
-    "REQ-SEC-STOR-052",
-    "REQ-SEC-STOR-053",
-    "REQ-SEC-STOR-054",
-    "REQ-CONF-SLN-001",
-    "REQ-CONF-SLN-002",
-    "REQ-CONF-SLN-003",
-    "REQ-CONF-SLN-004",
-    "REQ-CONF-SLN-005",
-    "REQ-CONF-SLN-007",
-    "REQ-CONF-SLN-008",
-    "REQ-CONF-SLN-010",
-    "REQ-CONF-SLN-011",
-    "REQ-CONF-SLN-012",
-    "REQ-CONF-SLN-013",
-    "REQ-CONF-SLN-014",
-    "REQ-CONF-SLN-015",
-    "REQ-CONF-SLN-016",
-    "REQ-CONF-SLN-017",
-    "REQ-CONF-SLN-018",
-    "REQ-CONF-SLN-019",
-    "REQ-CONF-SLN-020",
-    "REQ-CONF-SLN-021",
-    "REQ-CONF-SLN-022",
-    "REQ-CONF-SLN-023",
-    "REQ-CONF-SLN-024",
-    "REQ-CONF-SLN-025",
-    "REQ-CONF-SLN-026",
-    "REQ-CONF-SLN-027",
-    "REQ-CONF-SLN-028",
-    "REQ-CONF-SLN-029",
-    "REQ-CONF-SLN-030",
-    "REQ-CONF-SLN-031",
-    "REQ-CONF-SLN-032",
-    "REQ-CONF-SLN-033",
-    "REQ-CONF-SLN-034",
-    "REQ-CONF-SLN-039",
-    "REQ-CONF-SLN-040",
-    "REQ-CONF-SLN-041",
-    "REQ-CONF-SLN-042",
-    "REQ-CONF-SLN-043",
-    "REQ-CONF-SLN-044",
-    "REQ-CONF-SLN-047",
-    "REQ-CONF-SLN-048",
-    "REQ-CONF-SLN-049",
-    "REQ-CONF-SLN-050",
-    "REQ-CONF-SLN-051",
-    "REQ-CONF-SLN-052",
-    "REQ-CONF-SLN-053",
-    "REQ-CONF-SLN-056",
-    "REQ-CONF-SLN-057",
-    "REQ-CONF-SLN-058",
-    "REQ-CONF-SLN-059",
-    "REQ-CONF-SLN-060"
-  ],
-  "lock_ids": [
-    "LOCK-COMP-001",
-    "LOCK-COMP-002",
-    "LOCK-DATA-001",
-    "LOCK-DOC-003",
-    "LOCK-DOC-004",
-    "LOCK-GOV-001",
-    "LOCK-IMPL-001",
-    "LOCK-LIFE-001",
-    "LOCK-LIFE-002",
-    "LOCK-LIFE-003",
-    "LOCK-LIFE-004",
-    "LOCK-PROFILE-001",
-    "LOCK-PROFILE-002",
-    "LOCK-SEC-010"
-  ],
-  "exception_ids": [],
-  "depends_on": [
-    "DOC-CONST-002",
-    "DOC-CONST-013",
-    "DOC-SEC-009",
-    "DOC-SEC-019",
-    "DOC-OPS-016",
-    "DOC-CONF-005",
-    "DOC-CONF-016",
-    "DOC-ADR-001",
-    "DOC-ADR-011",
-    "DOC-ADR-024"
-  ],
-  "tags": [
-    "recipe",
-    "sovereign-linux",
-    "storage-layout",
-    "logical-data-ownership",
-    "physical-isolation",
-    "encryption-at-rest",
-    "artifacts",
-    "evidence",
-    "backup",
-    "restore",
-    "offline",
-    "non-normative"
-  ]
+ "doc_id": "DOC-RECIPE-SLN-004",
+ "document_class": "recipe",
+ "status": "active",
+ "language": "en",
+ "layer": "implementation_recipe",
+ "recipe_id": "RECIPE-SLN-004",
+ "recipe_version": "1.0.0",
+ "scope": [
+ "profile:sovereign_linux_node",
+ "overlay:high_assurance",
+ "overlay:sovereign_offline",
+ "sovereign_linux_storage_layout"
+ ],
+ "canonical_refs": [
+ "generated/authority-manifest.json",
+ "generated/decision-index.json",
+ "generated/document-index.json",
+ "contracts/terminology.contract.json",
+ "contracts/system.contract.json",
+ "generated/component-catalog.json",
+ "contracts/profiles/sovereign-linux-node.profile.json",
+ "contracts/profiles/high-assurance.profile.json",
+ "contracts/profiles/sovereign-offline.profile.json",
+ "contracts/artifact-classes.contract.json",
+ "contracts/release-channels.contract.json",
+ "generated/requirements-index.json",
+ "generated/assertion-index.json",
+ "generated/traceability.json",
+ "generated/exception-index.json",
+ "generated/test-catalog.json",
+ "generated/evidence-catalog.json",
+ "schemas/deployment-profile.schema.json",
+ "schemas/test-evidence.schema.json"
+ ],
+ "decision_ids": [
+ "DEC-DATA-001",
+ "DEC-GOV-001",
+ "DEC-HW-001",
+ "DEC-PROFILE-001",
+ "DEC-REL-001"
+ ],
+ "requirement_ids": [
+ "REQ-SEC-STOR-001",
+ "REQ-SEC-STOR-002",
+ "REQ-SEC-STOR-003",
+ "REQ-SEC-STOR-004",
+ "REQ-SEC-STOR-005",
+ "REQ-SEC-STOR-006",
+ "REQ-SEC-STOR-007",
+ "REQ-SEC-STOR-008",
+ "REQ-SEC-STOR-009",
+ "REQ-SEC-STOR-010",
+ "REQ-SEC-STOR-011",
+ "REQ-SEC-STOR-012",
+ "REQ-SEC-STOR-013",
+ "REQ-SEC-STOR-014",
+ "REQ-SEC-STOR-015",
+ "REQ-SEC-STOR-016",
+ "REQ-SEC-STOR-017",
+ "REQ-SEC-STOR-018",
+ "REQ-SEC-STOR-019",
+ "REQ-SEC-STOR-020",
+ "REQ-SEC-STOR-021",
+ "REQ-SEC-STOR-022",
+ "REQ-SEC-STOR-023",
+ "REQ-SEC-STOR-024",
+ "REQ-SEC-STOR-025",
+ "REQ-SEC-STOR-026",
+ "REQ-SEC-STOR-027",
+ "REQ-SEC-STOR-028",
+ "REQ-SEC-STOR-029",
+ "REQ-SEC-STOR-030",
+ "REQ-SEC-STOR-031",
+ "REQ-SEC-STOR-032",
+ "REQ-SEC-STOR-033",
+ "REQ-SEC-STOR-034",
+ "REQ-SEC-STOR-035",
+ "REQ-SEC-STOR-036",
+ "REQ-SEC-STOR-037",
+ "REQ-SEC-STOR-038",
+ "REQ-SEC-STOR-039",
+ "REQ-SEC-STOR-040",
+ "REQ-SEC-STOR-041",
+ "REQ-SEC-STOR-042",
+ "REQ-SEC-STOR-043",
+ "REQ-SEC-STOR-044",
+ "REQ-SEC-STOR-045",
+ "REQ-SEC-STOR-046",
+ "REQ-SEC-STOR-047",
+ "REQ-SEC-STOR-048",
+ "REQ-SEC-STOR-049",
+ "REQ-SEC-STOR-050",
+ "REQ-SEC-STOR-051",
+ "REQ-SEC-STOR-052",
+ "REQ-SEC-STOR-053",
+ "REQ-SEC-STOR-054",
+ "REQ-CONF-SLN-001",
+ "REQ-CONF-SLN-002",
+ "REQ-CONF-SLN-003",
+ "REQ-CONF-SLN-004",
+ "REQ-CONF-SLN-005",
+ "REQ-CONF-SLN-007",
+ "REQ-CONF-SLN-008",
+ "REQ-CONF-SLN-010",
+ "REQ-CONF-SLN-011",
+ "REQ-CONF-SLN-012",
+ "REQ-CONF-SLN-013",
+ "REQ-CONF-SLN-014",
+ "REQ-CONF-SLN-015",
+ "REQ-CONF-SLN-016",
+ "REQ-CONF-SLN-017",
+ "REQ-CONF-SLN-018",
+ "REQ-CONF-SLN-019",
+ "REQ-CONF-SLN-020",
+ "REQ-CONF-SLN-021",
+ "REQ-CONF-SLN-022",
+ "REQ-CONF-SLN-023",
+ "REQ-CONF-SLN-024",
+ "REQ-CONF-SLN-025",
+ "REQ-CONF-SLN-026",
+ "REQ-CONF-SLN-027",
+ "REQ-CONF-SLN-028",
+ "REQ-CONF-SLN-029",
+ "REQ-CONF-SLN-030",
+ "REQ-CONF-SLN-031",
+ "REQ-CONF-SLN-032",
+ "REQ-CONF-SLN-033",
+ "REQ-CONF-SLN-034",
+ "REQ-CONF-SLN-039",
+ "REQ-CONF-SLN-040",
+ "REQ-CONF-SLN-041",
+ "REQ-CONF-SLN-042",
+ "REQ-CONF-SLN-043",
+ "REQ-CONF-SLN-044",
+ "REQ-CONF-SLN-047",
+ "REQ-CONF-SLN-048",
+ "REQ-CONF-SLN-049",
+ "REQ-CONF-SLN-050",
+ "REQ-CONF-SLN-051",
+ "REQ-CONF-SLN-052",
+ "REQ-CONF-SLN-053",
+ "REQ-CONF-SLN-056",
+ "REQ-CONF-SLN-057",
+ "REQ-CONF-SLN-058",
+ "REQ-CONF-SLN-059",
+ "REQ-CONF-SLN-060"
+ ],
+ "lock_ids": [
+ "LOCK-COMP-001",
+ "LOCK-COMP-002",
+ "LOCK-DATA-001",
+ "LOCK-DOC-003",
+ "LOCK-DOC-004",
+ "LOCK-GOV-001",
+ "LOCK-IMPL-001",
+ "LOCK-LIFE-001",
+ "LOCK-LIFE-002",
+ "LOCK-LIFE-003",
+ "LOCK-LIFE-004",
+ "LOCK-PROFILE-001",
+ "LOCK-PROFILE-002",
+ "LOCK-SEC-010"
+ ],
+ "exception_ids": [],
+ "depends_on": [
+ "DOC-CONST-002",
+ "DOC-CONST-013",
+ "DOC-SEC-009",
+ "DOC-SEC-019",
+ "DOC-OPS-016",
+ "DOC-CONF-005",
+ "DOC-CONF-016",
+ "DOC-ADR-005",
+ "DOC-ADR-024"
+ ],
+ "tags": [
+ "recipe",
+ "sovereign-linux",
+ "storage-layout",
+ "logical-data-ownership",
+ "physical-isolation",
+ "encryption-at-rest",
+ "artifacts",
+ "evidence",
+ "backup",
+ "restore",
+ "offline",
+ "non-normative"
+ ]
 }
 KOA:DOC-META:END -->
 
 # Sovereign Linux Storage Layout
 
-> **Recipe status:** Active, non-normative implementation recipe.  
-> **Implementation:** Profile-derived Linux mount points with one encrypted active-data boundary, owner-specific subtrees, a separate recovery target, and a backup target in a distinct failure domain.  
+> **Recipe status:** Active, non-normative implementation recipe.
+> **Implementation:** Profile-derived Linux mount points with one encrypted active-data boundary, owner-specific subtrees, a separate recovery target, and a backup target in a distinct failure domain.
 > **Authority rule:** This recipe maps canonical storage boundaries to one practical layout. Component, profile, security, lifecycle, and conformance contracts remain authoritative.
 
 ---
@@ -251,7 +250,7 @@ The procedure preserves:
 
 Successful completion produces:
 
-```text
+`text
 profile and node identity
 → verified encrypted active-data mount
 → owner-scoped component boundaries
@@ -260,7 +259,7 @@ profile and node identity
 → verified recovery target
 → verified distinct backup target
 → registered conformance evidence
-```
+`
 
 This recipe does not choose a universal:
 
@@ -350,13 +349,13 @@ Those operations require their own active procedure.
 
 The sovereign Linux baseline includes:
 
-```text
+`text
 8 modern CPU cores minimum
 32 GiB RAM minimum
 1 TB encrypted SSD minimum
 recovery target required
 verified backup target required
-```
+`
 
 This recipe validates storage-related facts only.
 
@@ -469,23 +468,23 @@ This recipe does not create those identities.
 
 Verify one runtime identity:
 
-```bash
+`bash
 : "${SERVICE_USER:?SERVICE_USER must resolve from the active service contract}"
 : "${SERVICE_GROUP:?SERVICE_GROUP must resolve from the active service contract}"
 
 getent passwd "$SERVICE_USER" >/dev/null
 getent group "$SERVICE_GROUP" >/dev/null
-```
+`
 
 ### 5.3 Mount preconditions
 
 The deployment authority supplies exact, already mounted paths:
 
-```bash
+`bash
 export KOA_ACTIVE_ROOT="/var/lib/koa"
 export KOA_RECOVERY_ROOT="/var/lib/koa-recovery"
 export KOA_BACKUP_ROOT="/mnt/koa-backup"
-```
+`
 
 Required properties:
 
@@ -499,20 +498,20 @@ Required properties:
 
 Basic verification:
 
-```bash
+`bash
 set -euo pipefail
 
 for path in "$KOA_ACTIVE_ROOT" "$KOA_RECOVERY_ROOT" "$KOA_BACKUP_ROOT"; do
-  case "$path" in
-    /*) ;;
-    *) printf '%s
+ case "$path" in
+ /*) ;;
+ *) printf '%s
 ' "storage root must be absolute: $path" >&2; exit 1 ;;
-  esac
-  test -d "$path"
-  test ! -L "$path"
-  mountpoint -q "$path"
+ esac
+ test -d "$path"
+ test ! -L "$path"
+ mountpoint -q "$path"
 done
-```
+`
 
 ### 5.4 Encryption preconditions
 
@@ -525,11 +524,11 @@ The profile-approved verifier must confirm encryption of:
 
 A device-mapper example can inspect, but not independently authorize, encryption:
 
-```bash
+`bash
 ACTIVE_SOURCE="$(findmnt -n -o SOURCE --target "$KOA_ACTIVE_ROOT")"
 printf '%s
 ' "$ACTIVE_SOURCE"
-```
+`
 
 The result is compared with the profile-owned encryption inventory and key reference.
 
@@ -543,11 +542,11 @@ This recipe does not invent numeric thresholds.
 
 Verify that values resolve:
 
-```bash
+`bash
 : "${ACTIVE_MIN_FREE_BYTES:?resolve from profile or resource envelope}"
 : "${RECOVERY_MIN_FREE_BYTES:?resolve from recovery contract}"
 : "${BACKUP_MIN_FREE_BYTES:?resolve from backup contract}"
-```
+`
 
 The procedure blocks when any value is absent.
 
@@ -586,7 +585,7 @@ The procedure blocks when any value is absent.
 
 ### 6.3 Created top-level layout
 
-```text
+`text
 /var/lib/koa/
 ├── components/
 ├── artifacts/
@@ -604,7 +603,7 @@ The procedure blocks when any value is absent.
 
 /mnt/koa-backup/
 └── node-specific backup namespace owned by the backup procedure
-```
+`
 
 `lost-and-found-review` is a quarantine location for unattributed recovered files.
 
@@ -732,15 +731,15 @@ This recipe maps them to storage classes.
 
 Resolve free space without printing file contents:
 
-```bash
-available_bytes() {
-  df -B1 --output=avail "$1" | awk 'NR==2 {print $1}'
+`bash
+available_bytes {
+ df -B1 --output=avail "$1" | awk 'NR==2 {print $1}'
 }
 
 test "$(available_bytes "$KOA_ACTIVE_ROOT")" -ge "$ACTIVE_MIN_FREE_BYTES"
 test "$(available_bytes "$KOA_RECOVERY_ROOT")" -ge "$RECOVERY_MIN_FREE_BYTES"
 test "$(available_bytes "$KOA_BACKUP_ROOT")" -ge "$BACKUP_MIN_FREE_BYTES"
-```
+`
 
 A failed check blocks provisioning or the affected operation.
 
@@ -750,14 +749,14 @@ A failed check blocks provisioning or the affected operation.
 
 This recipe uses:
 
-```text
+`text
 components
 artifacts
 evidence
 cache
 staging
 lost-and-found-review
-```
+`
 
 These are implementation directories, not new artifact or component classes.
 
@@ -765,7 +764,7 @@ These are implementation directories, not new artifact or component classes.
 
 For a component with canonical identifier in `COMPONENT_ID`:
 
-```text
+`text
 $KOA_ACTIVE_ROOT/components/$COMPONENT_ID/
 ├── authoritative/
 ├── replicas/
@@ -774,7 +773,7 @@ $KOA_ACTIVE_ROOT/components/$COMPONENT_ID/
 ├── checkpoints/
 ├── logs/
 └── temporary/
-```
+`
 
 Only directories declared by the component contract are created.
 
@@ -782,7 +781,7 @@ A component without a queue does not receive a queue merely because this recipe 
 
 ### 9.3 Artifact path pattern
 
-```text
+`text
 $KOA_ACTIVE_ROOT/artifacts/
 ├── system/
 ├── services/
@@ -790,7 +789,7 @@ $KOA_ACTIVE_ROOT/artifacts/
 ├── knowledge/
 ├── manifests/
 └── quarantine/
-```
+`
 
 The four channel directories preserve release-channel identity.
 
@@ -798,23 +797,23 @@ The four channel directories preserve release-channel identity.
 
 ### 9.4 Evidence path pattern
 
-```text
+`text
 $KOA_ACTIVE_ROOT/evidence/
 ├── audit/
 ├── conformance/
 ├── decisions/
 ├── provenance/
 └── receipts/
-```
+`
 
 Exact ownership follows Audit Broker, evidence, and artifact contracts.
 
 ### 9.5 Cache and staging pattern
 
-```text
+`text
 $KOA_ACTIVE_ROOT/cache/$COMPONENT_ID/
 $KOA_ACTIVE_ROOT/staging/$COMPONENT_ID/
-```
+`
 
 Caches are disposable and reproducible.
 
@@ -844,7 +843,7 @@ Bind execution to one exact node and profile composition.
 
 **Command**
 
-```bash
+`bash
 set -euo pipefail
 set +x
 umask 077
@@ -856,7 +855,7 @@ umask 077
 : "${ACTIVE_RELEASE_SET_VERSION:?ACTIVE_RELEASE_SET_VERSION must be set}"
 
 test "$PRIMARY_PROFILE_ID" = "sovereign_linux_node"
-```
+`
 
 **Expected result**
 
@@ -880,10 +879,10 @@ Identify devices, mounts, filesystem types, and capacity without scanning data c
 
 **Command**
 
-```bash
-lsblk --json --bytes --output   NAME,KNAME,TYPE,SIZE,FSTYPE,FSVER,MOUNTPOINTS,UUID,PARTUUID,PKNAME,ROTA,RO
-findmnt --json --bytes --output   TARGET,SOURCE,FSTYPE,OPTIONS,SIZE,USED,AVAIL
-```
+`bash
+lsblk --json --bytes --output NAME,KNAME,TYPE,SIZE,FSTYPE,FSVER,MOUNTPOINTS,UUID,PARTUUID,PKNAME,ROTA,RO
+findmnt --json --bytes --output TARGET,SOURCE,FSTYPE,OPTIONS,SIZE,USED,AVAIL
+`
 
 Store the output only in the approved conformance-evidence path after sanitizing device labels or identifiers classified as sensitive.
 
@@ -893,11 +892,11 @@ The active, recovery, and backup roots resolve to declared mount sources.
 
 **Verification**
 
-```bash
+`bash
 for path in "$KOA_ACTIVE_ROOT" "$KOA_RECOVERY_ROOT" "$KOA_BACKUP_ROOT"; do
-  findmnt --target "$path" >/dev/null
+ findmnt --target "$path" >/dev/null
 done
-```
+`
 
 **Failure behavior**
 
@@ -913,14 +912,14 @@ Confirm that the observed topology matches the profile mapping.
 
 **Command**
 
-```bash
+`bash
 ACTIVE_SOURCE="$(findmnt -n -o SOURCE --target "$KOA_ACTIVE_ROOT")"
 RECOVERY_SOURCE="$(findmnt -n -o SOURCE --target "$KOA_RECOVERY_ROOT")"
 BACKUP_SOURCE="$(findmnt -n -o SOURCE --target "$KOA_BACKUP_ROOT")"
 
 printf '%s
-'   "active_source=$ACTIVE_SOURCE"   "recovery_source=$RECOVERY_SOURCE"   "backup_source=$BACKUP_SOURCE"
-```
+' "active_source=$ACTIVE_SOURCE" "recovery_source=$RECOVERY_SOURCE" "backup_source=$BACKUP_SOURCE"
+`
 
 The deployment authority compares these values with the canonical storage inventory.
 
@@ -952,23 +951,23 @@ Reject unsafe symlink, nested-mount, and unexpected-content conditions.
 
 **Command**
 
-```bash
+`bash
 for path in "$KOA_ACTIVE_ROOT" "$KOA_RECOVERY_ROOT" "$KOA_BACKUP_ROOT"; do
-  test -d "$path"
-  test ! -L "$path"
-  mountpoint -q "$path"
+ test -d "$path"
+ test ! -L "$path"
+ mountpoint -q "$path"
 done
 
 test -O "$KOA_ACTIVE_ROOT" || test "$(stat -c '%U' "$KOA_ACTIVE_ROOT")" = "root"
 test -O "$KOA_RECOVERY_ROOT" || test "$(stat -c '%U' "$KOA_RECOVERY_ROOT")" = "root"
-```
+`
 
 List only top-level names:
 
-```bash
+`bash
 find "$KOA_ACTIVE_ROOT" -mindepth 1 -maxdepth 1 -printf '%f
 ' | sort
-```
+`
 
 **Expected result**
 
@@ -988,7 +987,7 @@ Create root-owned boundaries without granting component-wide access.
 
 **Command**
 
-```bash
+`bash
 install -d -o root -g root -m 0750 "$KOA_ACTIVE_ROOT/components"
 install -d -o root -g root -m 0750 "$KOA_ACTIVE_ROOT/artifacts"
 install -d -o root -g root -m 0750 "$KOA_ACTIVE_ROOT/evidence"
@@ -998,8 +997,8 @@ install -d -o root -g root -m 0700 "$KOA_ACTIVE_ROOT/lost-and-found-review"
 
 printf '%s
 ' "RECIPE-SLN-004/1.0.0" |
-  install -o root -g root -m 0644 /dev/stdin "$KOA_ACTIVE_ROOT/layout-version"
-```
+ install -o root -g root -m 0644 /dev/stdin "$KOA_ACTIVE_ROOT/layout-version"
+`
 
 **Expected result**
 
@@ -1007,15 +1006,15 @@ Top-level paths are root-owned, non-symlink directories on the active-data mount
 
 **Verification**
 
-```bash
+`bash
 for name in components artifacts evidence cache staging lost-and-found-review; do
-  path="$KOA_ACTIVE_ROOT/$name"
-  test -d "$path"
-  test ! -L "$path"
-  test "$(stat -c '%U:%G' "$path")" = "root:root"
-  test "$(findmnt -n -o TARGET --target "$path")" = "$KOA_ACTIVE_ROOT"
+ path="$KOA_ACTIVE_ROOT/$name"
+ test -d "$path"
+ test ! -L "$path"
+ test "$(stat -c '%U:%G' "$path")" = "root:root"
+ test "$(findmnt -n -o TARGET --target "$path")" = "$KOA_ACTIVE_ROOT"
 done
-```
+`
 
 **Failure behavior**
 
@@ -1031,22 +1030,22 @@ Create only the classes declared by one active component.
 
 **Inputs**
 
-```bash
+`bash
 : "${COMPONENT_ID:?resolve from the active profile}"
 : "${SERVICE_USER:?resolve from the active service identity}"
 : "${SERVICE_GROUP:?resolve from the active service identity}"
 : "${COMPONENT_STORAGE_CLASSES:?space-separated declared classes}"
-```
+`
 
 Accepted class names for this recipe:
 
-```text
+`text
 authoritative replicas projections queues checkpoints logs temporary
-```
+`
 
 **Command**
 
-```bash
+`bash
 getent passwd "$SERVICE_USER" >/dev/null
 getent group "$SERVICE_GROUP" >/dev/null
 
@@ -1054,21 +1053,21 @@ COMPONENT_ROOT="$KOA_ACTIVE_ROOT/components/$COMPONENT_ID"
 install -d -o root -g "$SERVICE_GROUP" -m 0750 "$COMPONENT_ROOT"
 
 for class_name in $COMPONENT_STORAGE_CLASSES; do
-  case "$class_name" in
-    authoritative)
-      install -d -o "$SERVICE_USER" -g "$SERVICE_GROUP" -m 0700         "$COMPONENT_ROOT/authoritative"
-      ;;
-    replicas|projections|queues|checkpoints|logs|temporary)
-      install -d -o "$SERVICE_USER" -g "$SERVICE_GROUP" -m 0750         "$COMPONENT_ROOT/$class_name"
-      ;;
-    *)
-      printf '%s
+ case "$class_name" in
+ authoritative)
+ install -d -o "$SERVICE_USER" -g "$SERVICE_GROUP" -m 0700 "$COMPONENT_ROOT/authoritative"
+ ;;
+ replicas|projections|queues|checkpoints|logs|temporary)
+ install -d -o "$SERVICE_USER" -g "$SERVICE_GROUP" -m 0750 "$COMPONENT_ROOT/$class_name"
+ ;;
+ *)
+ printf '%s
 ' "unsupported or undeclared storage class: $class_name" >&2
-      exit 1
-      ;;
-  esac
+ exit 1
+ ;;
+ esac
 done
-```
+`
 
 **Expected result**
 
@@ -1076,20 +1075,20 @@ Only the declared owner can write the authoritative directory.
 
 **Verification**
 
-```bash
+`bash
 test ! -L "$COMPONENT_ROOT"
 
 for class_name in $COMPONENT_STORAGE_CLASSES; do
-  path="$COMPONENT_ROOT/$class_name"
-  test -d "$path"
-  test ! -L "$path"
-  test "$(stat -c '%U:%G' "$path")" = "$SERVICE_USER:$SERVICE_GROUP"
+ path="$COMPONENT_ROOT/$class_name"
+ test -d "$path"
+ test ! -L "$path"
+ test "$(stat -c '%U:%G' "$path")" = "$SERVICE_USER:$SERVICE_GROUP"
 done
 
 if test -d "$COMPONENT_ROOT/authoritative"; then
-  test "$(stat -c '%a' "$COMPONENT_ROOT/authoritative")" = "700"
+ test "$(stat -c '%a' "$COMPONENT_ROOT/authoritative")" = "700"
 fi
-```
+`
 
 **Failure behavior**
 
@@ -1109,21 +1108,21 @@ Create storage paths preserving the four release channels.
 
 **Inputs**
 
-```bash
+`bash
 : "${ARTIFACT_USER:?resolve from artifact-store authority}"
 : "${ARTIFACT_GROUP:?resolve from artifact-store authority}"
-```
+`
 
 **Command**
 
-```bash
+`bash
 getent passwd "$ARTIFACT_USER" >/dev/null
 getent group "$ARTIFACT_GROUP" >/dev/null
 
 for channel in system services governance knowledge manifests quarantine; do
-  install -d -o "$ARTIFACT_USER" -g "$ARTIFACT_GROUP" -m 0750     "$KOA_ACTIVE_ROOT/artifacts/$channel"
+ install -d -o "$ARTIFACT_USER" -g "$ARTIFACT_GROUP" -m 0750 "$KOA_ACTIVE_ROOT/artifacts/$channel"
 done
-```
+`
 
 **Expected result**
 
@@ -1131,13 +1130,13 @@ Component runtime identities cannot write canonical artifact paths.
 
 **Verification**
 
-```bash
+`bash
 for channel in system services governance knowledge manifests quarantine; do
-  path="$KOA_ACTIVE_ROOT/artifacts/$channel"
-  test "$(stat -c '%U:%G' "$path")" = "$ARTIFACT_USER:$ARTIFACT_GROUP"
-  test "$(stat -c '%a' "$path")" = "750"
+ path="$KOA_ACTIVE_ROOT/artifacts/$channel"
+ test "$(stat -c '%U:%G' "$path")" = "$ARTIFACT_USER:$ARTIFACT_GROUP"
+ test "$(stat -c '%a' "$path")" = "750"
 done
-```
+`
 
 **Failure behavior**
 
@@ -1153,21 +1152,21 @@ Separate evidence writers and evidence classes from component business data.
 
 **Inputs**
 
-```bash
+`bash
 : "${EVIDENCE_USER:?resolve from evidence authority}"
 : "${EVIDENCE_GROUP:?resolve from evidence authority}"
-```
+`
 
 **Command**
 
-```bash
+`bash
 getent passwd "$EVIDENCE_USER" >/dev/null
 getent group "$EVIDENCE_GROUP" >/dev/null
 
 for class_name in audit conformance decisions provenance receipts; do
-  install -d -o "$EVIDENCE_USER" -g "$EVIDENCE_GROUP" -m 0750     "$KOA_ACTIVE_ROOT/evidence/$class_name"
+ install -d -o "$EVIDENCE_USER" -g "$EVIDENCE_GROUP" -m 0750 "$KOA_ACTIVE_ROOT/evidence/$class_name"
 done
-```
+`
 
 **Expected result**
 
@@ -1175,12 +1174,12 @@ Evidence paths are separate from component authoritative stores and artifact sto
 
 **Verification**
 
-```bash
+`bash
 for class_name in audit conformance decisions provenance receipts; do
-  path="$KOA_ACTIVE_ROOT/evidence/$class_name"
-  test "$(stat -c '%U:%G' "$path")" = "$EVIDENCE_USER:$EVIDENCE_GROUP"
+ path="$KOA_ACTIVE_ROOT/evidence/$class_name"
+ test "$(stat -c '%U:%G' "$path")" = "$EVIDENCE_USER:$EVIDENCE_GROUP"
 done
-```
+`
 
 **Failure behavior**
 
@@ -1198,13 +1197,13 @@ Create disposable and temporary paths without granting authority.
 
 For one component:
 
-```bash
+`bash
 CACHE_ROOT="$KOA_ACTIVE_ROOT/cache/$COMPONENT_ID"
 STAGING_ROOT="$KOA_ACTIVE_ROOT/staging/$COMPONENT_ID"
 
 install -d -o "$SERVICE_USER" -g "$SERVICE_GROUP" -m 0750 "$CACHE_ROOT"
 install -d -o "$SERVICE_USER" -g "$SERVICE_GROUP" -m 0700 "$STAGING_ROOT"
-```
+`
 
 **Expected result**
 
@@ -1212,11 +1211,11 @@ The component can rebuild cache state and can stage bounded candidate data.
 
 **Verification**
 
-```bash
+`bash
 test "$(stat -c '%U:%G' "$CACHE_ROOT")" = "$SERVICE_USER:$SERVICE_GROUP"
 test "$(stat -c '%U:%G' "$STAGING_ROOT")" = "$SERVICE_USER:$SERVICE_GROUP"
 test "$(stat -c '%a' "$STAGING_ROOT")" = "700"
-```
+`
 
 **Failure behavior**
 
@@ -1232,18 +1231,18 @@ Create a read-mostly layout for admitted recovery material.
 
 **Inputs**
 
-```bash
+`bash
 : "${RECOVERY_USER:?resolve from recovery authority}"
 : "${RECOVERY_GROUP:?resolve from recovery authority}"
-```
+`
 
 **Command**
 
-```bash
+`bash
 for class_name in system manifests trust validation; do
-  install -d -o "$RECOVERY_USER" -g "$RECOVERY_GROUP" -m 0750     "$KOA_RECOVERY_ROOT/$class_name"
+ install -d -o "$RECOVERY_USER" -g "$RECOVERY_GROUP" -m 0750 "$KOA_RECOVERY_ROOT/$class_name"
 done
-```
+`
 
 **Expected result**
 
@@ -1251,12 +1250,12 @@ Normal component runtime identities cannot write the recovery target.
 
 **Verification**
 
-```bash
+`bash
 for class_name in system manifests trust validation; do
-  path="$KOA_RECOVERY_ROOT/$class_name"
-  test "$(stat -c '%U:%G' "$path")" = "$RECOVERY_USER:$RECOVERY_GROUP"
+ path="$KOA_RECOVERY_ROOT/$class_name"
+ test "$(stat -c '%U:%G' "$path")" = "$RECOVERY_USER:$RECOVERY_GROUP"
 done
-```
+`
 
 Recovery artifacts still require their own admission and integrity verification.
 
@@ -1270,14 +1269,14 @@ Confirm the backup target is mounted and create one node-scoped root for the app
 
 **Inputs**
 
-```bash
+`bash
 : "${BACKUP_USER:?resolve from backup authority}"
 : "${BACKUP_GROUP:?resolve from backup authority}"
-```
+`
 
 **Command**
 
-```bash
+`bash
 mountpoint -q "$KOA_BACKUP_ROOT"
 getent passwd "$BACKUP_USER" >/dev/null
 getent group "$BACKUP_GROUP" >/dev/null
@@ -1285,7 +1284,7 @@ getent group "$BACKUP_GROUP" >/dev/null
 BACKUP_NODE_ROOT="$KOA_BACKUP_ROOT/nodes/$NODE_ID"
 install -d -o root -g root -m 0750 "$KOA_BACKUP_ROOT/nodes"
 install -d -o "$BACKUP_USER" -g "$BACKUP_GROUP" -m 0700 "$BACKUP_NODE_ROOT"
-```
+`
 
 **Expected result**
 
@@ -1293,11 +1292,11 @@ The backup authority has one node-scoped write boundary.
 
 **Verification**
 
-```bash
+`bash
 test "$(stat -c '%U:%G' "$BACKUP_NODE_ROOT")" = "$BACKUP_USER:$BACKUP_GROUP"
 test "$(stat -c '%a' "$BACKUP_NODE_ROOT")" = "700"
 test "$(findmnt -n -o TARGET --target "$BACKUP_NODE_ROOT")" = "$KOA_BACKUP_ROOT"
-```
+`
 
 This step does not claim backup success.
 
@@ -1315,20 +1314,20 @@ Prove that one component runtime identity cannot write another owner's authorita
 
 Select two distinct active components whose test fixtures permit this negative test:
 
-```bash
+`bash
 : "${SOURCE_SERVICE_USER:?}"
 : "${TARGET_AUTHORITATIVE_PATH:?}"
 
 test -d "$TARGET_AUTHORITATIVE_PATH"
 test ! -L "$TARGET_AUTHORITATIVE_PATH"
 
-if runuser -u "$SOURCE_SERVICE_USER" --   sh -c 'test -w "$1"' sh "$TARGET_AUTHORITATIVE_PATH"
+if runuser -u "$SOURCE_SERVICE_USER" -- sh -c 'test -w "$1"' sh "$TARGET_AUTHORITATIVE_PATH"
 then
-  printf '%s
+ printf '%s
 ' "cross-owner authoritative path is writable" >&2
-  exit 1
+ exit 1
 fi
-```
+`
 
 **Expected result**
 
@@ -1350,7 +1349,7 @@ Produce one bounded machine-readable layout result.
 
 **Command**
 
-```bash
+`bash
 python3 - "$KOA_ACTIVE_ROOT" "$KOA_RECOVERY_ROOT" "$KOA_BACKUP_ROOT" <<'PY'
 from pathlib import Path
 import json
@@ -1358,49 +1357,49 @@ import os
 import stat
 import sys
 
-active, recovery, backup = [Path(value).resolve() for value in sys.argv[1:]]
+active, recovery, backup = [Path(value).resolve for value in sys.argv[1:]]
 
 required_active = {
-    "components": 0o750,
-    "artifacts": 0o750,
-    "evidence": 0o750,
-    "cache": 0o750,
-    "staging": 0o750,
-    "lost-and-found-review": 0o700,
+ "components": 0o750,
+ "artifacts": 0o750,
+ "evidence": 0o750,
+ "cache": 0o750,
+ "staging": 0o750,
+ "lost-and-found-review": 0o700,
 }
 
 result = {
-    "active_root": str(active),
-    "recovery_root": str(recovery),
-    "backup_root": str(backup),
-    "checks": [],
+ "active_root": str(active),
+ "recovery_root": str(recovery),
+ "backup_root": str(backup),
+ "checks": [],
 }
 
-for name, expected_mode in required_active.items():
-    path = active / name
-    check = {
-        "path": str(path),
-        "exists": path.is_dir(),
-        "symlink": path.is_symlink(),
-        "owner_uid": path.stat().st_uid if path.exists() else None,
-        "mode": oct(stat.S_IMODE(path.stat().st_mode)) if path.exists() else None,
-        "expected_mode": oct(expected_mode),
-    }
-    check["pass"] = (
-        check["exists"]
-        and not check["symlink"]
-        and check["owner_uid"] == 0
-        and stat.S_IMODE(path.stat().st_mode) == expected_mode
-    )
-    result["checks"].append(check)
+for name, expected_mode in required_active.items:
+ path = active / name
+ check = {
+ "path": str(path),
+ "exists": path.is_dir,
+ "symlink": path.is_symlink,
+ "owner_uid": path.stat.st_uid if path.exists else None,
+ "mode": oct(stat.S_IMODE(path.stat.st_mode)) if path.exists else None,
+ "expected_mode": oct(expected_mode),
+ }
+ check["pass"] = (
+ check["exists"]
+ and not check["symlink"]
+ and check["owner_uid"] == 0
+ and stat.S_IMODE(path.stat.st_mode) == expected_mode
+ )
+ result["checks"].append(check)
 
 result["pass"] = all(item["pass"] for item in result["checks"])
 print(json.dumps(result, indent=2))
 
 if not result["pass"]:
-    raise SystemExit(1)
+ raise SystemExit(1)
 PY
-```
+`
 
 **Expected result**
 
@@ -1420,11 +1419,11 @@ Verify declared minimum free space and safe failure before authoritative mutatio
 
 **Command**
 
-```bash
+`bash
 test "$(available_bytes "$KOA_ACTIVE_ROOT")" -ge "$ACTIVE_MIN_FREE_BYTES"
 test "$(available_bytes "$KOA_RECOVERY_ROOT")" -ge "$RECOVERY_MIN_FREE_BYTES"
 test "$(available_bytes "$KOA_BACKUP_ROOT")" -ge "$BACKUP_MIN_FREE_BYTES"
-```
+`
 
 Run the registered storage-exhaustion test in an isolated non-authoritative test boundary.
 
@@ -1477,9 +1476,9 @@ The layout can remain physically present, but the sovereign Linux conformance cl
 
 ## 11. Idempotency
 
-```text
+`text
 Idempotent: conditional
-```
+`
 
 Idempotent operations:
 
@@ -1574,7 +1573,7 @@ For `sovereign_offline`, disconnect external network authority and verify that:
 
 ### 12.6 Applicable documentation checks
 
-```bash
+`bash
 python docs/tools/check_profile_composition.py
 python docs/tools/check_component_boundaries.py
 python docs/tools/check_release_sets.py
@@ -1583,7 +1582,7 @@ python docs/tools/check_traceability.py
 python docs/tools/check_canonical_ownership.py
 python docs/tools/check_interfile_locks.py
 python docs/tools/validate_docs.py
-```
+`
 
 ### 12.7 Success criteria
 
@@ -1656,14 +1655,14 @@ Before removing a created directory:
 
 ### 14.3 Remove one empty component boundary
 
-```bash
+`bash
 : "${COMPONENT_ID:?}"
 
 COMPONENT_ROOT="$KOA_ACTIVE_ROOT/components/$COMPONENT_ID"
 
 find "$COMPONENT_ROOT" -mindepth 1 -maxdepth 1 -type d -empty -delete
 rmdir "$COMPONENT_ROOT" 2>/dev/null || true
-```
+`
 
 Do not use recursive deletion.
 
@@ -1671,11 +1670,11 @@ Do not use recursive deletion.
 
 Only during initial provisioning rollback:
 
-```bash
+`bash
 for name in lost-and-found-review staging cache evidence artifacts components; do
-  rmdir "$KOA_ACTIVE_ROOT/$name" 2>/dev/null || true
+ rmdir "$KOA_ACTIVE_ROOT/$name" 2>/dev/null || true
 done
-```
+`
 
 Keep `layout-version` only when the layout remains active.
 
@@ -1713,13 +1712,13 @@ It shall not remove:
 
 Run under the owning component identity and within its exact cache path.
 
-```bash
+`bash
 : "${COMPONENT_ID:?}"
 CACHE_ROOT="$KOA_ACTIVE_ROOT/cache/$COMPONENT_ID"
 
 test -d "$CACHE_ROOT"
 test ! -L "$CACHE_ROOT"
-```
+`
 
 Use the component's cache cleanup command.
 
@@ -1821,9 +1820,9 @@ A screenshot or directory listing without node, profile, test, subject, environm
 
 ## 17. Offline Behavior
 
-```text
+`text
 offline_capable
-```
+`
 
 The layout can be provisioned and validated without Internet access when the node has locally admitted:
 
@@ -1906,36 +1905,36 @@ The agent must not:
 
 ### 19.1 Example execution summary
 
-```json
+`json
 {
-  "recipe_id": "RECIPE-SLN-004",
-  "recipe_version": "1.0.0",
-  "node_id": "node-sovereign-hub-01",
-  "primary_profile_id": "sovereign_linux_node",
-  "overlay_ids": ["sovereign_offline"],
-  "release_set_id": "release-set-sovereign-node-2026.08.03.1",
-  "active_root": "/var/lib/koa",
-  "recovery_root": "/var/lib/koa-recovery",
-  "backup_root": "/mnt/koa-backup",
-  "created_boundaries": [
-    "components",
-    "artifacts",
-    "evidence",
-    "cache",
-    "staging",
-    "lost-and-found-review"
-  ],
-  "tests_run": [
-    "profile_composition",
-    "storage_encryption",
-    "layout_owner_and_mode",
-    "cross_owner_write_denial",
-    "backup_failure_domain"
-  ],
-  "evidence_ids": [],
-  "result": "pass"
+ "recipe_id": "RECIPE-SLN-004",
+ "recipe_version": "1.0.0",
+ "node_id": "node-sovereign-hub-01",
+ "primary_profile_id": "sovereign_linux_node",
+ "overlay_ids": ["sovereign_offline"],
+ "release_set_id": "release-set-sovereign-node-2026.08.03.1",
+ "active_root": "/var/lib/koa",
+ "recovery_root": "/var/lib/koa-recovery",
+ "backup_root": "/mnt/koa-backup",
+ "created_boundaries": [
+ "components",
+ "artifacts",
+ "evidence",
+ "cache",
+ "staging",
+ "lost-and-found-review"
+ ],
+ "tests_run": [
+ "profile_composition",
+ "storage_encryption",
+ "layout_owner_and_mode",
+ "cross_owner_write_denial",
+ "backup_failure_domain"
+ ],
+ "evidence_ids": [],
+ "result": "pass"
 }
-```
+`
 
 The example identifiers are illustrative and do not alter canonical profile or node records.
 
@@ -1945,9 +1944,9 @@ The example identifiers are illustrative and do not alter canonical profile or n
 
 **Signal**
 
-```text
+`text
 mountpoint reports false for /var/lib/koa
-```
+`
 
 **Likely causes**
 
@@ -1988,9 +1987,9 @@ Do not infer encryption from a device name.
 
 **Signal**
 
-```text
+`text
 expected service identity differs from stat result
-```
+`
 
 **Likely causes**
 
@@ -2090,39 +2089,39 @@ Keep receipt-before-commit transitions uncommitted. Preserve existing evidence a
 
 A sovereign node uses one profile-approved encrypted active-data filesystem mounted at:
 
-```text
+`text
 /var/lib/koa
-```
+`
 
 The active profile includes an example component:
 
-```text
+`text
 component_id: example_component
 service_user: koa-example-component
 service_group: koa-example-component
 declared classes: authoritative projections queues checkpoints logs temporary
-```
+`
 
 The deployment authority creates:
 
-```bash
+`bash
 export COMPONENT_ID="example_component"
 export SERVICE_USER="koa-example-component"
 export SERVICE_GROUP="koa-example-component"
 export COMPONENT_STORAGE_CLASSES="authoritative projections queues checkpoints logs temporary"
-```
+`
 
 The resulting path is:
 
-```text
+`text
 /var/lib/koa/components/example_component/
-├── authoritative/  owned by koa-example-component, mode 0700
-├── projections/    owned by koa-example-component, mode 0750
-├── queues/         owned by koa-example-component, mode 0750
-├── checkpoints/    owned by koa-example-component, mode 0750
-├── logs/           owned by koa-example-component, mode 0750
-└── temporary/      owned by koa-example-component, mode 0750
-```
+├── authoritative/ owned by koa-example-component, mode 0700
+├── projections/ owned by koa-example-component, mode 0750
+├── queues/ owned by koa-example-component, mode 0750
+├── checkpoints/ owned by koa-example-component, mode 0750
+├── logs/ owned by koa-example-component, mode 0750
+└── temporary/ owned by koa-example-component, mode 0750
+`
 
 A `high_assurance` composition can mount the same authoritative path from a dedicated encrypted volume.
 
@@ -2132,7 +2131,7 @@ The component identifier, identity, interface, and owner remain unchanged.
 
 This procedure does not perform the migration, but the accepted sequence is:
 
-```text
+`text
 declare target profile mapping
 → admit target storage and identities
 → quiesce owner writes
@@ -2144,7 +2143,7 @@ declare target profile mapping
 → run representative capability tests
 → commit new mapping
 → retain or retire prior boundary according to lifecycle
-```
+`
 
 The migration shall preserve:
 

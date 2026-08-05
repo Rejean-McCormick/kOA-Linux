@@ -141,16 +141,16 @@ Break-glass is not a permanent administrator role.
 
 It is a temporary state transition:
 
-```text
+`text
 bounded emergency condition
-    → explicit request
-    → identity and policy decision
-    → narrowly scoped grant
-    → visible controlled execution
-    → automatic expiry or revocation
-    → verified closure
-    → mandatory evidence and review
-```
+ → explicit request
+ → identity and policy decision
+ → narrowly scoped grant
+ → visible controlled execution
+ → automatic expiry or revocation
+ → verified closure
+ → mandatory evidence and review
+`
 
 The model ensures that emergency access remains:
 
@@ -169,10 +169,10 @@ The model ensures that emergency access remains:
 
 The model also preserves a central boundary:
 
-```text
+`text
 machine privilege is an execution mechanism
 not the source of governance authority
-```
+`
 
 Root or administrator access never becomes the ordinary governance API.
 
@@ -230,7 +230,7 @@ It does not define one mandatory hardware token, number of approvers, session-re
 
 The canonical sources for this document are:
 
-```text
+`text
 generated/authority-manifest.json
 generated/decision-index.json
 contracts/system.contract.json#/operating_modes
@@ -251,7 +251,7 @@ generated/traceability.json
 generated/test-catalog.json
 generated/evidence-catalog.json
 generated/exception-index.json
-```
+`
 
 Their ownership roles are:
 
@@ -281,7 +281,7 @@ This document explains the model. It does not own the enabled profile list, exac
 
 Break-glass eligibility requires all of the following:
 
-```text
+`text
 enabled profile capability
 enabled target component or node capability
 active break-glass policy
@@ -290,7 +290,7 @@ eligible approver or local authority path
 eligible operator identity
 verified receipt path
 declared closure and recovery path
-```
+`
 
 A missing element leaves the capability unavailable.
 
@@ -334,7 +334,7 @@ One identity can hold more than one role only when the active profile and policy
 
 A break-glass request includes:
 
-```text
+`text
 request_id
 requester_identity_ref
 proposed_operator_identity_ref
@@ -356,7 +356,7 @@ authority_refs
 evidence_refs
 expected_closure_condition
 correlation_id
-```
+`
 
 The request is not an active grant.
 
@@ -364,11 +364,11 @@ The request is not an active grant.
 
 The policy decision is one of:
 
-```text
+`text
 authorized
 denied
 indeterminate
-```
+`
 
 An authorized decision contains:
 
@@ -433,7 +433,7 @@ Long-lived shared emergency passwords are not the default architecture.
 
 The lifecycle states are:
 
-```text
+`text
 requested
 pending_approval
 authorized
@@ -446,7 +446,7 @@ closed
 denied
 failed
 recovery_required
-```
+`
 
 State changes are explicit and receipted where required.
 
@@ -470,16 +470,16 @@ A partially activated grant is not active.
 
 Each action under an active grant follows:
 
-```text
+`text
 operator identity
-    → active grant
-    → target and operation match
-    → expiry and revocation check
-    → component or node owner validation
-    → privileged execution if required
-    → target effect validation
-    → receipt
-```
+ → active grant
+ → target and operation match
+ → expiry and revocation check
+ → component or node owner validation
+ → privileged execution if required
+ → target effect validation
+ → receipt
+`
 
 The executor remains the component or broker that owns the operation.
 
@@ -537,7 +537,7 @@ Visibility does not expose protected reason details to unauthorized viewers.
 
 Receipt classes can include:
 
-```text
+`text
 request receipt
 decision receipt
 activation receipt
@@ -551,7 +551,7 @@ rollback or repair receipt
 closure receipt
 restricted-evidence-access receipt
 post-review receipt
-```
+`
 
 The receipt model distinguishes the decision from execution and the requested effect from authoritative commit.
 
@@ -967,7 +967,7 @@ This document is conformant when all of the following checks pass:
 
 Expected validator failure codes include:
 
-```text
+`text
 break_glass_not_enabled
 break_glass_emergency_class_invalid
 break_glass_request_incomplete
@@ -992,7 +992,7 @@ break_glass_target_effect_unknown
 break_glass_closure_partial
 break_glass_offline_reconciliation_failed
 break_glass_status_ambiguous
-```
+`
 
 ## 11. Non-Normative Examples
 

@@ -1,103 +1,102 @@
 <!-- KOA:DOC-META:BEGIN GENERATED
 {
-  "doc_id": "DOC-RECIPE-SLN-APPLIANCE-001",
-  "document_class": "non_normative_recipe",
-  "status": "active",
-  "language": "en",
-  "layer": "recipes",
-  "scope": [
-    "profile:sovereign_linux_node",
-    "profile_overlay:appliance_shell",
-    "sovereign_linux_appliance_session"
-  ],
-  "canonical_refs": [
-    "generated/profile-catalog.json",
-    "contracts/profiles/sovereign-linux-node.profile.json",
-    "contracts/profiles/appliance-shell.profile.json",
-    "contracts/profiles/high-assurance.profile.json",
-    "contracts/profiles/sovereign-offline.profile.json",
-    "contracts/release-channels.contract.json",
-    "contracts/artifact-classes.contract.json",
-    "generated/component-catalog.json",
-    "contracts/integration-types.contract.json",
-    "generated/assertion-index.json#/locks/LOCK-IMPL-002",
-    "generated/assertion-index.json#/locks/LOCK-LIFE-001",
-    "generated/assertion-index.json#/locks/LOCK-LIFE-003",
-    "generated/decision-index.json#/adrs/ADR-004",
-    "generated/decision-index.json#/adrs/ADR-014",
-    "generated/test-catalog.json",
-    "generated/evidence-catalog.json"
-  ],
-  "decision_ids": [
-    "DEC-SHELL-001",
-    "DEC-PROFILE-001",
-    "DEC-ARI-001",
-    "DEC-AI-001",
-    "DEC-DATA-001",
-    "DEC-GOV-001",
-    "DEC-GATE-001",
-    "DEC-CONTAINER-001",
-    "DEC-HW-001",
-    "DEC-REL-001"
-  ],
-  "requirement_ids": [],
-  "lock_ids": [
-    "LOCK-PROFILE-001",
-    "LOCK-IMPL-001",
-    "LOCK-IMPL-002",
-    "LOCK-ARI-001",
-    "LOCK-ARI-002",
-    "LOCK-AI-001",
-    "LOCK-AI-002",
-    "LOCK-DATA-001",
-    "LOCK-GOV-001",
-    "LOCK-GATE-001",
-    "LOCK-LIFE-001",
-    "LOCK-LIFE-002",
-    "LOCK-LIFE-003",
-    "LOCK-LIFE-004"
-  ],
-  "exception_ids": [],
-  "depends_on": [
-    "DOC-RECIPES-000",
-    "DOC-PROFILE-007",
-    "DOC-SYS-002",
-    "DOC-SYS-011",
-    "DOC-SYS-017",
-    "DOC-SEC-001",
-    "DOC-SEC-008",
-    "DOC-SEC-011",
-    "DOC-OPS-000",
-    "DOC-OPS-009",
-    "DOC-CONF-010",
-    "ADR-004",
-    "ADR-014"
-  ],
-  "tags": [
-    "recipe",
-    "sovereign-linux",
-    "appliance-shell",
-    "wayland",
-    "embedded-web-engine",
-    "systemd",
-    "atomic-activation",
-    "rollback",
-    "offline",
-    "recovery",
-    "accessibility",
-    "non-normative"
-  ]
+ "doc_id": "DOC-RECIPE-SLN-APPLIANCE-001",
+ "document_class": "non_normative_recipe",
+ "status": "active",
+ "language": "en",
+ "layer": "recipes",
+ "scope": [
+ "profile:sovereign_linux_node",
+ "profile_overlay:appliance_shell",
+ "sovereign_linux_appliance_session"
+ ],
+ "canonical_refs": [
+ "generated/profile-catalog.json",
+ "contracts/profiles/sovereign-linux-node.profile.json",
+ "contracts/profiles/appliance-shell.profile.json",
+ "contracts/profiles/high-assurance.profile.json",
+ "contracts/profiles/sovereign-offline.profile.json",
+ "contracts/release-channels.contract.json",
+ "contracts/artifact-classes.contract.json",
+ "generated/component-catalog.json",
+ "contracts/integration-types.contract.json",
+ "generated/assertion-index.json#/locks/LOCK-IMPL-002",
+ "generated/assertion-index.json#/locks/LOCK-LIFE-001",
+ "generated/assertion-index.json#/locks/LOCK-LIFE-003",
+ "generated/decision-index.json#/adrs/ADR-003",
+ "generated/decision-index.json#/adrs/",
+ "generated/test-catalog.json",
+ "generated/evidence-catalog.json"
+ ],
+ "decision_ids": [
+ "DEC-SHELL-001",
+ "DEC-PROFILE-001",
+ "DEC-ARI-001",
+ "DEC-AI-001",
+ "DEC-DATA-001",
+ "DEC-GOV-001",
+ "DEC-GATE-001",
+ "DEC-CONTAINER-001",
+ "DEC-HW-001",
+ "DEC-REL-001"
+ ],
+ "requirement_ids": [],
+ "lock_ids": [
+ "LOCK-PROFILE-001",
+ "LOCK-IMPL-001",
+ "LOCK-IMPL-002",
+ "LOCK-ARI-001",
+ "LOCK-ARI-002",
+ "LOCK-AI-001",
+ "LOCK-AI-002",
+ "LOCK-DATA-001",
+ "LOCK-GOV-001",
+ "LOCK-GATE-001",
+ "LOCK-LIFE-001",
+ "LOCK-LIFE-002",
+ "LOCK-LIFE-003",
+ "LOCK-LIFE-004"
+ ],
+ "exception_ids": [],
+ "depends_on": [
+ "DOC-RECIPES-000",
+ "DOC-PROFILE-007",
+ "DOC-SYS-002",
+ "DOC-SYS-011",
+ "DOC-SYS-017",
+ "DOC-SEC-001",
+ "DOC-SEC-008",
+ "DOC-SEC-011",
+ "DOC-OPS-000",
+ "DOC-OPS-009",
+ "DOC-CONF-010",
+ "DOC-ADR-003"
+ ],
+ "tags": [
+ "recipe",
+ "sovereign-linux",
+ "appliance-shell",
+ "wayland",
+ "embedded-web-engine",
+ "systemd",
+ "atomic-activation",
+ "rollback",
+ "offline",
+ "recovery",
+ "accessibility",
+ "non-normative"
+ ]
 }
 KOA:DOC-META:END -->
 
 # Sovereign Linux Appliance Shell
 
-> **Recipe classification:** Non-authoritative implementation guidance.  
-> **Risk class:** `operational_change`.  
-> **Primary profile:** `sovereign_linux_node`.  
-> **Required overlay:** `appliance_shell`.  
-> **Compatible strengthening overlays:** `high_assurance` and `sovereign_offline` only when the active profile registry permits the complete composition.  
-> **Authority rule:** `ADR-004`, the active profile contracts, artifact contracts, Release Set, security policy, and operating authority take precedence over this recipe.
+> **Recipe classification:** Non-authoritative implementation guidance.
+> **Risk class:** `operational_change`.
+> **Primary profile:** `sovereign_linux_node`.
+> **Required overlay:** `appliance_shell`.
+> **Compatible strengthening overlays:** `high_assurance` and `sovereign_offline` only when the active profile registry permits the complete composition.
+> **Authority rule:** `ADR-003`, the active profile contracts, artifact contracts, Release Set, security policy, and operating authority take precedence over this recipe.
 
 ## 1. Purpose
 
@@ -114,21 +113,21 @@ The appliance session combines:
 
 The recipe preserves this boundary:
 
-```text
+`text
 verified composed profile
-        ↓
+ ↓
 complete compatible Release Set
-        ↓
+ ↓
 inactive staged shell artifacts
-        ↓
+ ↓
 native recovery and status checks
-        ↓
+ ↓
 atomic active-release switch
-        ↓
+ ↓
 service readiness and restricted-session tests
-        ↓
+ ↓
 accepted appliance session
-```
+`
 
 The shell remains a presentation and session boundary.
 
@@ -172,17 +171,17 @@ This recipe does not:
 
 This recipe applies only when the effective composed profile contains:
 
-```text
+`text
 primary_profile: sovereign_linux_node
 overlay: appliance_shell
-```
+`
 
 Additional overlays can include:
 
-```text
+`text
 high_assurance
 sovereign_offline
-```
+`
 
 only when the active profile registry declares the combination compatible.
 
@@ -243,7 +242,7 @@ Canonical lifecycle states remain in the artifact and profile contracts.
 Before executing state-changing steps, resolve:
 
 - `DEC-SHELL-001`;
-- `ADR-004`;
+- `ADR-003`;
 - the active `sovereign_linux_node` profile contract;
 - the active `appliance_shell` overlay contract;
 - any active `high_assurance` or `sovereign_offline` overlay;
@@ -289,12 +288,12 @@ The profile can strengthen these values.
 
 Check the actual node:
 
-```bash
+`bash
 nproc
 awk '/MemTotal/ { printf "%.1f GiB\n", $2 / 1024 / 1024 }' /proc/meminfo
 lsblk --output NAME,SIZE,TYPE,FSTYPE,MOUNTPOINTS
 findmnt --target /
-```
+`
 
 A recipe check does not replace the active resource-envelope validator.
 
@@ -344,7 +343,7 @@ Under `sovereign_offline`, every required item is locally available.
 
 The reference helper uses:
 
-```text
+`text
 bash
 jq
 systemctl
@@ -355,17 +354,17 @@ flock
 curl
 ln
 mv
-```
+`
 
 Verify:
 
-```bash
+`bash
 for command_name in \
-  bash jq systemctl readlink stat find flock curl ln mv; do
-  command -v "$command_name" >/dev/null ||
-    printf 'missing: %s\n' "$command_name"
+ bash jq systemctl readlink stat find flock curl ln mv; do
+ command -v "$command_name" >/dev/null ||
+ printf 'missing: %s\n' "$command_name"
 done
-```
+`
 
 ### 3.7 Environment-file location
 
@@ -373,9 +372,9 @@ Use a root-owned local environment file outside the Release Set.
 
 Recommended reference location:
 
-```text
+`text
 /etc/koa/appliance-shell.env
-```
+`
 
 The file contains paths, unit names, and local URLs.
 
@@ -410,7 +409,7 @@ The recipe requires:
 
 Create `/etc/koa/appliance-shell.env` through the active configuration and privileged-change process:
 
-```bash
+`bash
 KOA_PROFILE_MANIFEST=/etc/koa/authority/node-profile.json
 KOA_RELEASE_ROOT=/var/lib/koa/releases
 KOA_RELEASE_SET_ID=rs-2026.08.03-001
@@ -428,7 +427,7 @@ KOA_RECOVERY_UNIT=koa-appliance-recovery.target
 KOA_READY_URL=https://127.0.0.1:8443/ready
 KOA_LOCAL_CA_FILE=/etc/koa/trust/local-workspace-ca.pem
 KOA_READY_TIMEOUT_SECONDS=10
-```
+`
 
 The identifiers and paths are reference values.
 
@@ -438,22 +437,22 @@ The active profile, unit definitions, artifact contracts, and local operating co
 
 The helper expects this reference layout:
 
-```text
+`text
 /var/lib/koa/releases/
 └── rs-2026.08.03-001/
-    ├── release-set.json
-    ├── system/
-    ├── services/
-    ├── governance/
-    └── knowledge/
-```
+ ├── release-set.json
+ ├── system/
+ ├── services/
+ ├── governance/
+ └── knowledge/
+`
 
 The active and previous links remain outside the immutable Release Set:
 
-```text
+`text
 /var/lib/koa/appliance-shell/active
 /var/lib/koa/appliance-shell/previous
-```
+`
 
 Units resolve artifacts through the active link.
 
@@ -583,9 +582,9 @@ The local-origin service binds only to the interface and port selected by the pr
 
 A reference local-only bind is:
 
-```text
+`text
 127.0.0.1:8443
-```
+`
 
 The embedded engine reaches approved local origins.
 
@@ -638,14 +637,14 @@ Evidence records identities, versions, profile, units, results, timing, failures
 
 Use an operator-controlled temporary directory:
 
-```bash
+`bash
 sudo install \
-  --directory \
-  --owner root \
-  --group root \
-  --mode 0750 \
-  /var/lib/koa/recipe-tools/appliance-shell
-```
+ --directory \
+ --owner root \
+ --group root \
+ --mode 0750 \
+ /var/lib/koa/recipe-tools/appliance-shell
+`
 
 Do not place mutable activation tools inside the immutable Release Set.
 
@@ -653,411 +652,411 @@ Do not place mutable activation tools inside the immutable Release Set.
 
 Create `/var/lib/koa/recipe-tools/appliance-shell/appliance-shellctl`:
 
-```bash
+`bash
 sudo tee \
-  /var/lib/koa/recipe-tools/appliance-shell/appliance-shellctl \
-  >/dev/null <<'BASH'
+ /var/lib/koa/recipe-tools/appliance-shell/appliance-shellctl \
+ >/dev/null <<'BASH'
 #!/usr/bin/env bash
 set -euo pipefail
 
-fail() {
-  printf 'error: %s\n' "$*" >&2
-  exit 1
+fail {
+ printf 'error: %s\n' "$*" >&2
+ exit 1
 }
 
-usage() {
-  cat >&2 <<'USAGE'
+usage {
+ cat >&2 <<'USAGE'
 Usage:
-  appliance-shellctl preflight <environment-file>
-  appliance-shellctl activate  <environment-file>
-  appliance-shellctl status    <environment-file>
-  appliance-shellctl rollback  <environment-file>
+ appliance-shellctl preflight <environment-file>
+ appliance-shellctl activate <environment-file>
+ appliance-shellctl status <environment-file>
+ appliance-shellctl rollback <environment-file>
 USAGE
-  exit 2
+ exit 2
 }
 
-require_command() {
-  command -v "$1" >/dev/null 2>&1 ||
-    fail "required command not found: $1"
+require_command {
+ command -v "$1" >/dev/null 2>&1 ||
+ fail "required command not found: $1"
 }
 
-require_variable() {
-  local name=$1
-  [ -n "${!name:-}" ] ||
-    fail "required variable is unset or empty: $name"
+require_variable {
+ local name=$1
+ [ -n "${!name:-}" ] ||
+ fail "required variable is unset or empty: $name"
 }
 
-require_file() {
-  [ -f "$1" ] || fail "required file not found: $1"
+require_file {
+ [ -f "$1" ] || fail "required file not found: $1"
 }
 
-require_directory() {
-  [ -d "$1" ] || fail "required directory not found: $1"
+require_directory {
+ [ -d "$1" ] || fail "required directory not found: $1"
 }
 
-require_root() {
-  [ "$(id -u)" -eq 0 ] ||
-    fail "activate and rollback require root; use the approved privilege path"
+require_root {
+ [ "$(id -u)" -eq 0 ] ||
+ fail "activate and rollback require root; use the approved privilege path"
 }
 
-load_environment() {
-  local environment_file=$1
+load_environment {
+ local environment_file=$1
 
-  require_file "$environment_file"
+ require_file "$environment_file"
 
-  # The environment file is an operator-controlled local input.
-  # It contains paths, unit names, and URLs, not secret values.
-  # shellcheck disable=SC1090
-  . "$environment_file"
+ # The environment file is an operator-controlled local input.
+ # It contains paths, unit names, and URLs, not secret values.
+ # shellcheck disable=SC1090
+ . "$environment_file"
 
-  require_variable KOA_PROFILE_MANIFEST
-  require_variable KOA_RELEASE_ROOT
-  require_variable KOA_RELEASE_SET_ID
-  require_variable KOA_ACTIVE_LINK
-  require_variable KOA_PREVIOUS_LINK
-  require_variable KOA_LOCK_FILE
-  require_variable KOA_LOCAL_ORIGIN_UNIT
-  require_variable KOA_COMPOSITOR_UNIT
-  require_variable KOA_SHELL_UNIT
-  require_variable KOA_ENGINE_UNIT
-  require_variable KOA_RECOVERY_UNIT
-  require_variable KOA_READY_URL
+ require_variable KOA_PROFILE_MANIFEST
+ require_variable KOA_RELEASE_ROOT
+ require_variable KOA_RELEASE_SET_ID
+ require_variable KOA_ACTIVE_LINK
+ require_variable KOA_PREVIOUS_LINK
+ require_variable KOA_LOCK_FILE
+ require_variable KOA_LOCAL_ORIGIN_UNIT
+ require_variable KOA_COMPOSITOR_UNIT
+ require_variable KOA_SHELL_UNIT
+ require_variable KOA_ENGINE_UNIT
+ require_variable KOA_RECOVERY_UNIT
+ require_variable KOA_READY_URL
 
-  KOA_RELEASE_DIRECTORY="${KOA_RELEASE_ROOT%/}/${KOA_RELEASE_SET_ID}"
-  KOA_RELEASE_MANIFEST="${KOA_RELEASE_DIRECTORY%/}/release-set.json"
+ KOA_RELEASE_DIRECTORY="${KOA_RELEASE_ROOT%/}/${KOA_RELEASE_SET_ID}"
+ KOA_RELEASE_MANIFEST="${KOA_RELEASE_DIRECTORY%/}/release-set.json"
 
-  export KOA_RELEASE_DIRECTORY
-  export KOA_RELEASE_MANIFEST
+ export KOA_RELEASE_DIRECTORY
+ export KOA_RELEASE_MANIFEST
 }
 
-json_contains_string() {
-  local file=$1
-  local expected=$2
+json_contains_string {
+ local file=$1
+ local expected=$2
 
-  jq -e --arg expected "$expected" '
-    [
-      .. |
-      strings |
-      select(. == $expected)
-    ] |
-    length > 0
-  ' "$file" >/dev/null
+ jq -e --arg expected "$expected" '
+ [
+ .. |
+ strings |
+ select(. == $expected)
+ ] |
+ length > 0
+ ' "$file" >/dev/null
 }
 
-check_unit_exists() {
-  systemctl cat "$1" >/dev/null 2>&1 ||
-    fail "systemd unit is not installed or readable: $1"
+check_unit_exists {
+ systemctl cat "$1" >/dev/null 2>&1 ||
+ fail "systemd unit is not installed or readable: $1"
 }
 
-check_environment_file_permissions() {
-  local environment_file=$1
-  local mode owner
+check_environment_file_permissions {
+ local environment_file=$1
+ local mode owner
 
-  mode=$(stat -c '%a' "$environment_file")
-  owner=$(stat -c '%U' "$environment_file")
+ mode=$(stat -c '%a' "$environment_file")
+ owner=$(stat -c '%U' "$environment_file")
 
-  case "$mode" in
-    *[2367][0-7]|??[2367])
-      fail "environment file is group- or world-writable: $environment_file"
-      ;;
-  esac
+ case "$mode" in
+ *[2367][0-7]|??[2367])
+ fail "environment file is group- or world-writable: $environment_file"
+ ;;
+ esac
 
-  if [ "$(id -u)" -eq 0 ] && [ "$owner" != "root" ]; then
-    fail "root activation requires a root-owned environment file"
-  fi
+ if [ "$(id -u)" -eq 0 ] && [ "$owner" != "root" ]; then
+ fail "root activation requires a root-owned environment file"
+ fi
 }
 
-check_release_permissions() {
-  local first_writable
+check_release_permissions {
+ local first_writable
 
-  first_writable=$(
-    find -L "$KOA_RELEASE_DIRECTORY" -xdev -perm /022 -print -quit
-  )
+ first_writable=$(
+ find -L "$KOA_RELEASE_DIRECTORY" -xdev -perm /022 -print -quit
+ )
 
-  [ -z "$first_writable" ] ||
-    fail "release content is group- or world-writable: $first_writable"
+ [ -z "$first_writable" ] ||
+ fail "release content is group- or world-writable: $first_writable"
 }
 
-check_manifest_sanity() {
-  require_file "$KOA_PROFILE_MANIFEST"
-  require_file "$KOA_RELEASE_MANIFEST"
+check_manifest_sanity {
+ require_file "$KOA_PROFILE_MANIFEST"
+ require_file "$KOA_RELEASE_MANIFEST"
 
-  json_contains_string \
-    "$KOA_PROFILE_MANIFEST" \
-    "sovereign_linux_node" ||
-    fail "profile manifest does not identify sovereign_linux_node"
+ json_contains_string \
+ "$KOA_PROFILE_MANIFEST" \
+ "sovereign_linux_node" ||
+ fail "profile manifest does not identify sovereign_linux_node"
 
-  json_contains_string \
-    "$KOA_PROFILE_MANIFEST" \
-    "appliance_shell" ||
-    fail "profile manifest does not include appliance_shell"
+ json_contains_string \
+ "$KOA_PROFILE_MANIFEST" \
+ "appliance_shell" ||
+ fail "profile manifest does not include appliance_shell"
 
-  local channel
-  for channel in system services governance knowledge; do
-    json_contains_string "$KOA_RELEASE_MANIFEST" "$channel" ||
-      fail "release manifest does not mention required channel: $channel"
-  done
+ local channel
+ for channel in system services governance knowledge; do
+ json_contains_string "$KOA_RELEASE_MANIFEST" "$channel" ||
+ fail "release manifest does not mention required channel: $channel"
+ done
 }
 
-check_tools() {
-  require_command jq
-  require_command systemctl
-  require_command readlink
-  require_command stat
-  require_command find
-  require_command flock
-  require_command curl
-  require_command ln
-  require_command mv
+check_tools {
+ require_command jq
+ require_command systemctl
+ require_command readlink
+ require_command stat
+ require_command find
+ require_command flock
+ require_command curl
+ require_command ln
+ require_command mv
 }
 
-check_units() {
-  check_unit_exists "$KOA_LOCAL_ORIGIN_UNIT"
-  check_unit_exists "$KOA_COMPOSITOR_UNIT"
-  check_unit_exists "$KOA_SHELL_UNIT"
-  check_unit_exists "$KOA_ENGINE_UNIT"
-  check_unit_exists "$KOA_RECOVERY_UNIT"
+check_units {
+ check_unit_exists "$KOA_LOCAL_ORIGIN_UNIT"
+ check_unit_exists "$KOA_COMPOSITOR_UNIT"
+ check_unit_exists "$KOA_SHELL_UNIT"
+ check_unit_exists "$KOA_ENGINE_UNIT"
+ check_unit_exists "$KOA_RECOVERY_UNIT"
 }
 
-ready_check() {
-  if [ -n "${KOA_LOCAL_CA_FILE:-}" ]; then
-    require_file "$KOA_LOCAL_CA_FILE"
-    curl \
-      --fail \
-      --silent \
-      --show-error \
-      --max-time "${KOA_READY_TIMEOUT_SECONDS:-10}" \
-      --cacert "$KOA_LOCAL_CA_FILE" \
-      "$KOA_READY_URL" >/dev/null
-  else
-    curl \
-      --fail \
-      --silent \
-      --show-error \
-      --max-time "${KOA_READY_TIMEOUT_SECONDS:-10}" \
-      "$KOA_READY_URL" >/dev/null
-  fi
+ready_check {
+ if [ -n "${KOA_LOCAL_CA_FILE:-}" ]; then
+ require_file "$KOA_LOCAL_CA_FILE"
+ curl \
+ --fail \
+ --silent \
+ --show-error \
+ --max-time "${KOA_READY_TIMEOUT_SECONDS:-10}" \
+ --cacert "$KOA_LOCAL_CA_FILE" \
+ "$KOA_READY_URL" >/dev/null
+ else
+ curl \
+ --fail \
+ --silent \
+ --show-error \
+ --max-time "${KOA_READY_TIMEOUT_SECONDS:-10}" \
+ "$KOA_READY_URL" >/dev/null
+ fi
 }
 
-check_active_units() {
-  systemctl is-active --quiet "$KOA_LOCAL_ORIGIN_UNIT"
-  systemctl is-active --quiet "$KOA_COMPOSITOR_UNIT"
-  systemctl is-active --quiet "$KOA_SHELL_UNIT"
-  systemctl is-active --quiet "$KOA_ENGINE_UNIT"
+check_active_units {
+ systemctl is-active --quiet "$KOA_LOCAL_ORIGIN_UNIT"
+ systemctl is-active --quiet "$KOA_COMPOSITOR_UNIT"
+ systemctl is-active --quiet "$KOA_SHELL_UNIT"
+ systemctl is-active --quiet "$KOA_ENGINE_UNIT"
 }
 
-atomic_link() {
-  local target=$1
-  local link=$2
-  local parent temporary
+atomic_link {
+ local target=$1
+ local link=$2
+ local parent temporary
 
-  parent=$(dirname "$link")
-  mkdir -p "$parent"
+ parent=$(dirname "$link")
+ mkdir -p "$parent"
 
-  temporary="${link}.new.$$"
-  rm -f "$temporary"
-  ln -s "$target" "$temporary"
-  mv -Tf "$temporary" "$link"
+ temporary="${link}.new.$$"
+ rm -f "$temporary"
+ ln -s "$target" "$temporary"
+ mv -Tf "$temporary" "$link"
 }
 
-record_previous_target() {
-  local current
+record_previous_target {
+ local current
 
-  if [ -L "$KOA_ACTIVE_LINK" ]; then
-    current=$(readlink -f "$KOA_ACTIVE_LINK")
-    [ -n "$current" ] ||
-      fail "active link cannot be resolved: $KOA_ACTIVE_LINK"
+ if [ -L "$KOA_ACTIVE_LINK" ]; then
+ current=$(readlink -f "$KOA_ACTIVE_LINK")
+ [ -n "$current" ] ||
+ fail "active link cannot be resolved: $KOA_ACTIVE_LINK"
 
-    atomic_link "$current" "$KOA_PREVIOUS_LINK"
-  fi
+ atomic_link "$current" "$KOA_PREVIOUS_LINK"
+ fi
 }
 
-restart_appliance_units() {
-  systemctl daemon-reload
+restart_appliance_units {
+ systemctl daemon-reload
 
-  systemctl restart "$KOA_LOCAL_ORIGIN_UNIT"
-  systemctl restart "$KOA_COMPOSITOR_UNIT"
-  systemctl restart "$KOA_SHELL_UNIT"
-  systemctl restart "$KOA_ENGINE_UNIT"
+ systemctl restart "$KOA_LOCAL_ORIGIN_UNIT"
+ systemctl restart "$KOA_COMPOSITOR_UNIT"
+ systemctl restart "$KOA_SHELL_UNIT"
+ systemctl restart "$KOA_ENGINE_UNIT"
 }
 
-preflight() {
-  local environment_file=$1
+preflight {
+ local environment_file=$1
 
-  check_tools
-  check_environment_file_permissions "$environment_file"
-  require_directory "$KOA_RELEASE_DIRECTORY"
-  check_release_permissions
-  check_manifest_sanity
-  check_units
+ check_tools
+ check_environment_file_permissions "$environment_file"
+ require_directory "$KOA_RELEASE_DIRECTORY"
+ check_release_permissions
+ check_manifest_sanity
+ check_units
 
-  printf 'preflight: pass\n'
-  printf 'profile_manifest=%s\n' "$KOA_PROFILE_MANIFEST"
-  printf 'release_set_id=%s\n' "$KOA_RELEASE_SET_ID"
-  printf 'release_directory=%s\n' "$KOA_RELEASE_DIRECTORY"
+ printf 'preflight: pass\n'
+ printf 'profile_manifest=%s\n' "$KOA_PROFILE_MANIFEST"
+ printf 'release_set_id=%s\n' "$KOA_RELEASE_SET_ID"
+ printf 'release_directory=%s\n' "$KOA_RELEASE_DIRECTORY"
 }
 
-activate() {
-  local environment_file=$1
-  local old_target=''
+activate {
+ local environment_file=$1
+ local old_target=''
 
-  require_root
-  preflight "$environment_file"
+ require_root
+ preflight "$environment_file"
 
-  mkdir -p "$(dirname "$KOA_LOCK_FILE")"
-  exec 9>"$KOA_LOCK_FILE"
-  flock -x 9
+ mkdir -p "$(dirname "$KOA_LOCK_FILE")"
+ exec 9>"$KOA_LOCK_FILE"
+ flock -x 9
 
-  if [ -L "$KOA_ACTIVE_LINK" ]; then
-    old_target=$(readlink -f "$KOA_ACTIVE_LINK")
-  fi
+ if [ -L "$KOA_ACTIVE_LINK" ]; then
+ old_target=$(readlink -f "$KOA_ACTIVE_LINK")
+ fi
 
-  record_previous_target
-  atomic_link "$KOA_RELEASE_DIRECTORY" "$KOA_ACTIVE_LINK"
+ record_previous_target
+ atomic_link "$KOA_RELEASE_DIRECTORY" "$KOA_ACTIVE_LINK"
 
-  if ! restart_appliance_units; then
-    printf 'activation failed; attempting rollback\n' >&2
+ if ! restart_appliance_units; then
+ printf 'activation failed; attempting rollback\n' >&2
 
-    if [ -n "$old_target" ] && [ -d "$old_target" ]; then
-      atomic_link "$old_target" "$KOA_ACTIVE_LINK"
-      systemctl daemon-reload
-      restart_appliance_units || true
-    fi
+ if [ -n "$old_target" ] && [ -d "$old_target" ]; then
+ atomic_link "$old_target" "$KOA_ACTIVE_LINK"
+ systemctl daemon-reload
+ restart_appliance_units || true
+ fi
 
-    fail "activation did not complete"
-  fi
+ fail "activation did not complete"
+ fi
 
-  if ! check_active_units || ! ready_check; then
-    printf 'acceptance failed; attempting rollback\n' >&2
+ if ! check_active_units || ! ready_check; then
+ printf 'acceptance failed; attempting rollback\n' >&2
 
-    if [ -n "$old_target" ] && [ -d "$old_target" ]; then
-      atomic_link "$old_target" "$KOA_ACTIVE_LINK"
-      systemctl daemon-reload
-      restart_appliance_units || true
-    fi
+ if [ -n "$old_target" ] && [ -d "$old_target" ]; then
+ atomic_link "$old_target" "$KOA_ACTIVE_LINK"
+ systemctl daemon-reload
+ restart_appliance_units || true
+ fi
 
-    fail "appliance shell did not pass initial acceptance"
-  fi
+ fail "appliance shell did not pass initial acceptance"
+ fi
 
-  printf 'activation: pass\n'
-  printf 'active_release=%s\n' "$(readlink -f "$KOA_ACTIVE_LINK")"
-  if [ -L "$KOA_PREVIOUS_LINK" ]; then
-    printf 'previous_release=%s\n' \
-      "$(readlink -f "$KOA_PREVIOUS_LINK")"
-  fi
+ printf 'activation: pass\n'
+ printf 'active_release=%s\n' "$(readlink -f "$KOA_ACTIVE_LINK")"
+ if [ -L "$KOA_PREVIOUS_LINK" ]; then
+ printf 'previous_release=%s\n' \
+ "$(readlink -f "$KOA_PREVIOUS_LINK")"
+ fi
 }
 
-status() {
-  check_tools
-  check_manifest_sanity
-  check_units
+status {
+ check_tools
+ check_manifest_sanity
+ check_units
 
-  printf 'active_release=%s\n' \
-    "$(readlink -f "$KOA_ACTIVE_LINK" 2>/dev/null || true)"
-  printf 'previous_release=%s\n' \
-    "$(readlink -f "$KOA_PREVIOUS_LINK" 2>/dev/null || true)"
+ printf 'active_release=%s\n' \
+ "$(readlink -f "$KOA_ACTIVE_LINK" 2>/dev/null || true)"
+ printf 'previous_release=%s\n' \
+ "$(readlink -f "$KOA_PREVIOUS_LINK" 2>/dev/null || true)"
 
-  local unit
-  for unit in \
-    "$KOA_LOCAL_ORIGIN_UNIT" \
-    "$KOA_COMPOSITOR_UNIT" \
-    "$KOA_SHELL_UNIT" \
-    "$KOA_ENGINE_UNIT" \
-    "$KOA_RECOVERY_UNIT"; do
-    printf '%s=' "$unit"
-    systemctl is-active "$unit" 2>/dev/null || true
-  done
+ local unit
+ for unit in \
+ "$KOA_LOCAL_ORIGIN_UNIT" \
+ "$KOA_COMPOSITOR_UNIT" \
+ "$KOA_SHELL_UNIT" \
+ "$KOA_ENGINE_UNIT" \
+ "$KOA_RECOVERY_UNIT"; do
+ printf '%s=' "$unit"
+ systemctl is-active "$unit" 2>/dev/null || true
+ done
 
-  if ready_check; then
-    printf 'ready_url=pass\n'
-  else
-    printf 'ready_url=fail\n'
-    return 1
-  fi
+ if ready_check; then
+ printf 'ready_url=pass\n'
+ else
+ printf 'ready_url=fail\n'
+ return 1
+ fi
 }
 
-rollback() {
-  local environment_file=$1
-  local previous_target current_target
+rollback {
+ local environment_file=$1
+ local previous_target current_target
 
-  require_root
-  check_tools
-  check_environment_file_permissions "$environment_file"
-  check_units
+ require_root
+ check_tools
+ check_environment_file_permissions "$environment_file"
+ check_units
 
-  mkdir -p "$(dirname "$KOA_LOCK_FILE")"
-  exec 9>"$KOA_LOCK_FILE"
-  flock -x 9
+ mkdir -p "$(dirname "$KOA_LOCK_FILE")"
+ exec 9>"$KOA_LOCK_FILE"
+ flock -x 9
 
-  [ -L "$KOA_PREVIOUS_LINK" ] ||
-    fail "previous release link does not exist: $KOA_PREVIOUS_LINK"
+ [ -L "$KOA_PREVIOUS_LINK" ] ||
+ fail "previous release link does not exist: $KOA_PREVIOUS_LINK"
 
-  previous_target=$(readlink -f "$KOA_PREVIOUS_LINK")
-  require_directory "$previous_target"
+ previous_target=$(readlink -f "$KOA_PREVIOUS_LINK")
+ require_directory "$previous_target"
 
-  current_target=''
-  if [ -L "$KOA_ACTIVE_LINK" ]; then
-    current_target=$(readlink -f "$KOA_ACTIVE_LINK")
-  fi
+ current_target=''
+ if [ -L "$KOA_ACTIVE_LINK" ]; then
+ current_target=$(readlink -f "$KOA_ACTIVE_LINK")
+ fi
 
-  atomic_link "$previous_target" "$KOA_ACTIVE_LINK"
+ atomic_link "$previous_target" "$KOA_ACTIVE_LINK"
 
-  if ! restart_appliance_units; then
-    if [ -n "$current_target" ] && [ -d "$current_target" ]; then
-      atomic_link "$current_target" "$KOA_ACTIVE_LINK"
-      systemctl daemon-reload
-      restart_appliance_units || true
-    fi
+ if ! restart_appliance_units; then
+ if [ -n "$current_target" ] && [ -d "$current_target" ]; then
+ atomic_link "$current_target" "$KOA_ACTIVE_LINK"
+ systemctl daemon-reload
+ restart_appliance_units || true
+ fi
 
-    fail "rollback service restart failed"
-  fi
+ fail "rollback service restart failed"
+ fi
 
-  check_active_units
-  ready_check
+ check_active_units
+ ready_check
 
-  printf 'rollback: pass\n'
-  printf 'active_release=%s\n' "$(readlink -f "$KOA_ACTIVE_LINK")"
+ printf 'rollback: pass\n'
+ printf 'active_release=%s\n' "$(readlink -f "$KOA_ACTIVE_LINK")"
 }
 
-main() {
-  [ "$#" -eq 2 ] || usage
+main {
+ [ "$#" -eq 2 ] || usage
 
-  local command_name=$1
-  local environment_file=$2
+ local command_name=$1
+ local environment_file=$2
 
-  load_environment "$environment_file"
+ load_environment "$environment_file"
 
-  case "$command_name" in
-    preflight)
-      preflight "$environment_file"
-      ;;
-    activate)
-      activate "$environment_file"
-      ;;
-    status)
-      status
-      ;;
-    rollback)
-      rollback "$environment_file"
-      ;;
-    *)
-      usage
-      ;;
-  esac
+ case "$command_name" in
+ preflight)
+ preflight "$environment_file"
+ ;;
+ activate)
+ activate "$environment_file"
+ ;;
+ status)
+ status
+ ;;
+ rollback)
+ rollback "$environment_file"
+ ;;
+ *)
+ usage
+ ;;
+ esac
 }
 
 main "$@"
 BASH
 
 sudo chown root:root \
-  /var/lib/koa/recipe-tools/appliance-shell/appliance-shellctl
+ /var/lib/koa/recipe-tools/appliance-shell/appliance-shellctl
 
 sudo chmod 0750 \
-  /var/lib/koa/recipe-tools/appliance-shell/appliance-shellctl
+ /var/lib/koa/recipe-tools/appliance-shell/appliance-shellctl
 
 sudo bash -n \
-  /var/lib/koa/recipe-tools/appliance-shell/appliance-shellctl
-```
+ /var/lib/koa/recipe-tools/appliance-shell/appliance-shellctl
+`
 
 The helper is a reference implementation.
 
@@ -1067,25 +1066,25 @@ Review it against the active profile, unit names, release layout, and privilege 
 
 Install the active, reviewed environment file:
 
-```bash
+`bash
 sudo install \
-  --owner root \
-  --group root \
-  --mode 0640 \
-  ./appliance-shell.env \
-  /etc/koa/appliance-shell.env
-```
+ --owner root \
+ --group root \
+ --mode 0640 \
+ ./appliance-shell.env \
+ /etc/koa/appliance-shell.env
+`
 
 Verify that it contains no secret values:
 
-```bash
+`bash
 sudo grep -nEi \
-  '(password|private[_-]?key|secret[[:space:]]*=|token[[:space:]]*=)' \
-  /etc/koa/appliance-shell.env && {
-    printf '%s\n' 'possible secret material detected' >&2
-    exit 1
-  } || true
-```
+ '(password|private[_-]?key|secret[[:space:]]*=|token[[:space:]]*=)' \
+ /etc/koa/appliance-shell.env && {
+ printf '%s\n' 'possible secret material detected' >&2
+ exit 1
+ } || true
+`
 
 Review every match manually.
 
@@ -1112,18 +1111,18 @@ It does not replace canonical schema, signature, trust, or compatibility validat
 
 ### 6.5 Run helper preflight
 
-```bash
+`bash
 sudo \
-  /var/lib/koa/recipe-tools/appliance-shell/appliance-shellctl \
-  preflight \
-  /etc/koa/appliance-shell.env
-```
+ /var/lib/koa/recipe-tools/appliance-shell/appliance-shellctl \
+ preflight \
+ /etc/koa/appliance-shell.env
+`
 
 Expected terminal result:
 
-```text
+`text
 preflight: pass
-```
+`
 
 The preflight confirms:
 
@@ -1141,29 +1140,29 @@ It does not prove semantic compatibility.
 
 Inspect the active unit definitions:
 
-```bash
+`bash
 for unit_name in \
-  koa-local-workspaces.service \
-  koa-wayland-compositor.service \
-  koa-appliance-shell.service \
-  koa-embedded-web-engine.service; do
-  sudo systemctl show "$unit_name" \
-    --property=User \
-    --property=Group \
-    --property=NoNewPrivileges \
-    --property=ProtectSystem \
-    --property=ProtectHome \
-    --property=PrivateTmp \
-    --property=PrivateDevices \
-    --property=DevicePolicy \
-    --property=CapabilityBoundingSet \
-    --property=RestrictAddressFamilies \
-    --property=IPAddressDeny \
-    --property=IPAddressAllow \
-    --property=ReadOnlyPaths \
-    --property=ReadWritePaths
+ koa-local-workspaces.service \
+ koa-wayland-compositor.service \
+ koa-appliance-shell.service \
+ koa-embedded-web-engine.service; do
+ sudo systemctl show "$unit_name" \
+ --property=User \
+ --property=Group \
+ --property=NoNewPrivileges \
+ --property=ProtectSystem \
+ --property=ProtectHome \
+ --property=PrivateTmp \
+ --property=PrivateDevices \
+ --property=DevicePolicy \
+ --property=CapabilityBoundingSet \
+ --property=RestrictAddressFamilies \
+ --property=IPAddressDeny \
+ --property=IPAddressAllow \
+ --property=ReadOnlyPaths \
+ --property=ReadWritePaths
 done
-```
+`
 
 Compare the result with the active profile and security contract.
 
@@ -1173,17 +1172,17 @@ A property being absent or weak is not automatically acceptable because the unit
 
 Before activation, inspect configured listeners:
 
-```bash
+`bash
 sudo ss --listening --tcp --numeric --process
-```
+`
 
 Verify that the local workspace origin is not exposed beyond the profile-selected interface.
 
 For the reference environment, expected local exposure is:
 
-```text
+`text
 127.0.0.1:8443
-```
+`
 
 Do not accept `0.0.0.0:8443` or `[::]:8443` unless an active network and security contract explicitly permits that exposure.
 
@@ -1191,9 +1190,9 @@ Do not accept `0.0.0.0:8443` or `[::]:8443` unless an active network and securit
 
 Verify the recovery unit exists:
 
-```bash
+`bash
 sudo systemctl cat koa-appliance-recovery.target
-```
+`
 
 Enter and leave the recovery path according to the active runbook before the first appliance activation.
 
@@ -1211,12 +1210,12 @@ Do not use this recipe to invent the recovery command sequence. The profile-owne
 
 Run activation from an authorized local console:
 
-```bash
+`bash
 sudo \
-  /var/lib/koa/recipe-tools/appliance-shell/appliance-shellctl \
-  activate \
-  /etc/koa/appliance-shell.env
-```
+ /var/lib/koa/recipe-tools/appliance-shell/appliance-shellctl \
+ activate \
+ /etc/koa/appliance-shell.env
+`
 
 The helper:
 
@@ -1234,42 +1233,42 @@ The helper does not mark the overall deployment conformant.
 
 ### 6.10 Inspect status
 
-```bash
+`bash
 sudo \
-  /var/lib/koa/recipe-tools/appliance-shell/appliance-shellctl \
-  status \
-  /etc/koa/appliance-shell.env
-```
+ /var/lib/koa/recipe-tools/appliance-shell/appliance-shellctl \
+ status \
+ /etc/koa/appliance-shell.env
+`
 
 Also inspect bounded service state:
 
-```bash
+`bash
 for unit_name in \
-  koa-local-workspaces.service \
-  koa-wayland-compositor.service \
-  koa-appliance-shell.service \
-  koa-embedded-web-engine.service \
-  koa-appliance-recovery.target; do
-  sudo systemctl show "$unit_name" \
-    --property=ActiveState \
-    --property=SubState \
-    --property=Result \
-    --property=NRestarts \
-    --property=ExecMainStatus
+ koa-local-workspaces.service \
+ koa-wayland-compositor.service \
+ koa-appliance-shell.service \
+ koa-embedded-web-engine.service \
+ koa-appliance-recovery.target; do
+ sudo systemctl show "$unit_name" \
+ --property=ActiveState \
+ --property=SubState \
+ --property=Result \
+ --property=NRestarts \
+ --property=ExecMainStatus
 done
-```
+`
 
 Review recent logs without copying unrestricted page content:
 
-```bash
+`bash
 sudo journalctl \
-  --since '-15 minutes' \
-  --unit koa-local-workspaces.service \
-  --unit koa-wayland-compositor.service \
-  --unit koa-appliance-shell.service \
-  --unit koa-embedded-web-engine.service \
-  --priority notice
-```
+ --since '-15 minutes' \
+ --unit koa-local-workspaces.service \
+ --unit koa-wayland-compositor.service \
+ --unit koa-appliance-shell.service \
+ --unit koa-embedded-web-engine.service \
+ --priority notice
+`
 
 ### 6.11 Validate local workspaces
 
@@ -1314,9 +1313,9 @@ A manual visual check alone is insufficient for a release-blocking claim.
 
 From the authorized local console:
 
-```bash
+`bash
 sudo systemctl stop koa-embedded-web-engine.service
-```
+`
 
 Verify:
 
@@ -1332,9 +1331,9 @@ Verify:
 
 Restore the engine:
 
-```bash
+`bash
 sudo systemctl start koa-embedded-web-engine.service
-```
+`
 
 Then repeat readiness and workspace validation.
 
@@ -1381,28 +1380,28 @@ Restore network state only through the profile-approved procedure.
 
 Apply representative workspace load and inspect:
 
-```bash
+`bash
 systemd-cgtop
-```
+`
 
 Inspect unit resource accounting:
 
-```bash
+`bash
 for unit_name in \
-  koa-local-workspaces.service \
-  koa-wayland-compositor.service \
-  koa-appliance-shell.service \
-  koa-embedded-web-engine.service; do
-  sudo systemctl show "$unit_name" \
-    --property=CPUAccounting \
-    --property=MemoryAccounting \
-    --property=TasksAccounting \
-    --property=MemoryCurrent \
-    --property=MemoryPeak \
-    --property=TasksCurrent \
-    --property=CPUUsageNSec
+ koa-local-workspaces.service \
+ koa-wayland-compositor.service \
+ koa-appliance-shell.service \
+ koa-embedded-web-engine.service; do
+ sudo systemctl show "$unit_name" \
+ --property=CPUAccounting \
+ --property=MemoryAccounting \
+ --property=TasksAccounting \
+ --property=MemoryCurrent \
+ --property=MemoryPeak \
+ --property=TasksCurrent \
+ --property=CPUUsageNSec
 done
-```
+`
 
 Verify that a renderer or workspace reaching its resource limit does not remove:
 
@@ -1469,21 +1468,21 @@ The active test catalog owns exact definitions.
 
 Expected coverage includes:
 
-```text
-TEST-ADR-004-001
-TEST-ADR-004-003
-TEST-ADR-004-004
-TEST-ADR-004-005
-TEST-ADR-004-006
-TEST-ADR-004-007
-TEST-ADR-004-008
-TEST-ADR-004-009
-TEST-ADR-004-010
-TEST-ADR-004-011
-TEST-ADR-004-012
-TEST-ADR-004-013
-TEST-ADR-004-014
-```
+`text
+TEST-ADR-003-001
+TEST-ADR-003-003
+TEST-ADR-003-004
+TEST-ADR-003-005
+TEST-ADR-003-006
+TEST-ADR-003-007
+TEST-ADR-003-008
+TEST-ADR-003-009
+TEST-ADR-003-010
+TEST-ADR-003-011
+TEST-ADR-003-012
+TEST-ADR-003-013
+TEST-ADR-003-014
+`
 
 The profile can require additional:
 
@@ -1502,7 +1501,7 @@ Ownership validation confirms:
 - shell and engine identities have no component database credentials;
 - local-origin services call registered component interfaces;
 - Publication Gateway remains separate;
-- UCKK Dimension Gateway remains separate;
+- UCKK Import Bridge and UCKK Publication Bridge remain separate;
 - Governance Policy Runtime remains non-mutating for application data;
 - Resource Governor remains authority-neutral for application state;
 - Audit Broker remains evidence infrastructure;
@@ -1512,14 +1511,14 @@ Ownership validation confirms:
 
 Record actual results as:
 
-```text
+`text
 pass
 fail
 blocked
 unavailable
 incomplete
 not applicable
-```
+`
 
 Do not report `pass` when:
 
@@ -1570,10 +1569,10 @@ Do not delete a retained artifact merely because the recipe did not activate it.
 
 After the site adopts a reviewed operational tool or runbook, remove the disposable helper:
 
-```bash
+`bash
 sudo rm -f \
-  /var/lib/koa/recipe-tools/appliance-shell/appliance-shellctl
-```
+ /var/lib/koa/recipe-tools/appliance-shell/appliance-shellctl
+`
 
 Keep the helper when it is the reviewed active local tool.
 
@@ -1608,12 +1607,12 @@ After activation or rollback:
 
 Verify:
 
-```bash
+`bash
 sudo \
-  /var/lib/koa/recipe-tools/appliance-shell/appliance-shellctl \
-  status \
-  /etc/koa/appliance-shell.env
-```
+ /var/lib/koa/recipe-tools/appliance-shell/appliance-shellctl \
+ status \
+ /etc/koa/appliance-shell.env
+`
 
 Also verify:
 
@@ -1648,12 +1647,12 @@ Rollback is appropriate when:
 
 From an authorized local console:
 
-```bash
+`bash
 sudo \
-  /var/lib/koa/recipe-tools/appliance-shell/appliance-shellctl \
-  rollback \
-  /etc/koa/appliance-shell.env
-```
+ /var/lib/koa/recipe-tools/appliance-shell/appliance-shellctl \
+ rollback \
+ /etc/koa/appliance-shell.env
+`
 
 The helper:
 
@@ -1755,9 +1754,9 @@ Before activation, safe exit consists of:
 
 Inspect active connections:
 
-```bash
+`bash
 sudo ss --tcp --udp --process --numeric
-```
+`
 
 When an appliance process opens an undeclared external connection:
 
@@ -1773,15 +1772,15 @@ When an appliance process opens an undeclared external connection:
 
 Inspect:
 
-```bash
+`bash
 sudo systemctl show \
-  koa-wayland-compositor.service \
-  koa-appliance-shell.service \
-  koa-embedded-web-engine.service \
-  --property=NRestarts \
-  --property=Result \
-  --property=ExecMainStatus
-```
+ koa-wayland-compositor.service \
+ koa-appliance-shell.service \
+ koa-embedded-web-engine.service \
+ --property=NRestarts \
+ --property=Result \
+ --property=ExecMainStatus
+`
 
 A crash loop is not readiness.
 
@@ -1829,7 +1828,7 @@ Do not treat the node as clean until the residual state is reconciled.
 
 ### 11.1 Canonical references
 
-```text
+`text
 generated/profile-catalog.json
 contracts/profiles/sovereign-linux-node.profile.json
 contracts/profiles/appliance-shell.profile.json
@@ -1841,11 +1840,11 @@ generated/component-catalog.json
 contracts/integration-types.contract.json
 generated/test-catalog.json
 generated/evidence-catalog.json
-```
+`
 
 ### 11.2 Decisions and locks
 
-```text
+`text
 DEC-SHELL-001
 DEC-PROFILE-001
 DEC-ARI-001
@@ -1871,11 +1870,11 @@ LOCK-LIFE-001
 LOCK-LIFE-002
 LOCK-LIFE-003
 LOCK-LIFE-004
-```
+`
 
 ### 11.3 Related documents
 
-```text
+`text
 11-recipes/README.md
 03-profiles/07-sovereign-linux-node.md
 02-system/02-logical-architecture.md
@@ -1887,9 +1886,8 @@ LOCK-LIFE-004
 08-operations/00-operating-model.md
 08-operations/09-restore.md
 09-conformance/10-canonical-ownership-validation.md
-10-adrs/ADR-004-minimal-wayland-and-embedded-web-engine.md
-10-adrs/ADR-014-strict-external-ai-boundary.md
-```
+10-adrs/ADR-003-appliance-shell-without-gnome.md
+`
 
 ### 11.4 Recipe validation status
 

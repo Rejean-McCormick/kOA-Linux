@@ -2,33 +2,6 @@
   "generated": true,
   "requirements": [
     {
-      "id": "REQ-ADR-001"
-    },
-    {
-      "id": "REQ-ADR-002"
-    },
-    {
-      "id": "REQ-ADR-003"
-    },
-    {
-      "id": "REQ-ADR-004"
-    },
-    {
-      "id": "REQ-ADR-005"
-    },
-    {
-      "id": "REQ-ADR-006"
-    },
-    {
-      "id": "REQ-ADR-007"
-    },
-    {
-      "id": "REQ-ADR-008"
-    },
-    {
-      "id": "REQ-ADR-009"
-    },
-    {
       "id": "REQ-ADR-009-001"
     },
     {
@@ -123,171 +96,6 @@
     },
     {
       "id": "REQ-ADR-009-032"
-    },
-    {
-      "id": "REQ-ADR-010"
-    },
-    {
-      "id": "REQ-ADR-011"
-    },
-    {
-      "id": "REQ-ADR-012"
-    },
-    {
-      "id": "REQ-ADR-013"
-    },
-    {
-      "id": "REQ-ADR-014"
-    },
-    {
-      "id": "REQ-ADR-015"
-    },
-    {
-      "id": "REQ-ADR-016"
-    },
-    {
-      "id": "REQ-ADR-017"
-    },
-    {
-      "id": "REQ-ADR-018"
-    },
-    {
-      "id": "REQ-ADR-019"
-    },
-    {
-      "id": "REQ-ADR-020"
-    },
-    {
-      "id": "REQ-ADR-021"
-    },
-    {
-      "id": "REQ-ADR-022"
-    },
-    {
-      "id": "REQ-ADR-022-001"
-    },
-    {
-      "id": "REQ-ADR-022-002"
-    },
-    {
-      "id": "REQ-ADR-022-003"
-    },
-    {
-      "id": "REQ-ADR-022-004"
-    },
-    {
-      "id": "REQ-ADR-022-005"
-    },
-    {
-      "id": "REQ-ADR-022-006"
-    },
-    {
-      "id": "REQ-ADR-022-007"
-    },
-    {
-      "id": "REQ-ADR-022-008"
-    },
-    {
-      "id": "REQ-ADR-022-009"
-    },
-    {
-      "id": "REQ-ADR-022-010"
-    },
-    {
-      "id": "REQ-ADR-022-011"
-    },
-    {
-      "id": "REQ-ADR-022-012"
-    },
-    {
-      "id": "REQ-ADR-022-013"
-    },
-    {
-      "id": "REQ-ADR-022-014"
-    },
-    {
-      "id": "REQ-ADR-022-015"
-    },
-    {
-      "id": "REQ-ADR-022-016"
-    },
-    {
-      "id": "REQ-ADR-022-017"
-    },
-    {
-      "id": "REQ-ADR-022-018"
-    },
-    {
-      "id": "REQ-ADR-022-019"
-    },
-    {
-      "id": "REQ-ADR-022-020"
-    },
-    {
-      "id": "REQ-ADR-022-021"
-    },
-    {
-      "id": "REQ-ADR-022-022"
-    },
-    {
-      "id": "REQ-ADR-022-023"
-    },
-    {
-      "id": "REQ-ADR-022-024"
-    },
-    {
-      "id": "REQ-ADR-022-025"
-    },
-    {
-      "id": "REQ-ADR-022-026"
-    },
-    {
-      "id": "REQ-ADR-022-027"
-    },
-    {
-      "id": "REQ-ADR-022-028"
-    },
-    {
-      "id": "REQ-ADR-022-029"
-    },
-    {
-      "id": "REQ-ADR-022-030"
-    },
-    {
-      "id": "REQ-ADR-022-031"
-    },
-    {
-      "id": "REQ-ADR-022-032"
-    },
-    {
-      "id": "REQ-ADR-023"
-    },
-    {
-      "id": "REQ-ADR-024"
-    },
-    {
-      "id": "REQ-ADR-025"
-    },
-    {
-      "id": "REQ-ADR-026"
-    },
-    {
-      "id": "REQ-ADR-027"
-    },
-    {
-      "id": "REQ-ADR-028"
-    },
-    {
-      "id": "REQ-ADR-029"
-    },
-    {
-      "id": "REQ-ADR-030"
-    },
-    {
-      "id": "REQ-ADR-031"
-    },
-    {
-      "id": "REQ-ADR-032"
     },
     {
       "id": "REQ-AI-001"
@@ -1346,6 +1154,18 @@
       "id": "REQ-COMP-DATA-024"
     },
     {
+      "id": "REQ-COMP-DATA-025"
+    },
+    {
+      "id": "REQ-COMP-DATA-026"
+    },
+    {
+      "id": "REQ-COMP-DATA-027"
+    },
+    {
+      "id": "REQ-COMP-DATA-028"
+    },
+    {
       "id": "REQ-COMP-IDT-001"
     },
     {
@@ -1860,114 +1680,6 @@
     },
     {
       "id": "REQ-COMP-RG-024"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-001"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-002"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-003"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-004"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-005"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-006"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-007"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-008"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-009"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-010"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-011"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-012"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-013"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-014"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-015"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-016"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-017"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-018"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-019"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-020"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-021"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-022"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-023"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-024"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-025"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-026"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-027"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-028"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-029"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-030"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-031"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-032"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-033"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-034"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-035"
-    },
-    {
-      "id": "REQ-COMP-UCKK-DG-036"
     },
     {
       "id": "REQ-CON-SAFE-001"
@@ -3188,6 +2900,15 @@
       "id": "REQ-CONF-LOCK-040"
     },
     {
+      "id": "REQ-CONF-LOCK-041"
+    },
+    {
+      "id": "REQ-CONF-LOCK-042"
+    },
+    {
+      "id": "REQ-CONF-LOCK-043"
+    },
+    {
       "id": "REQ-CONF-OWN-001"
     },
     {
@@ -3422,6 +3143,15 @@
       "id": "REQ-CONF-PROF-030"
     },
     {
+      "id": "REQ-CONF-PROF-031"
+    },
+    {
+      "id": "REQ-CONF-PROF-032"
+    },
+    {
+      "id": "REQ-CONF-PROF-033"
+    },
+    {
       "id": "REQ-CONF-REL-001"
     },
     {
@@ -3510,6 +3240,15 @@
     },
     {
       "id": "REQ-CONF-REL-030"
+    },
+    {
+      "id": "REQ-CONF-REL-031"
+    },
+    {
+      "id": "REQ-CONF-REL-032"
+    },
+    {
+      "id": "REQ-CONF-REL-033"
     },
     {
       "id": "REQ-CONF-SLN-001"
@@ -4260,6 +3999,18 @@
     },
     {
       "id": "REQ-CONST-DATA-024"
+    },
+    {
+      "id": "REQ-CONST-DATA-025"
+    },
+    {
+      "id": "REQ-CONST-DATA-026"
+    },
+    {
+      "id": "REQ-CONST-DATA-027"
+    },
+    {
+      "id": "REQ-CONST-DATA-028"
     },
     {
       "id": "REQ-CONST-FCA-001"
@@ -8624,6 +8375,36 @@
       "id": "REQ-LOCK-018"
     },
     {
+      "id": "REQ-MEDIATHEQUE-001"
+    },
+    {
+      "id": "REQ-MEDIATHEQUE-002"
+    },
+    {
+      "id": "REQ-MEDIATHEQUE-003"
+    },
+    {
+      "id": "REQ-MEDIATHEQUE-004"
+    },
+    {
+      "id": "REQ-MEDIATHEQUE-005"
+    },
+    {
+      "id": "REQ-MEDIATHEQUE-006"
+    },
+    {
+      "id": "REQ-MEDIATHEQUE-007"
+    },
+    {
+      "id": "REQ-MEDIATHEQUE-008"
+    },
+    {
+      "id": "REQ-MEDIATHEQUE-009"
+    },
+    {
+      "id": "REQ-MEDIATHEQUE-010"
+    },
+    {
       "id": "REQ-OFFLINE-001"
     },
     {
@@ -10934,15 +10715,6 @@
       "id": "REQ-OPS-ULW-024"
     },
     {
-      "id": "REQ-ORGO-025"
-    },
-    {
-      "id": "REQ-ORGO-027"
-    },
-    {
-      "id": "REQ-ORGO-028"
-    },
-    {
       "id": "REQ-PRO-BUILD-001"
     },
     {
@@ -11247,6 +11019,18 @@
     },
     {
       "id": "REQ-PROF-HA-040"
+    },
+    {
+      "id": "REQ-PROF-HA-041"
+    },
+    {
+      "id": "REQ-PROF-HA-042"
+    },
+    {
+      "id": "REQ-PROF-HA-043"
+    },
+    {
+      "id": "REQ-PROF-HA-044"
     },
     {
       "id": "REQ-PROF-MODEL-001"
@@ -15692,6 +15476,15 @@
       "id": "REQ-SYS-GOV-032"
     },
     {
+      "id": "REQ-SYS-GOV-033"
+    },
+    {
+      "id": "REQ-SYS-GOV-034"
+    },
+    {
+      "id": "REQ-SYS-GOV-035"
+    },
+    {
       "id": "REQ-SYS-HW-001"
     },
     {
@@ -15848,6 +15641,15 @@
       "id": "REQ-SYS-INT-032"
     },
     {
+      "id": "REQ-SYS-INT-033"
+    },
+    {
+      "id": "REQ-SYS-INT-034"
+    },
+    {
+      "id": "REQ-SYS-INT-035"
+    },
+    {
       "id": "REQ-SYS-LANG-001"
     },
     {
@@ -15966,6 +15768,15 @@
     },
     {
       "id": "REQ-SYS-MODE-020"
+    },
+    {
+      "id": "REQ-SYS-MODE-021"
+    },
+    {
+      "id": "REQ-SYS-MODE-022"
+    },
+    {
+      "id": "REQ-SYS-MODE-023"
     },
     {
       "id": "REQ-SYS-OVR-001"
@@ -16175,67 +15986,76 @@
       "id": "REQ-UCKK-001"
     },
     {
-      "id": "REQ-UCKK-002"
+      "id": "REQ-UCKK-IMPORT-001"
     },
     {
-      "id": "REQ-UCKK-003"
+      "id": "REQ-UCKK-IMPORT-002"
     },
     {
-      "id": "REQ-UCKK-004"
+      "id": "REQ-UCKK-IMPORT-003"
     },
     {
-      "id": "REQ-UCKK-005"
+      "id": "REQ-UCKK-IMPORT-004"
     },
     {
-      "id": "REQ-UCKK-006"
+      "id": "REQ-UCKK-IMPORT-005"
     },
     {
-      "id": "REQ-UCKK-007"
+      "id": "REQ-UCKK-IMPORT-006"
     },
     {
-      "id": "REQ-UCKK-008"
+      "id": "REQ-UCKK-IMPORT-007"
     },
     {
-      "id": "REQ-UCKK-009"
+      "id": "REQ-UCKK-IMPORT-008"
     },
     {
-      "id": "REQ-UCKK-010"
+      "id": "REQ-UCKK-IMPORT-009"
     },
     {
-      "id": "REQ-UCKK-011"
+      "id": "REQ-UCKK-IMPORT-010"
     },
     {
-      "id": "REQ-UCKK-012"
+      "id": "REQ-UCKK-IMPORT-011"
     },
     {
-      "id": "REQ-UCKK-013"
+      "id": "REQ-UCKK-IMPORT-012"
     },
     {
-      "id": "REQ-UCKK-014"
+      "id": "REQ-UCKK-PUB-001"
     },
     {
-      "id": "REQ-UCKK-015"
+      "id": "REQ-UCKK-PUB-002"
     },
     {
-      "id": "REQ-UCKK-016"
+      "id": "REQ-UCKK-PUB-003"
     },
     {
-      "id": "REQ-UCKK-017"
+      "id": "REQ-UCKK-PUB-004"
     },
     {
-      "id": "REQ-UCKK-018"
+      "id": "REQ-UCKK-PUB-005"
     },
     {
-      "id": "REQ-UCKK-019"
+      "id": "REQ-UCKK-PUB-006"
     },
     {
-      "id": "REQ-UCKK-020"
+      "id": "REQ-UCKK-PUB-007"
     },
     {
-      "id": "REQ-UCKK-021"
+      "id": "REQ-UCKK-PUB-008"
     },
     {
-      "id": "REQ-UCKK-022"
+      "id": "REQ-UCKK-PUB-009"
+    },
+    {
+      "id": "REQ-UCKK-PUB-010"
+    },
+    {
+      "id": "REQ-UCKK-PUB-011"
+    },
+    {
+      "id": "REQ-UCKK-PUB-012"
     },
     {
       "id": "REQ-USER-001"
@@ -16648,6 +16468,12 @@
       "id": "LOCK-LIFE-004"
     },
     {
+      "id": "LOCK-MEDIATHEQUE-001"
+    },
+    {
+      "id": "LOCK-MEDIATHEQUE-002"
+    },
+    {
       "id": "LOCK-OFFLINE-001"
     },
     {
@@ -16759,10 +16585,10 @@
       "id": "LOCK-SYS-RES-004"
     },
     {
-      "id": "LOCK-UCKK-001"
+      "id": "LOCK-UCKK-EXT-001"
     },
     {
-      "id": "LOCK-UCKK-002"
+      "id": "LOCK-UCKK-EXT-002"
     },
     {
       "id": "LOCK-USER-001"
@@ -16881,13 +16707,7 @@
       "id": "DEC-DOC-005"
     },
     {
-      "id": "DEC-DOC-ARCH-001"
-    },
-    {
       "id": "DEC-DOC-CHANGE-001"
-    },
-    {
-      "id": "DEC-DOC-EDITORIAL-001"
     },
     {
       "id": "DEC-DOC-EXC-001"
@@ -16944,13 +16764,7 @@
       "id": "DEC-LINUX-001"
     },
     {
-      "id": "DEC-MIG-001"
-    },
-    {
-      "id": "DEC-MIG-002"
-    },
-    {
-      "id": "DEC-MIG-003"
+      "id": "DEC-MEDIATHEQUE-001"
     },
     {
       "id": "DEC-OFFLINE-001"
@@ -17091,7 +16905,7 @@
       "id": "DEC-SYS-SENT-001"
     },
     {
-      "id": "DEC-UCKK-001"
+      "id": "DEC-UCKK-EXT-001"
     },
     {
       "id": "DEC-USER-001"

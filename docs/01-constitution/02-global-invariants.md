@@ -21,7 +21,9 @@
     "generated/requirements-index.json",
     "generated/assertion-index.json",
     "generated/traceability.json",
-    "generated/exception-index.json"
+    "generated/exception-index.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json"
   ],
   "decision_ids": [
     "DEC-AI-001",
@@ -88,7 +90,7 @@
     "LOCK-SENT-001",
     "LOCK-MEDIATHEQUE-001",
     "LOCK-UCKK-EXT-001",
-    "LOCK-UCKK-EXT-001"
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -156,7 +158,7 @@ Those choices remain owned by the applicable profile, overlay, component, securi
 
 The canonical sources used by this document are:
 
-```text
+`text
 generated/authority-manifest.json
 generated/decision-index.json
 contracts/terminology.contract.json
@@ -170,7 +172,7 @@ generated/requirements-index.json
 generated/assertion-index.json
 generated/traceability.json
 generated/exception-index.json
-```
+`
 
 Ownership is divided as follows:
 
@@ -266,7 +268,7 @@ renderer=requirements-list-v1
 - **REQ-CONST-024 — SHALL:** Resource Governor enforce deterministic resource envelopes, priorities, concurrency, and degradation without becoming an authorization or disclosure-policy authority.
 - **REQ-CONST-025 — SHALL:** Governance Policy Runtime remain distinct from Resource Governor and decide governed authorization, disclosure, and privilege only within its declared deployment scope.
 - **REQ-CONST-026 — SHALL:** Publication Gateway exclusively mediate governed publication across authority or security boundaries.
-- **REQ-CONST-027 — SHALL:** The UCKK Publication Bridge package and transport only explicitly authorized publication packages to an external UCKK Moodle destination; Publication Gateway remains the disclosure authority.
+- **REQ-CONST-027 — SHALL:** The UCKK Publication Bridge package and transport only explicitly authorized outbound packages, while the separate UCKK Import Bridge retrieves inbound learning packages into quarantine for deterministic validation and explicit local acceptance; neither direction shall merge authorities or imply background synchronization.
 - **REQ-CONST-028 — SHALL:** Activation of a published artifact avoid partial authoritative state and define class-appropriate rollback, rejection, recreation, revocation, or forward-repair behavior.
 - **REQ-CONST-029 — SHALL:** Policy changes, privileged mutations, artifact activations, publications, release activations, and other declared critical transitions emit machine-readable receipts.
 - **REQ-CONST-030 — SHALL:** Every external integration declare its capability scope, data boundary, authentication mode, failure behavior, and removal behavior.
@@ -295,13 +297,13 @@ An unresolved step produces a blocked capability outcome.
 
 A capability may transition through:
 
-```text
+`text
 normal
 degraded
 read_only | advisory | queued | locally_limited
 restoring
 normal
-```
+`
 
 A capability instead transitions to `blocked` when no declared degraded mode preserves authority and safety.
 
@@ -322,37 +324,49 @@ A cross-component exchange follows this sequence:
 
 Cross-domain publication follows:
 
-```text
+`text
 publication request
 → policy evaluation
 → disclosure decision
 → Publication Gateway execution
 → publication receipt
-```
+`
 
 Publication to the external UCKK platform follows this controlled path:
 
-```text
+`text
 user media selection
+→ Publication Gateway disclosure authorization
 → UCKK Publication Bridge packaging and transport
 → external UCKK receipt and separately owned destination copy
 → provenance record
-```
+`
 
-The two paths do not substitute for one another.
+Import from UCKK follows a separate controlled path:
+
+`text
+selected UCKK learning package or offline transfer bundle
+→ UCKK Import Bridge retrieval and quarantine
+→ source, licence, integrity, compatibility, and provenance validation
+→ explicit kOA Mediatheque acceptance
+→ distinct local record and offline availability
+→ import receipt
+`
+
+The directions do not substitute for one another and do not form an automatic synchronization loop.
 
 ### 6.5 Artifact activation
 
 Artifact activation follows:
 
-```text
+`text
 assembled
 → validated
 → approved
 → published
 → staged
 → active
-```
+`
 
 A failed validation, compatibility check, signature check where required, or recovery-precondition check stops activation before authority changes.
 
@@ -382,6 +396,7 @@ Removal of an optional integration follows:
 | Resource Governor unavailable | Block resource-intensive or unconstrained work | Low-risk local reading and inspection |
 | Publication Gateway unavailable | Queue or reject publication requests | Source-domain data and local use |
 | UCKK Publication Bridge unavailable | Queue or reject new UCKK publication | Existing kOA Mediatheque content remains available |
+| UCKK Import Bridge unavailable | Defer retrieval or retain an already transferred package in quarantine | Previously accepted local learning content remains available offline |
 | Receipt persistence failure | Do not commit a transition that requires a receipt | Previous authoritative state |
 | Artifact rollback target unavailable | Block activation before authority changes | Current active artifact |
 | Restore verification failure | Keep restored state inactive | Last verified active state |
@@ -411,13 +426,13 @@ Ariane Runtime owns deterministic local navigation behavior.
 
 The approved Ariane voice adapter is an optional external interaction path. Its absence removes voice capability without changing Ariane's local navigation state or authority.
 
-### 8.4 kOA Mediatheque and UCKK publication
+### 8.4 kOA and UCKK Mediatheque interchange
 
 After Publication Gateway authorization, the UCKK Publication Bridge packages and transports selected kOA Mediatheque records to an authorized external UCKK Moodle destination.
 
-Publication Gateway controls release across authority or security boundaries.
+The separate UCKK Import Bridge retrieves selected learning packages from UCKK or an approved offline bundle, holds them in quarantine, validates source, licence, rights, integrity, compatibility, and provenance, and submits them for explicit kOA Mediatheque acceptance.
 
-Ingestion is not publication, and publication is not ingestion.
+Publication Gateway controls outward release across authority or security boundaries. The kOA Mediatheque controls local acceptance. Ingestion is not publication, publication is not import, and neither direction is background synchronization.
 
 ### 8.5 Kristal
 
@@ -442,7 +457,7 @@ This document closes the following assumptions:
 - Ariane navigation does not depend on voice;
 - kOA Mediatheque core behavior does not depend on external AI;
 - Resource Governor and Governance Policy Runtime are separate authorities;
-- Publication Gateway authorizes disclosure, while the UCKK Publication Bridge performs target-specific packaging and transport;
+- Publication Gateway authorizes disclosure, the UCKK Publication Bridge performs outbound packaging and transport, and the separate UCKK Import Bridge performs inbound retrieval, quarantine, validation, and acceptance handoff;
 - Kristal is transversal but not a universal operational store;
 - shared infrastructure does not imply shared data ownership;
 - a recipe does not become a requirement through repetition;
@@ -486,9 +501,9 @@ This document is conformant when:
 
 The validation entry point is:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 ## 11. Non-Normative Examples
 

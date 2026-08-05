@@ -49,7 +49,8 @@
     "LOCK-LIFE-004",
     "LOCK-PROFILE-001",
     "LOCK-IMPL-001",
-    "LOCK-IMPL-002"
+    "LOCK-IMPL-002",
+    "LOCK-MEDIATHEQUE-002"
   ],
   "system": {
     "system_id": "koa_linux_operating_system",
@@ -348,6 +349,11 @@
       "capability_id": "portability_restore_and_exit",
       "availability": "global_contract",
       "description": "Open interfaces, export, backup, restore, and credible independent exit remain system objectives."
+    },
+    {
+      "capability_id": "governed_uckk_mediatheque_interchange",
+      "availability": "optional",
+      "description": "Selected local content can be published to the online UCKK Mediatheque, and selected UCKK learning packages can be imported for private offline use, through separate governed directional integrations."
     }
   ],
   "global_boundaries": {
@@ -504,7 +510,7 @@
   },
   "koa_mediatheque": {
     "decision_id": "DEC-MEDIATHEQUE-001",
-    "system_role": "internal_media_library_and_management_component",
+    "system_role": "internal_private_offline_mediatheque_authority",
     "component_ref": "generated/component-catalog.json#/components/koa_mediatheque",
     "authority": {
       "owns_local_media_records": true,
@@ -514,7 +520,8 @@
       "owns_collections_dimensions_tags_and_relationships": true,
       "owns_rights_restrictions_and_provenance": true,
       "owns_renditions_and_lifecycle_state": true,
-      "owns_import_export_backup_and_restore_state": true
+      "owns_import_export_backup_and_restore_state": true,
+      "owns_import_acceptance_state": true
     },
     "native_local_baseline": {
       "structured_state": "sqlite",
@@ -553,15 +560,27 @@
         "descriptive_text"
       ],
       "candidate_acceptance_requires_component_workflow": true
+    },
+    "shared_frame": {
+      "schema_ref": "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
+      "compatible_with": "uckk_mediatheque",
+      "shared_authority": false,
+      "shared_storage": false,
+      "shared_identity_namespace": false
+    },
+    "offline_learning": {
+      "accepted_uckk_packages_available_offline": true,
+      "private_local_corpora_supported": true,
+      "external_catalog_required": false,
+      "local_adaptations_private_by_default": true
     }
   },
   "uckk_external_platform": {
     "decision_id": "DEC-UCKK-EXT-001",
-    "classification": "external_moodle_platform",
+    "classification": "external_online_moodle_and_mediatheque_platform",
     "part_of_koa_linux": false,
     "native_subsystem": false,
     "runtime_profile_membership": "prohibited",
-    "documentation_mount": null,
     "required_for_local_operation": false,
     "required_for_offline_operation": false,
     "mediatheque": {
@@ -570,33 +589,43 @@
       "storage_is_separate_from_koa_mediatheque": true,
       "lifecycle_is_separate_from_koa_mediatheque": true,
       "identity_and_access_control_are_separate": true,
-      "compatible_frame_may_be_used": true,
+      "shared_frame_ref": "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
+      "compatible_frame_required_for_declared_interchange": true,
       "compatibility_transfers_authority": false
     },
     "publication_boundary": {
       "integration_ref": "contracts/integrations/uckk-publication.integration.json",
+      "direction": "publish_to_uckk",
       "disclosure_authorization_owner_ref": "generated/component-catalog.json#/components/publication_gateway",
       "packaging_and_transport_owner": "uckk_publication_bridge",
-      "workflow": [
-        "explicit_user_or_governed_selection",
-        "publication_eligibility_validation",
-        "rights_and_restriction_checks",
-        "moodle_destination_selection",
-        "package_and_manifest_production",
-        "authentication",
-        "transfer",
-        "publication_result_handling",
-        "receipt_preservation"
-      ],
-      "offline_behavior": "bounded_visible_idempotent_queue",
-      "direct_uckk_database_write": false,
-      "silent_bulk_synchronization": false,
-      "local_source_authority_transferred": false
+      "local_source_authority_transferred": false,
+      "offline_behavior": "bounded_visible_idempotent_queue"
     },
     "controlled_import": {
       "same_operation_as_publication": false,
       "requires_separate_explicit_contract": true,
       "background_bidirectional_synchronization": false
+    },
+    "online_by_default": true,
+    "import_boundary": {
+      "integration_ref": "contracts/integrations/uckk-import.integration.json",
+      "direction": "import_from_uckk",
+      "transport_and_quarantine_owner": "uckk_import_bridge",
+      "local_acceptance_owner": "koa_mediatheque",
+      "policy_owner": "governance_policy_runtime_when_required",
+      "package_ref": "contracts/artifact-contracts/uckk-learning-package.schema.json",
+      "receipt_ref": "contracts/artifact-contracts/uckk-import-receipt.schema.json",
+      "offline_bundle_supported": true,
+      "remote_version_becomes_update_candidate": true,
+      "automatic_local_overwrite": false
+    },
+    "interchange_invariants": {
+      "directional_operations_are_separate": true,
+      "background_bidirectional_synchronization": false,
+      "shared_database": false,
+      "direct_uckk_database_write": false,
+      "shared_authority": false,
+      "private_local_content_published_automatically": false
     }
   },
   "language_runtime": {
@@ -674,8 +703,20 @@
     "external_platforms": [
       {
         "platform_id": "uckk",
-        "classification": "external_moodle_platform",
+        "integration_id": "uckk-publication",
+        "classification": "external_moodle_publication",
         "integration_ref": "contracts/integrations/uckk-publication.integration.json",
+        "direction": "outbound",
+        "optional": true,
+        "direct_authoritative_store_write": false,
+        "removal_breaks_core": false
+      },
+      {
+        "platform_id": "uckk",
+        "integration_id": "uckk-import",
+        "classification": "external_moodle_import",
+        "integration_ref": "contracts/integrations/uckk-import.integration.json",
+        "direction": "inbound",
         "optional": true,
         "direct_authoritative_store_write": false,
         "removal_breaks_core": false

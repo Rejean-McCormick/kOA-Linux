@@ -18,7 +18,9 @@
     "generated/profile-catalog.json",
     "generated/component-catalog.json",
     "contracts/release-channels.contract.json",
-    "contracts/artifact-classes.contract.json"
+    "contracts/artifact-classes.contract.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json"
   ],
   "decision_ids": [
     "DEC-SYS-001",
@@ -67,7 +69,6 @@
     "LOCK-SENT-001",
     "LOCK-MEDIATHEQUE-001",
     "LOCK-UCKK-EXT-001",
-    "LOCK-UCKK-EXT-001",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
     "LOCK-DATA-001",
@@ -82,7 +83,8 @@
     "LOCK-PROFILE-001",
     "LOCK-PROFILE-002",
     "LOCK-IMPL-001",
-    "LOCK-IMPL-002"
+    "LOCK-IMPL-002",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -202,7 +204,7 @@ The owning component authorizes ordinary operations within its contract. A gover
 
 Resource Governor manages resource allocation and scheduling. It does not decide whether an actor may disclose information, exercise privilege, or accept an exception.
 
-Publication Gateway controls cross-domain disclosure and publication. The UCKK Publication Bridge performs UCKK-specific packaging and transport only after that authorization. It cannot substitute for or bypass Publication Gateway.
+Publication Gateway controls cross-domain disclosure and publication. The UCKK Publication Bridge performs UCKK-specific outbound packaging and transport only after that authorization. The separate UCKK Import Bridge retrieves selected learning packages into quarantine and submits them to deterministic validation and explicit local acceptance. Neither bridge can substitute for the governing authority or create implicit synchronization.
 
 The user language runtime consumes compiled artifacts. Language construction and compilation belong to the designated build workbench.
 
@@ -331,7 +333,8 @@ A failed activation preserves the previous valid authoritative state.
 | Owning component | Another component | Versioned API, command, event, gateway, exported artifact, or declared read model | Explicit and contract-defined | Consumer cannot acquire write authority over producer data | Producer owns source-state failure; consumer owns import and local-state failure |
 | Resource Governor | Components and workers | Component and profile resource envelopes | Control and observation | Resource decisions do not grant policy or data authority | Resource Governor owns scheduling and limit enforcement |
 | Governance Policy Runtime | Privileged broker, Publication Gateway, or governed component | Policy decision and receipt contracts | Authorization decision | Policy authorizes; execution remains with the receiving component or broker | Policy runtime owns decision failure; executor owns operation failure |
-| UCKK Publication Bridge | External UCKK Moodle platform | UCKK publication integration | Authorized package transport | Bridge owns packaging and transfer state; kOA Mediatheque retains local source authority; UCKK owns only its destination copy | Bridge owns transfer failure; external UCKK owns destination acceptance failure |
+| UCKK Publication Bridge | External UCKK Moodle platform | UCKK publication integration | Authorized outbound package transport | Bridge owns packaging and transfer state; kOA Mediatheque retains local source authority; UCKK owns only its destination copy | Bridge owns transfer failure; external UCKK owns destination acceptance failure |
+| UCKK Import Bridge | kOA Mediatheque | UCKK import integration and learning-package contracts | Inbound retrieval, quarantine, validation, and acceptance handoff | Bridge owns transfer and quarantine state; UCKK retains remote source authority; kOA Mediatheque decides local acceptance and owns the distinct local copy | Bridge owns retrieval and validation failure; kOA Mediatheque owns acceptance failure |
 | Publication Gateway | External audience or domain | Publication request and receipt contracts | Controlled outward disclosure | Gateway cannot rewrite source-domain authority | Gateway owns disclosure and delivery failure |
 | GF Wordbench | Language artifact repository | Language-pack and runtime-pack contracts | Build and publish | Build workbench produces artifacts; runtime does not compile them | Workbench owns build failure; repository owns admission failure |
 | SemantiK Architect Runtime | User-facing components | Compiled runtime contract | Read and evaluate | Runtime consumes approved compiled artifacts only | Runtime owns evaluation failure |
@@ -355,7 +358,7 @@ Direct cross-component writes to authoritative source tables are prohibited. Sha
 | `DEC-PROFILE-001` | Establishes seven primary profiles, three overlays, and explicit composition. |
 | `DEC-DATA-001` | Requires exclusive logical data ownership and prohibits cross-component source-table writes. |
 | `DEC-GOV-001` | Separates Resource Governor from Governance Policy Runtime. |
-| `DEC-UCKK-EXT-001` | Requires Publication Gateway authorization before UCKK-specific packaging and transport. |
+| `DEC-UCKK-EXT-001` | Establishes separate governed `publish_to_uckk` and `import_from_uckk` operations between distinct Mediatheque authorities. |
 | `DEC-SHELL-001` | Keeps desktop and appliance-shell choices profile-scoped. |
 | `DEC-CONTAINER-001` | Keeps container-runtime selection profile-scoped and avoids runtime-specific application authority. |
 | `DEC-K8S-001` | Excludes Kubernetes from endpoint requirements and limits it to approved infrastructure profiles. |
@@ -372,6 +375,8 @@ Direct cross-component writes to authoritative source tables are prohibited. Sha
 - Read-only access, caching, indexing, or transformation transfers ownership.
 - Resource allocation decisions imply authorization, disclosure, consent, or privilege decisions.
 - Publication Gateway and UCKK Publication Bridge are interchangeable.
+- UCKK Publication Bridge and UCKK Import Bridge are one bidirectional synchronization service.
+- A shared Mediatheque frame implies shared authority, storage, identity, access control, or lifecycle.
 - User runtime components may silently perform build-workbench functions.
 - Network availability is required for local authoritative operation.
 - Failure permits partial authoritative activation or silent substitution.

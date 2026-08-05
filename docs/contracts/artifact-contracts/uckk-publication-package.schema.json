@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.koa.local/artifact-contracts/uckk-publication-package.schema.json",
   "title": "UCKK Publication Package",
-  "description": "A governed, versioned, retry-safe package for publishing explicitly selected kOA Mediatheque record versions to an external UCKK Moodle destination.",
+  "description": "A governed, versioned, retry-safe package for publishing explicitly selected kOA Mediatheque record versions to an external UCKK Moodle destination. The declared shared Mediatheque frame governs compatible field mapping without merging source and destination authority.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -14,7 +14,8 @@
     "authorization",
     "items",
     "manifest",
-    "idempotency_key"
+    "idempotency_key",
+    "frame_compatibility"
   ],
   "properties": {
     "$schema": {
@@ -352,6 +353,41 @@
         },
         "cancel_on_source_version_change": {
           "const": true
+        }
+      }
+    },
+    "frame_compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "frame_id",
+        "source_frame_version",
+        "target_frame_version",
+        "mapping_version",
+        "rights_preserved",
+        "provenance_preserved"
+      ],
+      "properties": {
+        "frame_id": {
+          "const": "koa-uckk-shared-mediatheque-frame"
+        },
+        "source_frame_version": {
+          "type": "string"
+        },
+        "target_frame_version": {
+          "type": "string"
+        },
+        "mapping_version": {
+          "type": "string"
+        },
+        "rights_preserved": {
+          "const": true
+        },
+        "provenance_preserved": {
+          "const": true
+        },
+        "review_required": {
+          "type": "boolean"
         }
       }
     }

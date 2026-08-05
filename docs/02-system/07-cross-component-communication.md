@@ -28,7 +28,11 @@
     "generated/traceability.json",
     "generated/exception-index.json",
     "generated/test-catalog.json",
-    "generated/evidence-catalog.json"
+    "generated/evidence-catalog.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json",
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json"
   ],
   "decision_ids": [
     "DEC-COMP-001",
@@ -153,6 +157,7 @@ This document applies globally to every interaction in which one component commu
 - a component-owned worker or adapter;
 - Publication Gateway;
 - UCKK Publication Bridge;
+- UCKK Import Bridge;
 - Governance Policy Runtime;
 - Resource Governor;
 - Audit Broker;
@@ -203,7 +208,7 @@ Internal calls within one component are outside cross-component scope unless the
 
 The following explanatory documents provide adjacent context without becoming alternate owners:
 
-```text
+`text
 02-system/04-component-boundaries.md
 02-system/05-data-authority-and-ownership.md
 02-system/06-capability-model.md
@@ -216,7 +221,7 @@ The following explanatory documents provide adjacent context without becoming al
 04-components/01-component-contract-rules.md
 04-components/02-component-data-ownership.md
 04-components/03-component-integration-boundaries.md
-```
+`
 
 Repository-relative paths and canonical object identifiers are the only authority references used by this document.
 
@@ -366,6 +371,7 @@ A gateway or broker is an explicit boundary component, not a universal bypass.
 
 - Publication Gateway governs declared cross-domain disclosure and publication.
 - UCKK Publication Bridge packages and transports Publication-Gateway-authorized media to an external UCKK Moodle destination.
+- UCKK Import Bridge retrieves selected learning packages into quarantine, validates their declared source, licence, integrity, provenance, and frame compatibility, and submits them to the kOA Mediatheque for explicit local acceptance.
 - The privileged broker path performs allowlisted host mutations for applicable profiles.
 - Integration adapters isolate external providers.
 - A coordinator may orchestrate a multi-component workflow but does not become the owner of participating components' state.
@@ -391,7 +397,7 @@ The permitted topology for a concrete profile is declared by profile and compone
 - **REQ-SYS-COMM-010 — SHALL:** A cross-component query return a documented projection, snapshot, reference, or controlled read model without transferring ownership of the source data.
 - **REQ-SYS-COMM-011 — SHALL:** Every derived read model declare its source owners, freshness semantics, rebuild procedure, authorization boundary, and non-authoritative status unless a separate accepted decision assigns it authority.
 - **REQ-SYS-COMM-012 — SHALL:** Cross-domain disclosure and publication pass through Publication Gateway when the active contracts classify the transfer as governed publication.
-- **REQ-SYS-COMM-013 — SHALL NOT:** UCKK Publication Bridge substitute for Publication Gateway, create disclosure authority, or own local kOA Mediatheque records.
+- **REQ-SYS-COMM-013 — SHALL NOT:** UCKK Publication Bridge substitute for Publication Gateway or own local records; UCKK Import Bridge shall not bypass quarantine or local acceptance, own accepted local records, or be merged with publication into implicit bidirectional synchronization.
 - **REQ-SYS-COMM-014 — SHALL:** Resource scheduling requests and governance authorization requests use separate component contracts and preserve the authority separation between Resource Governor and Governance Policy Runtime.
 - **REQ-SYS-COMM-015 — SHALL:** An external integration remain capability-scoped, data-transfer-scoped, explicitly authenticated, removable, and isolated from unrelated core communication paths.
 - **REQ-SYS-COMM-016 — SHALL NOT:** External AI output directly mutate authoritative state, grant privilege, activate an artifact, authorize disclosure, or publish governed content.
@@ -543,13 +549,13 @@ Safe degradation is scoped to the failed capability. It does not create a new ow
 
 Use a command when one component asks another owner to perform a mutation.
 
-```text
+`text
 sender
-  -> versioned command contract
-  -> receiving owner validates authority and payload
-  -> receiving owner commits its own state
-  -> result + optional event + required receipt
-```
+ -> versioned command contract
+ -> receiving owner validates authority and payload
+ -> receiving owner commits its own state
+ -> result + optional event + required receipt
+`
 
 The sender holds intent. The receiver holds mutation authority.
 
@@ -557,12 +563,12 @@ The sender holds intent. The receiver holds mutation authority.
 
 Use a query when one component needs an authorized projection from another owner.
 
-```text
+`text
 consumer
-  -> versioned query contract
-  -> source owner applies authorization and redaction
-  -> projection with freshness and source context
-```
+ -> versioned query contract
+ -> source owner applies authorization and redaction
+ -> projection with freshness and source context
+`
 
 The consumer does not gain source ownership.
 
@@ -570,11 +576,11 @@ The consumer does not gain source ownership.
 
 Use an event when a committed fact can inform multiple consumers without coupling the publisher to each consumer's internal operation.
 
-```text
+`text
 publisher commits owned fact
-  -> publisher emits versioned event
-  -> consumers validate event and update only their own state
-```
+ -> publisher emits versioned event
+ -> consumers validate event and update only their own state
+`
 
 Consumer failure does not undo the publisher's committed fact unless a separate workflow contract explicitly defines compensation.
 
@@ -679,6 +685,7 @@ The following assumptions are prohibited:
 - physical database consolidation removes logical ownership boundaries;
 - physical separation creates new semantic boundaries not present in contracts;
 - Publication Gateway and UCKK Publication Bridge are interchangeable;
+- UCKK Publication Bridge and UCKK Import Bridge share one queue, state machine, credential, or automatic synchronization loop;
 - Resource Governor can grant authorization or Governance Policy Runtime can allocate resources;
 - external integration success creates authority;
 - external AI output is trusted component output;
@@ -707,7 +714,7 @@ This document is conformant when all of the following checks pass:
 11. Asynchronous interfaces declare and test delivery, ordering, retry, expiration, cancellation, duplicate, and terminal-failure behavior.
 12. Domain events map to committed publisher facts and do not replace mutation authorization.
 13. Read models declare source ownership, freshness, rebuild, authorization, and non-authoritative status.
-14. UCKK publication tests prove Publication Gateway authorization, bridge transport, destination receipt handling, and preservation of local source authority.
+14. UCKK interchange tests separately prove Publication Gateway authorization and outbound transport, inbound quarantine and validation, explicit local acceptance, distinct receipts, offline availability, and preservation of both authorities.
 15. Resource Governor and Governance Policy Runtime remain separate in interfaces and authority.
 16. External integrations remain removable and data-transfer-scoped.
 17. External AI outputs cannot directly mutate authoritative state.
@@ -722,7 +729,7 @@ This document is conformant when all of the following checks pass:
 
 Applicable failure codes include:
 
-```text
+`text
 component_interface_missing
 component_owner_not_resolved
 direct_authoritative_write_detected
@@ -747,7 +754,7 @@ critical_receipt_missing
 interface_compatibility_failed
 unsafe_communication_degradation
 communication_evidence_overexposure
-```
+`
 
 A required validator that cannot run produces `blocked`, not `pass`.
 
@@ -775,7 +782,7 @@ Konnaxion and Orgo still use separate logical ownership boundaries. A declared r
 
 A user selects kOA Mediatheque media for governed publication.
 
-Publication Gateway first evaluates and records the disclosure authorization. UCKK Publication Bridge then packages and transports the approved representation to the external UCKK platform. The local kOA Mediatheque record remains authoritative and separate from the destination copy.
+Publication Gateway first evaluates and records the disclosure authorization. UCKK Publication Bridge then packages and transports the approved representation to the external UCKK platform. In the reverse direction, UCKK Import Bridge retrieves a selected learning package into quarantine and the kOA Mediatheque creates a distinct local copy only after validation and explicit acceptance. Neither operation overwrites the other side automatically.
 
 ### Example 5 — Resource-sensitive job
 

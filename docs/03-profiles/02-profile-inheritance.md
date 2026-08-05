@@ -171,7 +171,7 @@ This document applies to:
 
 The current primary profiles are:
 
-```text
+`text
 user_lightweight
 developer_linux_workstation
 developer_windows_wsl
@@ -179,15 +179,15 @@ sovereign_linux_node
 sovereign_hub
 build_farm
 control_plane
-```
+`
 
 The current profile overlays are:
 
-```text
+`text
 high_assurance
 sovereign_offline
 appliance_shell
-```
+`
 
 This document does not assign the compatibility of a specific overlay to a specific primary profile. Each canonical profile contract owns those facts.
 
@@ -299,13 +299,13 @@ Naming similarity does not establish any relationship.
 
 The effective profile is calculated as:
 
-```text
+`text
 active global baseline
 + exactly one active primary profile
 + zero or more active compatible overlays
 + applicable active exceptions or waivers
 = one validated effective profile contract
-```
+`
 
 Exceptions remain separate records. They do not modify the source profile contracts or become reusable inherited behavior.
 
@@ -389,13 +389,13 @@ An overlay can constrain an optional capability. It cannot remove a global or pr
 
 The effective component set distinguishes:
 
-```text
+`text
 required
 session_activated
 task_activated
 optional
 prohibited
-```
+`
 
 Every included component resolves to the component registry and component-contract index.
 
@@ -404,7 +404,7 @@ Composition preserves:
 - one owner for each authoritative data domain;
 - direct-write prohibition across component boundaries;
 - Resource Governor and Governance Policy Runtime separation;
-- Publication Gateway and UCKK Dimension Gateway separation;
+- separation of Publication Gateway, UCKK Publication Bridge, and UCKK Import Bridge;
 - runtime and development-workbench separation.
 
 Component overlap between profiles does not create inheritance.
@@ -447,7 +447,7 @@ The effective profile preserves:
 - no native AI;
 - optional approved external surfaces only;
 - Ariane local non-voice navigation;
-- deterministic native UCKK;
+- deterministic local kOA Mediatheque processing and deterministic UCKK package validation;
 - optional and non-authoritative SenTient in eligible profiles;
 - explicit integration classification and removal;
 - offline continuity of declared local capabilities.
@@ -494,7 +494,7 @@ Version succession is not inheritance. Historical versions remain evidence and d
 - **REQ-PROFILE-INHERIT-021 — SHALL:** Effective capability membership include only capabilities explicitly required, optional, conditional, excluded, or modified by the global model, primary profile, and active compatible overlays.
 - **REQ-PROFILE-INHERIT-022 — SHALL:** Every enabled effective capability have complete dependency closure across components, authorities, data, artifacts, resources, integrations, and environment conditions.
 - **REQ-PROFILE-INHERIT-023 — SHALL NOT:** A profile or overlay acquire authority to write another component's canonical data through inheritance or composition.
-- **REQ-PROFILE-INHERIT-024 — SHALL:** Profile composition preserve the separation of Resource Governor from Governance Policy Runtime and Publication Gateway from UCKK Dimension Gateway.
+- **REQ-PROFILE-INHERIT-024 — SHALL:** Profile composition preserve the separation of Resource Governor from Governance Policy Runtime, Publication Gateway from UCKK-specific transport, and inbound import acceptance from outbound disclosure.
 - **REQ-PROFILE-INHERIT-025 — SHALL:** Profile composition preserve the no-native-AI baseline and represent ChatGPT, Suno, Gamma, and the approved Ariane voice adapter only as optional external surfaces.
 - **REQ-PROFILE-INHERIT-026 — SHALL:** Profile composition preserve Ariane local non-voice navigation independently of external AI and external voice.
 - **REQ-PROFILE-INHERIT-027 — SHALL:** SenTient remain optional, isolated, non-authoritative, and limited to eligible development or build profiles after all profile composition.
@@ -544,7 +544,7 @@ An overlay with no compatible primary profile remains non-deployable and cannot 
 
 Effective-profile calculation proceeds through:
 
-```text
+`text
 select_primary
 resolve_global_baseline
 resolve_overlays
@@ -561,7 +561,7 @@ evaluate_locks
 evaluate_tests_and_evidence
 emit_effective_contract
 emit_conformance_claim
-```
+`
 
 Every input object and version appears in the generated effective contract.
 
@@ -737,13 +737,13 @@ This document is conformant when validation confirms:
 
 The principal validation entry point is:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 Supporting checks include:
 
-```text
+`text
 tools/check_profile_inheritance.py
 tools/check_interfile_locks.py
 tools/check_component_boundaries.py
@@ -752,7 +752,7 @@ tools/check_traceability.py
 tools/check_decision_closure.py
 tools/check_no_unresolved_state.py
 tools/generate_profile_matrix.py --check
-```
+`
 
 ## 11. Non-Normative Examples
 

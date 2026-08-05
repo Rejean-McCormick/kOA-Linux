@@ -82,12 +82,12 @@
     "LOCK-ARI-002",
     "LOCK-MEDIATHEQUE-001",
     "LOCK-UCKK-EXT-001",
-    "LOCK-UCKK-EXT-001",
     "LOCK-GOV-001",
     "LOCK-GATE-001",
     "LOCK-SENT-001",
     "LOCK-PROFILE-001",
-    "LOCK-PROFILE-002"
+    "LOCK-PROFILE-002",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -128,7 +128,7 @@ KOA:DOC-META:END -->
 
 ## 1. Purpose
 
-This document defines the global context of the kOA operating environment.
+This document defines the global context of the kOA-Linux Operating System.
 
 It identifies:
 
@@ -196,12 +196,12 @@ Those facts belong to profile contracts, component contracts, artifact contracts
 
 Detailed observable behavior belongs to:
 
-```text
+`text
 contracts/components/*.component.json
 contracts/profiles/*.profile.json
 contracts/integration-types.contract.json
 contracts/artifact-classes.contract.json
-```
+`
 
 ## 4. Model and Responsibilities
 
@@ -211,21 +211,21 @@ kOA is a local-first operating environment that coordinates public participation
 
 It sits between human and institutional purposes and the host computing environment.
 
-```text
+`text
 Human and institutional actors
-        |
-        v
+ |
+ v
 kOA interaction and domain surfaces
-        |
-        v
+ |
+ v
 Knowledge, media, workflow, and language runtimes
-        |
-        v
+ |
+ v
 Governance, identity, audit, resource, and privilege controls
-        |
-        v
+ |
+ v
 Host operating system, storage, network, and hardware
-```
+`
 
 The system can connect to remote services, peers, publishers, artifact sources, backup targets, and optional AI surfaces. Core operation remains local and does not depend on those connections.
 
@@ -333,18 +333,13 @@ kOA Mediatheque is an independent multimedia domain.
 
 ### 4.6 External systems and environments
 
-| External system or environment | Permitted relationship |
-| --- | --- |
-| Host operating system and hardware | Provides processes, storage, networking, devices, isolation, scheduling, and recovery primitives through profile-defined mechanisms. |
-| Applications navigated by Ariane | Expose observable state and bounded actions through supported application contracts, Atlases, drivers, or user interfaces. |
-| User-selected local files and media | Enter as non-authoritative candidate input through an owning component's admission procedure. |
-| Removable media and offline bundles | Enter through bounded parsing, verification, identity, compatibility, and authorization checks. |
-| Remote kOA peer or hub | Exchanges only contract-defined data, artifacts, events, or synchronization records under explicit trust and conflict policy. |
-| External identity or federation provider | Supplies identity assertions that remain subject to local trust, scope, and revocation rules. |
-| Artifact and release source | Supplies signed or otherwise verifiable candidates for declared release channels and artifact classes. |
-| External backup or export destination | Receives encrypted, classified, policy-compliant exports without becoming the only restoration dependency. |
-| External integration | Provides a declared optional capability through a registered integration contract. |
-| External AI surface | Receives explicitly selected input and returns non-authoritative output for controlled review or admission. |
+External systems include package and release sources, identity and trust providers, backup destinations, federation peers, optional AI and media services, and the online UCKK Moodle platform.
+
+UCKK provides online learning, training, instruction distribution, courses, learning paths, activities, and its own UCKK Mediatheque. It remains outside the kOA-Linux authority boundary.
+
+The kOA and UCKK Mediatheques use the same shared frame or compatible frame versions. Compatibility supports explicit mapping and exchange; it does not create shared storage, identity, access control, lifecycle, or authority.
+
+Every external interaction is classified by direction, purpose, transferred data, authority boundary, failure behavior, removal behavior, and evidence. An external system cannot write directly into local authoritative storage.
 
 ### 4.7 Optional external AI surfaces
 
@@ -425,7 +420,7 @@ Artifact verification, identity, provenance, compatibility, activation, rollback
 - **REQ-SYS-CTX-004 — SHALL NOT:** Network reachability, local process access, shared storage visibility, or common deployment on one machine creates cross-component authority.
 - **REQ-SYS-CTX-005 — SHALL:** Konnaxion remains the public and commons-oriented principal domain, and Orgo remains the private and operational principal domain.
 - **REQ-SYS-CTX-006 — SHALL:** Kristal Runtime remains the transversal epistemic runtime and does not become the universal operational database or workflow engine.
-- **REQ-SYS-CTX-007 — SHALL:** kOA Mediatheque own local multimedia identity and lifecycle, while UCKK Publication Bridge owns only UCKK-specific package and transport state after publication authorization.
+- **REQ-SYS-CTX-007 — SHALL:** kOA Mediatheque own local multimedia identity, import acceptance, offline availability, and lifecycle; UCKK Publication Bridge owns only outbound package and transport state after authorization, and UCKK Import Bridge owns only inbound retrieval and quarantine-transport state.
 - **REQ-SYS-CTX-008 — SHALL:** Publication Gateway authorize cross-domain disclosure before UCKK Publication Bridge performs UCKK-specific packaging and transport.
 - **REQ-SYS-CTX-009 — SHALL:** Ariane Runtime owns deterministic application navigation, and external voice processing remains an optional non-authoritative input surface.
 - **REQ-SYS-CTX-010 — SHALL:** GF Wordbench owns language construction and compilation, while SemantiK Architect Runtime consumes validated precompiled language artifacts.
@@ -451,7 +446,7 @@ Artifact verification, identity, provenance, compatibility, activation, rollback
 
 A user-initiated operation follows this context sequence:
 
-```text
+`text
 human intent
 -> authenticated interface
 -> scope and capability resolution
@@ -460,13 +455,13 @@ human intent
 -> authoritative mutation by the owner
 -> state verification
 -> receipt or evidence when required
-```
+`
 
 The interface can be local, remote, accessible, graphical, textual, or Ariane-driven. The authority and ownership sequence remains the same.
 
 ### 6.2 Public signal to private operational work
 
-```text
+`text
 Konnaxion signal or approved external input
 -> versioned intake contract
 -> Orgo validation
@@ -474,13 +469,13 @@ Konnaxion signal or approved external input
 -> assignment, review, approval, and execution
 -> operational result
 -> optional publication candidate
-```
+`
 
 Konnaxion does not write Orgo persistence. Orgo does not acquire public-domain ownership by receiving a signal.
 
 ### 6.3 Private result to public publication
 
-```text
+`text
 Orgo publication candidate
 -> Publication Gateway classification and rights checks
 -> governance disclosure decision
@@ -488,13 +483,13 @@ Orgo publication candidate
 -> approved publication bundle
 -> Konnaxion admission
 -> publication receipt
-```
+`
 
 A publication failure leaves the private operational result intact.
 
 ### 6.4 Knowledge artifact lifecycle
 
-```text
+`text
 candidate source or structured contribution
 -> owning validation workflow
 -> verified knowledge artifact
@@ -503,13 +498,13 @@ candidate source or structured contribution
 -> atomic Kristal Runtime activation
 -> bounded query and consumption
 -> rollback, revocation, or supersession when required
-```
+`
 
 SenTient can assist in producing a candidate, but it does not own admission or final authority.
 
 ### 6.5 Language artifact lifecycle
 
-```text
+`text
 grammar and language source in GF Wordbench
 -> deterministic compilation
 -> validation and compatibility tests
@@ -517,29 +512,41 @@ grammar and language source in GF Wordbench
 -> SemantiK Architect Runtime verification
 -> atomic activation
 -> deterministic rendering
-```
+`
 
 Normal runtime operation does not require the development workbench.
 
-### 6.6 kOA Mediatheque ingestion lifecycle
+### 6.6 Mediatheque and UCKK interchange lifecycle
+
+Local creation or import first establishes a kOA Mediatheque record, version, integrity binding, rights state, provenance, visibility, and lifecycle under local authority.
+
+Outbound UCKK publication then follows:
 
 ```text
-user-selected local file or medium
--> Publication Gateway authorization
--> UCKK Publication Bridge package and transfer session
--> bounded staging and integrity verification
--> user-selected destination or unclassified destination
--> kOA Mediatheque admission
--> authoritative media object and version
--> optional deterministic derivatives
--> optional user-controlled publication or distribution
+local record version
+→ explicit selection
+→ disclosure authorization
+→ UCKK package and transport
+→ remote acceptance
+→ local receipt
 ```
 
-Ingestion does not automatically publish, classify, summarize, tag, or route content through AI.
+Inbound offline acquisition follows:
+
+```text
+UCKK course, path, instruction, or media selection
+→ source and license verification
+→ package integrity and compatibility validation
+→ quarantine
+→ explicit kOA Mediatheque acceptance
+→ local offline record and version
+```
+
+The directions are independent. A remote update becomes an import candidate and does not silently overwrite the local copy.
 
 ### 6.7 Ariane navigation lifecycle
 
-```text
+`text
 local structured request or external voice candidate
 -> Ariane input validation
 -> application observation
@@ -548,13 +555,13 @@ local structured request or external voice candidate
 -> execution or guided action
 -> post-action verification
 -> navigation result and evidence when required
-```
+`
 
 The external voice service ends at the structured candidate command.
 
 ### 6.8 Privileged node operation
 
-```text
+`text
 schema-bound operation request
 -> identity and trust context
 -> governance privilege decision
@@ -563,7 +570,7 @@ schema-bound operation request
 -> result verification
 -> privileged operation receipt
 -> controlled audit storage
-```
+`
 
 No first-class component receives unrestricted host-command authority through this flow.
 
@@ -675,7 +682,8 @@ The owning components:
 | Orgo | Publication Gateway | Publication candidate with provenance, classification, rights, consent, and requested audience | Orgo retains private workflow state. |
 | Publication Gateway | Konnaxion | Approved publication bundle and withdrawal or supersession instruction | Konnaxion owns accepted public state. |
 | Orgo or Konnaxion | Kristal Runtime | Bounded query, artifact consumption, and status inspection | Kristal owns artifact identity and runtime state. |
-| UCKK Publication Bridge | External UCKK Moodle platform | Authorized package, transport result, and destination receipt | Bridge owns transport state; kOA Mediatheque retains local source authority; UCKK owns only its accepted destination copy. |
+| UCKK Publication Bridge | Online UCKK Moodle platform | Authorized package, transport result, and destination receipt | Bridge owns outbound transport state; kOA Mediatheque retains local source authority; UCKK owns its accepted destination copy. |
+| UCKK Import Bridge | Online UCKK Moodle platform and kOA Mediatheque quarantine | Selected learning package, validation evidence, and import receipt | Bridge owns retrieval and quarantine transport state; UCKK remains source authority; kOA Mediatheque owns local acceptance and separate local identities. |
 | GF Wordbench | SemantiK Architect Runtime | Validated compiled language artifact | GF Wordbench owns source and build evidence; runtime owns activation state. |
 | External voice service | Ariane Runtime | Structured non-authoritative candidate command | Ariane owns navigation validation and execution. |
 | SenTient | Orgo or another review workflow | Candidate mapping, reconciliation, or enrichment artifact | Target owner decides admission. |
@@ -805,11 +813,9 @@ A participant submits a public request through Konnaxion.
 
 The request crosses a versioned intake boundary into Orgo, where it becomes an operational signal or case. Orgo assigns and resolves the work. A public result returns only through Publication Gateway after disclosure, rights, consent, and approval checks.
 
-### 11.5 Local media ingestion
+### 11.5 Local media and offline learning acquisition
 
-A user chooses a local media file and a personal kOA Mediatheque destination.
-
-kOA Mediatheque creates and owns the authoritative local media record and deterministic derivatives. After explicit Publication Gateway authorization, UCKK Publication Bridge performs resumable package transfer and integrity verification to the external UCKK platform. No native AI classifies or publishes the content automatically.
+A school administrator selects a UCKK learning path for offline use. The package is downloaded during a brief connection, validated for source, license, manifest, hashes, compatibility, and required resources, then accepted into the kOA Mediatheque. The local copy remains available after disconnection and preserves the UCKK source and version as provenance rather than as local authority.
 
 ### 11.6 External voice navigation
 

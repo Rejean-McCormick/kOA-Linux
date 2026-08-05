@@ -236,7 +236,7 @@ A workspace can move between branches. A branch can be checked out in more than 
 
 Every active workspace has a local manifest containing:
 
-```text
+`text
 workspace_id
 workspace_root
 active_profile_ref
@@ -256,7 +256,7 @@ artifact_output_root
 evidence_output_root
 created_at
 cleanup_authority
-```
+`
 
 The manifest contains no credential values.
 
@@ -266,14 +266,14 @@ It can be generated from canonical and local inputs, but its identity remains st
 
 Every mutable resource carries ownership labels or equivalent metadata:
 
-```text
+`text
 koa.workspace.id
 koa.instance.id
 koa.component.id
 koa.profile.id
 koa.source.revision
 koa.created.by
-```
+`
 
 Resources that cannot carry labels use a workspace-scoped parent namespace and an ownership record in the manifest.
 
@@ -294,23 +294,23 @@ Generated and runtime directories remain inside or uniquely bound to that source
 
 Each Python workspace uses:
 
-```text
+`text
 <workspace-root>/.venv
 <workspace-root>/pyproject.toml
 <workspace-root>/uv.lock
-```
+`
 
 Normal synchronization uses:
 
-```bash
+`bash
 uv sync --frozen
-```
+`
 
 Commands use:
 
-```bash
+`bash
 uv run <command>
-```
+`
 
 Environment reuse is limited to immutable package caches. Installed mutable environments are not shared.
 
@@ -409,7 +409,7 @@ Port allocation uses a workspace registry or deterministic allocation algorithm 
 
 A port record includes:
 
-```text
+`text
 workspace_id
 application_instance_id
 component_id
@@ -419,7 +419,7 @@ host_port
 service_port
 protocol
 allocated_at
-```
+`
 
 Loopback remains the default development bind address. LAN or external exposure follows the active profile and integration rules.
 
@@ -515,12 +515,12 @@ The test-run record includes:
 
 Fixtures are classified as:
 
-```text
+`text
 immutable_shared
 workspace_copy
 test_run_copy
 externally_managed_sandbox
-```
+`
 
 Mutable fixture use creates a workspace or test-run copy.
 
@@ -560,7 +560,7 @@ A provider response remains attributable to the originating workspace and reques
 
 Candidate artifact identity includes:
 
-```text
+`text
 artifact_class
 artifact_version
 workspace_id
@@ -573,7 +573,7 @@ provenance
 functional_integrity_record
 test_refs
 evidence_refs
-```
+`
 
 Artifact directories are immutable after the artifact record is finalized.
 
@@ -855,13 +855,13 @@ This document is conformant when validation confirms:
 
 The principal validation entry point is:
 
-```bash
+`bash
 uv run python docs/tools/validate_docs.py
-```
+`
 
 Supporting checks include:
 
-```text
+`text
 tools/check_workspace_isolation.py
 tools/check_parallel_resource_names.py
 tools/check_port_allocations.py
@@ -871,7 +871,7 @@ tools/check_artifact_contracts.py
 tools/check_traceability.py
 tools/check_generated_content.py
 tools/check_no_unresolved_state.py
-```
+`
 
 A failed isolation check blocks the affected workspace's conformance claim and prevents activation of colliding resources.
 

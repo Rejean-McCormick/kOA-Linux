@@ -14,6 +14,6 @@ Each location may remain absent until its documentation is available. Install a 
 
 `subsystems/uckk/` is not a reserved mount and must not be created as an active subsystem documentation path.
 
-UCKK is an external Moodle platform outside kOA-Linux. It has its own Mediatheque, authority, storage, lifecycle, identity, access control, and operational documentation. Publication from the internal kOA Mediatheque to UCKK is described by an external integration contract and a controlled publication bridge.
+UCKK is an external online Moodle platform outside kOA-Linux. It has its own Mediatheque, authority, storage, lifecycle, identity, access control, and operational documentation. kOA-Linux documents two separate controlled integrations: publication from the private kOA Mediatheque to UCKK, and import of selected UCKK learning packages for explicit local acceptance and offline use. The shared Mediatheque frame does not create a subsystem mount, shared database, or synchronization authority.
 
 The kOA Mediatheque is an internal kOA-Linux component. Its documentation belongs in the kOA-Linux component and contract trees, not under `subsystems/`.

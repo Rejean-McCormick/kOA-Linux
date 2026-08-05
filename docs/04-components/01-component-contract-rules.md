@@ -281,7 +281,7 @@ Reading data does not create ownership. Transporting an artifact does not create
 
 The component registry uses a controlled component-class vocabulary, including:
 
-```text
+`text
 runtime
 gateway
 broker
@@ -290,18 +290,18 @@ platform
 agent
 service
 privileged_broker
-```
+`
 
 The authority class uses an explicit value such as:
 
-```text
+`text
 authoritative
 authoritative_executor
 derived
 advisory
 non_authoritative
 transport
-```
+`
 
 The precise active vocabulary remains canonical in the components registry and component-contract schema.
 
@@ -311,7 +311,7 @@ A component contract declares its applicable profile references, optionality, ac
 
 Activation modes can include:
 
-```text
+`text
 always_on
 socket_activated
 session_activated
@@ -319,7 +319,7 @@ task_activated
 manual
 external_only
 recovery_only
-```
+`
 
 Profile membership comes from profile contracts. A component contract cannot infer global activation from installation or repository presence.
 
@@ -469,13 +469,13 @@ A poison event remains inspectable and does not block an entire queue indefinite
 
 When a local authoritative commit and an external event need to remain aligned, the contract identifies a consistency mechanism such as:
 
-```text
+`text
 transactional_outbox
 transactional_journal
 atomic_artifact_and_receipt
 durable_precommit_receipt
 validated_equivalent
-```
+`
 
 The mechanism defines crash recovery, replay, duplicate detection, and the relationship between commit status and event status.
 
@@ -518,7 +518,7 @@ A closed operation model is mandatory for privileged or high-impact administrati
 
 A state-changing operation normally progresses through:
 
-```text
+`text
 received
 identity_verified
 schema_verified
@@ -531,11 +531,11 @@ commit_pending
 committed
 receipt_durable
 completed
-```
+`
 
 Alternative transitions include:
 
-```text
+`text
 blocked
 rejected
 cancelled
@@ -544,7 +544,7 @@ conflicted
 expired
 rolled_back
 recovery_required
-```
+`
 
 The contract identifies which stages apply and which authority owns each stage.
 
@@ -901,13 +901,13 @@ Validation includes:
 
 The principal validation entry point is:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 Supporting checks include:
 
-```text
+`text
 tools/check_component_boundaries.py
 tools/check_canonical_ownership.py
 tools/check_interfile_locks.py
@@ -917,7 +917,7 @@ tools/check_ai_boundary.py
 tools/check_traceability.py
 tools/check_generated_content.py
 tools/check_no_unresolved_state.py
-```
+`
 
 A failed component-contract check blocks activation of the affected contract and dependent claims. The last validated active contract remains authoritative until a replacement passes.
 

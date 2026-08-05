@@ -265,19 +265,19 @@ An interruption leaves the candidate incomplete and ineligible for boot selectio
 
 ### 6.4 Activation progression
 
-```text
+`text
 discovered
-  -> verified
-  -> staged
-  -> selected
-  -> booting
-  -> observing
-  -> accepted
-```
+ -> verified
+ -> staged
+ -> selected
+ -> booting
+ -> observing
+ -> accepted
+`
 
 Alternative states are:
 
-```text
+`text
 blocked
 denied
 failed_boot
@@ -287,7 +287,7 @@ rolled_back
 forward_repair_required
 recovered
 retired
-```
+`
 
 During activation, the deployment confirms the expected system release and Release Set, validates storage and profile-owned host state, starts profile-required constitutional services, starts compatible component services, evaluates health, and preserves failure evidence. Acceptance occurs only after all required checks pass.
 

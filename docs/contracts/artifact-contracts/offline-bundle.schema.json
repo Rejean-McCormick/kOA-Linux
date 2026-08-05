@@ -13,7 +13,6 @@
     "object_kind": "offline_lifecycle_container",
     "release_treatment": {
       "kind": "lifecycle_container",
-      "release_channel": null,
       "creates_release_channel": false
     },
     "canonical_refs": [

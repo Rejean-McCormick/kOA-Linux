@@ -216,7 +216,7 @@ The canonical prohibited-marker list is owned by `generated/decision-index.json#
 
 The validator SHALL detect these markers in active status fields, metadata fields, normative headings, requirement statements, lock statements, profile claims, component contracts, and generated authority projections.
 
-```policy-literal
+`policy-literal
 open-decision placeholder
 TO DECIDE
 UNRESOLVED
@@ -226,7 +226,7 @@ PLACEHOLDER DECISION
 TEMPORARY DECISION
 FIXME
 XXX
-```
+`
 
 The checker SHALL be syntax-aware. It SHALL NOT fail merely because this policy, a validation test fixture, migration evidence, or an archive quotes a prohibited marker for explanatory purposes.
 
@@ -281,7 +281,7 @@ An exception may not be used to avoid making an architectural decision.
 - **REQ-DOC-DEC-005 — SHALL NOT:** An AI agent infer, invent, silently normalize, or implement a missing architectural decision.
 - **REQ-DOC-DEC-006 — SHALL:** A missing required decision produces a blocked validation result with machine-readable reason `missing_owner_decision`.
 - **REQ-DOC-DEC-007 — SHALL:** Only accepted decisions may be activated through `authority.registry.json`.
-- **REQ-DOC-DEC-008 — SHALL:** Major decisions have an accepted ADR, a transitive impact report, updated traceability, and passing validation.
+- **REQ-DOC-DEC-008 — SHALL:** A decision have an accepted ADR only when it protects a non-obvious, workaround-based, or regression-prone implementation choice; major decisions still require a transitive impact report, updated traceability, and passing validation.
 - **REQ-DOC-DEC-009 — SHALL:** A superseded or retired decision remains preserved and linked to its replacement.
 - **REQ-DOC-DEC-010 — SHALL NOT:** Prohibited unresolved markers appear as active architectural status, active normative content, or active generated authority.
 - **REQ-DOC-DEC-011 — SHALL:** Exceptions are explicit, bounded, owned, validated, and separate from decision closure.
@@ -303,7 +303,7 @@ A new architectural decision follows this sequence:
 7. classify the change as `patch`, `minor`, or `major`;
 8. identify affected canonical references;
 9. identify affected locks and requirements;
-10. create an ADR when required;
+10. create a short ADR only when the active choice meets the criteria in `10-adrs/README.md`;
 11. compute direct and transitive impact;
 12. update affected canonical registries;
 13. update schemas when needed;
@@ -347,16 +347,16 @@ A superseding decision SHALL identify:
 
 When a validator or AI agent discovers that active work requires an absent decision, it emits:
 
-```json
+`json
 {
-  "validation_status": "blocked",
-  "reason": "missing_owner_decision",
-  "required_decision_scope": "",
-  "affected_canonical_refs": [],
-  "affected_document_ids": [],
-  "prohibited_inference": true
+ "validation_status": "blocked",
+ "reason": "missing_owner_decision",
+ "required_decision_scope": "",
+ "affected_canonical_refs": [],
+ "affected_document_ids": [],
+ "prohibited_inference": true
 }
-```
+`
 
 The affected change remains inactive.
 
@@ -579,9 +579,9 @@ The following assumptions are prohibited:
 
 When none of the active canonical sources defines the required behavior, the only permitted conclusion is:
 
-```text
+`text
 BLOCKED: MISSING OWNER DECISION
-```
+`
 
 ## 10. Validation Criteria
 

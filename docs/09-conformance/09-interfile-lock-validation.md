@@ -29,7 +29,9 @@
     "contracts/ai-navigation.contract.json",
     "schemas/impact-report.schema.json",
     "contracts/components/koa-mediatheque.component.json",
-    "contracts/integrations/uckk-publication.integration.json"
+    "contracts/integrations/uckk-publication.integration.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json"
   ],
   "decision_ids": [
     "DEC-DOC-002",
@@ -85,7 +87,10 @@
     "REQ-CONF-LOCK-037",
     "REQ-CONF-LOCK-038",
     "REQ-CONF-LOCK-039",
-    "REQ-CONF-LOCK-040"
+    "REQ-CONF-LOCK-040",
+    "REQ-CONF-LOCK-041",
+    "REQ-CONF-LOCK-042",
+    "REQ-CONF-LOCK-043"
   ],
   "lock_ids": [
     "LOCK-DOC-001",
@@ -134,7 +139,9 @@
     "LOCK-LIFE-003",
     "LOCK-LIFE-004",
     "LOCK-MEDIATHEQUE-001",
-    "LOCK-UCKK-EXT-001"
+    "LOCK-UCKK-EXT-001",
+    "LOCK-MEDIATHEQUE-002",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -189,9 +196,9 @@ This document owns the validation procedure and result contract.
 
 This document applies to every active lock registered in:
 
-```text
+`text
 generated/assertion-index.json
-```
+`
 
 It applies to lock relationships involving:
 
@@ -256,7 +263,7 @@ They do not become the owner of the protected fact.
 
 The validation unit is:
 
-```text
+`text
 active lock
 +
 canonical sources
@@ -272,7 +279,7 @@ active exceptions
 tests and evidence
 +
 supported claims
-```
+`
 
 A file is not validated in isolation when an applicable lock crosses its boundary.
 
@@ -284,8 +291,8 @@ A file is not validated in isolation when an applicable lock crosses its boundar
 | `LOCK-SYS-*` | System baseline and global behavior |
 | `LOCK-AI-*` | AI capability and external-surface boundaries |
 | `LOCK-SENT-*` | SenTient isolation and non-authority |
-| `LOCK-MEDIA-*` | kOA Mediatheque local ownership, deterministic processing, offline continuity, and no hidden AI authority |
-| `LOCK-UCKK-PUB-*` | External UCKK Moodle publication remains explicit, optional, receipted, and separate from local Mediatheque authority |
+| `LOCK-MEDIATHEQUE-*` | kOA Mediatheque local ownership, deterministic processing, private offline continuity, shared-frame mapping, and no hidden AI authority |
+| `LOCK-UCKK-EXT-*` | Online UCKK publication and import remain explicit, directional, optional, receipted, authority-separated, and free of implicit synchronization |
 | `LOCK-ARI-*` | Ariane deterministic navigation and optional voice |
 | `LOCK-COMP-*` | Component identity, boundary, responsibility, and interaction |
 | `LOCK-DATA-*` | Authoritative data ownership and mutation |
@@ -595,7 +602,7 @@ It does not:
 
 ## 5. Applicable Normative Requirements
 
-<!-- GENERATED:REQUIREMENTS:BEGIN ids=REQ-CONF-LOCK-001,REQ-CONF-LOCK-002,REQ-CONF-LOCK-003,REQ-CONF-LOCK-004,REQ-CONF-LOCK-005,REQ-CONF-LOCK-006,REQ-CONF-LOCK-007,REQ-CONF-LOCK-008,REQ-CONF-LOCK-009,REQ-CONF-LOCK-010,REQ-CONF-LOCK-011,REQ-CONF-LOCK-012,REQ-CONF-LOCK-013,REQ-CONF-LOCK-014,REQ-CONF-LOCK-015,REQ-CONF-LOCK-016,REQ-CONF-LOCK-017,REQ-CONF-LOCK-018,REQ-CONF-LOCK-019,REQ-CONF-LOCK-020,REQ-CONF-LOCK-021,REQ-CONF-LOCK-022,REQ-CONF-LOCK-023,REQ-CONF-LOCK-024,REQ-CONF-LOCK-025,REQ-CONF-LOCK-026,REQ-CONF-LOCK-027,REQ-CONF-LOCK-028,REQ-CONF-LOCK-029,REQ-CONF-LOCK-030,REQ-CONF-LOCK-031,REQ-CONF-LOCK-032,REQ-CONF-LOCK-033,REQ-CONF-LOCK-034,REQ-CONF-LOCK-035,REQ-CONF-LOCK-036,REQ-CONF-LOCK-037,REQ-CONF-LOCK-038,REQ-CONF-LOCK-039,REQ-CONF-LOCK-040 -->
+<!-- GENERATED:REQUIREMENTS:BEGIN ids=REQ-CONF-LOCK-001,REQ-CONF-LOCK-002,REQ-CONF-LOCK-003,REQ-CONF-LOCK-004,REQ-CONF-LOCK-005,REQ-CONF-LOCK-006,REQ-CONF-LOCK-007,REQ-CONF-LOCK-008,REQ-CONF-LOCK-009,REQ-CONF-LOCK-010,REQ-CONF-LOCK-011,REQ-CONF-LOCK-012,REQ-CONF-LOCK-013,REQ-CONF-LOCK-014,REQ-CONF-LOCK-015,REQ-CONF-LOCK-016,REQ-CONF-LOCK-017,REQ-CONF-LOCK-018,REQ-CONF-LOCK-019,REQ-CONF-LOCK-020,REQ-CONF-LOCK-021,REQ-CONF-LOCK-022,REQ-CONF-LOCK-023,REQ-CONF-LOCK-024,REQ-CONF-LOCK-025,REQ-CONF-LOCK-026,REQ-CONF-LOCK-027,REQ-CONF-LOCK-028,REQ-CONF-LOCK-029,REQ-CONF-LOCK-030,REQ-CONF-LOCK-031,REQ-CONF-LOCK-032,REQ-CONF-LOCK-033,REQ-CONF-LOCK-034,REQ-CONF-LOCK-035,REQ-CONF-LOCK-036,REQ-CONF-LOCK-037,REQ-CONF-LOCK-038,REQ-CONF-LOCK-039,REQ-CONF-LOCK-040,REQ-CONF-LOCK-041,REQ-CONF-LOCK-042,REQ-CONF-LOCK-043 -->
 - **REQ-CONF-LOCK-002 — SHALL:** Only locks with active lifecycle status participate in current conformance, while deprecated locks participate until their declared removal condition is satisfied.
 - **REQ-CONF-LOCK-003 — SHALL NOT:** A draft, review, superseded, archived, malformed, or unresolvable lock supports an active authority or conformance claim.
 - **REQ-CONF-LOCK-004 — SHALL:** Lock identifiers, assertion identifiers, versions, owners, scopes, canonical references, decisions, requirements, exceptions, tests, and replacement relationships are unique and resolvable.
@@ -634,6 +641,9 @@ It does not:
 - **REQ-CONF-LOCK-038 — SHALL:** Equivalent canonical inputs, lock definitions, toolchains, and normalized environments produce equivalent semantic results and diagnostic ordering.
 - **REQ-CONF-LOCK-039 — SHALL:** Every active lock has complete traceability to accepted decisions, applicable requirements, affected owners, tests, evidence, exceptions, and supported claims.
 - **REQ-CONF-LOCK-040 — SHALL:** Ordinary Markdown lock-validation documentation uses registry, reference, structure, language, decision, requirement, lock, and traceability validation without an automatic file-content-hash requirement.
+- **REQ-CONF-LOCK-041 — SHALL:** Lock validation confirm that UCKK publication and import remain separate integrations with separate contracts, queues, credentials, packages, receipts, retry state, and authority effects.
+- **REQ-CONF-LOCK-042 — SHALL:** Lock validation confirm that shared-Mediatheque-frame compatibility never creates shared identifiers, storage, access control, lifecycle, or authority.
+- **REQ-CONF-LOCK-043 — SHALL NOT:** A valid corpus contain an active path that allows UCKK transport, remote availability, or reconnection to bypass Publication Gateway authorization, import quarantine, local acceptance, or explicit update decisions.
 <!-- GENERATED:REQUIREMENTS:END -->
 
 ## 6. Procedures or State Transitions
@@ -1009,7 +1019,11 @@ An AI context package includes a superseded lock and a proposed decision.
 
 The generated-context and decision locks fail. The package is excluded from active AI authoring context until regenerated from accepted active sources.
 
-### 11.10 Authority activation order
+### 11.10 UCKK directional-interchange drift
+
+A profile enables `uckk-import`, but a recipe describes direct installation into the local catalog without quarantine. `LOCK-UCKK-EXT-002` fails because the recipe bypasses the canonical import boundary. A second failure occurs if another document treats the shared frame as a shared database or enables background synchronization.
+
+### 11.11 Authority activation order
 
 Every individual registry parses and every document renders, but one migration redirect is missing.
 

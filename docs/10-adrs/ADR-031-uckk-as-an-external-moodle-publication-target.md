@@ -2,7 +2,7 @@
 {
   "doc_id": "ADR-031",
   "document_class": "adr",
-  "status": "accepted",
+  "status": "superseded",
   "language": "en",
   "layer": "decisions",
   "scope": [
@@ -15,10 +15,7 @@
     "contracts/components/koa-mediatheque.component.json",
     "contracts/artifact-contracts/uckk-publication-package.schema.json",
     "contracts/artifact-contracts/uckk-publication-receipt.schema.json",
-    "04-components/uckk-publication-bridge.md",
-    "10-adrs/ADR-020-publication-gateway-and-uckk-dimension-gateway-separation.md",
-    "10-adrs/ADR-022-deterministic-native-uckk-pipeline.md",
-    "10-adrs/ADR-029-native-uckk-mediatheque.md"
+    "04-components/uckk-publication-bridge.md"
   ],
   "decision_ids": [
     "DEC-UCKK-EXT-001"
@@ -27,7 +24,8 @@
   "lock_ids": [
     "LOCK-UCKK-EXT-001",
     "LOCK-MEDIATHEQUE-001",
-    "LOCK-GATE-001"
+    "LOCK-GATE-001",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -42,18 +40,14 @@
     "bridge"
   ],
   "adr_id": "ADR-031",
-  "adr_status": "accepted",
+  "adr_status": "superseded",
   "decision_class": "major",
   "owner_decision_id": "DEC-UCKK-EXT-001",
   "created_at": "2026-08-04",
   "accepted_at": "2026-08-04",
   "effective_at": "2026-08-04",
-  "supersedes": [
-    "ADR-020",
-    "ADR-022",
-    "ADR-029"
-  ],
-  "superseded_by": null
+  "supersedes": [],
+  "superseded_by": "ADR-032"
 }
 KOA:DOC-META:END -->
 
@@ -61,7 +55,7 @@ KOA:DOC-META:END -->
 
 ## Status
 
-Accepted.
+Superseded by ADR-032.
 
 ## Context
 
@@ -96,9 +90,11 @@ The initial integration is outbound publication only. A future controlled import
 - Offline nodes can queue authorized packages but cannot claim remote publication before receipt validation.
 - Remote withdrawal or deletion is recorded only when the external platform acknowledges it.
 
-## Superseded Decisions
+## Replaced Model
 
-This ADR supersedes the UCKK-internal architectural effects of ADR-020, ADR-022, and ADR-029. Those files remain historical records with superseded status.
+This ADR replaces the former internal-UCKK component, gateway, and native-Mediatheque model.
+
+The removed ADR files are not active canonical dependencies. Git history preserves the former rationale, while current authority resides in this ADR and the external UCKK publication integration contract.
 
 ## Rejected Alternatives
 

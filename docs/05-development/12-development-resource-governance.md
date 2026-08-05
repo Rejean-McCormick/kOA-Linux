@@ -288,13 +288,13 @@ A profile can omit a mechanism that does not apply to its host, but it preserves
 
 The developer workstation baseline provides:
 
-```text
+`text
 CPU: 8 modern cores minimum
 RAM: 32 GiB minimum, 64 GiB recommended
 Storage: 1 TB SSD minimum
 GPU: optional
 Concurrent heavy workspaces: maximum 2 by default
-```
+`
 
 These values describe the developer workstation profile. They do not become universal system requirements or production capacity claims.
 
@@ -351,7 +351,7 @@ Heavy services can include:
 - Elasticsearch;
 - OpenRefine;
 - local model runtimes;
-- intensive UCKK jobs;
+- intensive kOA Mediatheque processing and UCKK package-validation or transport jobs;
 - large browser farms;
 - full repository indexing;
 - memory-intensive integration environments.
@@ -448,7 +448,7 @@ Observability does not require collection of source content, secrets, user data,
 - **REQ-DEV-RES-007 — SHALL:** Every workload declare or inherit a validated workload class before admission.
 - **REQ-DEV-RES-008 — SHALL:** Essential interactive and recovery capabilities retain protected capacity during optional workload pressure.
 - **REQ-DEV-RES-009 — SHALL:** Heavy services be stopped by default and activated only for an explicit bounded task.
-- **REQ-DEV-RES-010 — SHALL NOT:** SenTient, Solr, Elasticsearch, OpenRefine, local model runtimes, or intensive UCKK jobs remain permanently active merely because they are installed.
+- **REQ-DEV-RES-010 — SHALL NOT:** SenTient, Solr, Elasticsearch, OpenRefine, local model runtimes, or intensive kOA Mediatheque processing and UCKK package-validation or transport jobs remain permanently active merely because they are installed.
 - **REQ-DEV-RES-011 — SHALL:** The developer workstation default limit concurrent heavy workspaces to two unless an explicit reassessment and conformance result approve a higher value.
 - **REQ-DEV-RES-012 — SHALL:** Admission control return an explicit start, queue, reduced-mode, deny, or cancel result.
 - **REQ-DEV-RES-013 — SHALL:** Queues be bounded and expose backpressure, expiry, cancellation, and terminal-failure behavior.
@@ -493,13 +493,13 @@ Budget allocation proceeds through:
 
 The admission flow is:
 
-```text
+`text
 requested
-  -> classified
-  -> authority_checked
-  -> capacity_evaluated
-  -> started | queued | reduced | denied | cancelled
-```
+ -> classified
+ -> authority_checked
+ -> capacity_evaluated
+ -> started | queued | reduced | denied | cancelled
+`
 
 For a started workload:
 
@@ -680,9 +680,9 @@ SenTient is a heavy, optional, task-activated, non-authoritative workload.
 
 Its dependencies, storage, temporary data, service identity, network, CPU, and memory remain isolated. Resource admission does not make its output authoritative.
 
-### 8.7 UCKK
+### 8.7 kOA Mediatheque and UCKK interchange
 
-Deterministic UCKK operations can be standard or heavy according to the task.
+Deterministic local media operations can be standard or heavy according to the task. UCKK publication packaging, inbound retrieval, quarantine scanning, compatibility validation, and transfer remain separate task-activated jobs with bounded queues and no automatic synchronization.
 
 Large transcodes, broad preview generation, and intensive media jobs use explicit admission and bounded temporary storage. Resource pressure does not authorize automatic use of Suno, Gamma, or another external service.
 

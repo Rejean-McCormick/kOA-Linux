@@ -142,7 +142,7 @@ KOA:DOC-META:END -->
 
 # Reproducible Build-Farm Worker
 
-> **Recipe status:** Non-normative implementation guidance.  
+> **Recipe status:** Non-normative implementation guidance.
 > The active build-farm profile, toolchain, artifact, release, resource, security, test, and evidence contracts take precedence.
 
 ## 1. Purpose
@@ -182,13 +182,13 @@ Use this recipe when:
 
 The retained build-farm envelope includes:
 
-```text
+`text
 CPU: 16 cores minimum
 RAM: 64 GiB minimum
 Storage: 2 TB SSD minimum
 Artifact cache: required
 Reproducible clean workers: required
-```
+`
 
 The active profile contract remains the owner of these values.
 
@@ -230,7 +230,7 @@ The build worker never receives release-signing keys or target activation creden
 
 This recipe uses:
 
-```text
+`text
 /var/lib/koa/build-farm/
 ├── requests/
 ├── jobs/
@@ -242,13 +242,13 @@ This recipe uses:
 ├── evidence/
 ├── rejected/
 └── locks/
-```
+`
 
 The caches are content-addressed and treated as immutable after admission.
 
 Each job uses:
 
-```text
+`text
 jobs/<build_id>/
 ├── request/
 ├── source/
@@ -258,7 +258,7 @@ jobs/<build_id>/
 ├── output-b/
 ├── logs/
 └── evidence/
-```
+`
 
 No job mounts another job's writable directory.
 
@@ -287,52 +287,52 @@ Create a dedicated unprivileged account according to the host identity-managemen
 
 Example directory preparation:
 
-```bash
+`bash
 set -euo pipefail
 
 BUILD_ROOT="/var/lib/koa/build-farm"
 
 sudo install -d -o root -g koa-build -m 0750 \
-  "$BUILD_ROOT" \
-  "$BUILD_ROOT/requests" \
-  "$BUILD_ROOT/jobs" \
-  "$BUILD_ROOT/source-cache" \
-  "$BUILD_ROOT/dependency-cache" \
-  "$BUILD_ROOT/worker-images" \
-  "$BUILD_ROOT/outputs" \
-  "$BUILD_ROOT/receipts" \
-  "$BUILD_ROOT/evidence" \
-  "$BUILD_ROOT/rejected" \
-  "$BUILD_ROOT/locks"
-```
+ "$BUILD_ROOT" \
+ "$BUILD_ROOT/requests" \
+ "$BUILD_ROOT/jobs" \
+ "$BUILD_ROOT/source-cache" \
+ "$BUILD_ROOT/dependency-cache" \
+ "$BUILD_ROOT/worker-images" \
+ "$BUILD_ROOT/outputs" \
+ "$BUILD_ROOT/receipts" \
+ "$BUILD_ROOT/evidence" \
+ "$BUILD_ROOT/rejected" \
+ "$BUILD_ROOT/locks"
+`
 
 Confirm rootless OCI operation for the build account:
 
-```bash
+`bash
 BUILD_UID="$(
-  id -u koa-build
+ id -u koa-build
 )"
 
 sudo loginctl enable-linger koa-build
 
 sudo -u koa-build \
-  env "XDG_RUNTIME_DIR=/run/user/$BUILD_UID" \
-  podman info >/dev/null
+ env "XDG_RUNTIME_DIR=/run/user/$BUILD_UID" \
+ podman info >/dev/null
 
 sudo -u koa-build \
-  env "XDG_RUNTIME_DIR=/run/user/$BUILD_UID" \
-  podman unshare true
-```
+ env "XDG_RUNTIME_DIR=/run/user/$BUILD_UID" \
+ podman unshare true
+`
 
 Confirm cgroup v2 and required controllers:
 
-```bash
+`bash
 test "$(
-  stat -fc '%T' /sys/fs/cgroup
+ stat -fc '%T' /sys/fs/cgroup
 )" = "cgroup2fs"
 
 cat /sys/fs/cgroup/cgroup.controllers
-```
+`
 
 Do not grant the build account:
 
@@ -351,13 +351,13 @@ Do not grant the build account:
 
 Assume the scheduler placed a validated request at:
 
-```text
+`text
 /var/lib/koa/build-farm/requests/<build_id>.json
-```
+`
 
 Load the exact build identity:
 
-```bash
+`bash
 set -euo pipefail
 
 REQUEST_FILE="${1:?usage: worker request.json}"
@@ -365,42 +365,42 @@ REQUEST_FILE="${1:?usage: worker request.json}"
 test -r "$REQUEST_FILE"
 
 BUILD_ID="$(
-  jq -er '.build_id' "$REQUEST_FILE"
+ jq -er '.build_id' "$REQUEST_FILE"
 )"
 
 SOURCE_REPOSITORY="$(
-  jq -er '.source.repository_path' "$REQUEST_FILE"
+ jq -er '.source.repository_path' "$REQUEST_FILE"
 )"
 
 SOURCE_COMMIT="$(
-  jq -er '.source.commit' "$REQUEST_FILE"
+ jq -er '.source.commit' "$REQUEST_FILE"
 )"
 
 SOURCE_TREE_DIGEST="$(
-  jq -er '.source.tree_digest' "$REQUEST_FILE"
+ jq -er '.source.tree_digest' "$REQUEST_FILE"
 )"
 
 WORKER_IMAGE="$(
-  jq -er '.worker.image_reference' "$REQUEST_FILE"
+ jq -er '.worker.image_reference' "$REQUEST_FILE"
 )"
 
 ARTIFACT_CLASS="$(
-  jq -er '.output.artifact_class' "$REQUEST_FILE"
+ jq -er '.output.artifact_class' "$REQUEST_FILE"
 )"
 
 RELEASE_CHANNEL="$(
-  jq -er '.output.release_channel' "$REQUEST_FILE"
+ jq -er '.output.release_channel' "$REQUEST_FILE"
 )"
 
 case "$WORKER_IMAGE" in
-  *@sha256:*) ;;
-  *)
-    printf '%s\n' \
-      "Worker image is not pinned by sha256 digest." >&2
-    exit 65
-    ;;
+ *@sha256:*) ;;
+ *)
+ printf '%s\n' \
+ "Worker image is not pinned by sha256 digest." >&2
+ exit 65
+ ;;
 esac
-```
+`
 
 Reject a request when:
 
@@ -416,71 +416,71 @@ Reject a request when:
 
 ### 5.2 Create a clean job directory
 
-```bash
+`bash
 JOB_DIR="$BUILD_ROOT/jobs/$BUILD_ID"
 JOB_LOCK="$BUILD_ROOT/locks/$BUILD_ID.lock"
 
 exec 9>"$JOB_LOCK"
 
 if ! flock -n 9; then
-  printf '%s\n' "Build is already active." >&2
-  exit 75
+ printf '%s\n' "Build is already active." >&2
+ exit 75
 fi
 
 if [ -e "$JOB_DIR" ]; then
-  printf '%s\n' \
-    "A pre-existing job directory requires explicit disposition." >&2
-  exit 65
+ printf '%s\n' \
+ "A pre-existing job directory requires explicit disposition." >&2
+ exit 65
 fi
 
 sudo install -d -o koa-build -g koa-build -m 0750 \
-  "$JOB_DIR" \
-  "$JOB_DIR/request" \
-  "$JOB_DIR/source" \
-  "$JOB_DIR/dependencies" \
-  "$JOB_DIR/work" \
-  "$JOB_DIR/output-a" \
-  "$JOB_DIR/output-b" \
-  "$JOB_DIR/logs" \
-  "$JOB_DIR/evidence"
+ "$JOB_DIR" \
+ "$JOB_DIR/request" \
+ "$JOB_DIR/source" \
+ "$JOB_DIR/dependencies" \
+ "$JOB_DIR/work" \
+ "$JOB_DIR/output-a" \
+ "$JOB_DIR/output-b" \
+ "$JOB_DIR/logs" \
+ "$JOB_DIR/evidence"
 
 sudo install -o koa-build -g koa-build -m 0640 \
-  "$REQUEST_FILE" \
-  "$JOB_DIR/request/build-request.json"
-```
+ "$REQUEST_FILE" \
+ "$JOB_DIR/request/build-request.json"
+`
 
 ### 5.3 Materialize source from an exact commit
 
 Create the source archive from the local admitted source repository:
 
-```bash
+`bash
 test -d "$SOURCE_REPOSITORY/.git" ||
-  git -C "$SOURCE_REPOSITORY" rev-parse --git-dir >/dev/null
+ git -C "$SOURCE_REPOSITORY" rev-parse --git-dir >/dev/null
 
 git -C "$SOURCE_REPOSITORY" \
-  cat-file -e "${SOURCE_COMMIT}^{commit}"
+ cat-file -e "${SOURCE_COMMIT}^{commit}"
 
 SOURCE_DATE_EPOCH="$(
-  git -C "$SOURCE_REPOSITORY" \
-    show -s --format=%ct "$SOURCE_COMMIT"
+ git -C "$SOURCE_REPOSITORY" \
+ show -s --format=%ct "$SOURCE_COMMIT"
 )"
 
 ACTUAL_TREE_DIGEST="$(
-  git -C "$SOURCE_REPOSITORY" \
-    rev-parse "${SOURCE_COMMIT}^{tree}"
+ git -C "$SOURCE_REPOSITORY" \
+ rev-parse "${SOURCE_COMMIT}^{tree}"
 )"
 
 test "$ACTUAL_TREE_DIGEST" = "$SOURCE_TREE_DIGEST"
 
 sudo -u koa-build \
-  git -C "$SOURCE_REPOSITORY" \
-    archive \
-    --format=tar \
-    --prefix=src/ \
-    "$SOURCE_COMMIT" |
-  sudo -u koa-build \
-    tar -xf - -C "$JOB_DIR/source"
-```
+ git -C "$SOURCE_REPOSITORY" \
+ archive \
+ --format=tar \
+ --prefix=src/ \
+ "$SOURCE_COMMIT" |
+ sudo -u koa-build \
+ tar -xf - -C "$JOB_DIR/source"
+`
 
 The build source contains no untracked file, developer-local configuration, branch worktree state, or mutable `.git` directory.
 
@@ -490,19 +490,19 @@ The input fetcher resolves the lockfiles and creates a content-addressed depende
 
 Example adapter:
 
-```bash
+`bash
 INPUT_FETCHER="/usr/libexec/koa/build-farm/fetch-build-inputs"
 
 test -x "$INPUT_FETCHER"
 
 sudo -u koa-build \
-  "$INPUT_FETCHER" \
-    --request "$JOB_DIR/request/build-request.json" \
-    --source "$JOB_DIR/source/src" \
-    --cache-root "$BUILD_ROOT/dependency-cache" \
-    --materialize "$JOB_DIR/dependencies" \
-    --receipt-dir "$BUILD_ROOT/receipts"
-```
+ "$INPUT_FETCHER" \
+ --request "$JOB_DIR/request/build-request.json" \
+ --source "$JOB_DIR/source/src" \
+ --cache-root "$BUILD_ROOT/dependency-cache" \
+ --materialize "$JOB_DIR/dependencies" \
+ --receipt-dir "$BUILD_ROOT/receipts"
+`
 
 The fetcher:
 
@@ -515,9 +515,9 @@ The fetcher:
 
 After hydration, make inputs read only:
 
-```bash
+`bash
 sudo chmod -R a-w "$JOB_DIR/source" "$JOB_DIR/dependencies"
-```
+`
 
 A dependency cache improves performance but does not replace lockfiles, verification, or provenance.
 
@@ -527,105 +527,105 @@ A dependency cache improves performance but does not replace lockfiles, verifica
 
 Example request fields:
 
-```bash
+`bash
 BUILD_CPUS="$(
-  jq -er '.resources.cpus' \
-    "$JOB_DIR/request/build-request.json"
+ jq -er '.resources.cpus' \
+ "$JOB_DIR/request/build-request.json"
 )"
 
 BUILD_MEMORY="$(
-  jq -er '.resources.memory' \
-    "$JOB_DIR/request/build-request.json"
+ jq -er '.resources.memory' \
+ "$JOB_DIR/request/build-request.json"
 )"
 
 BUILD_PIDS="$(
-  jq -er '.resources.pids' \
-    "$JOB_DIR/request/build-request.json"
+ jq -er '.resources.pids' \
+ "$JOB_DIR/request/build-request.json"
 )"
 
 BUILD_TMPFS="$(
-  jq -er '.resources.temporary_storage' \
-    "$JOB_DIR/request/build-request.json"
+ jq -er '.resources.temporary_storage' \
+ "$JOB_DIR/request/build-request.json"
 )"
-```
+`
 
 Validate these values against the active Resource Governor decision before using them.
 
 ### 6.2 Prepare a minimal deterministic environment
 
-```bash
+`bash
 BUILD_ENV_FILE="$JOB_DIR/request/build.env"
 
 sudo -u koa-build \
-  env -i \
-  LC_ALL=C.UTF-8 \
-  LANG=C.UTF-8 \
-  TZ=UTC \
-  SOURCE_DATE_EPOCH="$SOURCE_DATE_EPOCH" \
-  PYTHONHASHSEED=0 \
-  ZERO_AR_DATE=1 \
-  umask 022 \
-  sh -c '
-    umask 022
-    {
-      printf "LC_ALL=C.UTF-8\n"
-      printf "LANG=C.UTF-8\n"
-      printf "TZ=UTC\n"
-      printf "SOURCE_DATE_EPOCH=%s\n" "$SOURCE_DATE_EPOCH"
-      printf "PYTHONHASHSEED=0\n"
-      printf "ZERO_AR_DATE=1\n"
-      printf "HOME=/work/home\n"
-      printf "TMPDIR=/work/tmp\n"
-      printf "XDG_CACHE_HOME=/work/cache\n"
-    } > "$BUILD_ENV_FILE"
-  '
-```
+ env -i \
+ LC_ALL=C.UTF-8 \
+ LANG=C.UTF-8 \
+ TZ=UTC \
+ SOURCE_DATE_EPOCH="$SOURCE_DATE_EPOCH" \
+ PYTHONHASHSEED=0 \
+ ZERO_AR_DATE=1 \
+ umask 022 \
+ sh -c '
+ umask 022
+ {
+ printf "LC_ALL=C.UTF-8\n"
+ printf "LANG=C.UTF-8\n"
+ printf "TZ=UTC\n"
+ printf "SOURCE_DATE_EPOCH=%s\n" "$SOURCE_DATE_EPOCH"
+ printf "PYTHONHASHSEED=0\n"
+ printf "ZERO_AR_DATE=1\n"
+ printf "HOME=/work/home\n"
+ printf "TMPDIR=/work/tmp\n"
+ printf "XDG_CACHE_HOME=/work/cache\n"
+ } > "$BUILD_ENV_FILE"
+ '
+`
 
 No general host environment file is passed into the worker.
 
 ### 6.3 Run build A
 
-```bash
+`bash
 BUILD_ADAPTER="$(
-  jq -er '.worker.build_adapter' \
-    "$JOB_DIR/request/build-request.json"
+ jq -er '.worker.build_adapter' \
+ "$JOB_DIR/request/build-request.json"
 )"
 
 CONTAINER_NAME="${BUILD_ID}-a"
 
 sudo -u koa-build \
-  env "XDG_RUNTIME_DIR=/run/user/$BUILD_UID" \
-  podman run \
-    --rm \
-    --name "$CONTAINER_NAME" \
-    --network none \
-    --read-only \
-    --cap-drop all \
-    --security-opt no-new-privileges \
-    --pids-limit "$BUILD_PIDS" \
-    --cpus "$BUILD_CPUS" \
-    --memory "$BUILD_MEMORY" \
-    --memory-swap "$BUILD_MEMORY" \
-    --env-file "$BUILD_ENV_FILE" \
-    --tmpfs "/work/home:rw,nosuid,nodev,size=256m" \
-    --tmpfs "/work/tmp:rw,nosuid,nodev,size=$BUILD_TMPFS" \
-    --tmpfs "/work/cache:rw,nosuid,nodev,size=1g" \
-    --volume "$JOB_DIR/source/src:/work/src:ro,z" \
-    --volume "$JOB_DIR/dependencies:/work/dependencies:ro,z" \
-    --volume "$JOB_DIR/request:/work/request:ro,z" \
-    --volume "$JOB_DIR/output-a:/work/output:rw,z" \
-    --workdir /work/src \
-    --label "io.koa.build_id=$BUILD_ID" \
-    --label "io.koa.artifact_class=$ARTIFACT_CLASS" \
-    --label "io.koa.release_channel=$RELEASE_CHANNEL" \
-    "$WORKER_IMAGE" \
-    "$BUILD_ADAPTER" \
-      --request /work/request/build-request.json \
-      --dependencies /work/dependencies \
-      --output /work/output \
-  >"$JOB_DIR/logs/build-a.stdout" \
-  2>"$JOB_DIR/logs/build-a.stderr"
-```
+ env "XDG_RUNTIME_DIR=/run/user/$BUILD_UID" \
+ podman run \
+ --rm \
+ --name "$CONTAINER_NAME" \
+ --network none \
+ --read-only \
+ --cap-drop all \
+ --security-opt no-new-privileges \
+ --pids-limit "$BUILD_PIDS" \
+ --cpus "$BUILD_CPUS" \
+ --memory "$BUILD_MEMORY" \
+ --memory-swap "$BUILD_MEMORY" \
+ --env-file "$BUILD_ENV_FILE" \
+ --tmpfs "/work/home:rw,nosuid,nodev,size=256m" \
+ --tmpfs "/work/tmp:rw,nosuid,nodev,size=$BUILD_TMPFS" \
+ --tmpfs "/work/cache:rw,nosuid,nodev,size=1g" \
+ --volume "$JOB_DIR/source/src:/work/src:ro,z" \
+ --volume "$JOB_DIR/dependencies:/work/dependencies:ro,z" \
+ --volume "$JOB_DIR/request:/work/request:ro,z" \
+ --volume "$JOB_DIR/output-a:/work/output:rw,z" \
+ --workdir /work/src \
+ --label "io.koa.build_id=$BUILD_ID" \
+ --label "io.koa.artifact_class=$ARTIFACT_CLASS" \
+ --label "io.koa.release_channel=$RELEASE_CHANNEL" \
+ "$WORKER_IMAGE" \
+ "$BUILD_ADAPTER" \
+ --request /work/request/build-request.json \
+ --dependencies /work/dependencies \
+ --output /work/output \
+ >"$JOB_DIR/logs/build-a.stdout" \
+ 2>"$JOB_DIR/logs/build-a.stderr"
+`
 
 The worker has:
 
@@ -644,29 +644,29 @@ The artifact contract identifies which files constitute reproducible payload and
 
 Example payload manifest:
 
-```bash
+`bash
 PAYLOAD_LIST="$(
-  jq -er '.output.reproducible_paths[]' \
-    "$JOB_DIR/request/build-request.json"
+ jq -er '.output.reproducible_paths[]' \
+ "$JOB_DIR/request/build-request.json"
 )"
 
 : > "$JOB_DIR/evidence/build-a.manifest.sha256"
 
 while IFS= read -r relative_path; do
-  test -f "$JOB_DIR/output-a/$relative_path"
+ test -f "$JOB_DIR/output-a/$relative_path"
 
-  (
-    cd "$JOB_DIR/output-a"
-    sha256sum -- "$relative_path"
-  ) >> "$JOB_DIR/evidence/build-a.manifest.sha256"
+ (
+ cd "$JOB_DIR/output-a"
+ sha256sum -- "$relative_path"
+ ) >> "$JOB_DIR/evidence/build-a.manifest.sha256"
 done <<EOF
 $PAYLOAD_LIST
 EOF
 
 LC_ALL=C sort -o \
-  "$JOB_DIR/evidence/build-a.manifest.sha256" \
-  "$JOB_DIR/evidence/build-a.manifest.sha256"
-```
+ "$JOB_DIR/evidence/build-a.manifest.sha256" \
+ "$JOB_DIR/evidence/build-a.manifest.sha256"
+`
 
 Do not include build receipts containing execution times or worker identities in the payload-equivalence manifest unless their contract defines a reproducible representation.
 
@@ -676,81 +676,81 @@ Do not include build receipts containing execution times or worker identities in
 
 Build B uses a new container and separate writable directories.
 
-```bash
+`bash
 sudo rm -rf \
-  "$JOB_DIR/work/build-b" \
-  "$JOB_DIR/output-b"
+ "$JOB_DIR/work/build-b" \
+ "$JOB_DIR/output-b"
 
 sudo install -d -o koa-build -g koa-build -m 0750 \
-  "$JOB_DIR/work/build-b" \
-  "$JOB_DIR/output-b"
-```
+ "$JOB_DIR/work/build-b" \
+ "$JOB_DIR/output-b"
+`
 
 ### 7.2 Run build B
 
 Run the same pinned worker, source, dependencies, request, environment, and resource envelope with a different container identity:
 
-```bash
+`bash
 CONTAINER_NAME="${BUILD_ID}-b"
 
 sudo -u koa-build \
-  env "XDG_RUNTIME_DIR=/run/user/$BUILD_UID" \
-  podman run \
-    --rm \
-    --name "$CONTAINER_NAME" \
-    --network none \
-    --read-only \
-    --cap-drop all \
-    --security-opt no-new-privileges \
-    --pids-limit "$BUILD_PIDS" \
-    --cpus "$BUILD_CPUS" \
-    --memory "$BUILD_MEMORY" \
-    --memory-swap "$BUILD_MEMORY" \
-    --env-file "$BUILD_ENV_FILE" \
-    --tmpfs "/work/home:rw,nosuid,nodev,size=256m" \
-    --tmpfs "/work/tmp:rw,nosuid,nodev,size=$BUILD_TMPFS" \
-    --tmpfs "/work/cache:rw,nosuid,nodev,size=1g" \
-    --volume "$JOB_DIR/source/src:/work/src:ro,z" \
-    --volume "$JOB_DIR/dependencies:/work/dependencies:ro,z" \
-    --volume "$JOB_DIR/request:/work/request:ro,z" \
-    --volume "$JOB_DIR/output-b:/work/output:rw,z" \
-    --workdir /work/src \
-    --label "io.koa.build_id=$BUILD_ID" \
-    --label "io.koa.reproducibility_run=b" \
-    "$WORKER_IMAGE" \
-    "$BUILD_ADAPTER" \
-      --request /work/request/build-request.json \
-      --dependencies /work/dependencies \
-      --output /work/output \
-  >"$JOB_DIR/logs/build-b.stdout" \
-  2>"$JOB_DIR/logs/build-b.stderr"
-```
+ env "XDG_RUNTIME_DIR=/run/user/$BUILD_UID" \
+ podman run \
+ --rm \
+ --name "$CONTAINER_NAME" \
+ --network none \
+ --read-only \
+ --cap-drop all \
+ --security-opt no-new-privileges \
+ --pids-limit "$BUILD_PIDS" \
+ --cpus "$BUILD_CPUS" \
+ --memory "$BUILD_MEMORY" \
+ --memory-swap "$BUILD_MEMORY" \
+ --env-file "$BUILD_ENV_FILE" \
+ --tmpfs "/work/home:rw,nosuid,nodev,size=256m" \
+ --tmpfs "/work/tmp:rw,nosuid,nodev,size=$BUILD_TMPFS" \
+ --tmpfs "/work/cache:rw,nosuid,nodev,size=1g" \
+ --volume "$JOB_DIR/source/src:/work/src:ro,z" \
+ --volume "$JOB_DIR/dependencies:/work/dependencies:ro,z" \
+ --volume "$JOB_DIR/request:/work/request:ro,z" \
+ --volume "$JOB_DIR/output-b:/work/output:rw,z" \
+ --workdir /work/src \
+ --label "io.koa.build_id=$BUILD_ID" \
+ --label "io.koa.reproducibility_run=b" \
+ "$WORKER_IMAGE" \
+ "$BUILD_ADAPTER" \
+ --request /work/request/build-request.json \
+ --dependencies /work/dependencies \
+ --output /work/output \
+ >"$JOB_DIR/logs/build-b.stdout" \
+ 2>"$JOB_DIR/logs/build-b.stderr"
+`
 
 ### 7.3 Compare payloads
 
-```bash
+`bash
 : > "$JOB_DIR/evidence/build-b.manifest.sha256"
 
 while IFS= read -r relative_path; do
-  test -f "$JOB_DIR/output-b/$relative_path"
+ test -f "$JOB_DIR/output-b/$relative_path"
 
-  (
-    cd "$JOB_DIR/output-b"
-    sha256sum -- "$relative_path"
-  ) >> "$JOB_DIR/evidence/build-b.manifest.sha256"
+ (
+ cd "$JOB_DIR/output-b"
+ sha256sum -- "$relative_path"
+ ) >> "$JOB_DIR/evidence/build-b.manifest.sha256"
 done <<EOF
 $PAYLOAD_LIST
 EOF
 
 LC_ALL=C sort -o \
-  "$JOB_DIR/evidence/build-b.manifest.sha256" \
-  "$JOB_DIR/evidence/build-b.manifest.sha256"
+ "$JOB_DIR/evidence/build-b.manifest.sha256" \
+ "$JOB_DIR/evidence/build-b.manifest.sha256"
 
 diff -u \
-  "$JOB_DIR/evidence/build-a.manifest.sha256" \
-  "$JOB_DIR/evidence/build-b.manifest.sha256" \
-  > "$JOB_DIR/evidence/reproducibility.diff"
-```
+ "$JOB_DIR/evidence/build-a.manifest.sha256" \
+ "$JOB_DIR/evidence/build-b.manifest.sha256" \
+ > "$JOB_DIR/evidence/reproducibility.diff"
+`
 
 A zero-length diff supports payload reproducibility for the exact inputs and environment.
 
@@ -771,43 +771,43 @@ Cross-worker or cross-host reproduction can be required by the artifact class or
 
 Use the registered SBOM generator:
 
-```bash
+`bash
 SBOM_GENERATOR="/usr/libexec/koa/build-farm/generate-sbom"
 
 test -x "$SBOM_GENERATOR"
 
 sudo -u koa-build \
-  "$SBOM_GENERATOR" \
-    --request "$JOB_DIR/request/build-request.json" \
-    --source "$JOB_DIR/source/src" \
-    --dependencies "$JOB_DIR/dependencies" \
-    --artifacts "$JOB_DIR/output-a" \
-    --output "$JOB_DIR/evidence/sbom.json"
-```
+ "$SBOM_GENERATOR" \
+ --request "$JOB_DIR/request/build-request.json" \
+ --source "$JOB_DIR/source/src" \
+ --dependencies "$JOB_DIR/dependencies" \
+ --artifacts "$JOB_DIR/output-a" \
+ --output "$JOB_DIR/evidence/sbom.json"
+`
 
 The SBOM belongs to the exact output and records its generator identity and version.
 
 ### 8.2 Generate provenance
 
-```bash
+`bash
 PROVENANCE_GENERATOR="/usr/libexec/koa/build-farm/generate-provenance"
 
 test -x "$PROVENANCE_GENERATOR"
 
 sudo -u koa-build \
-  "$PROVENANCE_GENERATOR" \
-    --request "$JOB_DIR/request/build-request.json" \
-    --worker-image "$WORKER_IMAGE" \
-    --source-commit "$SOURCE_COMMIT" \
-    --source-tree "$SOURCE_TREE_DIGEST" \
-    --source-date-epoch "$SOURCE_DATE_EPOCH" \
-    --input-receipts "$BUILD_ROOT/receipts" \
-    --payload-manifest "$JOB_DIR/evidence/build-a.manifest.sha256" \
-    --reproducibility-manifest "$JOB_DIR/evidence/build-b.manifest.sha256" \
-    --network-mode none \
-    --resource-envelope "$JOB_DIR/request/build-request.json" \
-    --output "$JOB_DIR/evidence/provenance.json"
-```
+ "$PROVENANCE_GENERATOR" \
+ --request "$JOB_DIR/request/build-request.json" \
+ --worker-image "$WORKER_IMAGE" \
+ --source-commit "$SOURCE_COMMIT" \
+ --source-tree "$SOURCE_TREE_DIGEST" \
+ --source-date-epoch "$SOURCE_DATE_EPOCH" \
+ --input-receipts "$BUILD_ROOT/receipts" \
+ --payload-manifest "$JOB_DIR/evidence/build-a.manifest.sha256" \
+ --reproducibility-manifest "$JOB_DIR/evidence/build-b.manifest.sha256" \
+ --network-mode none \
+ --resource-envelope "$JOB_DIR/request/build-request.json" \
+ --output "$JOB_DIR/evidence/provenance.json"
+`
 
 Provenance identifies:
 
@@ -828,23 +828,23 @@ Provenance identifies:
 
 ### 8.3 Run artifact verification
 
-```bash
+`bash
 ARTIFACT_VERIFIER="/usr/libexec/koa/verify-build-output"
 
 test -x "$ARTIFACT_VERIFIER"
 
 VERIFICATION_RECEIPT="$(
-  sudo -u koa-build \
-  "$ARTIFACT_VERIFIER" \
-    --request "$JOB_DIR/request/build-request.json" \
-    --artifacts "$JOB_DIR/output-a" \
-    --sbom "$JOB_DIR/evidence/sbom.json" \
-    --provenance "$JOB_DIR/evidence/provenance.json" \
-    --reproducibility-diff \
-      "$JOB_DIR/evidence/reproducibility.diff" \
-    --receipt-dir "$BUILD_ROOT/receipts"
+ sudo -u koa-build \
+ "$ARTIFACT_VERIFIER" \
+ --request "$JOB_DIR/request/build-request.json" \
+ --artifacts "$JOB_DIR/output-a" \
+ --sbom "$JOB_DIR/evidence/sbom.json" \
+ --provenance "$JOB_DIR/evidence/provenance.json" \
+ --reproducibility-diff \
+ "$JOB_DIR/evidence/reproducibility.diff" \
+ --receipt-dir "$BUILD_ROOT/receipts"
 )"
-```
+`
 
 Verification covers identity, artifact class, release channel, integrity, provenance, target, profile, compatibility, policy, class-specific checks, and evidence completeness.
 
@@ -856,38 +856,38 @@ Only verified output leaves the worker boundary.
 
 Create a read-only candidate directory:
 
-```bash
+`bash
 CANDIDATE_DIR="$BUILD_ROOT/outputs/$BUILD_ID"
 
 sudo install -d -o root -g koa-release -m 0750 \
-  "$CANDIDATE_DIR"
+ "$CANDIDATE_DIR"
 
 sudo cp -a \
-  --no-preserve=ownership \
-  "$JOB_DIR/output-a/." \
-  "$CANDIDATE_DIR/"
+ --no-preserve=ownership \
+ "$JOB_DIR/output-a/." \
+ "$CANDIDATE_DIR/"
 
 sudo install -o root -g koa-release -m 0640 \
-  "$JOB_DIR/evidence/sbom.json" \
-  "$JOB_DIR/evidence/provenance.json" \
-  "$JOB_DIR/evidence/build-a.manifest.sha256" \
-  "$JOB_DIR/evidence/build-b.manifest.sha256" \
-  "$JOB_DIR/evidence/reproducibility.diff" \
-  "$CANDIDATE_DIR/"
+ "$JOB_DIR/evidence/sbom.json" \
+ "$JOB_DIR/evidence/provenance.json" \
+ "$JOB_DIR/evidence/build-a.manifest.sha256" \
+ "$JOB_DIR/evidence/build-b.manifest.sha256" \
+ "$JOB_DIR/evidence/reproducibility.diff" \
+ "$CANDIDATE_DIR/"
 
 sudo find "$CANDIDATE_DIR" -type d -exec chmod 0750 {} +
 sudo find "$CANDIDATE_DIR" -type f -exec chmod 0640 {} +
 sudo chmod -R a-w "$CANDIDATE_DIR"
-```
+`
 
 Submit the candidate through the protected signing or release interface:
 
-```bash
+`bash
 /usr/libexec/koa/submit-release-candidate \
-  --build-id "$BUILD_ID" \
-  --candidate "$CANDIDATE_DIR" \
-  --verification-receipt "$VERIFICATION_RECEIPT"
-```
+ --build-id "$BUILD_ID" \
+ --candidate "$CANDIDATE_DIR" \
+ --verification-receipt "$VERIFICATION_RECEIPT"
+`
 
 The signing authority independently verifies:
 
@@ -931,53 +931,53 @@ Publication and Release Set creation remain separate from signing. Target activa
 
 Before cleanup, transfer required logs and evidence:
 
-```bash
+`bash
 EVIDENCE_DIR="$BUILD_ROOT/evidence/$BUILD_ID"
 
 sudo install -d -o root -g koa-audit -m 0750 \
-  "$EVIDENCE_DIR"
+ "$EVIDENCE_DIR"
 
 sudo cp -a \
-  --no-preserve=ownership \
-  "$JOB_DIR/evidence/." \
-  "$EVIDENCE_DIR/"
+ --no-preserve=ownership \
+ "$JOB_DIR/evidence/." \
+ "$EVIDENCE_DIR/"
 
 sudo cp -a \
-  --no-preserve=ownership \
-  "$JOB_DIR/logs/." \
-  "$EVIDENCE_DIR/logs/"
+ --no-preserve=ownership \
+ "$JOB_DIR/logs/." \
+ "$EVIDENCE_DIR/logs/"
 
 sudo find "$EVIDENCE_DIR" -type d -exec chmod 0750 {} +
 sudo find "$EVIDENCE_DIR" -type f -exec chmod 0640 {} +
-```
+`
 
 Review logs for secrets, credentials, restricted source, personal data, and excessive content before wider disclosure.
 
 ### 10.3 Remove writable job state
 
-```bash
+`bash
 sudo -u koa-build \
-  env "XDG_RUNTIME_DIR=/run/user/$BUILD_UID" \
-  podman ps -aq \
-    --filter "label=io.koa.build_id=$BUILD_ID" |
-  xargs -r \
-    sudo -u koa-build \
-      env "XDG_RUNTIME_DIR=/run/user/$BUILD_UID" \
-      podman rm -f
+ env "XDG_RUNTIME_DIR=/run/user/$BUILD_UID" \
+ podman ps -aq \
+ --filter "label=io.koa.build_id=$BUILD_ID" |
+ xargs -r \
+ sudo -u koa-build \
+ env "XDG_RUNTIME_DIR=/run/user/$BUILD_UID" \
+ podman rm -f
 
 sudo rm -rf --one-file-system "$JOB_DIR"
-```
+`
 
 Verify no job-specific writable state remains:
 
-```bash
+`bash
 test ! -e "$JOB_DIR"
 
 sudo -u koa-build \
-  env "XDG_RUNTIME_DIR=/run/user/$BUILD_UID" \
-  podman ps -a \
-    --filter "label=io.koa.build_id=$BUILD_ID"
-```
+ env "XDG_RUNTIME_DIR=/run/user/$BUILD_UID" \
+ podman ps -a \
+ --filter "label=io.koa.build_id=$BUILD_ID"
+`
 
 Do not prune the complete shared image or dependency cache as part of ordinary job cleanup. Cache retention and garbage collection use a separate content-addressed policy that preserves objects referenced by active or retained evidence.
 

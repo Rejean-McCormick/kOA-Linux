@@ -31,7 +31,10 @@
     "generated/traceability.json",
     "generated/test-catalog.json",
     "generated/evidence-catalog.json",
-    "generated/exception-index.json"
+    "generated/exception-index.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json"
   ],
   "decision_ids": [
     "DEC-DATA-001",
@@ -143,11 +146,11 @@ Exit is the controlled transfer or closure of operational dependence on a deploy
 
 The model distinguishes three outcomes:
 
-```text
+`text
 data portability
 operational portability
 complete exit
-```
+`
 
 Data portability provides usable component-owned records and relationships.
 
@@ -159,14 +162,14 @@ A copied archive is not automatically portable. A successful restore attempt is 
 
 The architecture requires credible exit:
 
-```text
+`text
 exportable state
-    → verified package
-    → independent destination
-    → controlled cutover
-    → source closure
-    → evidence of continuing autonomy
-```
+ → verified package
+ → independent destination
+ → controlled cutover
+ → source closure
+ → evidence of continuing autonomy
+`
 
 ## 2. Scope
 
@@ -179,7 +182,7 @@ This document applies globally to portability and exit involving:
 - governance policy;
 - cultural-rights and consent records;
 - kOA Mediatheque objects and relationships;
-- UCKK publication packages, mappings, and receipts without claiming remote platform ownership;
+- UCKK publication packages, learning-package imports, local accepted copies, source mappings, quarantine dispositions, and directional receipts without claiming remote platform ownership;
 - Ariane configuration and experience artifacts;
 - Kristal, PGF, Atlas, language, and knowledge artifacts;
 - system and service artifacts;
@@ -216,7 +219,7 @@ This document does not define one mandatory archive format, database engine, clo
 
 The canonical sources for this document are:
 
-```text
+`text
 generated/authority-manifest.json
 generated/decision-index.json
 contracts/system.contract.json#/data_authority_and_ownership
@@ -240,7 +243,7 @@ generated/traceability.json
 generated/test-catalog.json
 generated/evidence-catalog.json
 generated/exception-index.json
-```
+`
 
 Their ownership roles are:
 
@@ -284,7 +287,7 @@ The requested scope declares its level explicitly.
 
 An exit inventory can include:
 
-```text
+`text
 tenant identities
 component data exports
 derived-data disclosures
@@ -303,7 +306,7 @@ backups and checkpoints
 recovery artifacts
 retention and deletion schedule
 reference and dependency graph
-```
+`
 
 Each item has an owner and disposition.
 
@@ -365,7 +368,7 @@ References can connect:
 
 The package includes a reference map that distinguishes:
 
-```text
+`text
 resolved internally
 resolved by another exported component
 resolved by an included artifact
@@ -373,7 +376,7 @@ resolved by a destination-created identity
 retained as historical reference
 excluded with declared reason
 unresolved and blocking
-```
+`
 
 Silent reference loss is not acceptable.
 
@@ -417,14 +420,14 @@ Portable deployments preserve artifact identity and channel membership.
 
 The destination resolves:
 
-```text
+`text
 system selection
 services selection
 governance selection
 knowledge selection
 effective Release Set
 profile and overlay compatibility
-```
+`
 
 A destination can select a newer compatible Release Set through the ordinary lifecycle. It does not silently reinterpret exported artifacts.
 
@@ -453,7 +456,7 @@ Each dependency is transferred, replaced, revoked, closed, retained temporarily,
 
 The operational phases are:
 
-```text
+`text
 planning
 inventory
 export preparation
@@ -472,7 +475,7 @@ source deactivation
 access revocation
 retention and deletion
 closure
-```
+`
 
 The authoritative phase is machine-readable.
 
@@ -951,7 +954,7 @@ This document is conformant when all of the following checks pass:
 
 Expected validator failure codes include:
 
-```text
+`text
 exit_authority_missing
 exit_scope_incomplete
 exit_owner_export_missing
@@ -976,7 +979,7 @@ exit_retention_conflict
 exit_receipt_path_unavailable
 exit_status_ambiguous
 exit_offline_sequence_invalid
-```
+`
 
 ## 11. Non-Normative Examples
 

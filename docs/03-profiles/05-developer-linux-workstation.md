@@ -26,7 +26,10 @@
     "generated/traceability.json",
     "generated/exception-index.json",
     "generated/test-catalog.json",
-    "generated/evidence-catalog.json"
+    "generated/evidence-catalog.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json"
   ],
   "decision_ids": [
     "DEC-AI-001",
@@ -132,10 +135,10 @@ KOA:DOC-META:END -->
 
 # Developer Linux Workstation
 
-> **Document status:** Normative profile explanation.  
-> **Profile ID:** `developer_linux_workstation`  
-> **Profile kind:** `primary_profile`  
-> **Canonical profile contract:** `contracts/profiles/developer-linux-workstation.profile.json`  
+> **Document status:** Normative profile explanation.
+> **Profile ID:** `developer_linux_workstation`
+> **Profile kind:** `primary_profile`
+> **Canonical profile contract:** `contracts/profiles/developer-linux-workstation.profile.json`
 > **Authority rule:** The profile contract owns profile facts. This document explains how those facts apply.
 
 ## 1. Purpose
@@ -226,9 +229,9 @@ The hardware envelope is a profile claim and is not a universal kOA requirement.
 
 ### 3.1 Primary authority
 
-```text
+`text
 contracts/profiles/developer-linux-workstation.profile.json
-```
+`
 
 ### 3.2 Supporting authority
 
@@ -279,17 +282,17 @@ Every active development unit has a stable `workspace_id`.
 
 The identifier is derived from:
 
-```text
+`text
 component-or-application + branch-or-purpose + unique-suffix
-```
+`
 
 Examples:
 
-```text
+`text
 konnaxion-main-a31f
 konnaxion-feature-voting-92cd
 orgo-main-b114
-```
+`
 
 The identifier namespaces:
 
@@ -367,7 +370,7 @@ Conditional or optional capabilities include:
 - external AI assistance;
 - SenTient;
 - Solr, Elasticsearch, OpenRefine, and model runtimes;
-- intensive UCKK processing;
+- intensive kOA Mediatheque processing and UCKK package validation or transport;
 - high-assurance or sovereign-offline overlays.
 
 A capability being available does not make it permanently active.
@@ -444,7 +447,7 @@ renderer=requirements-list-v1
 - **REQ-PROFILE-DEV-LINUX-024 — SHALL:** Each workspace have an enforceable CPU, memory, process, I/O, queue, worker, and heavy-job budget.
 - **REQ-PROFILE-DEV-LINUX-025 — SHALL:** Resource pressure reduce concurrency, queue work, suspend task-activated services, or reject new heavy work before isolation or authoritative data integrity is weakened.
 - **REQ-PROFILE-DEV-LINUX-026 — SHALL:** The default profile envelope permit no more than two concurrent heavy workspaces unless an explicitly validated resource envelope authorizes more.
-- **REQ-PROFILE-DEV-LINUX-027 — SHALL:** SenTient, Solr, Elasticsearch, OpenRefine, model runtimes, and intensive UCKK jobs be optional or task-activated rather than permanent profile dependencies.
+- **REQ-PROFILE-DEV-LINUX-027 — SHALL:** SenTient, Solr, Elasticsearch, OpenRefine, model runtimes, and intensive kOA Mediatheque processing and UCKK package-validation or transport jobs be optional or task-activated rather than permanent profile dependencies.
 - **REQ-PROFILE-DEV-LINUX-028 — SHALL:** SenTient remain isolated, non-authoritative, and unable to write directly to another component's authoritative store.
 - **REQ-PROFILE-DEV-LINUX-029 — SHALL NOT:** The profile require native AI or an external AI surface for source editing, local builds, tests, workspace management, or deterministic component operation.
 - **REQ-PROFILE-DEV-LINUX-030 — SHALL:** External AI outputs remain candidate inputs and pass normal review, validation, provenance, and import controls.
@@ -495,9 +498,9 @@ Heavy services are task-activated or manually activated. They stop or release re
 
 Normal reproducible synchronization uses:
 
-```bash
+`bash
 uv sync --frozen
-```
+`
 
 A lock refresh is separate:
 
@@ -534,7 +537,7 @@ A collision blocks the affected workspace start.
 
 A workspace can transition through:
 
-```text
+`text
 defined
 → validated
 → allocated
@@ -544,7 +547,7 @@ defined
 → active
 → retired
 → archived
-```
+`
 
 Recovery revalidates identity, ports, dependencies, services, data ownership, resource limits, queued work, and prior failure state before mutation resumes.
 
@@ -698,14 +701,14 @@ This document and the effective profile validate when:
 
 Applicable checks include:
 
-```bash
+`bash
 python docs/tools/check_profile_composition.py
 python docs/tools/check_component_boundaries.py
 python docs/tools/check_canonical_ownership.py
 python docs/tools/check_interfile_locks.py
 python docs/tools/check_traceability.py
 python docs/tools/validate_docs.py
-```
+`
 
 ## 11. Non-Normative Examples
 
@@ -713,10 +716,10 @@ python docs/tools/validate_docs.py
 
 A developer runs:
 
-```text
+`text
 konnaxion-main-a31f
 konnaxion-feature-voting-92cd
-```
+`
 
 Each workspace has its own `.venv`, ports, database identity, temporary paths, service names, and resource allocation. Stopping the feature workspace does not stop or mutate the main workspace.
 

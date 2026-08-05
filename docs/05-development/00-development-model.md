@@ -377,7 +377,7 @@ The development workflow hands off validated source and candidate evidence. It d
 
 A workspace separates these logical areas:
 
-```text
+`text
 source
 contracts
 tests
@@ -387,7 +387,7 @@ runtime
 artifacts
 evidence
 cache
-```
+`
 
 The physical layout can vary by repository, but cleanup and validation need to distinguish them.
 
@@ -397,29 +397,29 @@ Source and canonical contracts are version-controlled. Mutable runtime state, ca
 
 Python workspaces use:
 
-```text
+`text
 pyproject.toml
 uv.lock
 .venv
-```
+`
 
 The normal setup command is:
 
-```bash
+`bash
 uv sync --frozen
-```
+`
 
 Python commands execute through:
 
-```bash
+`bash
 uv run <command>
-```
+`
 
 A lock update is explicit:
 
-```bash
+`bash
 uv lock
-```
+`
 
 The updated lock is reviewed as part of the change.
 
@@ -462,13 +462,13 @@ A database or broker can be shared physically only when logical workspace and co
 
 Services use activation modes such as:
 
-```text
+`text
 always_on
 session_activated
 task_activated
 test_activated
 manual
-```
+`
 
 The active development profile identifies which components are required, available on demand, optional, or excluded.
 
@@ -508,7 +508,7 @@ Secret values do not enter source control, ordinary environment files, fixture a
 
 A change is classified as:
 
-```text
+`text
 implementation_only
 compatible_contract_change
 semantic_contract_change
@@ -517,7 +517,7 @@ artifact_change
 integration_change
 migration_change
 release_change
-```
+`
 
 Classification determines required decisions, impact analysis, tests, evidence, compatibility, and review.
 
@@ -573,9 +573,9 @@ Local validation includes applicable checks for:
 
 The principal documentation and contract command is:
 
-```bash
+`bash
 uv run python docs/tools/validate_docs.py
-```
+`
 
 Project-specific commands remain registered in the applicable toolchain and test catalog.
 
@@ -637,16 +637,16 @@ No AI provider is required for setup, dependency resolution, test execution, doc
 
 The approved external surfaces are:
 
-```text
+`text
 ChatGPT
 Suno
 Gamma
 approved Ariane voice adapter
-```
+`
 
 A development use follows:
 
-```text
+`text
 explicit user selection
 controlled export
 external processing
@@ -654,7 +654,7 @@ provenance-preserving return
 controlled local import
 human or authorized local review
 explicit acceptance
-```
+`
 
 Outputs can be candidate source, documentation, tests, media, or analysis. They remain non-authoritative until accepted into the owning workflow.
 
@@ -772,12 +772,12 @@ The build environment independently verifies the handoff.
 
 Production release artifacts belong to one of four channels:
 
-```text
+`text
 system
 services
 governance
 knowledge
-```
+`
 
 A compatible Release Set contains one tested version per channel.
 
@@ -876,13 +876,13 @@ This document is conformant when validation confirms:
 
 The principal validation entry point is:
 
-```bash
+`bash
 uv run python docs/tools/validate_docs.py
-```
+`
 
 Supporting checks include:
 
-```text
+`text
 tools/check_component_boundaries.py
 tools/check_profile_inheritance.py
 tools/check_interfile_locks.py
@@ -891,7 +891,7 @@ tools/check_artifact_contracts.py
 tools/check_traceability.py
 tools/check_generated_content.py
 tools/check_no_unresolved_state.py
-```
+`
 
 ## 11. Non-Normative Examples
 
@@ -903,10 +903,10 @@ A developer adds a component operation. The change updates the component contrac
 
 A developer clones a repository, enters the workspace, and runs:
 
-```bash
+`bash
 uv sync --frozen
 uv run pytest
-```
+`
 
 The environment is created in `.venv` and uses the committed `uv.lock`.
 

@@ -33,7 +33,11 @@
     "contracts/artifact-contracts/runtime-pack.schema.json",
     "contracts/artifact-contracts/language-pack.schema.json",
     "contracts/components/koa-mediatheque.component.json",
-    "contracts/integrations/uckk-publication.integration.json"
+    "contracts/integrations/uckk-publication.integration.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json",
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json"
   ],
   "decision_ids": [
     "DEC-REL-001",
@@ -76,7 +80,10 @@
     "REQ-CONF-REL-027",
     "REQ-CONF-REL-028",
     "REQ-CONF-REL-029",
-    "REQ-CONF-REL-030"
+    "REQ-CONF-REL-030",
+    "REQ-CONF-REL-031",
+    "REQ-CONF-REL-032",
+    "REQ-CONF-REL-033"
   ],
   "lock_ids": [
     "LOCK-DOC-002",
@@ -99,7 +106,8 @@
     "LOCK-LIFE-003",
     "LOCK-LIFE-004",
     "LOCK-MEDIATHEQUE-001",
-    "LOCK-UCKK-EXT-001"
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -163,20 +171,20 @@ This document defines the evidence required to support a kOA release conformance
 
 A release is not a single package or service version. It is a signed compatibility context that selects tested versions across four release channels:
 
-```text
+`text
 system
 services
 governance
 knowledge
-```
+`
 
 Release evidence proves three different things:
 
-```text
+`text
 artifact evidence
 Release Set compatibility evidence
 deployment and activation evidence
-```
+`
 
 Artifact evidence proves what each immutable selected object is, where it came from, how it was produced, what it contains, and whether it verifies.
 
@@ -235,7 +243,7 @@ It does not define artifact payload schemas, component behavior, profile members
 
 The canonical sources for this document are:
 
-```text
+`text
 generated/authority-manifest.json
 generated/decision-index.json
 contracts/system.contract.json#/release_and_artifact_identity
@@ -259,7 +267,7 @@ contracts/artifact-contracts/offline-bundle.schema.json
 contracts/artifact-contracts/policy-bundle.schema.json
 contracts/artifact-contracts/runtime-pack.schema.json
 contracts/artifact-contracts/language-pack.schema.json
-```
+`
 
 Their ownership roles are:
 
@@ -289,7 +297,7 @@ This document explains evidence composition. It does not become the canonical re
 
 A release-evidence package contains or references:
 
-```text
+`text
 release_claim_id
 Release Set identity and signature
 channel-selection manifests
@@ -308,7 +316,7 @@ offline evidence
 exceptions
 result
 validity
-```
+`
 
 The package can be distributed across evidence records. Its manifest resolves every required relationship.
 
@@ -339,7 +347,7 @@ A lifecycle container or evidence object remains outside the channel model.
 
 Each selected artifact evidence record identifies:
 
-```text
+`text
 artifact identity
 artifact class
 artifact version
@@ -359,7 +367,7 @@ compatibility declaration
 test results
 recovery behavior
 retention class
-```
+`
 
 Artifact evidence remains bound to the exact bytes.
 
@@ -478,7 +486,7 @@ Release test evidence includes:
 
 Required test families can include:
 
-```text
+`text
 schema and contract
 component integration
 data ownership
@@ -494,7 +502,7 @@ recovery
 offline
 performance and resource envelope
 portability and independent restoration
-```
+`
 
 ### 4.11 Migration evidence
 
@@ -520,7 +528,7 @@ A prepared or partially executed migration is not committed evidence.
 
 Activation evidence distinguishes:
 
-```text
+`text
 artifact verification
 staging
 authority decision
@@ -533,7 +541,7 @@ active artifact identity
 Release Set identity
 rollback availability
 final outcome
-```
+`
 
 The owning lifecycle boundary produces the authoritative commit receipt.
 
@@ -571,6 +579,10 @@ It covers:
 - application ordering;
 - local policy;
 - local receipts;
+- UCKK learning-package source, license, integrity, completeness, provenance, and shared-frame mapping evidence where applicable;
+- quarantine-before-acceptance evidence and separate local identity creation;
+- proof that accepted learning material remains usable offline;
+- proof that reconnection does not trigger automatic upload, overwrite, deletion, or synchronization;
 - activation;
 - recovery;
 - later reconciliation.
@@ -579,20 +591,20 @@ It covers:
 
 The release-evidence graph links:
 
-```text
+`text
 release claim
-    → Release Set
-        → four channel selections
-            → artifact claims
-                → provenance
-                → SBOM
-                → signature and trust
-                → tests
-        → compatibility evidence
-        → profile claims
-        → deployment evidence
-        → exceptions
-```
+ → Release Set
+ → four channel selections
+ → artifact claims
+ → provenance
+ → SBOM
+ → signature and trust
+ → tests
+ → compatibility evidence
+ → profile claims
+ → deployment evidence
+ → exceptions
+`
 
 Every mandatory edge resolves.
 
@@ -606,7 +618,7 @@ Restricted source materials, security findings, private proof, credentials, pers
 
 ## 5. Applicable Normative Requirements
 
-<!-- GENERATED:REQUIREMENTS:BEGIN ids=REQ-CONF-REL-001,REQ-CONF-REL-002,REQ-CONF-REL-003,REQ-CONF-REL-004,REQ-CONF-REL-005,REQ-CONF-REL-006,REQ-CONF-REL-007,REQ-CONF-REL-008,REQ-CONF-REL-009,REQ-CONF-REL-010,REQ-CONF-REL-011,REQ-CONF-REL-012,REQ-CONF-REL-013,REQ-CONF-REL-014,REQ-CONF-REL-015,REQ-CONF-REL-016,REQ-CONF-REL-017,REQ-CONF-REL-018,REQ-CONF-REL-019,REQ-CONF-REL-020,REQ-CONF-REL-021,REQ-CONF-REL-022,REQ-CONF-REL-023,REQ-CONF-REL-024,REQ-CONF-REL-025,REQ-CONF-REL-026,REQ-CONF-REL-027,REQ-CONF-REL-028,REQ-CONF-REL-029,REQ-CONF-REL-030 -->
+<!-- GENERATED:REQUIREMENTS:BEGIN ids=REQ-CONF-REL-001,REQ-CONF-REL-002,REQ-CONF-REL-003,REQ-CONF-REL-004,REQ-CONF-REL-005,REQ-CONF-REL-006,REQ-CONF-REL-007,REQ-CONF-REL-008,REQ-CONF-REL-009,REQ-CONF-REL-010,REQ-CONF-REL-011,REQ-CONF-REL-012,REQ-CONF-REL-013,REQ-CONF-REL-014,REQ-CONF-REL-015,REQ-CONF-REL-016,REQ-CONF-REL-017,REQ-CONF-REL-018,REQ-CONF-REL-019,REQ-CONF-REL-020,REQ-CONF-REL-021,REQ-CONF-REL-022,REQ-CONF-REL-023,REQ-CONF-REL-024,REQ-CONF-REL-025,REQ-CONF-REL-026,REQ-CONF-REL-027,REQ-CONF-REL-028,REQ-CONF-REL-029,REQ-CONF-REL-030,REQ-CONF-REL-031,REQ-CONF-REL-032,REQ-CONF-REL-033 -->
 - **REQ-CONF-REL-001 — SHALL:** Every release-evidence package identify the release claim, signed Release Set, exact system, services, governance, and knowledge channel selections, target profiles and overlays, evaluator, evidence-production interval, and release result.
 - **REQ-CONF-REL-002 — SHALL:** Release evidence distinguish artifact evidence, Release Set compatibility evidence, and deployment or activation evidence.
 - **REQ-CONF-REL-003 — SHALL NOT:** Passing evidence at one release-evidence level substitute for missing or failed evidence at another level.
@@ -637,6 +649,9 @@ Restricted source materials, security findings, private proof, credentials, pers
 - **REQ-CONF-REL-028 — SHALL:** Release-evidence reports expose claim identity, Release Set identity, channel selections, target scope, result, failed and blocked checks, evidence references, exceptions, evaluator, timestamps, validity, and remediation in machine-readable form.
 - **REQ-CONF-REL-029 — SHALL:** Public and ordinary release-evidence views use selective disclosure and exclude secrets, private keys, credentials, protected payloads, restricted personal data, protected cultural content, and unnecessary private proof.
 - **REQ-CONF-REL-030 — SHALL:** Release-evidence generation and result calculation be deterministic for identical canonical inputs, artifact bytes, Release Set, target scope, validator versions, test results, evidence, trust state, and exceptions.
+- **REQ-CONF-REL-031 — SHALL:** A release claim that includes UCKK import carry evidence for integration version, source identity, package version, complete resource graph, integrity, license, restrictions, provenance, shared-frame mapping, quarantine, local acceptance, and import receipt.
+- **REQ-CONF-REL-032 — SHALL:** An offline-learning claim prove that accepted UCKK material and required local runtime remain usable under the claimed disconnected condition.
+- **REQ-CONF-REL-033 — SHALL NOT:** Release evidence represent remote availability, transport success, or reconnection as local acceptance, authority transfer, automatic update, or synchronization.
 <!-- GENERATED:REQUIREMENTS:END -->
 
 ## 6. Procedures or State Transitions
@@ -982,7 +997,7 @@ This document is conformant when all of the following checks pass:
 
 Expected validator failure codes include:
 
-```text
+`text
 release_evidence_claim_identity_missing
 release_evidence_release_set_missing
 release_evidence_release_set_signature_failed
@@ -1010,7 +1025,7 @@ release_evidence_exception_invalid
 release_evidence_receipt_incomplete
 release_evidence_restricted_data_exposed
 release_evidence_result_nondeterministic
-```
+`
 
 ## 11. Non-Normative Examples
 

@@ -23,8 +23,7 @@
     "generated/traceability.json",
     "generated/test-catalog.json",
     "generated/evidence-catalog.json",
-    "generated/toolchain-catalog.json",
-    "generated/component-catalog.json"
+    "generated/toolchain-catalog.json"
   ],
   "decision_ids": [
     "DEC-AI-001",
@@ -37,7 +36,9 @@
     "DEC-K8S-001",
     "DEC-PROFILE-001",
     "DEC-REL-001",
-    "DEC-SENT-001"
+    "DEC-SENT-001",
+    "DEC-UCKK-EXT-001",
+    "DEC-MEDIATHEQUE-001"
   ],
   "requirement_ids": [
     "REQ-PROFILE-BUILD-001",
@@ -89,11 +90,13 @@
     "LOCK-LIFE-004",
     "LOCK-PROFILE-001",
     "LOCK-PROFILE-002",
-    "LOCK-SENT-001"
+    "LOCK-SENT-001",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-002"
   ],
   "independently_deployable": true,
   "supersedes": [],
-  "superseded_by": null,
   "composition": {
     "compatible_primary_profiles": [],
     "required_overlays": [],
@@ -104,7 +107,6 @@
     "incompatible_profiles": [
       "appliance_shell"
     ],
-    "composition_priority": null,
     "conflict_policy": "fail_closed"
   },
   "inheritance": {
@@ -498,8 +500,7 @@
         "Resource envelopes exist for workers, caches, tests, packaging, signing, and optional heavy tasks."
       ],
       "data_authority": "component_owned",
-      "failure_behavior": "New heavy or unconstrained work is blocked; bounded inspection and recovery operations may continue.",
-      "resource_envelope_ref": null
+      "failure_behavior": "New heavy or unconstrained work is blocked; bounded inspection and recovery operations may continue."
     },
     "orgo": {
       "state": "required",
@@ -509,8 +510,7 @@
         "Workflow state does not replace artifact provenance or release authority."
       ],
       "data_authority": "component_owned",
-      "failure_behavior": "New workflow scheduling stops; active workers drain or stop according to their task contract.",
-      "resource_envelope_ref": null
+      "failure_behavior": "New workflow scheduling stops; active workers drain or stop according to their task contract."
     },
     "koa_node_agent": {
       "state": "required",
@@ -519,8 +519,7 @@
         "The agent coordinates profile state, worker registration, health, and local artifact admission."
       ],
       "data_authority": "component_owned",
-      "failure_behavior": "Existing safe workers may drain; new node-level activation, registration, or recovery is blocked.",
-      "resource_envelope_ref": null
+      "failure_behavior": "Existing safe workers may drain; new node-level activation, registration, or recovery is blocked."
     },
     "identity_and_trust": {
       "state": "required",
@@ -529,8 +528,7 @@
         "Worker, source, signer, artifact, and release identities resolve before governed actions."
       ],
       "data_authority": "component_owned",
-      "failure_behavior": "Identity-dependent admission, signing, publication, and release-set assembly are blocked.",
-      "resource_envelope_ref": null
+      "failure_behavior": "Identity-dependent admission, signing, publication, and release-set assembly are blocked."
     },
     "audit_broker": {
       "state": "required",
@@ -539,8 +537,7 @@
         "Critical build, signing, transfer, and release-candidate transitions emit required receipts."
       ],
       "data_authority": "component_owned",
-      "failure_behavior": "Transitions requiring durable receipts remain uncommitted; noncritical local diagnostics may continue.",
-      "resource_envelope_ref": null
+      "failure_behavior": "Transitions requiring durable receipts remain uncommitted; noncritical local diagnostics may continue."
     },
     "governance_policy_runtime": {
       "state": "conditional",
@@ -549,8 +546,7 @@
         "Required when an active overlay or release policy requires governed authorization, disclosure, consent, exception, or privilege decisions."
       ],
       "data_authority": "component_owned",
-      "failure_behavior": "Governed actions are blocked; Resource Governor does not substitute a policy decision.",
-      "resource_envelope_ref": null
+      "failure_behavior": "Governed actions are blocked; Resource Governor does not substitute a policy decision."
     },
     "gf_wordbench": {
       "state": "conditional",
@@ -559,8 +555,7 @@
         "Activated only for language-pack authoring and compilation tasks."
       ],
       "data_authority": "component_owned",
-      "failure_behavior": "Language-pack builds are blocked; unrelated build channels continue.",
-      "resource_envelope_ref": null
+      "failure_behavior": "Language-pack builds are blocked; unrelated build channels continue."
     },
     "semantik_architect_runtime": {
       "state": "conditional",
@@ -569,8 +564,7 @@
         "Activated for compatibility and runtime validation of compiled language artifacts."
       ],
       "data_authority": "component_owned",
-      "failure_behavior": "Language-runtime validation is blocked; the candidate language pack remains non-releasable.",
-      "resource_envelope_ref": null
+      "failure_behavior": "Language-runtime validation is blocked; the candidate language pack remains non-releasable."
     },
     "sentient": {
       "state": "optional",
@@ -580,8 +574,7 @@
         "No direct write access to build, source, signing, release, or component-authoritative stores."
       ],
       "data_authority": "component_owned",
-      "failure_behavior": "Only the SenTient task fails or stops; required build capabilities continue.",
-      "resource_envelope_ref": null
+      "failure_behavior": "Only the SenTient task fails or stops; required build capabilities continue."
     }
   },
   "operating_modes": {
@@ -660,7 +653,6 @@
       {
         "artifact_class_id": "ART-CLASS-003",
         "state": "required",
-        "release_channel": null,
         "activation_policy": "not_activated"
       },
       {
@@ -672,7 +664,6 @@
       {
         "artifact_class_id": "ART-CLASS-006",
         "state": "required",
-        "release_channel": null,
         "activation_policy": "admission_then_activation"
       },
       {
@@ -684,7 +675,6 @@
       {
         "artifact_class_id": "ART-CLASS-008",
         "state": "conditional",
-        "release_channel": null,
         "activation_policy": "atomic"
       },
       {
@@ -702,7 +692,6 @@
       {
         "artifact_class_id": "ART-CLASS-014",
         "state": "required",
-        "release_channel": null,
         "activation_policy": "not_activated"
       },
       {
@@ -767,5 +756,24 @@
     "automatic_semantic_repairs_allowed": false,
     "validated_at": "2026-08-03T16:13:00-04:00",
     "validation_status": "pass"
+  },
+  "external_integrations": {
+    "uckk_publication": {
+      "integration_id": "uckk-publication",
+      "contract_ref": "contracts/integrations/uckk-publication.integration.json",
+      "availability": "optional",
+      "direction": "outbound",
+      "required_for_local_operation": false,
+      "required_for_offline_operation": false
+    },
+    "uckk_import": {
+      "integration_id": "uckk-import",
+      "contract_ref": "contracts/integrations/uckk-import.integration.json",
+      "availability": "optional",
+      "direction": "inbound",
+      "offline_bundle_supported": true,
+      "accepted_content_available_offline": true,
+      "automatic_sync": false
+    }
   }
 }

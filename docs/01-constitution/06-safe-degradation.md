@@ -25,6 +25,8 @@
     "DEC-AI-001",
     "DEC-SENT-001",
     "DEC-GOV-001",
+    "DEC-UCKK-EXT-001",
+    "DEC-MEDIATHEQUE-001",
     "DEC-ARI-001"
   ],
   "requirement_ids": [
@@ -52,6 +54,9 @@
     "LOCK-COMP-001",
     "LOCK-DATA-001",
     "LOCK-GOV-001",
+    "LOCK-UCKK-EXT-002",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-MEDIATHEQUE-001",
     "LOCK-PROFILE-001",
     "LOCK-PROFILE-002",
     "LOCK-SENT-001"
@@ -74,7 +79,7 @@ KOA:DOC-META:END -->
 
 ## 1. Purpose
 
-This document defines the constitutional principle of safe degradation for the kOA operating environment.
+This document defines the constitutional principle of safe degradation for the kOA-Linux Operating System.
 
 Safe degradation allows an affected capability to retain a precisely bounded, lower-authority form of operation when its full operating conditions are unavailable. It prevents a localized failure from becoming either a system-wide outage or an unauthorized expansion of behavior.
 
@@ -440,11 +445,19 @@ An integration failure cannot change the integration classification or widen dat
 
 Ariane separates deterministic local navigation from optional external voice processing. Loss of voice processing preserves non-voice navigation and disables only voice-dependent actions.
 
-### 8.9 UCKK
+### 8.9 kOA and UCKK Mediatheques
 
-UCKK processing may reduce concurrency, delay derived work, or suspend previews under resource pressure. Canonical media identity and user-owned source media remain distinct from derived previews, indexes, and optional transformations.
+Loss of UCKK connectivity does not degrade the authority or availability of locally installed kOA Mediatheque content.
 
-A failed derived process does not invalidate an already verified source object unless the source itself fails integrity validation.
+While disconnected:
+
+- local records, local versions, rights state, provenance, search, browsing, backup, restore, and deterministic derivatives continue within the active profile envelope;
+- previously imported and verified UCKK courses, learning paths, instructions, and resources remain available offline;
+- new UCKK discovery, download, publication delivery, withdrawal delivery, and remote-result confirmation become deferred or unavailable;
+- a queued outbound publication remains `pending`, never `published`;
+- a partially downloaded inbound package remains quarantined and unavailable until integrity and acceptance checks pass.
+
+Resource pressure may reduce local derivative concurrency or suspend previews, but it does not change ownership, rights, publication authority, or import acceptance rules.
 
 ### 8.10 SenTient
 
@@ -468,13 +481,8 @@ Stopping SenTient requires no substitution and does not impair the local baselin
 
 | ADR | Relevance |
 | --- | --- |
-| `ADR-013` | Global system and profile-specific rules remain separate. |
-| `ADR-014` | External AI does not become a hidden fallback for local capability loss. |
-| `ADR-018` | SenTient remains removable from the baseline. |
 | `ADR-019` | Resource and policy authority remain separate during failure. |
 | `ADR-021` | Ariane retains local navigation without external voice. |
-| `ADR-022` | The native UCKK pipeline remains deterministic and independent from generative AI. |
-| `ADR-023` | Profile overlays explicitly narrow or specialize behavior. |
 
 ### 9.3 Prohibited assumptions
 
@@ -523,7 +531,7 @@ This document conforms when all of the following checks pass:
 
 The validator reports actionable failures, including:
 
-```text
+`text
 safe_degradation_missing_capability_owner
 safe_degradation_missing_dependency
 safe_degradation_undeclared_mode
@@ -534,7 +542,7 @@ safe_degradation_missing_evidence
 safe_degradation_profile_scope_violation
 safe_degradation_partial_state_authoritative
 safe_degradation_recovery_not_revalidated
-```
+`
 
 ## 11. Non-Normative Examples
 
@@ -542,9 +550,9 @@ safe_degradation_recovery_not_revalidated
 
 The external voice path is unavailable. Ariane continues to provide local visual and keyboard navigation. Voice-dependent actions are disabled. No local speech model or alternate provider is activated automatically.
 
-### 11.2 UCKK preview worker under resource pressure
+### 11.2 Local Mediatheque worker under resource pressure
 
-The Resource Governor pauses preview generation and allows one low-priority media job at a time. Verified source media remains available. Missing previews are shown as pending rather than corrupt. The resource decision does not change media ownership or publication policy.
+The Resource Governor pauses preview generation and allows one low-priority media job at a time. Verified local source media and previously accepted offline learning packages remain available. Missing previews are shown as pending rather than corrupt. The resource decision does not change media ownership, UCKK import acceptance, or publication policy.
 
 ### 11.3 Governance policy unavailable
 
@@ -556,7 +564,7 @@ The component displays a previously verified local snapshot as read-only and ide
 
 ### 11.5 SenTient stopped
 
-The research workbench is absent from the user-lightweight profile and stopped in a developer profile. Konnaxion, Orgo, Ariane, UCKK, Kristal, and the language runtime continue according to their own contracts. No replacement AI service starts.
+The research workbench is absent from the user-lightweight profile and stopped in a developer profile. Konnaxion, Orgo, Ariane, Kristal, the kOA Mediatheque, installed offline learning content, and the language runtime continue according to their own contracts. No replacement AI service starts.
 
 ### 11.6 Failed artifact activation
 

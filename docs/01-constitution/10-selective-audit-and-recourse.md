@@ -243,7 +243,7 @@ One actor can hold multiple roles only where the applicable policy permits it. H
 
 A recourse case uses explicit states:
 
-```text
+`text
 initiated
 acknowledged
 evidence_preserved
@@ -253,16 +253,16 @@ decision_issued
 remedy_pending
 remedied
 closed
-```
+`
 
 Alternative terminal or transfer states are:
 
-```text
+`text
 withdrawn
 rejected_out_of_scope
 escalated
 superseded
-```
+`
 
 Every state transition records the responsible authority, time, reason, and evidence reference.
 
@@ -362,22 +362,22 @@ External AI output can support drafting or analysis only as non-authoritative ca
 
 A remedy moves through:
 
-```text
+`text
 assigned
 accepted_by_owner
 in_progress
 verified
 completed
-```
+`
 
 It can instead move to:
 
-```text
+`text
 blocked
 failed
 escalated
 superseded
-```
+`
 
 Completion requires evidence that the authoritative state, publication, access rule, artifact, record, or operational condition changed as directed. A written promise without verified effect is not a completed remedy.
 
@@ -490,20 +490,20 @@ This document is conformant when validation confirms:
 
 The principal validation entry point is:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 Supporting checks include:
 
-```text
+`text
 tools/check_interfile_locks.py
 tools/check_traceability.py
 tools/check_component_boundaries.py
 tools/check_artifact_contracts.py
 tools/check_decision_closure.py
 tools/check_no_unresolved_state.py
-```
+`
 
 ## 11. Non-Normative Examples
 

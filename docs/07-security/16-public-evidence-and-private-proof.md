@@ -1,156 +1,155 @@
 <!-- KOA:DOC-META:BEGIN GENERATED
 {
-  "doc_id": "DOC-SEC-016",
-  "document_class": "normative_markdown",
-  "status": "active",
-  "language": "en",
-  "layer": "security",
-  "scope": [
-    "global"
-  ],
-  "canonical_refs": [
-    "generated/authority-manifest.json",
-    "generated/decision-index.json",
-    "contracts/system.contract.json#/selective_audit_and_recourse",
-    "generated/component-catalog.json#/components/audit_broker",
-    "contracts/components/audit-broker.component.json",
-    "generated/component-catalog.json#/components/publication_gateway",
-    "contracts/components/publication-gateway.component.json",
-    "contracts/artifact-classes.contract.json",
-    "contracts/artifact-contracts/decision-receipt.schema.json",
-    "contracts/artifact-contracts/provenance-receipt.schema.json",
-    "contracts/artifact-contracts/publication-request.schema.json",
-    "generated/profile-catalog.json",
-    "generated/requirements-index.json",
-    "generated/assertion-index.json",
-    "generated/traceability.json",
-    "generated/test-catalog.json",
-    "generated/evidence-catalog.json",
-    "generated/exception-index.json"
-  ],
-  "decision_ids": [
-    "DEC-SYS-AUDIT-001",
-    "DEC-SYS-RECOURSE-001",
-    "DEC-DATA-DISCLOSURE-001",
-    "DEC-CULT-001",
-    "DEC-SEC-EVIDENCE-001",
-    "DEC-SYS-COMP-001",
-    "DEC-SYS-OFFLINE-001",
-    "DEC-SYS-AUDIT-001"
-  ],
-  "requirement_ids": [
-    "REQ-SEC-EVIDENCE-001",
-    "REQ-SEC-EVIDENCE-002",
-    "REQ-SEC-EVIDENCE-003",
-    "REQ-SEC-EVIDENCE-004",
-    "REQ-SEC-EVIDENCE-005",
-    "REQ-SEC-EVIDENCE-006",
-    "REQ-SEC-EVIDENCE-007",
-    "REQ-SEC-EVIDENCE-008",
-    "REQ-SEC-EVIDENCE-009",
-    "REQ-SEC-EVIDENCE-010",
-    "REQ-SEC-EVIDENCE-011",
-    "REQ-SEC-EVIDENCE-012",
-    "REQ-SEC-EVIDENCE-013",
-    "REQ-SEC-EVIDENCE-014",
-    "REQ-SEC-EVIDENCE-015",
-    "REQ-SEC-EVIDENCE-016",
-    "REQ-SEC-EVIDENCE-017",
-    "REQ-SEC-EVIDENCE-018",
-    "REQ-SEC-EVIDENCE-019",
-    "REQ-SEC-EVIDENCE-020",
-    "REQ-SEC-EVIDENCE-021",
-    "REQ-SEC-EVIDENCE-022",
-    "REQ-SEC-EVIDENCE-023",
-    "REQ-SEC-EVIDENCE-024",
-    "REQ-SEC-EVIDENCE-025",
-    "REQ-SEC-EVIDENCE-026",
-    "REQ-SEC-EVIDENCE-027",
-    "REQ-SEC-EVIDENCE-028",
-    "REQ-SEC-EVIDENCE-029",
-    "REQ-SEC-EVIDENCE-030",
-    "REQ-SEC-EVIDENCE-031",
-    "REQ-SEC-EVIDENCE-032",
-    "REQ-SEC-EVIDENCE-033",
-    "REQ-SEC-EVIDENCE-034",
-    "REQ-SEC-EVIDENCE-035",
-    "REQ-SEC-EVIDENCE-036",
-    "REQ-SEC-EVIDENCE-037",
-    "REQ-SEC-EVIDENCE-038",
-    "REQ-SEC-EVIDENCE-039",
-    "REQ-SEC-EVIDENCE-040"
-  ],
-  "lock_ids": [
-    "LOCK-OPS-001",
-    "LOCK-OPS-002",
-    "LOCK-OPS-003",
-    "LOCK-OPS-004",
-    "LOCK-DATA-001",
-    "LOCK-GOV-001",
-    "LOCK-CULT-001",
-    "LOCK-AI-001",
-    "LOCK-AI-002",
-    "LOCK-PROFILE-001",
-    "LOCK-PROFILE-002",
-    "LOCK-GATE-001",
-    "LOCK-LIFE-001",
-    "LOCK-LIFE-002",
-    "LOCK-LIFE-003",
-    "LOCK-LIFE-004"
-  ],
-  "exception_ids": [],
-  "depends_on": [
-    "DOC-CONST-002",
-    "DOC-CONST-003",
-    "DOC-CONST-004",
-    "DOC-CONST-005",
-    "DOC-CONST-007",
-    "DOC-CONST-008",
-    "DOC-CONST-009",
-    "DOC-CONST-010",
-    "DOC-SYS-000",
-    "DOC-SYS-003",
-    "DOC-SYS-004",
-    "DOC-SYS-005",
-    "DOC-SYS-006",
-    "DOC-SYS-008",
-    "DOC-SYS-009",
-    "DOC-SYS-010",
-    "DOC-SYS-011",
-    "DOC-SYS-012",
-    "DOC-SYS-014",
-    "DOC-SYS-015",
-    "DOC-SYS-016",
-    "DOC-SYS-017",
-    "DOC-SYS-018",
-    "DOC-SYS-019",
-    "DOC-PROFILE-001",
-    "DOC-PROFILE-002",
-    "DOC-COMP-000",
-    "DOC-COMP-001",
-    "DOC-SEC-000",
-    "DOC-SEC-001",
-    "DOC-SEC-002",
-    "DOC-SEC-003",
-    "DOC-SEC-004",
-    "DOC-SEC-005",
-    "DOC-SEC-006"
-  ],
-  "tags": [
-    "public-evidence",
-    "private-proof",
-    "selective-audit",
-    "minimum-disclosure",
-    "transparency-receipts",
-    "restricted-evidence",
-    "pseudonymization",
-    "aggregation",
-    "integrity",
-    "recourse",
-    "cultural-rights",
-    "offline-audit",
-    "conformance"
-  ]
+ "doc_id": "DOC-SEC-016",
+ "document_class": "normative_markdown",
+ "status": "active",
+ "language": "en",
+ "layer": "security",
+ "scope": [
+ "global"
+ ],
+ "canonical_refs": [
+ "generated/authority-manifest.json",
+ "generated/decision-index.json",
+ "contracts/system.contract.json#/selective_audit_and_recourse",
+ "generated/component-catalog.json#/components/audit_broker",
+ "contracts/components/audit-broker.component.json",
+ "generated/component-catalog.json#/components/publication_gateway",
+ "contracts/components/publication-gateway.component.json",
+ "contracts/artifact-classes.contract.json",
+ "contracts/artifact-contracts/decision-receipt.schema.json",
+ "contracts/artifact-contracts/provenance-receipt.schema.json",
+ "contracts/artifact-contracts/publication-request.schema.json",
+ "generated/profile-catalog.json",
+ "generated/requirements-index.json",
+ "generated/assertion-index.json",
+ "generated/traceability.json",
+ "generated/test-catalog.json",
+ "generated/evidence-catalog.json",
+ "generated/exception-index.json"
+ ],
+ "decision_ids": [
+ "DEC-SYS-AUDIT-001",
+ "DEC-SYS-RECOURSE-001",
+ "DEC-DATA-DISCLOSURE-001",
+ "DEC-CULT-001",
+ "DEC-SEC-EVIDENCE-001",
+ "DEC-SYS-COMP-001",
+ "DEC-SYS-OFFLINE-001"
+ ],
+ "requirement_ids": [
+ "REQ-SEC-EVIDENCE-001",
+ "REQ-SEC-EVIDENCE-002",
+ "REQ-SEC-EVIDENCE-003",
+ "REQ-SEC-EVIDENCE-004",
+ "REQ-SEC-EVIDENCE-005",
+ "REQ-SEC-EVIDENCE-006",
+ "REQ-SEC-EVIDENCE-007",
+ "REQ-SEC-EVIDENCE-008",
+ "REQ-SEC-EVIDENCE-009",
+ "REQ-SEC-EVIDENCE-010",
+ "REQ-SEC-EVIDENCE-011",
+ "REQ-SEC-EVIDENCE-012",
+ "REQ-SEC-EVIDENCE-013",
+ "REQ-SEC-EVIDENCE-014",
+ "REQ-SEC-EVIDENCE-015",
+ "REQ-SEC-EVIDENCE-016",
+ "REQ-SEC-EVIDENCE-017",
+ "REQ-SEC-EVIDENCE-018",
+ "REQ-SEC-EVIDENCE-019",
+ "REQ-SEC-EVIDENCE-020",
+ "REQ-SEC-EVIDENCE-021",
+ "REQ-SEC-EVIDENCE-022",
+ "REQ-SEC-EVIDENCE-023",
+ "REQ-SEC-EVIDENCE-024",
+ "REQ-SEC-EVIDENCE-025",
+ "REQ-SEC-EVIDENCE-026",
+ "REQ-SEC-EVIDENCE-027",
+ "REQ-SEC-EVIDENCE-028",
+ "REQ-SEC-EVIDENCE-029",
+ "REQ-SEC-EVIDENCE-030",
+ "REQ-SEC-EVIDENCE-031",
+ "REQ-SEC-EVIDENCE-032",
+ "REQ-SEC-EVIDENCE-033",
+ "REQ-SEC-EVIDENCE-034",
+ "REQ-SEC-EVIDENCE-035",
+ "REQ-SEC-EVIDENCE-036",
+ "REQ-SEC-EVIDENCE-037",
+ "REQ-SEC-EVIDENCE-038",
+ "REQ-SEC-EVIDENCE-039",
+ "REQ-SEC-EVIDENCE-040"
+ ],
+ "lock_ids": [
+ "LOCK-OPS-001",
+ "LOCK-OPS-002",
+ "LOCK-OPS-003",
+ "LOCK-OPS-004",
+ "LOCK-DATA-001",
+ "LOCK-GOV-001",
+ "LOCK-CULT-001",
+ "LOCK-AI-001",
+ "LOCK-AI-002",
+ "LOCK-PROFILE-001",
+ "LOCK-PROFILE-002",
+ "LOCK-GATE-001",
+ "LOCK-LIFE-001",
+ "LOCK-LIFE-002",
+ "LOCK-LIFE-003",
+ "LOCK-LIFE-004"
+ ],
+ "exception_ids": [],
+ "depends_on": [
+ "DOC-CONST-002",
+ "DOC-CONST-003",
+ "DOC-CONST-004",
+ "DOC-CONST-005",
+ "DOC-CONST-007",
+ "DOC-CONST-008",
+ "DOC-CONST-009",
+ "DOC-CONST-010",
+ "DOC-SYS-000",
+ "DOC-SYS-003",
+ "DOC-SYS-004",
+ "DOC-SYS-005",
+ "DOC-SYS-006",
+ "DOC-SYS-008",
+ "DOC-SYS-009",
+ "DOC-SYS-010",
+ "DOC-SYS-011",
+ "DOC-SYS-012",
+ "DOC-SYS-014",
+ "DOC-SYS-015",
+ "DOC-SYS-016",
+ "DOC-SYS-017",
+ "DOC-SYS-018",
+ "DOC-SYS-019",
+ "DOC-PROFILE-001",
+ "DOC-PROFILE-002",
+ "DOC-COMP-000",
+ "DOC-COMP-001",
+ "DOC-SEC-000",
+ "DOC-SEC-001",
+ "DOC-SEC-002",
+ "DOC-SEC-003",
+ "DOC-SEC-004",
+ "DOC-SEC-005",
+ "DOC-SEC-006"
+ ],
+ "tags": [
+ "public-evidence",
+ "private-proof",
+ "selective-audit",
+ "minimum-disclosure",
+ "transparency-receipts",
+ "restricted-evidence",
+ "pseudonymization",
+ "aggregation",
+ "integrity",
+ "recourse",
+ "cultural-rights",
+ "offline-audit",
+ "conformance"
+ ]
 }
 KOA:DOC-META:END -->
 
@@ -296,7 +295,7 @@ Private proof remains protected even when a related public projection exists.
 
 A governed link between public evidence and private proof identifies:
 
-```text
+`text
 public_artifact_ref
 private_proof_ref
 source_event_ref
@@ -308,7 +307,7 @@ integrity_ref
 access_policy_ref
 retention_policy_ref
 recourse_ref
-```
+`
 
 The public artifact does not reveal the protected reference when even the reference would expose sensitive information. In that case, Audit Broker retains the link and publishes a non-sensitive verification handle.
 
@@ -398,7 +397,7 @@ The artifact contract determines the required form.
 
 A critical event proceeds through:
 
-```text
+`text
 authoritative_transition_prepared
 receipt_fields_constructed
 producer_authenticated
@@ -409,7 +408,7 @@ local_receipt_durable
 authoritative_transition_completed
 audit_broker_delivery_pending
 audit_broker_accepted
-```
+`
 
 A component reports completion only after the contractually required local receipt state is durable.
 
@@ -455,7 +454,7 @@ The public projection remains a distinct artifact from its source proof.
 
 Projection transformations include:
 
-```text
+`text
 field_projection
 redaction
 pseudonymization
@@ -467,7 +466,7 @@ cryptographic_proof
 watermark
 signature
 packaging
-```
+`
 
 An external AI transformation remains candidate-only. The workflow preserves provenance, performs deterministic validation where possible, requires human review, and publishes only the accepted output.
 
@@ -475,7 +474,7 @@ An external AI transformation remains candidate-only. The workflow preserves pro
 
 A public receipt normally identifies:
 
-```text
+`text
 receipt_id
 event_or_process_class
 authority_or_rule_ref
@@ -487,7 +486,7 @@ occurred_at
 verification_status
 correction_or_withdrawal_status
 public_recourse_ref
-```
+`
 
 It omits protected actor identity and detailed evidence unless disclosure authority requires them.
 
@@ -550,7 +549,7 @@ A withdrawal receipt does not reproduce the withdrawn protected content.
 
 A private proof access request includes:
 
-```text
+`text
 request_id
 requester_identity_ref
 authority_scope_ref
@@ -564,7 +563,7 @@ requested_at
 expires_at
 destination_ref
 export_restrictions
-```
+`
 
 The request uses a closed schema.
 
@@ -790,7 +789,7 @@ The public recourse entry can be minimal while the case remains protected.
 
 A recourse case preserves:
 
-```text
+`text
 case_id
 challenged_public_artifact_ref
 challenged_decision_or_receipt_ref
@@ -805,7 +804,7 @@ reason_codes
 remedy_ref
 remedy_status
 closure_ref
-```
+`
 
 High-impact or conflict-sensitive cases use independent human review when the applicable policy requires separation.
 
@@ -908,13 +907,13 @@ This document is conformant when validation confirms:
 
 The principal validation entry point is:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 Supporting checks include:
 
-```text
+`text
 tools/check_component_boundaries.py
 tools/check_artifact_contracts.py
 tools/check_interfile_locks.py
@@ -923,7 +922,7 @@ tools/check_ai_boundary.py
 tools/check_traceability.py
 tools/check_decision_closure.py
 tools/check_no_unresolved_state.py
-```
+`
 
 A failed evidence-boundary check blocks the affected public projection, proof access, export, publication, recourse closure, remedy completion, or conformance claim.
 

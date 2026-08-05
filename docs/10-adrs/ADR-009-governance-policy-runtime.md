@@ -102,7 +102,7 @@
     "08-adrs/ADR-009-governance-policy-runtime.md"
   ],
   "depends_on": [
-    "DOC-ADR-README",
+    "DOC-ADR-000",
     "DOC-CONST-000",
     "DOC-SYS-007",
     "DOC-SYS-014",
@@ -331,7 +331,7 @@ The decision preserves:
 - one owner per authoritative data domain;
 - no direct cross-component writes;
 - separate Resource Governor and Governance Policy Runtime authorities;
-- separate Publication Gateway and UCKK Dimension Gateway authorities;
+- separate Publication Gateway, UCKK Publication Bridge, UCKK Import Bridge, and local acceptance authorities;
 - explicit primary profiles and overlays;
 - four release channels;
 - atomic activation;
@@ -699,7 +699,7 @@ Governance Policy Runtime does not:
 - change trust roots;
 - issue credentials;
 - bypass Publication Gateway;
-- bypass UCKK Dimension Gateway;
+- bypass UCKK Import Bridge quarantine and local acceptance;
 - call external AI during active evaluation;
 - expose governed payloads in general logs.
 
@@ -709,7 +709,7 @@ Requests use declared service contracts.
 
 Governed publication still passes through Publication Gateway.
 
-Media admission still passes through UCKK Dimension Gateway and UCKK Platform contracts.
+Inbound UCKK learning packages still pass through the UCKK Import Bridge contract, quarantine, and explicit local acceptance.
 
 Privileged host operations still pass through the narrow privileged broker.
 

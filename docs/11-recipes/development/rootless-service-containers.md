@@ -83,7 +83,7 @@ KOA:DOC-META:END -->
 
 # Rootless Service Containers for Development
 
-> **Recipe status:** Non-normative implementation guidance.  
+> **Recipe status:** Non-normative implementation guidance.
 > Canonical profile, component, toolchain, artifact, security, and resource contracts take precedence.
 
 ## 1. Purpose
@@ -163,7 +163,7 @@ Run these commands from the repository or worktree root.
 
 The example generates the identifier once and stores it in local uncommitted state. Set `KOA_COMPONENT_ID` to the component or product identity before first use.
 
-```bash
+`bash
 set -euo pipefail
 
 WORKSPACE_ROOT="$(git rev-parse --show-toplevel)"
@@ -178,46 +178,46 @@ chmod 700 "$WORKSPACE_STATE_DIR"
 
 GIT_EXCLUDE="$(git rev-parse --git-path info/exclude)"
 grep -qxF ".koa/" "$GIT_EXCLUDE" ||
-  printf '\n.koa/\n' >> "$GIT_EXCLUDE"
+ printf '\n.koa/\n' >> "$GIT_EXCLUDE"
 
 if [ ! -s "$WORKSPACE_ID_FILE" ]; then
-  PURPOSE="$(git branch --show-current)"
-  if [ -z "$PURPOSE" ]; then
-    PURPOSE="detached"
-  fi
+ PURPOSE="$(git branch --show-current)"
+ if [ -z "$PURPOSE" ]; then
+ PURPOSE="detached"
+ fi
 
-  PURPOSE="$(
-    printf '%s' "$PURPOSE" |
-      tr '[:upper:]' '[:lower:]' |
-      sed -E 's/[^a-z0-9]+/-/g; s/^-+|-+$//g' |
-      cut -c1-32
-  )"
+ PURPOSE="$(
+ printf '%s' "$PURPOSE" |
+ tr '[:upper:]' '[:lower:]' |
+ sed -E 's/[^a-z0-9]+/-/g; s/^-+|-+$//g' |
+ cut -c1-32
+ )"
 
-  UNIQUE_SUFFIX="$(
-    od -An -N2 -tx1 /dev/urandom |
-      tr -d ' \n'
-  )"
+ UNIQUE_SUFFIX="$(
+ od -An -N2 -tx1 /dev/urandom |
+ tr -d ' \n'
+ )"
 
-  printf '%s-%s-%s\n' \
-    "$KOA_COMPONENT_ID" \
-    "$PURPOSE" \
-    "$UNIQUE_SUFFIX" \
-    > "$WORKSPACE_ID_FILE"
+ printf '%s-%s-%s\n' \
+ "$KOA_COMPONENT_ID" \
+ "$PURPOSE" \
+ "$UNIQUE_SUFFIX" \
+ > "$WORKSPACE_ID_FILE"
 
-  chmod 600 "$WORKSPACE_ID_FILE"
+ chmod 600 "$WORKSPACE_ID_FILE"
 fi
 
 WORKSPACE_ID="$(cat "$WORKSPACE_ID_FILE")"
 export WORKSPACE_ID
 
 printf 'workspace_id=%s\n' "$WORKSPACE_ID"
-```
+`
 
 The resulting identifier follows:
 
-```text
+`text
 component + branch_or_purpose + unique_suffix
-```
+`
 
 Do not regenerate it during ordinary updates. A different worktree or parallel branch receives its own identifier and isolated resources.
 
@@ -225,12 +225,12 @@ Do not regenerate it during ordinary updates. A different worktree or parallel b
 
 Confirm that the command is running as a non-root user and that Podman can enter its rootless user namespace.
 
-```bash
+`bash
 set -euo pipefail
 
 if [ "$(id -u)" -eq 0 ]; then
-  printf '%s\n' "Run this recipe as the development user, not root." >&2
-  exit 1
+ printf '%s\n' "Run this recipe as the development user, not root." >&2
+ exit 1
 fi
 
 podman info >/dev/null
@@ -251,23 +251,23 @@ mkdir -p "$SECRET_DIR"
 chmod 700 "$WORKSPACE_RUNTIME_DIR" "$SECRET_DIR"
 
 podman network inspect "$NETWORK_NAME" >/dev/null 2>&1 ||
-  podman network create \
-    --label "io.koa.workspace_id=$WORKSPACE_ID" \
-    --label "io.koa.purpose=development-services" \
-    "$NETWORK_NAME"
+ podman network create \
+ --label "io.koa.workspace_id=$WORKSPACE_ID" \
+ --label "io.koa.purpose=development-services" \
+ "$NETWORK_NAME"
 
 podman volume inspect "$POSTGRES_VOLUME" >/dev/null 2>&1 ||
-  podman volume create \
-    --label "io.koa.workspace_id=$WORKSPACE_ID" \
-    --label "io.koa.component=postgres" \
-    "$POSTGRES_VOLUME"
+ podman volume create \
+ --label "io.koa.workspace_id=$WORKSPACE_ID" \
+ --label "io.koa.component=postgres" \
+ "$POSTGRES_VOLUME"
 
 podman volume inspect "$REDIS_VOLUME" >/dev/null 2>&1 ||
-  podman volume create \
-    --label "io.koa.workspace_id=$WORKSPACE_ID" \
-    --label "io.koa.component=redis" \
-    "$REDIS_VOLUME"
-```
+ podman volume create \
+ --label "io.koa.workspace_id=$WORKSPACE_ID" \
+ --label "io.koa.component=redis" \
+ "$REDIS_VOLUME"
+`
 
 Avoid:
 
@@ -285,67 +285,67 @@ Avoid:
 
 This example expects:
 
-```text
+`text
 .koa/runtime/workspace-port-allocation.json
-```
+`
 
 It contains bindings whose endpoint names are `postgres` and `redis`.
 
-```bash
+`bash
 set -euo pipefail
 
 PORT_ALLOCATION_FILE="$WORKSPACE_ROOT/.koa/runtime/workspace-port-allocation.json"
 
 if [ ! -r "$PORT_ALLOCATION_FILE" ]; then
-  printf 'Missing port allocation artifact: %s\n' \
-    "$PORT_ALLOCATION_FILE" >&2
-  exit 1
+ printf 'Missing port allocation artifact: %s\n' \
+ "$PORT_ALLOCATION_FILE" >&2
+ exit 1
 fi
 
 jq -e \
-  --arg workspace_id "$WORKSPACE_ID" \
-  '.workspace_id == $workspace_id' \
-  "$PORT_ALLOCATION_FILE" >/dev/null
+ --arg workspace_id "$WORKSPACE_ID" \
+ '.workspace_id == $workspace_id' \
+ "$PORT_ALLOCATION_FILE" >/dev/null
 
 POSTGRES_HOST_PORT="$(
-  jq -er \
-    '.bindings[] |
-     select(.endpoint_name == "postgres") |
-     select(.protocol == "tcp") |
-     select(.exposure_scope == "loopback_only") |
-     .host_port' \
-    "$PORT_ALLOCATION_FILE"
+ jq -er \
+ '.bindings[] |
+ select(.endpoint_name == "postgres") |
+ select(.protocol == "tcp") |
+ select(.exposure_scope == "loopback_only") |
+ .host_port' \
+ "$PORT_ALLOCATION_FILE"
 )"
 
 REDIS_HOST_PORT="$(
-  jq -er \
-    '.bindings[] |
-     select(.endpoint_name == "redis") |
-     select(.protocol == "tcp") |
-     select(.exposure_scope == "loopback_only") |
-     .host_port' \
-    "$PORT_ALLOCATION_FILE"
+ jq -er \
+ '.bindings[] |
+ select(.endpoint_name == "redis") |
+ select(.protocol == "tcp") |
+ select(.exposure_scope == "loopback_only") |
+ .host_port' \
+ "$PORT_ALLOCATION_FILE"
 )"
 
 export POSTGRES_HOST_PORT REDIS_HOST_PORT
-```
+`
 
 Do not scan for a different port after a collision. Treat the conflict as an allocation failure and correct the allocation artifact through its owning allocator.
 
 ### 6.2 Create a workspace-scoped database identity
 
-```bash
+`bash
 PG_SCOPE="$(
-  printf '%s' "$WORKSPACE_ID" |
-    tr '-' '_' |
-    cut -c1-40
+ printf '%s' "$WORKSPACE_ID" |
+ tr '-' '_' |
+ cut -c1-40
 )"
 
 PG_DATABASE="${PG_SCOPE}_app"
 PG_USER="${PG_SCOPE}_app"
 
 export PG_DATABASE PG_USER
-```
+`
 
 A second component in the same workspace receives a different database and identity. A second workspace receives a different scope.
 
@@ -353,27 +353,27 @@ A second component in the same workspace receives a different database and ident
 
 Generate the value outside the repository. Do not print it or place it in a general environment file.
 
-```bash
+`bash
 set -euo pipefail
 
 POSTGRES_PASSWORD_FILE="$SECRET_DIR/postgres-password"
 POSTGRES_SECRET="${WORKSPACE_ID}-postgres-password"
 
 if [ ! -s "$POSTGRES_PASSWORD_FILE" ]; then
-  umask 077
-  openssl rand -base64 36 > "$POSTGRES_PASSWORD_FILE"
+ umask 077
+ openssl rand -base64 36 > "$POSTGRES_PASSWORD_FILE"
 fi
 
 chmod 600 "$POSTGRES_PASSWORD_FILE"
 
 if podman secret inspect "$POSTGRES_SECRET" >/dev/null 2>&1; then
-  podman secret rm "$POSTGRES_SECRET"
+ podman secret rm "$POSTGRES_SECRET"
 fi
 
 podman secret create \
-  "$POSTGRES_SECRET" \
-  "$POSTGRES_PASSWORD_FILE" >/dev/null
-```
+ "$POSTGRES_SECRET" \
+ "$POSTGRES_PASSWORD_FILE" >/dev/null
+`
 
 The secret remains workspace-scoped local state. Each container receives only its declared secret.
 
@@ -381,70 +381,70 @@ The secret remains workspace-scoped local state. Each container receives only it
 
 Use immutable image references owned by the active toolchain or project lock. The tags below are illustrative moving tags and need replacement by project-approved references before a reproducibility or conformance claim.
 
-```bash
+`bash
 POSTGRES_IMAGE="docker.io/library/postgres:16"
 REDIS_IMAGE="docker.io/library/redis:7"
-```
+`
 
 Remove only containers with exact workspace-derived names:
 
-```bash
+`bash
 podman rm -f \
-  "$POSTGRES_CONTAINER" \
-  "$REDIS_CONTAINER" \
-  >/dev/null 2>&1 || true
-```
+ "$POSTGRES_CONTAINER" \
+ "$REDIS_CONTAINER" \
+ >/dev/null 2>&1 || true
+`
 
 Start PostgreSQL:
 
-```bash
+`bash
 podman run -d \
-  --name "$POSTGRES_CONTAINER" \
-  --network "$NETWORK_NAME" \
-  --label "io.koa.workspace_id=$WORKSPACE_ID" \
-  --label "io.koa.component=postgres" \
-  --label "io.koa.lifecycle=development" \
-  --pids-limit 256 \
-  --memory 2g \
-  --cpus 1.5 \
-  --restart on-failure:3 \
-  --secret "$POSTGRES_SECRET,target=postgres-password" \
-  -e "POSTGRES_DB=$PG_DATABASE" \
-  -e "POSTGRES_USER=$PG_USER" \
-  -e "POSTGRES_PASSWORD_FILE=/run/secrets/postgres-password" \
-  -v "$POSTGRES_VOLUME:/var/lib/postgresql/data" \
-  -p "127.0.0.1:${POSTGRES_HOST_PORT}:5432/tcp" \
-  --health-cmd "pg_isready -U $PG_USER -d $PG_DATABASE" \
-  --health-interval 5s \
-  --health-timeout 3s \
-  --health-retries 12 \
-  "$POSTGRES_IMAGE"
-```
+ --name "$POSTGRES_CONTAINER" \
+ --network "$NETWORK_NAME" \
+ --label "io.koa.workspace_id=$WORKSPACE_ID" \
+ --label "io.koa.component=postgres" \
+ --label "io.koa.lifecycle=development" \
+ --pids-limit 256 \
+ --memory 2g \
+ --cpus 1.5 \
+ --restart on-failure:3 \
+ --secret "$POSTGRES_SECRET,target=postgres-password" \
+ -e "POSTGRES_DB=$PG_DATABASE" \
+ -e "POSTGRES_USER=$PG_USER" \
+ -e "POSTGRES_PASSWORD_FILE=/run/secrets/postgres-password" \
+ -v "$POSTGRES_VOLUME:/var/lib/postgresql/data" \
+ -p "127.0.0.1:${POSTGRES_HOST_PORT}:5432/tcp" \
+ --health-cmd "pg_isready -U $PG_USER -d $PG_DATABASE" \
+ --health-interval 5s \
+ --health-timeout 3s \
+ --health-retries 12 \
+ "$POSTGRES_IMAGE"
+`
 
 Start Redis:
 
-```bash
+`bash
 podman run -d \
-  --name "$REDIS_CONTAINER" \
-  --network "$NETWORK_NAME" \
-  --label "io.koa.workspace_id=$WORKSPACE_ID" \
-  --label "io.koa.component=redis" \
-  --label "io.koa.lifecycle=development" \
-  --pids-limit 128 \
-  --memory 512m \
-  --cpus 0.5 \
-  --restart on-failure:3 \
-  -v "$REDIS_VOLUME:/data" \
-  -p "127.0.0.1:${REDIS_HOST_PORT}:6379/tcp" \
-  --health-cmd "redis-cli ping" \
-  --health-interval 5s \
-  --health-timeout 3s \
-  --health-retries 12 \
-  "$REDIS_IMAGE" \
-  redis-server \
-  --appendonly yes \
-  --save 60 1000
-```
+ --name "$REDIS_CONTAINER" \
+ --network "$NETWORK_NAME" \
+ --label "io.koa.workspace_id=$WORKSPACE_ID" \
+ --label "io.koa.component=redis" \
+ --label "io.koa.lifecycle=development" \
+ --pids-limit 128 \
+ --memory 512m \
+ --cpus 0.5 \
+ --restart on-failure:3 \
+ -v "$REDIS_VOLUME:/data" \
+ -p "127.0.0.1:${REDIS_HOST_PORT}:6379/tcp" \
+ --health-cmd "redis-cli ping" \
+ --health-interval 5s \
+ --health-timeout 3s \
+ --health-retries 12 \
+ "$REDIS_IMAGE" \
+ redis-server \
+ --appendonly yes \
+ --save 60 1000
+`
 
 Application processes can use either:
 
@@ -453,10 +453,10 @@ Application processes can use either:
 
 An application container can reach:
 
-```text
+`text
 orgo-feature-voting-92cd-svc-postgres:5432
 orgo-feature-voting-92cd-svc-redis:6379
-```
+`
 
 The actual prefix comes from the current workspace identity.
 
@@ -464,57 +464,57 @@ The actual prefix comes from the current workspace identity.
 
 ### 8.1 Verify workspace ownership
 
-```bash
+`bash
 podman ps \
-  --filter "label=io.koa.workspace_id=$WORKSPACE_ID"
-```
+ --filter "label=io.koa.workspace_id=$WORKSPACE_ID"
+`
 
 ### 8.2 Verify health
 
-```bash
+`bash
 for container in "$POSTGRES_CONTAINER" "$REDIS_CONTAINER"; do
-  state="$(
-    podman inspect "$container" |
-      jq -er '.[0].State.Health.Status'
-  )"
-  printf '%s %s\n' "$container" "$state"
-  test "$state" = "healthy"
+ state="$(
+ podman inspect "$container" |
+ jq -er '.[0].State.Health.Status'
+ )"
+ printf '%s %s\n' "$container" "$state"
+ test "$state" = "healthy"
 done
-```
+`
 
 ### 8.3 Verify database identity
 
-```bash
+`bash
 podman exec "$POSTGRES_CONTAINER" \
-  psql \
-  -U "$PG_USER" \
-  -d "$PG_DATABASE" \
-  -Atc 'select current_database(), current_user;'
-```
+ psql \
+ -U "$PG_USER" \
+ -d "$PG_DATABASE" \
+ -Atc 'select current_database, current_user;'
+`
 
 The database and identity both need to match the workspace-derived values.
 
 ### 8.4 Verify Redis
 
-```bash
+`bash
 podman exec "$REDIS_CONTAINER" redis-cli ping
-```
+`
 
 Expected result:
 
-```text
+`text
 PONG
-```
+`
 
 ### 8.5 Verify loopback-only publication
 
-```bash
+`bash
 podman port "$POSTGRES_CONTAINER"
 podman port "$REDIS_CONTAINER"
 
 ss -ltn |
-  grep -E "127\.0\.0\.1:(${POSTGRES_HOST_PORT}|${REDIS_HOST_PORT})\b"
-```
+ grep -E "127\.0\.0\.1:(${POSTGRES_HOST_PORT}|${REDIS_HOST_PORT})\b"
+`
 
 No binding for these services should appear on `0.0.0.0`, `::`, a LAN address, or a public interface unless an active exposure authorization permits it.
 
@@ -522,11 +522,11 @@ No binding for these services should appear on `0.0.0.0`, `::`, a LAN address, o
 
 Run the recipe in another worktree with another workspace identity, then compare:
 
-```bash
+`bash
 podman ps -a
 podman volume ls
 podman network ls
-```
+`
 
 Container names, volumes, networks, database identities, secrets, and host ports need to differ. Stopping or deleting one workspace must leave the other operational.
 
@@ -534,47 +534,47 @@ Container names, volumes, networks, database identities, secrets, and host ports
 
 Stop without deleting data:
 
-```bash
+`bash
 podman stop "$POSTGRES_CONTAINER" "$REDIS_CONTAINER"
-```
+`
 
 Restart:
 
-```bash
+`bash
 podman start "$POSTGRES_CONTAINER" "$REDIS_CONTAINER"
-```
+`
 
 Remove containers while retaining data:
 
-```bash
+`bash
 podman rm -f "$POSTGRES_CONTAINER" "$REDIS_CONTAINER"
-```
+`
 
 Full cleanup is explicit:
 
-```bash
+`bash
 set -euo pipefail
 
 podman ps -aq \
-  --filter "label=io.koa.workspace_id=$WORKSPACE_ID" |
-  xargs -r podman rm -f
+ --filter "label=io.koa.workspace_id=$WORKSPACE_ID" |
+ xargs -r podman rm -f
 
 podman secret rm "$POSTGRES_SECRET" >/dev/null 2>&1 || true
 podman network rm "$NETWORK_NAME" >/dev/null 2>&1 || true
 
 if [ "${PURGE_WORKSPACE_DATA:-0}" = "1" ]; then
-  podman volume rm \
-    "$POSTGRES_VOLUME" \
-    "$REDIS_VOLUME"
+ podman volume rm \
+ "$POSTGRES_VOLUME" \
+ "$REDIS_VOLUME"
 
-  rm -rf "$WORKSPACE_RUNTIME_DIR"
-  rm -rf "$WORKSPACE_ROOT/.koa/runtime"
-  rm -f "$WORKSPACE_ID_FILE"
+ rm -rf "$WORKSPACE_RUNTIME_DIR"
+ rm -rf "$WORKSPACE_ROOT/.koa/runtime"
+ rm -f "$WORKSPACE_ID_FILE"
 else
-  printf '%s\n' \
-    "Data retained. Set PURGE_WORKSPACE_DATA=1 for explicit deletion."
+ printf '%s\n' \
+ "Data retained. Set PURGE_WORKSPACE_DATA=1 for explicit deletion."
 fi
-```
+`
 
 Port reservations are released through the owning workspace allocator. Do not claim cleanup complete merely because containers stopped or the local allocation file was deleted.
 
@@ -598,23 +598,23 @@ Create any required backup before deleting persistent volumes.
 
 Useful bounded diagnostics:
 
-```bash
+`bash
 podman logs --tail 100 "$POSTGRES_CONTAINER"
 podman logs --tail 100 "$REDIS_CONTAINER"
 
 podman stats --no-stream \
-  "$POSTGRES_CONTAINER" \
-  "$REDIS_CONTAINER"
+ "$POSTGRES_CONTAINER" \
+ "$REDIS_CONTAINER"
 
 podman inspect "$POSTGRES_CONTAINER" |
-  jq '.[0] | {
-    name: .Name,
-    state: .State.Status,
-    health: .State.Health.Status,
-    labels: .Config.Labels,
-    network: .NetworkSettings.Networks
-  }'
-```
+ jq '.[0] | {
+ name: .Name,
+ state: .State.Status,
+ health: .State.Health.Status,
+ labels: .Config.Labels,
+ network: .NetworkSettings.Networks
+ }'
+`
 
 Do not print secret files, unrestricted environment blocks, authentication tokens, or complete unrestricted diagnostics into issue reports.
 

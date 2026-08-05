@@ -38,10 +38,11 @@
     "08-operations/14-maintenance.md",
     "08-operations/18-sovereign-node-operations.md",
     "10-adrs/ADR-005-rootless-podman-and-quadlet.md",
-    "10-adrs/ADR-008-four-independent-release-channels.md",
     "10-adrs/ADR-012-single-narrow-privileged-broker.md",
-    "10-adrs/ADR-013-system-baseline-and-profile-separation.md",
-    "10-adrs/ADR-019-resource-governor-and-policy-runtime-separation.md"
+    "10-adrs/ADR-019-resource-governor-and-policy-runtime-separation.md",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json"
   ],
   "decision_ids": [
     "DEC-CONTAINER-001",
@@ -150,7 +151,6 @@
     "DOC-SEC-009",
     "DOC-ADR-005",
     "DOC-ADR-012",
-    "DOC-ADR-013",
     "DOC-ADR-019"
   ],
   "tags": [
@@ -233,7 +233,7 @@ It does not define:
 
 The active sovereign Linux profile currently records:
 
-```text
+`text
 containers required: false
 containers permitted: true
 preferred runtime when used: Podman
@@ -243,7 +243,7 @@ Quadlet required: false
 privileged application containers: not permitted
 host network mode by default: not permitted
 read-only root filesystem: preferred
-```
+`
 
 A deployment that adopts this recipe records exact versions, service-account boundaries, paths, units, networks, storage, secrets, resource limits, tests, and rollback behavior in its profile manifest or deployment contract.
 
@@ -286,13 +286,13 @@ Use a dedicated non-login account for the rootless application-service boundary.
 
 Illustrative identity:
 
-```text
+`text
 account: koa-runtime
 home: /var/lib/koa/runtime
 runtime root: /run/user/<uid>
 Quadlet source: /var/lib/koa/runtime/.config/containers/systemd
 container storage: profile-managed rootless Podman storage
-```
+`
 
 The account does not receive an interactive password, sudo access, a general login shell, unrelated component data, unrestricted host mounts, arbitrary devices, or privileged containers.
 
@@ -300,40 +300,41 @@ Enabling a persistent user manager at boot is a host operation. Perform it throu
 
 ### 4.2 Recommended directory tree
 
-```text
+`text
 /var/lib/koa/
 ├── runtime/
-│   ├── .config/
-│   │   └── containers/
-│   │       └── systemd/
-│   │           ├── active/
-│   │           ├── koa-internal.network
-│   │           ├── koa-publication.network
-│   │           └── koa-cache.volume
-│   ├── config/
-│   │   ├── common.env
-│   │   └── components/
-│   ├── releases/
-│   │   └── services-<release-id>/
-│   │       ├── units/
-│   │       ├── inventory.json
-│   │       └── validation/
-│   └── state/
-│       ├── activation/
-│       └── sockets/
+│ ├── .config/
+│ │ └── containers/
+│ │ └── systemd/
+│ │ ├── active/
+│ │ ├── koa-internal.network
+│ │ ├── koa-publication.network
+│ │ └── koa-cache.volume
+│ ├── config/
+│ │ ├── common.env
+│ │ └── components/
+│ ├── releases/
+│ │ └── services-<release-id>/
+│ │ ├── units/
+│ │ ├── inventory.json
+│ │ └── validation/
+│ └── state/
+│ ├── activation/
+│ └── sockets/
 ├── data/
-│   ├── orgo/
-│   ├── konnaxion/
-│   ├── kristal/
-│   ├── uckk/
-│   └── receipts/
+│ ├── orgo/
+│ ├── konnaxion/
+│ ├── kristal/
+│ ├── mediatheque/
+│ ├── uckk-import-quarantine/
+│ └── receipts/
 ├── cache/
-│   ├── previews/
-│   ├── indexes/
-│   └── image-layers/
+│ ├── previews/
+│ ├── indexes/
+│ └── image-layers/
 ├── backup-staging/
 └── recovery/
-```
+`
 
 This is an example path layout. The active deployment manifest can choose different locations.
 
@@ -341,13 +342,13 @@ This is an example path layout. The active deployment manifest can choose differ
 
 Keep every validated services release in a separate directory:
 
-```text
+`text
 /var/lib/koa/runtime/releases/services-2026.08.03-1/units/
-```
+`
 
 An illustrative set can contain:
 
-```text
+`text
 koa-internal.network
 koa-publication.network
 koa-cache.volume
@@ -359,9 +360,11 @@ koa-ariane.container
 koa-orgo.container
 koa-konnaxion.container
 koa-kristal.container
-koa-uckk.container
+koa-mediatheque.container
+koa-uckk-import-bridge.container
+koa-uckk-publication-bridge.container
 koa-publication-gateway.container
-```
+`
 
 The actual set comes from the active profile and component registry.
 
@@ -369,16 +372,16 @@ The actual set comes from the active profile and component registry.
 
 One implementation can keep current files in:
 
-```text
+`text
 /var/lib/koa/runtime/.config/containers/systemd/active/
-```
+`
 
 Each file links to the selected validated release:
 
-```text
+`text
 active/koa-orgo.container
-  -> /var/lib/koa/runtime/releases/services-2026.08.03-1/units/koa-orgo.container
-```
+ -> /var/lib/koa/runtime/releases/services-2026.08.03-1/units/koa-orgo.container
+`
 
 Validate that the deployed Quadlet generator reads the selected subdirectory and link arrangement. Another deployment can atomically replace a complete unit set in the rootless Quadlet search path.
 
@@ -386,18 +389,18 @@ Validate that the deployed Quadlet generator reads the selected subdirectory and
 
 Use deterministic names:
 
-```text
+`text
 koa-<component>.container
 koa-<network-purpose>.network
 koa-<storage-purpose>.volume
 koa-<lifecycle-group>.pod
-```
+`
 
 Generated services normally appear as:
 
-```text
+`text
 koa-<component>.service
-```
+`
 
 Keep component names aligned with canonical IDs.
 
@@ -421,14 +424,14 @@ Unit files never embed authoritative application data.
 
 Illustrative host preparation:
 
-```bash
+`bash
 useradd \
-  --system \
-  --create-home \
-  --home-dir /var/lib/koa/runtime \
-  --shell /usr/sbin/nologin \
-  koa-runtime
-```
+ --system \
+ --create-home \
+ --home-dir /var/lib/koa/runtime \
+ --shell /usr/sbin/nologin \
+ koa-runtime
+`
 
 This is a host mutation example. Application components do not execute it.
 
@@ -436,85 +439,85 @@ The deployment assigns subordinate user and group ID ranges required by rootless
 
 Inspect:
 
-```bash
+`bash
 getent passwd koa-runtime
 grep '^koa-runtime:' /etc/subuid /etc/subgid
-```
+`
 
 ### 5.2 Enable the user manager
 
 Illustrative preparation:
 
-```bash
+`bash
 loginctl enable-linger koa-runtime
-```
+`
 
 Verify:
 
-```bash
+`bash
 loginctl show-user koa-runtime \
-  --property=Linger \
-  --property=RuntimePath \
-  --property=State
-```
+ --property=Linger \
+ --property=RuntimePath \
+ --property=State
+`
 
 The approved host path records this operation.
 
 ### 5.3 Create directories
 
-```bash
+`bash
 install -d -o koa-runtime -g koa-runtime -m 0700 \
-  /var/lib/koa/runtime/.config/containers/systemd \
-  /var/lib/koa/runtime/config \
-  /var/lib/koa/runtime/releases \
-  /var/lib/koa/runtime/state
+ /var/lib/koa/runtime/.config/containers/systemd \
+ /var/lib/koa/runtime/config \
+ /var/lib/koa/runtime/releases \
+ /var/lib/koa/runtime/state
 
 install -d -o koa-runtime -g koa-runtime -m 0750 \
-  /var/lib/koa/data \
-  /var/lib/koa/cache \
-  /var/lib/koa/backup-staging \
-  /var/lib/koa/recovery
-```
+ /var/lib/koa/data \
+ /var/lib/koa/cache \
+ /var/lib/koa/backup-staging \
+ /var/lib/koa/recovery
+`
 
 Create component data directories according to each owner contract. A shared parent directory does not create shared data ownership.
 
 ### 5.4 Confirm rootless Podman
 
-```bash
+`bash
 sudo -u koa-runtime \
-  env HOME=/var/lib/koa/runtime \
-  podman info \
-  --format 'rootless={{.Host.Security.Rootless}} cgroup={{.Host.CgroupsVersion}}'
-```
+ env HOME=/var/lib/koa/runtime \
+ podman info \
+ --format 'rootless={{.Host.Security.Rootless}} cgroup={{.Host.CgroupsVersion}}'
+`
 
 The deployed privileged model can use a controlled service action instead of operator `sudo`.
 
 ### 5.5 Confirm the systemd user manager
 
-```bash
+`bash
 uid="$(id -u koa-runtime)"
 runtime_dir="/run/user/${uid}"
 
 sudo -u koa-runtime \
-  env \
-    HOME=/var/lib/koa/runtime \
-    XDG_RUNTIME_DIR="$runtime_dir" \
-    DBUS_SESSION_BUS_ADDRESS="unix:path=${runtime_dir}/bus" \
-  systemctl --user is-system-running
-```
+ env \
+ HOME=/var/lib/koa/runtime \
+ XDG_RUNTIME_DIR="$runtime_dir" \
+ DBUS_SESSION_BUS_ADDRESS="unix:path=${runtime_dir}/bus" \
+ systemctl --user is-system-running
+`
 
 A missing user manager is a preparation failure, not a reason to run application containers as root.
 
 ### 5.6 Stage a release
 
-```bash
+`bash
 release_id=services-2026.08.03-1
 release_root="/var/lib/koa/runtime/releases/${release_id}"
 
 install -d -o koa-runtime -g koa-runtime -m 0750 \
-  "${release_root}/units" \
-  "${release_root}/validation"
-```
+ "${release_root}/units" \
+ "${release_root}/validation"
+`
 
 Place only files listed by the validated services-release inventory in the directory. Staging does not start or reload services.
 
@@ -524,7 +527,7 @@ Place only files listed by the validated services-release inventory in the direc
 
 `koa-internal.network`:
 
-```ini
+`ini
 [Unit]
 Description=kOA internal component network
 
@@ -535,7 +538,7 @@ Internal=true
 IPv6=false
 Label=koa.network-purpose=internal
 Label=koa.profile=sovereign_linux_node
-```
+`
 
 Components needing external access use a separate declared path rather than weakening this network.
 
@@ -543,7 +546,7 @@ Components needing external access use a separate declared path rather than weak
 
 `koa-publication.network`:
 
-```ini
+`ini
 [Unit]
 Description=kOA governed publication network
 
@@ -554,7 +557,7 @@ Internal=false
 IPv6=false
 Label=koa.network-purpose=publication
 Label=koa.profile=sovereign_linux_node
-```
+`
 
 The network does not authorize egress. Firewall, destination, protocol, identity, policy, and integration controls still apply.
 
@@ -562,7 +565,7 @@ The network does not authorize egress. Firewall, destination, protocol, identity
 
 `koa-cache.volume`:
 
-```ini
+`ini
 [Unit]
 Description=kOA reproducible cache volume
 
@@ -570,7 +573,7 @@ Description=kOA reproducible cache volume
 VolumeName=koa-cache
 Label=koa.storage-class=reproducible-cache
 Label=koa.profile=sovereign_linux_node
-```
+`
 
 Use named volumes for reproducible data when owner and retention contracts permit them. Explicit bind paths are clearer for authoritative data.
 
@@ -578,7 +581,7 @@ Use named volumes for reproducible data when owner and retention contracts permi
 
 `koa-orgo.container`:
 
-```ini
+`ini
 [Unit]
 Description=kOA Orgo component
 Requires=koa-internal-network.service
@@ -623,7 +626,7 @@ IOWeight=200
 
 [Install]
 WantedBy=default.target
-```
+`
 
 The values are illustrative. The active resource envelope supplies actual limits.
 
@@ -631,7 +634,7 @@ The values are illustrative. The active resource envelope supplies actual limits
 
 `koa-publication-gateway.container`:
 
-```ini
+`ini
 [Unit]
 Description=kOA Publication Gateway
 Requires=koa-internal-network.service
@@ -677,7 +680,7 @@ IOWeight=150
 
 [Install]
 WantedBy=default.target
-```
+`
 
 The secret name is a reference. Provision its value through the approved secret lifecycle.
 
@@ -685,14 +688,16 @@ The secret name is a reference. Provision its value through the approved secret 
 
 `koa-resource-governor.container`:
 
-```ini
+`ini
 [Unit]
 Description=kOA Resource Governor
 Requires=koa-internal-network.service
 After=koa-internal-network.service
 Before=koa-orgo.service
 Before=koa-konnaxion.service
-Before=koa-uckk.service
+Before=koa-mediatheque.service
+Before=koa-uckk-import-bridge.service
+Before=koa-uckk-publication-bridge.service
 
 [Container]
 ContainerName=koa-resource-governor
@@ -729,7 +734,7 @@ IOWeight=900
 
 [Install]
 WantedBy=default.target
-```
+`
 
 Containerizing Resource Governor does not grant it arbitrary host control. Host operations remain behind the profile-approved privileged boundary.
 
@@ -737,9 +742,9 @@ Containerizing Resource Governor does not grant it arbitrary host control. Host 
 
 Bind only a declared socket directory:
 
-```ini
+`ini
 Volume=/var/lib/koa/runtime/state/sockets/resource-governor:/run/koa/resource-governor:Z
-```
+`
 
 Do not mount the entire Podman socket, host `/run`, or the host filesystem for convenience.
 
@@ -747,7 +752,7 @@ Do not mount the entire Podman socket, host `/run`, or the host filesystem for c
 
 `koa-component-group.pod`:
 
-```ini
+`ini
 [Unit]
 Description=kOA example tightly coupled component group
 
@@ -755,7 +760,7 @@ Description=kOA example tightly coupled component group
 PodName=koa-component-group
 Network=koa-internal.network
 Label=koa.lifecycle-group=example
-```
+`
 
 Avoid grouping unrelated components. Shared network, IPC, process, or lifecycle namespaces can weaken isolation.
 
@@ -765,19 +770,19 @@ Avoid grouping unrelated components. Shared network, IPC, process, or lifecycle 
 
 A practical logical split is:
 
-```text
+`text
 koa-internal
-    component traffic only
+ component traffic only
 
 koa-publication
-    Publication Gateway and declared external adapters
+ Publication Gateway and declared external adapters
 
 host management path
-    Node Agent and narrow privileged broker
+ Node Agent and narrow privileged broker
 
 local sockets
-    selected local-only component interfaces
-```
+ selected local-only component interfaces
+`
 
 Avoid `Network=host` by default.
 
@@ -785,9 +790,9 @@ Avoid `Network=host` by default.
 
 For a local interface:
 
-```ini
+`ini
 PublishPort=127.0.0.1:8080:8080
-```
+`
 
 A management or public interface uses the exact declared address, protocol, port, identity, policy, and firewall rule.
 
@@ -795,24 +800,31 @@ A management or public interface uses the exact declared address, protocol, port
 
 Use one path per owner:
 
-```text
+`text
 /var/lib/koa/data/orgo
 /var/lib/koa/data/konnaxion
 /var/lib/koa/data/kristal
-/var/lib/koa/data/uckk
-```
+/var/lib/koa/data/mediatheque
+/var/lib/koa/data/uckk-import-quarantine
+`
 
 A container receives only its own authoritative path. Shared read-only reference artifacts use a separate declared path. Cross-component mutation uses contracts, not shared writable volumes.
+
+### 7.3.1 Directional UCKK bridge storage
+
+`koa-mediatheque.container` receives the authoritative local Mediatheque path. The UCKK Publication Bridge receives only outbound staging and receipt paths. The UCKK Import Bridge receives only inbound quarantine, validation, and receipt paths until the kOA Mediatheque accepts a package through its declared interface.
+
+Neither bridge mounts the Mediatheque authoritative path as writable. No Quadlet unit represents a local UCKK database or a generic bidirectional synchronization daemon.
 
 ### 7.4 Reproducible caches
 
 Use distinct cache paths and record owner plus rebuild behavior:
 
-```text
+`text
 /var/lib/koa/cache/previews
 /var/lib/koa/cache/indexes
 /var/lib/koa/cache/image-layers
-```
+`
 
 Under pressure, Resource Governor can request owner-controlled pruning. It does not delete another component's data directly.
 
@@ -828,9 +840,9 @@ Keep secret values out of unit and environment files.
 
 Reference a provisioned secret:
 
-```ini
+`ini
 Secret=koa-component-token,type=mount,target=/run/secrets/component-token
-```
+`
 
 Do not put secret values in:
 
@@ -847,12 +859,12 @@ Do not put secret values in:
 
 Example `common.env`:
 
-```bash
+`bash
 KOA_PROFILE_ID=sovereign_linux_node
 KOA_RELEASE_SET_ID=release-set-2026.08.03-1
 KOA_LOG_FORMAT=json
 KOA_OFFLINE_MODE=auto
-```
+`
 
 Component files add non-secret component-specific configuration.
 
@@ -860,7 +872,7 @@ Component files add non-secret component-specific configuration.
 
 Useful service and container controls include:
 
-```ini
+`ini
 CPUQuota=
 CPUWeight=
 MemoryHigh=
@@ -870,7 +882,7 @@ TasksMax=
 LimitNOFILE=
 Tmpfs=
 PidsLimit=
-```
+`
 
 Supported keys vary by the deployed versions. Inspect generated units and runtime state instead of assuming every property applied.
 
@@ -923,13 +935,13 @@ Staging does not change active authority.
 
 Illustrative operator sequence:
 
-```bash
+`bash
 systemctl --user daemon-reload
 systemctl --user start koa-resource-governor.service
 systemctl --user start koa-governance-policy-runtime.service
 systemctl --user start koa-audit-broker.service
 systemctl --user start koa-orgo.service koa-konnaxion.service koa-kristal.service
-```
+`
 
 The real order comes from generated dependencies and lifecycle contracts.
 
@@ -951,7 +963,7 @@ Use `Restart=always` only for continuously resident critical services with bound
 
 Example:
 
-```ini
+`ini
 [Unit]
 StartLimitIntervalSec=300
 StartLimitBurst=5
@@ -959,7 +971,7 @@ StartLimitBurst=5
 [Service]
 Restart=on-failure
 RestartSec=10s
-```
+`
 
 ### 8.7 Offline startup
 
@@ -989,83 +1001,83 @@ The rootless service account remains separate from the privileged recovery path.
 
 Run as the service account:
 
-```bash
+`bash
 uid="$(id -u koa-runtime)"
 runtime_dir="/run/user/${uid}"
 
 sudo -u koa-runtime \
-  env \
-    HOME=/var/lib/koa/runtime \
-    XDG_RUNTIME_DIR="$runtime_dir" \
-    DBUS_SESSION_BUS_ADDRESS="unix:path=${runtime_dir}/bus" \
-  /usr/lib/systemd/system-generators/podman-system-generator \
-    --user \
-    /tmp/koa-quadlet-output \
-    /tmp/koa-quadlet-early \
-    /tmp/koa-quadlet-late
-```
+ env \
+ HOME=/var/lib/koa/runtime \
+ XDG_RUNTIME_DIR="$runtime_dir" \
+ DBUS_SESSION_BUS_ADDRESS="unix:path=${runtime_dir}/bus" \
+ /usr/lib/systemd/system-generators/podman-system-generator \
+ --user \
+ /tmp/koa-quadlet-output \
+ /tmp/koa-quadlet-early \
+ /tmp/koa-quadlet-late
+`
 
 The generator path differs across distributions. Record the deployed path in the profile manifest or package inventory.
 
 ### 9.2 Inspect generated units
 
-```bash
+`bash
 systemctl --user cat koa-orgo.service
 systemctl --user show koa-orgo.service \
-  --property=CPUQuotaPerSecUSec \
-  --property=CPUWeight \
-  --property=MemoryHigh \
-  --property=MemoryMax \
-  --property=TasksMax \
-  --property=IOWeight \
-  --property=Restart \
-  --property=After \
-  --property=Requires \
-  --property=Wants
-```
+ --property=CPUQuotaPerSecUSec \
+ --property=CPUWeight \
+ --property=MemoryHigh \
+ --property=MemoryMax \
+ --property=TasksMax \
+ --property=IOWeight \
+ --property=Restart \
+ --property=After \
+ --property=Requires \
+ --property=Wants
+`
 
 Confirm requested limits and ordering.
 
 ### 9.3 Inspect isolation
 
-```bash
+`bash
 podman inspect koa-orgo
 podman top koa-orgo user pid hpid pcpu pmem comm
 podman stats --no-stream koa-orgo
 podman network inspect koa-internal
-```
+`
 
 Check rootless execution, expected image, no privilege, no host network, dropped capabilities, read-only root, expected mounts, expected networks, labels, and limits.
 
 ### 9.4 Inspect storage
 
-```bash
+`bash
 podman inspect koa-orgo --format '{{json .Mounts}}'
 findmnt /var/lib/koa/data/orgo
 stat -c '%U %G %a %n' /var/lib/koa/data/orgo
-```
+`
 
 The service receives only declared writable paths.
 
 ### 9.5 Inspect secret references
 
-```bash
+`bash
 podman secret ls
 podman exec koa-publication-gateway \
-  test -r /run/secrets/publication-credential
-```
+ test -r /run/secrets/publication-credential
+`
 
 Do not print the secret.
 
 Check absence from environment and labels:
 
-```bash
+`bash
 podman inspect koa-publication-gateway \
-  --format '{{json .Config.Env}}'
+ --format '{{json .Config.Env}}'
 
 podman inspect koa-publication-gateway \
-  --format '{{json .Config.Labels}}'
-```
+ --format '{{json .Config.Labels}}'
+`
 
 ### 9.6 Test offline behavior
 
@@ -1080,12 +1092,12 @@ In a controlled test, block external access and confirm:
 
 ### 9.7 Observe services
 
-```bash
+`bash
 systemctl --user list-units 'koa-*.service'
 systemctl --user --failed
 podman ps --format 'table {{.Names}}\t{{.Status}}\t{{.Networks}}'
 journalctl --user -u koa-orgo.service --since -30min
-```
+`
 
 Logs exclude secrets and governed payloads.
 
@@ -1114,28 +1126,28 @@ Logs exclude secrets and governed payloads.
 
 ### 9.9 Suggested evidence
 
-```json
+`json
 {
-  "evidence_id": "evidence.sovereign-node.quadlet.services-2026.08.03-1",
-  "profile_id": "sovereign_linux_node",
-  "service_release_id": "services-2026.08.03-1",
-  "runtime": "rootless_podman",
-  "supervision": "systemd_user_quadlet",
-  "checks": [
-    "service_identity_valid",
-    "quadlet_generation_valid",
-    "images_available_locally",
-    "rootless_isolation_valid",
-    "network_boundaries_valid",
-    "storage_ownership_valid",
-    "secret_references_valid",
-    "resource_limits_valid",
-    "offline_start_valid",
-    "rollback_candidate_valid"
-  ],
-  "result": "pass"
+ "evidence_id": "evidence.sovereign-node.quadlet.services-2026.08.03-1",
+ "profile_id": "sovereign_linux_node",
+ "service_release_id": "services-2026.08.03-1",
+ "runtime": "rootless_podman",
+ "supervision": "systemd_user_quadlet",
+ "checks": [
+ "service_identity_valid",
+ "quadlet_generation_valid",
+ "images_available_locally",
+ "rootless_isolation_valid",
+ "network_boundaries_valid",
+ "storage_ownership_valid",
+ "secret_references_valid",
+ "resource_limits_valid",
+ "offline_start_valid",
+ "rollback_candidate_valid"
+ ],
+ "result": "pass"
 }
-```
+`
 
 This supports an implementation result but does not create a profile conformance claim.
 
@@ -1165,25 +1177,25 @@ This supports an implementation result but does not create a profile conformance
 
 Stop a component:
 
-```bash
+`bash
 systemctl --user stop koa-orgo.service
-```
+`
 
 Inspect and remove an obsolete container instance after lifecycle closure:
 
-```bash
+`bash
 podman ps --all --filter name=koa-
 podman rm koa-orgo
-```
+`
 
 Container removal does not delete authoritative data.
 
 Inspect volumes before owner-controlled removal:
 
-```bash
+`bash
 podman volume ls
 podman volume inspect koa-cache
-```
+`
 
 ### 10.3 Release retention
 

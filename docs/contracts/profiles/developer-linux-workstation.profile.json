@@ -66,13 +66,14 @@
     "DEC-GATE-001",
     "DEC-AI-001",
     "DEC-SENT-001",
-    "DEC-UCKK-001",
+    "DEC-UCKK-EXT-001",
     "DEC-ARI-001",
     "DEC-SHELL-001",
     "DEC-CONTAINER-001",
     "DEC-K8S-001",
     "DEC-HW-001",
-    "DEC-REL-001"
+    "DEC-REL-001",
+    "DEC-MEDIATHEQUE-001"
   ],
   "requirement_ids": [
     "REQ-PROFILE-001",
@@ -108,8 +109,8 @@
     "LOCK-AI-001",
     "LOCK-AI-002",
     "LOCK-SENT-001",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-MEDIATHEQUE-002",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
     "LOCK-DATA-001",
@@ -124,7 +125,9 @@
     "LOCK-LIFE-001",
     "LOCK-LIFE-002",
     "LOCK-LIFE-003",
-    "LOCK-LIFE-004"
+    "LOCK-LIFE-004",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "scope": {
@@ -273,7 +276,7 @@
           "orgo"
         ],
         "contract_refs": [
-          "contracts/components/orgo.component.json"
+          "contracts/subsystems/orgo.subsystem.json"
         ],
         "default_activation": "stopped"
       },
@@ -283,7 +286,7 @@
           "konnaxion"
         ],
         "contract_refs": [
-          "contracts/components/konnaxion.component.json"
+          "contracts/subsystems/konnaxion.subsystem.json"
         ],
         "default_activation": "stopped"
       },
@@ -293,22 +296,9 @@
           "semantik_architect_runtime"
         ],
         "contract_refs": [
-          "contracts/components/semantik-architect-runtime.component.json"
+          "contracts/subsystems/semantik-architect.subsystem.json"
         ],
         "default_activation": "stopped"
-      },
-      {
-        "workbench_id": "gf_wordbench",
-        "component_ids": [
-          "gf_wordbench"
-        ],
-        "contract_refs": [
-          "contracts/components/gf-wordbench.component.json"
-        ],
-        "default_activation": "stopped",
-        "workbench_limits": {
-          "active_language_projects": 1
-        }
       },
       {
         "workbench_id": "sentient_development",
@@ -316,7 +306,7 @@
           "sentient"
         ],
         "contract_refs": [
-          "contracts/components/sentient.component.json"
+          "contracts/subsystems/sentient.subsystem.json"
         ],
         "default_activation": "stopped",
         "non_authoritative": true,
@@ -328,23 +318,25 @@
           "ariane_runtime"
         ],
         "contract_refs": [
-          "contracts/components/ariane-runtime.component.json"
+          "contracts/subsystems/ariane.subsystem.json"
         ],
         "default_activation": "stopped"
       },
       {
-        "workbench_id": "uckk_development",
+        "workbench_id": "uckk_interchange_development",
         "component_ids": [
           "koa_mediatheque",
-          "uckk_dimension_gateway",
           "publication_gateway"
         ],
         "contract_refs": [
           "contracts/components/koa-mediatheque.component.json",
-          "contracts/components/uckk-dimension-gateway.component.json",
           "contracts/components/publication-gateway.component.json"
         ],
-        "default_activation": "stopped"
+        "default_activation": "stopped",
+        "integration_refs": [
+          "contracts/integrations/uckk-publication.integration.json",
+          "contracts/integrations/uckk-import.integration.json"
+        ]
       }
     ],
     "activate_all_workbenches_required": false,
@@ -522,7 +514,7 @@
       "elasticsearch",
       "openrefine",
       "model_runtimes",
-      "intensive_uckk_jobs"
+      "uckk_package_validation_or_transport_jobs"
     ],
     "heavy_service_activation": "task_activated",
     "heavy_services_permanently_active_allowed": false,
@@ -577,29 +569,6 @@
       "component-level acceptance"
     ]
   },
-  "uckk": {
-    "native_pipeline": "deterministic_local",
-    "native_ai_driven_ingestion_allowed": false,
-    "native_operations": [
-      "file_ingestion",
-      "integrity_verification",
-      "user_supplied_metadata_capture",
-      "thumbnail_generation",
-      "preview_generation",
-      "transcoding",
-      "deterministic_text_extraction",
-      "storage",
-      "export",
-      "backup",
-      "restore"
-    ],
-    "suno_and_gamma": {
-      "classification": "external_optional_adapters",
-      "user_triggered_only": true,
-      "automatic_ingestion_invocation_allowed": false
-    },
-    "dimension_gateway_and_publication_gateway_are_separate": true
-  },
   "ariane": {
     "local_navigation_available_without_ai": true,
     "local_capabilities": [
@@ -621,7 +590,7 @@
       "local builds with installed toolchains and available caches",
       "local unit and integration tests with available services",
       "schema and contract validation",
-      "local deterministic UCKK processing",
+      "local deterministic kOA Mediatheque processing",
       "Ariane local navigation",
       "workspace lifecycle management",
       "local artifact preparation"
@@ -749,7 +718,7 @@
     "A maintained desktop environment must be absent.",
     "SenTient is required, authoritative, installed by default, or always active.",
     "External AI is a native profile capability.",
-    "UCKK native ingestion may invoke AI automatically.",
+    "kOA Mediatheque ingestion or UCKK package validation may invoke AI automatically or become authoritative through AI output.",
     "Ariane local navigation depends on external voice.",
     "Developer profile conformance proves production, sovereign, or high-assurance conformance.",
     "An undeclared overlay applies automatically.",
@@ -778,7 +747,7 @@
       "resource_budget_enforcement",
       "native_ai_absence",
       "sentient_isolation",
-      "uckk_deterministic_pipeline",
+      "mediatheque_and_uckk_package_determinism",
       "ariane_local_independence",
       "offline_behavior",
       "artifact_publication_boundary",
@@ -792,5 +761,53 @@
     ],
     "activation_requires_outcome": "pass",
     "ordinary_file_hashes_required": false
+  },
+  "external_integrations": {
+    "uckk_publication": {
+      "integration_id": "uckk-publication",
+      "contract_ref": "contracts/integrations/uckk-publication.integration.json",
+      "availability": "optional",
+      "direction": "outbound",
+      "required_for_local_operation": false,
+      "required_for_offline_operation": false
+    },
+    "uckk_import": {
+      "integration_id": "uckk-import",
+      "contract_ref": "contracts/integrations/uckk-import.integration.json",
+      "availability": "optional",
+      "direction": "inbound",
+      "offline_bundle_supported": true,
+      "accepted_content_available_offline": true,
+      "automatic_sync": false
+    }
+  },
+  "mediatheque_interchange": {
+    "local_authority": "koa_mediatheque",
+    "local_pipeline": "deterministic_offline",
+    "native_ai_driven_ingestion_allowed": false,
+    "local_operations": [
+      "file_ingestion",
+      "integrity_verification",
+      "user_supplied_metadata_capture",
+      "thumbnail_generation",
+      "preview_generation",
+      "transcoding",
+      "deterministic_text_extraction",
+      "storage",
+      "export",
+      "backup",
+      "restore"
+    ],
+    "shared_frame_ref": "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
+    "outbound_integration_ref": "contracts/integrations/uckk-publication.integration.json",
+    "inbound_integration_ref": "contracts/integrations/uckk-import.integration.json",
+    "publication_gateway_authorization_required": true,
+    "inbound_quarantine_and_explicit_acceptance_required": true,
+    "implicit_bidirectional_sync_allowed": false,
+    "external_media_adapters": {
+      "classification": "external_optional_adapters",
+      "user_triggered_only": true,
+      "automatic_ingestion_invocation_allowed": false
+    }
   }
 }

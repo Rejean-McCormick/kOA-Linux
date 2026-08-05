@@ -1896,9 +1896,6 @@
                 "prefixItems": [
                   {
                     "$ref": "#/$defs/simpleId"
-                  },
-                  {
-                    "$ref": "#/$defs/simpleId"
                   }
                 ],
                 "minItems": 2,

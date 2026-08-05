@@ -162,20 +162,20 @@ KOA:DOC-META:END -->
 
 This document defines conformance evaluation for the two kOA development primary profiles:
 
-```text
+`text
 developer_linux_workstation
 developer_windows_wsl
-```
+`
 
 Development-profile conformance proves that a workstation can host reproducible, isolated, concurrently runnable development workspaces without confusing mutable development state with release artifacts or production authority.
 
 The evaluation has three related subjects:
 
-```text
+`text
 developer workstation profile
-    → workspace contract
-        → executed workspace evidence
-```
+ → workspace contract
+ → executed workspace evidence
+`
 
 The workstation claim proves that the selected primary profile and its host boundary are correctly implemented.
 
@@ -195,7 +195,7 @@ A passing development-profile claim does not prove:
 
 The model preserves these distinctions:
 
-```text
+`text
 development convenience
 is not architectural authority
 
@@ -207,7 +207,7 @@ is not application authorization
 
 local success
 is not release evidence
-```
+`
 
 ## 2. Scope
 
@@ -262,7 +262,7 @@ Those choices remain owned by active profile contracts, component contracts, too
 
 The canonical sources for this document are:
 
-```text
+`text
 generated/authority-manifest.json
 generated/decision-index.json
 contracts/system.contract.json#/operating_modes
@@ -281,7 +281,7 @@ generated/traceability.json
 generated/test-catalog.json
 generated/evidence-catalog.json
 generated/exception-index.json
-```
+`
 
 Their ownership roles are:
 
@@ -308,15 +308,15 @@ This document explains evaluation and does not own tool versions, workspace inst
 
 The claim hierarchy is:
 
-```text
+`text
 development_profile_claim
-    → host_boundary_claim
-    → workspace_contract_claim
-    → workspace_runtime_claim
-    → parallel_execution_claim
-    → reproducibility_claim
-    → teardown_claim
-```
+ → host_boundary_claim
+ → workspace_contract_claim
+ → workspace_runtime_claim
+ → parallel_execution_claim
+ → reproducibility_claim
+ → teardown_claim
+`
 
 A profile claim can include several workspace claims. Every mandatory subordinate claim must pass before the profile claim passes.
 
@@ -337,7 +337,7 @@ Native-Linux evidence and WSL evidence remain separately attributable.
 
 A profile claim records:
 
-```text
+`text
 claim_id
 profile_id
 profile_contract_version
@@ -356,7 +356,7 @@ evidence refs
 exceptions
 result
 validity
-```
+`
 
 A workspace claim records the exact source revision and workspace contract version.
 
@@ -364,17 +364,17 @@ A workspace claim records the exact source revision and workspace contract versi
 
 A workspace identity derives from:
 
-```text
+`text
 component + branch_or_purpose + unique_suffix
-```
+`
 
 Examples:
 
-```text
+`text
 konnaxion-main-a31f
 konnaxion-feature-voting-92cd
 orgo-main-b114
-```
+`
 
 The `workspace_id` prefixes or namespaces mutable collision domains.
 
@@ -399,14 +399,14 @@ Every workspace owns one mutable dependency environment.
 
 For Python, the canonical model is:
 
-```text
+`text
 UV
 pyproject.toml
 uv.lock
 .python-version
 .venv
 uv sync --frozen
-```
+`
 
 A content-addressed UV download cache can be shared. Installed packages and the mutable `.venv` cannot.
 
@@ -418,7 +418,7 @@ Mutable services use workspace-prefixed identities.
 
 Namespaced state includes at least:
 
-```text
+`text
 dependency_environment
 containers
 networks
@@ -435,7 +435,7 @@ secret_names
 local_certificates
 development_queues
 host_ports
-```
+`
 
 The implementation can use rootless containers, workspace namespaces, or a profile-approved equivalent.
 
@@ -476,11 +476,11 @@ Production credentials are not a development conformance prerequisite.
 
 The endpoint model separates:
 
-```text
+`text
 workspace-internal endpoints
 host-exposed endpoints
 workspace-local interprocess communication
-```
+`
 
 Fixed internal ports are compatible with isolated networks.
 
@@ -514,7 +514,7 @@ Every workspace declares bounded:
 - pending queue depth;
 - heavy-job concurrency.
 
-Heavy services such as search engines, workbenches, model runtimes, SenTient, or intensive UCKK jobs are task-activated where included.
+Heavy services such as search engines, workbenches, model runtimes, SenTient, or intensive kOA Mediatheque processing and UCKK package-validation or transport jobs are task-activated where included.
 
 Resource Governor admission remains separate from business and governance authority.
 
@@ -558,7 +558,7 @@ A result cannot hide which side supplied a service, filesystem, port, credential
 
 Workspace lifecycle states can include:
 
-```text
+`text
 declared
 validated
 active
@@ -566,7 +566,7 @@ suspended
 teardown_pending
 retired
 failed
-```
+`
 
 Creation, activation, teardown, and removal are explicit.
 
@@ -578,15 +578,15 @@ Orphan cleanup covers ports, containers, networks, volumes, sockets, processes, 
 
 Development output becomes a release candidate through:
 
-```text
+`text
 clean source revision
-    → declared build
-    → tests
-    → provenance
-    → immutable artifact
-    → publication
-    → Release Set evaluation
-```
+ → declared build
+ → tests
+ → provenance
+ → immutable artifact
+ → publication
+ → Release Set evaluation
+`
 
 The mutable workspace does not cross this boundary as an artifact.
 
@@ -993,7 +993,7 @@ This document is conformant when all of the following checks pass:
 
 Expected validator failure codes include:
 
-```text
+`text
 dev_conformance_profile_identity_missing
 dev_conformance_profile_scope_mismatch
 dev_conformance_wsl_boundary_unresolved
@@ -1024,7 +1024,7 @@ dev_conformance_cross_workspace_teardown_effect
 dev_conformance_false_release_claim
 dev_conformance_evidence_stale
 dev_conformance_result_nondeterministic
-```
+`
 
 ## 11. Non-Normative Examples
 

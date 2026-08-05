@@ -1151,8 +1151,6 @@
       "DEC-GATE-001"
     ],
     "adr_ids": [
-      "ADR-009",
-      "ADR-010",
       "ADR-012"
     ],
     "requirement_ids": [
@@ -1266,7 +1264,6 @@
     "generated/decision-index.json",
     "contracts/system.contract.json",
     "generated/component-catalog.json",
-    "generated/component-catalog.json",
     "contracts/components/identity-and-trust.component.json",
     "contracts/components/audit-broker.component.json",
     "contracts/components/publication-gateway.component.json",
@@ -1353,7 +1350,7 @@
   "change_policy": {
     "semantic_owner": "governance-architecture",
     "accepted_owner_decision_required": true,
-    "major_change_requires_adr": true,
+    "major_change_requires_adr": false,
     "impact_report_required": true,
     "component_and_profile_compatibility_review_required": true,
     "migration_or_compatibility_plan_required": true,
@@ -1361,6 +1358,5 @@
     "complete_validation_required": true,
     "authority_registry_updated_last": true
   },
-  "supersedes": [],
-  "replaced_by": null
+  "supersedes": []
 }

@@ -114,7 +114,8 @@
     "LOCK-DOC-020",
     "LOCK-IMPL-001",
     "LOCK-MEDIATHEQUE-001",
-    "LOCK-UCKK-EXT-001"
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -165,19 +166,19 @@ This document defines how kOA proves that canonical ownership and data-authority
 
 The constitutional rule is simple:
 
-```text
+`text
 one authoritative domain
-        ↓
+ ↓
 one active owning component
-        ↓
+ ↓
 registered owner-controlled operations
-        ↓
+ ↓
 enforced identities and storage boundaries
-        ↓
+ ↓
 observable state transitions
-        ↓
+ ↓
 tests and evidence
-```
+`
 
 Conformance requires more than consistent documentation.
 
@@ -333,17 +334,17 @@ They do not override active ownership declarations.
 
 ### 3.2 Lifecycle and integrations
 
-```text
+`text
 contracts/release-channels.contract.json
 contracts/artifact-classes.contract.json
 contracts/integration-types.contract.json
-```
+`
 
 Lifecycle and integration validation must preserve component ownership.
 
 ### 3.3 Related documents
 
-```text
+`text
 01-constitution/08-data-authority-and-ownership.md
 02-system/04-component-boundaries.md
 02-system/05-data-authority.md
@@ -359,7 +360,7 @@ Lifecycle and integration validation must preserve component ownership.
 07-security/12-external-integration-classification.md
 08-operations/00-operating-model.md
 08-operations/09-restore.md
-```
+`
 
 ## 4. Model and Responsibilities
 
@@ -768,7 +769,7 @@ Validation proves that it:
 - produces publication results and receipts;
 - leaves source ownership unchanged.
 
-### 4.20 kOA Mediatheque and UCKK Publication Adapter
+### 4.20 kOA Mediatheque and UCKK Publication Bridge
 
 kOA Mediatheque owns local media records, file versions, managed local content references, hashes, collections, dimensions, tags, relationships, rights, restrictions, provenance, renditions, lifecycle state, import and export history, and local backup and restore state.
 
@@ -780,7 +781,7 @@ Validation proves that kOA Mediatheque:
 - treats XLSX, AI services, and publication targets as interfaces rather than authoritative stores;
 - preserves local ownership when an object is exported or published.
 
-The optional UCKK Publication Adapter owns only target-specific Moodle packaging, transport, result handling, and receipt production after an explicit Publication Gateway authorization.
+The optional UCKK Publication Bridge owns only target-specific Moodle packaging, transport, result handling, and receipt production after an explicit Publication Gateway authorization. The separate UCKK Import Bridge owns retrieval and quarantine transport state; kOA Mediatheque owns local acceptance and separate local identities.
 
 Validation proves that the adapter:
 
@@ -1019,7 +1020,7 @@ Evidence remains tied to exact identities and versions.
 - **REQ-CONF-OWN-021 — SHALL NOT:** ChatGPT, Suno, Gamma, Ariane external voice, SenTient, another integration, or another workbench directly mutate canonical component state.
 - **REQ-CONF-OWN-022 — SHALL:** Publication Gateway validation demonstrate that it transports only an owner-authorized representation and does not own or mutate source component data.
 - **REQ-CONF-OWN-023 — SHALL:** kOA Mediatheque validation demonstrate exclusive ownership of local media records and managed local content state, deterministic local operation, and independence from UCKK availability.
-- **REQ-CONF-OWN-024 — SHALL:** Publication Gateway and the UCKK Publication Adapter remain separately identifiable, separately authorized, separately testable, and non-substitutable; the adapter SHALL NOT bypass disclosure authorization, write directly to Moodle storage, or transfer ownership of the local source record.
+- **REQ-CONF-OWN-024 — SHALL:** Publication Gateway and the UCKK Publication Bridge remain separately identifiable, separately authorized, separately testable, and non-substitutable; the adapter SHALL NOT bypass disclosure authorization, write directly to Moodle storage, or transfer ownership of the local source record.
 - **REQ-CONF-OWN-025 — SHALL:** Governance Policy Runtime validation demonstrate that policy evaluation does not mutate application data, allocate resources, publish content, issue identities, or execute privileged operations.
 - **REQ-CONF-OWN-026 — SHALL:** Resource Governor validation demonstrate that resource admission and scheduling do not create application, policy, publication, identity, or data authority.
 - **REQ-CONF-OWN-027 — SHALL:** Audit Broker validation demonstrate that receipts and evidence remain records of bounded events rather than replacement application databases or unrestricted replicas.
@@ -1341,7 +1342,7 @@ Operations execute owner-controlled procedures and provide runtime evidence.
 | `DEC-DATA-001` | Every authoritative domain has one owner and direct foreign source writes are prohibited |
 | `DEC-GATE-001` | Publication Gateway authorization and destination-specific transport remain separate |
 | `DEC-MEDIATHEQUE-001` | kOA Mediatheque is the internal local media authority |
-| `DEC-UCKK-EXT-001` | UCKK is an external Moodle publication target reached through an optional controlled adapter |
+| `DEC-UCKK-EXT-001` | UCKK is an external online Moodle platform reached through optional controlled directional adapters |
 | `DEC-GOV-001` | Governance Policy Runtime and Resource Governor remain separate authorities |
 | `DEC-PROFILE-001` | Profiles alter topology and strengthening without transferring ownership |
 | `DEC-AI-001` | External AI remains optional, non-authoritative, and unable to write canonical state |
@@ -1394,7 +1395,7 @@ The following assumptions are invalid:
 - SenTient can write canonical state because it is local;
 - Publication Gateway owns published source data;
 - UCKK owns local kOA Mediatheque records because a publication copy exists;
-- the UCKK Publication Adapter owns either the local source record or the external Moodle object;
+- the UCKK Publication Bridge owns either the local source record or the external Moodle object;
 - a shared Mediatheque frame implies shared storage or shared authority;
 - Governance Policy Runtime owns the action it authorizes;
 - Resource Governor owns the work it schedules;
@@ -1444,7 +1445,7 @@ This document is conformant when:
 25. external AI and SenTient cannot mutate canonical state directly;
 26. Publication Gateway remains a transport executor;
 27. kOA Mediatheque remains the exclusive owner of local media records and local managed content state;
-28. the external UCKK platform accepts or rejects its own publication copy through a declared interface, while Publication Gateway and the UCKK Publication Adapter remain separately authorized and tested;
+28. the external UCKK platform accepts or rejects its own publication copy through a declared interface, while Publication Gateway and the UCKK Publication Bridge remain separately authorized and tested; the UCKK Import Bridge is independently tested for retrieval, quarantine, validation, and acceptance handoff;
 29. Governance Policy Runtime remains non-mutating for application data;
 30. Resource Governor remains authority-neutral for application state;
 31. Audit Broker remains evidence infrastructure rather than application source;
@@ -1475,44 +1476,44 @@ This document is conformant when:
 
 Expected test coverage includes:
 
-```text
-TEST-CONF-OWN-001  Authoritative-domain inventory
-TEST-CONF-OWN-002  Unique active owner
-TEST-CONF-OWN-003  Ownership declaration consistency
-TEST-CONF-OWN-004  Ownerless mutable-state detection
-TEST-CONF-OWN-005  Mutation-path inventory
-TEST-CONF-OWN-006  Static foreign-client detection
-TEST-CONF-OWN-007  Distinct service identities
-TEST-CONF-OWN-008  Database and schema grants
-TEST-CONF-OWN-009  File, object, queue, and secret permissions
-TEST-CONF-OWN-010  Positive owner mutation
-TEST-CONF-OWN-011  Direct foreign database write denial
-TEST-CONF-OWN-012  Foreign queue and object-store denial
-TEST-CONF-OWN-013  Unchanged-state proof
-TEST-CONF-OWN-014  Cross-tenant and cross-domain denial
-TEST-CONF-OWN-015  Derived-state source declaration
-TEST-CONF-OWN-016  Derived-state rebuild
-TEST-CONF-OWN-017  Read-replica write denial
-TEST-CONF-OWN-018  Event producer ownership
-TEST-CONF-OWN-019  Consumer cannot rewrite producer state
-TEST-CONF-OWN-020  Controlled candidate adoption
-TEST-CONF-OWN-021  External AI direct-write denial
-TEST-CONF-OWN-022  Publication Gateway source non-ownership
-TEST-CONF-OWN-023  kOA Mediatheque local ownership and offline independence
-TEST-CONF-OWN-024  Publication Gateway and UCKK adapter separation
-TEST-CONF-OWN-025  Governance Policy Runtime non-mutation
-TEST-CONF-OWN-026  Resource Governor authority separation
-TEST-CONF-OWN-027  Audit Broker non-authority
-TEST-CONF-OWN-028  Component-owned migration
-TEST-CONF-OWN-029  Foreign migration denial
-TEST-CONF-OWN-030  Backup ownership metadata
-TEST-CONF-OWN-031  Component-owned restore
-TEST-CONF-OWN-032  Profile-composed topology
-TEST-CONF-OWN-033  Release Set ownership closure
-TEST-CONF-OWN-034  Exception scope and expiry
-TEST-CONF-OWN-035  Runtime ownership-drift detection
-TEST-CONF-OWN-036  Evidence completeness and reproducibility
-```
+`text
+TEST-CONF-OWN-001 Authoritative-domain inventory
+TEST-CONF-OWN-002 Unique active owner
+TEST-CONF-OWN-003 Ownership declaration consistency
+TEST-CONF-OWN-004 Ownerless mutable-state detection
+TEST-CONF-OWN-005 Mutation-path inventory
+TEST-CONF-OWN-006 Static foreign-client detection
+TEST-CONF-OWN-007 Distinct service identities
+TEST-CONF-OWN-008 Database and schema grants
+TEST-CONF-OWN-009 File, object, queue, and secret permissions
+TEST-CONF-OWN-010 Positive owner mutation
+TEST-CONF-OWN-011 Direct foreign database write denial
+TEST-CONF-OWN-012 Foreign queue and object-store denial
+TEST-CONF-OWN-013 Unchanged-state proof
+TEST-CONF-OWN-014 Cross-tenant and cross-domain denial
+TEST-CONF-OWN-015 Derived-state source declaration
+TEST-CONF-OWN-016 Derived-state rebuild
+TEST-CONF-OWN-017 Read-replica write denial
+TEST-CONF-OWN-018 Event producer ownership
+TEST-CONF-OWN-019 Consumer cannot rewrite producer state
+TEST-CONF-OWN-020 Controlled candidate adoption
+TEST-CONF-OWN-021 External AI direct-write denial
+TEST-CONF-OWN-022 Publication Gateway source non-ownership
+TEST-CONF-OWN-023 kOA Mediatheque local ownership and offline independence
+TEST-CONF-OWN-024 Publication Gateway and UCKK adapter separation
+TEST-CONF-OWN-025 Governance Policy Runtime non-mutation
+TEST-CONF-OWN-026 Resource Governor authority separation
+TEST-CONF-OWN-027 Audit Broker non-authority
+TEST-CONF-OWN-028 Component-owned migration
+TEST-CONF-OWN-029 Foreign migration denial
+TEST-CONF-OWN-030 Backup ownership metadata
+TEST-CONF-OWN-031 Component-owned restore
+TEST-CONF-OWN-032 Profile-composed topology
+TEST-CONF-OWN-033 Release Set ownership closure
+TEST-CONF-OWN-034 Exception scope and expiry
+TEST-CONF-OWN-035 Runtime ownership-drift detection
+TEST-CONF-OWN-036 Evidence completeness and reproducibility
+`
 
 The test catalog and evidence registry own executable controls and evidence definitions.
 
@@ -1589,7 +1590,7 @@ The owning Mediatheque creates an owner-authorized publication representation wh
 
 Governance Policy Runtime supplies the required disclosure decision, and Publication Gateway authorizes the cross-domain release.
 
-The UCKK Publication Adapter creates the target-specific package and manifest, calls the declared external interface, and records the result and receipt.
+The UCKK Publication Bridge creates the target-specific package and manifest, calls the declared external interface, and records the result and receipt.
 
 UCKK accepts or rejects its own external copy. Direct writes to UCKK database tables or managed storage are denied, and local Mediatheque operation remains available when UCKK is offline.
 

@@ -30,7 +30,8 @@
     "DEC-GOV-001",
     "DEC-AI-001",
     "DEC-SENT-001",
-    "DEC-UCKK-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001",
     "DEC-ARI-001",
     "DEC-LANG-001",
     "DEC-LIFE-001"
@@ -82,8 +83,10 @@
     "LOCK-AI-001",
     "LOCK-AI-002",
     "LOCK-SENT-001",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-MEDIATHEQUE-002",
+    "LOCK-UCKK-EXT-002",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
     "LOCK-LIFE-001",
@@ -93,7 +96,6 @@
   ],
   "exception_ids": [],
   "depends_on": [
-    "DOC-ADR-013",
     "DOC-SYS-001",
     "DOC-SEC-000",
     "DOC-SEC-011",
@@ -129,7 +131,7 @@ KOA:DOC-META:END -->
 | Owner | `owner:user-profile-operations` |
 | Last reviewed | `2026-08-03` |
 | Applies to profiles | `user_lightweight` |
-| Applies to components | `identity_and_trust`, `governance_policy_runtime`, `audit_broker`, `koa_node_agent`, `resource_governor`, `orgo`, `kristal_runtime`, `konnaxion`, `semantik_architect_runtime`, `uckk_platform`, `uckk_dimension_gateway`, `ariane_runtime`, `publication_gateway` |
+| Applies to components | `identity_and_trust`, `governance_policy_runtime`, `audit_broker`, `koa_node_agent`, `resource_governor`, `orgo`, `kristal_runtime`, `konnaxion`, `semantik_architect_runtime`, `koa_mediatheque`, `ariane_runtime`, `publication_gateway`; optional integrations: `uckk-publication`, `uckk-import` |
 | Applies to toolchains | `none` |
 | Supported platforms | systemd-based Linux with cgroup v2 and a profile-supported rootless OCI runtime |
 | Supersedes | `none` |
@@ -155,7 +157,7 @@ Successful completion produces:
 - one active `user_lightweight` profile;
 - one exact active Release Set;
 - local identity, governance, audit, resource, and recovery control;
-- local Orgo, Kristal, Konnaxion, SemantiK, UCKK, and Ariane capability;
+- local Orgo, Kristal, Konnaxion, SemantiK, kOA Mediatheque, and Ariane capability;
 - no mandatory external AI, central control plane, cluster orchestrator, heavy research workbench, or permanent virtual machine;
 - an idle memory target of approximately 5–8 GiB;
 - an encrypted protected backup and a tested restore path.
@@ -258,7 +260,7 @@ The recipe does not substitute newer versions by assumption.
 - `DEC-GOV-001`
 - `DEC-AI-001`
 - `DEC-SENT-001`
-- `DEC-UCKK-001`
+- `DEC-UCKK-EXT-001`
 - `DEC-ARI-001`
 - `DEC-LANG-001`
 - `DEC-LIFE-001`
@@ -312,8 +314,8 @@ The recipe does not substitute newer versions by assumption.
 - `LOCK-AI-001`
 - `LOCK-AI-002`
 - `LOCK-SENT-001`
-- `LOCK-UCKK-001`
-- `LOCK-UCKK-002`
+- `LOCK-UCKK-EXT-001`
+- `LOCK-UCKK-EXT-002`
 - `LOCK-ARI-001`
 - `LOCK-ARI-002`
 - `LOCK-LIFE-001`
@@ -337,8 +339,11 @@ The recipe does not substitute newer versions by assumption.
 - `contracts/components/kristal-runtime.component.json`
 - `contracts/components/konnaxion.component.json`
 - `contracts/components/semantik-architect-runtime.component.json`
-- `contracts/components/uckk-platform.component.json`
-- `contracts/components/uckk-dimension-gateway.component.json`
+- `contracts/components/koa-mediatheque.component.json`
+- `contracts/integrations/uckk-publication.integration.json`
+- `contracts/integrations/uckk-import.integration.json`
+- `contracts/artifact-contracts/uckk-learning-package.schema.json`
+- `contracts/artifact-contracts/uckk-import-receipt.schema.json`
 - `contracts/components/ariane-runtime.component.json`
 - `contracts/components/publication-gateway.component.json`
 
@@ -351,7 +356,6 @@ The recipe does not substitute newer versions by assumption.
 
 ### 4.7 Related documentation
 
-- `DOC-ADR-013`
 - `DOC-SYS-001`
 - `DOC-SEC-000`
 - `DOC-SEC-011`
@@ -463,7 +467,7 @@ A failed command blocks the recipe until the condition is corrected or a differe
 | `/var/lib/koa/orgo/` | private operational state | orgo | included | component-owned restore |
 | `/var/lib/koa/konnaxion/` | public or local participation state | konnaxion | included | component-owned restore |
 | `/var/lib/koa/kristal/` | verified Runtime Packs, provenance, active and last-known-good state | kristal_runtime | included or independently referenced | verify and activate independently |
-| `/var/lib/koa/uckk/` | original media, versions, rights, metadata, and derived-state references | uckk_platform | originals and rights included; derived caches regenerable | rebuild derived state |
+| `/var/lib/koa/mediatheque/` | local media records, versions, managed content, rights, metadata, provenance, and rendition references | koa_mediatheque | authoritative records and managed content included; derived caches regenerable | verify records and rebuild reproducible derivatives |
 | `/var/lib/koa/ariane/` | Atlas, driver, local navigation, and bounded session state | ariane_runtime | authoritative state included; caches regenerable | verify local navigation |
 | `/var/lib/koa/audit/` | classified receipts and evidence | audit_broker | included according to retention | protected restore and access |
 | `/var/lib/koa/quarantine/` | untrusted imports | import owners | not included unless incident policy requires | delete after disposition |
@@ -543,7 +547,7 @@ Cross-component mutations use component APIs, events, or gateways.
 
 The minimal installation enables none by default.
 
-ChatGPT, Suno, Gamma, Ariane external voice, remote synchronization, federation, remote support, and external storage require separately registered integrations, user or workflow initiation, data eligibility, policy authorization, provenance, and removal behavior.
+ChatGPT, Suno, Gamma, Ariane external voice, UCKK publication, remote synchronization, federation, remote support, and external storage require separately registered integrations, user or workflow initiation, data eligibility, policy authorization, provenance, and removal behavior.
 
 External AI output remains candidate material.
 
@@ -560,8 +564,9 @@ External AI output remains candidate material.
 | `kristal_runtime` | `installed_and_enabled` | Verifies, stores, activates, queries, and exposes portable epistemic artifacts for predictable offline use. |
 | `konnaxion` | `installed_and_enabled` | Provides public and commons-oriented discovery, education, collaboration, deliberation, cultural exchange, participation, curation, and distribution. |
 | `semantik_architect_runtime` | `installed_and_enabled` | Produces deterministic text from structured data using validated precompiled language artifacts. |
-| `uckk_platform` | `installed_and_enabled` | Owns multimedia content identity, versioning, organization, provenance, visibility, publication, distribution, and archival behavior. |
-| `uckk_dimension_gateway` | `installed_and_enabled` | Transfers user-selected local documents and media into the user's UCKK dimension through resumable, verified, explicitly classified ingestion. |
+| `koa_mediatheque` | `installed_and_enabled` | Owns local multimedia records, versions, managed content, metadata, rights, provenance, deterministic renditions, lifecycle, export, backup, and restore. |
+| `uckk-publication` | `not_installed_by_default` | Optional outbound Moodle publication integration. It is enabled only with Publication Gateway authorization and never owns local media. |
+| `uckk-import` | `not_installed_by_default` | Optional inbound learning-package integration. It retrieves or receives selected complete packages into quarantine; local acceptance remains with kOA Mediatheque. |
 | `ariane_runtime` | `installed_and_enabled` | Provides deterministic application navigation from validated Atlases, with observation, planning, execution, verification, and safe user control. |
 | `publication_gateway` | `not_installed_by_default` | Controls disclosure and publication between private operational domains and public or commons-oriented surfaces. It is added only when the user enables the publication capability through the profile contract. |
 | `sentient` | `excluded` | Provides isolated, explicit semantic research, reconciliation, and enrichment that produces candidate artifacts for review. The minimal installation does not deploy it. |
@@ -596,8 +601,9 @@ The profile contract remains authoritative when it differs from this recipe.
 | Kristal Runtime | 0.2–0.5 GiB | 0.75 GiB | service memory and query limits |
 | Konnaxion core | 0.3–0.7 GiB | 1.0 GiB | service memory and request limits |
 | SemantiK runtime | 0.1–0.3 GiB | 0.5 GiB | one worker and one normally active language pack |
-| UCKK platform | 0.5–1.0 GiB | 1.5 GiB | one heavy media job and task-worker cgroups |
-| UCKK Dimension Gateway | 0.05–0.2 GiB | 0.3 GiB | small always-on gateway with bounded import workers |
+| kOA Mediatheque | 0.5–1.0 GiB | 1.5 GiB | one heavy media job and task-worker cgroups |
+| Optional UCKK publication integration | 0–0.2 GiB | 0.3 GiB | task-activated outbound packaging and transport; absent when integration is disabled |
+| Optional UCKK import integration | 0–0.3 GiB | 0.5 GiB | task-activated retrieval, quarantine, scanning, and validation; accepted content is stored by kOA Mediatheque |
 | Ariane Runtime | 0.2–0.6 GiB | 1.0 GiB | local deterministic navigation limits |
 | Browser and user applications | 2.0–4.0 GiB | 6.0 GiB | desktop and browser process controls |
 | Combined idle target | 5.0–8.0 GiB | 10.0 GiB | Resource Governor and cgroup v2 |
@@ -824,8 +830,7 @@ Import the services-channel artifacts for:
 - Kristal Runtime;
 - Konnaxion;
 - SemantiK Architect Runtime;
-- UCKK Platform;
-- UCKK Dimension Gateway;
+- kOA Mediatheque;
 - Ariane Runtime.
 
 Import through the profile-approved artifact verifier.
@@ -847,8 +852,7 @@ jq -e '
          "kristal_runtime",
          "konnaxion",
          "semantik_architect_runtime",
-         "uckk_platform",
-         "uckk_dimension_gateway",
+         "koa_mediatheque",
          "ariane_runtime"]
         | index($id))
 ' /var/lib/koa/node/effective-profile.json
@@ -876,7 +880,7 @@ Keep idle use within the lightweight envelope and prevent heavy work from destab
 - apply memory, CPU, I/O, process, queue, and timeout limits;
 - limit SemantiK to one worker;
 - activate one language pack normally;
-- limit UCKK to one heavy media job;
+- limit kOA Mediatheque to one heavy media job;
 - configure thumbnail, preview, extraction, indexing, backup, and synchronization workers for task activation and idle shutdown;
 - keep low-priority background I/O below interactive and integrity-critical work.
 
@@ -1036,7 +1040,7 @@ Show that local core operation does not require Internet, a control plane, exter
 - open Orgo and Konnaxion local workspaces;
 - query an active Kristal Runtime Pack;
 - render through SemantiK;
-- ingest a small local UCKK file through the deterministic path;
+- ingest a small local file into the kOA Mediatheque through the deterministic path;
 - navigate using Ariane without voice;
 - verify audit receipts and local cancellation.
 
@@ -1217,8 +1221,8 @@ Expected locks include:
 - `LOCK-AI-001`
 - `LOCK-AI-002`
 - `LOCK-SENT-001`
-- `LOCK-UCKK-001`
-- `LOCK-UCKK-002`
+- `LOCK-UCKK-EXT-001`
+- `LOCK-UCKK-EXT-002`
 - `LOCK-ARI-001`
 - `LOCK-ARI-002`
 - `LOCK-LIFE-001`
@@ -1269,7 +1273,7 @@ Required test evidence includes:
 | `TEST-CROSS-008` | Policy decision precedes governed privilege | `pass` |
 | `TEST-CROSS-009` | Audit Broker does not become an authorization engine | `pass` |
 | `TEST-CROSS-011` | Ariane voice remains externally optional | `pass` |
-| `TEST-CROSS-012` | UCKK native ingestion remains deterministic | `pass` |
+| `TEST-CROSS-012` | kOA Mediatheque ingestion remains deterministic; UCKK publication and import remain external, separate, governed, and non-synchronizing | `pass` |
 | `TEST-CROSS-013` | External AI cannot directly mutate authority | `pass` |
 | `TEST-CROSS-014` | Identity layers remain distinct | `pass` |
 | `TEST-CROSS-015` | All cross-component mutations are contract-bound | `pass` |
@@ -1599,8 +1603,7 @@ The agent does not treat this recipe as independent authority.
     "kristal_runtime",
     "konnaxion",
     "semantik_architect_runtime",
-    "uckk_platform",
-    "uckk_dimension_gateway",
+    "koa_mediatheque",
     "ariane_runtime"
 ],
   "workspace_id": null,
@@ -1614,7 +1617,7 @@ The agent does not treat this recipe as independent authority.
     "DEC-GOV-001",
     "DEC-AI-001",
     "DEC-SENT-001",
-    "DEC-UCKK-001",
+    "DEC-UCKK-EXT-001",
     "DEC-ARI-001",
     "DEC-LANG-001",
     "DEC-LIFE-001"
@@ -1666,8 +1669,8 @@ The agent does not treat this recipe as independent authority.
     "LOCK-AI-001",
     "LOCK-AI-002",
     "LOCK-SENT-001",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-002",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
     "LOCK-LIFE-001",
@@ -1940,7 +1943,7 @@ The active `user_lightweight` Release Set includes:
 - Kristal Runtime;
 - Konnaxion core;
 - SemantiK runtime;
-- UCKK Platform and Dimension Gateway;
+- kOA Mediatheque;
 - Ariane Runtime;
 - one French language pack;
 - one local Kristal Runtime Pack.
@@ -1956,7 +1959,7 @@ At idle:
 
 The user imports a video.
 
-One UCKK task worker starts, produces a preview, records provenance, and exits after completion. A second heavy media request remains queued until the first finishes.
+One kOA Mediatheque task worker starts, produces a preview, records provenance, and exits after completion. A second heavy media request remains queued until the first finishes.
 
 The user disconnects the network and can still authenticate, use local Orgo and Konnaxion workspaces, query Kristal, render French through SemantiK, navigate with Ariane, and inspect local receipts.
 

@@ -95,7 +95,7 @@
     "LOCK-SENT-001",
     "LOCK-MEDIATHEQUE-001",
     "LOCK-UCKK-EXT-001",
-    "LOCK-UCKK-EXT-001"
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -165,7 +165,7 @@ Profile-specific degradation envelopes remain owned by profile contracts. Compon
 
 The canonical sources are:
 
-```text
+`text
 contracts/system.contract.json#/capability_degradation
 generated/component-catalog.json
 generated/profile-catalog.json
@@ -179,7 +179,7 @@ generated/traceability.json
 generated/exception-index.json
 generated/test-catalog.json
 generated/evidence-catalog.json
-```
+`
 
 Ownership is divided as follows:
 
@@ -355,21 +355,21 @@ No implementation selects a less restrictive state than the capability contract 
 
 The normal transition is:
 
-```text
+`text
 normal
 → degraded
 → restoring
 → normal
-```
+`
 
 When no safe reduced mode exists:
 
-```text
+`text
 normal | degraded
 → blocked
 → restoring
 → normal
-```
+`
 
 A transition to `degraded` records:
 
@@ -399,13 +399,13 @@ A queued request is pending work, not an approved future mutation.
 
 Resource pressure follows:
 
-```text
+`text
 resource threshold approached
 → lower priority or reduce concurrency
 → queue or suspend task-activated work
 → reject new heavy work
 → preserve required core capabilities
-```
+`
 
 Resource Governor applies the active resource envelope. It does not modify authorization, disclosure, consent, or data ownership.
 
@@ -415,13 +415,13 @@ When the required envelope cannot be enforced, the affected unconstrained work i
 
 Artifact activation follows:
 
-```text
+`text
 validate
 → verify
 → stage
 → compatibility check
 → activate atomically
-```
+`
 
 If any step fails:
 
@@ -541,7 +541,7 @@ A resource allowance does not authorize an operation. A policy allowance does no
 
 Publication Gateway failure affects cross-domain publication.
 
-UCKK Publication Bridge failure affects only UCKK-specific packaging, transport, and destination receipt handling.
+UCKK Publication Bridge failure affects only outbound packaging, transport, and destination-receipt handling. UCKK Import Bridge failure affects new retrieval, quarantine intake, and remote update checks; already accepted local learning material remains available offline.
 
 Neither failure transfers responsibility to the other gateway, and neither gateway can bypass the missing boundary.
 
@@ -626,13 +626,13 @@ This document is conformant when:
 
 Applicable validation commands are:
 
-```bash
+`bash
 python docs/tools/check_component_boundaries.py
 python docs/tools/check_profile_composition.py
 python docs/tools/check_interfile_locks.py
 python docs/tools/check_traceability.py
 python docs/tools/validate_docs.py
-```
+`
 
 ## 11. Non-Normative Examples
 

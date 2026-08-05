@@ -347,79 +347,79 @@ The examples in this section illustrate syntax only. They do not create requirem
 
 ### 11.1 Valid canonical requirement object
 
-```json
+`json
 {
-  "requirement_id": "REQ-DEV-UV-001",
-  "version": 1,
-  "status": "active",
-  "strength": "SHALL",
-  "scope": {
-    "kind": "profile",
-    "profiles": [
-      "developer_linux_workstation",
-      "developer_windows_wsl"
-    ]
-  },
-  "statement": "Each Python workspace has its own installed dependency environment.",
-  "owner": "development-architecture",
-  "source": {
-    "kind": "owner_decision",
-    "id": "DEC-DEV-001"
-  },
-  "canonical_refs": [
-    "contracts/toolchains/python-uv.toolchain.json#/environment_isolation/per_workspace_venv"
-  ],
-  "lock_ids": [
-    "LOCK-DEV-001",
-    "LOCK-DEV-002"
-  ],
-  "validation": [
-    {
-      "type": "repository_check",
-      "test_id": "TEST-DEV-UV-001"
-    }
-  ]
+ "requirement_id": "REQ-DEV-UV-001",
+ "version": 1,
+ "status": "active",
+ "strength": "SHALL",
+ "scope": {
+ "kind": "profile",
+ "profiles": [
+ "developer_linux_workstation",
+ "developer_windows_wsl"
+ ]
+ },
+ "statement": "Each Python workspace has its own installed dependency environment.",
+ "owner": "development-architecture",
+ "source": {
+ "kind": "owner_decision",
+ "id": "DEC-DEV-001"
+ },
+ "canonical_refs": [
+ "contracts/toolchains/python-uv.toolchain.json#/environment_isolation/per_workspace_venv"
+ ],
+ "lock_ids": [
+ "LOCK-DEV-001",
+ "LOCK-DEV-002"
+ ],
+ "validation": [
+ {
+ "type": "repository_check",
+ "test_id": "TEST-DEV-UV-001"
+ }
+ ]
 }
-```
+`
 
 ### 11.2 Valid generated projection
 
-```markdown
+`markdown
 <!-- GENERATED:REQUIREMENTS:BEGIN ids=REQ-DEV-UV-001 -->
 - **REQ-DEV-UV-001 — SHALL:** Each Python workspace has its own installed dependency environment.
 <!-- GENERATED:REQUIREMENTS:END -->
-```
+`
 
 ### 11.3 Invalid manually authored obligation
 
-```markdown
+`markdown
 Every Python project SHALL use its own environment.
-```
+`
 
 This is invalid outside a generated requirements block, even when the intended rule is correct.
 
 ### 11.4 Invalid competing vocabulary
 
-```markdown
+`markdown
 Every Python project MUST use UV.
-```
+`
 
 This is invalid because `MUST` is not part of the kOA normative vocabulary.
 
 ### 11.5 Valid explanatory prose
 
-```markdown
+`markdown
 UV manages Python dependencies for the development profiles. The canonical requirements governing environment isolation are projected below.
-```
+`
 
 This explains context without creating a second normative statement.
 
 ### 11.6 Valid permission
 
-```markdown
+`markdown
 <!-- GENERATED:REQUIREMENTS:BEGIN ids=REQ-DEV-UV-010 -->
 - **REQ-DEV-UV-010 — MAY:** Development workspaces share the content-addressed UV download cache.
 <!-- GENERATED:REQUIREMENTS:END -->
-```
+`
 
 The permission does not imply a preferred default or an obligation to share the cache.

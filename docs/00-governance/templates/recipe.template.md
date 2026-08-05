@@ -38,49 +38,49 @@ KOA:DOC-META:END -->
 
 <!-- KOA:TARGET-DOC-META:BEGIN
 {
-  "doc_id": "DOC-RECIPE-TEMPLATE",
-  "document_class": "recipe",
-  "status": "template",
-  "language": "en",
-  "layer": "implementation_recipe",
-  "scope": ["global"],
-  "canonical_refs": [
-    "generated/document-index.json",
-    "generated/requirements-index.json",
-    "generated/assertion-index.json",
-    "generated/profile-catalog.json"
-  ],
-  "decision_ids": [],
-  "requirement_ids": [],
-  "lock_ids": [
-    "LOCK-IMPL-001",
-    "LOCK-IMPL-002",
-    "LOCK-DOC-003",
-    "LOCK-DOC-004",
-    "LOCK-DOC-005",
-    "LOCK-DOC-016"
-  ],
-  "exception_ids": [],
-  "depends_on": [
-    "DOC-GOV-000",
-    "DOC-GOV-002",
-    "DOC-GOV-003",
-    "DOC-GOV-007",
-    "DOC-GOV-010"
-  ],
-  "tags": [
-    "template",
-    "recipe",
-    "implementation",
-    "non-normative"
-  ]
+ "doc_id": "DOC-RECIPE-TEMPLATE",
+ "document_class": "recipe",
+ "status": "template",
+ "language": "en",
+ "layer": "implementation_recipe",
+ "scope": ["global"],
+ "canonical_refs": [
+ "generated/document-index.json",
+ "generated/requirements-index.json",
+ "generated/assertion-index.json",
+ "generated/profile-catalog.json"
+ ],
+ "decision_ids": [],
+ "requirement_ids": [],
+ "lock_ids": [
+ "LOCK-IMPL-001",
+ "LOCK-IMPL-002",
+ "LOCK-DOC-003",
+ "LOCK-DOC-004",
+ "LOCK-DOC-005",
+ "LOCK-DOC-016"
+ ],
+ "exception_ids": [],
+ "depends_on": [
+ "DOC-GOV-000",
+ "DOC-GOV-002",
+ "DOC-GOV-003",
+ "DOC-GOV-007",
+ "DOC-GOV-010"
+ ],
+ "tags": [
+ "template",
+ "recipe",
+ "implementation",
+ "non-normative"
+ ]
 }
 KOA:TARGET-DOC-META:END -->
 
 # Recipe Template
 
-> **Template status:** Non-normative authoring template.  
-> **Required action:** Replace every placeholder enclosed in `<...>` before activating a recipe.  
+> **Template status:** Non-normative authoring template.
+> **Required action:** Replace every placeholder enclosed in `<...>` before activating a recipe.
 > **Authority rule:** A recipe explains one implementation method. It does not create system, profile, component, security, lifecycle, or conformance requirements.
 
 ---
@@ -165,9 +165,9 @@ List adjacent activities that are intentionally outside this recipe.
 
 Reference active profile contracts by canonical path.
 
-```text
+`text
 contracts/profiles/<profile>.profile.json
-```
+`
 
 Supported profiles:
 
@@ -263,10 +263,10 @@ All preconditions must be testable or explicitly verifiable.
 
 ### 5.4 Verification commands
 
-```bash
+`bash
 # Replace with commands that verify each precondition.
 <command>
-```
+`
 
 Each command must:
 
@@ -329,9 +329,9 @@ For each mutable resource, declare:
 
 State the minimum required privilege.
 
-```text
+`text
 <unprivileged user|rootless container|narrow privileged broker|root>
-```
+`
 
 Root must not be used as the ordinary governance API.
 
@@ -350,9 +350,9 @@ This recipe must not:
 
 Declare the approved secret source:
 
-```text
+`text
 <secret manager, environment injection, protected file, or profile-defined source>
-```
+`
 
 ### 7.3 Network boundaries
 
@@ -414,13 +414,13 @@ For `user_lightweight`, heavy services should be task-activated and bounded.
 
 Use only declared identifiers.
 
-```text
+`text
 profile_id
 component_id
 workspace_id
 artifact_id
 release_id
-```
+`
 
 ### 9.2 Workspace-scoped resources
 
@@ -476,21 +476,21 @@ Each step must include:
 
 **Command**
 
-```bash
+`bash
 <command>
-```
+`
 
 **Expected result**
 
-```text
+`text
 <observable result>
-```
+`
 
 **Verification**
 
-```bash
+`bash
 <verification command>
-```
+`
 
 **Failure behavior**
 
@@ -510,21 +510,21 @@ Each step must include:
 
 **Command**
 
-```bash
+`bash
 <command>
-```
+`
 
 **Expected result**
 
-```text
+`text
 <observable result>
-```
+`
 
 **Verification**
 
-```bash
+`bash
 <verification command>
-```
+`
 
 **Failure behavior**
 
@@ -544,21 +544,21 @@ Each step must include:
 
 **Command**
 
-```bash
+`bash
 <command>
-```
+`
 
 **Expected result**
 
-```text
+`text
 <observable result>
-```
+`
 
 **Verification**
 
-```bash
+`bash
 <verification command>
-```
+`
 
 **Failure behavior**
 
@@ -574,9 +574,9 @@ Each step must include:
 
 Declare whether the complete recipe is idempotent.
 
-```text
+`text
 Idempotent: <yes|no|conditional>
-```
+`
 
 If conditional, state the exact condition.
 
@@ -599,31 +599,31 @@ A recipe that is not idempotent must include a checkpoint and rollback plan.
 
 List commands that prove the intended outcome.
 
-```bash
+`bash
 <functional validation command>
-```
+`
 
 Expected result:
 
-```text
+`text
 <expected output or state>
-```
+`
 
 ### 12.2 Contract validation
 
 Validate generated or modified artifacts against their canonical schemas.
 
-```bash
+`bash
 <schema validation command>
-```
+`
 
 ### 12.3 Lock validation
 
 Run applicable Interfile Alignment Locks.
 
-```bash
+`bash
 python docs/tools/check_interfile_locks.py
-```
+`
 
 List the expected lock IDs:
 
@@ -633,17 +633,17 @@ List the expected lock IDs:
 
 Run the profile-specific conformance checks.
 
-```bash
+`bash
 <profile validation command>
-```
+`
 
 ### 12.5 Documentation validation
 
 When the recipe changes documentation or generated examples:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 ### 12.6 Success criteria
 
@@ -702,15 +702,15 @@ Rollback is required when:
 
 ### 14.3 Rollback procedure
 
-```bash
+`bash
 <rollback command sequence>
-```
+`
 
 ### 14.4 Rollback verification
 
-```bash
+`bash
 <rollback verification command>
-```
+`
 
 ### 14.5 Irreversible changes
 
@@ -718,9 +718,9 @@ List every irreversible operation.
 
 If none:
 
-```text
+`text
 None.
-```
+`
 
 If an irreversible change exists, declare:
 
@@ -736,9 +736,9 @@ If an irreversible change exists, declare:
 
 Describe how to remove every resource created by the recipe.
 
-```bash
+`bash
 <cleanup commands>
-```
+`
 
 Cleanup must not remove:
 
@@ -777,10 +777,10 @@ List relevant metrics.
 
 Declare whether the recipe produces a critical-transition receipt.
 
-```text
+`text
 Receipt required: <yes|no>
 Receipt contract: <canonical reference or "none">
-```
+`
 
 ### 16.4 Evidence
 
@@ -797,12 +797,12 @@ Evidence must be sufficient to reproduce or verify the result without relying on
 
 Declare one of:
 
-```text
+`text
 fully_offline
 offline_after_prerequisite_download
 online_required
 not_applicable
-```
+`
 
 If downloads are required, declare:
 
@@ -876,24 +876,24 @@ The AI agent must not:
 
 ### 19.1 Required execution summary
 
-```json
+`json
 {
-  "recipe_id": "<RECIPE-DOMAIN-NNN>",
-  "recipe_version": "<MAJOR.MINOR.PATCH>",
-  "profile_ids": [],
-  "component_ids": [],
-  "workspace_id": null,
-  "decision_ids": [],
-  "requirement_ids": [],
-  "lock_ids": [],
-  "exception_ids": [],
-  "commands_executed": [],
-  "tests_run": [],
-  "evidence_ids": [],
-  "rollback_available": true,
-  "result": "pass|fail|blocked"
+ "recipe_id": "<RECIPE-DOMAIN-NNN>",
+ "recipe_version": "<MAJOR.MINOR.PATCH>",
+ "profile_ids": [],
+ "component_ids": [],
+ "workspace_id": null,
+ "decision_ids": [],
+ "requirement_ids": [],
+ "lock_ids": [],
+ "exception_ids": [],
+ "commands_executed": [],
+ "tests_run": [],
+ "evidence_ids": [],
+ "rollback_available": true,
+ "result": "pass|fail|blocked"
 }
-```
+`
 
 ---
 
@@ -905,9 +905,9 @@ Troubleshooting entries must use observed conditions rather than guesses.
 
 **Observed signal**
 
-```text
+`text
 <error, status, metric, or log evidence>
-```
+`
 
 **Likely bounded causes**
 
@@ -916,15 +916,15 @@ Troubleshooting entries must use observed conditions rather than guesses.
 
 **Diagnostic command**
 
-```bash
+`bash
 <command>
-```
+`
 
 **Corrective action**
 
-```bash
+`bash
 <command or documented action>
-```
+`
 
 **Escalation condition**
 
@@ -970,13 +970,13 @@ The recipe owner reviews this file when any referenced:
 
 `compute_impact.py` determines whether the recipe requires:
 
-```text
+`text
 updated
 reviewed_no_change
 regenerated
 deprecated
 blocked
-```
+`
 
 A recipe is deprecated when its implementation method is no longer recommended but remains usable.
 

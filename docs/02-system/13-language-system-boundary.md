@@ -636,10 +636,6 @@ An independent language-pack update is permitted only when compatibility constra
 
 | ADR | Relevance |
 | --- | --- |
-| `ADR-006` | Establishes explicit first-class component boundaries. |
-| `ADR-013` | Separates the global system baseline from profile-specific implementation choices. |
-| `ADR-014` | Establishes the strict external AI boundary. |
-| `ADR-017` | Defines the lightweight user hardware profile. |
 | `ADR-024` | Preserves logical ownership under profile-dependent physical consolidation. |
 
 ### 9.3 Prohibited assumptions
@@ -702,7 +698,7 @@ This document conforms when all of the following checks pass:
 
 The validator reports actionable failures, including:
 
-```text
+`text
 language_runtime_build_tools_present
 language_runtime_unverified_pack
 language_runtime_incompatible_pack
@@ -719,7 +715,7 @@ language_runtime_application_owner_violation
 language_runtime_missing_provenance
 language_runtime_missing_activation_evidence
 gf_wordbench_multiple_active_languages_in_session
-```
+`
 
 ## 11. Non-Normative Examples
 

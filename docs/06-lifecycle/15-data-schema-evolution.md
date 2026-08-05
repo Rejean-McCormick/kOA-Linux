@@ -389,22 +389,22 @@ Migration evidence proves execution and validation without requiring unrestricte
 
 The migration lifecycle uses these conceptual states:
 
-```text
+`text
 proposed
-  -> analyzed
-  -> planned
-  -> rehearsed
-  -> validated
-  -> staged
-  -> executing
-  -> paused | failed | completed
-  -> verifying
-  -> accepted | reverting | repairing
-  -> reverted | repaired
-  -> observed
-  -> compatibility_closed
-  -> retired
-```
+ -> analyzed
+ -> planned
+ -> rehearsed
+ -> validated
+ -> staged
+ -> executing
+ -> paused | failed | completed
+ -> verifying
+ -> accepted | reverting | repairing
+ -> reverted | repaired
+ -> observed
+ -> compatibility_closed
+ -> retired
+`
 
 A failed, paused, reverting, or repairing migration does not become accepted merely because some work units completed.
 

@@ -1,95 +1,94 @@
 <!-- KOA:DOC-META:BEGIN GENERATED
 {
-  "doc_id": "DOC-RECIPES-000",
-  "document_class": "non_normative_readme",
-  "status": "active",
-  "language": "en",
-  "layer": "recipes",
-  "scope": [
-    "non_normative_implementation_guidance",
-    "profile_conditioned_examples"
-  ],
-  "canonical_refs": [
-    "generated/authority-manifest.json",
-    "generated/decision-index.json",
-    "contracts/system.contract.json",
-    "generated/component-catalog.json",
-    "generated/profile-catalog.json",
-    "generated/toolchain-catalog.json",
-    "contracts/release-channels.contract.json",
-    "contracts/artifact-classes.contract.json",
-    "contracts/integration-types.contract.json",
-    "generated/requirements-index.json",
-    "generated/assertion-index.json",
-    "generated/traceability.json",
-    "generated/test-catalog.json",
-    "generated/evidence-catalog.json",
-    "generated/exception-index.json"
-  ],
-  "decision_ids": [
-    "DEC-PROFILE-001",
-    "DEC-CONTAINER-001",
-    "DEC-K8S-001",
-    "DEC-DATA-001",
-    "DEC-GOV-001",
-    "DEC-GATE-001",
-    "DEC-AI-001",
-    "DEC-SENT-001",
-    "DEC-REL-001",
-    "DEC-DOC-CHANGE-001"
-  ],
-  "requirement_ids": [],
-  "lock_ids": [
-    "LOCK-IMPL-001",
-    "LOCK-IMPL-002",
-    "LOCK-PROFILE-001",
-    "LOCK-DATA-001",
-    "LOCK-GOV-001",
-    "LOCK-GATE-001",
-    "LOCK-AI-001",
-    "LOCK-AI-002",
-    "LOCK-SENT-001",
-    "LOCK-DEV-001",
-    "LOCK-DEV-002",
-    "LOCK-DEV-003",
-    "LOCK-DEV-004",
-    "LOCK-DEV-005",
-    "LOCK-LIFE-001",
-    "LOCK-LIFE-002",
-    "LOCK-LIFE-003",
-    "LOCK-LIFE-004"
-  ],
-  "exception_ids": [],
-  "depends_on": [
-    "DOC-DEV-006",
-    "DOC-DEV-016",
-    "DOC-LIFE-013",
-    "DOC-LIFE-015",
-    "DOC-LIFE-016",
-    "DOC-LIFE-019",
-    "DOC-SEC-001",
-    "DOC-SEC-012",
-    "DOC-OPS-000",
-    "DOC-OPS-009",
-    "DOC-OPS-019",
-    "DOC-CONF-010",
-    "ADR-004",
-    "ADR-014"
-  ],
-  "tags": [
-    "recipes",
-    "readme",
-    "non-normative",
-    "implementation-guidance",
-    "profiles",
-    "development",
-    "operations",
-    "recovery",
-    "build-farm",
-    "validation",
-    "cleanup",
-    "safe-examples"
-  ]
+ "doc_id": "DOC-RECIPES-000",
+ "document_class": "non_normative_readme",
+ "status": "active",
+ "language": "en",
+ "layer": "recipes",
+ "scope": [
+ "non_normative_implementation_guidance",
+ "profile_conditioned_examples"
+ ],
+ "canonical_refs": [
+ "generated/authority-manifest.json",
+ "generated/decision-index.json",
+ "contracts/system.contract.json",
+ "generated/component-catalog.json",
+ "generated/profile-catalog.json",
+ "generated/toolchain-catalog.json",
+ "contracts/release-channels.contract.json",
+ "contracts/artifact-classes.contract.json",
+ "contracts/integration-types.contract.json",
+ "generated/requirements-index.json",
+ "generated/assertion-index.json",
+ "generated/traceability.json",
+ "generated/test-catalog.json",
+ "generated/evidence-catalog.json",
+ "generated/exception-index.json"
+ ],
+ "decision_ids": [
+ "DEC-PROFILE-001",
+ "DEC-CONTAINER-001",
+ "DEC-K8S-001",
+ "DEC-DATA-001",
+ "DEC-GOV-001",
+ "DEC-GATE-001",
+ "DEC-AI-001",
+ "DEC-SENT-001",
+ "DEC-REL-001",
+ "DEC-DOC-CHANGE-001"
+ ],
+ "requirement_ids": [],
+ "lock_ids": [
+ "LOCK-IMPL-001",
+ "LOCK-IMPL-002",
+ "LOCK-PROFILE-001",
+ "LOCK-DATA-001",
+ "LOCK-GOV-001",
+ "LOCK-GATE-001",
+ "LOCK-AI-001",
+ "LOCK-AI-002",
+ "LOCK-SENT-001",
+ "LOCK-DEV-001",
+ "LOCK-DEV-002",
+ "LOCK-DEV-003",
+ "LOCK-DEV-004",
+ "LOCK-DEV-005",
+ "LOCK-LIFE-001",
+ "LOCK-LIFE-002",
+ "LOCK-LIFE-003",
+ "LOCK-LIFE-004"
+ ],
+ "exception_ids": [],
+ "depends_on": [
+ "DOC-DEV-006",
+ "DOC-DEV-016",
+ "DOC-LIFE-013",
+ "DOC-LIFE-015",
+ "DOC-LIFE-016",
+ "DOC-LIFE-019",
+ "DOC-SEC-001",
+ "DOC-SEC-012",
+ "DOC-OPS-000",
+ "DOC-OPS-009",
+ "DOC-OPS-019",
+ "DOC-CONF-010",
+ "DOC-ADR-003"
+ ],
+ "tags": [
+ "recipes",
+ "readme",
+ "non-normative",
+ "implementation-guidance",
+ "profiles",
+ "development",
+ "operations",
+ "recovery",
+ "build-farm",
+ "validation",
+ "cleanup",
+ "safe-examples"
+ ]
 }
 KOA:DOC-META:END -->
 
@@ -116,19 +115,19 @@ They do not define:
 
 The authority chain remains:
 
-```text
+`text
 accepted decisions and locks
-        ↓
+ ↓
 canonical registries
-        ↓
+ ↓
 active component, profile, artifact, and integration contracts
-        ↓
+ ↓
 normative system, security, lifecycle, operations, and conformance documents
-        ↓
+ ↓
 runbooks and approved local configuration
-        ↓
+ ↓
 recipes and examples
-```
+`
 
 A recipe is usable only when every authority above it remains compatible.
 
@@ -268,45 +267,45 @@ Higher-risk classes require stronger prerequisites, validation, evidence, and cl
 
 ### 3.1 Authority and decisions
 
-```text
+`text
 generated/authority-manifest.json
 generated/decision-index.json
 generated/requirements-index.json
 generated/assertion-index.json
 generated/decision-index.json
-```
+`
 
 Recipes always defer to active authority.
 
 ### 3.2 Components and profiles
 
-```text
+`text
 contracts/system.contract.json
 generated/component-catalog.json
 generated/component-catalog.json
 contracts/components/*.component.json
 generated/profile-catalog.json
 contracts/profiles/*.profile.json
-```
+`
 
 A recipe cannot infer component or profile behavior from a container name, process name, directory name, or prior deployment.
 
 ### 3.3 Toolchains and development
 
-```text
+`text
 generated/toolchain-catalog.json
 contracts/toolchains/*.toolchain.json
-```
+`
 
 Python recipes use the active UV toolchain contract and a workspace-local `.venv`.
 
 ### 3.4 Artifacts and releases
 
-```text
+`text
 contracts/release-channels.contract.json
 contracts/artifact-classes.contract.json
 contracts/artifact-contracts/*.schema.json
-```
+`
 
 Recipes can produce candidate artifacts.
 
@@ -314,22 +313,22 @@ Publication and activation remain separate lifecycle transitions.
 
 ### 3.5 Integrations
 
-```text
+`text
 contracts/integration-types.contract.json
 contracts/artifact-contracts/integration-manifest.schema.json
 contracts/examples/integration-manifest.example.yaml
-```
+`
 
 An example integration manifest is not provider approval or production configuration.
 
 ### 3.6 Evidence and validation
 
-```text
+`text
 generated/traceability.json
 generated/test-catalog.json
 generated/evidence-catalog.json
 generated/exception-index.json
-```
+`
 
 Tests and evidence referenced by a recipe remain owned by these registries.
 
@@ -341,19 +340,19 @@ Each recipe uses a stable path and a descriptive lowercase filename.
 
 Recommended format:
 
-```text
+`text
 NN-action-object.md
-```
+`
 
 Examples:
 
-```text
+`text
 01-create-python-workspace.md
 02-start-isolated-service-stack.md
 03-run-component-contract-tests.md
 04-stage-offline-bundle.md
 05-verify-clean-restore.md
-```
+`
 
 A filename is not a canonical identifier.
 
@@ -376,26 +375,26 @@ It does not describe the state of a component, artifact, release, migration, res
 
 A complete recipe begins with a compact declaration such as:
 
-```yaml
+`yaml
 recipe:
-  title: Create an isolated Python workspace
-  status: active
-  language: en
-  risk_class: local_disposable
-  primary_profiles:
-    - developer_linux_workstation
-    - developer_windows_wsl
-  compatible_overlays: []
-  prohibited_profiles:
-    - sovereign_offline
-  owner: development-tooling
-  canonical_refs:
-    - contracts/toolchains/python-uv.toolchain.json
-    - 05-development/03-python-uv.md
-  expected_tests:
-    - TEST-DEV-UV-001
-  expected_evidence: []
-```
+ title: Create an isolated Python workspace
+ status: active
+ language: en
+ risk_class: local_disposable
+ primary_profiles:
+ - developer_linux_workstation
+ - developer_windows_wsl
+ compatible_overlays: []
+ prohibited_profiles:
+ - sovereign_offline
+ owner: development-tooling
+ canonical_refs:
+ - contracts/toolchains/python-uv.toolchain.json
+ - 05-development/03-python-uv.md
+ expected_tests:
+ - TEST-DEV-UV-001
+ expected_evidence: []
+`
 
 Exact metadata structure can be standardized later by an active schema.
 
@@ -543,7 +542,7 @@ Recipes can be grouped by topic when the directory grows.
 
 Recommended category names include:
 
-```text
+`text
 development/
 containers/
 databases/
@@ -560,7 +559,7 @@ build-farm/
 documentation/
 troubleshooting/
 decommissioning/
-```
+`
 
 Category creation should follow actual content rather than creating empty directory structure.
 
@@ -577,22 +576,22 @@ Use filenames that are:
 
 Good:
 
-```text
+`text
 verify-offline-bundle.md
 create-isolated-postgres.md
 run-language-pack-validation.md
 reset-build-worker.md
-```
+`
 
 Avoid:
 
-```text
+`text
 misc.md
 new-setup.md
 prod-fix.md
 final-final.md
 customer-a-recovery.md
-```
+`
 
 ### 5.3 Command formatting
 
@@ -600,19 +599,19 @@ Use fenced code blocks with an explicit language.
 
 Examples:
 
-```bash
+`bash
 uv sync --frozen
-```
+`
 
-```powershell
+`powershell
 uv sync --frozen
-```
+`
 
-```yaml
+`yaml
 services:
-  example:
-    image: example.invalid/immutable-reference
-```
+ example:
+ image: example.invalid/immutable-reference
+`
 
 Commands with destructive effects include a warning immediately before the block.
 
@@ -622,12 +621,12 @@ Use visible example placeholders only inside explicitly marked example blocks.
 
 Preferred style:
 
-```text
+`text
 <workspace-id>
 <component-id>
 <artifact-id>
 <profile-id>
-```
+`
 
 A recipe explains how to resolve each placeholder.
 
@@ -639,10 +638,10 @@ Repository-relative paths use forward slashes.
 
 Examples:
 
-```text
+`text
 docs/generated/profile-catalog.json
 generated/evidence/
-```
+`
 
 Host-specific absolute paths appear only when the recipe explicitly targets that host and profile.
 
@@ -652,12 +651,12 @@ Examples derive names from a stable workspace identity.
 
 Example pattern:
 
-```text
+`text
 workspace_id: koa-dev-42
 service_name: koa-dev-42-orgo
 database_name: koa_dev_42_orgo
 volume_name: koa-dev-42-orgo-data
-```
+`
 
 Hard-coded common ports are acceptable only for isolated examples that prove collision handling or reserve the port through the active workspace contract.
 
@@ -811,9 +810,9 @@ Recipe files never contain real secrets.
 
 Use protected references such as:
 
-```text
+`text
 secret://development/example-service/token
-```
+`
 
 Examples do not place secrets in:
 
@@ -841,7 +840,7 @@ Valid cross-component examples use:
 - owner-controlled migration;
 - owner-controlled restore;
 - Publication Gateway;
-- UCKK Dimension Gateway.
+- UCKK Import Bridge and UCKK Publication Bridge.
 
 ### 7.4 Databases
 
@@ -919,7 +918,7 @@ Reachability and credentials do not imply provider approval.
 
 ### 7.8 External AI
 
-AI-related recipes preserve `ADR-014`.
+AI-related recipes preserve .
 
 They use only approved capability-specific surfaces.
 
@@ -965,10 +964,10 @@ SenTient output remains candidate material.
 
 A UCKK recipe keeps these boundaries separate:
 
-- UCKK Platform owns final UCKK objects;
-- UCKK Dimension Gateway coordinates explicit admission;
+- the online UCKK platform owns final UCKK objects;
+- UCKK Import Bridge coordinates explicit inbound retrieval and quarantine;
 - Suno and Gamma are optional external-processing adapters;
-- Publication Gateway performs external publication.
+- Publication Gateway authorizes external publication and the UCKK Publication Bridge performs UCKK-specific transport.
 
 A recipe does not substitute one path for another.
 
@@ -978,7 +977,7 @@ A recipe does not substitute one path for another.
 
 A recipe preflight can verify:
 
-```text
+`text
 repository state
 workspace identity
 profile and overlays
@@ -991,7 +990,7 @@ port and service allocation
 secret references
 network mode
 backup or known-good state
-```
+`
 
 Preflight failure stops state-changing execution.
 
@@ -1099,13 +1098,13 @@ Clean-state validation includes:
 
 Example output is labelled clearly:
 
-```text
+`text
 Example output
 --------------
 profile: developer_linux_workstation
 workspace_id: koa-example-01
 result: pass
-```
+`
 
 Do not present fabricated output as captured execution evidence.
 
@@ -1182,9 +1181,9 @@ Destructive commands are:
 
 Avoid examples such as:
 
-```bash
+`bash
 rm -rf /
-```
+`
 
 or broad database, volume, queue, or namespace deletion without exact target resolution.
 
@@ -1412,9 +1411,9 @@ Use the owning component's repair, migration, or restore contract.
 
 A recipe contains:
 
-```text
+`text
 API_TOKEN=real-provider-secret
-```
+`
 
 The recipe is invalid.
 
@@ -1450,6 +1449,6 @@ A recipe says:
 
 > When ChatGPT is unavailable, start a local model automatically.
 
-The recipe is invalid under `ADR-014`.
+The recipe is invalid under .
 
 The external capability becomes unavailable while native local operation remains available.

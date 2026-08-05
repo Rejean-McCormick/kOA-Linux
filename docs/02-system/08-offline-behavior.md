@@ -66,7 +66,7 @@
     "LOCK-SENT-001",
     "LOCK-MEDIATHEQUE-001",
     "LOCK-UCKK-EXT-001",
-    "LOCK-UCKK-EXT-001"
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -92,7 +92,7 @@ KOA:DOC-META:END -->
 
 ## 1. Purpose
 
-This document defines the global offline behavior of the kOA operating environment.
+This document defines the global offline behavior of the kOA-Linux Operating System.
 
 Offline operation is a normal supported state, not an exceptional recovery mode. The native system remains useful when Internet access, external AI surfaces, remote synchronization, remote publication targets, online update services, or other external dependencies are unavailable.
 
@@ -331,26 +331,27 @@ Offline Ariane can use:
 
 The external voice path converts speech into a candidate structured command. It does not own the Atlas, authorize actions, or execute interface operations directly. When unavailable, the voice control is disabled without disabling local Ariane navigation.
 
-### 4.7 kOA Mediatheque offline behavior
+### 4.7 kOA Mediatheque and offline learning behavior
 
-kOA Mediatheque remains user-directed and deterministic offline.
+The kOA Mediatheque remains user-directed, private by default, and deterministic offline.
 
 The local workflow can include:
 
 ```text
-user selects material
-  -> user chooses category or unclassified state
-  -> user chooses local visibility
-  -> gateway verifies and transfers
-  -> kOA Mediatheque creates media identity and initial version
-  -> original and provenance are preserved
-  -> deterministic local derivatives are scheduled
-  -> user receives local confirmation
+user selects local material or a verified transfer package
+→ system validates integrity, provenance, rights, and compatibility
+→ user chooses local visibility and acceptance
+→ kOA Mediatheque creates local identity and version
+→ original bytes and provenance are preserved
+→ deterministic local derivatives are scheduled
+→ user receives local confirmation
 ```
+
+Already accepted UCKK courses, learning paths, instructions, manuals, and resources remain locally consultable without a live UCKK connection.
 
 Installed deterministic tools can generate thumbnails, previews, transcodes, text extraction, checksums, and other reproducible derivatives defined by active contracts. These operations do not constitute AI content understanding.
 
-Publication is never an automatic consequence of ingestion. External publication and external processing remain separately governed.
+Publication is never an automatic consequence of local ingestion or UCKK import. A remote update is a new import candidate, not permission to overwrite the local copy.
 
 ### 4.8 Installed artifact behavior
 
@@ -363,6 +364,7 @@ Offline operation relies on activated local artifacts such as:
 - language runtime packs;
 - Ariane Atlases and Runtime Packs;
 - kOA Mediatheque processing tools;
+- verified UCKK-derived course and learning-path packages accepted for local use;
 - profile contracts;
 - trust roots;
 - schemas;
@@ -657,23 +659,25 @@ Governance Policy Runtime decides whether governed actions are authorized where 
 
 An operation can require both decisions:
 
-```text
+`text
 governance authorization
-  -> resource admission
-  -> component execution
-  -> result verification
-  -> evidence
-```
+ -> resource admission
+ -> component execution
+ -> result verification
+ -> evidence
+`
 
 A positive resource decision does not authorize an operation. A positive policy decision does not guarantee resource availability.
 
-### 8.3 Queued publication to UCKK
+### 8.3 UCKK interchange while offline
 
-When offline, a UCKK publication request may be queued locally but is not delivered. On reconnection, Publication Gateway revalidates authorization before UCKK Publication Bridge packages and transports the approved representation.
+Outbound publication and inbound acquisition degrade independently.
 
-Publication Gateway governs cross-domain release and external publication.
+For `publish_to_uckk`, a request may be queued locally but is not delivered and is never reported as published. On reconnection, Publication Gateway revalidates authorization, rights, source version, destination, and expiry before UCKK-specific packaging and transport.
 
-Offline ingestion can complete locally while external publication remains unavailable. A queued publication request remains distinct from the kOA Mediatheque media record and requires current revalidation before delivery.
+For `import_from_uckk`, an already complete transferred package may be validated and accepted offline when its source evidence, license, manifest, signatures, hashes, compatibility, and required resources are locally verifiable. An incomplete or unverifiable package remains quarantined. Discovery of new UCKK content and live download remain unavailable.
+
+No reconnect operation silently synchronizes the two Mediatheques. Remote changes become candidates for explicit comparison and import.
 
 ### 8.4 Ariane and application components
 
@@ -743,6 +747,8 @@ The following assumptions are prohibited:
 11. A thumbnail or transcode is AI analysis.
 12. Ingestion implies publication permission.
 13. A queued publication is already published.
+14. A downloaded UCKK package is authoritative before validation and explicit local acceptance.
+15. Reconnection permits silent overwrite or background bidirectional synchronization between the two Mediatheques.
 14. A queued request remains authorized indefinitely.
 15. Reconnection authorizes automatic replay.
 16. The newest remote version automatically wins a conflict.
@@ -813,9 +819,11 @@ A user imports a video into the kOA Mediatheque, selects local metadata and visi
 
 The external voice provider is unavailable. The user selects a predefined goal in Ariane. Ariane loads the local Atlas, presents a route, requests confirmation for a sensitive action, executes an approved local interaction, and verifies the result.
 
-### 11.4 Queued publication
+### 11.4 Queued publication and offline course import
 
-A user approves a publication request while the external destination is unavailable. The local system records a pending request, not a completed publication. After reconnection, consent has expired. Revalidation rejects the request and records the reason.
+A user approves an outbound publication request while UCKK is unavailable. The local system records a pending request, not a completed publication. After reconnection, consent has expired, so revalidation rejects delivery and records the reason.
+
+Separately, an isolated school receives a complete signed UCKK course package on removable media. The package passes source, license, signature, hash, compatibility, and completeness checks. The kOA Mediatheque accepts a local copy that remains available offline and preserves the UCKK source as provenance.
 
 ### 11.5 Stale trust status
 

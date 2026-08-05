@@ -29,7 +29,10 @@
     "generated/traceability.json",
     "generated/exception-index.json",
     "generated/test-catalog.json",
-    "generated/evidence-catalog.json"
+    "generated/evidence-catalog.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json"
   ],
   "decision_ids": [
     "DEC-GOV-001",
@@ -181,19 +184,19 @@ The envelope does not allocate business authority. It answers whether a technica
 
 Resource governance is intentionally separate from policy governance:
 
-```text
+`text
 Governance Policy Runtime:
-    Is the action authorized?
+ Is the action authorized?
 
 Resource Governor:
-    Can the authorized action receive bounded resources now?
+ Can the authorized action receive bounded resources now?
 
 Owning component:
-    Does the operation satisfy component invariants and data rules?
+ Does the operation satisfy component invariants and data rules?
 
 Lifecycle owner:
-    Can this envelope or artifact become active?
-```
+ Can this envelope or artifact become active?
+`
 
 The operational goal is predictable local capability on realistic hardware without allowing background or heavy work to starve interactive use, critical services, receipts, or recovery.
 
@@ -272,7 +275,7 @@ This document does not define component business policy, workflow approval, publ
 
 Related explanatory documents are:
 
-```text
+`text
 02-system/14-resource-governor.md
 04-components/resource-governor.md
 03-profiles/06-user-lightweight.md
@@ -281,7 +284,7 @@ Related explanatory documents are:
 06-lifecycle/14-recovery.md
 07-security/05-privilege-boundaries.md
 07-security/06-privileged-broker.md
-```
+`
 
 ## 4. Operational Model and Responsibilities
 
@@ -413,7 +416,7 @@ Queue length is not permission to execute.
 
 An admission result can be:
 
-```text
+`text
 admitted
 admitted_with_limits
 deferred
@@ -421,7 +424,7 @@ paused
 rejected
 cancelled
 completed
-```
+`
 
 A deferred request remains explicit and includes a recheck condition or queue position.
 
@@ -431,7 +434,7 @@ A rejected request includes a stable reason code.
 
 Typical modes are:
 
-```text
+`text
 interactive_normal
 interactive_constrained
 battery_saver
@@ -440,7 +443,7 @@ memory_pressure
 storage_pressure
 offline
 recovery
-```
+`
 
 A mode changes effective ceilings and admission behavior while preserving the envelope identity.
 
@@ -520,7 +523,7 @@ The envelope records declared capacity separately from observed capacity.
 
 For a minimum `user_lightweight` target, the baseline is:
 
-```text
+`text
 physical CPU cores: 4
 memory: 16 GiB
 storage: 512 GB SSD
@@ -530,7 +533,7 @@ heavy-job concurrency: 1
 user-workload memory reserve: 6 GiB
 idle task workers: 0
 heavy services at boot: 0
-```
+`
 
 Preferred hardware can improve throughput but does not change authority.
 
@@ -1139,7 +1142,7 @@ This document is conformant when:
 
 Applicable failure codes include:
 
-```text
+`text
 resource_envelope_identity_missing
 resource_envelope_profile_mismatch
 resource_envelope_host_below_minimum
@@ -1166,7 +1169,7 @@ resource_envelope_drift
 resource_envelope_rollback_unproven
 resource_receipt_missing
 resource_observability_payload_exposure
-```
+`
 
 A required validator that cannot run produces `blocked`, not `pass`.
 
@@ -1200,7 +1203,7 @@ Resource Governor defers it because another heavy job is active. The request rem
 
 The endpoint enters offline mode while local Orgo work continues.
 
-A synchronization or UCKK publication worker is deferred because its declared remote dependency is unavailable. Local tasks, kOA Mediatheque processing, Ariane navigation, receipts, backup, and restore remain operational.
+An outbound UCKK publication worker or online inbound retrieval worker is deferred because its declared remote dependency is unavailable. A package already received through an approved offline carrier may still undergo bounded quarantine and validation. Local tasks, accepted learning content, kOA Mediatheque processing, Ariane navigation, receipts, backup, and restore remain operational.
 
 ### Example 6 — Recovery priority
 

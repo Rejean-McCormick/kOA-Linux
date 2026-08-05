@@ -30,13 +30,6 @@
       "statement": "kOA uses four canonical and independently versioned release channels: system, services, governance, and knowledge."
     }
   ],
-  "governing_adrs": [
-    {
-      "adr_id": "ADR-008",
-      "path": "10-adrs/ADR-008-four-independent-release-channels.md",
-      "status": "accepted"
-    }
-  ],
   "governing_locks": [
     {
       "lock_id": "LOCK-LIFE-003",

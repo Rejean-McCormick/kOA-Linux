@@ -141,8 +141,8 @@ KOA:DOC-META:END -->
 
 # Development Secret Isolation
 
-> **Recipe status:** Active, non-normative implementation recipe.  
-> **Implementation:** Workspace-scoped protected files outside the repository, with runtime-only copies and file-reference injection.  
+> **Recipe status:** Active, non-normative implementation recipe.
+> **Implementation:** Workspace-scoped protected files outside the repository, with runtime-only copies and file-reference injection.
 > **Authority rule:** This recipe demonstrates one compliant method. Active contracts and profiles remain authoritative.
 
 ---
@@ -179,12 +179,12 @@ This recipe configures workspace-scoped development secrets so that:
 
 Successful completion produces a workspace with:
 
-```text
+`text
 persistent protected secret files
 → runtime-only protected copies
 → service-specific file references
 → verified repository and permission boundaries
-```
+`
 
 This recipe does not define:
 
@@ -377,7 +377,7 @@ The shell session has:
 
 Verification:
 
-```bash
+`bash
 set -euo pipefail
 
 : "${WORKSPACE_ID:?WORKSPACE_ID must be set from the workspace declaration}"
@@ -395,15 +395,15 @@ command -v python3
 command -v install
 command -v find
 command -v stat
-```
+`
 
 ### 5.3 Secret-name preconditions
 
 This recipe uses lowercase secret names with underscores:
 
-```text
+`text
 ^[a-z][a-z0-9_]*$
-```
+`
 
 Each name identifies one value.
 
@@ -418,7 +418,7 @@ Names do not contain:
 
 Validation:
 
-```bash
+`bash
 SECRET_NAME="${SECRET_NAME:?SECRET_NAME must be set}"
 
 python3 - "$SECRET_NAME" <<'PY'
@@ -427,41 +427,41 @@ import sys
 
 name = sys.argv[1]
 if not re.fullmatch(r"[a-z][a-z0-9_]*", name):
-    raise SystemExit("invalid secret name")
+ raise SystemExit("invalid secret name")
 PY
-```
+`
 
 ### 5.4 Filesystem preconditions
 
 Persistent state is placed under:
 
-```text
+`text
 ${XDG_STATE_HOME:-$HOME/.local/state}/koa/workspaces/$WORKSPACE_ID/secrets
-```
+`
 
 Runtime copies are placed under:
 
-```text
+`text
 $XDG_RUNTIME_DIR/koa/workspaces/$WORKSPACE_ID/secrets
-```
+`
 
 Both paths must be outside the repository.
 
-```bash
+`bash
 STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
 SECRET_ROOT="$STATE_HOME/koa/workspaces/$WORKSPACE_ID/secrets"
 RUNTIME_SECRET_ROOT="$XDG_RUNTIME_DIR/koa/workspaces/$WORKSPACE_ID/secrets"
 
 case "$SECRET_ROOT/" in
-  "$WORKSPACE_ROOT/"*) printf '%s
+ "$WORKSPACE_ROOT/"*) printf '%s
 ' "persistent secret root is inside repository" >&2; exit 1 ;;
 esac
 
 case "$RUNTIME_SECRET_ROOT/" in
-  "$WORKSPACE_ROOT/"*) printf '%s
+ "$WORKSPACE_ROOT/"*) printf '%s
 ' "runtime secret root is inside repository" >&2; exit 1 ;;
 esac
-```
+`
 
 ## 6. Inputs and Outputs
 
@@ -512,9 +512,9 @@ It does not modify:
 
 ### 7.1 Privilege model
 
-```text
+`text
 unprivileged user
-```
+`
 
 Do not run this recipe with `sudo`.
 
@@ -537,14 +537,14 @@ Secret values are:
 
 Do not use:
 
-```text
+`text
 command --password=value
 export PASSWORD=value
 echo value > file
 cat secret-file
 set -x
 docker build --build-arg secret=value
-```
+`
 
 Do not enable shell tracing during secret operations.
 
@@ -615,11 +615,11 @@ Secret files must not be used for large fixtures, certificates chains with unrel
 
 This recipe uses:
 
-```text
+`text
 workspace_id
 secret_name
 component_id
-```
+`
 
 The directory path includes `workspace_id`.
 
@@ -627,11 +627,11 @@ The filename includes only `secret_name`.
 
 ### 9.2 Workspace-scoped resources
 
-```bash
+`bash
 STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
 SECRET_ROOT="$STATE_HOME/koa/workspaces/$WORKSPACE_ID/secrets"
 RUNTIME_SECRET_ROOT="$XDG_RUNTIME_DIR/koa/workspaces/$WORKSPACE_ID/secrets"
-```
+`
 
 Two workspaces with the same secret name receive different paths because their `workspace_id` values differ.
 
@@ -669,7 +669,7 @@ Create stable shell variables from the already validated workspace identity.
 
 **Command**
 
-```bash
+`bash
 set -euo pipefail
 set +x
 umask 077
@@ -682,7 +682,7 @@ SECRET_ROOT="$STATE_HOME/koa/workspaces/$WORKSPACE_ID/secrets"
 RUNTIME_SECRET_ROOT="${XDG_RUNTIME_DIR:?}/koa/workspaces/$WORKSPACE_ID/secrets"
 
 export WORKSPACE_ROOT STATE_HOME SECRET_ROOT RUNTIME_SECRET_ROOT
-```
+`
 
 **Expected result**
 
@@ -690,17 +690,17 @@ All four variables resolve to absolute paths. Secret roots are outside the repos
 
 **Verification**
 
-```bash
+`bash
 python3 - "$WORKSPACE_ROOT" "$SECRET_ROOT" "$RUNTIME_SECRET_ROOT" <<'PY'
 from pathlib import Path
 import sys
 
-workspace, persistent, runtime = map(lambda value: Path(value).resolve(), sys.argv[1:])
+workspace, persistent, runtime = map(lambda value: Path(value).resolve, sys.argv[1:])
 for candidate in (persistent, runtime):
-    if candidate == workspace or workspace in candidate.parents:
-        raise SystemExit(f"secret path inside repository: {candidate}")
+ if candidate == workspace or workspace in candidate.parents:
+ raise SystemExit(f"secret path inside repository: {candidate}")
 PY
-```
+`
 
 **Failure behavior**
 
@@ -720,7 +720,7 @@ Create user-owned `0700` persistent and runtime directories without following an
 
 **Command**
 
-```bash
+`bash
 test ! -L "$STATE_HOME/koa" || { printf '%s
 ' "state path is a symlink" >&2; exit 1; }
 test ! -L "$STATE_HOME/koa/workspaces" || { printf '%s
@@ -737,7 +737,7 @@ install -d -m 0700 "$XDG_RUNTIME_DIR/koa"
 install -d -m 0700 "$XDG_RUNTIME_DIR/koa/workspaces"
 install -d -m 0700 "$XDG_RUNTIME_DIR/koa/workspaces/$WORKSPACE_ID"
 install -d -m 0700 "$RUNTIME_SECRET_ROOT"
-```
+`
 
 **Expected result**
 
@@ -745,14 +745,14 @@ Every created directory is owned by the current user and has mode `0700`.
 
 **Verification**
 
-```bash
+`bash
 for directory in "$SECRET_ROOT" "$RUNTIME_SECRET_ROOT"; do
-  test -d "$directory"
-  test ! -L "$directory"
-  test -O "$directory"
-  test "$(stat -c '%a' "$directory")" = "700"
+ test -d "$directory"
+ test ! -L "$directory"
+ test -O "$directory"
+ test "$(stat -c '%a' "$directory")" = "700"
 done
-```
+`
 
 **Failure behavior**
 
@@ -772,11 +772,11 @@ Prevent common local secret filenames from being accidentally tracked while leav
 
 **Command**
 
-```bash
+`bash
 GIT_DIR="$(git -C "$WORKSPACE_ROOT" rev-parse --git-dir)"
 case "$GIT_DIR" in
-  /*) ;;
-  *) GIT_DIR="$WORKSPACE_ROOT/$GIT_DIR" ;;
+ /*) ;;
+ *) GIT_DIR="$WORKSPACE_ROOT/$GIT_DIR" ;;
 esac
 
 EXCLUDE_FILE="$GIT_DIR/info/exclude"
@@ -784,12 +784,12 @@ install -d -m 0700 "$(dirname "$EXCLUDE_FILE")"
 touch "$EXCLUDE_FILE"
 chmod 0600 "$EXCLUDE_FILE"
 
-for pattern in   ".env"   ".env.*"   ".secrets/"   "secrets.local/"   "*.private.pem"   "*.private.key"   "*.p12"   "*.pfx"
+for pattern in ".env" ".env.*" ".secrets/" "secrets.local/" "*.private.pem" "*.private.key" "*.p12" "*.pfx"
 do
-  grep -Fqx "$pattern" "$EXCLUDE_FILE" || printf '%s
+ grep -Fqx "$pattern" "$EXCLUDE_FILE" || printf '%s
 ' "$pattern" >> "$EXCLUDE_FILE"
 done
-```
+`
 
 **Expected result**
 
@@ -797,11 +797,11 @@ Local secret-like files are ignored in this checkout without changing repository
 
 **Verification**
 
-```bash
+`bash
 grep -Fqx ".env" "$EXCLUDE_FILE"
 grep -Fqx ".secrets/" "$EXCLUDE_FILE"
 test "$(stat -c '%a' "$EXCLUDE_FILE")" = "600"
-```
+`
 
 **Failure behavior**
 
@@ -821,7 +821,7 @@ Create a new value without terminal echo, command-line exposure, or overwrite.
 
 **Command**
 
-```bash
+`bash
 : "${SECRET_NAME:?SECRET_NAME must be set}"
 
 python3 - "$SECRET_ROOT" "$SECRET_NAME" <<'PY'
@@ -836,33 +836,33 @@ root = Path(sys.argv[1])
 name = sys.argv[2]
 
 if not re.fullmatch(r"[a-z][a-z0-9_]*", name):
-    raise SystemExit("invalid secret name")
-if root.is_symlink() or not root.is_dir():
-    raise SystemExit("invalid secret root")
-if root.stat().st_uid != os.getuid():
-    raise SystemExit("secret root not owned by current user")
-if stat.S_IMODE(root.stat().st_mode) != 0o700:
-    raise SystemExit("secret root mode must be 0700")
+ raise SystemExit("invalid secret name")
+if root.is_symlink or not root.is_dir:
+ raise SystemExit("invalid secret root")
+if root.stat.st_uid != os.getuid:
+ raise SystemExit("secret root not owned by current user")
+if stat.S_IMODE(root.stat.st_mode) != 0o700:
+ raise SystemExit("secret root mode must be 0700")
 
 target = root / name
-if target.exists() or target.is_symlink():
-    raise SystemExit("secret already exists; use the rotation procedure")
+if target.exists or target.is_symlink:
+ raise SystemExit("secret already exists; use the rotation procedure")
 
 value = getpass("Secret value: ")
 if not value:
-    raise SystemExit("empty secret rejected")
+ raise SystemExit("empty secret rejected")
 
 flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL
 fd = os.open(target, flags, 0o600)
 try:
-    os.write(fd, value.encode("utf-8"))
-    os.fsync(fd)
+ os.write(fd, value.encode("utf-8"))
+ os.fsync(fd)
 finally:
-    os.close(fd)
+ os.close(fd)
 
 value = ""
 PY
-```
+`
 
 **Expected result**
 
@@ -870,7 +870,7 @@ PY
 
 **Verification**
 
-```bash
+`bash
 SECRET_PATH="$SECRET_ROOT/$SECRET_NAME"
 
 test -f "$SECRET_PATH"
@@ -878,7 +878,7 @@ test ! -L "$SECRET_PATH"
 test -O "$SECRET_PATH"
 test "$(stat -c '%a' "$SECRET_PATH")" = "600"
 test -s "$SECRET_PATH"
-```
+`
 
 **Failure behavior**
 
@@ -898,7 +898,7 @@ Copy the persistent value into the user-session runtime directory for one active
 
 **Command**
 
-```bash
+`bash
 SECRET_PATH="$SECRET_ROOT/$SECRET_NAME"
 RUNTIME_SECRET_PATH="$RUNTIME_SECRET_ROOT/$SECRET_NAME"
 
@@ -908,7 +908,7 @@ test -O "$SECRET_PATH"
 test "$(stat -c '%a' "$SECRET_PATH")" = "600"
 
 install -m 0600 "$SECRET_PATH" "$RUNTIME_SECRET_PATH"
-```
+`
 
 **Expected result**
 
@@ -916,7 +916,7 @@ A runtime copy exists with the same opaque value and protected permissions.
 
 **Verification**
 
-```bash
+`bash
 test -f "$RUNTIME_SECRET_PATH"
 test ! -L "$RUNTIME_SECRET_PATH"
 test -O "$RUNTIME_SECRET_PATH"
@@ -927,12 +927,12 @@ from pathlib import Path
 import hmac
 import sys
 
-left = Path(sys.argv[1]).read_bytes()
-right = Path(sys.argv[2]).read_bytes()
+left = Path(sys.argv[1]).read_bytes
+right = Path(sys.argv[2]).read_bytes
 if not hmac.compare_digest(left, right):
-    raise SystemExit("runtime copy differs")
+ raise SystemExit("runtime copy differs")
 PY
-```
+`
 
 The comparison does not print the value and does not create a retained digest.
 
@@ -956,10 +956,10 @@ Expose only the protected path through the service environment.
 
 The component contract supplies the file-reference variable name. This example uses a fictional local service variable:
 
-```bash
+`bash
 export EXAMPLE_SERVICE_TOKEN_FILE="$RUNTIME_SECRET_PATH"
 exec ./scripts/run-development-service
-```
+`
 
 **Expected result**
 
@@ -991,9 +991,9 @@ Mount one runtime secret read-only without embedding it in an image or container
 
 When the active container toolchain supports an OCI read-only bind mount:
 
-```bash
-podman run --rm   --name "${WORKSPACE_ID}-example-service"   --mount "type=bind,src=$RUNTIME_SECRET_PATH,dst=/run/secrets/$SECRET_NAME,ro"   --env "EXAMPLE_SERVICE_TOKEN_FILE=/run/secrets/$SECRET_NAME"   example-service-development-image
-```
+`bash
+podman run --rm --name "${WORKSPACE_ID}-example-service" --mount "type=bind,src=$RUNTIME_SECRET_PATH,dst=/run/secrets/$SECRET_NAME,ro" --env "EXAMPLE_SERVICE_TOKEN_FILE=/run/secrets/$SECRET_NAME" example-service-development-image
+`
 
 The image name above is illustrative and must be replaced by the exact admitted development image identity already declared by the workspace.
 
@@ -1029,59 +1029,59 @@ Prove path, ownership, permission, repository, and workspace isolation.
 
 **Command**
 
-```bash
+`bash
 python3 - "$WORKSPACE_ROOT" "$SECRET_ROOT" "$RUNTIME_SECRET_ROOT" "$WORKSPACE_ID" <<'PY'
 from pathlib import Path
 import os
 import stat
 import sys
 
-workspace = Path(sys.argv[1]).resolve()
-roots = [Path(sys.argv[2]).resolve(), Path(sys.argv[3]).resolve()]
+workspace = Path(sys.argv[1]).resolve
+roots = [Path(sys.argv[2]).resolve, Path(sys.argv[3]).resolve]
 workspace_id = sys.argv[4]
 
 for root in roots:
-    if root == workspace or workspace in root.parents:
-        raise SystemExit("secret root inside repository")
-    if workspace_id not in root.parts:
-        raise SystemExit("workspace_id absent from secret path")
-    if root.is_symlink() or not root.is_dir():
-        raise SystemExit("invalid secret root")
-    if root.stat().st_uid != os.getuid():
-        raise SystemExit("wrong secret-root owner")
-    if stat.S_IMODE(root.stat().st_mode) != 0o700:
-        raise SystemExit("wrong secret-root mode")
-    for item in root.iterdir():
-        if item.is_symlink() or not item.is_file():
-            raise SystemExit(f"invalid secret entry: {item.name}")
-        if item.stat().st_uid != os.getuid():
-            raise SystemExit(f"wrong owner: {item.name}")
-        if stat.S_IMODE(item.stat().st_mode) != 0o600:
-            raise SystemExit(f"wrong mode: {item.name}")
+ if root == workspace or workspace in root.parents:
+ raise SystemExit("secret root inside repository")
+ if workspace_id not in root.parts:
+ raise SystemExit("workspace_id absent from secret path")
+ if root.is_symlink or not root.is_dir:
+ raise SystemExit("invalid secret root")
+ if root.stat.st_uid != os.getuid:
+ raise SystemExit("wrong secret-root owner")
+ if stat.S_IMODE(root.stat.st_mode) != 0o700:
+ raise SystemExit("wrong secret-root mode")
+ for item in root.iterdir:
+ if item.is_symlink or not item.is_file:
+ raise SystemExit(f"invalid secret entry: {item.name}")
+ if item.stat.st_uid != os.getuid:
+ raise SystemExit(f"wrong owner: {item.name}")
+ if stat.S_IMODE(item.stat.st_mode) != 0o600:
+ raise SystemExit(f"wrong mode: {item.name}")
 PY
-```
+`
 
 Check tracked filenames:
 
-```bash
-if git -C "$WORKSPACE_ROOT" ls-files | grep -E   '(^|/)(\.env($|\.)|\.secrets/|secrets\.local/)|\.(private\.pem|private\.key|p12|pfx)$'
+`bash
+if git -C "$WORKSPACE_ROOT" ls-files | grep -E '(^|/)(\.env($|\.)|\.secrets/|secrets\.local/)|\.(private\.pem|private\.key|p12|pfx)$'
 then
-  printf '%s
+ printf '%s
 ' "tracked secret-like path detected" >&2
-  exit 1
+ exit 1
 fi
-```
+`
 
 Check for a private-key marker in tracked content, excluding this recipe text:
 
-```bash
-if git -C "$WORKSPACE_ROOT" grep -I -n   -e 'BEGIN PRIVATE KEY'   -e 'BEGIN RSA PRIVATE KEY'   -e 'BEGIN EC PRIVATE KEY'   -- . ':!docs/11-recipes/development/secret-isolation.md'
+`bash
+if git -C "$WORKSPACE_ROOT" grep -I -n -e 'BEGIN PRIVATE KEY' -e 'BEGIN RSA PRIVATE KEY' -e 'BEGIN EC PRIVATE KEY' -- . ':!docs/11-recipes/development/secret-isolation.md'
 then
-  printf '%s
+ printf '%s
 ' "private-key marker detected in tracked content" >&2
-  exit 1
+ exit 1
 fi
-```
+`
 
 **Expected result**
 
@@ -1105,7 +1105,7 @@ Atomically replace the local development value without retaining the old value.
 
 **Command**
 
-```bash
+`bash
 : "${SECRET_NAME:?SECRET_NAME must be set}"
 
 python3 - "$SECRET_ROOT" "$SECRET_NAME" <<'PY'
@@ -1121,44 +1121,44 @@ root = Path(sys.argv[1])
 name = sys.argv[2]
 
 if not re.fullmatch(r"[a-z][a-z0-9_]*", name):
-    raise SystemExit("invalid secret name")
+ raise SystemExit("invalid secret name")
 
 target = root / name
-if target.is_symlink() or not target.is_file():
-    raise SystemExit("existing regular secret required")
-if target.stat().st_uid != os.getuid():
-    raise SystemExit("wrong secret owner")
-if stat.S_IMODE(target.stat().st_mode) != 0o600:
-    raise SystemExit("wrong secret mode")
+if target.is_symlink or not target.is_file:
+ raise SystemExit("existing regular secret required")
+if target.stat.st_uid != os.getuid:
+ raise SystemExit("wrong secret owner")
+if stat.S_IMODE(target.stat.st_mode) != 0o600:
+ raise SystemExit("wrong secret mode")
 
 first = getpass("New secret value: ")
 second = getpass("Repeat new secret value: ")
 if not first or first != second:
-    raise SystemExit("new values do not match")
+ raise SystemExit("new values do not match")
 
 fd, temporary_name = tempfile.mkstemp(prefix=f".{name}.", dir=root)
 temporary = Path(temporary_name)
 try:
-    os.fchmod(fd, 0o600)
-    os.write(fd, first.encode("utf-8"))
-    os.fsync(fd)
-    os.close(fd)
-    fd = -1
-    os.replace(temporary, target)
-    directory_fd = os.open(root, os.O_RDONLY)
-    try:
-        os.fsync(directory_fd)
-    finally:
-        os.close(directory_fd)
+ os.fchmod(fd, 0o600)
+ os.write(fd, first.encode("utf-8"))
+ os.fsync(fd)
+ os.close(fd)
+ fd = -1
+ os.replace(temporary, target)
+ directory_fd = os.open(root, os.O_RDONLY)
+ try:
+ os.fsync(directory_fd)
+ finally:
+ os.close(directory_fd)
 finally:
-    if fd >= 0:
-        os.close(fd)
-    temporary.unlink(missing_ok=True)
+ if fd >= 0:
+ os.close(fd)
+ temporary.unlink(missing_ok=True)
 
 first = ""
 second = ""
 PY
-```
+`
 
 Restage the runtime copy and restart only the dependent service.
 
@@ -1188,11 +1188,11 @@ Remove ephemeral values after dependent services stop.
 
 **Command**
 
-```bash
+`bash
 test -d "$RUNTIME_SECRET_ROOT"
 find "$RUNTIME_SECRET_ROOT" -mindepth 1 -maxdepth 1 -type f -exec chmod 0600 {} +
 find "$RUNTIME_SECRET_ROOT" -mindepth 1 -maxdepth 1 -type f -delete
-```
+`
 
 **Expected result**
 
@@ -1200,9 +1200,9 @@ The runtime root is empty.
 
 **Verification**
 
-```bash
+`bash
 test -z "$(find "$RUNTIME_SECRET_ROOT" -mindepth 1 -maxdepth 1 -print -quit)"
-```
+`
 
 **Failure behavior**
 
@@ -1214,9 +1214,9 @@ None. Runtime copies are reconstructible from persistent workspace values.
 
 ## 11. Idempotency
 
-```text
+`text
 Idempotent: conditional
-```
+`
 
 Idempotent operations:
 
@@ -1242,24 +1242,24 @@ Creation and rotation are separate procedures so rerunning initialization cannot
 
 ### 12.1 Functional validation
 
-```bash
+`bash
 test -d "$SECRET_ROOT"
 test -d "$RUNTIME_SECRET_ROOT"
 test "$(stat -c '%a' "$SECRET_ROOT")" = "700"
 test "$(stat -c '%a' "$RUNTIME_SECRET_ROOT")" = "700"
 
 find "$SECRET_ROOT" -mindepth 1 -maxdepth 1 -type f ! -perm 0600 -print -quit |
-  grep -q . && exit 1 || true
+ grep -q . && exit 1 || true
 
 find "$RUNTIME_SECRET_ROOT" -mindepth 1 -maxdepth 1 -type f ! -perm 0600 -print -quit |
-  grep -q . && exit 1 || true
-```
+ grep -q . && exit 1 || true
+`
 
 Expected result:
 
-```text
+`text
 All roots and files are current-user owned, workspace-scoped, and protected.
-```
+`
 
 ### 12.2 Contract validation
 
@@ -1289,9 +1289,9 @@ A scanner finding is reviewed without printing the full detected value.
 
 ### 12.4 Lock validation
 
-```bash
+`bash
 python docs/tools/check_interfile_locks.py
-```
+`
 
 Expected locks include:
 
@@ -1308,9 +1308,9 @@ Expected locks include:
 
 ### 12.5 Documentation validation
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 ### 12.6 Success criteria
 
@@ -1374,34 +1374,34 @@ Rollback applies when:
 
 Remove runtime copies:
 
-```bash
+`bash
 find "$RUNTIME_SECRET_ROOT" -mindepth 1 -maxdepth 1 -type f -delete
-```
+`
 
 Remove one newly created unused value:
 
-```bash
+`bash
 : "${SECRET_NAME:?}"
 test -f "$SECRET_ROOT/$SECRET_NAME"
 test ! -L "$SECRET_ROOT/$SECRET_NAME"
 rm -- "$SECRET_ROOT/$SECRET_NAME"
-```
+`
 
 Remove empty roots:
 
-```bash
+`bash
 rmdir "$RUNTIME_SECRET_ROOT" 2>/dev/null || true
 rmdir "$XDG_RUNTIME_DIR/koa/workspaces/$WORKSPACE_ID" 2>/dev/null || true
 rmdir "$SECRET_ROOT" 2>/dev/null || true
 rmdir "$STATE_HOME/koa/workspaces/$WORKSPACE_ID" 2>/dev/null || true
-```
+`
 
 ### 14.4 Rollback verification
 
-```bash
+`bash
 test ! -e "$RUNTIME_SECRET_ROOT/$SECRET_NAME"
 test ! -e "$SECRET_ROOT/$SECRET_NAME"
-```
+`
 
 When an external credential was created, verify revocation with the issuer's approved procedure.
 
@@ -1427,11 +1427,11 @@ Recovery uses issuer-side reissuance or another new value. The recipe does not r
 
 Require exact confirmation:
 
-```bash
+`bash
 : "${WORKSPACE_ID:?}"
 : "${CONFIRM_WORKSPACE_ID:?CONFIRM_WORKSPACE_ID must be set}"
 test "$CONFIRM_WORKSPACE_ID" = "$WORKSPACE_ID"
-```
+`
 
 Then:
 
@@ -1446,14 +1446,14 @@ Then:
 
 Example scoped deletion:
 
-```bash
+`bash
 test -d "$SECRET_ROOT"
 test ! -L "$SECRET_ROOT"
 
 find "$SECRET_ROOT" -mindepth 1 -maxdepth 1 -type f -delete
 rmdir "$SECRET_ROOT"
 rmdir "$STATE_HOME/koa/workspaces/$WORKSPACE_ID" 2>/dev/null || true
-```
+`
 
 Do not recursively remove `$STATE_HOME/koa/workspaces`.
 
@@ -1497,9 +1497,9 @@ Metrics remain workspace-scoped.
 
 ### 16.3 Receipts
 
-```text
+`text
 Receipt required: no for ordinary local file creation and staging.
-```
+`
 
 A structured receipt or security event is required when applicable policy classifies:
 
@@ -1526,9 +1526,9 @@ Evidence contains references and outcomes, not values.
 
 ## 17. Offline Behavior
 
-```text
+`text
 fully_offline
-```
+`
 
 The file-isolation, creation, staging, injection, validation, rotation, and cleanup procedure requires no network access.
 
@@ -1601,31 +1601,31 @@ The agent must not:
 
 ### 19.1 Example execution summary
 
-```json
+`json
 {
-  "recipe_id": "RECIPE-DEV-006",
-  "recipe_version": "1.0.0",
-  "profile_ids": ["developer_linux_workstation"],
-  "component_ids": ["example_service"],
-  "workspace_id": "example-service-feature-auth-a1b2",
-  "secret_names": ["example_service_token"],
-  "commands_executed": [
-    "resolve_workspace",
-    "create_protected_roots",
-    "create_secret",
-    "stage_runtime_copy",
-    "validate_boundary"
-  ],
-  "tests_run": [
-    "workspace_contract_validation",
-    "secret_path_and_permission_validation",
-    "tracked_file_secret_scan"
-  ],
-  "evidence_ids": [],
-  "rollback_available": true,
-  "result": "pass"
+ "recipe_id": "RECIPE-DEV-006",
+ "recipe_version": "1.0.0",
+ "profile_ids": ["developer_linux_workstation"],
+ "component_ids": ["example_service"],
+ "workspace_id": "example-service-feature-auth-a1b2",
+ "secret_names": ["example_service_token"],
+ "commands_executed": [
+ "resolve_workspace",
+ "create_protected_roots",
+ "create_secret",
+ "stage_runtime_copy",
+ "validate_boundary"
+ ],
+ "tests_run": [
+ "workspace_contract_validation",
+ "secret_path_and_permission_validation",
+ "tracked_file_secret_scan"
+ ],
+ "evidence_ids": [],
+ "rollback_available": true,
+ "result": "pass"
 }
-```
+`
 
 The example contains no credential value.
 
@@ -1635,9 +1635,9 @@ The example contains no credential value.
 
 **Observed signal**
 
-```text
+`text
 secret path inside repository
-```
+`
 
 **Likely bounded causes**
 
@@ -1647,10 +1647,10 @@ secret path inside repository
 
 **Diagnostic command**
 
-```bash
+`bash
 printf '%s
 ' "$WORKSPACE_ROOT" "$SECRET_ROOT" "$RUNTIME_SECRET_ROOT"
-```
+`
 
 **Corrective action**
 
@@ -1666,9 +1666,9 @@ The active profile mandates a path that conflicts with workspace isolation.
 
 **Observed signal**
 
-```text
+`text
 wrong secret mode
-```
+`
 
 **Likely bounded causes**
 
@@ -1678,17 +1678,17 @@ wrong secret mode
 
 **Diagnostic command**
 
-```bash
+`bash
 stat -c '%U %G %a %n' "$SECRET_ROOT/$SECRET_NAME"
-```
+`
 
 **Corrective action**
 
 When ownership is correct and no exposure is suspected:
 
-```bash
+`bash
 chmod 0600 "$SECRET_ROOT/$SECRET_NAME"
-```
+`
 
 If another user could read it, revoke and rotate the credential.
 
@@ -1702,9 +1702,9 @@ Ownership differs or exposure scope is uncertain.
 
 **Observed signal**
 
-```text
+`text
 service configuration has no file-reference or protected-file input
-```
+`
 
 **Likely bounded causes**
 
@@ -1730,9 +1730,9 @@ The component would require command-line exposure, committed `.env`, or broad en
 
 **Observed signal**
 
-```text
+`text
 tracked secret-like path detected
-```
+`
 
 **Likely bounded causes**
 
@@ -1742,10 +1742,10 @@ tracked secret-like path detected
 
 **Diagnostic command**
 
-```bash
+`bash
 git -C "$WORKSPACE_ROOT" ls-files |
-  grep -E '(^|/)(\.env($|\.)|\.secrets/|secrets\.local/)|\.(private\.pem|private\.key|p12|pfx)$'
-```
+ grep -E '(^|/)(\.env($|\.)|\.secrets/|secrets\.local/)|\.(private\.pem|private\.key|p12|pfx)$'
+`
 
 **Corrective action**
 
@@ -1761,9 +1761,9 @@ The value reached a remote repository, artifact, diagnostic bundle, external AI 
 
 **Observed signal**
 
-```text
+`text
 runtime secret directory is not empty
-```
+`
 
 **Likely bounded causes**
 
@@ -1774,10 +1774,10 @@ runtime secret directory is not empty
 
 **Diagnostic command**
 
-```bash
+`bash
 find "$RUNTIME_SECRET_ROOT" -mindepth 1 -maxdepth 1 -printf '%u %m %f
 '
-```
+`
 
 **Corrective action**
 
@@ -1791,15 +1791,15 @@ The file is owned by another user, belongs to another workspace, or cannot be at
 
 A workspace has:
 
-```text
+`text
 workspace_id: example-service-feature-auth-a1b2
 component_id: example_service
 secret_name: example_service_token
-```
+`
 
 The developer runs:
 
-```bash
+`bash
 export WORKSPACE_ID="example-service-feature-auth-a1b2"
 export SECRET_NAME="example_service_token"
 
@@ -1807,22 +1807,22 @@ WORKSPACE_ROOT="$(git rev-parse --show-toplevel)"
 STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
 SECRET_ROOT="$STATE_HOME/koa/workspaces/$WORKSPACE_ID/secrets"
 RUNTIME_SECRET_ROOT="${XDG_RUNTIME_DIR:?}/koa/workspaces/$WORKSPACE_ID/secrets"
-```
+`
 
 The value is entered interactively through Step 4.
 
 The service receives:
 
-```bash
+`bash
 export EXAMPLE_SERVICE_TOKEN_FILE="$RUNTIME_SECRET_ROOT/$SECRET_NAME"
 exec ./scripts/run-development-service
-```
+`
 
 After the service stops:
 
-```bash
+`bash
 find "$RUNTIME_SECRET_ROOT" -mindepth 1 -maxdepth 1 -type f -delete
-```
+`
 
 The example identifiers and variable names are illustrative, not canonical defaults.
 
@@ -1843,13 +1843,13 @@ Review this recipe when any referenced:
 
 Maintenance outcomes are:
 
-```text
+`text
 updated
 reviewed_no_change
 regenerated
 deprecated
 blocked
-```
+`
 
 Deprecate this recipe when protected files are no longer the recommended development method.
 

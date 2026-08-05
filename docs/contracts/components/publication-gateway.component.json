@@ -58,8 +58,7 @@
     "integration_manifest_contract": "contracts/artifact-contracts/integration-manifest.schema.json",
     "component_documentation": "04-components/publication-gateway.md",
     "security_documentation": "07-security/17-cross-domain-publication.md",
-    "cultural_rights_documentation": "01-constitution/12-cultural-rights-and-consent.md",
-    "separation_adr": "10-adrs/ADR-031-uckk-as-an-external-moodle-publication-target.md"
+    "cultural_rights_documentation": "01-constitution/12-cultural-rights-and-consent.md"
   },
   "decision_ids": [
     "DEC-GATE-001",
@@ -213,13 +212,13 @@
   "source_component_relationships": [
     {
       "component_id": "konnaxion",
-      "contract_ref": "contracts/components/konnaxion.component.json",
+      "contract_ref": "contracts/subsystems/konnaxion.subsystem.json",
       "role": "publication_destination_or_source_domain",
       "direct_data_write_allowed": false
     },
     {
       "component_id": "orgo",
-      "contract_ref": "contracts/components/orgo.component.json",
+      "contract_ref": "contracts/subsystems/orgo.subsystem.json",
       "role": "private_workflow_source_domain",
       "direct_data_write_allowed": false
     },

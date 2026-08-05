@@ -23,14 +23,20 @@
     "generated/assertion-index.json",
     "generated/traceability.json",
     "generated/test-catalog.json",
-    "generated/evidence-catalog.json"
+    "generated/evidence-catalog.json",
+    "contracts/integrations/uckk-publication.integration.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json"
   ],
   "decision_ids": [
     "DEC-GOV-001",
     "DEC-AI-001",
     "DEC-PROFILE-001",
     "DEC-DATA-001",
-    "DEC-GATE-001"
+    "DEC-GATE-001",
+    "DEC-UCKK-EXT-001",
+    "DEC-MEDIATHEQUE-001"
   ],
   "requirement_ids": [
     "REQ-SYS-GOV-001",
@@ -64,7 +70,10 @@
     "REQ-SYS-GOV-029",
     "REQ-SYS-GOV-030",
     "REQ-SYS-GOV-031",
-    "REQ-SYS-GOV-032"
+    "REQ-SYS-GOV-032",
+    "REQ-SYS-GOV-033",
+    "REQ-SYS-GOV-034",
+    "REQ-SYS-GOV-035"
   ],
   "lock_ids": [
     "LOCK-GOV-001",
@@ -72,7 +81,10 @@
     "LOCK-GATE-001",
     "LOCK-AI-002",
     "LOCK-PROFILE-001",
-    "LOCK-LIFE-001"
+    "LOCK-LIFE-001",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-002",
+    "LOCK-MEDIATHEQUE-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -103,9 +115,9 @@ KOA:DOC-META:END -->
 
 # Governance Policy Runtime
 
-> **Component ID:** `governance_policy_runtime`  
-> **Contract:** `contracts/components/governance-policy-runtime.component.json`  
-> **Contract version:** `1.0.0`  
+> **Component ID:** `governance_policy_runtime`
+> **Contract:** `contracts/components/governance-policy-runtime.component.json`
+> **Contract version:** `1.0.0`
 > **Authority role:** `policy_authority`
 
 ## 1. Purpose
@@ -128,17 +140,17 @@ The calling authoritative component, gateway, or privileged execution component 
 
 This division preserves accountability:
 
-```text
+`text
 verified request and bounded context
-                ↓
+ ↓
 Governance Policy Runtime
-                ↓
+ ↓
 decision + obligations + receipt
-                ↓
+ ↓
 authoritative caller or execution boundary
-                ↓
+ ↓
 execution result + execution evidence
-```
+`
 
 A decision receipt proves that policy evaluation occurred. It does not, by itself, prove that the governed operation was executed correctly.
 
@@ -234,10 +246,10 @@ External policy services and external AI services are not required.
 
 ### 3.1 Primary references
 
-```text
+`text
 generated/component-catalog.json#/components/governance_policy_runtime
 contracts/components/governance-policy-runtime.component.json
-```
+`
 
 The component registry owns identity and primary responsibility.
 
@@ -245,38 +257,38 @@ The component contract owns observable interfaces, inputs, outputs, state, data 
 
 ### 3.2 Related system authority
 
-```text
+`text
 contracts/system.contract.json#/global_capabilities
 contracts/system.contract.json#/global_boundaries
 contracts/system.contract.json#/data_authority
 contracts/system.contract.json#/cross_component_communication
 contracts/system.contract.json#/degradation_baseline
 contracts/system.contract.json#/critical_transitions
-```
+`
 
 ### 3.3 Related component contracts
 
-```text
+`text
 contracts/components/identity-and-trust.component.json
 contracts/components/audit-broker.component.json
 contracts/components/publication-gateway.component.json
 contracts/components/koa-node-agent.component.json
 contracts/components/resource-governor.component.json
-```
+`
 
 ### 3.4 Related profile authority
 
-```text
+`text
 generated/profile-catalog.json
 contracts/profiles/sovereign-linux-node.profile.json
 contracts/profiles/sovereign-hub.profile.json
 contracts/profiles/high-assurance.profile.json
 contracts/profiles/sovereign-offline.profile.json
-```
+`
 
 ### 3.5 Related lifecycle and evidence authority
 
-```text
+`text
 contracts/release-channels.contract.json
 contracts/artifact-classes.contract.json
 contracts/artifact-contracts/policy-bundle.schema.json
@@ -285,7 +297,7 @@ contracts/artifact-contracts/release-set.schema.json
 generated/exception-index.json
 generated/test-catalog.json
 generated/evidence-catalog.json
-```
+`
 
 ## 4. Model and Responsibilities
 
@@ -503,7 +515,7 @@ Read access is limited to the minimum contract-defined context needed for evalua
 
 The policy-set states are:
 
-```text
+`text
 absent
 staged
 validating
@@ -513,7 +525,7 @@ superseded
 activation_failed
 rollback_required
 forward_repair_required
-```
+`
 
 The allowed transitions are canonical in the component contract.
 
@@ -636,7 +648,7 @@ Their references and relevant values are recorded for review.
 
 ## 5. Applicable Normative Requirements
 
-<!-- GENERATED:REQUIREMENTS:BEGIN ids=REQ-SYS-GOV-001,REQ-SYS-GOV-002,REQ-SYS-GOV-003,REQ-SYS-GOV-004,REQ-SYS-GOV-005,REQ-SYS-GOV-006,REQ-SYS-GOV-007,REQ-SYS-GOV-008,REQ-SYS-GOV-009,REQ-SYS-GOV-010,REQ-SYS-GOV-011,REQ-SYS-GOV-012,REQ-SYS-GOV-013,REQ-SYS-GOV-014,REQ-SYS-GOV-015,REQ-SYS-GOV-016,REQ-SYS-GOV-017,REQ-SYS-GOV-018,REQ-SYS-GOV-019,REQ-SYS-GOV-020,REQ-SYS-GOV-021,REQ-SYS-GOV-022,REQ-SYS-GOV-023,REQ-SYS-GOV-024,REQ-SYS-GOV-025,REQ-SYS-GOV-026,REQ-SYS-GOV-027,REQ-SYS-GOV-028,REQ-SYS-GOV-029,REQ-SYS-GOV-030,REQ-SYS-GOV-031,REQ-SYS-GOV-032 -->
+<!-- GENERATED:REQUIREMENTS:BEGIN ids=REQ-SYS-GOV-001,REQ-SYS-GOV-002,REQ-SYS-GOV-003,REQ-SYS-GOV-004,REQ-SYS-GOV-005,REQ-SYS-GOV-006,REQ-SYS-GOV-007,REQ-SYS-GOV-008,REQ-SYS-GOV-009,REQ-SYS-GOV-010,REQ-SYS-GOV-011,REQ-SYS-GOV-012,REQ-SYS-GOV-013,REQ-SYS-GOV-014,REQ-SYS-GOV-015,REQ-SYS-GOV-016,REQ-SYS-GOV-017,REQ-SYS-GOV-018,REQ-SYS-GOV-019,REQ-SYS-GOV-020,REQ-SYS-GOV-021,REQ-SYS-GOV-022,REQ-SYS-GOV-023,REQ-SYS-GOV-024,REQ-SYS-GOV-025,REQ-SYS-GOV-026,REQ-SYS-GOV-027,REQ-SYS-GOV-028,REQ-SYS-GOV-029,REQ-SYS-GOV-030,REQ-SYS-GOV-031,REQ-SYS-GOV-032,REQ-SYS-GOV-033,REQ-SYS-GOV-034,REQ-SYS-GOV-035 -->
 - **REQ-SYS-GOV-001 — SHALL:** Governance Policy Runtime remain a separate component authority from Resource Governor.
 - **REQ-SYS-GOV-002 — SHALL:** Governance Policy Runtime evaluate only governance decisions declared by active policy, profile, component, gateway, security, lifecycle, or exception contracts.
 - **REQ-SYS-GOV-003 — SHALL:** Governance Policy Runtime support governed decisions for authorization, disclosure, consent, privilege, and registered exceptions.
@@ -669,6 +681,9 @@ Their references and relevant values are recorded for review.
 - **REQ-SYS-GOV-030 — SHALL:** Governance Policy Runtime degradation preserve unaffected non-governed capabilities while blocking transitions that require unavailable policy authority.
 - **REQ-SYS-GOV-031 — SHALL:** A semantic change to policy authority, evaluation meaning, decision input, obligation, exception handling, profile applicability, or failure behavior use an accepted decision and complete impact analysis.
 - **REQ-SYS-GOV-032 — SHALL:** Governance Policy Runtime conformance be traceable from accepted decisions through requirements, locks, component and profile contracts, tests, evidence, and active authority.
+- **REQ-SYS-GOV-033 — SHALL:** Governance Policy Runtime evaluate applicable disclosure, rights, restrictions, consent, cultural, destination, and retention rules before outbound UCKK publication authorization.
+- **REQ-SYS-GOV-034 — SHALL:** Governance Policy Runtime evaluate applicable source, license, offline-use, restriction, profile, mapping, and local-acceptance rules before a quarantined UCKK package can be accepted.
+- **REQ-SYS-GOV-035 — SHALL NOT:** A governance decision perform transport, create kOA or UCKK records, merge authority, or authorize automatic synchronization merely because connectivity is available.
 <!-- GENERATED:REQUIREMENTS:END -->
 
 ## 6. Procedures or State Transitions
@@ -753,6 +768,14 @@ Their references and relevant values are recorded for review.
 5. Publication Gateway performs or rejects transport.
 6. decision and publication receipts are linked.
 7. source ownership remains unchanged.
+
+### 6.8 Evaluate an UCKK import candidate
+
+1. Resolve the active profile, source identity, package version, license, restrictions, offline-use terms, shared-frame version, mapping evidence, and requested local use.
+2. Confirm that the package remains quarantined and that the requesting actor has the required local acceptance role.
+3. Evaluate source allowlisting, integrity evidence, cultural and privacy restrictions, local-storage policy, runtime compatibility, and update disposition.
+4. Return `permit`, `deny`, or `needs_review` with explicit obligations and reasons.
+5. Preserve the decision receipt. The kOA Mediatheque performs any later acceptance and identity creation.
 
 ## 7. Failure States and Safe Degradation
 
@@ -841,15 +864,15 @@ Governance Policy Runtime controls governance decisions.
 
 A workload can require both controls:
 
-```text
+`text
 policy evaluation
-        ↓
+ ↓
 component acceptance
-        ↓
+ ↓
 resource admission and scheduling
-        ↓
+ ↓
 component execution
-```
+`
 
 Policy approval does not guarantee resource availability.
 
@@ -868,7 +891,15 @@ Publication Gateway:
 
 Neither component absorbs the other's authority.
 
-### 8.5 kOA Node Agent
+### 8.5 UCKK directional interchange
+
+For `publish_to_uckk`, Governance Policy Runtime evaluates disclosure purpose, audience, destination, rights, restrictions, consent, cultural conditions, retention, and any required transformation before Publication Gateway authorizes an outbound package.
+
+For `import_from_uckk`, it evaluates source eligibility, license, offline-use permission, restrictions, cultural conditions, profile compatibility, local acceptance role, update policy, and any lossy shared-frame mapping that requires review.
+
+A policy result authorizes or denies the governed decision. It does not retrieve packages, perform transport, create local media identities, write UCKK state, or synchronize progress. Unknown required facts fail closed and leave inbound material quarantined or outbound publication blocked.
+
+### 8.6 kOA Node Agent
 
 The policy runtime evaluates a privilege request.
 
@@ -878,7 +909,7 @@ The registered privileged boundary executes the operation.
 
 A decision result is not a root credential or general shell.
 
-### 8.6 Audit Broker
+### 8.7 Audit Broker
 
 The policy runtime submits selected decision evidence.
 
@@ -886,7 +917,7 @@ The executing component submits selected execution evidence.
 
 Audit Broker retains or routes evidence according to its contract without becoming a universal operational store.
 
-### 8.7 Exception registry
+### 8.8 Exception registry
 
 The exception registry owns exception identity, scope, controls, lifecycle, and evidence requirements.
 
@@ -894,7 +925,7 @@ The policy runtime evaluates applicability.
 
 It cannot create or modify an exception during decision evaluation.
 
-### 8.8 Policy-bundle artifacts
+### 8.9 Policy-bundle artifacts
 
 Policy-bundle artifacts carry executable policy authority.
 
@@ -902,7 +933,7 @@ Markdown explains policy behavior but is not an executable policy set.
 
 Candidate bundles remain inactive until validation and atomic activation complete.
 
-### 8.9 External AI
+### 8.10 External AI
 
 External AI output is candidate material only.
 
@@ -918,8 +949,6 @@ The component does not call an external AI system to invent a rule or resolve mi
 
 | Decision or ADR | Closed choice |
 | --- | --- |
-| `DEC-GOV-001` / `ADR-009` | Governance Policy Runtime and Resource Governor remain separate authorities |
-| `ADR-010` | Audit remains selective |
 | `ADR-012` | Privileged execution remains behind a narrow registered boundary |
 | `DEC-AI-001` | External AI remains optional and non-authoritative |
 | `DEC-PROFILE-001` | Applicability is profile-conditioned and machine-readable |
@@ -1005,28 +1034,28 @@ This document and component contract are aligned when:
 
 Expected test coverage includes:
 
-```text
-TEST-SYS-GOV-001  Resource and policy authority separation
-TEST-SYS-GOV-002  Profile-conditioned component applicability
-TEST-SYS-GOV-003  Policy request completeness
-TEST-SYS-GOV-004  Policy result and obligation completeness
-TEST-SYS-GOV-005  Fail-closed indeterminate evaluation
-TEST-SYS-GOV-006  Calling-component enforcement boundary
-TEST-SYS-GOV-007  Foreign authoritative-state write rejection
-TEST-SYS-GOV-008  Identity assertion verification
-TEST-SYS-GOV-009  Policy-bundle compatibility
-TEST-SYS-GOV-010  Atomic policy activation and predecessor retention
-TEST-SYS-GOV-011  Offline governed operation
-TEST-SYS-GOV-012  External AI non-authority
-TEST-SYS-GOV-013  Registered exception applicability
-TEST-SYS-GOV-014  Underlying requirement preservation
-TEST-SYS-GOV-015  Privilege evaluation and execution separation
-TEST-SYS-GOV-016  Disclosure evaluation and publication separation
-TEST-SYS-GOV-017  Consent-context completeness
-TEST-SYS-GOV-018  Decision receipt generation
-TEST-SYS-GOV-019  Decision and execution evidence distinction
-TEST-SYS-GOV-020  Capability-scoped policy-runtime degradation
-```
+`text
+TEST-SYS-GOV-001 Resource and policy authority separation
+TEST-SYS-GOV-002 Profile-conditioned component applicability
+TEST-SYS-GOV-003 Policy request completeness
+TEST-SYS-GOV-004 Policy result and obligation completeness
+TEST-SYS-GOV-005 Fail-closed indeterminate evaluation
+TEST-SYS-GOV-006 Calling-component enforcement boundary
+TEST-SYS-GOV-007 Foreign authoritative-state write rejection
+TEST-SYS-GOV-008 Identity assertion verification
+TEST-SYS-GOV-009 Policy-bundle compatibility
+TEST-SYS-GOV-010 Atomic policy activation and predecessor retention
+TEST-SYS-GOV-011 Offline governed operation
+TEST-SYS-GOV-012 External AI non-authority
+TEST-SYS-GOV-013 Registered exception applicability
+TEST-SYS-GOV-014 Underlying requirement preservation
+TEST-SYS-GOV-015 Privilege evaluation and execution separation
+TEST-SYS-GOV-016 Disclosure evaluation and publication separation
+TEST-SYS-GOV-017 Consent-context completeness
+TEST-SYS-GOV-018 Decision receipt generation
+TEST-SYS-GOV-019 Decision and execution evidence distinction
+TEST-SYS-GOV-020 Capability-scoped policy-runtime degradation
+`
 
 The test catalog and evidence registry own executable controls and evidence definitions.
 

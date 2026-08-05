@@ -66,11 +66,11 @@
     "LOCK-DEV-005",
     "LOCK-MEDIATHEQUE-001",
     "LOCK-UCKK-EXT-001",
-    "LOCK-UCKK-EXT-001",
     "LOCK-DATA-001",
     "LOCK-GOV-001",
     "LOCK-LIFE-001",
-    "LOCK-LIFE-002"
+    "LOCK-LIFE-002",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -138,14 +138,14 @@ Its responsibility includes:
 
 The Resource Governor does not decide whether an actor is allowed to perform a business, governance, disclosure, publication, privilege, or data-access action. It answers a different question:
 
-```text
+`text
 authorization owner:
-    Is this action permitted?
+ Is this action permitted?
 
 Resource Governor:
-    Can this authorized or otherwise valid workload run now,
-    under which limits, and with which pressure behavior?
-```
+ Can this authorized or otherwise valid workload run now,
+ under which limits, and with which pressure behavior?
+`
 
 Both answers can be required before execution. A positive answer from either side does not imply a positive answer from the other.
 
@@ -173,7 +173,7 @@ This document applies to governed resource use by:
 
 The component can govern a workload at one or more execution scopes:
 
-```text
+`text
 session
 workspace
 component instance
@@ -184,7 +184,7 @@ tenant
 node
 deployment
 recovery environment
-```
+`
 
 The component does not define:
 
@@ -205,7 +205,7 @@ Profiles define the available capacity and implementation constraints. Component
 
 The canonical sources for this document are:
 
-```text
+`text
 generated/authority-manifest.json
 generated/decision-index.json
 contracts/system.contract.json#/resource_governor
@@ -219,7 +219,7 @@ generated/assertion-index.json
 generated/traceability.json
 generated/evidence-catalog.json
 generated/exception-index.json
-```
+`
 
 Their ownership roles are:
 
@@ -277,7 +277,7 @@ Network authorization and disclosure policy remain outside this component.
 
 A governed workload declaration includes:
 
-```text
+`text
 workload_id
 component_id
 execution_scope
@@ -293,7 +293,7 @@ retry limit
 cancellation behavior
 authority reference
 correlation identifier
-```
+`
 
 A request without enough context remains unadmitted.
 
@@ -341,7 +341,7 @@ An overlay modifies an envelope only through explicit composition.
 
 A resource request can result in:
 
-```text
+`text
 admitted
 queued
 throttled
@@ -350,11 +350,11 @@ rejected
 expired
 cancelled
 released
-```
+`
 
 Execution state remains separately observable:
 
-```text
+`text
 requested
 admitted
 queued
@@ -366,7 +366,7 @@ failed
 cancelled
 rejected
 expired
-```
+`
 
 The decision records effective limits and a stable reason code.
 
@@ -828,7 +828,7 @@ This document is conformant when all of the following checks pass:
 
 Expected validator failure codes include:
 
-```text
+`text
 resource_envelope_missing
 resource_request_invalid
 resource_authority_context_missing
@@ -849,7 +849,7 @@ resource_envelope_activation_partial
 resource_receipt_path_unavailable
 resource_profile_envelope_invalid
 resource_component_conformance_evidence_incomplete
-```
+`
 
 ## 11. Non-Normative Examples
 

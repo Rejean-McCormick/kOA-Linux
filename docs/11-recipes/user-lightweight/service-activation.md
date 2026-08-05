@@ -18,7 +18,7 @@
     "contracts/components/resource-governor.component.json",
     "contracts/components/identity-and-trust.component.json",
     "contracts/subsystems/ariane.subsystem.json",
-    "contracts/subsystems/uckk.subsystem.json",
+    "contracts/components/koa-mediatheque.component.json",
     "contracts/artifact-contracts/resource-envelope.schema.json",
     "generated/requirements-index.json",
     "generated/assertion-index.json",
@@ -32,7 +32,7 @@
     "DEC-CONTAINER-001",
     "DEC-GOV-001",
     "DEC-ARI-001",
-    "DEC-UCKK-001",
+    "DEC-MEDIATHEQUE-001",
     "DEC-AI-001",
     "DEC-SENT-001",
     "DEC-DATA-001",
@@ -74,6 +74,8 @@
     "LOCK-ARI-001",
     "LOCK-ARI-002",
     "LOCK-SENT-001",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-MEDIATHEQUE-002",
     "LOCK-DATA-001",
     "LOCK-GOV-001",
     "LOCK-LIFE-001",
@@ -106,6 +108,7 @@
     "interactive-user",
     "ariane",
     "resource-governor",
+    "koa-mediatheque",
     "readiness",
     "on-demand",
     "heavy-job",
@@ -145,7 +148,7 @@ At completion:
 - Ariane local navigation is available without external AI;
 - optional external voice remains disabled unless activated explicitly;
 - SenTient remains absent;
-- no more than one heavy UCKK job runs concurrently;
+- no more than one heavy kOA Mediatheque job runs concurrently;
 - process start and service readiness remain distinct;
 - status reports identify active, degraded, failed, and unavailable capabilities;
 - shutdown is ordered and idempotent;
@@ -231,10 +234,10 @@ Save as `.koa/user-lightweight-services.json`.
       "failure_effect": "interactive_session_degraded"
     },
     {
-      "service_id": "uckk_local_worker",
+      "service_id": "koa_mediatheque_worker",
       "service_class": "on_demand",
       "activation": "foreground_job",
-      "adapter": ".koa/service-adapters/uckk-local-worker",
+      "adapter": ".koa/service-adapters/koa-mediatheque-worker",
       "dependencies": [
         "resource_governor"
       ],
@@ -242,7 +245,7 @@ Save as `.koa/user-lightweight-services.json`.
       "heavy": true,
       "external": false,
       "enabled_by_default": false,
-      "failure_effect": "requested_uckk_job_fails"
+      "failure_effect": "requested_mediatheque_job_fails"
     },
     {
       "service_id": "ariane_external_voice",
@@ -286,7 +289,7 @@ Save as `.koa/user-lightweight-services.json`.
 }
 ```
 
-The plan includes three startup services, one local heavy job, one external optional service, and no SenTient service.
+The plan includes three startup services, one local kOA Mediatheque heavy job, one external optional service, and no SenTient service.
 
 ## 2. Create the service controller
 
@@ -738,7 +741,7 @@ Create executable adapters:
 .koa/service-adapters/resource-governor
 .koa/service-adapters/identity-and-trust
 .koa/service-adapters/ariane-local-navigation
-.koa/service-adapters/uckk-local-worker
+.koa/service-adapters/koa-mediatheque-worker
 .koa/service-adapters/ariane-external-voice
 ```
 
@@ -863,7 +866,7 @@ does not mean an authoritative component commit
 
 Ariane should expose equivalent truthful user-facing status.
 
-## 7. Run one heavy UCKK job
+## 7. Run one heavy kOA Mediatheque job
 
 Save as `scripts/run-user-lightweight-heavy-job.sh`.
 
@@ -874,7 +877,7 @@ set -euo pipefail
 REPOSITORY_ROOT="${REPOSITORY_ROOT:-$(pwd)}"
 PLAN="${PLAN:-$REPOSITORY_ROOT/.koa/user-lightweight-services.json}"
 CONTROLLER="${CONTROLLER:-$REPOSITORY_ROOT/scripts/user-lightweight-service.py}"
-SERVICE_ID="${1:-uckk_local_worker}"
+SERVICE_ID="${1:-koa_mediatheque_worker}"
 
 python3 "$CONTROLLER" \
   --root "$REPOSITORY_ROOT" \
@@ -887,14 +890,14 @@ Run:
 
 ```bash
 chmod +x scripts/run-user-lightweight-heavy-job.sh
-scripts/run-user-lightweight-heavy-job.sh uckk_local_worker
+scripts/run-user-lightweight-heavy-job.sh koa_mediatheque_worker
 ```
 
 The controller acquires one local heavy-job lock before calling `run`.
 
 A second concurrent request fails without disabling the baseline.
 
-The lock enforces concurrency. It does not authorize the UCKK operation. The component still validates the request, authority, resource decision, cancellation, result, and required receipts.
+The lock enforces concurrency. It does not authorize the kOA Mediatheque operation. The component still validates the request, authority, resource decision, cancellation, result, and required receipts.
 
 ## 8. Activate optional external voice
 
@@ -919,7 +922,7 @@ Verify that:
 - Ariane local navigation becomes ready;
 - disconnected status is truthful;
 - external voice remains inactive;
-- deterministic local UCKK work remains available subject to resources;
+- deterministic local kOA Mediatheque work remains available subject to resources;
 - no external AI is required;
 - optional integration failure does not disable the baseline.
 
@@ -929,7 +932,7 @@ Connected testing does not prove disconnected behavior.
 
 The exact `user_lightweight` envelope is profile-owned.
 
-This recipe assumes protected interactive responsiveness, optional background services that can stop, at most one heavy UCKK job, and bounded queues, retries, and timeouts.
+This recipe assumes protected interactive responsiveness, optional background services that can stop, at most one heavy kOA Mediatheque job, and bounded queues, retries, and timeouts.
 
 Resource Governor can admit, queue, throttle, pause, reject, expire, or cancel a workload.
 
@@ -988,7 +991,7 @@ A stop failure remains visible and does not become a false clean-shutdown result
 | Resource Governor unavailable | Block new governed workloads and report capacity authority unavailable |
 | Identity and Trust unavailable | Keep protected actions unavailable |
 | Ariane local navigation unavailable | Report the interactive session degraded |
-| Heavy UCKK job rejected | Preserve the baseline and report the requested job failure |
+| Heavy kOA Mediatheque job rejected | Preserve the baseline and report the requested job failure |
 | External voice unavailable | Continue local Ariane navigation |
 | Adapter missing | Block activation of the affected service |
 | Readiness timeout | Do not create an active marker |
@@ -1017,7 +1020,7 @@ Release installation remains a lifecycle operation with artifact verification, c
 - [ ] SenTient is absent;
 - [ ] no native service requires external connectivity;
 - [ ] no native service requires containers or Kubernetes;
-- [ ] at most one heavy UCKK job runs;
+- [ ] at most one heavy kOA Mediatheque job runs;
 - [ ] status distinguishes start, readiness, failure, and optional absence;
 - [ ] optional external failure does not disable local navigation;
 - [ ] shutdown is ordered and idempotent;
@@ -1034,7 +1037,7 @@ Release installation remains a lifecycle operation with artifact verification, c
 | External AI optional | `REQ-SYS-MODE-016`, `LOCK-AI-001`, `LOCK-AI-002` |
 | Local Ariane navigation | `REQ-SYS-MODE-017`, `LOCK-ARI-001`, `LOCK-ARI-002` |
 | SenTient absent | `REQ-SYS-MODE-018`, `LOCK-SENT-001` |
-| One heavy UCKK job | `REQ-COMP-RG-010` |
+| One heavy kOA Mediatheque job | `REQ-COMP-RG-010` |
 | Optional heavy services removable | `REQ-COMP-RG-011` |
 | Bounded resource use | `REQ-COMP-RG-001`, `REQ-COMP-RG-005`, `REQ-COMP-RG-012` |
 | Separate resource and policy authority | `DEC-GOV-001`, `LOCK-GOV-001`, `ADR-019` |

@@ -115,7 +115,8 @@
     "LOCK-LIFE-003",
     "LOCK-LIFE-004",
     "LOCK-IMPL-001",
-    "LOCK-IMPL-002"
+    "LOCK-IMPL-002",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -184,17 +185,17 @@ Security is an architectural property rather than a host-hardening checklist.
 
 The controlling sequence is:
 
-```text
+`text
 explicit identity and scope
-        ↓
+ ↓
 verified trust and policy
-        ↓
+ ↓
 bounded interface and resource authority
-        ↓
+ ↓
 component-owned operation
-        ↓
+ ↓
 state verification and selective evidence
-```
+`
 
 No layer silently supplies authority missing from another layer.
 
@@ -321,51 +322,51 @@ Those details belong to active profiles, component contracts, artifact contracts
 
 ### 3.1 Authority and invariants
 
-```text
+`text
 generated/authority-manifest.json
 generated/decision-index.json
 generated/requirements-index.json
 generated/assertion-index.json
 generated/decision-index.json
-```
+`
 
 ### 3.2 System and component boundaries
 
-```text
+`text
 contracts/system.contract.json
 generated/component-catalog.json
 generated/component-catalog.json
 contracts/components/*.component.json
-```
+`
 
 ### 3.3 Profiles
 
-```text
+`text
 generated/profile-catalog.json
 contracts/profiles/*.profile.json
-```
+`
 
 ### 3.4 Artifacts and releases
 
-```text
+`text
 contracts/release-channels.contract.json
 contracts/artifact-classes.contract.json
 contracts/artifact-contracts/*.schema.json
-```
+`
 
 ### 3.5 Integrations and evidence
 
-```text
+`text
 contracts/integration-types.contract.json
 generated/exception-index.json
 generated/traceability.json
 generated/test-catalog.json
 generated/evidence-catalog.json
-```
+`
 
 ### 3.6 Related security documents
 
-```text
+`text
 07-security/00-threat-model.md
 07-security/02-security-domains.md
 07-security/03-identity-trust-and-signatures.md
@@ -386,7 +387,7 @@ generated/evidence-catalog.json
 07-security/18-offline-import-security.md
 07-security/19-software-supply-chain.md
 07-security/20-break-glass-security.md
-```
+`
 
 The specialized documents refine this baseline without changing its ownership rules.
 
@@ -407,7 +408,7 @@ Security authority is distributed among registered owners.
 | Privileged node-operation coordination | kOA Node Agent and registered privileged boundary |
 | Cross-domain external publication | Publication Gateway |
 | kOA Mediatheque admission | kOA Mediatheque |
-| Publication to external UCKK Moodle | Publication Gateway with UCKK publication adapter |
+| Publication to external UCKK Moodle | Publication Gateway with UCKK Publication Bridge |
 | Artifact identity and lifecycle | Artifact class and release contracts |
 | Integration permissions and data classes | Integration registry and manifest |
 | Selective evidence handling | Audit Broker and evidence contracts |
@@ -568,21 +569,21 @@ Convenience, shared hosting, administrator access, or container co-location does
 
 The normal privileged path is:
 
-```text
+`text
 unprivileged caller
-        ↓
+ ↓
 registered component interface
-        ↓
+ ↓
 governance policy decision when required
-        ↓
+ ↓
 kOA Node Agent request
-        ↓
+ ↓
 closed privileged operation
-        ↓
+ ↓
 before-and-after verification
-        ↓
+ ↓
 operation receipt
-```
+`
 
 The privileged boundary accepts closed operation types rather than arbitrary commands.
 
@@ -965,19 +966,19 @@ SenTient remains an isolated optional workbench in developer and build profiles.
 
 An external or workbench output follows this pattern:
 
-```text
+`text
 explicit authorized export
-        ↓
+ ↓
 external or isolated processing
-        ↓
+ ↓
 candidate artifact + provenance
-        ↓
+ ↓
 controlled import
-        ↓
+ ↓
 destination validation and review
-        ↓
+ ↓
 explicit acceptance or rejection
-```
+`
 
 The destination component owns the final state change.
 
@@ -1593,7 +1594,7 @@ Security validation confirms both without turning profile implementation or repo
 | `DEC-AI-001` | No native AI baseline; approved external surfaces are explicit, removable, and non-authoritative |
 | `DEC-SENT-001` | SenTient is an optional isolated workbench outside the user baseline |
 | `DEC-MEDIATHEQUE-001` | kOA Mediatheque behavior is deterministic and local |
-| `DEC-UCKK-EXT-001` | UCKK is an external Moodle publication target |
+| `DEC-UCKK-EXT-001` | UCKK is an external online Moodle and Mediatheque interchange target |
 | `DEC-ARI-001` | Ariane local navigation is independent of optional external voice |
 | `DEC-PROFILE-001` | Security strengthening and implementation remain profile-specific |
 | `DEC-DATA-001` | Component data ownership is exclusive and cross-component source writes are prohibited |
@@ -1611,7 +1612,7 @@ Security validation confirms both without turning profile implementation or repo
 | `LOCK-AI-001`, `LOCK-AI-002` | No native AI authority and no direct authoritative mutation by external AI |
 | `LOCK-SENT-001` | SenTient remains optional, isolated, and non-authoritative |
 | `LOCK-MEDIATHEQUE-001`, `LOCK-MEDIATHEQUE-002` | kOA Mediatheque remains deterministic; Suno and Gamma remain explicit candidate-producing adapters |
-| `LOCK-UCKK-EXT-001` | UCKK publication remains explicit, external, and unable to claim local authority |
+| `LOCK-UCKK-EXT-001` | UCKK publication and import remain explicit, external, and unable to claim authority over the other Mediatheque |
 | `LOCK-ARI-001`, `LOCK-ARI-002` | Local navigation remains independent of voice |
 | `LOCK-DATA-001` | No direct foreign authoritative write |
 | `LOCK-GOV-001` | Resource and policy authority remain separate |
@@ -1729,38 +1730,38 @@ This document is conformant when:
 
 Expected test coverage includes:
 
-```text
-TEST-SEC-BASE-001  Explicit identity and authority context
-TEST-SEC-BASE-002  Fail-closed missing trust or policy
-TEST-SEC-BASE-003  Component-interface authorization
-TEST-SEC-BASE-004  Tenant and security-domain isolation
-TEST-SEC-BASE-005  Direct foreign-write rejection
-TEST-SEC-BASE-006  Narrow privileged broker
-TEST-SEC-BASE-007  Privileged-operation replay and idempotency
-TEST-SEC-BASE-008  Secret and key-class separation
-TEST-SEC-BASE-009  Secret exclusion from artifacts and logs
-TEST-SEC-BASE-010  Credential rotation and revocation
-TEST-SEC-BASE-011  Default-deny network policy
-TEST-SEC-BASE-012  External egress classification
-TEST-SEC-BASE-013  Bounded parser and archive handling
-TEST-SEC-BASE-014  Web and API security controls
-TEST-SEC-BASE-015  Profile-conditioned host hardening
-TEST-SEC-BASE-016  Least-privilege service isolation
-TEST-SEC-BASE-017  Artifact trust and compatibility verification
-TEST-SEC-BASE-018  Reproducible supply-chain validation
-TEST-SEC-BASE-019  Atomic activation and known-good recovery
-TEST-SEC-BASE-020  No native AI capability
-TEST-SEC-BASE-021  External AI candidate boundary
-TEST-SEC-BASE-022  Cultural-rights and consent enforcement
-TEST-SEC-BASE-023  Publication Gateway separation
-TEST-SEC-BASE-024  Selective audit classification
-TEST-SEC-BASE-025  Restricted-evidence access audit
-TEST-SEC-BASE-026  Capability-scoped degradation
-TEST-SEC-BASE-027  Offline trust and revocation closure
-TEST-SEC-BASE-028  Quarantined offline import
-TEST-SEC-BASE-029  Recovery boundary and control separation
-TEST-SEC-BASE-030  Security exception lifecycle
-```
+`text
+TEST-SEC-BASE-001 Explicit identity and authority context
+TEST-SEC-BASE-002 Fail-closed missing trust or policy
+TEST-SEC-BASE-003 Component-interface authorization
+TEST-SEC-BASE-004 Tenant and security-domain isolation
+TEST-SEC-BASE-005 Direct foreign-write rejection
+TEST-SEC-BASE-006 Narrow privileged broker
+TEST-SEC-BASE-007 Privileged-operation replay and idempotency
+TEST-SEC-BASE-008 Secret and key-class separation
+TEST-SEC-BASE-009 Secret exclusion from artifacts and logs
+TEST-SEC-BASE-010 Credential rotation and revocation
+TEST-SEC-BASE-011 Default-deny network policy
+TEST-SEC-BASE-012 External egress classification
+TEST-SEC-BASE-013 Bounded parser and archive handling
+TEST-SEC-BASE-014 Web and API security controls
+TEST-SEC-BASE-015 Profile-conditioned host hardening
+TEST-SEC-BASE-016 Least-privilege service isolation
+TEST-SEC-BASE-017 Artifact trust and compatibility verification
+TEST-SEC-BASE-018 Reproducible supply-chain validation
+TEST-SEC-BASE-019 Atomic activation and known-good recovery
+TEST-SEC-BASE-020 No native AI capability
+TEST-SEC-BASE-021 External AI candidate boundary
+TEST-SEC-BASE-022 Cultural-rights and consent enforcement
+TEST-SEC-BASE-023 Publication Gateway separation
+TEST-SEC-BASE-024 Selective audit classification
+TEST-SEC-BASE-025 Restricted-evidence access audit
+TEST-SEC-BASE-026 Capability-scoped degradation
+TEST-SEC-BASE-027 Offline trust and revocation closure
+TEST-SEC-BASE-028 Quarantined offline import
+TEST-SEC-BASE-029 Recovery boundary and control separation
+TEST-SEC-BASE-030 Security exception lifecycle
+`
 
 The test catalog and evidence registry own executable controls and evidence definitions.
 

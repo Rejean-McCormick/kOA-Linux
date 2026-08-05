@@ -152,8 +152,8 @@ KOA:DOC-META:END -->
 
 # Forward Repair
 
-> **Document status:** Normative lifecycle architecture.  
-> **Recovery rule:** Rollback is preferred while the previous verified state remains safe and compatible. Forward repair is used only after an irreversible or rollback-incompatible boundary has been crossed.  
+> **Document status:** Normative lifecycle architecture.
+> **Recovery rule:** Rollback is preferred while the previous verified state remains safe and compatible. Forward repair is used only after an irreversible or rollback-incompatible boundary has been crossed.
 > **Authority rule:** The owner of each affected component or artifact remains authoritative throughout repair.
 
 ## 1. Purpose
@@ -259,7 +259,7 @@ This document does not invent a separate artifact class for the plan.
 
 A forward repair uses stable identifiers for:
 
-```text
+`text
 failed transition
 repair plan
 repair execution
@@ -275,7 +275,7 @@ queue
 receipt
 test result
 evidence item
-```
+`
 
 ## 4. Model and Responsibilities
 
@@ -324,7 +324,7 @@ A complete plan includes:
 
 The forward-repair lifecycle uses:
 
-```text
+`text
 planned
 → admitted
 → staged
@@ -333,15 +333,15 @@ planned
 → verifying
 → restoring
 → completed
-```
+`
 
 Alternative states are:
 
-```text
+`text
 blocked
 failed
 superseded
-```
+`
 
 A failed execution can return to `executing` only from a verified checkpoint and only through a declared retry or successor procedure.
 
@@ -404,12 +404,12 @@ A checkpoint is authoritative only for repair progress. Component data remains o
 
 A repair can affect one or more of:
 
-```text
+`text
 system
 services
 governance
 knowledge
-```
+`
 
 A cross-channel repair declares either:
 
@@ -811,7 +811,7 @@ Forward repair validates when:
 
 Applicable checks include:
 
-```bash
+`bash
 python docs/tools/check_artifact_contracts.py
 python docs/tools/check_component_boundaries.py
 python docs/tools/check_release_sets.py
@@ -820,7 +820,7 @@ python docs/tools/check_canonical_ownership.py
 python docs/tools/check_interfile_locks.py
 python docs/tools/check_traceability.py
 python docs/tools/validate_docs.py
-```
+`
 
 ## 11. Non-Normative Examples
 

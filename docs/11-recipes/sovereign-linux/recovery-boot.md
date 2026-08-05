@@ -1,158 +1,157 @@
 <!-- KOA:DOC-META:BEGIN GENERATED
 {
-  "doc_id": "DOC-RECIPE-SLN-REC-001",
-  "document_class": "recipe",
-  "status": "active",
-  "language": "en",
-  "layer": "implementation_recipe",
-  "scope": [
-    "profile:sovereign_linux_node",
-    "operations:recovery_boot"
-  ],
-  "canonical_refs": [
-    "contracts/profiles/sovereign-linux-node.profile.json",
-    "contracts/profiles/high-assurance.profile.json",
-    "contracts/profiles/sovereign-offline.profile.json",
-    "contracts/profiles/appliance-shell.profile.json",
-    "contracts/system.contract.json",
-    "generated/component-catalog.json",
-    "contracts/release-channels.contract.json",
-    "contracts/artifact-classes.contract.json",
-    "contracts/artifact-contracts/sovereignty-bundle.schema.json",
-    "contracts/components/identity-and-trust.component.json",
-    "contracts/components/governance-policy-runtime.component.json",
-    "contracts/components/audit-broker.component.json",
-    "contracts/components/koa-node-agent.component.json",
-    "contracts/components/resource-governor.component.json",
-    "generated/requirements-index.json",
-    "generated/assertion-index.json",
-    "generated/traceability.json",
-    "generated/exception-index.json",
-    "generated/test-catalog.json",
-    "generated/evidence-catalog.json"
-  ],
-  "decision_ids": [
-    "DEC-PROFILE-001",
-    "DEC-SYS-001",
-    "DEC-AUTH-001",
-    "DEC-IDENT-001",
-    "DEC-DATA-001",
-    "DEC-COMP-001",
-    "DEC-GOV-001",
-    "DEC-PRIV-001",
-    "DEC-AI-001",
-    "DEC-LIFE-001",
-    "DEC-HW-001"
-  ],
-  "requirement_ids": [
-    "REQ-OPS-SOVNODE-001",
-    "REQ-OPS-SOVNODE-002",
-    "REQ-OPS-SOVNODE-003",
-    "REQ-OPS-SOVNODE-004",
-    "REQ-OPS-SOVNODE-005",
-    "REQ-OPS-SOVNODE-006",
-    "REQ-OPS-SOVNODE-007",
-    "REQ-OPS-SOVNODE-008",
-    "REQ-OPS-SOVNODE-009",
-    "REQ-OPS-SOVNODE-010",
-    "REQ-OPS-SOVNODE-011",
-    "REQ-OPS-SOVNODE-012",
-    "REQ-OPS-SOVNODE-013",
-    "REQ-OPS-SOVNODE-014",
-    "REQ-OPS-SOVNODE-015",
-    "REQ-OPS-SOVNODE-016",
-    "REQ-OPS-SOVNODE-017",
-    "REQ-OPS-SOVNODE-018",
-    "REQ-OPS-SOVNODE-019",
-    "REQ-OPS-SOVNODE-020",
-    "REQ-OPS-SOVNODE-023",
-    "REQ-OPS-SOVNODE-024",
-    "REQ-OPS-SOVNODE-025",
-    "REQ-OPS-SOVNODE-026",
-    "REQ-OPS-SOVNODE-027",
-    "REQ-OPS-SOVNODE-028",
-    "REQ-OPS-SOVNODE-029",
-    "REQ-OPS-SOVNODE-030",
-    "REQ-OPS-SOVNODE-031",
-    "REQ-OPS-SOVNODE-032",
-    "REQ-OPS-SOVNODE-033",
-    "REQ-OPS-SOVNODE-034",
-    "REQ-OPS-SOVNODE-035",
-    "REQ-OPS-SOVNODE-036",
-    "REQ-OPS-SOVNODE-039",
-    "REQ-OPS-SOVNODE-040",
-    "REQ-OPS-SOVNODE-041",
-    "REQ-OPS-BACKUP-015",
-    "REQ-OPS-BACKUP-017",
-    "REQ-OPS-BACKUP-028",
-    "REQ-OPS-BACKUP-030",
-    "REQ-OPS-BACKUP-031",
-    "REQ-OPS-BACKUP-032",
-    "REQ-OPS-BACKUP-033",
-    "REQ-OPS-BACKUP-034",
-    "REQ-SEC-THREAT-004",
-    "REQ-SEC-THREAT-005",
-    "REQ-SEC-THREAT-009",
-    "REQ-SEC-THREAT-010",
-    "REQ-SEC-THREAT-011",
-    "REQ-SEC-THREAT-012",
-    "REQ-SEC-THREAT-013",
-    "REQ-SEC-THREAT-014",
-    "REQ-SEC-THREAT-015",
-    "REQ-SEC-THREAT-025",
-    "REQ-SEC-THREAT-029",
-    "REQ-SEC-THREAT-030",
-    "REQ-SEC-THREAT-031",
-    "REQ-SEC-THREAT-032",
-    "REQ-SEC-THREAT-033",
-    "REQ-SEC-THREAT-034",
-    "REQ-SEC-THREAT-035",
-    "REQ-SEC-THREAT-041"
-  ],
-  "lock_ids": [
-    "LOCK-PROFILE-001",
-    "LOCK-PROFILE-002",
-    "LOCK-IMPL-001",
-    "LOCK-IMPL-002",
-    "LOCK-AUTH-001",
-    "LOCK-AUTH-002",
-    "LOCK-AUTH-003",
-    "LOCK-AUTH-004",
-    "LOCK-DATA-001",
-    "LOCK-COMP-001",
-    "LOCK-GOV-001",
-    "LOCK-PRIV-001",
-    "LOCK-AI-001",
-    "LOCK-AI-002",
-    "LOCK-LIFE-001",
-    "LOCK-LIFE-002",
-    "LOCK-LIFE-003",
-    "LOCK-LIFE-004"
-  ],
-  "exception_ids": [],
-  "depends_on": [
-    "DOC-ADR-013",
-    "DOC-PROF-011",
-    "DOC-SEC-000",
-    "DOC-SEC-011",
-    "DOC-OPS-008",
-    "DOC-OPS-018",
-    "DOC-CONF-009"
-  ],
-  "tags": [
-    "recipe",
-    "sovereign-linux-node",
-    "recovery-boot",
-    "systemd",
-    "offline",
-    "read-only",
-    "rollback",
-    "restore",
-    "trust-recovery",
-    "removable-media",
-    "break-glass",
-    "non-normative"
-  ]
+ "doc_id": "DOC-RECIPE-SLN-REC-001",
+ "document_class": "recipe",
+ "status": "active",
+ "language": "en",
+ "layer": "implementation_recipe",
+ "scope": [
+ "profile:sovereign_linux_node",
+ "operations:recovery_boot"
+ ],
+ "canonical_refs": [
+ "contracts/profiles/sovereign-linux-node.profile.json",
+ "contracts/profiles/high-assurance.profile.json",
+ "contracts/profiles/sovereign-offline.profile.json",
+ "contracts/profiles/appliance-shell.profile.json",
+ "contracts/system.contract.json",
+ "generated/component-catalog.json",
+ "contracts/release-channels.contract.json",
+ "contracts/artifact-classes.contract.json",
+ "contracts/artifact-contracts/sovereignty-bundle.schema.json",
+ "contracts/components/identity-and-trust.component.json",
+ "contracts/components/governance-policy-runtime.component.json",
+ "contracts/components/audit-broker.component.json",
+ "contracts/components/koa-node-agent.component.json",
+ "contracts/components/resource-governor.component.json",
+ "generated/requirements-index.json",
+ "generated/assertion-index.json",
+ "generated/traceability.json",
+ "generated/exception-index.json",
+ "generated/test-catalog.json",
+ "generated/evidence-catalog.json"
+ ],
+ "decision_ids": [
+ "DEC-PROFILE-001",
+ "DEC-SYS-001",
+ "DEC-AUTH-001",
+ "DEC-IDENT-001",
+ "DEC-DATA-001",
+ "DEC-COMP-001",
+ "DEC-GOV-001",
+ "DEC-PRIV-001",
+ "DEC-AI-001",
+ "DEC-LIFE-001",
+ "DEC-HW-001"
+ ],
+ "requirement_ids": [
+ "REQ-OPS-SOVNODE-001",
+ "REQ-OPS-SOVNODE-002",
+ "REQ-OPS-SOVNODE-003",
+ "REQ-OPS-SOVNODE-004",
+ "REQ-OPS-SOVNODE-005",
+ "REQ-OPS-SOVNODE-006",
+ "REQ-OPS-SOVNODE-007",
+ "REQ-OPS-SOVNODE-008",
+ "REQ-OPS-SOVNODE-009",
+ "REQ-OPS-SOVNODE-010",
+ "REQ-OPS-SOVNODE-011",
+ "REQ-OPS-SOVNODE-012",
+ "REQ-OPS-SOVNODE-013",
+ "REQ-OPS-SOVNODE-014",
+ "REQ-OPS-SOVNODE-015",
+ "REQ-OPS-SOVNODE-016",
+ "REQ-OPS-SOVNODE-017",
+ "REQ-OPS-SOVNODE-018",
+ "REQ-OPS-SOVNODE-019",
+ "REQ-OPS-SOVNODE-020",
+ "REQ-OPS-SOVNODE-023",
+ "REQ-OPS-SOVNODE-024",
+ "REQ-OPS-SOVNODE-025",
+ "REQ-OPS-SOVNODE-026",
+ "REQ-OPS-SOVNODE-027",
+ "REQ-OPS-SOVNODE-028",
+ "REQ-OPS-SOVNODE-029",
+ "REQ-OPS-SOVNODE-030",
+ "REQ-OPS-SOVNODE-031",
+ "REQ-OPS-SOVNODE-032",
+ "REQ-OPS-SOVNODE-033",
+ "REQ-OPS-SOVNODE-034",
+ "REQ-OPS-SOVNODE-035",
+ "REQ-OPS-SOVNODE-036",
+ "REQ-OPS-SOVNODE-039",
+ "REQ-OPS-SOVNODE-040",
+ "REQ-OPS-SOVNODE-041",
+ "REQ-OPS-BACKUP-015",
+ "REQ-OPS-BACKUP-017",
+ "REQ-OPS-BACKUP-028",
+ "REQ-OPS-BACKUP-030",
+ "REQ-OPS-BACKUP-031",
+ "REQ-OPS-BACKUP-032",
+ "REQ-OPS-BACKUP-033",
+ "REQ-OPS-BACKUP-034",
+ "REQ-SEC-THREAT-004",
+ "REQ-SEC-THREAT-005",
+ "REQ-SEC-THREAT-009",
+ "REQ-SEC-THREAT-010",
+ "REQ-SEC-THREAT-011",
+ "REQ-SEC-THREAT-012",
+ "REQ-SEC-THREAT-013",
+ "REQ-SEC-THREAT-014",
+ "REQ-SEC-THREAT-015",
+ "REQ-SEC-THREAT-025",
+ "REQ-SEC-THREAT-029",
+ "REQ-SEC-THREAT-030",
+ "REQ-SEC-THREAT-031",
+ "REQ-SEC-THREAT-032",
+ "REQ-SEC-THREAT-033",
+ "REQ-SEC-THREAT-034",
+ "REQ-SEC-THREAT-035",
+ "REQ-SEC-THREAT-041"
+ ],
+ "lock_ids": [
+ "LOCK-PROFILE-001",
+ "LOCK-PROFILE-002",
+ "LOCK-IMPL-001",
+ "LOCK-IMPL-002",
+ "LOCK-AUTH-001",
+ "LOCK-AUTH-002",
+ "LOCK-AUTH-003",
+ "LOCK-AUTH-004",
+ "LOCK-DATA-001",
+ "LOCK-COMP-001",
+ "LOCK-GOV-001",
+ "LOCK-PRIV-001",
+ "LOCK-AI-001",
+ "LOCK-AI-002",
+ "LOCK-LIFE-001",
+ "LOCK-LIFE-002",
+ "LOCK-LIFE-003",
+ "LOCK-LIFE-004"
+ ],
+ "exception_ids": [],
+ "depends_on": [
+ "DOC-PROF-011",
+ "DOC-SEC-000",
+ "DOC-SEC-011",
+ "DOC-OPS-008",
+ "DOC-OPS-018",
+ "DOC-CONF-009"
+ ],
+ "tags": [
+ "recipe",
+ "sovereign-linux-node",
+ "recovery-boot",
+ "systemd",
+ "offline",
+ "read-only",
+ "rollback",
+ "restore",
+ "trust-recovery",
+ "removable-media",
+ "break-glass",
+ "non-normative"
+ ]
 }
 KOA:DOC-META:END -->
 
@@ -191,7 +190,7 @@ The reference procedure provides:
 
 The target safe sequence is:
 
-```text
+`text
 verified recovery environment
 -> recovery authentication
 -> policy and evidence foundation
@@ -200,7 +199,7 @@ verified recovery environment
 -> bounded repair
 -> clean verification
 -> normal startup or continued quarantine
-```
+`
 
 ## 2. Non-Normative Status
 
@@ -427,15 +426,15 @@ The entry method records:
 
 The reference implementation uses a verified systemd recovery target named:
 
-```text
+`text
 koa-recovery.target
-```
+`
 
 A bootloader entry can request:
 
-```text
+`text
 systemd.unit=koa-recovery.target
-```
+`
 
 An equivalent profile-supported init, boot-slot, immutable-image, or recovery-appliance mechanism can replace systemd without changing the security and recovery contract.
 
@@ -557,7 +556,7 @@ Before any mutating operation:
 
 Run from the verified recovery environment before unlocking writable state.
 
-```bash
+`bash
 set -eu
 
 cat /proc/cmdline
@@ -572,23 +571,23 @@ cat /proc/meminfo
 cat /proc/pressure/cpu
 cat /proc/pressure/memory
 cat /proc/pressure/io
-```
+`
 
 Inspect the effective profile and recovery state when present:
 
-```bash
+`bash
 jq '.' /var/lib/koa/node/effective-profile.json
 jq '.' /var/lib/koa/recovery/recovery-state.json
 jq '.' /var/lib/koa/node/active-artifacts.json
 jq '.' /var/lib/koa/node/backup-readiness.json
-```
+`
 
 Inspect bounded local evidence:
 
-```bash
+`bash
 journalctl --boot --priority=warning..alert --no-pager
 systemctl --failed --no-legend
-```
+`
 
 These commands do not prove recovery authority or successful repair.
 
@@ -614,13 +613,13 @@ Bind recovery to one node, one verified recovery environment, one operator conte
 
 **Verification**
 
-```bash
+`bash
 jq -e '
-  .profile.primary == "sovereign_linux_node"
-  and .recovery_environment.verification == "pass"
-  and .evidence_path == "ready"
+ .profile.primary == "sovereign_linux_node"
+ and .recovery_environment.verification == "pass"
+ and .evidence_path == "ready"
 ' /var/lib/koa/recovery/recovery-state.json
-```
+`
 
 **Failure behavior**
 
@@ -649,10 +648,10 @@ Prevent recovery from expanding network, privilege, tenant, or data exposure.
 
 **Verification**
 
-```bash
+`bash
 ss --tcp --udp --listening --numeric --process
 systemctl --failed --no-legend
-```
+`
 
 Review confirms that every listener and active service belongs to the declared recovery environment.
 
@@ -683,9 +682,9 @@ Prevent diagnosis or repair from destroying the last recoverable state.
 
 **Verification**
 
-```bash
+`bash
 findmnt --real --output TARGET,SOURCE,FSTYPE,OPTIONS
-```
+`
 
 The source mount used for diagnosis includes read-only protection unless the approved operation explicitly changes it.
 
@@ -717,14 +716,14 @@ Determine whether the failure concerns boot, services, governance, knowledge, co
 
 **Verification**
 
-```bash
+`bash
 jq -e '
-  .node_identity.status != null
-  and .authority_release.status != null
-  and .release_set.active_id != null
-  and .backup.status != null
+ .node_identity.status != null
+ and .authority_release.status != null
+ and .release_set.active_id != null
+ and .backup.status != null
 ' /var/lib/koa/recovery/recovery-state.json
-```
+`
 
 **Failure behavior**
 
@@ -754,14 +753,14 @@ Prevent a generic repair action from mixing distinct authority and data effects.
 
 **Verification**
 
-```bash
+`bash
 jq -e '
-  .selected_recovery_class != null
-  and .policy_decision.status == "allow"
-  and .policy_decision.scope_matches == true
-  and .policy_decision.expired == false
+ .selected_recovery_class != null
+ and .policy_decision.status == "allow"
+ and .policy_decision.scope_matches == true
+ and .policy_decision.expired == false
 ' /var/lib/koa/recovery/recovery-plan.json
-```
+`
 
 **Failure behavior**
 
@@ -892,20 +891,20 @@ Prove that the selected repaired state can satisfy the sovereign-node startup co
 
 **Verification**
 
-```bash
+`bash
 jq -e '
-  .boot_integrity == "pass"
-  and .node_identity == "pass"
-  and .local_trust == "pass"
-  and .authority_release == "pass"
-  and .release_set == "pass"
-  and .components == "pass"
-  and .audit == "pass"
-  and .resources == "pass"
-  and .backup != "fail"
-  and .recovery == "pass"
+ .boot_integrity == "pass"
+ and .node_identity == "pass"
+ and .local_trust == "pass"
+ and .authority_release == "pass"
+ and .release_set == "pass"
+ and .components == "pass"
+ and .audit == "pass"
+ and .resources == "pass"
+ and .backup != "fail"
+ and .recovery == "pass"
 ' /var/lib/koa/recovery/acceptance.json
-```
+`
 
 **Failure behavior**
 
@@ -936,15 +935,15 @@ Leave recovery without carrying emergency authority, temporary network paths, or
 
 **Verification**
 
-```bash
+`bash
 jq -e '
-  .recovery_session.closed == true
-  and .emergency_authority.active == false
-  and .remote_support.active == false
-  and .temporary_credentials.active == false
-  and .next_boot_target == "normal"
+ .recovery_session.closed == true
+ and .emergency_authority.active == false
+ and .remote_support.active == false
+ and .temporary_credentials.active == false
+ and .next_boot_target == "normal"
 ' /var/lib/koa/recovery/recovery-state.json
-```
+`
 
 **Failure behavior**
 
@@ -972,16 +971,16 @@ Confirm that recovery produced a valid `ready_local` node rather than only a suc
 
 **Verification**
 
-```bash
+`bash
 jq -e '
-  .node_state == "ready_local"
-  and .health != null
-  and .connectivity != null
-  and .trust_freshness != null
-  and .backup_readiness != null
-  and .recovery_readiness == "pass"
+ .node_state == "ready_local"
+ and .health != null
+ and .connectivity != null
+ and .trust_freshness != null
+ and .backup_readiness != null
+ and .recovery_readiness == "pass"
 ' /var/lib/koa/node/operational-status.json
-```
+`
 
 **Failure behavior**
 
@@ -1021,9 +1020,9 @@ No state rollback occurs solely for an evidence formatting defect; the evidence 
 
 ## 11. Idempotency and Concurrency
 
-```text
+`text
 Idempotent: operation dependent
-```
+`
 
 The recovery session itself can be resumed when its identity, source state, target state, authority, and expiry remain valid.
 
@@ -1168,13 +1167,13 @@ Validation additionally confirms:
 
 ### 12.3 Documentation validation
 
-```bash
+`bash
 python docs/tools/check_interfile_locks.py
 python docs/tools/check_traceability.py
 python docs/tools/check_decision_closure.py
 python docs/tools/check_no_unresolved_state.py
 python docs/tools/validate_docs.py
-```
+`
 
 These command names come from the active documentation toolchain references used throughout the corpus.
 
@@ -1335,9 +1334,9 @@ Protected evidence access is separately authenticated and audited.
 
 ## 17. Offline Behavior
 
-```text
+`text
 fully_offline_capable_when_recovery_artifacts_are_local
-```
+`
 
 A complete local recovery kit can contain:
 
@@ -1405,127 +1404,127 @@ An AI agent executing this recipe:
 
 ### 19.1 Required execution summary template
 
-```json
+`json
 {
-  "recipe_id": "RECIPE-SLN-REC-001",
-  "recipe_version": "1.0.0",
-  "profile_ids": [
-    "sovereign_linux_node"
-  ],
-  "overlay_ids": [],
-  "node_id": null,
-  "recovery_boot_id": null,
-  "entry_method": null,
-  "recovery_class": null,
-  "source_release_set_id": null,
-  "target_release_set_id": null,
-  "authority_release_id": null,
-  "decision_ids": [
-    "DEC-PROFILE-001",
-    "DEC-SYS-001",
-    "DEC-AUTH-001",
-    "DEC-IDENT-001",
-    "DEC-DATA-001",
-    "DEC-COMP-001",
-    "DEC-GOV-001",
-    "DEC-PRIV-001",
-    "DEC-AI-001",
-    "DEC-LIFE-001",
-    "DEC-HW-001"
-  ],
-  "requirement_ids": [
-    "REQ-OPS-SOVNODE-001",
-    "REQ-OPS-SOVNODE-002",
-    "REQ-OPS-SOVNODE-003",
-    "REQ-OPS-SOVNODE-004",
-    "REQ-OPS-SOVNODE-005",
-    "REQ-OPS-SOVNODE-006",
-    "REQ-OPS-SOVNODE-007",
-    "REQ-OPS-SOVNODE-008",
-    "REQ-OPS-SOVNODE-009",
-    "REQ-OPS-SOVNODE-010",
-    "REQ-OPS-SOVNODE-011",
-    "REQ-OPS-SOVNODE-012",
-    "REQ-OPS-SOVNODE-013",
-    "REQ-OPS-SOVNODE-014",
-    "REQ-OPS-SOVNODE-015",
-    "REQ-OPS-SOVNODE-016",
-    "REQ-OPS-SOVNODE-017",
-    "REQ-OPS-SOVNODE-018",
-    "REQ-OPS-SOVNODE-019",
-    "REQ-OPS-SOVNODE-020",
-    "REQ-OPS-SOVNODE-023",
-    "REQ-OPS-SOVNODE-024",
-    "REQ-OPS-SOVNODE-025",
-    "REQ-OPS-SOVNODE-026",
-    "REQ-OPS-SOVNODE-027",
-    "REQ-OPS-SOVNODE-028",
-    "REQ-OPS-SOVNODE-029",
-    "REQ-OPS-SOVNODE-030",
-    "REQ-OPS-SOVNODE-031",
-    "REQ-OPS-SOVNODE-032",
-    "REQ-OPS-SOVNODE-033",
-    "REQ-OPS-SOVNODE-034",
-    "REQ-OPS-SOVNODE-035",
-    "REQ-OPS-SOVNODE-036",
-    "REQ-OPS-SOVNODE-039",
-    "REQ-OPS-SOVNODE-040",
-    "REQ-OPS-SOVNODE-041",
-    "REQ-OPS-BACKUP-015",
-    "REQ-OPS-BACKUP-017",
-    "REQ-OPS-BACKUP-028",
-    "REQ-OPS-BACKUP-030",
-    "REQ-OPS-BACKUP-031",
-    "REQ-OPS-BACKUP-032",
-    "REQ-OPS-BACKUP-033",
-    "REQ-OPS-BACKUP-034",
-    "REQ-SEC-THREAT-004",
-    "REQ-SEC-THREAT-005",
-    "REQ-SEC-THREAT-009",
-    "REQ-SEC-THREAT-010",
-    "REQ-SEC-THREAT-011",
-    "REQ-SEC-THREAT-012",
-    "REQ-SEC-THREAT-013",
-    "REQ-SEC-THREAT-014",
-    "REQ-SEC-THREAT-015",
-    "REQ-SEC-THREAT-025",
-    "REQ-SEC-THREAT-029",
-    "REQ-SEC-THREAT-030",
-    "REQ-SEC-THREAT-031",
-    "REQ-SEC-THREAT-032",
-    "REQ-SEC-THREAT-033",
-    "REQ-SEC-THREAT-034",
-    "REQ-SEC-THREAT-035",
-    "REQ-SEC-THREAT-041"
-  ],
-  "lock_ids": [
-    "LOCK-PROFILE-001",
-    "LOCK-PROFILE-002",
-    "LOCK-IMPL-001",
-    "LOCK-IMPL-002",
-    "LOCK-AUTH-001",
-    "LOCK-AUTH-002",
-    "LOCK-AUTH-003",
-    "LOCK-AUTH-004",
-    "LOCK-DATA-001",
-    "LOCK-COMP-001",
-    "LOCK-GOV-001",
-    "LOCK-PRIV-001",
-    "LOCK-AI-001",
-    "LOCK-AI-002",
-    "LOCK-LIFE-001",
-    "LOCK-LIFE-002",
-    "LOCK-LIFE-003",
-    "LOCK-LIFE-004"
-  ],
-  "exception_ids": [],
-  "commands_executed": [],
-  "tests_run": [],
-  "evidence_ids": [],
-  "rollback_available": null,
-  "result": "not_executed"
+ "recipe_id": "RECIPE-SLN-REC-001",
+ "recipe_version": "1.0.0",
+ "profile_ids": [
+ "sovereign_linux_node"
+ ],
+ "overlay_ids": [],
+ "node_id": null,
+ "recovery_boot_id": null,
+ "entry_method": null,
+ "recovery_class": null,
+ "source_release_set_id": null,
+ "target_release_set_id": null,
+ "authority_release_id": null,
+ "decision_ids": [
+ "DEC-PROFILE-001",
+ "DEC-SYS-001",
+ "DEC-AUTH-001",
+ "DEC-IDENT-001",
+ "DEC-DATA-001",
+ "DEC-COMP-001",
+ "DEC-GOV-001",
+ "DEC-PRIV-001",
+ "DEC-AI-001",
+ "DEC-LIFE-001",
+ "DEC-HW-001"
+ ],
+ "requirement_ids": [
+ "REQ-OPS-SOVNODE-001",
+ "REQ-OPS-SOVNODE-002",
+ "REQ-OPS-SOVNODE-003",
+ "REQ-OPS-SOVNODE-004",
+ "REQ-OPS-SOVNODE-005",
+ "REQ-OPS-SOVNODE-006",
+ "REQ-OPS-SOVNODE-007",
+ "REQ-OPS-SOVNODE-008",
+ "REQ-OPS-SOVNODE-009",
+ "REQ-OPS-SOVNODE-010",
+ "REQ-OPS-SOVNODE-011",
+ "REQ-OPS-SOVNODE-012",
+ "REQ-OPS-SOVNODE-013",
+ "REQ-OPS-SOVNODE-014",
+ "REQ-OPS-SOVNODE-015",
+ "REQ-OPS-SOVNODE-016",
+ "REQ-OPS-SOVNODE-017",
+ "REQ-OPS-SOVNODE-018",
+ "REQ-OPS-SOVNODE-019",
+ "REQ-OPS-SOVNODE-020",
+ "REQ-OPS-SOVNODE-023",
+ "REQ-OPS-SOVNODE-024",
+ "REQ-OPS-SOVNODE-025",
+ "REQ-OPS-SOVNODE-026",
+ "REQ-OPS-SOVNODE-027",
+ "REQ-OPS-SOVNODE-028",
+ "REQ-OPS-SOVNODE-029",
+ "REQ-OPS-SOVNODE-030",
+ "REQ-OPS-SOVNODE-031",
+ "REQ-OPS-SOVNODE-032",
+ "REQ-OPS-SOVNODE-033",
+ "REQ-OPS-SOVNODE-034",
+ "REQ-OPS-SOVNODE-035",
+ "REQ-OPS-SOVNODE-036",
+ "REQ-OPS-SOVNODE-039",
+ "REQ-OPS-SOVNODE-040",
+ "REQ-OPS-SOVNODE-041",
+ "REQ-OPS-BACKUP-015",
+ "REQ-OPS-BACKUP-017",
+ "REQ-OPS-BACKUP-028",
+ "REQ-OPS-BACKUP-030",
+ "REQ-OPS-BACKUP-031",
+ "REQ-OPS-BACKUP-032",
+ "REQ-OPS-BACKUP-033",
+ "REQ-OPS-BACKUP-034",
+ "REQ-SEC-THREAT-004",
+ "REQ-SEC-THREAT-005",
+ "REQ-SEC-THREAT-009",
+ "REQ-SEC-THREAT-010",
+ "REQ-SEC-THREAT-011",
+ "REQ-SEC-THREAT-012",
+ "REQ-SEC-THREAT-013",
+ "REQ-SEC-THREAT-014",
+ "REQ-SEC-THREAT-015",
+ "REQ-SEC-THREAT-025",
+ "REQ-SEC-THREAT-029",
+ "REQ-SEC-THREAT-030",
+ "REQ-SEC-THREAT-031",
+ "REQ-SEC-THREAT-032",
+ "REQ-SEC-THREAT-033",
+ "REQ-SEC-THREAT-034",
+ "REQ-SEC-THREAT-035",
+ "REQ-SEC-THREAT-041"
+ ],
+ "lock_ids": [
+ "LOCK-PROFILE-001",
+ "LOCK-PROFILE-002",
+ "LOCK-IMPL-001",
+ "LOCK-IMPL-002",
+ "LOCK-AUTH-001",
+ "LOCK-AUTH-002",
+ "LOCK-AUTH-003",
+ "LOCK-AUTH-004",
+ "LOCK-DATA-001",
+ "LOCK-COMP-001",
+ "LOCK-GOV-001",
+ "LOCK-PRIV-001",
+ "LOCK-AI-001",
+ "LOCK-AI-002",
+ "LOCK-LIFE-001",
+ "LOCK-LIFE-002",
+ "LOCK-LIFE-003",
+ "LOCK-LIFE-004"
+ ],
+ "exception_ids": [],
+ "commands_executed": [],
+ "tests_run": [],
+ "evidence_ids": [],
+ "rollback_available": null,
+ "result": "not_executed"
 }
-```
+`
 
 A runtime recovery record replaces null and empty values with executed facts.
 
@@ -1537,9 +1536,9 @@ The template's `not_executed` result is not conformance evidence.
 
 **Observed signal**
 
-```text
+`text
 the boot manager returns to the normal target, emergency shell, or firmware
-```
+`
 
 **Likely bounded causes**
 
@@ -1551,12 +1550,12 @@ the boot manager returns to the normal target, emergency shell, or firmware
 
 **Read-only diagnostics**
 
-```bash
+`bash
 cat /proc/cmdline
 systemctl list-dependencies --all koa-recovery.target
 systemctl --failed --no-legend
 journalctl --boot --priority=warning..alert --no-pager
-```
+`
 
 **Corrective action**
 
@@ -1572,9 +1571,9 @@ Escalate before changing boot trust, firmware, or encrypted-volume metadata.
 
 **Observed signal**
 
-```text
+`text
 encrypted volumes remain locked or source filesystems cannot be mounted safely
-```
+`
 
 **Likely bounded causes**
 
@@ -1586,10 +1585,10 @@ encrypted volumes remain locked or source filesystems cannot be mounted safely
 
 **Read-only diagnostics**
 
-```bash
+`bash
 lsblk --fs --output NAME,PATH,TYPE,FSTYPE,FSVER,LABEL,UUID,MOUNTPOINTS
 findmnt --real --output TARGET,SOURCE,FSTYPE,OPTIONS
-```
+`
 
 **Corrective action**
 
@@ -1605,9 +1604,9 @@ Escalate before any metadata rewrite, key substitution, or destructive filesyste
 
 **Observed signal**
 
-```text
+`text
 artifact verification passes cryptographically but compatibility, revocation, downgrade, or policy validation fails
-```
+`
 
 **Likely bounded causes**
 
@@ -1631,9 +1630,9 @@ Escalate when the only available state requires an emergency downgrade or trust 
 
 **Observed signal**
 
-```text
+`text
 files are restored, but identity, governance, component, artifact, workflow, or readiness checks fail
-```
+`
 
 **Likely bounded causes**
 
@@ -1658,9 +1657,9 @@ Escalate when the component owner contract cannot produce or restore a complete 
 
 **Observed signal**
 
-```text
+`text
 remote support, emergency credential, recovery network path, or recovery session has not expired
-```
+`
 
 **Corrective action**
 
@@ -1712,13 +1711,13 @@ changes.
 
 Impact analysis assigns one of:
 
-```text
+`text
 updated
 reviewed_no_change
 regenerated
 deprecated
 blocked
-```
+`
 
 The recipe is deprecated when the implementation remains usable but is no longer recommended.
 

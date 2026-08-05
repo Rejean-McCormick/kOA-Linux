@@ -154,8 +154,8 @@ KOA:DOC-META:END -->
 
 # Storage Boundaries
 
-> **Document status:** Normative security architecture.  
-> **Primary invariant:** Physical co-location does not create shared authority.  
+> **Document status:** Normative security architecture.
+> **Primary invariant:** Physical co-location does not create shared authority.
 > **Authority rule:** Every authoritative data set has one owner, one declared write boundary, and one owner-approved lifecycle.
 
 ## 1. Purpose
@@ -215,7 +215,7 @@ This document does not own:
 
 The storage architecture recognizes these classes:
 
-```text
+`text
 authoritative component storage
 canonical registry storage
 artifact storage
@@ -226,7 +226,7 @@ backup and archive storage
 workspace storage
 temporary and staging storage
 external managed storage
-```
+`
 
 Each stored object belongs to one declared class.
 
@@ -250,7 +250,7 @@ Each stored object belongs to one declared class.
 
 The applicable global rules include:
 
-```text
+`text
 one authoritative owner per data set
 no direct cross-component authoritative writes
 declared interfaces preserve provenance
@@ -258,7 +258,7 @@ backup, restore, portability, and credible exit
 storage failure blocks unsafe writes
 cache and replica unavailability never transfers authority
 profile-specific physical separation remains profile-scoped
-```
+`
 
 ### 3.3 Relationship to data at rest
 
@@ -394,7 +394,7 @@ Artifact stores preserve immutable identity and integrity.
 
 A stored artifact has distinct states such as:
 
-```text
+`text
 candidate
 admitted
 staged
@@ -402,7 +402,7 @@ active
 rejected
 revoked
 archived
-```
+`
 
 Storage presence does not change lifecycle state.
 
@@ -593,7 +593,7 @@ For a shared database, object store, filesystem, queue, cache, or search service
 
 An authoritative write follows:
 
-```text
+`text
 resolve owner and target
 → authenticate writer
 → evaluate applicable policy
@@ -601,7 +601,7 @@ resolve owner and target
 → commit at owner transaction boundary
 → verify postcondition
 → emit required event or receipt
-```
+`
 
 A failed check leaves the previous authoritative state intact or invokes the owner's declared idempotent, compensating, or forward-repair procedure.
 
@@ -846,14 +846,14 @@ Storage boundaries validate when:
 
 Applicable checks include:
 
-```bash
+`bash
 python docs/tools/check_component_boundaries.py
 python docs/tools/check_profile_composition.py
 python docs/tools/check_canonical_ownership.py
 python docs/tools/check_interfile_locks.py
 python docs/tools/check_traceability.py
 python docs/tools/validate_docs.py
-```
+`
 
 ## 11. Non-Normative Examples
 

@@ -249,24 +249,24 @@ Optional fields can record:
 
 The machine identifier uses the pattern:
 
-```text
+`text
 ^[a-z0-9]+(?:-[a-z0-9]+)*-[a-z0-9]{4,12}$
-```
+`
 
 The intended derivation is:
 
-```text
+`text
 component-or-workbench + purpose-slug + unique-suffix
-```
+`
 
 Examples:
 
-```text
+`text
 konnaxion-main-a31f
 konnaxion-feature-voting-92cd
 orgo-migration-b114
 uckk-preview-fix-71ac2
-```
+`
 
 The suffix provides local collision resistance. It is not a content hash and does not claim global uniqueness.
 
@@ -310,7 +310,7 @@ Every mutable resource derives a namespace from `workspace_id` or stores an expl
 
 Examples include:
 
-```text
+`text
 service name: koa-<workspace_id>-<service>
 network name: koa-<workspace_id>
 volume name: koa-<workspace_id>-<purpose>
@@ -318,7 +318,7 @@ database: koa_<workspace_id_normalized>_<component>
 socket directory: <profile-runtime-root>/<workspace_id>/
 secret scope: workspace/<workspace_id>/
 log scope: <profile-state-root>/<workspace_id>/logs/
-```
+`
 
 A profile can use another transformation when it is deterministic, reversible to the workspace record, collision-safe on the target platform, and validated.
 
@@ -383,24 +383,24 @@ Resource Governor or a profile-approved equivalent enforces these limits without
 
 The workspace identity lifecycle is:
 
-```text
+`text
 allocated
-  -> initializing
-  -> active
-  -> suspended
-  -> recovering
-  -> active
-  -> retiring
-  -> retired
-```
+ -> initializing
+ -> active
+ -> suspended
+ -> recovering
+ -> active
+ -> retiring
+ -> retired
+`
 
 Failure states can include:
 
-```text
+`text
 conflicted
 orphaned
 cleanup_incomplete
-```
+`
 
 A retired identity remains historical. Reactivating the same source in a new independent workspace creates a new identifier.
 

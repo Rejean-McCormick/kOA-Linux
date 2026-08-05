@@ -18,7 +18,9 @@
     "generated/profile-catalog.json",
     "contracts/artifact-classes.contract.json",
     "contracts/release-channels.contract.json",
-    "contracts/integration-types.contract.json"
+    "contracts/integration-types.contract.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json"
   ],
   "decision_ids": [
     "DEC-DOC-001",
@@ -66,7 +68,7 @@ KOA:DOC-META:END -->
 
 # Glossary
 
-> **Document status:** Explanatory and non-normative.  
+> **Document status:** Explanatory and non-normative.
 > **Canonical authority:** `contracts/terminology.contract.json` owns canonical names, identifiers, definitions, aliases, deprecations, and controlled vocabularies. This document is a readable projection of that registry.
 
 ## 1. Purpose
@@ -117,14 +119,14 @@ Definitions of runtime behavior, profile membership, component responsibility, r
 
 Related governance documents include:
 
-```text
+`text
 00-governance/02-documentation-contract.md
 00-governance/03-normative-language.md
 00-governance/05-decision-closure-and-prohibited-ambiguity.md
 00-governance/09-canonical-ownership.md
 00-governance/10-interfile-alignment-locks.md
 00-governance/16-language-terminology-and-style.md
-```
+`
 
 ## 4. Context
 
@@ -222,7 +224,8 @@ renderer=glossary-by-category-v1
 | **Resource Governor** | `resource_governor` | The deterministic authority for CPU, memory, I/O, concurrency, queues, scheduling, and process limits. | `global` | `generated/component-catalog.json#/components/resource_governor` |
 | **SemantiK Architect Runtime** | `semantik_architect_runtime` | The runtime that executes compiled language artifacts and does not perform language construction. | `global` | `generated/component-catalog.json#/components/semantik_architect_runtime` |
 | **SenTient** | `sentient` | An optional isolated research and enrichment workbench whose outputs remain candidate inputs until explicitly reviewed and imported. | `global` | `generated/component-catalog.json#/components/sentient` |
-| **UCKK Publication Bridge** | `uckk_publication_bridge` | The external integration that packages and transports explicitly authorized kOA Mediatheque records to an external UCKK Moodle destination. | `global` | `generated/integration-catalog.json#/integrations/uckk_publication` |
+| **UCKK Publication Bridge** | `uckk_publication_bridge` | The outbound integration that packages and transports explicitly authorized kOA Mediatheque representations to the online UCKK Mediatheque after Publication Gateway authorization. | `global` | `generated/integration-catalog.json#/integrations/uckk_publication` |
+| **UCKK Import Bridge** | `uckk_import_bridge` | The inbound integration that retrieves selected UCKK learning packages, quarantines and validates them, and submits them for explicit local acceptance. | `global` | `generated/integration-catalog.json#/integrations/uckk_import` |
 | **kOA Mediatheque** | `koa_mediatheque` | The internal authoritative component for deterministic local media ingestion, storage, versions, metadata, rights, provenance, transformation, export, backup, and restore. | `global` | `generated/component-catalog.json#/components/koa_mediatheque` |
 
 ### Development
@@ -350,7 +353,9 @@ renderer=terminology-distinction-table-v1
 | Rule | Left term | Right term | Required distinction |
 | --- | --- | --- | --- |
 | `TERM-DIST-001` | **Resource Governor** | **Governance Policy Runtime** | Resource control is separate from authorization, disclosure, consent, and governed privilege. |
-| `TERM-DIST-002` | **Publication Gateway** | **UCKK Publication Bridge** | Publication Gateway authorizes disclosure; the bridge performs UCKK-specific packaging and transport after authorization. |
+| `TERM-DIST-002` | **Publication Gateway** | **UCKK Publication Bridge** | Publication Gateway authorizes disclosure; the bridge performs UCKK-specific outbound packaging and transport after authorization. |
+| `TERM-DIST-002A` | **UCKK Publication Bridge** | **UCKK Import Bridge** | Outbound publication and inbound retrieval/acceptance are separate directional operations, not one synchronization service. |
+| `TERM-DIST-002B` | **shared Mediatheque frame** | **shared authority** | A compatible interchange frame preserves mappings and rights semantics without merging databases, identities, access control, lifecycle, or authority. |
 | `TERM-DIST-003` | **Ariane Runtime** | **approved Ariane voice adapter** | Local deterministic navigation is separate from the optional external voice capability. |
 | `TERM-DIST-004` | **kOA Mediatheque** | **UCKK Publication Bridge** | The local Mediatheque owns local media; the bridge owns only UCKK-specific packaging and transport state. |
 | `TERM-DIST-005` | **Kristal Runtime** | **GF Wordbench** | Runtime consumption is separate from language construction. |
@@ -469,7 +474,6 @@ renderer=identifier-family-table-v1
 | `decision` | `^DEC-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$` | `DEC-DOC-003` |
 | `requirement` | `^REQ-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$` | `REQ-DOC-LANG-001` |
 | `lock` | `^LOCK-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$` | `LOCK-DOC-019` |
-| `adr` | `^ADR-[0-9]{3}$` | `ADR-025` |
 | `test` | `^TEST-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$` | `TEST-DOC-LANG-001` |
 | `evidence` | `^EVID-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$` | `EVID-DOC-LANG-001` |
 | `exception` | `^EXC-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$` | `EXC-DOC-001` |
@@ -587,19 +591,19 @@ The glossary contains no secret, credential, user-content, or tenant-specific va
 
 The terminology registry defines these validation outcomes:
 
-```text
-unknown term                 → blocked
-alias collision              → fail
+`text
+unknown term → blocked
+alias collision → fail
 deprecated term in active prose → fail
-forbidden alias              → fail
-```
+forbidden alias → fail
+`
 
 Applicable validation includes:
 
-```bash
+`bash
 python docs/tools/check_language.py
 python docs/tools/validate_docs.py
-```
+`
 
 The document is valid when:
 
@@ -622,49 +626,52 @@ The document is valid when:
 
 Correct:
 
-```text
+`text
 Resource Governor limits CPU and concurrency.
 Governance Policy Runtime evaluates a governed authorization request.
-```
+`
 
 Incorrect:
 
-```text
+`text
 The governance runtime handles both resource limits and authorization.
-```
+`
 
 The incorrect wording collapses two separate authorities.
 
-### 16.2 UCKK publication bridge wording
+### 16.2 UCKK directional-interchange wording
 
 Correct:
 
-```text
-UCKK Publication Bridge packages and transports explicitly authorized media to an external UCKK Moodle destination.
-Publication Gateway releases approved information across a domain boundary.
-```
+`text
+Publication Gateway authorizes outbound disclosure.
+UCKK Publication Bridge packages and transports the approved representation to the online UCKK Mediatheque.
+UCKK Import Bridge retrieves a selected learning package into quarantine and submits it for explicit local acceptance.
+The kOA and UCKK Mediatheques implement a shared frame but remain separate authorities.
+`
 
 Incorrect:
 
-```text
-The UCKK publication bridge publishes data externally.
-```
+`text
+The UCKK bridge synchronizes both Mediatheques.
+The shared frame means both sides use the same database and record identity.
+`
 
-The incorrect wording is ambiguous and assigns publication responsibility to the wrong gateway.
+The incorrect wording collapses two directional operations and falsely merges authority, storage, identity, access control, and lifecycle.
 
 ### 16.3 Historical product wording
 
 Correct current wording:
 
-```text
+`text
 The kOA Operating Environment includes a sovereign Linux node profile.
-```
+`
 
 Classified historical wording:
 
-```text
+`text
 The archived source used the name "kOA Linux."
-```
+`
 
 The historical name remains evidence only.
 

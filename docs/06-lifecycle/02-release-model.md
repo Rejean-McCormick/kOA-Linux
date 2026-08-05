@@ -563,9 +563,9 @@ This document is conformant when:
 
 The validation entry point is:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 ## 11. Non-Normative Examples
 

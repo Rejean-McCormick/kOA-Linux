@@ -1,89 +1,88 @@
 <!-- KOA:DOC-META:BEGIN GENERATED
 {
-  "doc_id": "DOC-RECIPE-USER-ZRAM-001",
-  "document_class": "recipe",
-  "status": "active",
-  "language": "en",
-  "layer": "recipe",
-  "scope": [
-    "user_lightweight"
-  ],
-  "canonical_refs": [
-    "generated/decision-index.json",
-    "generated/profile-catalog.json",
-    "contracts/profiles/user-lightweight.profile.json",
-    "contracts/components/resource-governor.component.json",
-    "contracts/artifact-contracts/resource-envelope.schema.json",
-    "contracts/artifact-contracts/decision-receipt.schema.json",
-    "generated/requirements-index.json",
-    "generated/assertion-index.json",
-    "generated/traceability.json",
-    "generated/test-catalog.json",
-    "generated/evidence-catalog.json"
-  ],
-  "decision_ids": [
-    "DEC-HW-001",
-    "DEC-PROFILE-001",
-    "DEC-GOV-001"
-  ],
-  "requirement_ids": [
-    "REQ-CONF-USER-004",
-    "REQ-CONF-USER-005",
-    "REQ-CONF-USER-006",
-    "REQ-CONF-USER-007",
-    "REQ-CONF-USER-009",
-    "REQ-CONF-USER-027",
-    "REQ-CONF-USER-029",
-    "REQ-SYS-RG-001",
-    "REQ-SYS-RG-002",
-    "REQ-SYS-RG-005",
-    "REQ-SYS-RG-012",
-    "REQ-SYS-RG-013",
-    "REQ-SYS-RG-015",
-    "REQ-SYS-RG-021",
-    "REQ-OPS-OBS-024",
-    "REQ-OPS-OBS-025"
-  ],
-  "lock_ids": [
-    "LOCK-PROFILE-001",
-    "LOCK-PROFILE-002",
-    "LOCK-GOV-001",
-    "LOCK-OPS-001",
-    "LOCK-OPS-002",
-    "LOCK-IMPL-001",
-    "LOCK-DOC-002"
-  ],
-  "exception_ids": [],
-  "depends_on": [
-    "DOC-SYS-014",
-    "DOC-PROFILE-001",
-    "DOC-PROFILE-004",
-    "DOC-OPS-001",
-    "DOC-OPS-012",
-    "DOC-CONF-002",
-    "DOC-CONF-007",
-    "DOC-CONF-018",
-    "DOC-ADR-017"
-  ],
-  "tags": [
-    "recipe",
-    "user-lightweight",
-    "zram",
-    "cgroup-v2",
-    "systemd",
-    "resource-limits",
-    "memory-pressure",
-    "heavy-job",
-    "safe-degradation",
-    "resource-governor"
-  ],
-  "normative": false
+ "doc_id": "DOC-RECIPE-USER-ZRAM-001",
+ "document_class": "recipe",
+ "status": "active",
+ "language": "en",
+ "layer": "recipe",
+ "scope": [
+ "user_lightweight"
+ ],
+ "canonical_refs": [
+ "generated/decision-index.json",
+ "generated/profile-catalog.json",
+ "contracts/profiles/user-lightweight.profile.json",
+ "contracts/components/resource-governor.component.json",
+ "contracts/artifact-contracts/resource-envelope.schema.json",
+ "contracts/artifact-contracts/decision-receipt.schema.json",
+ "generated/requirements-index.json",
+ "generated/assertion-index.json",
+ "generated/traceability.json",
+ "generated/test-catalog.json",
+ "generated/evidence-catalog.json"
+ ],
+ "decision_ids": [
+ "DEC-HW-001",
+ "DEC-PROFILE-001",
+ "DEC-GOV-001"
+ ],
+ "requirement_ids": [
+ "REQ-CONF-USER-004",
+ "REQ-CONF-USER-005",
+ "REQ-CONF-USER-006",
+ "REQ-CONF-USER-007",
+ "REQ-CONF-USER-009",
+ "REQ-CONF-USER-027",
+ "REQ-CONF-USER-029",
+ "REQ-SYS-RG-001",
+ "REQ-SYS-RG-002",
+ "REQ-SYS-RG-005",
+ "REQ-SYS-RG-012",
+ "REQ-SYS-RG-013",
+ "REQ-SYS-RG-015",
+ "REQ-SYS-RG-021",
+ "REQ-OPS-OBS-024",
+ "REQ-OPS-OBS-025"
+ ],
+ "lock_ids": [
+ "LOCK-PROFILE-001",
+ "LOCK-PROFILE-002",
+ "LOCK-GOV-001",
+ "LOCK-OPS-001",
+ "LOCK-OPS-002",
+ "LOCK-IMPL-001",
+ "LOCK-DOC-002"
+ ],
+ "exception_ids": [],
+ "depends_on": [
+ "DOC-SYS-014",
+ "DOC-PROFILE-001",
+ "DOC-PROFILE-004",
+ "DOC-OPS-001",
+ "DOC-OPS-012",
+ "DOC-CONF-002",
+ "DOC-CONF-007",
+ "DOC-CONF-018"
+ ],
+ "tags": [
+ "recipe",
+ "user-lightweight",
+ "zram",
+ "cgroup-v2",
+ "systemd",
+ "resource-limits",
+ "memory-pressure",
+ "heavy-job",
+ "safe-degradation",
+ "resource-governor"
+ ],
+ "normative": false
 }
 KOA:DOC-META:END -->
 
 # zram and cgroup Limits for User Lightweight
 
-> **Recipe status:** Non-normative implementation guidance.  
+> **Recipe status:** Non-normative implementation guidance.
 > The active profile, Resource Governor, component, operations, and conformance contracts take precedence.
 
 ## 1. Purpose
@@ -157,7 +156,7 @@ The heavy-job maximum remains one because the active user-lightweight decision o
 
 Run the checks before making changes:
 
-```bash
+`bash
 set -euo pipefail
 
 printf '%s\n' "systemd version:"
@@ -182,40 +181,40 @@ printf '%s\n' "current pressure:"
 cat /proc/pressure/cpu
 cat /proc/pressure/memory
 cat /proc/pressure/io
-```
+`
 
 Expected cgroup filesystem:
 
-```text
+`text
 cgroup2fs
-```
+`
 
 Required controllers for this recipe:
 
-```text
+`text
 cpu io memory pids
-```
+`
 
 Record the current state:
 
-```bash
+`bash
 sudo install -d -m 0750 /var/lib/koa/resource-baseline
 
 sudo sh -c '
-  {
-    date --iso-8601=seconds
-    systemd --version | head -1
-    printf "\nMEMINFO\n"
-    cat /proc/meminfo
-    printf "\nSWAP\n"
-    swapon --show --bytes
-    printf "\nCGROUP CONTROLLERS\n"
-    cat /sys/fs/cgroup/cgroup.controllers
-    printf "\nZRAM\n"
-    zramctl
-  } > /var/lib/koa/resource-baseline/before-zram-cgroups.txt
+ {
+ date --iso-8601=seconds
+ systemd --version | head -1
+ printf "\nMEMINFO\n"
+ cat /proc/meminfo
+ printf "\nSWAP\n"
+ swapon --show --bytes
+ printf "\nCGROUP CONTROLLERS\n"
+ cat /sys/fs/cgroup/cgroup.controllers
+ printf "\nZRAM\n"
+ zramctl
+ } > /var/lib/koa/resource-baseline/before-zram-cgroups.txt
 '
-```
+`
 
 Stop when the unified hierarchy or required controllers are unavailable. Use another profile-approved mechanism rather than partially applying the recipe.
 
@@ -227,21 +226,21 @@ Install `systemd-zram-generator` using the host's maintained package source. Pac
 
 Verify that the generator exists:
 
-```bash
+`bash
 command -v zram-generator >/dev/null 2>&1 ||
-  test -x /usr/lib/systemd/system-generators/zram-generator ||
-  test -x /usr/lib/systemd/system-generators/systemd-zram-generator
-```
+ test -x /usr/lib/systemd/system-generators/zram-generator ||
+ test -x /usr/lib/systemd/system-generators/systemd-zram-generator
+`
 
 ### 5.2 Write the generator configuration
 
 Create:
 
-```text
+`text
 /etc/systemd/zram-generator.conf
-```
+`
 
-```bash
+`bash
 sudo install -d -m 0755 /etc/systemd
 
 sudo tee /etc/systemd/zram-generator.conf >/dev/null <<'EOF'
@@ -251,7 +250,7 @@ compression-algorithm = zstd
 swap-priority = 100
 fs-type = swap
 EOF
-```
+`
 
 This configures a logical zram device equal to half of physical memory. Actual compressed memory consumption remains workload dependent.
 
@@ -261,17 +260,17 @@ The safest activation path is a reboot after confirming the configuration and re
 
 For a controlled maintenance window:
 
-```bash
+`bash
 sudo systemctl daemon-reload
 sudo reboot
-```
+`
 
 After restart:
 
-```bash
+`bash
 swapon --show --bytes --output=NAME,TYPE,SIZE,USED,PRIO
 zramctl
-```
+`
 
 Confirm:
 
@@ -289,7 +288,7 @@ Do not disable an existing encrypted disk-swap recovery arrangement without revi
 
 Create a small generator for the systemd drop-ins:
 
-```bash
+`bash
 sudo install -d -m 0755 /usr/local/libexec
 
 sudo tee /usr/local/libexec/koa-generate-user-lightweight-limits >/dev/null <<'PY'
@@ -297,58 +296,58 @@ sudo tee /usr/local/libexec/koa-generate-user-lightweight-limits >/dev/null <<'P
 from pathlib import Path
 
 mem_kib = None
-for line in Path("/proc/meminfo").read_text().splitlines():
-    if line.startswith("MemTotal:"):
-        mem_kib = int(line.split()[1])
-        break
+for line in Path("/proc/meminfo").read_text.splitlines:
+ if line.startswith("MemTotal:"):
+ mem_kib = int(line.split[1])
+ break
 
 if mem_kib is None:
-    raise SystemExit("MemTotal not found")
+ raise SystemExit("MemTotal not found")
 
 total_bytes = mem_kib * 1024
 
 def gib_fraction(numerator: int, denominator: int) -> str:
-    value = total_bytes * numerator // denominator
-    mebibytes = max(256, value // (1024 * 1024))
-    return f"{mebibytes}M"
+ value = total_bytes * numerator // denominator
+ mebibytes = max(256, value // (1024 * 1024))
+ return f"{mebibytes}M"
 
 values = {
-    "BACKGROUND_HIGH": gib_fraction(35, 100),
-    "BACKGROUND_MAX": gib_fraction(50, 100),
-    "HEAVY_HIGH": gib_fraction(25, 100),
-    "HEAVY_MAX": gib_fraction(40, 100),
+ "BACKGROUND_HIGH": gib_fraction(35, 100),
+ "BACKGROUND_MAX": gib_fraction(50, 100),
+ "HEAVY_HIGH": gib_fraction(25, 100),
+ "HEAVY_MAX": gib_fraction(40, 100),
 }
 
-for key, value in values.items():
-    print(f"{key}={value}")
+for key, value in values.items:
+ print(f"{key}={value}")
 PY
 
 sudo chmod 0755 /usr/local/libexec/koa-generate-user-lightweight-limits
-```
+`
 
 Generate the values:
 
-```bash
+`bash
 eval "$(
-  sudo /usr/local/libexec/koa-generate-user-lightweight-limits
+ sudo /usr/local/libexec/koa-generate-user-lightweight-limits
 )"
 
 printf '%s\n' \
-  "background_high=$BACKGROUND_HIGH" \
-  "background_max=$BACKGROUND_MAX" \
-  "heavy_high=$HEAVY_HIGH" \
-  "heavy_max=$HEAVY_MAX"
-```
+ "background_high=$BACKGROUND_HIGH" \
+ "background_max=$BACKGROUND_MAX" \
+ "heavy_high=$HEAVY_HIGH" \
+ "heavy_max=$HEAVY_MAX"
+`
 
 ### 6.2 Configure the background slice
 
-```bash
+`bash
 sudo install -d -m 0755 \
-  /etc/systemd/system/koa-background.slice.d
+ /etc/systemd/system/koa-background.slice.d
 
 sudo tee \
-  /etc/systemd/system/koa-background.slice.d/limits.conf \
-  >/dev/null <<EOF
+ /etc/systemd/system/koa-background.slice.d/limits.conf \
+ >/dev/null <<EOF
 [Slice]
 CPUWeight=100
 IOWeight=100
@@ -356,17 +355,17 @@ MemoryHigh=$BACKGROUND_HIGH
 MemoryMax=$BACKGROUND_MAX
 TasksMax=2048
 EOF
-```
+`
 
 ### 6.3 Configure the heavy-job slice
 
-```bash
+`bash
 sudo install -d -m 0755 \
-  /etc/systemd/system/koa-heavy.slice.d
+ /etc/systemd/system/koa-heavy.slice.d
 
 sudo tee \
-  /etc/systemd/system/koa-heavy.slice.d/limits.conf \
-  >/dev/null <<EOF
+ /etc/systemd/system/koa-heavy.slice.d/limits.conf \
+ >/dev/null <<EOF
 [Slice]
 CPUWeight=50
 IOWeight=50
@@ -374,30 +373,30 @@ MemoryHigh=$HEAVY_HIGH
 MemoryMax=$HEAVY_MAX
 TasksMax=512
 EOF
-```
+`
 
 ### 6.4 Activate the slice definitions
 
-```bash
+`bash
 sudo systemctl daemon-reload
 
 sudo systemctl start koa-background.slice
 sudo systemctl start koa-heavy.slice
 
 systemctl show koa-background.slice \
-  -p CPUWeight \
-  -p IOWeight \
-  -p MemoryHigh \
-  -p MemoryMax \
-  -p TasksMax
+ -p CPUWeight \
+ -p IOWeight \
+ -p MemoryHigh \
+ -p MemoryMax \
+ -p TasksMax
 
 systemctl show koa-heavy.slice \
-  -p CPUWeight \
-  -p IOWeight \
-  -p MemoryHigh \
-  -p MemoryMax \
-  -p TasksMax
-```
+ -p CPUWeight \
+ -p IOWeight \
+ -p MemoryHigh \
+ -p MemoryMax \
+ -p TasksMax
+`
 
 The slices are enforcement mechanisms, not independent Resource Governor authority. The canonical profile and component budgets still determine which work belongs in each class.
 
@@ -407,33 +406,33 @@ The slices are enforcement mechanisms, not independent Resource Governor authori
 
 For a system service named `koa-preview-worker.service`:
 
-```bash
+`bash
 sudo systemctl edit koa-preview-worker.service
-```
+`
 
 Add:
 
-```ini
+`ini
 [Service]
 Slice=koa-background.slice
 CPUAccounting=yes
 MemoryAccounting=yes
 IOAccounting=yes
 TasksAccounting=yes
-```
+`
 
 Then apply:
 
-```bash
+`bash
 sudo systemctl daemon-reload
 sudo systemctl restart koa-preview-worker.service
 
 systemctl show koa-preview-worker.service \
-  -p Slice \
-  -p ControlGroup \
-  -p MemoryCurrent \
-  -p TasksCurrent
-```
+ -p Slice \
+ -p ControlGroup \
+ -p MemoryCurrent \
+ -p TasksCurrent
+`
 
 Repeat only for services whose active component contract classifies them as background work.
 
@@ -441,7 +440,7 @@ Repeat only for services whose active component contract classifies them as back
 
 The fixed transient unit name causes systemd to reject a second simultaneous start.
 
-```bash
+`bash
 sudo install -d -m 0755 /usr/local/sbin
 
 sudo tee /usr/local/sbin/koa-heavy-run >/dev/null <<'SH'
@@ -449,44 +448,44 @@ sudo tee /usr/local/sbin/koa-heavy-run >/dev/null <<'SH'
 set -euo pipefail
 
 if [ "$#" -eq 0 ]; then
-  printf 'usage: %s command [argument ...]\n' "$0" >&2
-  exit 64
+ printf 'usage: %s command [argument ...]\n' "$0" >&2
+ exit 64
 fi
 
 UNIT="koa-heavy-job.service"
 
 if systemctl is-active --quiet "$UNIT"; then
-  printf '%s\n' \
-    "A heavy job is already active; queue or retry later." >&2
-  exit 75
+ printf '%s\n' \
+ "A heavy job is already active; queue or retry later." >&2
+ exit 75
 fi
 
 exec systemd-run \
-  --unit="$UNIT" \
-  --slice=koa-heavy.slice \
-  --property=CPUAccounting=yes \
-  --property=MemoryAccounting=yes \
-  --property=IOAccounting=yes \
-  --property=TasksAccounting=yes \
-  --property=Nice=10 \
-  --property=IOSchedulingClass=best-effort \
-  --property=IOSchedulingPriority=7 \
-  --collect \
-  --wait \
-  --pipe \
-  -- "$@"
+ --unit="$UNIT" \
+ --slice=koa-heavy.slice \
+ --property=CPUAccounting=yes \
+ --property=MemoryAccounting=yes \
+ --property=IOAccounting=yes \
+ --property=TasksAccounting=yes \
+ --property=Nice=10 \
+ --property=IOSchedulingClass=best-effort \
+ --property=IOSchedulingPriority=7 \
+ --collect \
+ --wait \
+ --pipe \
+ -- "$@"
 SH
 
 sudo chmod 0755 /usr/local/sbin/koa-heavy-run
-```
+`
 
 Example:
 
-```bash
+`bash
 sudo koa-heavy-run \
-  /usr/local/libexec/koa-media-transcode \
-  --input /srv/koa/inbox/example.mkv
-```
+ /usr/local/libexec/koa-media-transcode \
+ --input /srv/koa/inbox/example.mkv
+`
 
 A second invocation while the first remains active exits with a temporary-failure status.
 
@@ -494,28 +493,28 @@ Every supported heavy-job entry point needs to call the Resource Governor or thi
 
 ### 7.3 Inspect current admission state
 
-```bash
+`bash
 systemctl status koa-heavy-job.service || true
 
 systemctl show koa-heavy-job.service \
-  -p ActiveState \
-  -p SubState \
-  -p Slice \
-  -p MemoryCurrent \
-  -p CPUUsageNSec \
-  -p IOReadBytes \
-  -p IOWriteBytes \
-  -p TasksCurrent || true
-```
+ -p ActiveState \
+ -p SubState \
+ -p Slice \
+ -p MemoryCurrent \
+ -p CPUUsageNSec \
+ -p IOReadBytes \
+ -p IOWriteBytes \
+ -p TasksCurrent || true
+`
 
 ## 8. Validate Pressure, Degradation, and Observability
 
 ### 8.1 Validate zram
 
-```bash
+`bash
 swapon --show --bytes --output=NAME,TYPE,SIZE,USED,PRIO
 zramctl --output NAME,DISKSIZE,DATA,COMPR,TOTAL,ALGORITHM
-```
+`
 
 Record:
 
@@ -528,38 +527,38 @@ Record:
 
 ### 8.2 Validate cgroup placement
 
-```bash
+`bash
 systemd-cgls /koa-background.slice
 systemd-cgls /koa-heavy.slice
 
 systemctl show koa-background.slice \
-  -p MemoryCurrent \
-  -p MemoryPeak \
-  -p MemoryEvents \
-  -p CPUUsageNSec \
-  -p TasksCurrent
+ -p MemoryCurrent \
+ -p MemoryPeak \
+ -p MemoryEvents \
+ -p CPUUsageNSec \
+ -p TasksCurrent
 
 systemctl show koa-heavy.slice \
-  -p MemoryCurrent \
-  -p MemoryPeak \
-  -p MemoryEvents \
-  -p CPUUsageNSec \
-  -p TasksCurrent
-```
+ -p MemoryCurrent \
+ -p MemoryPeak \
+ -p MemoryEvents \
+ -p CPUUsageNSec \
+ -p TasksCurrent
+`
 
 ### 8.3 Validate the one-heavy-job limit
 
 Start one controlled test job:
 
-```bash
+`bash
 sudo koa-heavy-run /usr/bin/sleep 60
-```
+`
 
 While it is active, run from another terminal:
 
-```bash
+`bash
 sudo koa-heavy-run /usr/bin/sleep 10
-```
+`
 
 Expected behavior:
 
@@ -573,22 +572,22 @@ Use an approved synthetic load or component test. Keep the load within the test 
 
 Observe:
 
-```bash
+`bash
 watch -n 2 '
-  printf "\nMEMORY\n"
-  free -h
-  printf "\nSWAP\n"
-  swapon --show
-  printf "\nPRESSURE\n"
-  cat /proc/pressure/memory
-  printf "\nHEAVY SLICE\n"
-  systemctl show koa-heavy.slice \
-    -p MemoryCurrent \
-    -p MemoryHigh \
-    -p MemoryMax \
-    -p MemoryEvents
+ printf "\nMEMORY\n"
+ free -h
+ printf "\nSWAP\n"
+ swapon --show
+ printf "\nPRESSURE\n"
+ cat /proc/pressure/memory
+ printf "\nHEAVY SLICE\n"
+ systemctl show koa-heavy.slice \
+ -p MemoryCurrent \
+ -p MemoryHigh \
+ -p MemoryMax \
+ -p MemoryEvents
 '
-```
+`
 
 The expected operational pattern is:
 
@@ -601,29 +600,29 @@ The expected operational pattern is:
 
 ### 8.5 Capture bounded evidence
 
-```bash
+`bash
 sudo install -d -m 0750 /var/lib/koa/resource-evidence
 
 sudo sh -c '
-  {
-    date --iso-8601=seconds
-    printf "\nMEMORY\n"
-    free -b
-    printf "\nSWAP\n"
-    swapon --show --bytes
-    printf "\nZRAM\n"
-    zramctl
-    printf "\nBACKGROUND SLICE\n"
-    systemctl show koa-background.slice
-    printf "\nHEAVY SLICE\n"
-    systemctl show koa-heavy.slice
-    printf "\nPRESSURE\n"
-    cat /proc/pressure/cpu
-    cat /proc/pressure/memory
-    cat /proc/pressure/io
-  } > /var/lib/koa/resource-evidence/user-lightweight-resource-state.txt
+ {
+ date --iso-8601=seconds
+ printf "\nMEMORY\n"
+ free -b
+ printf "\nSWAP\n"
+ swapon --show --bytes
+ printf "\nZRAM\n"
+ zramctl
+ printf "\nBACKGROUND SLICE\n"
+ systemctl show koa-background.slice
+ printf "\nHEAVY SLICE\n"
+ systemctl show koa-heavy.slice
+ printf "\nPRESSURE\n"
+ cat /proc/pressure/cpu
+ cat /proc/pressure/memory
+ cat /proc/pressure/io
+ } > /var/lib/koa/resource-evidence/user-lightweight-resource-state.txt
 '
-```
+`
 
 Review and minimize the evidence before export. Do not include secret values, unrestricted process environments, personal data, or unrelated diagnostics.
 
@@ -659,15 +658,15 @@ Do not respond to pressure by:
 
 For each modified service:
 
-```bash
+`bash
 sudo systemctl revert koa-preview-worker.service
-```
+`
 
 Review the resulting unit before restart.
 
 ### 10.2 Remove the launcher and slice drop-ins
 
-```bash
+`bash
 sudo rm -f /usr/local/sbin/koa-heavy-run
 sudo rm -f /usr/local/libexec/koa-generate-user-lightweight-limits
 
@@ -677,24 +676,24 @@ sudo rm -rf /etc/systemd/system/koa-heavy.slice.d
 sudo systemctl daemon-reload
 sudo systemctl stop koa-heavy.slice || true
 sudo systemctl stop koa-background.slice || true
-```
+`
 
 ### 10.3 Remove the zram configuration
 
 Only remove zram after reviewing active swap use and confirming a safe reboot path.
 
-```bash
+`bash
 sudo rm -f /etc/systemd/zram-generator.conf
 sudo systemctl daemon-reload
 sudo reboot
-```
+`
 
 After restart:
 
-```bash
+`bash
 swapon --show
 zramctl
-```
+`
 
 ### 10.4 Verify rollback
 

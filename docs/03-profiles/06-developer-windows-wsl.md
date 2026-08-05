@@ -187,17 +187,17 @@ A developer may use security controls or offline techniques that resemble strong
 
 Each workspace uses a stable identifier derived from:
 
-```text
+`text
 component + branch_or_purpose + unique_suffix
-```
+`
 
 Examples:
 
-```text
+`text
 konnaxion-main-a31f
 konnaxion-feature-voting-92cd
 orgo-main-b114
-```
+`
 
 The identifier prefixes or namespaces:
 
@@ -222,17 +222,17 @@ Python development uses UV.
 
 Every Python workspace contains:
 
-```text
+`text
 pyproject.toml
 uv.lock
 .venv/
-```
+`
 
 The Python version is declared. Installed dependencies remain inside the workspace `.venv`. Reproducible validation uses:
 
-```bash
+`bash
 uv sync --frozen
-```
+`
 
 A content-addressed UV download cache may be shared. A mutable `.venv` may not be shared.
 

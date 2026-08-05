@@ -39,6 +39,10 @@
     "uckk_is_external_platform": true,
     "uckk_subsystem_contract_or_mount_is_prohibited": true,
     "koa_mediatheque_is_internal_component": true,
-    "external_platform_publication_requires_integration_contract": true
+    "external_platform_publication_requires_integration_contract": true,
+    "external_platform_import_requires_integration_contract": true,
+    "uckk_directional_interchange_only": true,
+    "uckk_background_bidirectional_sync_prohibited": true,
+    "shared_mediatheque_frame_merges_authority": false
   }
 }

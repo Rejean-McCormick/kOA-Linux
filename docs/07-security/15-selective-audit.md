@@ -1,127 +1,126 @@
 <!-- KOA:DOC-META:BEGIN GENERATED
 {
-  "doc_id": "DOC-SEC-015",
-  "document_class": "normative_markdown",
-  "status": "active",
-  "language": "en",
-  "layer": "security",
-  "scope": [
-    "global"
-  ],
-  "canonical_refs": [
-    "generated/decision-index.json",
-    "contracts/system.contract.json",
-    "generated/component-catalog.json",
-    "generated/profile-catalog.json",
-    "contracts/components/audit-broker.component.json",
-    "contracts/components/governance-policy-runtime.component.json",
-    "contracts/components/identity-and-trust.component.json",
-    "contracts/components/publication-gateway.component.json",
-    "contracts/components/resource-governor.component.json",
-    "contracts/artifact-contracts/decision-receipt.schema.json",
-    "contracts/artifact-contracts/publication-receipt.schema.json",
-    "contracts/artifact-contracts/provenance-receipt.schema.json",
-    "generated/requirements-index.json",
-    "generated/assertion-index.json",
-    "generated/traceability.json",
-    "generated/exception-index.json",
-    "generated/test-catalog.json",
-    "generated/evidence-catalog.json",
-    "10-adrs/ADR-010-selective-audit.md"
-  ],
-  "decision_ids": [
-    "DEC-AUD-001",
-    "DEC-DATA-001",
-    "DEC-GOV-001",
-    "DEC-PROFILE-001"
-  ],
-  "requirement_ids": [
-    "REQ-SEC-AUDIT-001",
-    "REQ-SEC-AUDIT-002",
-    "REQ-SEC-AUDIT-003",
-    "REQ-SEC-AUDIT-004",
-    "REQ-SEC-AUDIT-005",
-    "REQ-SEC-AUDIT-006",
-    "REQ-SEC-AUDIT-007",
-    "REQ-SEC-AUDIT-008",
-    "REQ-SEC-AUDIT-009",
-    "REQ-SEC-AUDIT-010",
-    "REQ-SEC-AUDIT-011",
-    "REQ-SEC-AUDIT-012",
-    "REQ-SEC-AUDIT-013",
-    "REQ-SEC-AUDIT-014",
-    "REQ-SEC-AUDIT-015",
-    "REQ-SEC-AUDIT-016",
-    "REQ-SEC-AUDIT-017",
-    "REQ-SEC-AUDIT-018",
-    "REQ-SEC-AUDIT-019",
-    "REQ-SEC-AUDIT-020",
-    "REQ-SEC-AUDIT-021",
-    "REQ-SEC-AUDIT-022",
-    "REQ-SEC-AUDIT-023",
-    "REQ-SEC-AUDIT-024",
-    "REQ-SEC-AUDIT-025",
-    "REQ-SEC-AUDIT-026",
-    "REQ-SEC-AUDIT-027",
-    "REQ-SEC-AUDIT-028",
-    "REQ-SEC-AUDIT-029",
-    "REQ-SEC-AUDIT-030"
-  ],
-  "lock_ids": [
-    "LOCK-DOC-002",
-    "LOCK-DATA-001",
-    "LOCK-GOV-001",
-    "LOCK-GATE-001",
-    "LOCK-PROFILE-001"
-  ],
-  "exception_ids": [],
-  "depends_on": [
-    "DOC-GOV-000",
-    "DOC-GOV-001",
-    "DOC-GOV-002",
-    "DOC-GOV-009",
-    "DOC-GOV-010",
-    "DOC-CONST-002",
-    "DOC-CONST-003",
-    "DOC-CONST-004",
-    "DOC-CONST-005",
-    "DOC-CONST-007",
-    "DOC-CONST-008",
-    "DOC-CONST-010",
-    "DOC-SYS-002",
-    "DOC-SYS-004",
-    "DOC-SYS-005",
-    "DOC-SYS-006",
-    "DOC-SYS-007",
-    "DOC-SYS-015",
-    "DOC-SYS-017",
-    "DOC-SYS-019",
-    "DOC-SYS-020",
-    "DOC-PROFILE-001",
-    "DOC-PROFILE-003",
-    "DOC-COMP-000",
-    "DOC-LIFE-002",
-    "DOC-LIFE-012",
-    "DOC-SEC-000",
-    "DOC-SEC-001",
-    "DOC-SEC-002",
-    "DOC-SEC-003",
-    "DOC-SEC-004",
-    "DOC-SEC-013",
-    "DOC-SEC-014"
-  ],
-  "tags": [
-    "security",
-    "selective-audit",
-    "private-proof",
-    "public-evidence",
-    "audit-broker",
-    "data-minimization",
-    "authorized-views",
-    "recourse",
-    "retention",
-    "privacy"
-  ]
+ "doc_id": "DOC-SEC-015",
+ "document_class": "normative_markdown",
+ "status": "active",
+ "language": "en",
+ "layer": "security",
+ "scope": [
+ "global"
+ ],
+ "canonical_refs": [
+ "generated/decision-index.json",
+ "contracts/system.contract.json",
+ "generated/component-catalog.json",
+ "generated/profile-catalog.json",
+ "contracts/components/audit-broker.component.json",
+ "contracts/components/governance-policy-runtime.component.json",
+ "contracts/components/identity-and-trust.component.json",
+ "contracts/components/publication-gateway.component.json",
+ "contracts/components/resource-governor.component.json",
+ "contracts/artifact-contracts/decision-receipt.schema.json",
+ "contracts/artifact-contracts/publication-receipt.schema.json",
+ "contracts/artifact-contracts/provenance-receipt.schema.json",
+ "generated/requirements-index.json",
+ "generated/assertion-index.json",
+ "generated/traceability.json",
+ "generated/exception-index.json",
+ "generated/test-catalog.json",
+ "generated/evidence-catalog.json"
+ ],
+ "decision_ids": [
+ "DEC-AUD-001",
+ "DEC-DATA-001",
+ "DEC-GOV-001",
+ "DEC-PROFILE-001"
+ ],
+ "requirement_ids": [
+ "REQ-SEC-AUDIT-001",
+ "REQ-SEC-AUDIT-002",
+ "REQ-SEC-AUDIT-003",
+ "REQ-SEC-AUDIT-004",
+ "REQ-SEC-AUDIT-005",
+ "REQ-SEC-AUDIT-006",
+ "REQ-SEC-AUDIT-007",
+ "REQ-SEC-AUDIT-008",
+ "REQ-SEC-AUDIT-009",
+ "REQ-SEC-AUDIT-010",
+ "REQ-SEC-AUDIT-011",
+ "REQ-SEC-AUDIT-012",
+ "REQ-SEC-AUDIT-013",
+ "REQ-SEC-AUDIT-014",
+ "REQ-SEC-AUDIT-015",
+ "REQ-SEC-AUDIT-016",
+ "REQ-SEC-AUDIT-017",
+ "REQ-SEC-AUDIT-018",
+ "REQ-SEC-AUDIT-019",
+ "REQ-SEC-AUDIT-020",
+ "REQ-SEC-AUDIT-021",
+ "REQ-SEC-AUDIT-022",
+ "REQ-SEC-AUDIT-023",
+ "REQ-SEC-AUDIT-024",
+ "REQ-SEC-AUDIT-025",
+ "REQ-SEC-AUDIT-026",
+ "REQ-SEC-AUDIT-027",
+ "REQ-SEC-AUDIT-028",
+ "REQ-SEC-AUDIT-029",
+ "REQ-SEC-AUDIT-030"
+ ],
+ "lock_ids": [
+ "LOCK-DOC-002",
+ "LOCK-DATA-001",
+ "LOCK-GOV-001",
+ "LOCK-GATE-001",
+ "LOCK-PROFILE-001"
+ ],
+ "exception_ids": [],
+ "depends_on": [
+ "DOC-GOV-000",
+ "DOC-GOV-001",
+ "DOC-GOV-002",
+ "DOC-GOV-009",
+ "DOC-GOV-010",
+ "DOC-CONST-002",
+ "DOC-CONST-003",
+ "DOC-CONST-004",
+ "DOC-CONST-005",
+ "DOC-CONST-007",
+ "DOC-CONST-008",
+ "DOC-CONST-010",
+ "DOC-SYS-002",
+ "DOC-SYS-004",
+ "DOC-SYS-005",
+ "DOC-SYS-006",
+ "DOC-SYS-007",
+ "DOC-SYS-015",
+ "DOC-SYS-017",
+ "DOC-SYS-019",
+ "DOC-SYS-020",
+ "DOC-PROFILE-001",
+ "DOC-PROFILE-003",
+ "DOC-COMP-000",
+ "DOC-LIFE-002",
+ "DOC-LIFE-012",
+ "DOC-SEC-000",
+ "DOC-SEC-001",
+ "DOC-SEC-002",
+ "DOC-SEC-003",
+ "DOC-SEC-004",
+ "DOC-SEC-013",
+ "DOC-SEC-014"
+ ],
+ "tags": [
+ "security",
+ "selective-audit",
+ "private-proof",
+ "public-evidence",
+ "audit-broker",
+ "data-minimization",
+ "authorized-views",
+ "recourse",
+ "retention",
+ "privacy"
+ ]
 }
 KOA:DOC-META:END -->
 
@@ -181,7 +180,6 @@ This document does not:
 | `generated/requirements-index.json` | Owns the normative statements displayed in Section 5. |
 | `generated/assertion-index.json` | Owns canonical ownership, component separation, authority separation, gateway separation, and profile-scope assertions. |
 | `generated/traceability.json` | Owns decision, requirement, lock, component, profile, test, and evidence relationships. |
-| `10-adrs/ADR-010-selective-audit.md` | Records the accepted choice of selective audit instead of total transparency. |
 
 This Markdown document explains the audit model. Canonical event, evidence, receipt, access-policy, retention, and disclosure fields remain machine-readable.
 
@@ -555,7 +553,7 @@ A resource grant does not authorize access or disclosure.
 | `DEC-GOV-001` | Preserves the distinction between policy authorization and deterministic resource admission or evidence custody. |
 | `DEC-PROFILE-001` | Keeps profile-specific retention, offline, assurance, and evidence mechanisms within explicit profile scope. |
 
-`ADR-010-selective-audit.md` records the accepted rationale: civic accountability and sensitive operations both matter, while one public log would create surveillance.
+`-selective-audit.md` records the accepted rationale: civic accountability and sensitive operations both matter, while one public log would create surveillance.
 
 ### Prohibited assumptions
 
@@ -586,7 +584,7 @@ This document is conformant when:
 1. `DOC-SEC-015` is active at `07-security/15-selective-audit.md`.
 2. Every canonical reference resolves.
 3. Every listed decision exists with status `accepted`.
-4. `ADR-010` exists with status `accepted`.
+4. exists with status `accepted`.
 5. Every requirement in Section 5 exists with identical strength, statement, scope, owner, source decision, and validation mapping.
 6. Every listed lock exists and is active.
 7. Source records, source events, captured evidence, custody records, views, private proof, and public receipts remain distinct.
@@ -614,9 +612,9 @@ This document is conformant when:
 
 The validation entry point is:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 ## 11. Non-Normative Examples
 

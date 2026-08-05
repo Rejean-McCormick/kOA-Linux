@@ -15,7 +15,10 @@
     "generated/test-catalog.json",
     "generated/evidence-catalog.json",
     "contracts/components/koa-mediatheque.component.json",
-    "contracts/integrations/uckk-publication.integration.json"
+    "contracts/integrations/uckk-publication.integration.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json"
   ],
   "decision_ids": [
     "DEC-PROFILE-001",
@@ -61,7 +64,10 @@
     "REQ-CONF-PROF-027",
     "REQ-CONF-PROF-028",
     "REQ-CONF-PROF-029",
-    "REQ-CONF-PROF-030"
+    "REQ-CONF-PROF-030",
+    "REQ-CONF-PROF-031",
+    "REQ-CONF-PROF-032",
+    "REQ-CONF-PROF-033"
   ],
   "lock_ids": [
     "LOCK-DOC-001",
@@ -84,7 +90,8 @@
     "LOCK-LIFE-003",
     "LOCK-LIFE-004",
     "LOCK-MEDIATHEQUE-001",
-    "LOCK-UCKK-EXT-001"
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -322,7 +329,7 @@ Every base profile includes these common families:
 | `PF-COMMON-COMPONENT` | Component boundaries | Required components exist; non-responsibilities and data ownership are preserved. |
 | `PF-COMMON-SECURITY` | Security baseline | Identity, least privilege, network boundaries, secret handling, and safe denial. |
 | `PF-COMMON-GOVERNANCE` | Governance boundary | Governance Policy Runtime remains distinct from Resource Governor and application authority. |
-| `PF-COMMON-GATEWAY` | Gateway separation | Publication Gateway authorizes disclosure; the UCKK publication adapter performs target-specific packaging and transport; neither owns kOA Mediatheque source records. |
+| `PF-COMMON-GATEWAY` | Gateway separation | Publication Gateway authorizes disclosure; the UCKK Publication Bridge performs target-specific packaging and transport; neither owns kOA Mediatheque source records. |
 | `PF-COMMON-OFFLINE` | Local continuity | Minimum local operation continues without Internet or upstream control plane. |
 | `PF-COMMON-LIFECYCLE` | Lifecycle | Update, rollback, backup, restore, migration, removal, and exit behavior. |
 | `PF-COMMON-EVIDENCE` | Evidence validity | Evidence scope, producer, result, release, profile, and freshness are valid. |
@@ -410,7 +417,7 @@ The developer Linux profile includes profile-declared tests such as:
 
 The catalog owns the procedures and outcomes for these identities.
 
-The matrix covers per-workspace `.venv`, isolated ports, services, data, secrets, databases, resource budgets, parallel worktrees, rootless-container behavior where selected, native-process equivalence, deterministic kOA Mediatheque processing, optional UCKK publication only when selected, optional SenTient isolation, and candidate-artifact publication.
+The matrix covers per-workspace `.venv`, isolated ports, services, data, secrets, databases, resource budgets, parallel worktrees, rootless-container behavior where selected, native-process equivalence, deterministic kOA Mediatheque processing, separately optional UCKK publication and UCKK import when selected, quarantine-before-acceptance, offline learning-package use, optional SenTient isolation, and candidate-artifact publication.
 
 ### 4.8 Developer Windows and WSL matrix
 
@@ -440,7 +447,7 @@ The sovereign Linux node matrix emphasizes:
 - data migrations;
 - local identity, governance, audit, and administration;
 - network boundaries;
-- bounded local Mediatheque operation and optional queued UCKK publication where selected;
+- bounded local Mediatheque operation, optional queued UCKK publication, controlled UCKK learning-package import, quarantine, separate local identity creation, and offline use where selected;
 - offline operation;
 - hardware and storage health;
 - node removal and data export.
@@ -468,7 +475,7 @@ The sovereign hub profile includes profile-declared tests such as:
 - `TEST-HUB-SECURITY-001`;
 - `TEST-HUB-CAPACITY-001`.
 
-The matrix covers required components, logical zones, default-deny networking, tenant isolation, publication, federation trust, offline continuity, queue revalidation, resource reserves, backup, restore, exit, release rollback, load, capacity, governance/resource separation, and optional-service isolation.
+The matrix covers required components, logical zones, default-deny networking, tenant isolation, directional UCKK publication and import, import quarantine and local acceptance, federation trust, offline continuity, queue revalidation, resource reserves, backup, restore, exit, release rollback, load, capacity, governance/resource separation, and optional-service isolation.
 
 ### 4.11 Build farm matrix
 
@@ -577,7 +584,7 @@ Evidence from another matrix composition is reusable only when the test catalog 
 
 ## 5. Applicable Normative Requirements
 
-<!-- GENERATED:REQUIREMENTS:BEGIN ids=REQ-CONF-PROF-001,REQ-CONF-PROF-002,REQ-CONF-PROF-003,REQ-CONF-PROF-004,REQ-CONF-PROF-005,REQ-CONF-PROF-006,REQ-CONF-PROF-007,REQ-CONF-PROF-008,REQ-CONF-PROF-009,REQ-CONF-PROF-010,REQ-CONF-PROF-011,REQ-CONF-PROF-012,REQ-CONF-PROF-013,REQ-CONF-PROF-014,REQ-CONF-PROF-015,REQ-CONF-PROF-016,REQ-CONF-PROF-017,REQ-CONF-PROF-018,REQ-CONF-PROF-019,REQ-CONF-PROF-020,REQ-CONF-PROF-021,REQ-CONF-PROF-022,REQ-CONF-PROF-023,REQ-CONF-PROF-024,REQ-CONF-PROF-025,REQ-CONF-PROF-026,REQ-CONF-PROF-027,REQ-CONF-PROF-028,REQ-CONF-PROF-029,REQ-CONF-PROF-030 -->
+<!-- GENERATED:REQUIREMENTS:BEGIN ids=REQ-CONF-PROF-001,REQ-CONF-PROF-002,REQ-CONF-PROF-003,REQ-CONF-PROF-004,REQ-CONF-PROF-005,REQ-CONF-PROF-006,REQ-CONF-PROF-007,REQ-CONF-PROF-008,REQ-CONF-PROF-009,REQ-CONF-PROF-010,REQ-CONF-PROF-011,REQ-CONF-PROF-012,REQ-CONF-PROF-013,REQ-CONF-PROF-014,REQ-CONF-PROF-015,REQ-CONF-PROF-016,REQ-CONF-PROF-017,REQ-CONF-PROF-018,REQ-CONF-PROF-019,REQ-CONF-PROF-020,REQ-CONF-PROF-021,REQ-CONF-PROF-022,REQ-CONF-PROF-023,REQ-CONF-PROF-024,REQ-CONF-PROF-025,REQ-CONF-PROF-026,REQ-CONF-PROF-027,REQ-CONF-PROF-028,REQ-CONF-PROF-029,REQ-CONF-PROF-030,REQ-CONF-PROF-031,REQ-CONF-PROF-032,REQ-CONF-PROF-033 -->
 - **REQ-CONF-PROF-001 — SHALL:** Every profile conformance claim bind to one exact base profile, overlay set, component selection, integration set, topology, platform, configuration, active Release Set, test-catalog version, and evidence scope.
 - **REQ-CONF-PROF-002 — SHALL:** The profile matrix derive test applicability from canonical profile, overlay, component, integration, requirement, lock, traceability, and test-catalog records.
 - **REQ-CONF-PROF-003 — SHALL NOT:** A manually curated checklist, example, dashboard, prior result, or undocumented convention replace the generated profile matrix.
@@ -597,7 +604,7 @@ Evidence from another matrix composition is reusable only when the test catalog 
 - **REQ-CONF-PROF-017 — SHALL:** Every profile validate minimum local operation without Internet and without an upstream control plane according to its profile contract.
 - **REQ-CONF-PROF-018 — SHALL NOT:** External AI, SenTient, containers, Kubernetes, federation, a GPU, or remote services become implicit prerequisites when the active profile does not require them.
 - **REQ-CONF-PROF-019 — SHALL:** Profile tests verify component data ownership and reject direct cross-component authoritative writes.
-- **REQ-CONF-PROF-020 — SHALL:** Profile tests verify that kOA Mediatheque remains the local media authority, Publication Gateway authorizes disclosure, and the optional UCKK publication adapter performs only target-specific packaging and transport without direct Moodle database writes or ownership transfer.
+- **REQ-CONF-PROF-020 — SHALL:** Profile tests verify that kOA Mediatheque remains the local media authority, Publication Gateway authorizes outbound disclosure, UCKK Publication Bridge performs only target-specific packaging and transport, and UCKK Import Bridge cannot create local authoritative state before quarantine validation and explicit acceptance.
 - **REQ-CONF-PROF-021 — SHALL:** Lifecycle coverage include applicable update, rollback, backup, restore, migration, removal, exit, and recovery tests.
 - **REQ-CONF-PROF-022 — SHALL:** Resource and capacity tests cover declared limits, protected reserves, queues, heavy-work admission, saturation, containment, and cleanup.
 - **REQ-CONF-PROF-023 — SHALL:** Security tests cover identity, trust, authorization, network boundaries, secrets, privileged operations, selective evidence, and safe denial.
@@ -608,6 +615,9 @@ Evidence from another matrix composition is reusable only when the test catalog 
 - **REQ-CONF-PROF-028 — SHALL:** Exceptions remain test-visible, scoped, approved, unexpired, and unable to convert a failed test into a pass.
 - **REQ-CONF-PROF-029 — SHALL:** The final conformance record list all required, conditional, prohibited, not-applicable, blocked, failed, invalid, cancelled, and not-run counts with their identities.
 - **REQ-CONF-PROF-030 — SHALL NOT:** A profile, recipe, test runner, orchestration platform, generated context, or implementation convenience silently alter matrix applicability or result semantics.
+- **REQ-CONF-PROF-031 — SHALL:** Applicable profile matrices test UCKK import source validation, complete-package quarantine, integrity, license, rights, provenance, shared-frame compatibility, separate local identities, and import receipts.
+- **REQ-CONF-PROF-032 — SHALL:** Applicable offline profile matrices prove that accepted UCKK learning packages remain usable without network access and that incomplete packages remain quarantined.
+- **REQ-CONF-PROF-033 — SHALL NOT:** Profile tests accept automatic upload, download, overwrite, deletion, progress transfer, or bidirectional synchronization on reconnection.
 <!-- GENERATED:REQUIREMENTS:END -->
 
 ## 6. Procedures or State Transitions
@@ -637,23 +647,23 @@ Matrix generation proceeds through:
 
 The matrix lifecycle is:
 
-```text
+`text
 generated
-  -> validated
-  -> ready
-  -> executing
-  -> evaluating
-  -> conformant | non_conformant | blocked
-  -> superseded
-```
+ -> validated
+ -> ready
+ -> executing
+ -> evaluating
+ -> conformant | non_conformant | blocked
+ -> superseded
+`
 
 Supporting states include:
 
-```text
+`text
 stale
 cancelled
 invalid
-```
+`
 
 A stale or superseded matrix cannot support a new conformance claim.
 

@@ -7,4 +7,3 @@
 | orgo | contracts/subsystems/orgo.subsystem.json | active | 1.0.0 |
 | semantik_architect | contracts/subsystems/semantik-architect.subsystem.json | active | 1.0.0 |
 | sentient | contracts/subsystems/sentient.subsystem.json | active | 1.0.0 |
-| uckk | contracts/subsystems/uckk.subsystem.json | active | 1.0.0 |

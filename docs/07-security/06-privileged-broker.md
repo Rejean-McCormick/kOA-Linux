@@ -246,9 +246,9 @@ This document explains the broker contract. It does not replace the machine-read
 
 The ordinary broker component identity is:
 
-```text
+`text
 koa_node_agent
-```
+`
 
 Its component class is `privileged_broker`. Its authority class is `authoritative_executor`.
 
@@ -276,7 +276,7 @@ The broker is authoritative for:
 | Release compatibility | Release-channel authority |
 | Component business-state transition | Owning component |
 | Publication authority | Publication Gateway and applicable policy authority |
-| UCKK dimension admission | UCKK Platform and UCKK Dimension Gateway |
+| UCKK package retrieval and quarantine | UCKK Import Bridge; local acceptance remains with the kOA Mediatheque and applicable policy authority |
 | Profile eligibility | Active profile contract |
 
 The broker validates references to these authorities but does not replace them.
@@ -285,7 +285,7 @@ The broker validates references to these authorities but does not replace them.
 
 Every operation declares:
 
-```text
+`text
 operation_id
 operation_class
 purpose
@@ -301,7 +301,7 @@ timeout_seconds
 offline_behavior
 replay_behavior
 rollback_or_recovery_behavior
-```
+`
 
 An operation is unavailable when its active contract is missing, invalid, incompatible, revoked, or outside the profile.
 
@@ -427,7 +427,7 @@ Hardening evidence maps each granted privilege to an active operation.
 
 A broker request includes:
 
-```text
+`text
 operation
 request_id
 idempotency_id
@@ -444,7 +444,7 @@ resource_admission_ref
 correlation_id
 requested_at
 deadline_at
-```
+`
 
 Operation-specific schemas can require additional canonical references. Unknown fields are rejected.
 
@@ -452,7 +452,7 @@ Operation-specific schemas can require additional canonical references. Unknown 
 
 Admission proceeds through:
 
-```text
+`text
 received
 transport_peer_verified
 service_identity_verified
@@ -466,7 +466,7 @@ expected_state_verified
 artifact_and_trust_verified
 resource_admitted
 accepted
-```
+`
 
 A failed stage produces an explicit blocked or rejected result before privileged mutation.
 
@@ -548,7 +548,7 @@ The adapter reports its execution steps. The broker verifies actual state indepe
 
 Commit uses a registered mechanism such as:
 
-```text
+`text
 atomic pointer
 transactional journal
 boot slot
@@ -556,7 +556,7 @@ atomic configuration swap
 verified service-group transition
 hardware-backed generation switch
 validated equivalent
-```
+`
 
 ### 6.9 Completion
 
@@ -622,14 +622,14 @@ A body mismatch is a security event.
 
 After restart, incomplete operations are classified as:
 
-```text
+`text
 not_started
 pre_commit
 commit_unknown
 committed_verification_pending
 receipt_pending
 recovery_required
-```
+`
 
 The broker compares journal state with actual host state.
 
@@ -672,7 +672,7 @@ Quarantine stores references, reason codes, observed metadata, and evidence. It 
 
 Every critical operation receipt identifies:
 
-```text
+`text
 receipt_id
 operation
 request_id
@@ -691,7 +691,7 @@ duration
 correlation_id
 occurred_at
 recovery_ref
-```
+`
 
 The receipt excludes secret values and unrestricted payloads.
 
@@ -929,13 +929,13 @@ This document is conformant when validation confirms:
 
 The principal validation entry point is:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 Supporting checks include:
 
-```text
+`text
 tools/check_privilege_boundaries.py
 tools/check_component_boundaries.py
 tools/check_interfile_locks.py
@@ -945,7 +945,7 @@ tools/check_release_sets.py
 tools/check_ai_boundary.py
 tools/check_traceability.py
 tools/check_no_unresolved_state.py
-```
+`
 
 A failed broker check blocks the affected operation, broker contract, profile claim, release activation, or recovery completion.
 

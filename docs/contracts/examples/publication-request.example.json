@@ -133,8 +133,7 @@
     "restricted_receipt_required": true,
     "withdrawal_supported": true,
     "supersession_supported": true,
-    "withdrawal_subject_ref": "publication:community-garden-progress-20260803",
-    "supersedes_publication_ref": null
+    "withdrawal_subject_ref": "publication:community-garden-progress-20260803"
   },
   "verification": {
     "required_checks": [

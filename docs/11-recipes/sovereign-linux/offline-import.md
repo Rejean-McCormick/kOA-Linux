@@ -130,7 +130,7 @@ KOA:DOC-META:END -->
 
 # Offline Import for Sovereign Linux
 
-> **Recipe status:** Non-normative implementation guidance.  
+> **Recipe status:** Non-normative implementation guidance.
 > The active profile, artifact, release, trust, component, resource, evidence, and incident contracts take precedence.
 
 ## 1. Purpose
@@ -185,7 +185,7 @@ This recipe does not cover:
 
 The transport directory can use a layout such as:
 
-```text
+`text
 offline-bundle/
 ├── bundle.json
 ├── manifest.sha256
@@ -193,14 +193,14 @@ offline-bundle/
 ├── release-set.json
 ├── revocation-snapshot.json
 ├── artifacts/
-│   ├── system/
-│   ├── services/
-│   ├── governance/
-│   └── knowledge/
+│ ├── system/
+│ ├── services/
+│ ├── governance/
+│ └── knowledge/
 ├── receipts/
 └── metadata/
-    └── transfer-provenance.json
-```
+ └── transfer-provenance.json
+`
 
 The exact fields and required members remain owned by the active offline-bundle and artifact contracts.
 
@@ -210,7 +210,7 @@ The manifest covers every bundle member except the detached signature file itsel
 
 This recipe uses:
 
-```text
+`text
 /var/lib/koa/offline-import/
 ├── quarantine/
 ├── verified/
@@ -218,21 +218,21 @@ This recipe uses:
 ├── receipts/
 ├── evidence/
 └── rejected/
-```
+`
 
 Suggested ownership:
 
-```text
+`text
 root:koa-import
-```
+`
 
 Suggested permissions:
 
-```text
+`text
 0750 directories
 0640 ordinary records
 0600 restricted evidence
-```
+`
 
 The verifier and activation services receive only the directories required by their contracts.
 
@@ -242,11 +242,11 @@ The node begins with a previously trusted local release-verification context.
 
 Example implementation paths:
 
-```text
+`text
 /etc/koa/trust/offline-release-keyring.gpg
 /etc/koa/trust/trust-set.json
 /etc/koa/trust/revocation-state.json
-```
+`
 
 The offline bundle can carry certificates, signer chains, revocation snapshots, and proposed trust-update artifacts for validation. An ordinary bundle does not modify the active trust store.
 
@@ -256,59 +256,59 @@ A trust-store update follows a separate authorized trust-update contract with co
 
 Create the service group and directories according to the host's identity-management recipe. Then create the import tree:
 
-```bash
+`bash
 set -euo pipefail
 
 IMPORT_ROOT="/var/lib/koa/offline-import"
 
 sudo install -d -o root -g koa-import -m 0750 \
-  "$IMPORT_ROOT" \
-  "$IMPORT_ROOT/quarantine" \
-  "$IMPORT_ROOT/verified" \
-  "$IMPORT_ROOT/staging" \
-  "$IMPORT_ROOT/receipts" \
-  "$IMPORT_ROOT/evidence" \
-  "$IMPORT_ROOT/rejected"
+ "$IMPORT_ROOT" \
+ "$IMPORT_ROOT/quarantine" \
+ "$IMPORT_ROOT/verified" \
+ "$IMPORT_ROOT/staging" \
+ "$IMPORT_ROOT/receipts" \
+ "$IMPORT_ROOT/evidence" \
+ "$IMPORT_ROOT/rejected"
 
 sudo install -d -o root -g root -m 0755 /run/koa
-```
+`
 
 Use a host-wide lock so two import sessions cannot stage or activate overlapping artifacts concurrently:
 
-```bash
+`bash
 exec 9>/run/koa/offline-import.lock
 
 if ! flock -n 9; then
-  printf '%s\n' "Another offline import is active." >&2
-  exit 75
+ printf '%s\n' "Another offline import is active." >&2
+ exit 75
 fi
-```
+`
 
 Record the target context before touching the transport:
 
-```bash
+`bash
 TARGET_PROFILE="sovereign_linux_node+sovereign_offline"
 TARGET_NODE_ID="$(
-  cat /etc/koa/node-id
+ cat /etc/koa/node-id
 )"
 
 ACTIVE_AUTHORITY_SET="$(
-  cat /etc/koa/authority-set-id
+ cat /etc/koa/authority-set-id
 )"
 
 ACTIVE_RELEASE_SET="$(
-  cat /var/lib/koa/releases/active-release-set-id
+ cat /var/lib/koa/releases/active-release-set-id
 )"
 
 export TARGET_PROFILE TARGET_NODE_ID
 export ACTIVE_AUTHORITY_SET ACTIVE_RELEASE_SET
 
 printf '%s\n' \
-  "target_node=$TARGET_NODE_ID" \
-  "target_profile=$TARGET_PROFILE" \
-  "active_authority_set=$ACTIVE_AUTHORITY_SET" \
-  "active_release_set=$ACTIVE_RELEASE_SET"
-```
+ "target_node=$TARGET_NODE_ID" \
+ "target_profile=$TARGET_PROFILE" \
+ "active_authority_set=$ACTIVE_AUTHORITY_SET" \
+ "active_release_set=$ACTIVE_RELEASE_SET"
+`
 
 Stop when any required identity or active-state record cannot be resolved.
 
@@ -316,40 +316,40 @@ Stop when any required identity or active-state record cannot be resolved.
 
 Identify the intended partition through a stable path such as:
 
-```text
+`text
 /dev/disk/by-id/usb-VENDOR_PRODUCT_SERIAL-part1
-```
+`
 
 Set the exact path manually after comparing serial number, size, filesystem, and custody record:
 
-```bash
+`bash
 TRANSPORT_DEVICE="/dev/disk/by-id/usb-VENDOR_PRODUCT_SERIAL-part1"
 MEDIA_MOUNT="/mnt/koa-offline-import"
 
 test -b "$TRANSPORT_DEVICE"
 
 lsblk \
-  --paths \
-  --output NAME,SIZE,FSTYPE,RO,MOUNTPOINTS,SERIAL \
-  "$TRANSPORT_DEVICE"
-```
+ --paths \
+ --output NAME,SIZE,FSTYPE,RO,MOUNTPOINTS,SERIAL \
+ "$TRANSPORT_DEVICE"
+`
 
 Mount without executable or device semantics:
 
-```bash
+`bash
 sudo install -d -m 0750 "$MEDIA_MOUNT"
 
 sudo mount \
-  -o ro,nosuid,nodev,noexec \
-  "$TRANSPORT_DEVICE" \
-  "$MEDIA_MOUNT"
+ -o ro,nosuid,nodev,noexec \
+ "$TRANSPORT_DEVICE" \
+ "$MEDIA_MOUNT"
 
 findmnt --target "$MEDIA_MOUNT"
-```
+`
 
 Resolve the bundle directory and create a local import identity:
 
-```bash
+`bash
 SOURCE_BUNDLE="$MEDIA_MOUNT/offline-bundle"
 
 test -d "$SOURCE_BUNDLE"
@@ -358,72 +358,72 @@ test -f "$SOURCE_BUNDLE/manifest.sha256"
 test -f "$SOURCE_BUNDLE/manifest.sha256.sig"
 
 BUNDLE_ID="$(
-  jq -er '.bundle_id' "$SOURCE_BUNDLE/bundle.json"
+ jq -er '.bundle_id' "$SOURCE_BUNDLE/bundle.json"
 )"
 
 BUNDLE_VERSION="$(
-  jq -er '.version' "$SOURCE_BUNDLE/bundle.json"
+ jq -er '.version' "$SOURCE_BUNDLE/bundle.json"
 )"
 
 IMPORT_SUFFIX="$(
-  od -An -N4 -tx1 /dev/urandom |
-    tr -d ' \n'
+ od -An -N4 -tx1 /dev/urandom |
+ tr -d ' \n'
 )"
 
 IMPORT_ID="${BUNDLE_ID}-${BUNDLE_VERSION}-${IMPORT_SUFFIX}"
 QUARANTINE_DIR="$IMPORT_ROOT/quarantine/$IMPORT_ID"
 
 sudo install -d -o root -g koa-import -m 0750 \
-  "$QUARANTINE_DIR"
-```
+ "$QUARANTINE_DIR"
+`
 
 Reject unsafe source structure before copying:
 
-```bash
+`bash
 if find "$SOURCE_BUNDLE" -xdev -type l -print -quit |
-   grep -q .; then
-  printf '%s\n' "Symbolic links are not accepted." >&2
-  exit 65
+ grep -q .; then
+ printf '%s\n' "Symbolic links are not accepted." >&2
+ exit 65
 fi
 
 if find "$SOURCE_BUNDLE" -xdev -type f -links +1 -print -quit |
-   grep -q .; then
-  printf '%s\n' "Hard-linked files are not accepted." >&2
-  exit 65
+ grep -q .; then
+ printf '%s\n' "Hard-linked files are not accepted." >&2
+ exit 65
 fi
 
 if find "$SOURCE_BUNDLE" -xdev \
-     \( -type b -o -type c -o -type p -o -type s \) \
-     -print -quit |
-   grep -q .; then
-  printf '%s\n' "Special files are not accepted." >&2
-  exit 65
+ \( -type b -o -type c -o -type p -o -type s \) \
+ -print -quit |
+ grep -q .; then
+ printf '%s\n' "Special files are not accepted." >&2
+ exit 65
 fi
-```
+`
 
 Copy without preserving untrusted ownership or special metadata:
 
-```bash
+`bash
 sudo cp -a \
-  --no-preserve=ownership \
-  "$SOURCE_BUNDLE/." \
-  "$QUARANTINE_DIR/"
+ --no-preserve=ownership \
+ "$SOURCE_BUNDLE/." \
+ "$QUARANTINE_DIR/"
 
 sudo chown -R root:koa-import "$QUARANTINE_DIR"
 sudo find "$QUARANTINE_DIR" -type d -exec chmod 0750 {} +
 sudo find "$QUARANTINE_DIR" -type f -exec chmod 0640 {} +
 sudo sync
-```
+`
 
 Unmount and physically remove the transport before verification:
 
-```bash
+`bash
 sudo umount "$MEDIA_MOUNT"
 sudo rmdir "$MEDIA_MOUNT"
 
 printf '%s\n' \
-  "Remove the transport medium and complete the custody record."
-```
+ "Remove the transport medium and complete the custody record."
+`
 
 Verification operates only on the immutable local quarantine copy.
 
@@ -445,31 +445,31 @@ Before parsing detailed content, enforce locally configured limits for:
 
 Example basic limits:
 
-```bash
+`bash
 MAX_BUNDLE_BYTES=$((64 * 1024 * 1024 * 1024))
 MAX_MEMBERS=10000
 MAX_MEMBER_BYTES=$((16 * 1024 * 1024 * 1024))
 
 BUNDLE_BYTES="$(
-  sudo du -sb "$QUARANTINE_DIR" |
-    awk '{print $1}'
+ sudo du -sb "$QUARANTINE_DIR" |
+ awk '{print $1}'
 )"
 
 MEMBER_COUNT="$(
-  sudo find "$QUARANTINE_DIR" -xdev -type f |
-    wc -l
+ sudo find "$QUARANTINE_DIR" -xdev -type f |
+ wc -l
 )"
 
 test "$BUNDLE_BYTES" -le "$MAX_BUNDLE_BYTES"
 test "$MEMBER_COUNT" -le "$MAX_MEMBERS"
 
 if sudo find "$QUARANTINE_DIR" -xdev -type f \
-     -size "+${MAX_MEMBER_BYTES}c" -print -quit |
-   grep -q .; then
-  printf '%s\n' "A bundle member exceeds the local limit." >&2
-  exit 65
+ -size "+${MAX_MEMBER_BYTES}c" -print -quit |
+ grep -q .; then
+ printf '%s\n' "A bundle member exceeds the local limit." >&2
+ exit 65
 fi
-```
+`
 
 These are example implementation limits. The active profile and artifact contracts remain authoritative.
 
@@ -477,30 +477,30 @@ These are example implementation limits. The active profile and artifact contrac
 
 Use a verifier that reads only the dedicated offline release keyring:
 
-```bash
+`bash
 OFFLINE_KEYRING="/etc/koa/trust/offline-release-keyring.gpg"
 
 test -r "$OFFLINE_KEYRING"
 
 sudo -u koa-import \
-  gpgv \
-  --keyring "$OFFLINE_KEYRING" \
-  "$QUARANTINE_DIR/manifest.sha256.sig" \
-  "$QUARANTINE_DIR/manifest.sha256"
-```
+ gpgv \
+ --keyring "$OFFLINE_KEYRING" \
+ "$QUARANTINE_DIR/manifest.sha256.sig" \
+ "$QUARANTINE_DIR/manifest.sha256"
+`
 
 Do not use the operator's personal keyring, a browser trust store, the operating-system web trust store, or a key embedded only in the bundle as the authority for this check.
 
 ### 6.3 Verify every manifest digest
 
-```bash
+`bash
 sudo -u koa-import \
-  sh -c '
-    set -euo pipefail
-    cd "$1"
-    sha256sum --check --strict manifest.sha256
-  ' sh "$QUARANTINE_DIR"
-```
+ sh -c '
+ set -euo pipefail
+ cd "$1"
+ sha256sum --check --strict manifest.sha256
+ ' sh "$QUARANTINE_DIR"
+`
 
 Confirm that the manifest:
 
@@ -515,7 +515,7 @@ Confirm that the manifest:
 
 The following executable paths are illustrative deployment adapters. Bind them to the installed contract-owned verifier and compatibility engine:
 
-```bash
+`bash
 BUNDLE_VERIFIER="/usr/libexec/koa/verify-offline-bundle"
 COMPATIBILITY_CHECKER="/usr/libexec/koa/check-release-compatibility"
 
@@ -523,27 +523,27 @@ test -x "$BUNDLE_VERIFIER"
 test -x "$COMPATIBILITY_CHECKER"
 
 VERIFICATION_RECEIPT="$(
-  sudo -u koa-import \
-  "$BUNDLE_VERIFIER" \
-    --bundle "$QUARANTINE_DIR" \
-    --target-node "$TARGET_NODE_ID" \
-    --effective-profile "$TARGET_PROFILE" \
-    --authority-set "$ACTIVE_AUTHORITY_SET" \
-    --trust-set /etc/koa/trust/trust-set.json \
-    --revocation-state /etc/koa/trust/revocation-state.json \
-    --output-dir "$IMPORT_ROOT/receipts"
+ sudo -u koa-import \
+ "$BUNDLE_VERIFIER" \
+ --bundle "$QUARANTINE_DIR" \
+ --target-node "$TARGET_NODE_ID" \
+ --effective-profile "$TARGET_PROFILE" \
+ --authority-set "$ACTIVE_AUTHORITY_SET" \
+ --trust-set /etc/koa/trust/trust-set.json \
+ --revocation-state /etc/koa/trust/revocation-state.json \
+ --output-dir "$IMPORT_ROOT/receipts"
 )"
 
 COMPATIBILITY_RECEIPT="$(
-  sudo -u koa-import \
-  "$COMPATIBILITY_CHECKER" \
-    --release-set "$QUARANTINE_DIR/release-set.json" \
-    --bundle "$QUARANTINE_DIR" \
-    --active-release-set "$ACTIVE_RELEASE_SET" \
-    --effective-profile "$TARGET_PROFILE" \
-    --output-dir "$IMPORT_ROOT/receipts"
+ sudo -u koa-import \
+ "$COMPATIBILITY_CHECKER" \
+ --release-set "$QUARANTINE_DIR/release-set.json" \
+ --bundle "$QUARANTINE_DIR" \
+ --active-release-set "$ACTIVE_RELEASE_SET" \
+ --effective-profile "$TARGET_PROFILE" \
+ --output-dir "$IMPORT_ROOT/receipts"
 )"
-```
+`
 
 The verifier evaluates:
 
@@ -584,20 +584,20 @@ Verification completion does not install, import, migrate, publish, or activate 
 
 Create a staging plan from the verified Release Set:
 
-```bash
+`bash
 IMPORT_PLANNER="/usr/libexec/koa/plan-offline-import"
 STAGING_PLAN="$IMPORT_ROOT/staging/$IMPORT_ID-plan.json"
 
 test -x "$IMPORT_PLANNER"
 
 sudo -u koa-import \
-  "$IMPORT_PLANNER" \
-    --bundle "$QUARANTINE_DIR" \
-    --verification-receipt "$VERIFICATION_RECEIPT" \
-    --compatibility-receipt "$COMPATIBILITY_RECEIPT" \
-    --current-release-set "$ACTIVE_RELEASE_SET" \
-    --output "$STAGING_PLAN"
-```
+ "$IMPORT_PLANNER" \
+ --bundle "$QUARANTINE_DIR" \
+ --verification-receipt "$VERIFICATION_RECEIPT" \
+ --compatibility-receipt "$COMPATIBILITY_RECEIPT" \
+ --current-release-set "$ACTIVE_RELEASE_SET" \
+ --output "$STAGING_PLAN"
+`
 
 Review that the plan identifies:
 
@@ -615,21 +615,21 @@ Review that the plan identifies:
 
 Stage only through owner adapters:
 
-```bash
+`bash
 SYSTEM_STAGER="/usr/libexec/koa/stage-system-artifact"
 SERVICE_STAGER="/usr/libexec/koa/stage-service-artifact"
 GOVERNANCE_STAGER="/usr/libexec/koa/stage-governance-artifact"
 KNOWLEDGE_STAGER="/usr/libexec/koa/stage-knowledge-artifact"
 
 for adapter in \
-  "$SYSTEM_STAGER" \
-  "$SERVICE_STAGER" \
-  "$GOVERNANCE_STAGER" \
-  "$KNOWLEDGE_STAGER"
+ "$SYSTEM_STAGER" \
+ "$SERVICE_STAGER" \
+ "$GOVERNANCE_STAGER" \
+ "$KNOWLEDGE_STAGER"
 do
-  test -x "$adapter"
+ test -x "$adapter"
 done
-```
+`
 
 Each adapter receives only artifacts that belong to its release channel and component boundary.
 
@@ -654,36 +654,36 @@ A typical sequence is:
 
 Example orchestrator adapter:
 
-```bash
+`bash
 ACTIVATOR="/usr/libexec/koa/activate-offline-release-set"
 ACTIVATION_RECEIPT_DIR="$IMPORT_ROOT/receipts/$IMPORT_ID"
 
 sudo install -d -o root -g koa-import -m 0750 \
-  "$ACTIVATION_RECEIPT_DIR"
+ "$ACTIVATION_RECEIPT_DIR"
 
 test -x "$ACTIVATOR"
 
 sudo "$ACTIVATOR" \
-  --plan "$STAGING_PLAN" \
-  --verification-receipt "$VERIFICATION_RECEIPT" \
-  --compatibility-receipt "$COMPATIBILITY_RECEIPT" \
-  --preserve-last-valid \
-  --receipt-dir "$ACTIVATION_RECEIPT_DIR"
-```
+ --plan "$STAGING_PLAN" \
+ --verification-receipt "$VERIFICATION_RECEIPT" \
+ --compatibility-receipt "$COMPATIBILITY_RECEIPT" \
+ --preserve-last-valid \
+ --receipt-dir "$ACTIVATION_RECEIPT_DIR"
+`
 
 The orchestrator coordinates owner adapters. It does not acquire ownership of their data or activation boundaries.
 
 After activation:
 
-```bash
+`bash
 cat /var/lib/koa/releases/active-release-set-id
 
 systemctl is-system-running || true
 
 /usr/libexec/koa/validate-active-release \
-  --effective-profile "$TARGET_PROFILE" \
-  --receipt-dir "$ACTIVATION_RECEIPT_DIR"
-```
+ --effective-profile "$TARGET_PROFILE" \
+ --receipt-dir "$ACTIVATION_RECEIPT_DIR"
+`
 
 A successful file copy, package installation, service startup, or signature check does not by itself prove activation success.
 
@@ -711,41 +711,41 @@ Record:
 
 Example custody record:
 
-```bash
+`bash
 CUSTODY_RECORD="$IMPORT_ROOT/evidence/$IMPORT_ID-custody.json"
 
 sudo -u koa-import \
-  jq -n \
-    --arg import_id "$IMPORT_ID" \
-    --arg node_id "$TARGET_NODE_ID" \
-    --arg profile "$TARGET_PROFILE" \
-    --arg bundle_id "$BUNDLE_ID" \
-    --arg bundle_version "$BUNDLE_VERSION" \
-    --arg authority_set "$ACTIVE_AUTHORITY_SET" \
-    --arg previous_release_set "$ACTIVE_RELEASE_SET" \
-    --arg verification_receipt "$VERIFICATION_RECEIPT" \
-    --arg compatibility_receipt "$COMPATIBILITY_RECEIPT" \
-    --arg created_at "$(date --iso-8601=seconds)" \
-    '{
-      import_id: $import_id,
-      target_node_id: $node_id,
-      effective_profile: $profile,
-      bundle: {
-        bundle_id: $bundle_id,
-        version: $bundle_version
-      },
-      authority_set_id: $authority_set,
-      previous_release_set_id: $previous_release_set,
-      verification_receipt: $verification_receipt,
-      compatibility_receipt: $compatibility_receipt,
-      created_at: $created_at,
-      disposition: "pending_finalization"
-    }' |
-  sudo tee "$CUSTODY_RECORD" >/dev/null
+ jq -n \
+ --arg import_id "$IMPORT_ID" \
+ --arg node_id "$TARGET_NODE_ID" \
+ --arg profile "$TARGET_PROFILE" \
+ --arg bundle_id "$BUNDLE_ID" \
+ --arg bundle_version "$BUNDLE_VERSION" \
+ --arg authority_set "$ACTIVE_AUTHORITY_SET" \
+ --arg previous_release_set "$ACTIVE_RELEASE_SET" \
+ --arg verification_receipt "$VERIFICATION_RECEIPT" \
+ --arg compatibility_receipt "$COMPATIBILITY_RECEIPT" \
+ --arg created_at "$(date --iso-8601=seconds)" \
+ '{
+ import_id: $import_id,
+ target_node_id: $node_id,
+ effective_profile: $profile,
+ bundle: {
+ bundle_id: $bundle_id,
+ version: $bundle_version
+ },
+ authority_set_id: $authority_set,
+ previous_release_set_id: $previous_release_set,
+ verification_receipt: $verification_receipt,
+ compatibility_receipt: $compatibility_receipt,
+ created_at: $created_at,
+ disposition: "pending_finalization"
+ }' |
+ sudo tee "$CUSTODY_RECORD" >/dev/null
 
 sudo chown root:koa-import "$CUSTODY_RECORD"
 sudo chmod 0640 "$CUSTODY_RECORD"
-```
+`
 
 Transfer receipts and restricted evidence to the active evidence authority after successful validation. Public or operator-visible summaries remain separate from private proof.
 
@@ -782,12 +782,12 @@ Do not include:
 
 ### 10.2 Move rejected material
 
-```bash
+`bash
 REJECTED_DIR="$IMPORT_ROOT/rejected/$IMPORT_ID"
 
 sudo mv "$QUARANTINE_DIR" "$REJECTED_DIR"
 sudo chmod -R go-rwx "$REJECTED_DIR"
-```
+`
 
 Retain rejected material only for the period required by incident, audit, or disposal policy.
 
@@ -795,16 +795,16 @@ Retain rejected material only for the period required by incident, audit, or dis
 
 Use only owner-controlled rollback commands identified in the staging plan:
 
-```bash
+`bash
 ROLLBACK="/usr/libexec/koa/rollback-offline-release-set"
 
 test -x "$ROLLBACK"
 
 sudo "$ROLLBACK" \
-  --plan "$STAGING_PLAN" \
-  --restore-release-set "$ACTIVE_RELEASE_SET" \
-  --receipt-dir "$ACTIVATION_RECEIPT_DIR"
-```
+ --plan "$STAGING_PLAN" \
+ --restore-release-set "$ACTIVE_RELEASE_SET" \
+ --receipt-dir "$ACTIVATION_RECEIPT_DIR"
+`
 
 Validate the restored state before resuming ordinary operation.
 
@@ -812,13 +812,13 @@ Validate the restored state before resuming ordinary operation.
 
 After a successful import and evidence transfer:
 
-```bash
+`bash
 sudo /usr/libexec/koa/finalize-offline-import \
-  --import-id "$IMPORT_ID" \
-  --retain-receipts \
-  --retain-required-evidence \
-  --remove-temporary-staging
-```
+ --import-id "$IMPORT_ID" \
+ --retain-receipts \
+ --retain-required-evidence \
+ --remove-temporary-staging
+`
 
 Do not delete:
 

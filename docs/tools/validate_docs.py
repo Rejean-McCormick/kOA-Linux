@@ -9,7 +9,7 @@ TOOLS=[
  "check_generated_blocks.py","check_generated_content.py","check_greenfield_architecture.py",
  "check_interfile_locks.py","check_language.py","check_no_unresolved_state.py",
  "check_normative_language.py","check_profile_inheritance.py","check_release_sets.py",
- "check_subsystem_alignment.py","check_traceability.py",
+ "check_subsystem_alignment.py","check_traceability.py","check_uckk_external_boundary.py",
 ]
 def main():
  failures=[]

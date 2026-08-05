@@ -119,14 +119,14 @@ The component provides identity and trust evidence. It does not provide general 
 
 The distinction is fundamental:
 
-```text
+`text
 identity evidence
-    → identity result
+ → identity result
 trust evidence
-    → trust result
+ → trust result
 requested action
-    → authorization by the owning component or policy authority
-```
+ → authorization by the owning component or policy authority
+`
 
 A valid human identity does not automatically authorize publication, privileged host mutation, data access, governance action, or release activation. A valid artifact signature does not automatically make the artifact compatible or authorized for activation. A valid service credential does not grant access to every component.
 
@@ -172,7 +172,7 @@ Profile contracts determine deployment membership, assurance level, storage topo
 
 The canonical sources for this document are:
 
-```text
+`text
 generated/authority-manifest.json
 generated/decision-index.json
 contracts/system.contract.json#/authority_model
@@ -188,7 +188,7 @@ generated/assertion-index.json
 generated/traceability.json
 generated/evidence-catalog.json
 generated/exception-index.json
-```
+`
 
 Their ownership roles are:
 
@@ -227,7 +227,7 @@ The result states preserve diagnostic meaning. Protected use proceeds only when 
 
 The component supports these subject classes:
 
-```text
+`text
 human
 service
 component_instance
@@ -239,20 +239,20 @@ organization
 external_integration
 artifact_signer
 recovery_operator
-```
+`
 
 An active identity record contains a stable identifier, subject class, owner, tenant, environment, lifecycle state, credential references, timestamps, and evidence references.
 
 Identity lifecycle states are:
 
-```text
+`text
 pending
 active
 suspended
 revoked
 expired
 retired
-```
+`
 
 Display names remain descriptive attributes. They are not canonical identity.
 
@@ -273,7 +273,7 @@ The active profile and authentication policy determine factor combinations and a
 
 Credential classes include:
 
-```text
+`text
 password_verifier
 public_key
 x509_certificate
@@ -282,18 +282,18 @@ service_token
 device_credential
 recovery_code
 attestation_credential
-```
+`
 
 Credential lifecycle states are:
 
-```text
+`text
 pending
 active
 suspended
 revoked
 expired
 retired
-```
+`
 
 Credential validation examines the complete declared context rather than the credential object alone. The context includes subject binding, issuer, tenant, environment, intended use, time, scope, revocation, assurance, algorithm, and supported version.
 
@@ -303,7 +303,7 @@ Trust roots are exact-scope objects.
 
 The scope can contain:
 
-```text
+`text
 tenant
 environment
 release_channel
@@ -311,20 +311,20 @@ artifact_class
 integration
 component
 purpose
-```
+`
 
 A root trusted for a governance policy bundle in one environment does not automatically validate a service artifact, knowledge package, external integration, another tenant, or another environment.
 
 Trust-root states are:
 
-```text
+`text
 staged
 active
 suspended
 revoked
 superseded
 retired
-```
+`
 
 ### 4.6 Signature and attestation verification
 
@@ -364,7 +364,7 @@ Revocation blocks new protected use. Pending operations are reevaluated. Histori
 
 Rotation uses a successor lifecycle:
 
-```text
+`text
 create successor
 verify owner and scope
 stage successor
@@ -373,7 +373,7 @@ activate successor
 use explicit overlap where required
 retire or revoke predecessor
 record receipts
-```
+`
 
 Implicit permanent overlap is not a rotation strategy.
 
@@ -725,7 +725,7 @@ This document is conformant when all of the following checks pass:
 
 Expected validator failure codes include:
 
-```text
+`text
 identity_not_established
 identity_result_indeterminate
 credential_expired
@@ -744,7 +744,7 @@ authentication_authorization_boundary_violation
 trust_root_scope_undefined
 private_material_disclosure_detected
 component_conformance_evidence_incomplete
-```
+`
 
 ## 11. Non-Normative Examples
 

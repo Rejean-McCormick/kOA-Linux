@@ -543,8 +543,6 @@
     "LOCK-LIFE-003"
   ],
   "adr_ids": [
-    "ADR-008",
-    "ADR-013",
     "ADR-015"
   ],
   "tags": [

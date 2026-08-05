@@ -174,9 +174,9 @@ The lifecycle separates:
 
 The detailed runtime component behavior remains owned by:
 
-```text
+`text
 contracts/components/kristal-runtime.component.json
-```
+`
 
 Artifact structure and lifecycle requirements remain owned by `contracts/artifact-classes.contract.json`.
 
@@ -249,7 +249,7 @@ These details belong to component, profile, artifact, security, toolchain, and r
 
 ### 4.1 General lifecycle
 
-```text
+`text
 source or input
 -> Structured Epistemic State
 -> optional Claim-IR or SenTient candidate resolution
@@ -265,7 +265,7 @@ source or input
 -> atomic activation
 -> deterministic query
 -> feedback, revision, supersession, withdrawal, or revocation
-```
+`
 
 Each arrow represents a separately identified transition.
 
@@ -479,7 +479,7 @@ System, services, and governance channels remain independently versioned and act
 
 ### 4.13 Activation sequence
 
-```text
+`text
 fetch or import
 -> quarantine
 -> bounded manifest parsing
@@ -496,7 +496,7 @@ fetch or import
 -> secure evidence
 -> mark active
 -> retain previous known-good state
-```
+`
 
 The runtime never treats staging as activation.
 

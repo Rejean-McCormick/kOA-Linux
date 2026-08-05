@@ -29,7 +29,12 @@
     "generated/requirements-index.json",
     "generated/assertion-index.json",
     "generated/traceability.json",
-    "generated/exception-index.json"
+    "generated/exception-index.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json",
+    "04-components/uckk-import-bridge.md"
   ],
   "decision_ids": [
     "DEC-PROFILE-001",
@@ -79,7 +84,13 @@
     "REQ-OPS-OFF-029",
     "REQ-OPS-OFF-030",
     "REQ-OPS-OFF-031",
-    "REQ-OPS-OFF-032"
+    "REQ-OPS-OFF-032",
+    "REQ-UCKK-IMPORT-001",
+    "REQ-UCKK-IMPORT-002",
+    "REQ-UCKK-IMPORT-003",
+    "REQ-UCKK-IMPORT-004",
+    "REQ-UCKK-IMPORT-005",
+    "REQ-UCKK-IMPORT-006"
   ],
   "lock_ids": [
     "LOCK-OPS-001",
@@ -109,7 +120,8 @@
     "LOCK-MEDIATHEQUE-002",
     "LOCK-UCKK-EXT-001",
     "LOCK-DEV-001",
-    "LOCK-DEV-004"
+    "LOCK-DEV-004",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -138,7 +150,8 @@
     "DOC-OPS-007",
     "DOC-OPS-008",
     "DOC-OPS-009",
-    "DOC-OPS-010"
+    "DOC-OPS-010",
+    "DOC-COMP-UCKK-IMPORT-001"
   ],
   "tags": [
     "offline-operations",
@@ -151,7 +164,9 @@
     "replay-protection",
     "offline-bundles",
     "recovery",
-    "sovereign-offline"
+    "sovereign-offline",
+    "import-from-uckk",
+    "offline-learning"
   ]
 }
 KOA:DOC-META:END -->
@@ -180,15 +195,15 @@ The model distinguishes:
 
 The core principle is:
 
-```text
+`text
 offline continuity
-    means
+ means
 declared local capability under verified local authority
 
 offline continuity
-    does not mean
+ does not mean
 permission to guess missing authority or claim remote completion
-```
+`
 
 A node can remain useful while disconnected without pretending that every connected feature remains available.
 
@@ -237,7 +252,7 @@ It applies to:
 
 It covers operation during:
 
-```text
+`text
 connected
 disconnecting
 offline_verified
@@ -247,7 +262,7 @@ reconnecting
 synchronizing
 conflict_review
 connected_verified
-```
+`
 
 The exact state identifiers, transition commands, timers, network interfaces, media devices, trust values, retention periods, storage paths, and synchronization protocols belong to active profile, component, integration, artifact, and operations contracts.
 
@@ -605,7 +620,7 @@ Examples include migrations, trust updates, restore activation, publication comp
 
 The following states remain distinct:
 
-```text
+`text
 prepared locally
 queued locally
 submitted to transport
@@ -613,7 +628,7 @@ received by peer
 accepted by peer
 executed by peer
 verified locally
-```
+`
 
 A local publication intent is not a completed publication.
 
@@ -1384,7 +1399,7 @@ Local navigation remains available when voice or connectivity is absent.
 
 The kOA Mediatheque preserves local source and derivative ownership and deterministic processing. UCKK has separate remote authority and storage.
 
-The UCKK publication integration can queue controlled publication intents where permitted. It does not queue direct remote database writes or implicit bidirectional synchronization.
+The UCKK publication integration can queue controlled outbound publication intents where permitted. The separate UCKK import integration can accept complete offline learning packages into quarantine or defer online retrieval. Neither direction queues direct remote database writes, automatic progress transfer, or implicit bidirectional synchronization.
 
 Publication remains separate from dimension ingestion.
 
@@ -1435,23 +1450,12 @@ A test peer does not use production trust or production synchronization authorit
 
 | ADR | Relevance |
 | --- | --- |
-| `ADR-002` | Supports locally staged and verified system images in applicable sovereign profiles. |
 | `ADR-005` | Permits profile-scoped rootless runtime and local service topology. |
-| `ADR-008` | Establishes four independent release channels. |
-| `ADR-009` | Keeps policy decisions explicit while disconnected. |
-| `ADR-010` | Preserves selective audit and private evidence. |
 | `ADR-012` | Keeps privileged node transitions inside a narrow broker boundary. |
-| `ADR-013` | Separates global offline semantics from profile implementation. |
-| `ADR-014` | Establishes the strict external AI boundary. |
 | `ADR-015` | Requires isolated development workspaces. |
-| `ADR-018` | Keeps SenTient optional and isolated. |
 | `ADR-019` | Separates resource and governance authority. |
-| `ADR-030` | Establishes the kOA Mediatheque as an internal component. |
 | `ADR-021` | Preserves Ariane local navigation without external voice. |
-| `ADR-031` | Establishes UCKK as an external Moodle publication target. |
-| `ADR-023` | Makes offline overlay effects explicit. |
 | `ADR-024` | Preserves logical ownership across deployment forms. |
-| `ADR-026` | Blocks active authority based on missing implementation decisions. |
 
 ### 9.3 Prohibited assumptions
 
@@ -1545,7 +1549,7 @@ This document conforms when all of the following checks pass:
 
 The validator reports focused failures, including:
 
-```text
+`text
 offline_profile_capability_missing
 offline_component_mode_missing
 offline_transition_invalid
@@ -1581,7 +1585,7 @@ offline_queue_drain_unbounded
 offline_connected_ready_too_early
 offline_recovery_not_revalidated
 offline_workspace_identity_collision
-```
+`
 
 ## 11. Non-Normative Examples
 

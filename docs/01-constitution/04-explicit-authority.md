@@ -321,12 +321,12 @@ An authority resolution is complete only when every required input is available 
 
 A delegation moves through these conceptual states:
 
-```text
+`text
 created -> validated -> active -> expired
-                        |      |
-                        |      +-> revoked
-                        +--------> suspended
-```
+ | |
+ | +-> revoked
+ +--------> suspended
+`
 
 The delegation becomes active after:
 
@@ -476,7 +476,7 @@ When an owning component or the privileged broker cannot verify the requested re
 | Privileged host mutation | Governance Policy Runtime | kOA Node Agent | Audit Broker | The Node Agent executes only a bound allowlisted operation. |
 | Component data mutation | Governance Policy Runtime when governed | Owning component | Owning component and Audit Broker | Other components cannot write the authoritative store directly. |
 | Private-to-public publication | Governance Policy Runtime | Publication Gateway and Konnaxion | Audit Broker | Publication Gateway controls disclosure; Konnaxion owns accepted public state. |
-| UCKK local ingestion | Owning user and UCKK contracts | UCKK Dimension Gateway and UCKK Platform | Audit Broker when required | Ingestion does not automatically publish or infer categories. |
+| UCKK-to-kOA import | Owning user and applicable local policy | UCKK Import Bridge for retrieval and quarantine; kOA Mediatheque for local acceptance | Audit Broker when required | Import does not publish local content, merge authorities, or infer unrestricted rights. |
 | Artifact activation | Governance Policy Runtime when governed | Owning runtime or kOA Node Agent | Evidence Registry and Audit Broker | Verification precedes atomic activation. |
 | Ariane navigation | Owning application and Ariane contracts | Ariane Runtime | Audit Broker when required | External voice output remains an untrusted structured input. |
 | SenTient candidate production | Owning review workflow | SenTient only within its isolated workspace | Audit Broker when required | Candidate output has no direct authority in another component. |

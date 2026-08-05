@@ -228,7 +228,7 @@ Publication Gateway remains the owner of governed private-to-public content disc
 
 The artifact publication path is:
 
-```text
+`text
 source identity
 -> build or creation
 -> immutable candidate
@@ -239,7 +239,7 @@ source identity
 -> release publication
 -> Release Set compatibility
 -> independent target admission and activation
-```
+`
 
 Publication ends when the destination confirms durable availability and evidence is secured.
 
@@ -286,7 +286,7 @@ One human or service can hold more than one role only when active policy permits
 
 The development publication lifecycle uses these conceptual states:
 
-```text
+`text
 source_selected
 -> building
 -> candidate_created
@@ -298,11 +298,11 @@ source_selected
 -> signed_or_signature_not_required
 -> publishing
 -> published
-```
+`
 
 Alternative states include:
 
-```text
+`text
 rejected
 blocked
 quarantined
@@ -312,17 +312,17 @@ superseded
 revoked
 withdrawn
 archived
-```
+`
 
 These states are independent from:
 
-```text
+`text
 installed
 staged
 activating
 active
 rolled_back
-```
+`
 
 ### 4.5 Candidate immutability
 
@@ -492,13 +492,13 @@ Release Set creation is a compatibility publication step. It does not activate t
 
 Promotion carries the same immutable artifact between controlled environments.
 
-```text
+`text
 verified candidate identity
 -> development availability
 -> test availability
 -> pilot availability
 -> production availability
-```
+`
 
 Environment-specific configuration remains a separate declared artifact or runtime input.
 

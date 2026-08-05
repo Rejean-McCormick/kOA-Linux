@@ -3,7 +3,7 @@
 Compute direct and transitive documentation impact for kOA.
 
 The tool builds a typed reverse-dependency graph from active Markdown metadata,
-JSON registries and contracts, accepted ADR ownership, generated-source
+JSON registries and contracts, optional ADR rationale, generated-source
 relationships, requirement projections, locks, exceptions, and ordinary
 repo-relative references.
 
@@ -1629,19 +1629,6 @@ def build_report(
                     "message": "A major change requires at least one accepted owner decision.",
                 }
             )
-        missing_adrs = [
-            item["decision_id"]
-            for item in decision_checks
-            if not item["accepted_adr_present"]
-        ]
-        if missing_adrs:
-            activation_blockers.append(
-                {
-                    "code": "MAJOR_CHANGE_WITHOUT_ACCEPTED_ADR",
-                    "message": "Major decision changes require accepted ADR coverage.",
-                    "decision_ids": missing_adrs,
-                }
-            )
 
     schema_path = graph.docs_root / "schemas/impact-report.schema.json"
 
@@ -1848,7 +1835,7 @@ def run_self_test() -> int:
             raise AssertionError(f"Self-test missing impact nodes: {missing}")
 
         if not accepted_adr_for_decision(graph, "DEC-TEST-900"):
-            raise AssertionError("Self-test did not resolve accepted ADR.")
+            raise AssertionError("Self-test did not resolve optional ADR rationale.")
 
     print("compute_impact.py self-test: pass")
     return 0

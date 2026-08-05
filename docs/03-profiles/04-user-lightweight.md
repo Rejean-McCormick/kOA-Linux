@@ -11,14 +11,17 @@
   "canonical_refs": [
     "contracts/profiles/user-lightweight.profile.json",
     "generated/profile-catalog.json",
-    "contracts/system.contract.json"
+    "contracts/system.contract.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json"
   ],
   "decision_ids": [
     "DEC-PROFILE-001",
     "DEC-USER-001",
     "DEC-AI-001",
     "DEC-SENT-001",
-    "DEC-UCKK-001",
+    "DEC-UCKK-EXT-001",
     "DEC-ARI-001",
     "DEC-GOV-001",
     "DEC-GATE-001",
@@ -65,8 +68,8 @@
     "LOCK-AI-001",
     "LOCK-AI-002",
     "LOCK-SENT-001",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-MEDIATHEQUE-002",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
     "LOCK-GOV-001",
@@ -140,7 +143,8 @@ The profile can include:
 - local navigation and accessibility;
 - a lightweight local interface;
 - local Kristal reading and bounded knowledge storage;
-- deterministic UCKK ingestion, preview, export, and backup;
+- deterministic kOA Mediatheque ingestion, preview, export, backup, and offline retrieval;
+- bounded validation and explicit acceptance of selected UCKK learning packages;
 - local Ariane navigation and action verification;
 - controlled access to remote or local hub services;
 - optional user-triggered external integrations;
@@ -258,7 +262,7 @@ UCKK performs native ingestion through deterministic local operations, including
 
 External creative services such as Suno or Gamma remain optional adapters. They are not part of native ingestion and are invoked only through an explicit user action and controlled re-import.
 
-UCKK Dimension Gateway controls admission into UCKK. Publication Gateway controls governed release to another domain or audience. The two responsibilities remain separate.
+UCKK Import Bridge controls inbound retrieval and quarantine; the kOA Mediatheque controls local acceptance. Publication Gateway controls governed outbound release, followed by the UCKK Publication Bridge. The directional responsibilities remain separate.
 
 ### 4.5 Kristal responsibility
 
@@ -289,7 +293,7 @@ The profile does not require SenTient for:
 - startup;
 - navigation;
 - local knowledge access;
-- deterministic UCKK processing;
+- deterministic kOA Mediatheque processing and UCKK package validation;
 - backup;
 - restore;
 - offline operation;
@@ -348,15 +352,15 @@ Operator access does not automatically grant cultural, publication, or data auth
 - **REQ-USER-004 — SHALL:** The interface display offline, degraded, queued, external, and blocked states in a form understandable to the local user.
 - **REQ-USER-005 — SHALL NOT:** The endpoint silently replace an unavailable local or external capability with another provider, model, service, or data path.
 - **REQ-USER-006 — SHALL:** Ariane local navigation and action verification remain available without external voice processing.
-- **REQ-USER-007 — SHALL:** Native UCKK ingestion and processing remain deterministic and local.
-- **REQ-USER-008 — SHALL NOT:** Native UCKK ingestion automatically invoke Suno, Gamma, ChatGPT, Ariane external voice, SenTient, or another AI service.
+- **REQ-USER-007 — SHALL:** Local kOA Mediatheque processing and offline validation of complete UCKK learning packages remain deterministic and locally operable.
+- **REQ-USER-008 — SHALL NOT:** kOA Mediatheque ingestion or UCKK learning-package import automatically invoke Suno, Gamma, ChatGPT, Ariane external voice, SenTient, or another AI service.
 - **REQ-USER-009 — SHALL:** Every external-service invocation be explicit, minimized, attributable, reviewable, and bound to controlled re-import and component acceptance.
 - **REQ-USER-010 — SHALL NOT:** External output become authoritative or mutate authoritative component data directly.
 - **REQ-USER-011 — SHALL:** SenTient, when present, remain optional, stopped by default, task-activated, resource-isolated, and non-authoritative.
 - **REQ-USER-012 — SHALL NOT:** Profile conformance depend on SenTient, Kubernetes, a GPU, a local model runtime, a public cloud, or a permanent network connection.
 - **REQ-USER-013 — SHALL:** Each component retain logical ownership of its authoritative data.
 - **REQ-USER-014 — SHALL NOT:** Components write directly into another component’s authoritative storage.
-- **REQ-USER-015 — SHALL:** UCKK Dimension Gateway and Publication Gateway remain separate authorities and execution boundaries.
+- **REQ-USER-015 — SHALL:** UCKK Import Bridge, UCKK Publication Bridge, Publication Gateway, and kOA Mediatheque acceptance remain separate authorities and execution boundaries.
 - **REQ-USER-016 — SHALL:** Governed publication, disclosure, consent, and privilege decisions fail closed when required authority cannot be verified.
 - **REQ-USER-017 — SHALL:** Resource Governor preserve essential local capabilities by limiting, delaying, or denying optional heavy work under resource pressure.
 - **REQ-USER-018 — SHALL:** Background services and optional components use bounded CPU, memory, storage, process, queue, and network resources.
@@ -457,17 +461,17 @@ Reconnection is not an automatic authorization event.
 
 The update sequence is:
 
-```text
+`text
 discovered
-  -> downloaded_or_imported
-  -> verified
-  -> staged
-  -> tested
-  -> compatible
-  -> activated
-  -> observed
-  -> retained_or_repaired
-```
+ -> downloaded_or_imported
+ -> verified
+ -> staged
+ -> tested
+ -> compatible
+ -> activated
+ -> observed
+ -> retained_or_repaired
+`
 
 A candidate that fails verification, compatibility, migration, testing, or activation returns the deployment to the last known good state or enters the documented forward-repair path.
 
@@ -512,7 +516,7 @@ Removal includes:
 | Storage reserve too low | Stop non-essential ingestion and generation. | Read access, export, cleanup, recovery | New large writes |
 | Governance runtime unavailable when required | Block new governed decisions. | Existing safe local reads where policy permits | New publication, disclosure, or privilege decision |
 | Publication Gateway unavailable | Keep publication local and pending. | Local editing and storage | Cross-domain publication |
-| UCKK Dimension Gateway unavailable | Preserve existing content. | Reading, export, backup | New governed admission |
+| UCKK Import Bridge unavailable | Preserve existing local and previously accepted content. | Reading, local adaptation, export, backup | New UCKK retrieval and import |
 | Identity status stale | Apply declared expiry policy. | Non-sensitive local functions | Operations requiring fresh authority |
 | Clock uncertain | Mark time uncertainty. | Non-time-sensitive local work | Expiry-sensitive authority and release decisions |
 | Backup target unavailable | Report degraded protection. | Active local state | Claim of current protected backup |
@@ -593,9 +597,9 @@ The following assumptions are prohibited:
 7. Failure of external voice disables Ariane.
 8. SenTient is required for navigation, knowledge access, media handling, or conformance.
 9. SenTient can write authoritative data directly.
-10. Native UCKK ingestion can invoke AI automatically.
+10. kOA Mediatheque ingestion or UCKK package import can invoke AI automatically.
 11. UCKK admission authorizes publication.
-12. Publication Gateway and UCKK Dimension Gateway are interchangeable.
+12. Publication Gateway, UCKK Publication Bridge, and UCKK Import Bridge are interchangeable.
 13. Resource Governor can decide consent or publication.
 14. Governance Policy Runtime can allocate resources.
 15. All component data belongs in one database.
@@ -634,13 +638,13 @@ This document is conformant when:
 16. Normative keywords occur only in the generated requirement block.
 17. The profile starts and remains useful without Internet or external AI.
 18. Ariane local navigation passes without external voice.
-19. Deterministic UCKK operations pass without AI.
+19. Deterministic kOA Mediatheque operations and UCKK learning-package validation pass without AI; accepted content remains available offline.
 20. SenTient absence does not affect baseline conformance.
 21. Optional heavy services remain stopped until explicitly activated.
 22. Resource pressure preserves essential capabilities.
 23. Component authoritative data remains isolated by ownership.
 24. Direct cross-component authoritative writes fail validation.
-25. Publication Gateway and UCKK Dimension Gateway remain separate.
+25. Publication Gateway, UCKK Publication Bridge, and UCKK Import Bridge remain separate.
 26. External-service output requires controlled acceptance.
 27. Queued operations are revalidated after reconnection.
 28. Update failure preserves the last known good state.
@@ -679,7 +683,7 @@ A downloaded services-channel candidate fails a migration test. The endpoint ret
 
 ### 11.7 Bounded local installation
 
-The user installs only the local interface, Ariane runtime, Kristal runtime, a small UCKK deployment, Resource Governor, and backup tooling. The profile does not require the developer toolchain, SenTient, Kubernetes, or a hub.
+The user installs only the local interface, Ariane runtime, Kristal runtime, the private offline kOA Mediatheque, Resource Governor, and backup tooling. Optional UCKK publication and import integrations can be enabled independently; the profile does not install or operate the online UCKK Moodle platform. The profile does not require the developer toolchain, SenTient, Kubernetes, or a hub.
 
 ### 11.8 Controlled publication
 

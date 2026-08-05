@@ -192,17 +192,17 @@ Application-specific authority remains with the application or owning kOA compon
 
 ### 4.1 Experience model
 
-```text
+`text
 Application = territory
-Atlas       = validated map
-Driver      = bounded means of observation and action
-Ariane      = navigator
-User        = goal owner and final controller
-```
+Atlas = validated map
+Driver = bounded means of observation and action
+Ariane = navigator
+User = goal owner and final controller
+`
 
 Ariane performs a closed navigation cycle:
 
-```text
+`text
 goal
 -> input validation
 -> application identification
@@ -213,7 +213,7 @@ goal
 -> guidance or execution
 -> resulting-state verification
 -> completion, recovery, or blocked result
-```
+`
 
 Ariane never treats an unverified visual impression, guessed intent, or external model response as sufficient evidence for an authoritative action.
 
@@ -406,7 +406,7 @@ Voice is an optional additional input, not the accessibility foundation.
 
 The voice path is:
 
-```text
+`text
 speech
 -> external voice and intent service
 -> structured candidate command
@@ -416,7 +416,7 @@ speech
 -> authority and confirmation
 -> guidance or execution
 -> verification
-```
+`
 
 The candidate command includes enough structure for Ariane to identify the proposed goal and declared parameters. Ariane rejects incomplete, unsupported, ambiguous, stale, or unsafe candidates.
 
@@ -516,7 +516,7 @@ Resource Governor prioritizes observation, confirmation, cancellation, and recov
 
 Ariane navigation uses the following conceptual states:
 
-```text
+`text
 idle
 -> identifying_application
 -> observing
@@ -529,11 +529,11 @@ or
 -> executing
 -> verifying
 -> completed
-```
+`
 
 Alternative outcomes include:
 
-```text
+`text
 blocked
 paused
 cancelled
@@ -541,7 +541,7 @@ degraded
 recovery_required
 recovering
 failed
-```
+`
 
 The detailed state machine belongs to the Ariane component contract.
 

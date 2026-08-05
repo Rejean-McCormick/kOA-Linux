@@ -299,11 +299,6 @@ The profile applies these accepted architectural records:
 
 | Record | Effect |
 | --- | --- |
-| `ADR-001` | Uses a standard maintained Linux kernel |
-| `ADR-002` | Uses an immutable signed operating-system image with atomic activation |
-| `ADR-008` | Separates system, services, governance, and knowledge release channels |
-| `ADR-009` | Uses Governance Policy Runtime where the profile requires governed policy evaluation |
-| `ADR-010` | Uses selective audit rather than indiscriminate operational replication |
 | `ADR-012` | Routes normal privileged node mutation through one narrow broker |
 | `DEC-PROFILE-001` | Defines primary profiles and composable overlays |
 | `DEC-DATA-001` | Preserves logical data ownership and prohibits foreign source writes |
@@ -433,8 +428,7 @@ Application and runtime components can include:
 - Orgo;
 - Kristal Runtime;
 - SemantiK Architect Runtime;
-- UCKK Platform;
-- UCKK Dimension Gateway;
+- kOA Mediatheque;
 - Ariane Runtime;
 - Publication Gateway.
 
@@ -1017,17 +1011,15 @@ Publication Gateway prepares and transports the permitted representation.
 
 The source component remains authoritative for source data.
 
-UCKK Dimension Gateway does not substitute for Publication Gateway.
+UCKK Publication Bridge does not substitute for or bypass Publication Gateway authorization.
 
-### 8.7 UCKK admission
+### 8.7 Publication to external UCKK
 
-A user or authorized component requests admission of selected media.
+A user or authorized component selects an exact kOA Mediatheque record version or rendition for publication.
 
-UCKK Dimension Gateway verifies the transfer boundary.
+Publication Gateway verifies disclosure authority, rights, restrictions, audience, purpose, and destination. UCKK Publication Bridge then packages and transports only the authorized representation. In the reverse direction, UCKK Import Bridge places selected complete learning packages in quarantine; local acceptance creates separate identities and preserves offline availability without automatic synchronization.
 
-UCKK Platform accepts and owns the resulting UCKK state according to its contract.
-
-Publication and UCKK admission remain distinct operations.
+The external UCKK Moodle platform owns its accepted destination state. The kOA Mediatheque retains authority over the local source record. Local ingestion and external publication remain distinct operations.
 
 ### 8.8 Audit and evidence
 
@@ -1066,11 +1058,6 @@ External outputs remain non-authoritative until adopted by an owning component.
 
 | Decision or ADR | Closed choice |
 | --- | --- |
-| `ADR-001` | Standard maintained Linux kernel |
-| `ADR-002` | Signed image-built operating-system base and atomic activation |
-| `ADR-008` / `DEC-REL-001` | Four independent release channels bound by Release Sets |
-| `ADR-009` / `DEC-GOV-001` | Governance Policy Runtime remains separate from Resource Governor |
-| `ADR-010` | Selective audit rather than indiscriminate data exposure |
 | `ADR-012` | One narrow privileged node broker |
 | `DEC-PROFILE-001` | Sovereign Linux node is a primary profile with explicit overlays |
 | `DEC-DATA-001` | Logical data ownership and prohibited foreign writes |

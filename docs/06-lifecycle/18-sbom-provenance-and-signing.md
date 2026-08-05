@@ -242,7 +242,7 @@ Those details remain with canonical schemas, artifact classes, profiles, securit
 
 The supply-chain graph is:
 
-```text
+`text
 source and material identities
 -> controlled build or creation
 -> immutable subject artifact
@@ -254,7 +254,7 @@ source and material identities
 -> publication and release evidence
 -> target verification
 -> independent activation
-```
+`
 
 Every node has its own identity.
 

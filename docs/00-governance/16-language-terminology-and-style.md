@@ -230,8 +230,10 @@ The following display names are fixed:
 | Konnaxion | `konnaxion` |
 | Orgo | `orgo` |
 | Kristal Runtime | `kristal_runtime` |
-| UCKK Platform | `uckk_platform` |
-| UCKK Dimension Gateway | `uckk_dimension_gateway` |
+| kOA Mediatheque | `koa_mediatheque` |
+| UCKK | `uckk` |
+| UCKK Publication Bridge | `uckk_publication_bridge` |
+| UCKK Import Bridge | `uckk_import_bridge` |
 | Ariane Runtime | `ariane_runtime` |
 | SemantiK Architect Runtime | `semantik_architect_runtime` |
 | GF Wordbench | `gf_wordbench` |
@@ -254,9 +256,11 @@ The following terms represent distinct concepts:
 | Term A | Term B | Required distinction |
 | --- | --- | --- |
 | Resource Governor | Governance Policy Runtime | Resource control versus authorization, disclosure, consent, and governed privilege |
-| Publication Gateway | UCKK Dimension Gateway | Cross-domain publication versus selected-media ingestion into UCKK |
+| Publication Gateway | UCKK Publication Bridge | Disclosure authorization versus Moodle-specific outbound packaging, transport, result handling, and receipts |
+| UCKK Publication Bridge | UCKK Import Bridge | Governed outbound publication versus governed inbound retrieval, quarantine, validation, and local acceptance |
+| shared Mediatheque frame | shared database or authority | Compatible interchange semantics versus prohibited authority, storage, identity, access-control, or lifecycle merger |
 | Ariane Runtime | approved Ariane voice adapter | Local deterministic navigation versus optional external voice capability |
-| UCKK Platform | UCKK Dimension Gateway | Media platform authority versus controlled ingestion boundary |
+| kOA Mediatheque | UCKK Mediatheque | Separate local and external authority, storage, lifecycle, identity, access control, and operations |
 | Kristal Runtime | GF Wordbench | Runtime consumption versus language construction |
 | SemantiK Architect Runtime | GF Wordbench | Compiled language execution versus language build sessions |
 | profile | profile overlay | Complete deployment identity versus composable assurance or shell behavior |
@@ -333,7 +337,6 @@ Canonical identifiers use these forms:
 | Requirement | `REQ-<DOMAIN>-<NUMBER>` or `REQ-<DOMAIN>-<SUBDOMAIN>-<NUMBER>` | `REQ-DOC-LANG-001` |
 | Lock | `LOCK-<DOMAIN>-<NUMBER>` | `LOCK-DOC-019` |
 | Decision | `DEC-<DOMAIN>-<NUMBER>` | `DEC-DOC-003` |
-| ADR | `ADR-<NUMBER>` | `ADR-025` |
 | Test | `TEST-<DOMAIN>-<NUMBER>` | `TEST-DOC-LANG-001` |
 | Evidence | `EVID-<DOMAIN>-<NUMBER>` | `EVID-DOC-LANG-001` |
 | Exception | `EXC-<DOMAIN>-<NUMBER>` | `EXC-DOC-001` |
@@ -978,8 +981,9 @@ Terminology preserves component boundaries.
 The following names remain distinct in all cross-component documentation:
 
 - `resource_governor` and `governance_policy_runtime`;
-- `publication_gateway` and `uckk_dimension_gateway`;
-- `uckk_platform` and `uckk_dimension_gateway`;
+- `publication_gateway` and `uckk_publication_bridge`;
+- `koa_mediatheque` and `uckk_mediatheque`;
+- `koa_mediatheque` and `uckk_publication_bridge`;
 - `kristal_runtime` and `semantik_architect_runtime`;
 - `semantik_architect_runtime` and `gf_wordbench`;
 - `ariane_runtime` and the approved external voice adapter.
@@ -1110,13 +1114,13 @@ kOA Linux does not use GNOME.
 Preferred:
 
 ```text
-The external AI surface returns a candidate input. UCKK accepts the input only after explicit review and controlled import.
+The external AI surface returns a candidate input. The kOA Mediatheque accepts it only after explicit review and a controlled component-owned import.
 ```
 
 Ambiguous:
 
 ```text
-The AI adds the result to UCKK.
+The AI adds the result to the media library.
 ```
 
 ### 11.5 Development identity

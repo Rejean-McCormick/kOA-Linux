@@ -35,7 +35,10 @@
     "generated/traceability.json",
     "generated/exception-index.json",
     "generated/test-catalog.json",
-    "generated/evidence-catalog.json"
+    "generated/evidence-catalog.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json"
   ],
   "decision_ids": [
     "DEC-LIFE-001",
@@ -210,7 +213,7 @@ Profiles and component contracts supply those concrete values.
 
 ### 4.1 Backup model
 
-```text
+`text
 profile and recovery objectives
 -> component-owned checkpoints
 -> component export or owner-coordinated snapshot
@@ -222,7 +225,7 @@ profile and recovery objectives
 -> restore-eligible state
 -> scheduled isolated or clean restore test
 -> retained, superseded, expired, and destroyed lifecycle
-```
+`
 
 A backup coordinator orchestrates work.
 
@@ -262,6 +265,7 @@ The component registry currently assigns 84 authoritative data domains across 15
 | `semantik_architect_runtime` | 4 | `active_language_pack_selection`, `language_runtime_compatibility_state`, `deterministic_render_cache`, `language_runtime_health_state` |
 | `sentient` | 4 | `sentient_isolated_workspaces`, `sentient_imported_candidate_corpora`, `sentient_candidate_resolution_outputs`, `sentient_research_provenance` |
 | `uckk_publication_integration` | 4 | `uckk_publication_queue`, `uckk_upload_sessions`, `uckk_staging_metadata`, `uckk_publication_receipts` |
+| `uckk_import_integration` | 5 | `uckk_import_queue`, `uckk_import_quarantine`, `uckk_import_validation_state`, `uckk_import_source_mappings`, `uckk_import_receipts` |
 | `koa_mediatheque` | 9 | `koa_media_objects`, `koa_media_versions`, `koa_media_collections`, `koa_media_relationships`, `koa_media_provenance`, `koa_media_rights_and_restrictions`, `koa_media_renditions`, `koa_media_lifecycle_state`, `koa_media_import_export_history` |
 
 A backup coverage report accounts for these domains without silently transferring ownership to the backup system.
@@ -833,7 +837,7 @@ A failed required check blocks or narrows the affected backup, restore-readiness
 
 ### 11.1 Nightly sovereign-node backup
 
-A sovereign node creates owner checkpoints for identity, governance, audit, Orgo, Konnaxion, Kristal, the kOA Mediatheque, active language, and publication state, including queued UCKK packages and receipts but not remote UCKK authoritative storage.
+A sovereign node creates owner checkpoints for identity, governance, audit, Orgo, Konnaxion, Kristal, the kOA Mediatheque, active language, outbound publication state, and inbound import state. The backup can include queued outbound packages, inbound quarantine metadata where retention permits it, source mappings, validation records, accepted local learning content, and receipts, but never claims to contain authoritative remote UCKK storage.
 
 It assembles one encrypted backup set, writes it to local protected storage, and copies it to an offline device held separately.
 

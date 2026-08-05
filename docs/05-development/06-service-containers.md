@@ -247,31 +247,31 @@ Production use requires:
 
 ### 3.1 Architecture and decisions
 
-```text
+`text
 generated/decision-index.json
 contracts/system.contract.json#/global_boundaries
 contracts/system.contract.json#/data_authority
 contracts/system.contract.json#/cross_component_communication
-```
+`
 
 Relevant accepted decisions include:
 
-```text
+`text
 DEC-CONTAINER-001
 DEC-K8S-001
 DEC-PROFILE-001
 DEC-DATA-001
 DEC-GOV-001
 DEC-REL-001
-```
+`
 
 ### 3.2 Components and interfaces
 
-```text
+`text
 generated/component-catalog.json
 generated/component-catalog.json
 contracts/components/*.component.json
-```
+`
 
 The component contract defines the service boundary.
 
@@ -279,22 +279,22 @@ A container image, compose file, Quadlet file, or Kubernetes object does not cre
 
 ### 3.3 Profiles
 
-```text
+`text
 generated/profile-catalog.json
 contracts/profiles/developer-linux-workstation.profile.json
 contracts/profiles/developer-windows-wsl.profile.json
 contracts/profiles/build-farm.profile.json
 contracts/profiles/sovereign-linux-node.profile.json
 contracts/profiles/control-plane.profile.json
-```
+`
 
 The profile owns runtime selection and runtime-specific adoption.
 
 ### 3.4 Development toolchains
 
-```text
+`text
 contracts/toolchains/python-uv.toolchain.json
-```
+`
 
 UV owns Python dependency-environment behavior.
 
@@ -302,7 +302,7 @@ Containers isolate non-Python infrastructure and service state that UV does not 
 
 ### 3.5 Artifacts, releases, and evidence
 
-```text
+`text
 contracts/artifact-classes.contract.json
 contracts/release-channels.contract.json
 generated/requirements-index.json
@@ -311,7 +311,7 @@ generated/traceability.json
 generated/test-catalog.json
 generated/evidence-catalog.json
 generated/exception-index.json
-```
+`
 
 Published service images are artifacts rather than mutable development state.
 
@@ -321,19 +321,19 @@ Published service images are artifacts rather than mutable development state.
 
 The correct direction is:
 
-```text
+`text
 component responsibility
-        ↓
+ ↓
 component contract
-        ↓
+ ↓
 profile applicability
-        ↓
+ ↓
 artifact and image
-        ↓
+ ↓
 runtime-specific service definition
-        ↓
+ ↓
 workspace instance
-```
+`
 
 The reverse direction is invalid.
 
@@ -347,9 +347,9 @@ The identifier namespaces mutable development resources.
 
 A conceptual naming form is:
 
-```text
+`text
 <workspace_id>-<component_or_service>-<resource>
-```
+`
 
 The exact syntax belongs to the active development profile or workspace contract.
 
@@ -626,7 +626,7 @@ Examples include:
 - Elasticsearch;
 - OpenRefine;
 - model runtimes;
-- intensive UCKK workers.
+- intensive kOA Mediatheque workers and UCKK package-validation or transport workers.
 
 Resource pressure in one workspace should not make another workspace or the host unusable.
 
@@ -1124,28 +1124,28 @@ This document is conformant when:
 
 Expected test coverage includes:
 
-```text
-TEST-DEV-CONT-001  Profile-specific runtime selection
-TEST-DEV-CONT-002  Runtime-independent component contract
-TEST-DEV-CONT-003  Rootless Linux development runtime
-TEST-DEV-CONT-004  Windows/WSL Docker or Podman compatibility
-TEST-DEV-CONT-005  Build-farm OCI runtime
-TEST-DEV-CONT-006  No endpoint Kubernetes dependency
-TEST-DEV-CONT-007  Workspace resource-name isolation
-TEST-DEV-CONT-008  Parallel workspace collision freedom
-TEST-DEV-CONT-009  Immutable image or reproducible build identity
-TEST-DEV-CONT-010  Secret exclusion from images and manifests
-TEST-DEV-CONT-011  Least-privilege container configuration
-TEST-DEV-CONT-012  Workspace network and port isolation
-TEST-DEV-CONT-013  Volume and database isolation
-TEST-DEV-CONT-014  Component-owned migration workflow
-TEST-DEV-CONT-015  Foreign authoritative-write rejection
-TEST-DEV-CONT-016  Health and readiness distinction
-TEST-DEV-CONT-017  Workspace resource limits
-TEST-DEV-CONT-018  Idempotent workspace lifecycle
-TEST-DEV-CONT-019  Artifact provenance and release placement
-TEST-DEV-CONT-020  Exact validation-input evidence
-```
+`text
+TEST-DEV-CONT-001 Profile-specific runtime selection
+TEST-DEV-CONT-002 Runtime-independent component contract
+TEST-DEV-CONT-003 Rootless Linux development runtime
+TEST-DEV-CONT-004 Windows/WSL Docker or Podman compatibility
+TEST-DEV-CONT-005 Build-farm OCI runtime
+TEST-DEV-CONT-006 No endpoint Kubernetes dependency
+TEST-DEV-CONT-007 Workspace resource-name isolation
+TEST-DEV-CONT-008 Parallel workspace collision freedom
+TEST-DEV-CONT-009 Immutable image or reproducible build identity
+TEST-DEV-CONT-010 Secret exclusion from images and manifests
+TEST-DEV-CONT-011 Least-privilege container configuration
+TEST-DEV-CONT-012 Workspace network and port isolation
+TEST-DEV-CONT-013 Volume and database isolation
+TEST-DEV-CONT-014 Component-owned migration workflow
+TEST-DEV-CONT-015 Foreign authoritative-write rejection
+TEST-DEV-CONT-016 Health and readiness distinction
+TEST-DEV-CONT-017 Workspace resource limits
+TEST-DEV-CONT-018 Idempotent workspace lifecycle
+TEST-DEV-CONT-019 Artifact provenance and release placement
+TEST-DEV-CONT-020 Exact validation-input evidence
+`
 
 The test catalog and evidence registry own executable controls and evidence definitions.
 
@@ -1163,12 +1163,12 @@ The workspace uses rootless Podman.
 
 Its services use names such as:
 
-```text
+`text
 alpha-orgo-api
 alpha-postgres
 alpha-private-network
 alpha-orgo-data
-```
+`
 
 Host ports are allocated for `alpha` rather than hardcoded globally.
 
@@ -1178,12 +1178,12 @@ A second worktree uses workspace `beta`.
 
 It builds the same component revision family but uses:
 
-```text
+`text
 beta-orgo-api
 beta-postgres
 beta-private-network
 beta-orgo-data
-```
+`
 
 Both workspaces run concurrently with different host ports, databases, volumes, credentials, logs, and processes.
 

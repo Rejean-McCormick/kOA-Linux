@@ -28,6 +28,20 @@
       "title": "Suno",
       "status": "active",
       "version": "1.0.0"
+    },
+    {
+      "id": "uckk-import",
+      "path": "contracts/integrations/uckk-import.integration.json",
+      "title": "UCKK Import",
+      "status": "active",
+      "version": "1.0.0"
+    },
+    {
+      "id": "uckk-publication",
+      "path": "contracts/integrations/uckk-publication.integration.json",
+      "title": "UCKK Publication",
+      "status": "active",
+      "version": "1.0.0"
     }
   ]
 }

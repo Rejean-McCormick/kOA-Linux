@@ -122,7 +122,8 @@
     "LOCK-PRIV-001",
     "LOCK-LIFE-001",
     "LOCK-PROFILE-001",
-    "LOCK-PROFILE-002"
+    "LOCK-PROFILE-002",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -163,10 +164,10 @@ This document defines the global kOA security boundary for artificial-intelligen
 
 The governing principle is:
 
-```text
+`text
 AI can assist.
 AI does not become invisible authority.
-```
+`
 
 The boundary preserves:
 
@@ -441,7 +442,7 @@ The AI never receives raw database credentials or a generic privileged execution
 
 ### 4.10 Candidate lifecycle
 
-```text
+`text
 local source selected
 -> data eligibility and minimization
 -> transfer preview
@@ -454,7 +455,7 @@ local source selected
 -> required review
 -> owning-component admission or rejection
 -> optional publication or activation through a separate lifecycle
-```
+`
 
 External processing ends at candidate creation.
 
@@ -894,7 +895,7 @@ Provider-specific conveniences disappear without creating a core-data migration 
 | `DEC-SENT-001` | SenTient is an optional isolated task-activated workbench and not a canonical authority. |
 | `DEC-ARI-001` | Ariane local navigation is deterministic; external voice is optional and returns a candidate command. |
 | `DEC-MEDIATHEQUE-001` | kOA Mediatheque ingestion is deterministic; Suno and Gamma are user-triggered external adapters. |
-| `DEC-UCKK-EXT-001` | UCKK is an external publication target and never an AI admission owner. |
+| `DEC-UCKK-EXT-001` | UCKK is an external online learning and Mediatheque platform; neither directional bridge nor external AI owns local admission authority. |
 | `DEC-LANG-001` | AI language suggestions remain candidate source; GF Wordbench compilation and SemantiK runtime stay deterministic and separate. |
 | `DEC-KRISTAL-001` | AI-extracted or reconciled claims remain candidates until explicit epistemic review and recognition. |
 | `DEC-AUTH-001` | AI cannot infer or grant authority, privilege, publication, release, activation, exception, or recovery rights. |

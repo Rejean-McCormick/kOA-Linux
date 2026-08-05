@@ -204,7 +204,7 @@ A claim is descriptive evidence about a target. It is not an owner decision, a p
 
 The following profile documents explain the model without becoming alternate owners:
 
-```text
+`text
 03-profiles/00-profile-model.md
 03-profiles/01-profile-composition-and-overlays.md
 03-profiles/02-profile-inheritance.md
@@ -218,7 +218,7 @@ The following profile documents explain the model without becoming alternate own
 03-profiles/11-high-assurance.md
 03-profiles/12-sovereign-offline.md
 03-profiles/13-appliance-shell.md
-```
+`
 
 Repository-relative paths and canonical object identifiers are the only authority references used by this document.
 
@@ -447,7 +447,7 @@ The result is calculated rather than selected by the claimant.
 
 An issued claim includes:
 
-```text
+`text
 claim identifier
 claim class
 target identity
@@ -465,7 +465,7 @@ result
 issuer or evaluator identity
 issued time
 validity interval or revalidation condition
-```
+`
 
 Human-readable badges or summaries are projections of the canonical claim record.
 
@@ -582,11 +582,11 @@ A qualified claim is permitted only when the active exception contract defines t
 
 Examples of qualified wording include:
 
-```text
+`text
 passes user_lightweight except for EXC-PROFILE-USER-001
 passes sovereign_linux_node with a time-bounded storage-redundancy exception
 deployment conformance passed; operational restore conformance blocked
-```
+`
 
 Qualified wording never shortens to an unqualified profile badge.
 
@@ -759,7 +759,7 @@ This document is conformant when:
 
 Applicable failure codes include:
 
-```text
+`text
 profile_claim_subject_missing
 primary_profile_missing
 implicit_overlay_claim
@@ -780,7 +780,7 @@ claim_wording_overstated
 claim_stale
 claim_class_mismatch
 partial_claim_presented_as_complete
-```
+`
 
 A required evaluator or validator that cannot run produces `blocked`, not `pass`.
 
@@ -798,12 +798,12 @@ It does not claim sovereign-node, appliance-shell, or high-assurance conformance
 
 A production node declares:
 
-```text
+`text
 primary profile: sovereign_linux_node
 overlays:
-  - sovereign_offline
-  - high_assurance
-```
+ - sovereign_offline
+ - high_assurance
+`
 
 The evaluator resolves the combined composition, runs base and overlay tests, and issues one effective-composition claim plus linked subclaims. A pass for the base profile does not compensate for a failed high-assurance test.
 

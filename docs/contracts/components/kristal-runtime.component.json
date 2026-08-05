@@ -24,9 +24,7 @@
     "DEC-AI-001",
     "DEC-REL-001"
   ],
-  "adr_refs": [
-    "ADR-007"
-  ],
+  "adr_refs": [],
   "requirement_refs": [
     "REQ-COMP-KRISTAL-001",
     "REQ-COMP-KRISTAL-002",
@@ -549,7 +547,7 @@
     "compatible_interface_addition": "minor",
     "clarification_without_semantic_change": "patch",
     "requires_accepted_decision_for_semantic_change": true,
-    "requires_adr_for_major_change": true,
+    "requires_adr_for_major_change": false,
     "requires_impact_report_for_major_change": true,
     "requires_full_validation_before_activation": true
   },

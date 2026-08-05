@@ -132,9 +132,9 @@ This document does not:
 
 Detailed canonical behavior remains owned by:
 
-```text
+`text
 contracts/components/kristal-runtime.component.json
-```
+`
 
 ## 3. Canonical References
 
@@ -458,9 +458,9 @@ This document is conformant when:
 
 The validation entry point is:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 ## 11. Non-Normative Examples
 

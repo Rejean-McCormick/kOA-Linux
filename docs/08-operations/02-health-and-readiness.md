@@ -168,17 +168,17 @@ A component can be:
 
 The primary operational principle is:
 
-```text
+`text
 process alive
-    does not imply
+ does not imply
 contract ready
-    does not imply
+ does not imply
 write ready
-    does not imply
+ does not imply
 policy-authorized
-    does not imply
+ does not imply
 publication or activation complete
-```
+`
 
 This document provides the global health semantics.
 
@@ -416,14 +416,14 @@ Readiness is not necessarily tied to one transport endpoint.
 
 A component can expose separate readiness classes such as:
 
-```text
+`text
 readiness.local_read
 readiness.authoritative_write
 readiness.background_work
 readiness.publication
 readiness.activation
 readiness.recovery
-```
+`
 
 A router uses the class that matches the routed request.
 
@@ -1059,11 +1059,11 @@ Ariane exposes local-navigation readiness separately from external voice readine
 
 Voice loss does not remove local deterministic navigation.
 
-### 8.11 kOA Mediatheque and UCKK publication
+### 8.11 kOA and UCKK Mediatheque interchange
 
-The kOA Mediatheque exposes local source storage, deterministic processing, derivative, export, backup, restore, and admission health separately. The UCKK publication integration exposes queue, authentication, transfer, remote-result, and receipt health.
+The kOA Mediatheque exposes local source storage, deterministic processing, accepted offline learning content, derivative, export, backup, restore, and admission health separately. The UCKK publication integration exposes outbound queue, authentication, transfer, remote-result, and receipt health. The UCKK import integration separately exposes retrieval, offline-carrier intake, quarantine, scanner, integrity, licence, compatibility, acceptance-handoff, and import-receipt health.
 
-Suno, Gamma, and UCKK status remain external integration states and do not define local kOA Mediatheque health.
+Suno, Gamma, and live UCKK status remain external integration states and do not define local kOA Mediatheque health. An unavailable online source does not make previously accepted offline learning content unready.
 
 ### 8.12 SenTient
 
@@ -1111,18 +1111,10 @@ A worker process being alive does not prove that it is clean or job-ready.
 | ADR | Relevance |
 | --- | --- |
 | `ADR-005` | Allows profile-scoped supervision and rootless service execution without defining health by container existence. |
-| `ADR-008` | Requires independent channel activation and acceptance. |
-| `ADR-009` | Separates policy decision outcomes from service health. |
-| `ADR-010` | Separates durable receipts and private proof from ordinary diagnostics. |
-| `ADR-011` | Avoids making Kubernetes-specific probe semantics universal. |
-| `ADR-013` | Separates global health semantics from profile implementation. |
+| `ADR-005` | Avoids making Kubernetes-specific probe semantics universal. |
 | `ADR-015` | Requires isolated development workspaces and health namespaces. |
-| `ADR-018` | Keeps SenTient optional and independently observable. |
 | `ADR-019` | Separates resource health from governance authority. |
 | `ADR-021` | Preserves Ariane local readiness without external voice. |
-| `ADR-030` | Preserves deterministic kOA Mediatheque readiness without external AI. |
-| `ADR-031` | Keeps external UCKK availability separate from local readiness. |
-| `ADR-023` | Makes offline and high-assurance health effects explicit through overlays. |
 | `ADR-024` | Preserves logical boundaries across physical consolidation. |
 
 ### 9.3 Prohibited assumptions
@@ -1211,7 +1203,7 @@ This document conforms when all of the following checks pass:
 
 The validator reports focused failures, including:
 
-```text
+`text
 health_contract_missing
 health_capability_mapping_missing
 health_liveness_readiness_conflated
@@ -1245,7 +1237,7 @@ health_offline_local_status_missing
 health_external_integration_cascade
 health_synthetic_test_mutated_truth
 health_receipt_probe_conflation
-```
+`
 
 ## 11. Non-Normative Examples
 
@@ -1255,13 +1247,13 @@ Konnaxion is running and can return verified local civic-space reads.
 
 Its database has entered read-only mode. Health reports:
 
-```text
+`text
 liveness: alive
 local_read: healthy
 authoritative_write: read_only
 publication: unavailable
 overall: read_only
-```
+`
 
 The router continues read traffic and rejects writes.
 

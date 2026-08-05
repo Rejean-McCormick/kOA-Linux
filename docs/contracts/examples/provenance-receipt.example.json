@@ -17,7 +17,6 @@
     "primary_profile": "build_farm",
     "overlay_ids": [],
     "release_channel": "services",
-    "release_set_ref": null,
     "candidate_only": true,
     "release_authority": false,
     "activation_authority": false,
@@ -420,9 +419,7 @@
       "signature revocation",
       "test evidence invalidation",
       "provenance schema incompatibility"
-    ],
-    "supersedes_receipt_id": null,
-    "superseded_by_receipt_id": null
+    ]
   },
   "retention": {
     "retention_class_ref": "contracts/retention.registry.json#/classes/build-provenance",

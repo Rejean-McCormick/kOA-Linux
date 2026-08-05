@@ -60,13 +60,13 @@
     "LOCK-SENT-001",
     "LOCK-MEDIATHEQUE-001",
     "LOCK-UCKK-EXT-001",
-    "LOCK-UCKK-EXT-001",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
     "LOCK-DATA-001",
     "LOCK-PROFILE-001",
     "LOCK-LIFE-001",
-    "LOCK-LIFE-002"
+    "LOCK-LIFE-002",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -152,17 +152,17 @@ An external AI surface is a registered, optional integration that performs one d
 
 Every operation follows this authority chain:
 
-```text
+`text
 explicit user action
-    -> profile permission
-    -> registered integration
-    -> disclosed outbound data
-    -> external processing
-    -> candidate output
-    -> local validation
-    -> owning-component acceptance
-    -> optional authoritative use or publication
-```
+ -> profile permission
+ -> registered integration
+ -> disclosed outbound data
+ -> external processing
+ -> candidate output
+ -> local validation
+ -> owning-component acceptance
+ -> optional authoritative use or publication
+`
 
 The external service owns only remote processing. It does not own kOA data, policy, privilege, release, publication, or component authority.
 

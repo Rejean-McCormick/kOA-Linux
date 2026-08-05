@@ -251,8 +251,8 @@
         "LOCK-AI-001",
         "LOCK-AI-002",
         "LOCK-SENT-001",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-MEDIATHEQUE-002",
         "LOCK-ARI-001",
         "LOCK-ARI-002",
         "LOCK-DATA-001",
@@ -476,18 +476,12 @@
     },
     {
       "path": "00-governance/templates/adr.template.md",
-      "doc_id": "DOC-GOV-TPL-ADR-001",
+      "doc_id": "DOC-GOV-TPL-",
       "document_class": "template",
       "status": "active",
       "requirement_ids": [],
-      "assertion_ids": [
-        "LOCK-DOC-003",
-        "LOCK-DOC-005",
-        "LOCK-DOC-016"
-      ],
-      "decision_ids": [
-        "DEC-DOC-001"
-      ]
+      "assertion_ids": [],
+      "decision_ids": []
     },
     {
       "path": "00-governance/templates/component-document.template.md",
@@ -593,6 +587,9 @@
         "LOCK-DATA-001",
         "LOCK-GATE-001",
         "LOCK-GOV-001",
+        "LOCK-UCKK-EXT-002",
+        "LOCK-UCKK-EXT-001",
+        "LOCK-MEDIATHEQUE-001",
         "LOCK-LIFE-001",
         "LOCK-PROFILE-001",
         "LOCK-PROFILE-002"
@@ -603,6 +600,8 @@
         "DEC-DATA-001",
         "DEC-GATE-001",
         "DEC-GOV-001",
+        "DEC-UCKK-EXT-001",
+        "DEC-MEDIATHEQUE-001",
         "DEC-INTEGRATION-001",
         "DEC-OFFLINE-001",
         "DEC-PORT-001",
@@ -655,8 +654,9 @@
         "LOCK-PROFILE-001",
         "LOCK-PROFILE-002",
         "LOCK-SENT-001",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002"
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-AI-001",
@@ -671,7 +671,8 @@
         "DEC-REL-001",
         "DEC-SENT-001",
         "DEC-SHELL-001",
-        "DEC-UCKK-001"
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001"
       ]
     },
     {
@@ -730,8 +731,9 @@
         "LOCK-PROFILE-001",
         "LOCK-PROFILE-002",
         "LOCK-SENT-001",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002"
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-AI-001",
@@ -742,7 +744,8 @@
         "DEC-PROFILE-001",
         "DEC-REL-001",
         "DEC-SENT-001",
-        "DEC-UCKK-001"
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001"
       ]
     },
     {
@@ -778,8 +781,8 @@
         "LOCK-AI-001",
         "LOCK-AI-002",
         "LOCK-SENT-001",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
         "LOCK-ARI-001",
         "LOCK-ARI-002",
         "LOCK-DATA-001",
@@ -794,13 +797,15 @@
         "LOCK-PROFILE-001",
         "LOCK-PROFILE-002",
         "LOCK-IMPL-001",
-        "LOCK-IMPL-002"
+        "LOCK-IMPL-002",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-SYS-001",
         "DEC-AI-001",
         "DEC-SENT-001",
-        "DEC-UCKK-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001",
         "DEC-ARI-001",
         "DEC-PROFILE-001",
         "DEC-DATA-001",
@@ -928,6 +933,9 @@
         "LOCK-COMP-001",
         "LOCK-DATA-001",
         "LOCK-GOV-001",
+        "LOCK-UCKK-EXT-002",
+        "LOCK-UCKK-EXT-001",
+        "LOCK-MEDIATHEQUE-001",
         "LOCK-PROFILE-001",
         "LOCK-PROFILE-002",
         "LOCK-SENT-001"
@@ -937,6 +945,8 @@
         "DEC-AI-001",
         "DEC-SENT-001",
         "DEC-GOV-001",
+        "DEC-UCKK-EXT-001",
+        "DEC-MEDIATHEQUE-001",
         "DEC-ARI-001"
       ]
     },
@@ -1009,17 +1019,26 @@
         "REQ-CONST-DATA-021",
         "REQ-CONST-DATA-022",
         "REQ-CONST-DATA-023",
-        "REQ-CONST-DATA-024"
+        "REQ-CONST-DATA-024",
+        "REQ-CONST-DATA-025",
+        "REQ-CONST-DATA-026",
+        "REQ-CONST-DATA-027",
+        "REQ-CONST-DATA-028"
       ],
       "assertion_ids": [
         "LOCK-DATA-001",
         "LOCK-GATE-001",
         "LOCK-PROFILE-001",
-        "LOCK-IMPL-001"
+        "LOCK-IMPL-001",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-DATA-001",
-        "DEC-GATE-001"
+        "DEC-GATE-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001"
       ]
     },
     {
@@ -1053,18 +1072,20 @@
         "LOCK-AI-001",
         "LOCK-AI-002",
         "LOCK-SENT-001",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
         "LOCK-ARI-001",
         "LOCK-ARI-002",
         "LOCK-DATA-001",
-        "LOCK-PROFILE-001"
+        "LOCK-PROFILE-001",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-SYS-OFFLINE-001",
         "DEC-SYS-AI-001",
         "DEC-ARI-001",
-        "DEC-UCKK-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001",
         "DEC-SENT-001"
       ]
     },
@@ -1287,8 +1308,8 @@
         "LOCK-AI-001",
         "LOCK-AI-002",
         "LOCK-SENT-001",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
         "LOCK-ARI-001",
         "LOCK-ARI-002",
         "LOCK-DATA-001",
@@ -1302,13 +1323,15 @@
         "LOCK-LIFE-004",
         "LOCK-PROFILE-001",
         "LOCK-IMPL-001",
-        "LOCK-IMPL-002"
+        "LOCK-IMPL-002",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-SYS-001",
         "DEC-AI-001",
         "DEC-SENT-001",
-        "DEC-UCKK-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001",
         "DEC-ARI-001",
         "DEC-PROFILE-001",
         "DEC-DATA-001",
@@ -1366,13 +1389,14 @@
         "LOCK-AI-002",
         "LOCK-ARI-001",
         "LOCK-ARI-002",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
         "LOCK-GOV-001",
         "LOCK-GATE-001",
         "LOCK-SENT-001",
         "LOCK-PROFILE-001",
-        "LOCK-PROFILE-002"
+        "LOCK-PROFILE-002",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-SYS-001",
@@ -1380,7 +1404,8 @@
         "DEC-DATA-001",
         "DEC-AI-001",
         "DEC-ARI-001",
-        "DEC-UCKK-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001",
         "DEC-GOV-001",
         "DEC-PRIV-001",
         "DEC-IDENT-001",
@@ -1437,8 +1462,8 @@
         "LOCK-AI-001",
         "LOCK-AI-002",
         "LOCK-SENT-001",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
         "LOCK-ARI-001",
         "LOCK-ARI-002",
         "LOCK-DATA-001",
@@ -1450,12 +1475,14 @@
         "LOCK-IMPL-001",
         "LOCK-IMPL-002",
         "LOCK-LIFE-001",
-        "LOCK-LIFE-003"
+        "LOCK-LIFE-003",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-AI-001",
         "DEC-SENT-001",
-        "DEC-UCKK-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001",
         "DEC-ARI-001",
         "DEC-PROFILE-001",
         "DEC-DATA-001",
@@ -1488,7 +1515,10 @@
         "REQ-SYS-MODE-017",
         "REQ-SYS-MODE-018",
         "REQ-SYS-MODE-019",
-        "REQ-SYS-MODE-020"
+        "REQ-SYS-MODE-020",
+        "REQ-SYS-MODE-021",
+        "REQ-SYS-MODE-022",
+        "REQ-SYS-MODE-023"
       ],
       "assertion_ids": [
         "LOCK-PROFILE-001",
@@ -1496,8 +1526,8 @@
         "LOCK-AI-001",
         "LOCK-AI-002",
         "LOCK-SENT-001",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
         "LOCK-ARI-001",
         "LOCK-ARI-002",
         "LOCK-GOV-001",
@@ -1507,7 +1537,8 @@
         "LOCK-DEV-004",
         "LOCK-DEV-005",
         "LOCK-LIFE-001",
-        "LOCK-LIFE-002"
+        "LOCK-LIFE-002",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-SYS-003",
@@ -1515,7 +1546,8 @@
         "DEC-AI-001",
         "DEC-SENT-001",
         "DEC-ARI-001",
-        "DEC-UCKK-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001",
         "DEC-GOV-001"
       ]
     },
@@ -1532,14 +1564,15 @@
         "LOCK-GOV-001",
         "LOCK-GATE-001",
         "LOCK-SENT-001",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
         "LOCK-AI-001",
         "LOCK-AI-002",
         "LOCK-PROFILE-001",
         "LOCK-PROFILE-002",
         "LOCK-ARI-001",
-        "LOCK-ARI-002"
+        "LOCK-ARI-002",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-COMP-001",
@@ -1547,7 +1580,8 @@
         "DEC-GOV-001",
         "DEC-GATE-001",
         "DEC-SENT-001",
-        "DEC-UCKK-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001",
         "DEC-AI-001",
         "DEC-PROFILE-001",
         "DEC-LANG-001",
@@ -1653,13 +1687,14 @@
         "LOCK-AI-002",
         "LOCK-ARI-001",
         "LOCK-ARI-002",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
         "LOCK-SENT-001",
         "LOCK-GOV-001",
         "LOCK-GATE-001",
         "LOCK-PROFILE-001",
-        "LOCK-PROFILE-002"
+        "LOCK-PROFILE-002",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-SYS-CAP-001",
@@ -1668,7 +1703,8 @@
         "DEC-SYS-AI-001",
         "DEC-SYS-RESOURCE-001",
         "DEC-ARI-001",
-        "DEC-UCKK-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001",
         "DEC-SENT-001"
       ]
     },
@@ -1775,8 +1811,9 @@
         "LOCK-PROFILE-001",
         "LOCK-PROFILE-002",
         "LOCK-SENT-001",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002"
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-AI-001",
@@ -1786,7 +1823,8 @@
         "DEC-HW-001",
         "DEC-PROFILE-001",
         "DEC-SENT-001",
-        "DEC-UCKK-001"
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001"
       ]
     },
     {
@@ -1832,8 +1870,8 @@
         "LOCK-ARI-001",
         "LOCK-ARI-002",
         "LOCK-SENT-001",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
         "LOCK-DATA-001",
         "LOCK-COMP-001",
         "LOCK-COMP-002",
@@ -1841,13 +1879,15 @@
         "LOCK-LIFE-001",
         "LOCK-LIFE-002",
         "LOCK-PROFILE-001",
-        "LOCK-PROFILE-002"
+        "LOCK-PROFILE-002",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-AI-001",
         "DEC-ARI-001",
         "DEC-SENT-001",
-        "DEC-UCKK-001"
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001"
       ]
     },
     {
@@ -1881,19 +1921,21 @@
         "LOCK-AI-001",
         "LOCK-AI-002",
         "LOCK-SENT-001",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
         "LOCK-ARI-001",
         "LOCK-ARI-002",
         "LOCK-DATA-001",
         "LOCK-PROFILE-001",
         "LOCK-LIFE-001",
-        "LOCK-LIFE-002"
+        "LOCK-LIFE-002",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-AI-001",
         "DEC-SENT-001",
-        "DEC-UCKK-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001",
         "DEC-ARI-001",
         "DEC-PROFILE-001",
         "DEC-DATA-001"
@@ -1959,54 +2001,41 @@
       ]
     },
     {
-      "path": "02-system/12-uckk-system-boundary.md",
+      "path": "02-system/12-koa-mediatheque-system-boundary.md",
       "doc_id": "DOC-SYS-012",
       "document_class": "normative_markdown",
       "status": "active",
       "requirement_ids": [
-        "REQ-UCKK-001",
-        "REQ-UCKK-002",
-        "REQ-UCKK-003",
-        "REQ-UCKK-004",
-        "REQ-UCKK-005",
-        "REQ-UCKK-006",
-        "REQ-UCKK-007",
-        "REQ-UCKK-008",
-        "REQ-UCKK-009",
-        "REQ-UCKK-010",
-        "REQ-UCKK-011",
-        "REQ-UCKK-012",
-        "REQ-UCKK-013",
-        "REQ-UCKK-014",
-        "REQ-UCKK-015",
-        "REQ-UCKK-016",
-        "REQ-UCKK-017",
-        "REQ-UCKK-018",
-        "REQ-UCKK-019",
-        "REQ-UCKK-020",
-        "REQ-UCKK-021",
-        "REQ-UCKK-022"
+        "REQ-MEDIATHEQUE-001",
+        "REQ-MEDIATHEQUE-002",
+        "REQ-MEDIATHEQUE-003",
+        "REQ-UCKK-PUB-001",
+        "REQ-UCKK-PUB-002",
+        "REQ-UCKK-IMPORT-001",
+        "REQ-UCKK-IMPORT-002",
+        "REQ-UCKK-IMPORT-003",
+        "REQ-UCKK-IMPORT-004",
+        "REQ-UCKK-IMPORT-005",
+        "REQ-UCKK-IMPORT-006"
       ],
       "assertion_ids": [
-        "LOCK-AI-001",
-        "LOCK-AI-002",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-MEDIATHEQUE-002",
+        "LOCK-UCKK-EXT-001",
+        "LOCK-UCKK-EXT-002",
         "LOCK-DATA-001",
-        "LOCK-GATE-001",
-        "LOCK-LIFE-001",
-        "LOCK-LIFE-002",
-        "LOCK-LIFE-003",
-        "LOCK-LIFE-004"
+        "LOCK-COMP-001",
+        "LOCK-COMP-002",
+        "LOCK-GOV-001",
+        "LOCK-OFFLINE-001"
       ],
       "decision_ids": [
-        "DEC-UCKK-001",
-        "DEC-GATE-001",
-        "DEC-AI-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001",
         "DEC-DATA-001",
-        "DEC-HW-001",
-        "DEC-LIFE-001",
-        "DEC-REL-001"
+        "DEC-COMP-001",
+        "DEC-GOV-001",
+        "DEC-OFFLINE-001"
       ]
     },
     {
@@ -2203,7 +2232,16 @@
         "REQ-SYS-INT-029",
         "REQ-SYS-INT-030",
         "REQ-SYS-INT-031",
-        "REQ-SYS-INT-032"
+        "REQ-SYS-INT-032",
+        "REQ-UCKK-IMPORT-001",
+        "REQ-UCKK-IMPORT-002",
+        "REQ-UCKK-IMPORT-003",
+        "REQ-UCKK-IMPORT-004",
+        "REQ-UCKK-IMPORT-005",
+        "REQ-UCKK-IMPORT-006",
+        "REQ-SYS-INT-033",
+        "REQ-SYS-INT-034",
+        "REQ-SYS-INT-035"
       ],
       "assertion_ids": [
         "LOCK-AI-001",
@@ -2212,13 +2250,14 @@
         "LOCK-GATE-001",
         "LOCK-ARI-001",
         "LOCK-ARI-002",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
         "LOCK-SENT-001",
         "LOCK-COMP-001",
         "LOCK-COMP-002",
         "LOCK-PROFILE-001",
-        "LOCK-PROFILE-002"
+        "LOCK-PROFILE-002",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-INT-001",
@@ -2227,7 +2266,8 @@
         "DEC-SYS-COMP-001",
         "DEC-DATA-DISCLOSURE-001",
         "DEC-ARI-001",
-        "DEC-UCKK-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001",
         "DEC-SENT-001"
       ]
     },
@@ -2291,8 +2331,9 @@
         "LOCK-PROFILE-001",
         "LOCK-PROFILE-002",
         "LOCK-SENT-001",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002"
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-AI-001",
@@ -2304,7 +2345,8 @@
         "DEC-PROFILE-001",
         "DEC-REL-001",
         "DEC-SENT-001",
-        "DEC-UCKK-001"
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001"
       ]
     },
     {
@@ -2339,19 +2381,22 @@
         "LOCK-PROFILE-002",
         "LOCK-GOV-001",
         "LOCK-SENT-001",
-        "LOCK-UCKK-001",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
         "LOCK-LIFE-001",
         "LOCK-LIFE-002",
         "LOCK-LIFE-003",
         "LOCK-IMPL-001",
-        "LOCK-IMPL-002"
+        "LOCK-IMPL-002",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-HW-001",
         "DEC-PROFILE-001",
         "DEC-GOV-001",
         "DEC-SENT-001",
-        "DEC-UCKK-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001",
         "DEC-REL-001",
         "DEC-CONTAINER-001"
       ]
@@ -2748,8 +2793,8 @@
         "LOCK-AI-001",
         "LOCK-AI-002",
         "LOCK-SENT-001",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-MEDIATHEQUE-002",
         "LOCK-ARI-001",
         "LOCK-ARI-002",
         "LOCK-GOV-001",
@@ -2766,7 +2811,7 @@
         "DEC-USER-001",
         "DEC-AI-001",
         "DEC-SENT-001",
-        "DEC-UCKK-001",
+        "DEC-UCKK-EXT-001",
         "DEC-ARI-001",
         "DEC-GOV-001",
         "DEC-GATE-001",
@@ -3010,8 +3055,8 @@
         "LOCK-PROFILE-002",
         "LOCK-AI-001",
         "LOCK-AI-002",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-MEDIATHEQUE-002",
         "LOCK-DATA-001",
         "LOCK-GOV-001",
         "LOCK-GATE-001",
@@ -3027,7 +3072,7 @@
         "DEC-K8S-001",
         "DEC-REL-001",
         "DEC-AI-001",
-        "DEC-UCKK-001",
+        "DEC-UCKK-EXT-001",
         "DEC-GATE-001"
       ]
     },
@@ -3193,7 +3238,11 @@
         "REQ-PROF-HA-037",
         "REQ-PROF-HA-038",
         "REQ-PROF-HA-039",
-        "REQ-PROF-HA-040"
+        "REQ-PROF-HA-040",
+        "REQ-PROF-HA-041",
+        "REQ-PROF-HA-042",
+        "REQ-PROF-HA-043",
+        "REQ-PROF-HA-044"
       ],
       "assertion_ids": [
         "LOCK-PROFILE-001",
@@ -3211,7 +3260,10 @@
         "LOCK-LIFE-004",
         "LOCK-AI-001",
         "LOCK-AI-002",
-        "LOCK-COMP-001"
+        "LOCK-COMP-001",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-PROFILE-001",
@@ -3223,7 +3275,9 @@
         "DEC-PRIV-001",
         "DEC-LIFE-001",
         "DEC-AI-001",
-        "DEC-DATA-001"
+        "DEC-DATA-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001"
       ]
     },
     {
@@ -3281,8 +3335,8 @@
         "LOCK-LIFE-004",
         "LOCK-ARI-001",
         "LOCK-ARI-002",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-MEDIATHEQUE-002",
         "LOCK-SENT-001"
       ],
       "decision_ids": [
@@ -3524,7 +3578,11 @@
         "REQ-COMP-DATA-021",
         "REQ-COMP-DATA-022",
         "REQ-COMP-DATA-023",
-        "REQ-COMP-DATA-024"
+        "REQ-COMP-DATA-024",
+        "REQ-COMP-DATA-025",
+        "REQ-COMP-DATA-026",
+        "REQ-COMP-DATA-027",
+        "REQ-COMP-DATA-028"
       ],
       "assertion_ids": [
         "LOCK-COMP-001",
@@ -3547,7 +3605,10 @@
         "LOCK-SEC-002",
         "LOCK-PORT-001",
         "LOCK-IMPL-001",
-        "LOCK-IMPL-002"
+        "LOCK-IMPL-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-COMP-001",
@@ -3563,7 +3624,9 @@
         "DEC-INTEGRATION-001",
         "DEC-AI-001",
         "DEC-PROFILE-001",
-        "DEC-KRISTAL-001"
+        "DEC-KRISTAL-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001"
       ]
     },
     {
@@ -3610,8 +3673,8 @@
         "LOCK-AI-001",
         "LOCK-AI-002",
         "LOCK-SENT-001",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
         "LOCK-OFFLINE-001",
         "LOCK-LIFE-001",
         "LOCK-LIFE-002",
@@ -3621,7 +3684,8 @@
         "LOCK-INT-002",
         "LOCK-INT-003",
         "LOCK-INT-004",
-        "LOCK-INT-005"
+        "LOCK-INT-005",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-COMP-001",
@@ -3631,7 +3695,8 @@
         "DEC-GATE-001",
         "DEC-AI-001",
         "DEC-SENT-001",
-        "DEC-UCKK-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001",
         "DEC-OFFLINE-001",
         "DEC-REL-001",
         "DEC-CONTAINER-001"
@@ -3643,8 +3708,15 @@
       "document_class": "normative_markdown",
       "status": "active",
       "requirement_ids": [],
-      "assertion_ids": [],
-      "decision_ids": []
+      "assertion_ids": [
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
+        "LOCK-UCKK-EXT-002"
+      ],
+      "decision_ids": [
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001"
+      ]
     },
     {
       "path": "04-components/audit-broker.md",
@@ -3736,7 +3808,10 @@
         "REQ-SYS-GOV-029",
         "REQ-SYS-GOV-030",
         "REQ-SYS-GOV-031",
-        "REQ-SYS-GOV-032"
+        "REQ-SYS-GOV-032",
+        "REQ-SYS-GOV-033",
+        "REQ-SYS-GOV-034",
+        "REQ-SYS-GOV-035"
       ],
       "assertion_ids": [
         "LOCK-GOV-001",
@@ -3744,14 +3819,19 @@
         "LOCK-GATE-001",
         "LOCK-AI-002",
         "LOCK-PROFILE-001",
-        "LOCK-LIFE-001"
+        "LOCK-LIFE-001",
+        "LOCK-UCKK-EXT-001",
+        "LOCK-UCKK-EXT-002",
+        "LOCK-MEDIATHEQUE-001"
       ],
       "decision_ids": [
         "DEC-GOV-001",
         "DEC-AI-001",
         "DEC-PROFILE-001",
         "DEC-DATA-001",
-        "DEC-GATE-001"
+        "DEC-GATE-001",
+        "DEC-UCKK-EXT-001",
+        "DEC-MEDIATHEQUE-001"
       ]
     },
     {
@@ -3803,6 +3883,49 @@
         "DEC-PROFILE-001",
         "DEC-DATA-001",
         "DEC-REL-001"
+      ]
+    },
+    {
+      "path": "04-components/koa-mediatheque.md",
+      "doc_id": "DOC-COMP-MEDIATHEQUE-001",
+      "document_class": "normative_markdown",
+      "status": "active",
+      "requirement_ids": [
+        "REQ-MEDIATHEQUE-001",
+        "REQ-MEDIATHEQUE-002",
+        "REQ-MEDIATHEQUE-003",
+        "REQ-MEDIATHEQUE-004",
+        "REQ-MEDIATHEQUE-005",
+        "REQ-MEDIATHEQUE-006",
+        "REQ-MEDIATHEQUE-007",
+        "REQ-MEDIATHEQUE-008",
+        "REQ-MEDIATHEQUE-009",
+        "REQ-MEDIATHEQUE-010",
+        "REQ-UCKK-IMPORT-001",
+        "REQ-UCKK-IMPORT-002",
+        "REQ-UCKK-IMPORT-003",
+        "REQ-UCKK-IMPORT-004",
+        "REQ-UCKK-IMPORT-005",
+        "REQ-UCKK-IMPORT-006"
+      ],
+      "assertion_ids": [
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-MEDIATHEQUE-002",
+        "LOCK-UCKK-EXT-001",
+        "LOCK-DATA-001",
+        "LOCK-COMP-001",
+        "LOCK-COMP-002",
+        "LOCK-GOV-001",
+        "LOCK-OFFLINE-001",
+        "LOCK-UCKK-EXT-002"
+      ],
+      "decision_ids": [
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001",
+        "DEC-DATA-001",
+        "DEC-COMP-001",
+        "DEC-GOV-001",
+        "DEC-OFFLINE-001"
       ]
     },
     {
@@ -3969,7 +4092,14 @@
       "doc_id": "DOC-COMP-README",
       "document_class": "explanatory_markdown",
       "status": "active",
-      "requirement_ids": [],
+      "requirement_ids": [
+        "REQ-UCKK-IMPORT-001",
+        "REQ-UCKK-IMPORT-002",
+        "REQ-UCKK-IMPORT-003",
+        "REQ-UCKK-IMPORT-004",
+        "REQ-UCKK-IMPORT-005",
+        "REQ-UCKK-IMPORT-006"
+      ],
       "assertion_ids": [
         "LOCK-COMP-001",
         "LOCK-COMP-002",
@@ -3977,12 +4107,13 @@
         "LOCK-GOV-001",
         "LOCK-GATE-001",
         "LOCK-SENT-001",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
         "LOCK-ARI-001",
         "LOCK-ARI-002",
         "LOCK-PROFILE-001",
-        "LOCK-PROFILE-002"
+        "LOCK-PROFILE-002",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-COMP-001",
@@ -3990,7 +4121,8 @@
         "DEC-GOV-001",
         "DEC-GATE-001",
         "DEC-SENT-001",
-        "DEC-UCKK-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001",
         "DEC-ARI-001",
         "DEC-PROFILE-BASELINE-001"
       ]
@@ -4034,12 +4166,13 @@
         "LOCK-DEV-003",
         "LOCK-DEV-004",
         "LOCK-DEV-005",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
         "LOCK-DATA-001",
         "LOCK-GOV-001",
         "LOCK-LIFE-001",
-        "LOCK-LIFE-002"
+        "LOCK-LIFE-002",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-GOV-001",
@@ -4104,97 +4237,81 @@
       "decision_ids": []
     },
     {
-      "path": "04-components/subsystems/uckk-mediatheque.md",
-      "doc_id": "DOC-SUB-UCKK-MEDIATHEQUE",
-      "document_class": "explanatory_markdown",
-      "status": "active",
-      "requirement_ids": [],
-      "assertion_ids": [],
-      "decision_ids": []
-    },
-    {
-      "path": "04-components/subsystems/uckk.md",
-      "doc_id": "DOC-SUB-UCKK",
-      "document_class": "explanatory_markdown",
-      "status": "active",
-      "requirement_ids": [],
-      "assertion_ids": [],
-      "decision_ids": []
-    },
-    {
-      "path": "04-components/uckk-dimension-gateway.md",
-      "doc_id": "DOC-COMP-UCKK-DG-001",
+      "path": "04-components/uckk-import-bridge.md",
+      "doc_id": "DOC-COMP-UCKK-IMPORT-001",
       "document_class": "normative_markdown",
       "status": "active",
       "requirement_ids": [
-        "REQ-COMP-UCKK-DG-001",
-        "REQ-COMP-UCKK-DG-002",
-        "REQ-COMP-UCKK-DG-003",
-        "REQ-COMP-UCKK-DG-004",
-        "REQ-COMP-UCKK-DG-005",
-        "REQ-COMP-UCKK-DG-006",
-        "REQ-COMP-UCKK-DG-007",
-        "REQ-COMP-UCKK-DG-008",
-        "REQ-COMP-UCKK-DG-009",
-        "REQ-COMP-UCKK-DG-010",
-        "REQ-COMP-UCKK-DG-011",
-        "REQ-COMP-UCKK-DG-012",
-        "REQ-COMP-UCKK-DG-013",
-        "REQ-COMP-UCKK-DG-014",
-        "REQ-COMP-UCKK-DG-015",
-        "REQ-COMP-UCKK-DG-016",
-        "REQ-COMP-UCKK-DG-017",
-        "REQ-COMP-UCKK-DG-018",
-        "REQ-COMP-UCKK-DG-019",
-        "REQ-COMP-UCKK-DG-020",
-        "REQ-COMP-UCKK-DG-021",
-        "REQ-COMP-UCKK-DG-022",
-        "REQ-COMP-UCKK-DG-023",
-        "REQ-COMP-UCKK-DG-024",
-        "REQ-COMP-UCKK-DG-025",
-        "REQ-COMP-UCKK-DG-026",
-        "REQ-COMP-UCKK-DG-027",
-        "REQ-COMP-UCKK-DG-028",
-        "REQ-COMP-UCKK-DG-029",
-        "REQ-COMP-UCKK-DG-030",
-        "REQ-COMP-UCKK-DG-031",
-        "REQ-COMP-UCKK-DG-032",
-        "REQ-COMP-UCKK-DG-033",
-        "REQ-COMP-UCKK-DG-034",
-        "REQ-COMP-UCKK-DG-035",
-        "REQ-COMP-UCKK-DG-036"
+        "REQ-UCKK-IMPORT-001",
+        "REQ-UCKK-IMPORT-002",
+        "REQ-UCKK-IMPORT-003",
+        "REQ-UCKK-IMPORT-004",
+        "REQ-UCKK-IMPORT-005",
+        "REQ-UCKK-IMPORT-006",
+        "REQ-UCKK-IMPORT-007",
+        "REQ-UCKK-IMPORT-008",
+        "REQ-UCKK-IMPORT-009",
+        "REQ-UCKK-IMPORT-010",
+        "REQ-UCKK-IMPORT-011",
+        "REQ-UCKK-IMPORT-012"
       ],
       "assertion_ids": [
-        "LOCK-GATE-001",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
+        "LOCK-UCKK-EXT-001",
+        "LOCK-UCKK-EXT-002",
+        "LOCK-MEDIATHEQUE-001",
         "LOCK-DATA-001",
-        "LOCK-COMP-001",
-        "LOCK-COMP-002",
         "LOCK-GOV-001",
-        "LOCK-AI-001",
-        "LOCK-AI-002",
-        "LOCK-PROFILE-001",
-        "LOCK-PROFILE-002",
-        "LOCK-OPS-001",
-        "LOCK-OPS-002",
-        "LOCK-OPS-003",
-        "LOCK-LIFE-001",
-        "LOCK-LIFE-002",
-        "LOCK-LIFE-003",
-        "LOCK-LIFE-004"
+        "LOCK-OFFLINE-001"
       ],
       "decision_ids": [
-        "DEC-GATE-001",
-        "DEC-UCKK-001",
-        "DEC-SYS-COMP-001",
-        "DEC-SYS-CAP-001",
-        "DEC-SYS-OFFLINE-001",
-        "DEC-SYS-RESOURCE-001",
-        "DEC-SYS-AUDIT-001",
-        "DEC-DATA-DISCLOSURE-001",
-        "DEC-CULT-001",
-        "DEC-INT-001"
+        "DEC-UCKK-EXT-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-DATA-001",
+        "DEC-GOV-001",
+        "DEC-OFFLINE-001"
+      ]
+    },
+    {
+      "path": "04-components/uckk-publication-bridge.md",
+      "doc_id": "DOC-COMP-UCKK-PUB-001",
+      "document_class": "normative_markdown",
+      "status": "active",
+      "requirement_ids": [
+        "REQ-UCKK-PUB-001",
+        "REQ-UCKK-PUB-002",
+        "REQ-UCKK-PUB-003",
+        "REQ-UCKK-PUB-004",
+        "REQ-UCKK-PUB-005",
+        "REQ-UCKK-PUB-006",
+        "REQ-UCKK-PUB-007",
+        "REQ-UCKK-PUB-008",
+        "REQ-UCKK-PUB-009",
+        "REQ-UCKK-PUB-010",
+        "REQ-UCKK-PUB-011",
+        "REQ-UCKK-PUB-012",
+        "REQ-UCKK-IMPORT-001",
+        "REQ-UCKK-IMPORT-002",
+        "REQ-UCKK-IMPORT-003",
+        "REQ-UCKK-IMPORT-004",
+        "REQ-UCKK-IMPORT-005",
+        "REQ-UCKK-IMPORT-006"
+      ],
+      "assertion_ids": [
+        "LOCK-UCKK-EXT-001",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-GATE-001",
+        "LOCK-DATA-001",
+        "LOCK-GOV-001",
+        "LOCK-OFFLINE-001",
+        "LOCK-UCKK-EXT-002"
+      ],
+      "decision_ids": [
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001",
+        "DEC-DATA-001",
+        "DEC-COMP-001",
+        "DEC-GOV-001",
+        "DEC-OFFLINE-001"
       ]
     },
     {
@@ -5405,8 +5522,10 @@
         "LOCK-AI-002",
         "LOCK-ARI-001",
         "LOCK-ARI-002",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002"
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-MEDIATHEQUE-002",
+        "LOCK-UCKK-EXT-001",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-REL-001",
@@ -5414,7 +5533,8 @@
         "DEC-DATA-001",
         "DEC-AI-001",
         "DEC-ARI-001",
-        "DEC-UCKK-001"
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001"
       ]
     },
     {
@@ -6039,7 +6159,13 @@
         "REQ-LIFE-OFF-025",
         "REQ-LIFE-OFF-026",
         "REQ-LIFE-OFF-027",
-        "REQ-LIFE-OFF-028"
+        "REQ-LIFE-OFF-028",
+        "REQ-UCKK-IMPORT-001",
+        "REQ-UCKK-IMPORT-002",
+        "REQ-UCKK-IMPORT-003",
+        "REQ-UCKK-IMPORT-004",
+        "REQ-UCKK-IMPORT-005",
+        "REQ-UCKK-IMPORT-006"
       ],
       "assertion_ids": [
         "LOCK-LIFE-001",
@@ -6056,8 +6182,10 @@
         "LOCK-AI-002",
         "LOCK-ARI-001",
         "LOCK-ARI-002",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002"
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-MEDIATHEQUE-002",
+        "LOCK-UCKK-EXT-001",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-REL-001",
@@ -6067,7 +6195,8 @@
         "DEC-GOV-001",
         "DEC-AI-001",
         "DEC-ARI-001",
-        "DEC-UCKK-001"
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001"
       ]
     },
     {
@@ -6682,9 +6811,12 @@
         "LOCK-GATE-001",
         "LOCK-SENT-001",
         "LOCK-ARI-001",
-        "LOCK-UCKK-001",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-MEDIATHEQUE-002",
+        "LOCK-UCKK-EXT-001",
         "LOCK-PROFILE-001",
-        "LOCK-PROFILE-002"
+        "LOCK-PROFILE-002",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-AUTH-001",
@@ -6697,7 +6829,8 @@
         "DEC-LIFE-001",
         "DEC-GATE-001",
         "DEC-SENT-001",
-        "DEC-UCKK-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001",
         "DEC-ARI-001",
         "DEC-LANG-001",
         "DEC-KRISTAL-001",
@@ -6763,8 +6896,9 @@
         "LOCK-AI-001",
         "LOCK-AI-002",
         "LOCK-SENT-001",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-MEDIATHEQUE-002",
+        "LOCK-UCKK-EXT-001",
         "LOCK-ARI-001",
         "LOCK-ARI-002",
         "LOCK-DATA-001",
@@ -6783,12 +6917,14 @@
         "LOCK-LIFE-003",
         "LOCK-LIFE-004",
         "LOCK-IMPL-001",
-        "LOCK-IMPL-002"
+        "LOCK-IMPL-002",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-AI-001",
         "DEC-SENT-001",
-        "DEC-UCKK-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001",
         "DEC-ARI-001",
         "DEC-PROFILE-001",
         "DEC-DATA-001",
@@ -7491,8 +7627,9 @@
         "LOCK-AI-001",
         "LOCK-AI-002",
         "LOCK-SENT-001",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-MEDIATHEQUE-002",
+        "LOCK-UCKK-EXT-001",
         "LOCK-ARI-001",
         "LOCK-ARI-002",
         "LOCK-DATA-001",
@@ -7503,13 +7640,15 @@
         "LOCK-PRIV-001",
         "LOCK-LIFE-001",
         "LOCK-PROFILE-001",
-        "LOCK-PROFILE-002"
+        "LOCK-PROFILE-002",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-AI-001",
         "DEC-SENT-001",
         "DEC-ARI-001",
-        "DEC-UCKK-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001",
         "DEC-LANG-001",
         "DEC-KRISTAL-001",
         "DEC-AUTH-001",
@@ -7576,8 +7715,9 @@
         "LOCK-AI-001",
         "LOCK-AI-002",
         "LOCK-SENT-001",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-MEDIATHEQUE-002",
+        "LOCK-UCKK-EXT-001",
         "LOCK-ARI-001",
         "LOCK-ARI-002",
         "LOCK-DATA-001",
@@ -7586,12 +7726,14 @@
         "LOCK-PROFILE-001",
         "LOCK-LIFE-001",
         "LOCK-LIFE-003",
-        "LOCK-IMPL-001"
+        "LOCK-IMPL-001",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-AI-001",
         "DEC-SENT-001",
-        "DEC-UCKK-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001",
         "DEC-ARI-001",
         "DEC-PROFILE-001",
         "DEC-DATA-001",
@@ -7851,8 +7993,7 @@
         "DEC-CULT-001",
         "DEC-SEC-EVIDENCE-001",
         "DEC-SYS-COMP-001",
-        "DEC-SYS-OFFLINE-001",
-        "DEC-SYS-AUDIT-001"
+        "DEC-SYS-OFFLINE-001"
       ]
     },
     {
@@ -7971,7 +8112,13 @@
         "REQ-SEC-OFFLINE-029",
         "REQ-SEC-OFFLINE-030",
         "REQ-SEC-OFFLINE-031",
-        "REQ-SEC-OFFLINE-032"
+        "REQ-SEC-OFFLINE-032",
+        "REQ-UCKK-IMPORT-001",
+        "REQ-UCKK-IMPORT-002",
+        "REQ-UCKK-IMPORT-003",
+        "REQ-UCKK-IMPORT-004",
+        "REQ-UCKK-IMPORT-005",
+        "REQ-UCKK-IMPORT-006"
       ],
       "assertion_ids": [
         "LOCK-SEC-001",
@@ -7995,7 +8142,8 @@
         "LOCK-AI-002",
         "LOCK-PORT-001",
         "LOCK-IMPL-001",
-        "LOCK-IMPL-002"
+        "LOCK-IMPL-002",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-SEC-001",
@@ -8998,7 +9146,13 @@
         "REQ-OPS-OFF-029",
         "REQ-OPS-OFF-030",
         "REQ-OPS-OFF-031",
-        "REQ-OPS-OFF-032"
+        "REQ-OPS-OFF-032",
+        "REQ-UCKK-IMPORT-001",
+        "REQ-UCKK-IMPORT-002",
+        "REQ-UCKK-IMPORT-003",
+        "REQ-UCKK-IMPORT-004",
+        "REQ-UCKK-IMPORT-005",
+        "REQ-UCKK-IMPORT-006"
       ],
       "assertion_ids": [
         "LOCK-OPS-001",
@@ -9024,10 +9178,12 @@
         "LOCK-SENT-001",
         "LOCK-ARI-001",
         "LOCK-ARI-002",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-MEDIATHEQUE-002",
+        "LOCK-UCKK-EXT-001",
         "LOCK-DEV-001",
-        "LOCK-DEV-004"
+        "LOCK-DEV-004",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-PROFILE-001",
@@ -9040,7 +9196,8 @@
         "DEC-AI-001",
         "DEC-SENT-001",
         "DEC-ARI-001",
-        "DEC-UCKK-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001",
         "DEC-DEV-001",
         "DEC-DEV-002"
       ]
@@ -9460,12 +9617,14 @@
         "LOCK-AI-001",
         "LOCK-AI-002",
         "LOCK-SENT-001",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-MEDIATHEQUE-002",
+        "LOCK-UCKK-EXT-001",
         "LOCK-ARI-001",
         "LOCK-ARI-002",
         "LOCK-IMPL-001",
-        "LOCK-IMPL-002"
+        "LOCK-IMPL-002",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-SYS-001",
@@ -9479,7 +9638,8 @@
         "DEC-REL-001",
         "DEC-AI-001",
         "DEC-SENT-001",
-        "DEC-UCKK-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001",
         "DEC-ARI-001"
       ]
     },
@@ -9896,7 +10056,10 @@
         "REQ-CONF-PROF-027",
         "REQ-CONF-PROF-028",
         "REQ-CONF-PROF-029",
-        "REQ-CONF-PROF-030"
+        "REQ-CONF-PROF-030",
+        "REQ-CONF-PROF-031",
+        "REQ-CONF-PROF-032",
+        "REQ-CONF-PROF-033"
       ],
       "assertion_ids": [
         "LOCK-DOC-001",
@@ -9917,7 +10080,10 @@
         "LOCK-DEV-004",
         "LOCK-DEV-005",
         "LOCK-LIFE-003",
-        "LOCK-LIFE-004"
+        "LOCK-LIFE-004",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-PROFILE-001",
@@ -9929,7 +10095,9 @@
         "DEC-AI-001",
         "DEC-SENT-001",
         "DEC-CONTAINER-001",
-        "DEC-K8S-001"
+        "DEC-K8S-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001"
       ]
     },
     {
@@ -10053,7 +10221,10 @@
         "REQ-CONF-REL-027",
         "REQ-CONF-REL-028",
         "REQ-CONF-REL-029",
-        "REQ-CONF-REL-030"
+        "REQ-CONF-REL-030",
+        "REQ-CONF-REL-031",
+        "REQ-CONF-REL-032",
+        "REQ-CONF-REL-033"
       ],
       "assertion_ids": [
         "LOCK-DOC-002",
@@ -10074,7 +10245,10 @@
         "LOCK-LIFE-001",
         "LOCK-LIFE-002",
         "LOCK-LIFE-003",
-        "LOCK-LIFE-004"
+        "LOCK-LIFE-004",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-REL-001",
@@ -10083,7 +10257,9 @@
         "DEC-PROFILE-001",
         "DEC-GOV-001",
         "DEC-GATE-001",
-        "DEC-AI-001"
+        "DEC-AI-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001"
       ]
     },
     {
@@ -10202,7 +10378,10 @@
         "REQ-CONF-LOCK-037",
         "REQ-CONF-LOCK-038",
         "REQ-CONF-LOCK-039",
-        "REQ-CONF-LOCK-040"
+        "REQ-CONF-LOCK-040",
+        "REQ-CONF-LOCK-041",
+        "REQ-CONF-LOCK-042",
+        "REQ-CONF-LOCK-043"
       ],
       "assertion_ids": [
         "LOCK-DOC-001",
@@ -10234,8 +10413,6 @@
         "LOCK-AI-001",
         "LOCK-AI-002",
         "LOCK-SENT-001",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
         "LOCK-ARI-001",
         "LOCK-ARI-002",
         "LOCK-DATA-001",
@@ -10251,7 +10428,11 @@
         "LOCK-LIFE-001",
         "LOCK-LIFE-002",
         "LOCK-LIFE-003",
-        "LOCK-LIFE-004"
+        "LOCK-LIFE-004",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
+        "LOCK-MEDIATHEQUE-002",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-DOC-002",
@@ -10263,7 +10444,9 @@
         "DEC-COMP-001",
         "DEC-GOV-001",
         "DEC-AI-001",
-        "DEC-LIFE-001"
+        "DEC-LIFE-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001"
       ]
     },
     {
@@ -10338,7 +10521,10 @@
         "LOCK-DOC-015",
         "LOCK-DOC-019",
         "LOCK-DOC-020",
-        "LOCK-IMPL-001"
+        "LOCK-IMPL-001",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-DATA-001",
@@ -10348,7 +10534,9 @@
         "DEC-AI-001",
         "DEC-SENT-001",
         "DEC-REL-001",
-        "DEC-DOC-CHANGE-001"
+        "DEC-DOC-CHANGE-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001"
       ]
     },
     {
@@ -10548,7 +10736,10 @@
         "LOCK-SENT-001",
         "LOCK-GOV-001",
         "LOCK-GATE-001",
-        "LOCK-IMPL-001"
+        "LOCK-IMPL-001",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-CONF-AICTX-001",
@@ -10558,7 +10749,9 @@
         "DEC-PROFILE-INHERIT-001",
         "DEC-SYS-COMP-001",
         "DEC-INT-001",
-        "DEC-SENT-001"
+        "DEC-SENT-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001"
       ]
     },
     {
@@ -10840,7 +11033,13 @@
         "REQ-CONF-USER-027",
         "REQ-CONF-USER-028",
         "REQ-CONF-USER-029",
-        "REQ-CONF-USER-030"
+        "REQ-CONF-USER-030",
+        "REQ-UCKK-IMPORT-001",
+        "REQ-UCKK-IMPORT-002",
+        "REQ-UCKK-IMPORT-003",
+        "REQ-UCKK-IMPORT-004",
+        "REQ-UCKK-IMPORT-005",
+        "REQ-UCKK-IMPORT-006"
       ],
       "assertion_ids": [
         "LOCK-PROFILE-001",
@@ -10848,8 +11047,6 @@
         "LOCK-AI-001",
         "LOCK-AI-002",
         "LOCK-SENT-001",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
         "LOCK-ARI-001",
         "LOCK-ARI-002",
         "LOCK-DATA-001",
@@ -10859,21 +11056,25 @@
         "LOCK-LIFE-003",
         "LOCK-LIFE-004",
         "LOCK-IMPL-001",
-        "LOCK-DOC-002"
+        "LOCK-DOC-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
+        "LOCK-UCKK-EXT-002"
       ],
       "decision_ids": [
         "DEC-PROFILE-001",
         "DEC-HW-001",
         "DEC-AI-001",
         "DEC-SENT-001",
-        "DEC-UCKK-001",
         "DEC-ARI-001",
         "DEC-DATA-001",
         "DEC-GOV-001",
         "DEC-CONTAINER-001",
         "DEC-K8S-001",
         "DEC-SHELL-001",
-        "DEC-REL-001"
+        "DEC-REL-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001"
       ]
     },
     {
@@ -11142,7 +11343,8 @@
         "DEC-AI-001",
         "DEC-COMP-001",
         "DEC-DATA-001",
-        "DEC-LIFE-001"
+        "DEC-LIFE-001",
+        "DEC-REL-001"
       ]
     },
     {
@@ -11174,10 +11376,30 @@
       "path": "10-adrs/ADR-005-rootless-podman-and-quadlet.md",
       "doc_id": "DOC-ADR-005",
       "document_class": "adr",
-      "status": "active",
+      "status": "accepted",
       "requirement_ids": [
         "REQ-IMPL-002",
-        "REQ-PROFILE-001"
+        "REQ-PROFILE-001",
+        "REQ-CONF-SLN-033",
+        "REQ-CONF-SLN-034",
+        "REQ-CONF-SLN-035",
+        "REQ-CONF-SLN-036",
+        "REQ-CONF-SLN-037",
+        "REQ-CONF-SLN-038",
+        "REQ-CONF-SLN-039",
+        "REQ-CONF-SLN-040",
+        "REQ-LIFE-SVC-013",
+        "REQ-LIFE-SVC-014",
+        "REQ-LIFE-SVC-015",
+        "REQ-LIFE-SVC-017",
+        "REQ-LIFE-SVC-031",
+        "REQ-LIFE-SVC-033",
+        "REQ-LIFE-SVC-034",
+        "REQ-LIFE-SVC-035",
+        "REQ-LIFE-SVC-044",
+        "REQ-OPS-JOB-032",
+        "REQ-OPS-JOB-043",
+        "REQ-OPS-JOB-054"
       ],
       "assertion_ids": [
         "LOCK-PROFILE-001",
@@ -11185,10 +11407,18 @@
         "LOCK-IMPL-001",
         "LOCK-IMPL-002",
         "LOCK-DEV-003",
-        "LOCK-DEV-004"
+        "LOCK-DEV-004",
+        "LOCK-COMP-001",
+        "LOCK-COMP-002",
+        "LOCK-GOV-001",
+        "LOCK-LIFE-001",
+        "LOCK-LIFE-002"
       ],
       "decision_ids": [
-        "DEC-CONTAINER-001"
+        "DEC-CONTAINER-001",
+        "DEC-K8S-001",
+        "DEC-PROFILE-001",
+        "DEC-REL-001"
       ]
     },
     {
@@ -11610,8 +11840,8 @@
         "LOCK-AI-001",
         "LOCK-AI-002",
         "LOCK-SENT-001",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-MEDIATHEQUE-002",
         "LOCK-ARI-001",
         "LOCK-ARI-002",
         "LOCK-DATA-001",
@@ -11625,7 +11855,7 @@
       "decision_ids": [
         "DEC-AI-001",
         "DEC-SENT-001",
-        "DEC-UCKK-001",
+        "DEC-UCKK-EXT-001",
         "DEC-ARI-001",
         "DEC-PROFILE-001",
         "DEC-DATA-001",
@@ -11638,7 +11868,7 @@
       "path": "10-adrs/ADR-015-development-workspace-isolation-with-uv.md",
       "doc_id": "DOC-ADR-015",
       "document_class": "adr",
-      "status": "active",
+      "status": "accepted",
       "requirement_ids": [
         "REQ-DEV-UV-001",
         "REQ-DEV-UV-002"
@@ -11798,7 +12028,7 @@
       "path": "10-adrs/ADR-019-resource-governor-and-policy-runtime-separation.md",
       "doc_id": "DOC-ADR-019",
       "document_class": "adr",
-      "status": "active",
+      "status": "accepted",
       "requirement_ids": [
         "REQ-COMP-RG-001",
         "REQ-COMP-RG-002",
@@ -11831,49 +12061,10 @@
       ]
     },
     {
-      "path": "10-adrs/ADR-020-publication-gateway-and-uckk-dimension-gateway-separation.md",
-      "doc_id": "DOC-ADR-020",
-      "document_class": "architecture_decision_record",
-      "status": "active",
-      "requirement_ids": [
-        "REQ-CONST-026",
-        "REQ-CONST-027",
-        "REQ-DEG-027",
-        "REQ-DEG-028",
-        "REQ-ORGO-025",
-        "REQ-ORGO-027",
-        "REQ-ORGO-028"
-      ],
-      "assertion_ids": [
-        "LOCK-AI-001",
-        "LOCK-AI-002",
-        "LOCK-COMP-001",
-        "LOCK-COMP-002",
-        "LOCK-DATA-001",
-        "LOCK-GATE-001",
-        "LOCK-GOV-001",
-        "LOCK-LIFE-001",
-        "LOCK-LIFE-002",
-        "LOCK-PROFILE-001",
-        "LOCK-PROFILE-002",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002"
-      ],
-      "decision_ids": [
-        "DEC-AI-001",
-        "DEC-DATA-001",
-        "DEC-GATE-001",
-        "DEC-GOV-001",
-        "DEC-PROFILE-001",
-        "DEC-REL-001",
-        "DEC-UCKK-001"
-      ]
-    },
-    {
       "path": "10-adrs/ADR-021-ariane-local-navigation-with-optional-external-voice.md",
-      "doc_id": "ADR-021",
-      "document_class": "architecture_decision_record",
-      "status": "active",
+      "doc_id": "DOC-ADR-021",
+      "document_class": "adr",
+      "status": "accepted",
       "requirement_ids": [
         "REQ-ARIANE-001",
         "REQ-ARIANE-002",
@@ -11946,87 +12137,6 @@
       ]
     },
     {
-      "path": "10-adrs/ADR-022-deterministic-native-uckk-pipeline.md",
-      "doc_id": "DOC-ADR-022",
-      "document_class": "adr",
-      "status": "accepted",
-      "requirement_ids": [
-        "REQ-ADR-022-001",
-        "REQ-ADR-022-002",
-        "REQ-ADR-022-003",
-        "REQ-ADR-022-004",
-        "REQ-ADR-022-005",
-        "REQ-ADR-022-006",
-        "REQ-ADR-022-007",
-        "REQ-ADR-022-008",
-        "REQ-ADR-022-009",
-        "REQ-ADR-022-010",
-        "REQ-ADR-022-011",
-        "REQ-ADR-022-012",
-        "REQ-ADR-022-013",
-        "REQ-ADR-022-014",
-        "REQ-ADR-022-015",
-        "REQ-ADR-022-016",
-        "REQ-ADR-022-017",
-        "REQ-ADR-022-018",
-        "REQ-ADR-022-019",
-        "REQ-ADR-022-020",
-        "REQ-ADR-022-021",
-        "REQ-ADR-022-022",
-        "REQ-ADR-022-023",
-        "REQ-ADR-022-024",
-        "REQ-ADR-022-025",
-        "REQ-ADR-022-026",
-        "REQ-ADR-022-027",
-        "REQ-ADR-022-028",
-        "REQ-ADR-022-029",
-        "REQ-ADR-022-030",
-        "REQ-ADR-022-031",
-        "REQ-ADR-022-032"
-      ],
-      "assertion_ids": [
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
-        "LOCK-GATE-001",
-        "LOCK-AI-001",
-        "LOCK-AI-002",
-        "LOCK-DATA-001",
-        "LOCK-COMP-001",
-        "LOCK-COMP-002",
-        "LOCK-GOV-001",
-        "LOCK-LIFE-001",
-        "LOCK-LIFE-002",
-        "LOCK-LIFE-003",
-        "LOCK-LIFE-004",
-        "LOCK-PROFILE-001",
-        "LOCK-PROFILE-002",
-        "LOCK-SEC-001",
-        "LOCK-SEC-002",
-        "LOCK-OFFLINE-001",
-        "LOCK-PORT-001",
-        "LOCK-IMPL-001",
-        "LOCK-IMPL-002"
-      ],
-      "decision_ids": [
-        "DEC-UCKK-001",
-        "DEC-GATE-001",
-        "DEC-AI-001",
-        "DEC-DATA-001",
-        "DEC-COMP-001",
-        "DEC-GOV-001",
-        "DEC-SEC-001",
-        "DEC-OFFLINE-001",
-        "DEC-LIFE-001",
-        "DEC-AUDIT-001",
-        "DEC-RECEIPT-001",
-        "DEC-PORT-001",
-        "DEC-INTEGRATION-001",
-        "DEC-REL-001",
-        "DEC-PROFILE-001",
-        "DEC-HW-001"
-      ]
-    },
-    {
       "path": "10-adrs/ADR-023-explicit-profile-overlays.md",
       "doc_id": "ADR-023",
       "document_class": "adr",
@@ -12056,8 +12166,8 @@
     {
       "path": "10-adrs/ADR-024-logical-data-ownership-with-profile-dependent-physical-isolation.md",
       "doc_id": "DOC-ADR-024",
-      "document_class": "architecture_decision_record",
-      "status": "active",
+      "document_class": "adr",
+      "status": "accepted",
       "requirement_ids": [
         "REQ-CONST-007",
         "REQ-CONST-008",
@@ -12258,115 +12368,60 @@
       "decision_ids": []
     },
     {
-      "path": "10-adrs/ADR-029-native-uckk-mediatheque.md",
-      "doc_id": "ADR-029",
+      "path": "10-adrs/ADR-030-koa-mediatheque-as-an-internal-component.md",
+      "doc_id": "ADR-030",
       "document_class": "adr",
       "status": "accepted",
       "requirement_ids": [],
-      "assertion_ids": [],
-      "decision_ids": []
+      "assertion_ids": [
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-MEDIATHEQUE-002"
+      ],
+      "decision_ids": [
+        "DEC-MEDIATHEQUE-001"
+      ]
+    },
+    {
+      "path": "10-adrs/ADR-031-uckk-as-an-external-moodle-publication-target.md",
+      "doc_id": "ADR-031",
+      "document_class": "adr",
+      "status": "superseded",
+      "requirement_ids": [],
+      "assertion_ids": [
+        "LOCK-UCKK-EXT-001",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-GATE-001",
+        "LOCK-UCKK-EXT-002"
+      ],
+      "decision_ids": [
+        "DEC-UCKK-EXT-001"
+      ]
+    },
+    {
+      "path": "10-adrs/ADR-032-directional-interchange-between-koa-and-uckk-mediatheques.md",
+      "doc_id": "ADR-032",
+      "document_class": "adr",
+      "status": "active",
+      "requirement_ids": [],
+      "assertion_ids": [
+        "LOCK-UCKK-EXT-001",
+        "LOCK-UCKK-EXT-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-MEDIATHEQUE-002"
+      ],
+      "decision_ids": [
+        "DEC-UCKK-EXT-001",
+        "DEC-MEDIATHEQUE-001"
+      ]
     },
     {
       "path": "10-adrs/README.md",
-      "doc_id": "DOC-ADR-README",
-      "document_class": "normative_markdown",
+      "doc_id": "DOC-ADR-000",
+      "document_class": "explanatory_markdown",
       "status": "active",
-      "requirement_ids": [
-        "REQ-ADR-001",
-        "REQ-ADR-002",
-        "REQ-ADR-003",
-        "REQ-ADR-004",
-        "REQ-ADR-005",
-        "REQ-ADR-006",
-        "REQ-ADR-007",
-        "REQ-ADR-008",
-        "REQ-ADR-009",
-        "REQ-ADR-010",
-        "REQ-ADR-011",
-        "REQ-ADR-012",
-        "REQ-ADR-013",
-        "REQ-ADR-014",
-        "REQ-ADR-015",
-        "REQ-ADR-016",
-        "REQ-ADR-017",
-        "REQ-ADR-018",
-        "REQ-ADR-019",
-        "REQ-ADR-020",
-        "REQ-ADR-021",
-        "REQ-ADR-022",
-        "REQ-ADR-023",
-        "REQ-ADR-024",
-        "REQ-ADR-025",
-        "REQ-ADR-026",
-        "REQ-ADR-027",
-        "REQ-ADR-028",
-        "REQ-ADR-029",
-        "REQ-ADR-030",
-        "REQ-ADR-031",
-        "REQ-ADR-032"
-      ],
-      "assertion_ids": [
-        "LOCK-PROFILE-001",
-        "LOCK-PROFILE-002",
-        "LOCK-COMP-001",
-        "LOCK-COMP-002",
-        "LOCK-DATA-001",
-        "LOCK-GOV-001",
-        "LOCK-GATE-001",
-        "LOCK-AI-001",
-        "LOCK-AI-002",
-        "LOCK-SENT-001",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
-        "LOCK-ARI-001",
-        "LOCK-ARI-002",
-        "LOCK-LIFE-001",
-        "LOCK-LIFE-002",
-        "LOCK-LIFE-003",
-        "LOCK-LIFE-004",
-        "LOCK-REL-001",
-        "LOCK-REL-002",
-        "LOCK-SEC-001",
-        "LOCK-SEC-002",
-        "LOCK-OFFLINE-001",
-        "LOCK-PORT-001",
-        "LOCK-IMPL-001",
-        "LOCK-IMPL-002"
-      ],
-      "decision_ids": [
-        "DEC-DOC-001",
-        "DEC-DOC-002",
-        "DEC-DOC-003",
-        "DEC-DOC-004",
-        "DEC-DOC-005",
-        "DEC-DOC-ARCH-001",
-        "DEC-DOC-CHANGE-001",
-        "DEC-DOC-EDITORIAL-001",
-        "DEC-DOC-EXC-001",
-        "DEC-MIG-001",
-        "DEC-MIG-002",
-        "DEC-MIG-003",
-        "DEC-AI-001",
-        "DEC-SENT-001",
-        "DEC-UCKK-001",
-        "DEC-ARI-001",
-        "DEC-PROFILE-001",
-        "DEC-DEV-001",
-        "DEC-DATA-001",
-        "DEC-GOV-001",
-        "DEC-GATE-001",
-        "DEC-SHELL-001",
-        "DEC-CONTAINER-001",
-        "DEC-K8S-001",
-        "DEC-HW-001",
-        "DEC-REL-001",
-        "DEC-KRISTAL-001",
-        "DEC-COMP-001",
-        "DEC-PRIV-001",
-        "DEC-AUDIT-001",
-        "DEC-OS-001",
-        "DEC-IMAGE-001"
-      ]
+      "requirement_ids": [],
+      "assertion_ids": [],
+      "decision_ids": []
     },
     {
       "path": "11-recipes/build-farm/artifact-cache.md",
@@ -13165,8 +13220,8 @@
         "LOCK-LIFE-004",
         "LOCK-AI-001",
         "LOCK-AI-002",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-MEDIATHEQUE-002",
         "LOCK-IMPL-001",
         "LOCK-IMPL-002"
       ],
@@ -13180,7 +13235,7 @@
         "DEC-HW-001",
         "DEC-REL-001",
         "DEC-AI-001",
-        "DEC-UCKK-001"
+        "DEC-UCKK-EXT-001"
       ]
     },
     {
@@ -13579,8 +13634,8 @@
         "LOCK-AI-002",
         "LOCK-ARI-001",
         "LOCK-ARI-002",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002"
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-MEDIATHEQUE-002"
       ],
       "decision_ids": [
         "DEC-REL-001",
@@ -13591,7 +13646,7 @@
         "DEC-GOV-001",
         "DEC-AI-001",
         "DEC-ARI-001",
-        "DEC-UCKK-001"
+        "DEC-UCKK-EXT-001"
       ]
     },
     {
@@ -13844,8 +13899,8 @@
         "LOCK-AI-001",
         "LOCK-AI-002",
         "LOCK-SENT-001",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-MEDIATHEQUE-002",
         "LOCK-ARI-001",
         "LOCK-ARI-002",
         "LOCK-IMPL-001",
@@ -13863,8 +13918,42 @@
         "DEC-REL-001",
         "DEC-AI-001",
         "DEC-SENT-001",
-        "DEC-UCKK-001",
+        "DEC-UCKK-EXT-001",
         "DEC-ARI-001"
+      ]
+    },
+    {
+      "path": "11-recipes/user-lightweight/koa-mediatheque-local.md",
+      "doc_id": "RECIPE-USER-LIGHT-MEDIATHEQUE-001",
+      "document_class": "recipe",
+      "status": "active",
+      "requirement_ids": [
+        "REQ-MEDIATHEQUE-001",
+        "REQ-MEDIATHEQUE-002",
+        "REQ-MEDIATHEQUE-004",
+        "REQ-MEDIATHEQUE-007",
+        "REQ-UCKK-PUB-001",
+        "REQ-UCKK-IMPORT-001",
+        "REQ-UCKK-IMPORT-002",
+        "REQ-UCKK-IMPORT-003",
+        "REQ-UCKK-IMPORT-004",
+        "REQ-UCKK-IMPORT-005",
+        "REQ-UCKK-IMPORT-006"
+      ],
+      "assertion_ids": [
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-MEDIATHEQUE-002",
+        "LOCK-UCKK-EXT-001",
+        "LOCK-OFFLINE-001",
+        "LOCK-UCKK-EXT-002"
+      ],
+      "decision_ids": [
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001",
+        "DEC-DATA-001",
+        "DEC-COMP-001",
+        "DEC-GOV-001",
+        "DEC-OFFLINE-001"
       ]
     },
     {
@@ -13977,8 +14066,10 @@
         "LOCK-AI-001",
         "LOCK-AI-002",
         "LOCK-SENT-001",
-        "LOCK-UCKK-001",
-        "LOCK-UCKK-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
+        "LOCK-MEDIATHEQUE-002",
+        "LOCK-UCKK-EXT-002",
         "LOCK-ARI-001",
         "LOCK-ARI-002",
         "LOCK-LIFE-001",
@@ -13996,7 +14087,8 @@
         "DEC-GOV-001",
         "DEC-AI-001",
         "DEC-SENT-001",
-        "DEC-UCKK-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-UCKK-EXT-001",
         "DEC-ARI-001",
         "DEC-LANG-001",
         "DEC-LIFE-001"
@@ -14043,6 +14135,8 @@
         "LOCK-ARI-001",
         "LOCK-ARI-002",
         "LOCK-SENT-001",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-MEDIATHEQUE-002",
         "LOCK-DATA-001",
         "LOCK-GOV-001",
         "LOCK-LIFE-001",
@@ -14054,7 +14148,7 @@
         "DEC-CONTAINER-001",
         "DEC-GOV-001",
         "DEC-ARI-001",
-        "DEC-UCKK-001",
+        "DEC-MEDIATHEQUE-001",
         "DEC-AI-001",
         "DEC-SENT-001",
         "DEC-DATA-001",
@@ -14062,13 +14156,35 @@
       ]
     },
     {
-      "path": "11-recipes/user-lightweight/uckk-mediatheque-local.md",
-      "doc_id": "DOC-REC-UCKK-MEDIATHEQUE-LOCAL",
+      "path": "11-recipes/user-lightweight/uckk-learning-package-import.md",
+      "doc_id": "DOC-REC-UCKK-IMPORT-001",
       "document_class": "recipe",
       "status": "active",
-      "requirement_ids": [],
-      "assertion_ids": [],
-      "decision_ids": []
+      "requirement_ids": [
+        "REQ-UCKK-IMPORT-001",
+        "REQ-UCKK-IMPORT-002",
+        "REQ-UCKK-IMPORT-003",
+        "REQ-UCKK-IMPORT-004",
+        "REQ-UCKK-IMPORT-005",
+        "REQ-UCKK-IMPORT-006",
+        "REQ-UCKK-IMPORT-007",
+        "REQ-UCKK-IMPORT-008",
+        "REQ-UCKK-IMPORT-009",
+        "REQ-UCKK-IMPORT-010",
+        "REQ-UCKK-IMPORT-011",
+        "REQ-UCKK-IMPORT-012"
+      ],
+      "assertion_ids": [
+        "LOCK-UCKK-EXT-001",
+        "LOCK-UCKK-EXT-002",
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-OFFLINE-001"
+      ],
+      "decision_ids": [
+        "DEC-UCKK-EXT-001",
+        "DEC-MEDIATHEQUE-001",
+        "DEC-OFFLINE-001"
+      ]
     },
     {
       "path": "11-recipes/user-lightweight/zram-and-cgroup-limits.md",
@@ -14114,7 +14230,10 @@
       "document_class": "explanatory_markdown",
       "status": "active",
       "requirement_ids": [],
-      "assertion_ids": [],
+      "assertion_ids": [
+        "LOCK-UCKK-EXT-001",
+        "LOCK-UCKK-EXT-002"
+      ],
       "decision_ids": []
     },
     {
@@ -14156,7 +14275,11 @@
       "document_class": "explanatory_markdown",
       "status": "active",
       "requirement_ids": [],
-      "assertion_ids": [],
+      "assertion_ids": [
+        "LOCK-MEDIATHEQUE-001",
+        "LOCK-UCKK-EXT-001",
+        "LOCK-UCKK-EXT-002"
+      ],
       "decision_ids": []
     }
   ]

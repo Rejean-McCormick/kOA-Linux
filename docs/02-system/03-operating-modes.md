@@ -17,7 +17,10 @@
     "generated/requirements-index.json",
     "generated/assertion-index.json",
     "generated/traceability.json",
-    "generated/exception-index.json"
+    "generated/exception-index.json",
+    "contracts/integrations/uckk-publication.integration.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json"
   ],
   "decision_ids": [
     "DEC-SYS-003",
@@ -49,7 +52,10 @@
     "REQ-SYS-MODE-017",
     "REQ-SYS-MODE-018",
     "REQ-SYS-MODE-019",
-    "REQ-SYS-MODE-020"
+    "REQ-SYS-MODE-020",
+    "REQ-SYS-MODE-021",
+    "REQ-SYS-MODE-022",
+    "REQ-SYS-MODE-023"
   ],
   "lock_ids": [
     "LOCK-PROFILE-001",
@@ -58,7 +64,6 @@
     "LOCK-AI-002",
     "LOCK-SENT-001",
     "LOCK-MEDIATHEQUE-001",
-    "LOCK-UCKK-EXT-001",
     "LOCK-UCKK-EXT-001",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
@@ -69,7 +74,8 @@
     "LOCK-DEV-004",
     "LOCK-DEV-005",
     "LOCK-LIFE-001",
-    "LOCK-LIFE-002"
+    "LOCK-LIFE-002",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -141,7 +147,7 @@ This document applies globally to:
 
 The mode model applies at the smallest meaningful execution scope, which can be:
 
-```text
+`text
 session
 workspace
 component instance
@@ -151,7 +157,7 @@ service group
 node
 deployment
 recovery environment
-```
+`
 
 A host can therefore contain several simultaneous mode instances. For example, one user session can remain in interactive user mode while an isolated development workspace runs in development workspace mode and background components run in unattended service mode.
 
@@ -161,7 +167,7 @@ This document does not define the full membership of a deployment profile, the i
 
 The canonical sources for this document are:
 
-```text
+`text
 generated/authority-manifest.json
 generated/decision-index.json
 contracts/system.contract.json#/operating_modes
@@ -171,7 +177,7 @@ generated/requirements-index.json
 generated/assertion-index.json
 generated/traceability.json
 generated/exception-index.json
-```
+`
 
 Their ownership roles are:
 
@@ -195,12 +201,12 @@ This document explains the mode model. It does not independently own canonical m
 
 A mode instance is described by four independent dimensions:
 
-```text
+`text
 primary mode
 connectivity state
 capability health
 authority context
-```
+`
 
 The dimensions are evaluated for a declared execution scope rather than assumed globally.
 
@@ -357,7 +363,7 @@ The Governance Policy Runtime, when deployed, evaluates governance authorization
 
 ## 5. Applicable Normative Requirements
 
-<!-- GENERATED:REQUIREMENTS:BEGIN ids=REQ-SYS-MODE-001,REQ-SYS-MODE-002,REQ-SYS-MODE-003,REQ-SYS-MODE-004,REQ-SYS-MODE-005,REQ-SYS-MODE-006,REQ-SYS-MODE-007,REQ-SYS-MODE-008,REQ-SYS-MODE-009,REQ-SYS-MODE-010,REQ-SYS-MODE-011,REQ-SYS-MODE-012,REQ-SYS-MODE-013,REQ-SYS-MODE-014,REQ-SYS-MODE-015,REQ-SYS-MODE-016,REQ-SYS-MODE-017,REQ-SYS-MODE-018,REQ-SYS-MODE-019,REQ-SYS-MODE-020 -->
+<!-- GENERATED:REQUIREMENTS:BEGIN ids=REQ-SYS-MODE-001,REQ-SYS-MODE-002,REQ-SYS-MODE-003,REQ-SYS-MODE-004,REQ-SYS-MODE-005,REQ-SYS-MODE-006,REQ-SYS-MODE-007,REQ-SYS-MODE-008,REQ-SYS-MODE-009,REQ-SYS-MODE-010,REQ-SYS-MODE-011,REQ-SYS-MODE-012,REQ-SYS-MODE-013,REQ-SYS-MODE-014,REQ-SYS-MODE-015,REQ-SYS-MODE-016,REQ-SYS-MODE-017,REQ-SYS-MODE-018,REQ-SYS-MODE-019,REQ-SYS-MODE-020,REQ-SYS-MODE-021,REQ-SYS-MODE-022,REQ-SYS-MODE-023 -->
 - **REQ-SYS-MODE-001 — SHALL:** Every authority-bearing operation resolve an active operating-mode context for the actor, capability, target, and execution scope.
 - **REQ-SYS-MODE-002 — SHALL:** Each deployment profile declare the primary operating modes and state overlays it permits.
 - **REQ-SYS-MODE-003 — SHALL NOT:** A mode transition broaden authority, data ownership, trust, disclosure, privilege, or profile scope by itself.
@@ -378,6 +384,9 @@ The Governance Policy Runtime, when deployed, evaluates governance authorization
 - **REQ-SYS-MODE-018 — SHALL:** SenTient remain optional, isolated, non-authoritative, and absent from the default interactive user baseline.
 - **REQ-SYS-MODE-019 — SHALL:** Resource-intensive jobs be admitted, scheduled, limited, paused, or rejected by the Resource Governor according to the active profile and mode budget.
 - **REQ-SYS-MODE-020 — SHALL:** Concurrent mode instances remain isolated and independently authorized when multiple users, workspaces, components, or services operate on the same host.
+- **REQ-SYS-MODE-021 — SHALL:** Accepted UCKK learning packages remain available in offline operating mode when their license, required resources, and local runtime permit it.
+- **REQ-SYS-MODE-022 — SHALL:** UCKK publication and UCKK import remain separate explicitly enabled mode capabilities with separate queues, credentials, receipts, retries, and terminal results.
+- **REQ-SYS-MODE-023 — SHALL NOT:** A transition from offline to connected mode automatically upload local progress or adaptations, download remote updates, overwrite accepted local content, or synchronize the two Mediatheques.
 <!-- GENERATED:REQUIREMENTS:END -->
 
 ## 6. Procedures or State Transitions
@@ -540,9 +549,13 @@ The Governance Policy Runtime controls governance authorization, disclosure, and
 
 Each component defines its own service-mode instances and internal states. The system mode model constrains how those states interact with profiles, authority, resources, connectivity, and lifecycle.
 
-### 8.7 Publication and kOA Mediatheque Dimension gateways
+### 8.7 Directional UCKK Mediatheque interchange
 
-Publication Gateway controls governed disclosure across domains. After authorization, UCKK Publication Bridge performs target-specific packaging and transport to the external UCKK platform. Local Mediatheque operation remains independent.
+Publication Gateway controls outbound disclosure. After authorization, UCKK Publication Bridge performs target-specific packaging and transport to the online UCKK platform.
+
+UCKK Import Bridge owns selected inbound retrieval or offline-bundle intake and quarantine. The kOA Mediatheque owns local acceptance, separate local identities, and offline availability. Accepted courses, learning paths, manuals, and instructions remain usable in disconnected mode within their rights and runtime constraints.
+
+The two directions are independently enabled and fail independently. Reconnection does not authorize automatic transfer, overwrite, deletion, progress upload, or bidirectional synchronization.
 
 ### 8.8 Lifecycle services
 
@@ -602,6 +615,9 @@ This document is conformant when all of the following checks pass:
 12. degraded-mode tests prove capability containment;
 13. Ariane tests prove local navigation without external AI;
 14. kOA Mediatheque tests prove deterministic native behavior without Suno or Gamma;
+15. accepted UCKK learning packages remain locally available in disconnected mode;
+16. inbound and outbound UCKK operations remain separately enabled, queued, receipted, and recoverable;
+17. reconnection does not trigger automatic upload, download, overwrite, or synchronization;
 15. maintenance tests prove declared scope, completion checks, and rollback or repair;
 16. recovery tests prove isolation, verified inputs, integrity checks, and valid reactivation;
 17. break-glass tests prove human invocation, narrow scope, expiration, recording, and review;
@@ -613,7 +629,7 @@ This document is conformant when all of the following checks pass:
 
 Expected validator failure codes include:
 
-```text
+`text
 mode_not_permitted_by_profile
 mode_scope_undefined
 mode_authority_unavailable
@@ -627,7 +643,7 @@ user_baseline_contains_development_toolchain
 user_baseline_contains_sentient
 external_ai_baseline_dependency
 resource_policy_authority_confusion
-```
+`
 
 ## 11. Non-Normative Examples
 

@@ -136,14 +136,14 @@ Publication Gateway is the controlled disclosure boundary between private operat
 
 Its primary system flow is:
 
-```text
+`text
 Orgo private result
 -> publication candidate
 -> Publication Gateway validation and policy
 -> approved publication bundle
 -> Konnaxion admission
 -> publication receipt
-```
+`
 
 The component prevents direct database coupling and converts one explicit private-domain candidate into one controlled public-domain handoff.
 
@@ -151,9 +151,9 @@ It owns disclosure processing and evidence. It does not own the originating Orgo
 
 The machine-readable owner of detailed stores, interfaces, states, events, workflows, failures, security, resources, and conformance is:
 
-```text
+`text
 contracts/components/publication-gateway.component.json
-```
+`
 
 ## 2. Scope
 
@@ -215,7 +215,7 @@ A public signal moving into private operational work uses its own explicit intak
 
 Publication Gateway is a policy-enforced transformation and handoff boundary.
 
-```text
+`text
 private authoritative state
 -> explicit candidate
 -> validation
@@ -226,7 +226,7 @@ private authoritative state
 -> immutable publication bundle
 -> public-domain admission
 -> accountable receipt
-```
+`
 
 The private and public records remain distinct objects with explicit provenance.
 
@@ -387,7 +387,7 @@ Publication Gateway does not write Konnaxion persistence.
 
 A completed receipt connects:
 
-```text
+`text
 Orgo source
 -> publication request
 -> policy and approvals
@@ -395,7 +395,7 @@ Orgo source
 -> publication bundle
 -> Konnaxion receiving identity
 -> public result
-```
+`
 
 Public accountability evidence and restricted evidence remain separate.
 

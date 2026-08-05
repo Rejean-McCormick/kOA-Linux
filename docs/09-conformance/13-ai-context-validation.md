@@ -27,7 +27,10 @@
     "generated/test-catalog.json",
     "generated/evidence-catalog.json",
     "contracts/components/koa-mediatheque.component.json",
-    "contracts/integrations/uckk-publication.integration.json"
+    "contracts/integrations/uckk-publication.integration.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json"
   ],
   "decision_ids": [
     "DEC-CONF-AICTX-001",
@@ -112,7 +115,8 @@
     "LOCK-GATE-001",
     "LOCK-IMPL-001",
     "LOCK-MEDIATHEQUE-001",
-    "LOCK-UCKK-EXT-001"
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -280,7 +284,7 @@ A package has one primary scope kind. It can include supporting scopes when each
 
 A reusable package manifest contains:
 
-```text
+`text
 context_id
 version
 status
@@ -307,11 +311,11 @@ generation_configuration_ref
 generated_at
 validation
 output_ref
-```
+`
 
 A task bundle additionally identifies:
 
-```text
+`text
 task_class
 requested_operation
 target_scope
@@ -323,13 +327,13 @@ authority_domain_refs
 lifecycle_stage
 required_output_class
 parent_context_refs
-```
+`
 
 ### 4.3 Package lifecycle
 
 Reusable package states are:
 
-```text
+`text
 generated
 validated
 active
@@ -337,7 +341,7 @@ stale
 invalid
 superseded
 archived
-```
+`
 
 `generated` means output exists but has not passed complete validation.
 
@@ -380,7 +384,7 @@ A package cannot:
 
 Every included source is classified as:
 
-```text
+`text
 canonical_authority
 normative_explanation
 non_normative_recipe
@@ -389,7 +393,7 @@ generated_projection
 migration_only
 user_provided_content
 external_content
-```
+`
 
 Only `canonical_authority` owns machine-readable architectural facts.
 
@@ -414,12 +418,12 @@ A scoped package is complete for its declared use, not for every possible kOA ta
 
 A primary-profile package contains:
 
-```text
+`text
 global baseline
 + exactly one primary profile
 + compatible overlays selected by the package
 + applicable approved exceptions
-```
+`
 
 An overlay package identifies itself as non-deployable and provides compatibility rules without inventing a primary-profile selection.
 
@@ -497,7 +501,7 @@ A summary that states a permission without its conditions and failure behavior i
 
 Before construction, the generator or requesting AI agent identifies:
 
-```text
+`text
 task_class
 requested_operation
 target_scope
@@ -509,11 +513,11 @@ affected_registries
 lifecycle_stage
 authority_domain
 output_class
-```
+`
 
 Task classes include:
 
-```text
+`text
 editorial_change
 canonical_registry_change
 requirement_change
@@ -530,7 +534,7 @@ release_change
 operations_change
 security_change
 conformance_change
-```
+`
 
 A semantic task begins with the canonical owner.
 
@@ -589,13 +593,13 @@ The generator does not choose the most common wording.
 
 When an implementation-affecting owner decision is absent, the package records:
 
-```text
+`text
 validation_status: blocked
 reason_code: MISSING_OWNER_DECISION
 affected_objects
 required_decision_scope
 prohibited_inference: true
-```
+`
 
 The task bundle can support drafting a decision proposal. It cannot support activating dependent architecture.
 
@@ -635,7 +639,7 @@ Safety and authority information is not treated as optional verbosity.
 
 A split package contains:
 
-```text
+`text
 root_manifest
 ordered_part_refs
 dependency_edges
@@ -643,7 +647,7 @@ coverage_summary
 included_scope_summary
 excluded_scope_summary
 validation_summary
-```
+`
 
 Every part identifies the root manifest and package version.
 
@@ -674,7 +678,7 @@ Public AI contexts exclude private proof and unrestricted sensitive evidence.
 
 Validation proceeds through:
 
-```text
+`text
 schema_validation
 registry_registration
 output_path_validation
@@ -693,7 +697,7 @@ generated_content_comparison
 traceability_validation
 offline_rebuild_validation
 final_status
-```
+`
 
 A later check does not erase an earlier failure.
 
@@ -759,7 +763,7 @@ Boundary checks preserve:
 - component data ownership;
 - no direct cross-component authoritative writes;
 - Resource Governor and Governance Policy Runtime separation;
-- kOA Mediatheque ownership and external UCKK publication-boundary separation;
+- kOA Mediatheque ownership, shared-frame semantics, and separate outbound publication and inbound UCKK import boundaries;
 - Ariane local navigation without AI;
 - deterministic local kOA Mediatheque operation;
 - optional isolated non-authoritative SenTient;
@@ -830,7 +834,7 @@ The validation record includes reason codes and affected objects.
 
 Evidence records:
 
-```text
+`text
 context_id
 context_version
 output_ref
@@ -848,7 +852,7 @@ finished_at
 result
 reason_codes
 evidence_refs
-```
+`
 
 A claimed command result is accepted only with execution evidence.
 
@@ -896,12 +900,12 @@ The package explains authority; it does not grant authority.
 
 Approved external surfaces are:
 
-```text
+`text
 chatgpt
 suno
 gamma
 approved_ariane_voice_adapter
-```
+`
 
 A context package using an external surface declares:
 
@@ -1061,7 +1065,7 @@ Remote AI and external providers are not required to build or validate core cont
 
 The standard local commands are:
 
-```bash
+`bash
 uv run python docs/tools/build_ai_context.py --check
 uv run python docs/tools/check_generated_content.py
 uv run python docs/tools/check_ai_boundary.py
@@ -1071,7 +1075,7 @@ uv run python docs/tools/check_traceability.py
 uv run python docs/tools/check_decision_closure.py
 uv run python docs/tools/check_no_unresolved_state.py
 uv run python docs/tools/validate_docs.py
-```
+`
 
 The registered tool contracts determine exact command options.
 
@@ -1157,13 +1161,13 @@ This document is conformant when validation confirms:
 
 The principal validation entry point is:
 
-```bash
+`bash
 uv run python docs/tools/validate_docs.py
-```
+`
 
 Supporting checks include:
 
-```text
+`text
 docs/tools/build_ai_context.py --check
 docs/tools/check_generated_content.py
 docs/tools/check_canonical_ownership.py
@@ -1175,7 +1179,7 @@ docs/tools/check_ai_boundary.py
 docs/tools/check_traceability.py
 docs/tools/check_decision_closure.py
 docs/tools/check_no_unresolved_state.py
-```
+`
 
 A failed AI-context check blocks activation of the affected package and blocks its use for implementation-affecting, release, security, operations, migration, or conformance work.
 
@@ -1191,7 +1195,9 @@ A task bundle contains one compatible sovereign primary profile, the `sovereign_
 
 ### 11.3 Component package
 
-The `uckk_publication` integration package includes explicit user-selected publication, kOA Mediatheque source ownership, disclosure authorization, rights and restriction checks, target-specific packaging, manifest integrity, external Moodle transport, result receipts, queued offline state, and failure behavior. It explicitly excludes UCKK from local subsystem ownership and does not describe publication as background synchronization or unrestricted media ingestion.
+The `uckk_publication` integration package includes explicit user-selected publication, kOA Mediatheque source ownership, disclosure authorization, rights and restriction checks, target-specific packaging, manifest integrity, external Moodle transport, result receipts, queued offline state, and failure behavior.
+
+The separate `uckk_import` integration package includes source selection, online retrieval or approved offline-carrier intake, quarantine, source and licence checks, integrity and frame-compatibility validation, explicit local acceptance, distinct local identity, import receipts, offline availability, and rejection or expiry behavior. Both packages explicitly exclude UCKK from local subsystem ownership and prohibit background bidirectional synchronization.
 
 ### 11.4 Omitted object
 

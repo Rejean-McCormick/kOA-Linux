@@ -221,12 +221,12 @@ kOA Node Agent executes the local privileged transition where its contract appli
 
 The activation unit is one Release Set containing:
 
-```text
+`text
 system
 services
 governance
 knowledge
-```
+`
 
 Each entry identifies one specific channel version. The Release Set also binds compatibility results, tests, evidence, manifests, signatures, and recovery information.
 
@@ -270,7 +270,7 @@ No single successful check replaces the others.
 
 The activation transaction uses:
 
-```text
+`text
 requested
 identity_verified
 authorization_verified
@@ -286,11 +286,11 @@ authority_committed
 post_activation_validated
 receipt_durable
 completed
-```
+`
 
 Alternative states are:
 
-```text
+`text
 blocked
 rejected
 cancelled
@@ -300,7 +300,7 @@ expired
 rolled_back
 forward_repair_required
 recovery_required
-```
+`
 
 ### 4.5 Last-known-good state
 
@@ -319,11 +319,11 @@ The lifecycle contract records how long it is retained and when it can be retire
 
 Every Release Set declares one strategy:
 
-```text
+`text
 rollback
 forward_repair
 rollback_or_forward_repair
-```
+`
 
 The strategy can differ by artifact or migration, but the Release Set exposes one complete executable recovery plan.
 
@@ -378,7 +378,7 @@ The strategy can differ by artifact or migration, but the Release Set exposes on
 
 An activation request includes:
 
-```text
+`text
 request_id
 idempotency_id
 target_release_set_ref
@@ -392,7 +392,7 @@ activation_window_ref
 correlation_id
 requested_at
 deadline_at
-```
+`
 
 Optional fields can identify an offline bundle, maintenance plan, approved interruption window, or recovery environment. The request schema remains closed.
 
@@ -558,7 +558,7 @@ Service startup alone is not completion.
 
 The activation receipt includes:
 
-```text
+`text
 receipt_id
 request_id
 transaction_id
@@ -577,7 +577,7 @@ finished_at
 result
 rollback_or_recovery_ref
 correlation_id
-```
+`
 
 The receipt uses the `security_and_node_audit` class unless another canonical rule assigns a stricter class.
 
@@ -606,7 +606,7 @@ A prior version is not automatically a valid rollback target.
 
 Rollback follows the activation transaction:
 
-```text
+`text
 rollback_requested
 target_prior_set_verified
 expected_state_verified
@@ -619,7 +619,7 @@ authority_pointer_restored
 rollback_postchecks_passed
 rollback_receipt_durable
 rolled_back
-```
+`
 
 The restored pointer identifies one complete prior Release Set.
 
@@ -658,13 +658,13 @@ The failed Release Set remains immutable and retains its lifecycle history.
 
 On restart, the activation executor reads the durable transaction journal and classifies the transaction:
 
-```text
+`text
 not_started
 pre_commit
 authority_commit_unknown
 authority_committed_postcheck_incomplete
 completed_receipt_pending
-```
+`
 
 Recovery verifies actual pointers, artifacts, services, migrations, and receipts.
 
@@ -863,13 +863,13 @@ This document is conformant when validation confirms:
 
 The principal validation entry point is:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 Supporting checks include:
 
-```text
+`text
 tools/check_release_sets.py
 tools/check_artifact_contracts.py
 tools/check_component_boundaries.py
@@ -878,7 +878,7 @@ tools/check_profile_inheritance.py
 tools/check_traceability.py
 tools/check_decision_closure.py
 tools/check_no_unresolved_state.py
-```
+`
 
 A failed lifecycle check blocks the affected activation, rollback, repair, recovery completion, or conformance claim.
 

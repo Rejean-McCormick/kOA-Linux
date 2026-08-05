@@ -147,7 +147,7 @@
       "local_restore",
       "local_rollback_or_forward_repair",
       "local_ariane_navigation",
-      "deterministic_uckk_operation",
+      "deterministic_koa_mediatheque_operation",
       "local_evidence_export",
       "portable_data_export"
     ],
@@ -193,8 +193,7 @@
     "inherited_required_components": "from_base_profile",
     "optional_component_ids": [],
     "prohibited_component_ids": [
-      "sentient",
-      "gf_wordbench"
+      "sentient"
     ],
     "component_overrides": [
       {
@@ -355,7 +354,8 @@
       "chatgpt",
       "suno",
       "gamma",
-      "ariane_external_voice"
+      "ariane_external_voice",
+      "uckk-publication"
     ],
     "automatically_enabled_integrations": [],
     "runtime_external_calls_allowed": false,
@@ -368,7 +368,24 @@
       "explicit_user_or_operator_action",
       "active_integration_contract",
       "successful_validation"
-    ]
+    ],
+    "uckk_publication": {
+      "integration_id": "uckk-publication",
+      "contract_ref": "contracts/integrations/uckk-publication.integration.json",
+      "availability": "optional",
+      "direction": "outbound",
+      "required_for_local_operation": false,
+      "required_for_offline_operation": false
+    },
+    "uckk_import": {
+      "integration_id": "uckk-import",
+      "contract_ref": "contracts/integrations/uckk-import.integration.json",
+      "availability": "optional",
+      "direction": "inbound",
+      "offline_bundle_supported": true,
+      "accepted_content_available_offline": true,
+      "automatic_sync": false
+    }
   },
   "governance": {
     "governance_policy_runtime_required": true,
@@ -655,7 +672,7 @@
           "local_policy_evaluation",
           "local_identity_verification",
           "local_ariane_navigation",
-          "deterministic_uckk_operation"
+          "deterministic_koa_mediatheque_operation"
         ],
         "blocked_capability_ids": [
           "external_publication",
@@ -887,7 +904,6 @@
     "contracts/system.contract.json",
     "generated/component-catalog.json",
     "generated/profile-catalog.json",
-    "generated/component-catalog.json",
     "contracts/release-channels.contract.json",
     "contracts/artifact-classes.contract.json",
     "contracts/integration-types.contract.json",
@@ -908,7 +924,9 @@
     "DEC-AI-001",
     "DEC-DATA-001",
     "DEC-GOV-001",
-    "DEC-REL-001"
+    "DEC-REL-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-UCKK-EXT-001"
   ],
   "requirement_ids": [
     "REQ-DOC-AUTH-006",
@@ -921,7 +939,9 @@
     "REQ-DOC-EXC-003",
     "REQ-DOC-EXC-019",
     "REQ-AI-DOC-007",
-    "REQ-AI-DOC-008"
+    "REQ-AI-DOC-008",
+    "REQ-MEDIATHEQUE-001",
+    "REQ-UCKK-PUB-001"
   ],
   "lock_ids": [
     "LOCK-PROFILE-001",
@@ -934,13 +954,16 @@
     "LOCK-LIFE-002",
     "LOCK-LIFE-003",
     "LOCK-LIFE-004",
-    "LOCK-IMPL-002"
+    "LOCK-IMPL-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-MEDIATHEQUE-002",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "documentation": {
     "doc_id": "DOC-PROFILE-012",
     "path": "03-profiles/12-sovereign-offline.md",
-    "ai_context_path": "generated/ai-context/sovereign-offline.json",
     "generated_catalog_path": "generated/profile-catalog.md"
   },
   "change_policy": {
@@ -952,6 +975,5 @@
     "complete_validation_required": true,
     "authority_registry_updated_last": true
   },
-  "supersedes": [],
-  "replaced_by": null
+  "supersedes": []
 }

@@ -22,7 +22,9 @@
     "generated/traceability.json",
     "generated/exception-index.json",
     "generated/test-catalog.json",
-    "generated/evidence-catalog.json"
+    "generated/evidence-catalog.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json"
   ],
   "decision_ids": [
     "DEC-PORT-001",
@@ -177,7 +179,7 @@ A cache, replica, storage snapshot, database dump, container volume, object-stor
 
 The following documents provide detailed implementation and operational interpretation without becoming alternate canonical owners:
 
-```text
+`text
 06-lifecycle/14-recovery.md
 08-operations/08-backup.md
 08-operations/09-restore.md
@@ -185,7 +187,7 @@ The following documents provide detailed implementation and operational interpre
 08-operations/13-disaster-recovery.md
 09-conformance/
 11-recipes/sovereign-linux/backup-and-restore.md
-```
+`
 
 Repository-relative paths and canonical object identifiers are the only authority references used by this document.
 
@@ -342,7 +344,7 @@ A coordinating process may assemble these outputs but does not bypass component 
 
 A complete package includes, when applicable:
 
-```text
+`text
 package manifest
 subject and scope declaration
 component export inventory
@@ -358,7 +360,7 @@ integration dependency declarations
 restore and independent-consumption instructions
 validation and compatibility rules
 test definitions and expected results
-```
+`
 
 Immutable artifacts may be referenced rather than embedded only when their independent retrieval, identity, compatibility, and continued availability have been verified.
 
@@ -529,13 +531,13 @@ Kristal identity remains derived from canonical epistemic content rather than wo
 
 Language artifacts required to interpret exported content are included or independently retrievable under declared identities and compatibility rules.
 
-### 9.6 UCKK and publication boundaries
+### 9.6 UCKK interchange and portability boundaries
 
-UCKK exports preserve source media identity, metadata, ownership, restrictions, deterministic derivatives, and artifact relationships.
+Outbound UCKK publication packages preserve the local source identity, metadata, rights, restrictions, deterministic derivatives, and artifact relationships without claiming ownership of the remote destination object.
 
-Restricted content remains restricted in originals, previews, indexes, manifests, and exports.
+Inbound UCKK learning packages preserve remote source identity, version, integrity, licence, rights, provenance, and frame compatibility. After explicit local acceptance, the kOA Mediatheque owns a distinct local copy and its offline lifecycle; the remote UCKK object remains under UCKK authority.
 
-Publication Gateway controls governed disclosure. A portability export does not automatically publish its content.
+Restricted content remains restricted in originals, previews, indexes, manifests, packages, and exports. Publication Gateway controls governed outward disclosure. A portability export does not automatically publish content, and a restored connection does not automatically synchronize either Mediatheque.
 
 ### 9.7 Resource Governor
 
@@ -600,7 +602,7 @@ This document is conformant when:
 
 Applicable failure codes include:
 
-```text
+`text
 portability_owner_missing
 export_scope_invalid
 export_inventory_incomplete
@@ -615,7 +617,7 @@ consent_continuity_failed
 cross_component_restore_write
 portability_evidence_missing
 credible_exit_unproven
-```
+`
 
 A required validator that cannot run produces `blocked`, not `pass`.
 

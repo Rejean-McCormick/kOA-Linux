@@ -572,9 +572,9 @@ This document is conformant when:
 
 The validation entry point is:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 ## 11. Non-Normative Examples
 
@@ -584,7 +584,7 @@ A PostgreSQL process is infrastructure rather than automatically being a compone
 
 > **Non-normative example:** This example illustrates gateway authority.
 
-The UCKK Publication Bridge can validate, package, and transport an authorized representation to the external UCKK platform. The kOA Mediatheque remains the owner of local media state, Publication Gateway remains the disclosure authority, and UCKK owns only its separately accepted destination copy.
+The UCKK Publication Bridge can validate, package, and transport an authorized representation to the online UCKK platform. The separate UCKK Import Bridge retrieves selected learning packages into quarantine. The kOA Mediatheque remains the owner of local media state and local acceptance, Publication Gateway remains the outbound disclosure authority, and UCKK owns its remote records. Shared-frame compatibility never merges these authorities.
 
 > **Non-normative example:** This example illustrates derived data.
 

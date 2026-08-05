@@ -12,7 +12,7 @@
   "canonical_refs": [
     "generated/decision-index.json#/decisions/DEC-AI-001",
     "generated/decision-index.json#/decisions/DEC-SENT-001",
-    "generated/decision-index.json#/decisions/DEC-UCKK-001",
+    "generated/decision-index.json#/decisions/DEC-UCKK-EXT-001",
     "generated/decision-index.json#/decisions/DEC-ARI-001",
     "contracts/system.contract.json#/ai_boundary",
     "contracts/system.contract.json#/external_integrations",
@@ -28,7 +28,7 @@
   "decision_ids": [
     "DEC-AI-001",
     "DEC-SENT-001",
-    "DEC-UCKK-001",
+    "DEC-UCKK-EXT-001",
     "DEC-ARI-001",
     "DEC-PROFILE-001",
     "DEC-DATA-001",
@@ -41,8 +41,8 @@
     "LOCK-AI-001",
     "LOCK-AI-002",
     "LOCK-SENT-001",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-MEDIATHEQUE-002",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
     "LOCK-DATA-001",
@@ -188,7 +188,7 @@ The `sovereign_offline` overlay prohibits Internet-dependent external AI operati
 
 - `generated/decision-index.json#/decisions/DEC-AI-001`
 - `generated/decision-index.json#/decisions/DEC-SENT-001`
-- `generated/decision-index.json#/decisions/DEC-UCKK-001`
+- `generated/decision-index.json#/decisions/DEC-UCKK-EXT-001`
 - `generated/decision-index.json#/decisions/DEC-ARI-001`
 - `generated/decision-index.json#/decisions/DEC-PROFILE-001`
 - `generated/decision-index.json#/decisions/DEC-DATA-001`
@@ -234,8 +234,8 @@ No standalone requirement is introduced by this ADR. Executable requirements bel
 - `LOCK-AI-001`
 - `LOCK-AI-002`
 - `LOCK-SENT-001`
-- `LOCK-UCKK-001`
-- `LOCK-UCKK-002`
+- `LOCK-MEDIATHEQUE-001`
+- `LOCK-MEDIATHEQUE-002`
 - `LOCK-ARI-001`
 - `LOCK-ARI-002`
 - `LOCK-DATA-001`
@@ -672,7 +672,7 @@ It follows these fixed properties:
 
 This decision preserves:
 
-- deterministic local UCKK;
+- deterministic local kOA Mediatheque and offline learning-package use;
 - deterministic local language runtime;
 - local Ariane navigation;
 - component-owned application logic;
@@ -787,11 +787,11 @@ External publication requires:
 
 Suno and Gamma remain external-processing adapters.
 
-Native UCKK ingestion and dimension admission remain local and deterministic.
+Local kOA Mediatheque ingestion and accepted UCKK package processing remain local and deterministic.
 
-UCKK Dimension Gateway coordinates admission.
+UCKK Import Bridge coordinates inbound retrieval and quarantine; the kOA Mediatheque owns acceptance.
 
-UCKK Platform owns final accepted UCKK objects.
+The online UCKK Mediatheque owns final accepted UCKK objects.
 
 External provider output re-enters as candidate media.
 
@@ -981,7 +981,7 @@ Offline-capable profiles preserve:
 - local application workflows;
 - local navigation;
 - local language runtime;
-- native UCKK;
+- local kOA Mediatheque and controlled UCKK import;
 - local governance;
 - local identity and trust;
 - local artifacts;
@@ -1194,7 +1194,7 @@ Migration applies to any implementation that currently has:
 - undeclared AI endpoints;
 - shared credentials;
 - unreviewed candidate adoption;
-- AI-dependent UCKK ingestion;
+- AI-dependent kOA Mediatheque ingestion or UCKK learning-package validation;
 - AI-dependent Ariane navigation;
 - SenTient outside permitted profiles.
 
@@ -1325,7 +1325,7 @@ This ADR formalizes an already closed owner decision. It does not independently 
 
 - `generated/decision-index.json#/decisions/DEC-AI-001`
 - `generated/decision-index.json#/decisions/DEC-SENT-001`
-- `generated/decision-index.json#/decisions/DEC-UCKK-001`
+- `generated/decision-index.json#/decisions/DEC-UCKK-EXT-001`
 - `generated/decision-index.json#/decisions/DEC-ARI-001`
 - `contracts/system.contract.json#/ai_boundary`
 - `contracts/system.contract.json#/external_integrations`
@@ -1342,7 +1342,7 @@ This ADR formalizes an already closed owner decision. It does not independently 
 | `DOC-SYS-009` | `reviewed_no_change` | Already defines the native and external AI boundary |
 | `DOC-SYS-010` | `reviewed_no_change` | Already limits external AI surfaces |
 | `DOC-SYS-011` | `reviewed_no_change` | Already separates local navigation and external voice |
-| `DOC-SYS-012` | `reviewed_no_change` | Already keeps native UCKK deterministic |
+| `DOC-SYS-012` | `reviewed_no_change` | Already keeps local Mediatheque processing deterministic |
 | `DOC-SYS-016` | `reviewed_no_change` | Already classifies external integrations |
 | `DOC-SYS-017` | `reviewed_no_change` | Already defines capability-scoped degradation |
 | `DOC-COMP-SENT-001` | `reviewed_no_change` | Already limits SenTient to optional isolated workbench behavior |
@@ -1359,8 +1359,8 @@ This ADR formalizes an already closed owner decision. It does not independently 
 | `LOCK-AI-001` | `unchanged` | Prevents native AI baseline |
 | `LOCK-AI-002` | `unchanged` | Preserves candidate-only external AI output |
 | `LOCK-SENT-001` | `unchanged` | Preserves SenTient isolation and scope |
-| `LOCK-UCKK-001` | `unchanged` | Preserves deterministic native UCKK |
-| `LOCK-UCKK-002` | `unchanged` | Keeps Suno and Gamma explicit |
+| `LOCK-MEDIATHEQUE-001` | `unchanged` | Preserves deterministic local Mediatheque processing |
+| `LOCK-MEDIATHEQUE-002` | `unchanged` | Keeps Suno and Gamma explicit |
 | `LOCK-ARI-001` | `unchanged` | Preserves local deterministic navigation |
 | `LOCK-ARI-002` | `unchanged` | Preserves local navigation after voice failure |
 | `LOCK-DATA-001` | `unchanged` | Prevents direct canonical mutation |
@@ -1410,7 +1410,7 @@ The documentation release regenerates or reviews:
 | `TEST-ADR-014-013` | No silent provider or local AI fallback | `pass` |
 | `TEST-ADR-014-014` | External AI removal without core failure | `pass` |
 | `TEST-ADR-014-015` | SenTient profile and isolation boundary | `pass` |
-| `TEST-ADR-014-016` | Native UCKK does not invoke Suno or Gamma automatically | `pass` |
+| `TEST-ADR-014-016` | kOA Mediatheque and UCKK package import do not invoke Suno or Gamma automatically | `pass` |
 | `TEST-ADR-014-017` | Ariane local navigation survives external voice failure | `pass` |
 | `TEST-ADR-014-018` | Receipt and provenance minimization | `pass` |
 
@@ -1483,7 +1483,7 @@ Decision-specific validation includes:
 11. Provider failure and removal preserve native core operation.
 12. No silent alternate provider or local model activates.
 13. SenTient remains limited to developer and build profiles and remains non-authoritative.
-14. Native UCKK remains deterministic and does not call Suno or Gamma automatically.
+14. Local kOA Mediatheque processing and UCKK package validation remain deterministic and do not call Suno or Gamma automatically.
 15. Ariane local navigation remains available without external voice.
 16. Required tests and evidence complete for each deployment conformance claim.
 17. This ADR does not claim that deployment-specific tests have already executed.
@@ -1565,7 +1565,7 @@ Reconsideration requires objective evidence and a new accepted decision covering
 | AI allowed independently per component | Produces inconsistent security, consent, credentials, and adoption | A future integration framework demonstrates equivalent global enforcement |
 | Complete AI prohibition | Removes useful bounded optional capabilities | Not applicable while strict candidate-only controls remain effective |
 | SenTient as production service | Violates profile, resource, and authority decisions | New accepted decision replacing `DEC-SENT-001` |
-| Automatic Suno or Gamma from UCKK | Violates deterministic native UCKK and explicit user trigger | New accepted UCKK and AI decisions with data, rights, failure, and authority analysis |
+| Automatic Suno or Gamma during UCKK import | Violates deterministic local validation and explicit user trigger | New accepted UCKK and AI decisions with data, rights, failure, and authority analysis |
 | Voice-only Ariane navigation | Violates local deterministic accessibility and degradation | New accepted Ariane decision preserving non-voice recovery and accessibility |
 | silent alternate-provider substitution | Expands provider and data authority without user consent | Never within this ADR; requires a new explicit provider operation and user action |
 
@@ -1653,7 +1653,7 @@ The review record reflects document formalization and the accepted owner decisio
   "decision_ids": [
     "DEC-AI-001",
     "DEC-SENT-001",
-    "DEC-UCKK-001",
+    "DEC-UCKK-EXT-001",
     "DEC-ARI-001",
     "DEC-PROFILE-001",
     "DEC-DATA-001",
@@ -1691,8 +1691,8 @@ The review record reflects document formalization and the accepted owner decisio
     "LOCK-AI-001",
     "LOCK-AI-002",
     "LOCK-SENT-001",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-MEDIATHEQUE-002",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
     "LOCK-DATA-001",

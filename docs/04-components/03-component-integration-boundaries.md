@@ -70,7 +70,6 @@
     "LOCK-SENT-001",
     "LOCK-MEDIATHEQUE-001",
     "LOCK-UCKK-EXT-001",
-    "LOCK-UCKK-EXT-001",
     "LOCK-OFFLINE-001",
     "LOCK-LIFE-001",
     "LOCK-LIFE-002",
@@ -80,7 +79,8 @@
     "LOCK-INT-002",
     "LOCK-INT-003",
     "LOCK-INT-004",
-    "LOCK-INT-005"
+    "LOCK-INT-005",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -422,7 +422,7 @@ Administrative access does not grant application data authority or cultural auth
 - **REQ-COMP-INT-017 — SHALL:** Unrelated component capabilities continue when a bounded integration fails and continued operation is safe.
 - **REQ-COMP-INT-018 — SHALL:** Queued operations be revalidated after reconnection or material authority change before transmission, acceptance, publication, or activation.
 - **REQ-COMP-INT-019 — SHALL:** Publication Gateway mediate governed cross-domain publication.
-- **REQ-COMP-INT-020 — SHALL:** UCKK Publication Bridge perform target-specific packaging and transport only after Publication Gateway authorization.
+- **REQ-COMP-INT-020 — SHALL:** UCKK Publication Bridge perform target-specific packaging and transport only after Publication Gateway authorization; UCKK Import Bridge shall use a separate quarantined path and cannot create local authoritative state before kOA Mediatheque acceptance.
 - **REQ-COMP-INT-021 — SHALL NOT:** UCKK Publication Bridge bypass Publication Gateway authorization, own local kOA Mediatheque records, or perform implicit synchronization.
 - **REQ-COMP-INT-022 — SHALL:** Governance Policy Runtime and Resource Governor remain separate authorities even when one integration depends on both.
 - **REQ-COMP-INT-023 — SHALL NOT:** External AI, external creative services, or SenTient write authoritative component data directly.
@@ -459,16 +459,16 @@ A new integration is registered through this sequence:
 
 The synchronous request flow is:
 
-```text
+`text
 constructed
-  -> authenticated
-  -> authorized
-  -> contract_validated
-  -> accepted | denied | blocked
-  -> executed
-  -> committed
-  -> responded
-```
+ -> authenticated
+ -> authorized
+ -> contract_validated
+ -> accepted | denied | blocked
+ -> executed
+ -> committed
+ -> responded
+`
 
 The response distinguishes validation failure, authorization denial, blocked authority, conflict, resource exhaustion, dependency unavailability, and internal failure.
 
@@ -478,16 +478,16 @@ A timeout does not prove that execution failed. The caller uses the idempotency 
 
 The event flow is:
 
-```text
+`text
 fact_committed_by_owner
-  -> event_created
-  -> event_published
-  -> event_delivered
-  -> consumer_validated
-  -> consumer_accepted | rejected | quarantined
-  -> consumer_state_committed
-  -> checkpoint_advanced
-```
+ -> event_created
+ -> event_published
+ -> event_delivered
+ -> consumer_validated
+ -> consumer_accepted | rejected | quarantined
+ -> consumer_state_committed
+ -> checkpoint_advanced
+`
 
 A consumer checkpoint advances only after its own state commit or another declared durable acceptance point.
 

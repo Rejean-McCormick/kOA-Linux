@@ -72,7 +72,6 @@
     "LOCK-SENT-001",
     "LOCK-MEDIATHEQUE-001",
     "LOCK-UCKK-EXT-001",
-    "LOCK-UCKK-EXT-001",
     "LOCK-DATA-001",
     "LOCK-COMP-001",
     "LOCK-COMP-002",
@@ -80,7 +79,8 @@
     "LOCK-LIFE-001",
     "LOCK-LIFE-002",
     "LOCK-PROFILE-001",
-    "LOCK-PROFILE-002"
+    "LOCK-PROFILE-002",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -137,7 +137,7 @@ This document does not classify deterministic local parsing, search, indexing, c
 
 The canonical sources are:
 
-```text
+`text
 contracts/system.contract.json#/ai_boundary
 contracts/integration-types.contract.json
 generated/component-catalog.json#/components/ariane_runtime
@@ -148,7 +148,7 @@ generated/requirements-index.json
 generated/assertion-index.json
 generated/traceability.json
 generated/exception-index.json
-```
+`
 
 Their ownership roles are:
 
@@ -281,7 +281,7 @@ renderer=requirements-list-v1
 
 An external AI request follows:
 
-```text
+`text
 explicit user action
 → capability selection
 → integration and authority resolution
@@ -295,7 +295,7 @@ explicit user action
 → reject | edit | accept
 → component-owned import
 → provenance or critical-transition receipt
-```
+`
 
 The process stops before transfer when the destination, capability, data class, policy, consent, or authentication cannot be resolved.
 
@@ -319,21 +319,21 @@ Acceptance is explicit. Viewing or downloading a response is not acceptance.
 
 Ariane operates through two separate paths:
 
-```text
+`text
 local deterministic controls
 → Ariane Runtime
 → local navigation
-```
+`
 
 and:
 
-```text
+`text
 explicit voice action
 → approved Ariane voice adapter
 → validated intent candidate
 → Ariane Runtime
 → local navigation
-```
+`
 
 Loss of the voice path returns Ariane to local deterministic controls. It does not alter the local navigation model.
 
@@ -341,7 +341,7 @@ Loss of the voice path returns Ariane to local deterministic controls. It does n
 
 A SenTient task follows:
 
-```text
+`text
 explicit task request
 → isolated task activation
 → bounded input copy or governed reference
@@ -350,7 +350,7 @@ explicit task request
 → review
 → reject | import through owner interface
 → task shutdown
-```
+`
 
 SenTient retains only the state allowed by its component contract and applicable retention policy.
 
@@ -488,13 +488,13 @@ This document is conformant when:
 
 Applicable validation commands are:
 
-```bash
+`bash
 python docs/tools/check_ai_boundary.py
 python docs/tools/check_component_boundaries.py
 python docs/tools/check_interfile_locks.py
 python docs/tools/check_traceability.py
 python docs/tools/validate_docs.py
-```
+`
 
 ## 11. Non-Normative Examples
 

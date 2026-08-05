@@ -1,207 +1,206 @@
 <!-- KOA:DOC-META:BEGIN GENERATED
 {
-  "doc_id": "DOC-RECIPE-CP-001",
-  "document_class": "recipe",
-  "status": "active",
-  "language": "en",
-  "layer": "implementation_recipe",
-  "recipe_id": "RECIPE-CP-001",
-  "recipe_version": "1.0.0",
-  "scope": [
-    "profile:control_plane",
-    "kubernetes_deployment",
-    "cluster_scoped_service_activation",
-    "release_set_deployment"
-  ],
-  "canonical_refs": [
-    "generated/authority-manifest.json",
-    "generated/decision-index.json",
-    "generated/document-index.json",
-    "contracts/terminology.contract.json",
-    "contracts/system.contract.json",
-    "generated/component-catalog.json",
-    "contracts/profiles/control-plane.profile.json",
-    "contracts/release-channels.contract.json",
-    "contracts/artifact-classes.contract.json",
-    "contracts/integration-types.contract.json",
-    "generated/requirements-index.json",
-    "generated/assertion-index.json",
-    "generated/traceability.json",
-    "generated/exception-index.json",
-    "generated/test-catalog.json",
-    "generated/evidence-catalog.json",
-    "contracts/artifact-contracts/integration-manifest.schema.json",
-    "schemas/deployment-profile.schema.json",
-    "schemas/test-evidence.schema.json"
-  ],
-  "decision_ids": [
-    "DEC-CONTAINER-001",
-    "DEC-DATA-001",
-    "DEC-GOV-001",
-    "DEC-K8S-001",
-    "DEC-PROFILE-001",
-    "DEC-REL-001"
-  ],
-  "requirement_ids": [
-    "REQ-LIFE-SVC-001",
-    "REQ-LIFE-SVC-002",
-    "REQ-LIFE-SVC-003",
-    "REQ-LIFE-SVC-004",
-    "REQ-LIFE-SVC-005",
-    "REQ-LIFE-SVC-006",
-    "REQ-LIFE-SVC-007",
-    "REQ-LIFE-SVC-008",
-    "REQ-LIFE-SVC-009",
-    "REQ-LIFE-SVC-010",
-    "REQ-LIFE-SVC-011",
-    "REQ-LIFE-SVC-012",
-    "REQ-LIFE-SVC-013",
-    "REQ-LIFE-SVC-014",
-    "REQ-LIFE-SVC-015",
-    "REQ-LIFE-SVC-016",
-    "REQ-LIFE-SVC-017",
-    "REQ-LIFE-SVC-018",
-    "REQ-LIFE-SVC-019",
-    "REQ-LIFE-SVC-020",
-    "REQ-LIFE-SVC-021",
-    "REQ-LIFE-SVC-022",
-    "REQ-LIFE-SVC-023",
-    "REQ-LIFE-SVC-024",
-    "REQ-LIFE-SVC-025",
-    "REQ-LIFE-SVC-026",
-    "REQ-LIFE-SVC-027",
-    "REQ-LIFE-SVC-028",
-    "REQ-LIFE-SVC-029",
-    "REQ-LIFE-SVC-030",
-    "REQ-LIFE-SVC-031",
-    "REQ-LIFE-SVC-032",
-    "REQ-LIFE-SVC-033",
-    "REQ-LIFE-SVC-034",
-    "REQ-LIFE-SVC-035",
-    "REQ-LIFE-SVC-036",
-    "REQ-LIFE-SVC-037",
-    "REQ-LIFE-SVC-038",
-    "REQ-LIFE-SVC-039",
-    "REQ-LIFE-SVC-040",
-    "REQ-LIFE-SVC-041",
-    "REQ-LIFE-SVC-042",
-    "REQ-LIFE-SVC-043",
-    "REQ-LIFE-SVC-044",
-    "REQ-LIFE-SVC-045",
-    "REQ-LIFE-SVC-046",
-    "REQ-LIFE-SVC-047",
-    "REQ-LIFE-SVC-048",
-    "REQ-LIFE-SVC-049",
-    "REQ-LIFE-SVC-050",
-    "REQ-LIFE-SVC-051",
-    "REQ-LIFE-SVC-052",
-    "REQ-OPS-JOB-001",
-    "REQ-OPS-JOB-003",
-    "REQ-OPS-JOB-004",
-    "REQ-OPS-JOB-012",
-    "REQ-OPS-JOB-013",
-    "REQ-OPS-JOB-032",
-    "REQ-OPS-JOB-033",
-    "REQ-OPS-JOB-034",
-    "REQ-OPS-JOB-040",
-    "REQ-OPS-JOB-041",
-    "REQ-OPS-JOB-043",
-    "REQ-OPS-JOB-044",
-    "REQ-OPS-JOB-045",
-    "REQ-OPS-JOB-048",
-    "REQ-OPS-JOB-049",
-    "REQ-OPS-JOB-051",
-    "REQ-OPS-JOB-052",
-    "REQ-OPS-JOB-053",
-    "REQ-OPS-JOB-054",
-    "REQ-SEC-SC-017",
-    "REQ-SEC-SC-020",
-    "REQ-SEC-SC-021",
-    "REQ-SEC-SC-022",
-    "REQ-SEC-SC-023",
-    "REQ-SEC-SC-024",
-    "REQ-SEC-SC-028",
-    "REQ-SEC-SC-030",
-    "REQ-SEC-SC-031",
-    "REQ-SEC-SC-032",
-    "REQ-SEC-SC-033",
-    "REQ-SEC-SC-034",
-    "REQ-SEC-SC-035",
-    "REQ-SEC-SC-036",
-    "REQ-SEC-SC-037",
-    "REQ-SEC-SC-038",
-    "REQ-SEC-SC-039",
-    "REQ-SEC-SC-040",
-    "REQ-SEC-SC-041",
-    "REQ-SEC-SC-042",
-    "REQ-SEC-SC-043",
-    "REQ-SEC-SC-044",
-    "REQ-SEC-SC-045",
-    "REQ-SEC-SC-048",
-    "REQ-SEC-SC-049",
-    "REQ-SEC-SC-050",
-    "REQ-SEC-SC-051",
-    "REQ-SEC-SC-052",
-    "REQ-SEC-SC-053",
-    "REQ-SEC-SC-054",
-    "REQ-SEC-SC-055",
-    "REQ-SEC-SC-056"
-  ],
-  "lock_ids": [
-    "LOCK-COMP-001",
-    "LOCK-COMP-002",
-    "LOCK-DATA-001",
-    "LOCK-DOC-003",
-    "LOCK-DOC-004",
-    "LOCK-GOV-001",
-    "LOCK-IMPL-001",
-    "LOCK-IMPL-002",
-    "LOCK-LIFE-001",
-    "LOCK-LIFE-002",
-    "LOCK-LIFE-003",
-    "LOCK-LIFE-004",
-    "LOCK-PROFILE-001",
-    "LOCK-PROFILE-002",
-    "LOCK-SEC-010"
-  ],
-  "exception_ids": [],
-  "depends_on": [
-    "DOC-CONST-002",
-    "DOC-CONST-013",
-    "DOC-SYS-017",
-    "DOC-DEV-013",
-    "DOC-LIFE-006",
-    "DOC-LIFE-016",
-    "DOC-SEC-009",
-    "DOC-SEC-019",
-    "DOC-OPS-006",
-    "DOC-OPS-016",
-    "DOC-CONF-005",
-    "DOC-ADR-001",
-    "DOC-ADR-011",
-    "DOC-ADR-024"
-  ],
-  "tags": [
-    "recipe",
-    "control-plane",
-    "kubernetes",
-    "deployment",
-    "server-side-apply",
-    "release-set",
-    "resource-governor",
-    "governance-policy-runtime",
-    "network-policy",
-    "service-updates",
-    "offline",
-    "non-normative"
-  ]
+ "doc_id": "DOC-RECIPE-CP-001",
+ "document_class": "recipe",
+ "status": "active",
+ "language": "en",
+ "layer": "implementation_recipe",
+ "recipe_id": "RECIPE-CP-001",
+ "recipe_version": "1.0.0",
+ "scope": [
+ "profile:control_plane",
+ "kubernetes_deployment",
+ "cluster_scoped_service_activation",
+ "release_set_deployment"
+ ],
+ "canonical_refs": [
+ "generated/authority-manifest.json",
+ "generated/decision-index.json",
+ "generated/document-index.json",
+ "contracts/terminology.contract.json",
+ "contracts/system.contract.json",
+ "generated/component-catalog.json",
+ "contracts/profiles/control-plane.profile.json",
+ "contracts/release-channels.contract.json",
+ "contracts/artifact-classes.contract.json",
+ "contracts/integration-types.contract.json",
+ "generated/requirements-index.json",
+ "generated/assertion-index.json",
+ "generated/traceability.json",
+ "generated/exception-index.json",
+ "generated/test-catalog.json",
+ "generated/evidence-catalog.json",
+ "contracts/artifact-contracts/integration-manifest.schema.json",
+ "schemas/deployment-profile.schema.json",
+ "schemas/test-evidence.schema.json"
+ ],
+ "decision_ids": [
+ "DEC-CONTAINER-001",
+ "DEC-DATA-001",
+ "DEC-GOV-001",
+ "DEC-K8S-001",
+ "DEC-PROFILE-001",
+ "DEC-REL-001"
+ ],
+ "requirement_ids": [
+ "REQ-LIFE-SVC-001",
+ "REQ-LIFE-SVC-002",
+ "REQ-LIFE-SVC-003",
+ "REQ-LIFE-SVC-004",
+ "REQ-LIFE-SVC-005",
+ "REQ-LIFE-SVC-006",
+ "REQ-LIFE-SVC-007",
+ "REQ-LIFE-SVC-008",
+ "REQ-LIFE-SVC-009",
+ "REQ-LIFE-SVC-010",
+ "REQ-LIFE-SVC-011",
+ "REQ-LIFE-SVC-012",
+ "REQ-LIFE-SVC-013",
+ "REQ-LIFE-SVC-014",
+ "REQ-LIFE-SVC-015",
+ "REQ-LIFE-SVC-016",
+ "REQ-LIFE-SVC-017",
+ "REQ-LIFE-SVC-018",
+ "REQ-LIFE-SVC-019",
+ "REQ-LIFE-SVC-020",
+ "REQ-LIFE-SVC-021",
+ "REQ-LIFE-SVC-022",
+ "REQ-LIFE-SVC-023",
+ "REQ-LIFE-SVC-024",
+ "REQ-LIFE-SVC-025",
+ "REQ-LIFE-SVC-026",
+ "REQ-LIFE-SVC-027",
+ "REQ-LIFE-SVC-028",
+ "REQ-LIFE-SVC-029",
+ "REQ-LIFE-SVC-030",
+ "REQ-LIFE-SVC-031",
+ "REQ-LIFE-SVC-032",
+ "REQ-LIFE-SVC-033",
+ "REQ-LIFE-SVC-034",
+ "REQ-LIFE-SVC-035",
+ "REQ-LIFE-SVC-036",
+ "REQ-LIFE-SVC-037",
+ "REQ-LIFE-SVC-038",
+ "REQ-LIFE-SVC-039",
+ "REQ-LIFE-SVC-040",
+ "REQ-LIFE-SVC-041",
+ "REQ-LIFE-SVC-042",
+ "REQ-LIFE-SVC-043",
+ "REQ-LIFE-SVC-044",
+ "REQ-LIFE-SVC-045",
+ "REQ-LIFE-SVC-046",
+ "REQ-LIFE-SVC-047",
+ "REQ-LIFE-SVC-048",
+ "REQ-LIFE-SVC-049",
+ "REQ-LIFE-SVC-050",
+ "REQ-LIFE-SVC-051",
+ "REQ-LIFE-SVC-052",
+ "REQ-OPS-JOB-001",
+ "REQ-OPS-JOB-003",
+ "REQ-OPS-JOB-004",
+ "REQ-OPS-JOB-012",
+ "REQ-OPS-JOB-013",
+ "REQ-OPS-JOB-032",
+ "REQ-OPS-JOB-033",
+ "REQ-OPS-JOB-034",
+ "REQ-OPS-JOB-040",
+ "REQ-OPS-JOB-041",
+ "REQ-OPS-JOB-043",
+ "REQ-OPS-JOB-044",
+ "REQ-OPS-JOB-045",
+ "REQ-OPS-JOB-048",
+ "REQ-OPS-JOB-049",
+ "REQ-OPS-JOB-051",
+ "REQ-OPS-JOB-052",
+ "REQ-OPS-JOB-053",
+ "REQ-OPS-JOB-054",
+ "REQ-SEC-SC-017",
+ "REQ-SEC-SC-020",
+ "REQ-SEC-SC-021",
+ "REQ-SEC-SC-022",
+ "REQ-SEC-SC-023",
+ "REQ-SEC-SC-024",
+ "REQ-SEC-SC-028",
+ "REQ-SEC-SC-030",
+ "REQ-SEC-SC-031",
+ "REQ-SEC-SC-032",
+ "REQ-SEC-SC-033",
+ "REQ-SEC-SC-034",
+ "REQ-SEC-SC-035",
+ "REQ-SEC-SC-036",
+ "REQ-SEC-SC-037",
+ "REQ-SEC-SC-038",
+ "REQ-SEC-SC-039",
+ "REQ-SEC-SC-040",
+ "REQ-SEC-SC-041",
+ "REQ-SEC-SC-042",
+ "REQ-SEC-SC-043",
+ "REQ-SEC-SC-044",
+ "REQ-SEC-SC-045",
+ "REQ-SEC-SC-048",
+ "REQ-SEC-SC-049",
+ "REQ-SEC-SC-050",
+ "REQ-SEC-SC-051",
+ "REQ-SEC-SC-052",
+ "REQ-SEC-SC-053",
+ "REQ-SEC-SC-054",
+ "REQ-SEC-SC-055",
+ "REQ-SEC-SC-056"
+ ],
+ "lock_ids": [
+ "LOCK-COMP-001",
+ "LOCK-COMP-002",
+ "LOCK-DATA-001",
+ "LOCK-DOC-003",
+ "LOCK-DOC-004",
+ "LOCK-GOV-001",
+ "LOCK-IMPL-001",
+ "LOCK-IMPL-002",
+ "LOCK-LIFE-001",
+ "LOCK-LIFE-002",
+ "LOCK-LIFE-003",
+ "LOCK-LIFE-004",
+ "LOCK-PROFILE-001",
+ "LOCK-PROFILE-002",
+ "LOCK-SEC-010"
+ ],
+ "exception_ids": [],
+ "depends_on": [
+ "DOC-CONST-002",
+ "DOC-CONST-013",
+ "DOC-SYS-017",
+ "DOC-DEV-013",
+ "DOC-LIFE-006",
+ "DOC-LIFE-016",
+ "DOC-SEC-009",
+ "DOC-SEC-019",
+ "DOC-OPS-006",
+ "DOC-OPS-016",
+ "DOC-CONF-005",
+ "DOC-ADR-005",
+ "DOC-ADR-024"
+ ],
+ "tags": [
+ "recipe",
+ "control-plane",
+ "kubernetes",
+ "deployment",
+ "server-side-apply",
+ "release-set",
+ "resource-governor",
+ "governance-policy-runtime",
+ "network-policy",
+ "service-updates",
+ "offline",
+ "non-normative"
+ ]
 }
 KOA:DOC-META:END -->
 
 # Control-Plane Kubernetes Deployment
 
-> **Recipe status:** Active, non-normative implementation recipe.  
-> **Implementation:** Deploy verified Kubernetes projections into a profile-admitted cluster by server-side validation, staged apply, capability verification, and explicit authoritative-route activation.  
+> **Recipe status:** Active, non-normative implementation recipe.
+> **Implementation:** Deploy verified Kubernetes projections into a profile-admitted cluster by server-side validation, staged apply, capability verification, and explicit authoritative-route activation.
 > **Authority rule:** Kubernetes is an enforcement and orchestration adapter for the `control_plane` profile. It does not become the canonical owner of kOA components, policy, identities, data, resources, releases, or conformance.
 
 ---
@@ -246,7 +245,7 @@ It covers:
 
 Successful execution produces:
 
-```text
+`text
 admitted cluster
 → verified Release Set
 → validated deployment projections
@@ -255,7 +254,7 @@ admitted cluster
 → representative capability verification
 → explicit authoritative-route activation
 → registered deployment evidence
-```
+`
 
 This recipe does not install Kubernetes or create a cluster.
 
@@ -291,7 +290,7 @@ This recipe shall not be used to introduce Kubernetes into:
 - `sovereign_linux_node`;
 - `appliance_shell`.
 
-Those endpoint profiles remain governed by `ADR-011`.
+Those endpoint profiles remain governed by `ADR-005`.
 
 ## 3. Scope
 
@@ -366,7 +365,7 @@ A Helm release, Kustomize directory, Deployment, StatefulSet, or operator custom
 
 ### 4.2 Primary architecture records
 
-- `docs/10-adrs/ADR-011-no-kubernetes-requirement-on-endpoints.md`
+- `docs/10-adrs/ADR-005-rootless-podman-and-quadlet.md`
 - `docs/10-adrs/ADR-024-logical-data-ownership-with-profile-dependent-physical-isolation.md`
 
 ### 4.3 Primary lifecycle and operations documents
@@ -423,7 +422,7 @@ The cluster is already admitted and healthy enough for deployment.
 
 Required checks:
 
-```bash
+`bash
 set -euo pipefail
 set +x
 
@@ -433,7 +432,7 @@ set +x
 kubectl --context "$KUBE_CONTEXT" cluster-info
 kubectl --context "$KUBE_CONTEXT" get --raw='/readyz'
 kubectl --context "$KUBE_CONTEXT" get nodes
-```
+`
 
 The deployment authority verifies that:
 
@@ -448,12 +447,12 @@ The deployment authority verifies that:
 
 Required variables:
 
-```bash
+`bash
 : "${RELEASE_SET_ID:?RELEASE_SET_ID must be set}"
 : "${RELEASE_SET_VERSION:?RELEASE_SET_VERSION must be set}"
 : "${RELEASE_BUNDLE_ROOT:?RELEASE_BUNDLE_ROOT must be set}"
 : "${DEPLOYMENT_PROJECTION_ROOT:?DEPLOYMENT_PROJECTION_ROOT must be set}"
-```
+`
 
 `RELEASE_BUNDLE_ROOT` contains the admitted Release Set, artifacts, evidence, and trust material.
 
@@ -465,13 +464,13 @@ Required tools are selected and versioned by the profile or deployment toolchain
 
 This recipe uses these command names without defining versions:
 
-```bash
+`bash
 command -v kubectl
 command -v python3
 command -v find
 command -v sort
 command -v sha256sum
-```
+`
 
 `sha256sum` is used only for intrinsic artifact and manifest integrity checks.
 
@@ -542,18 +541,18 @@ The inventory format remains owned by the active deployment-projection contract.
 
 Every `kubectl` command in this recipe includes:
 
-```text
+`text
 --context "$KUBE_CONTEXT"
-```
+`
 
 Do not rely on the current default context.
 
 Before every mutation, print and verify:
 
-```bash
+`bash
 kubectl --context "$KUBE_CONTEXT" config current-context
 kubectl --context "$KUBE_CONTEXT" get namespace
-```
+`
 
 ### 7.2 Namespace boundary
 
@@ -575,12 +574,12 @@ This recipe applies secret references but does not create or display secret valu
 
 Do not use:
 
-```text
+`text
 kubectl create secret --from-literal
 kubectl set env with a secret value
 inline Secret manifests containing plaintext values
 shell variables containing secret values
-```
+`
 
 The profile-approved secret-delivery adapter supplies references or encrypted sealed material according to its contract.
 
@@ -727,9 +726,9 @@ Do not place credentials, personal data, tenant payloads, or arbitrary user cont
 
 Server-side apply uses a stable field manager:
 
-```text
+`text
 koa-deployment-authority
-```
+`
 
 Component operators or other controllers must have explicitly non-overlapping field ownership or a declared reconciliation contract.
 
@@ -745,14 +744,14 @@ Prevent mutation of the wrong cluster.
 
 **Command**
 
-```bash
+`bash
 set -euo pipefail
 set +x
 
 kubectl --context "$KUBE_CONTEXT" config current-context
 kubectl --context "$KUBE_CONTEXT" cluster-info
 kubectl --context "$KUBE_CONTEXT" get --raw='/readyz'
-```
+`
 
 **Expected result**
 
@@ -774,19 +773,19 @@ Confirm that the exact four-channel Release Set and its evidence are admitted.
 
 Run the canonical Release Set and artifact validators against:
 
-```bash
+`bash
 printf '%s
-'   "$RELEASE_BUNDLE_ROOT"   "$RELEASE_SET_ID"   "$RELEASE_SET_VERSION"
-```
+' "$RELEASE_BUNDLE_ROOT" "$RELEASE_SET_ID" "$RELEASE_SET_VERSION"
+`
 
 Verify exact versions for:
 
-```text
+`text
 system
 services
 governance
 knowledge
-```
+`
 
 **Expected result**
 
@@ -811,17 +810,17 @@ Ensure the Kubernetes projection matches the Release Set and profile.
 
 **Command**
 
-```bash
+`bash
 test -d "$DEPLOYMENT_PROJECTION_ROOT"
 test ! -L "$DEPLOYMENT_PROJECTION_ROOT"
 
-find "$DEPLOYMENT_PROJECTION_ROOT"   -type l -print -quit |
-  grep -q . && {
-    printf '%s
+find "$DEPLOYMENT_PROJECTION_ROOT" -type l -print -quit |
+ grep -q . && {
+ printf '%s
 ' "symlink found in deployment projection" >&2
-    exit 1
-  } || true
-```
+ exit 1
+ } || true
+`
 
 Run the canonical projection validator.
 
@@ -847,8 +846,8 @@ The projection validator rejects image references lacking a digest.
 
 Extract and inspect only image references:
 
-```bash
-kubectl --context "$KUBE_CONTEXT" create   --dry-run=client   -f "$DEPLOYMENT_PROJECTION_ROOT"   -o json |
+`bash
+kubectl --context "$KUBE_CONTEXT" create --dry-run=client -f "$DEPLOYMENT_PROJECTION_ROOT" -o json |
 python3 -c '
 import json
 import sys
@@ -857,18 +856,18 @@ data = json.load(sys.stdin)
 items = data.get("items", [data])
 
 def walk(value):
-    if isinstance(value, dict):
-        for key, child in value.items():
-            if key == "image" and isinstance(child, str):
-                print(child)
-            walk(child)
-    elif isinstance(value, list):
-        for child in value:
-            walk(child)
+ if isinstance(value, dict):
+ for key, child in value.items:
+ if key == "image" and isinstance(child, str):
+ print(child)
+ walk(child)
+ elif isinstance(value, list):
+ for child in value:
+ walk(child)
 
 walk(items)
 ' | sort -u
-```
+`
 
 **Expected result**
 
@@ -888,11 +887,11 @@ Validate structure and cluster-side admission without persisting resources.
 
 **Command**
 
-```bash
-kubectl --context "$KUBE_CONTEXT" apply   --dry-run=client   --server-side   --field-manager=koa-deployment-authority   -f "$DEPLOYMENT_PROJECTION_ROOT"
+`bash
+kubectl --context "$KUBE_CONTEXT" apply --dry-run=client --server-side --field-manager=koa-deployment-authority -f "$DEPLOYMENT_PROJECTION_ROOT"
 
-kubectl --context "$KUBE_CONTEXT" apply   --dry-run=server   --server-side   --field-manager=koa-deployment-authority   -f "$DEPLOYMENT_PROJECTION_ROOT"
-```
+kubectl --context "$KUBE_CONTEXT" apply --dry-run=server --server-side --field-manager=koa-deployment-authority -f "$DEPLOYMENT_PROJECTION_ROOT"
+`
 
 **Expected result**
 
@@ -1006,11 +1005,11 @@ Create the bounded target context without activating new service instances.
 
 Apply only the projection phase classified as `prerequisites`:
 
-```bash
+`bash
 PREREQUISITES_ROOT="$DEPLOYMENT_PROJECTION_ROOT/phases/prerequisites"
 
-kubectl --context "$KUBE_CONTEXT" apply   --server-side   --field-manager=koa-deployment-authority   -f "$PREREQUISITES_ROOT"
-```
+kubectl --context "$KUBE_CONTEXT" apply --server-side --field-manager=koa-deployment-authority -f "$PREREQUISITES_ROOT"
+`
 
 Prerequisites can include:
 
@@ -1055,9 +1054,9 @@ For every migration group:
 
 Example observation:
 
-```bash
-kubectl --context "$KUBE_CONTEXT"   -n "$MIGRATION_NAMESPACE"   wait   --for=condition=complete   --timeout="$MIGRATION_WAIT"   "job/$MIGRATION_JOB_NAME"
-```
+`bash
+kubectl --context "$KUBE_CONTEXT" -n "$MIGRATION_NAMESPACE" wait --for=condition=complete --timeout="$MIGRATION_WAIT" "job/$MIGRATION_JOB_NAME"
+`
 
 The exact namespace, timeout, and Job name come from the migration contract.
 
@@ -1079,11 +1078,11 @@ Start candidate service instances without changing authoritative routing.
 
 **Command**
 
-```bash
+`bash
 SERVICES_ROOT="$DEPLOYMENT_PROJECTION_ROOT/phases/services"
 
-kubectl --context "$KUBE_CONTEXT" apply   --server-side   --field-manager=koa-deployment-authority   -f "$SERVICES_ROOT"
-```
+kubectl --context "$KUBE_CONTEXT" apply --server-side --field-manager=koa-deployment-authority -f "$SERVICES_ROOT"
+`
 
 **Expected result**
 
@@ -1120,11 +1119,11 @@ Run registered tests for:
 
 Kubernetes observations can support diagnosis:
 
-```bash
+`bash
 kubectl --context "$KUBE_CONTEXT" get workloads -A
 kubectl --context "$KUBE_CONTEXT" get pods -A
 kubectl --context "$KUBE_CONTEXT" get events -A
-```
+`
 
 The exact workload query can be narrowed by profile labels.
 
@@ -1148,11 +1147,11 @@ Switch traffic or authority only after complete verification.
 
 Apply only the activation phase:
 
-```bash
+`bash
 ACTIVATION_ROOT="$DEPLOYMENT_PROJECTION_ROOT/phases/activation"
 
-kubectl --context "$KUBE_CONTEXT" apply   --server-side   --field-manager=koa-deployment-authority   -f "$ACTIVATION_ROOT"
-```
+kubectl --context "$KUBE_CONTEXT" apply --server-side --field-manager=koa-deployment-authority -f "$ACTIVATION_ROOT"
+`
 
 Activation resources can project:
 
@@ -1234,9 +1233,9 @@ When evidence is required receipt-before-commit, keep activation uncommitted or 
 
 ## 11. Idempotency
 
-```text
+`text
 Idempotent: conditional
-```
+`
 
 Idempotent operations:
 
@@ -1327,7 +1326,7 @@ Validate:
 
 ### 12.5 Applicable documentation checks
 
-```bash
+`bash
 python docs/tools/check_profile_composition.py
 python docs/tools/check_component_boundaries.py
 python docs/tools/check_release_sets.py
@@ -1336,7 +1335,7 @@ python docs/tools/check_traceability.py
 python docs/tools/check_canonical_ownership.py
 python docs/tools/check_interfile_locks.py
 python docs/tools/validate_docs.py
-```
+`
 
 ### 12.6 Success criteria
 
@@ -1397,9 +1396,9 @@ Rollback is allowed only when:
 
 Apply the prior verified activation projection:
 
-```bash
-kubectl --context "$KUBE_CONTEXT" apply   --server-side   --field-manager=koa-deployment-authority   -f "$PRIOR_ACTIVATION_ROOT"
-```
+`bash
+kubectl --context "$KUBE_CONTEXT" apply --server-side --field-manager=koa-deployment-authority -f "$PRIOR_ACTIVATION_ROOT"
+`
 
 Then verify the prior representative capabilities.
 
@@ -1539,9 +1538,9 @@ It includes exact execution and subject identities and does not rely on screensh
 
 ## 17. Offline Behavior
 
-```text
+`text
 offline_capable_when_profile_admitted
-```
+`
 
 Disconnected deployment requires locally available admitted:
 
@@ -1638,30 +1637,30 @@ The agent must not:
 
 ### 19.1 Example execution summary
 
-```json
+`json
 {
-  "recipe_id": "RECIPE-CP-001",
-  "recipe_version": "1.0.0",
-  "profile_id": "control_plane",
-  "cluster_id": "control-plane-cluster-primary",
-  "release_set_id": "release-set-control-plane-2026.08.03.1",
-  "phases": [
-    "preflight",
-    "prerequisites",
-    "migrations",
-    "services",
-    "capability_verification",
-    "activation",
-    "post_activation"
-  ],
-  "images_verified_by_digest": true,
-  "server_dry_run": "pass",
-  "authoritative_route_activated": true,
-  "rollback_available": true,
-  "evidence_ids": [],
-  "result": "pass"
+ "recipe_id": "RECIPE-CP-001",
+ "recipe_version": "1.0.0",
+ "profile_id": "control_plane",
+ "cluster_id": "control-plane-cluster-primary",
+ "release_set_id": "release-set-control-plane-2026.08.03.1",
+ "phases": [
+ "preflight",
+ "prerequisites",
+ "migrations",
+ "services",
+ "capability_verification",
+ "activation",
+ "post_activation"
+ ],
+ "images_verified_by_digest": true,
+ "server_dry_run": "pass",
+ "authoritative_route_activated": true,
+ "rollback_available": true,
+ "evidence_ids": [],
+ "result": "pass"
 }
-```
+`
 
 The example values are illustrative and do not establish canonical cluster or release identities.
 
@@ -1812,32 +1811,32 @@ Enter `restoring`, stop new mutations where safe, fence the invalid writer, reco
 
 A control-plane profile declares:
 
-```text
+`text
 cluster_id: control-plane-cluster-primary
 primary_profile_id: control_plane
 release_set_id: release-set-control-plane-2026.08.03.1
 deployment_strategy: staged_then_activate
-```
+`
 
 The admitted projection contains:
 
-```text
+`text
 phases/prerequisites
 phases/migrations
 phases/services
 phases/activation
 inventory.json
-```
+`
 
 The deployment authority performs:
 
-```bash
-kubectl --context "$KUBE_CONTEXT" apply   --dry-run=server   --server-side   --field-manager=koa-deployment-authority   -f "$DEPLOYMENT_PROJECTION_ROOT"
+`bash
+kubectl --context "$KUBE_CONTEXT" apply --dry-run=server --server-side --field-manager=koa-deployment-authority -f "$DEPLOYMENT_PROJECTION_ROOT"
 
-kubectl --context "$KUBE_CONTEXT" apply   --server-side   --field-manager=koa-deployment-authority   -f "$DEPLOYMENT_PROJECTION_ROOT/phases/prerequisites"
+kubectl --context "$KUBE_CONTEXT" apply --server-side --field-manager=koa-deployment-authority -f "$DEPLOYMENT_PROJECTION_ROOT/phases/prerequisites"
 
-kubectl --context "$KUBE_CONTEXT" apply   --server-side   --field-manager=koa-deployment-authority   -f "$DEPLOYMENT_PROJECTION_ROOT/phases/services"
-```
+kubectl --context "$KUBE_CONTEXT" apply --server-side --field-manager=koa-deployment-authority -f "$DEPLOYMENT_PROJECTION_ROOT/phases/services"
+`
 
 After representative capability tests pass, the activation phase changes the declared authoritative route.
 
@@ -1849,7 +1848,7 @@ This recipe does not perform the migration.
 
 The accepted migration sequence is:
 
-```text
+`text
 declare Kubernetes-adopting profile version
 → admit cluster and extensions
 → generate deployment projections
@@ -1862,7 +1861,7 @@ declare Kubernetes-adopting profile version
 → enter restoring
 → reconcile queues, leases, writes, and receipts
 → retire prior deployment after retention and rollback conditions
-```
+`
 
 A migration shall preserve:
 

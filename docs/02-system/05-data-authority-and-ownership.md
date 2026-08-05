@@ -16,7 +16,11 @@
     "generated/assertion-index.json",
     "generated/traceability.json",
     "contracts/integration-types.contract.json",
-    "generated/profile-catalog.json"
+    "generated/profile-catalog.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json",
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json"
   ],
   "decision_ids": [
     "DEC-SYS-DATA-001",
@@ -257,7 +261,7 @@ User authority does not permit bypassing component invariants. Component ownersh
 - **REQ-SYS-DATA-011 — SHALL:** A deployment profile may strengthen physical separation, encryption, tenancy, locality, or replication controls without redefining global logical ownership.
 - **REQ-SYS-DATA-012 — SHALL NOT:** A profile-specific storage topology, database technology, filesystem layout, container boundary, or service arrangement is represented as a universal system ownership rule.
 - **REQ-SYS-DATA-013 — SHALL:** Cross-domain disclosure and publication pass through the Publication Gateway or another explicitly accepted disclosure contract with policy evaluation and required evidence.
-- **REQ-SYS-DATA-014 — SHALL:** Publication of selected kOA Mediatheque records to an external UCKK Moodle destination require Publication Gateway authorization and UCKK Publication Bridge transport.
+- **REQ-SYS-DATA-014 — SHALL:** Publication of selected local records require Publication Gateway authorization and UCKK Publication Bridge transport; import of selected UCKK learning packages shall use the separate UCKK Import Bridge, quarantine, deterministic validation, and explicit kOA Mediatheque acceptance.
 - **REQ-SYS-DATA-015 — SHALL:** The Governance Policy Runtime evaluates authorization, disclosure, and privilege policy without becoming the owner of the governed application data.
 - **REQ-SYS-DATA-016 — SHALL:** The Resource Governor controls resource allocation, scheduling, and degradation without acquiring authority over application data, disclosure, or business state.
 - **REQ-SYS-DATA-017 — SHALL NOT:** Kristal is used as a universal operational database, universal workflow state store, or replacement for component-owned authoritative data.
@@ -379,7 +383,7 @@ An ownership transfer:
 
 The Publication Gateway controls disclosure outside an existing domain.
 
-The UCKK Publication Bridge controls target-specific package creation, transport, retry, and destination receipt handling after Publication Gateway authorization.
+The UCKK Publication Bridge controls target-specific outbound package creation, transport, retry, and destination receipt handling after Publication Gateway authorization. The separate UCKK Import Bridge controls inbound retrieval, quarantine, package validation, and acceptance-request state. The kOA Mediatheque alone creates and owns an accepted local copy; UCKK retains authority over the remote source.
 
 A successful ingestion does not authorize publication. A successful publication does not transfer ownership of upstream authoritative data unless an accepted ownership-transfer contract says otherwise.
 
@@ -408,7 +412,7 @@ They do not become writers to the originating component's authoritative state an
 | `DEC-SYS-DATA-003` | Establishes controlled export, import, replication, disclosure, and gateway behavior. |
 | `DEC-SYS-DATA-004` | Establishes atomic canonical-ownership transfer and predecessor deactivation. |
 | `DEC-SYS-GOV-001` | Separates Governance Policy Runtime authority from Resource Governor authority. |
-| `DEC-UCKK-EXT-001` | Keeps disclosure authorization in Publication Gateway and UCKK-specific transport in the external integration. |
+| `DEC-UCKK-EXT-001` | Keeps outbound disclosure authorization, outbound transport, inbound retrieval, and local acceptance as separate authorities and state machines. |
 | `DEC-SYS-SENT-001` | Keeps SenTient optional, isolated, and non-authoritative. |
 | `DEC-SYS-KRISTAL-001` | Keeps Kristal transversal without making it a universal operational store. |
 
@@ -446,7 +450,7 @@ This document is conformant when:
 9. Every derived-data class declares source, purpose, synchronization state, and invalidation behavior.
 10. No cache, index, replica, analytical store, AI context, export, or evidence record is classified as authoritative without an accepted ownership decision.
 11. Profile contracts can strengthen physical controls without changing global logical ownership.
-12. UCKK publication requires gateway authorization before bridge transport.
+12. UCKK publication requires gateway authorization before outbound bridge transport; UCKK import requires quarantine and validation before explicit local acceptance, and neither direction implies synchronization.
 13. Resource Governor and Governance Policy Runtime remain separate.
 14. SenTient remains optional, isolated, and non-authoritative.
 15. Kristal is not assigned universal operational database or workflow ownership.
@@ -459,9 +463,9 @@ This document is conformant when:
 
 The validation entry point is:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 ## 11. Non-Normative Examples
 

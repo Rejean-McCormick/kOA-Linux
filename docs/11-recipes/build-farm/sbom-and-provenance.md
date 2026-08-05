@@ -33,7 +33,7 @@ KOA:DOC-META:END -->
 
 # SBOM and Provenance
 
-> **Recipe status:** Active, non-authoritative implementation guidance.  
+> **Recipe status:** Active, non-authoritative implementation guidance.
 > **Canonical boundary:** This recipe does not define artifact classes, release authority, signature formats, evidence semantics, toolchain versions, dependency policy, component ownership, or Release Set membership. Resolve those facts from the active build-farm profile, toolchain contracts, artifact contracts, release-channel registry, component contracts, test catalog, evidence registry, and release authority before executing the procedure.
 
 ## 1. Purpose
@@ -158,7 +158,7 @@ Do not collapse these artifacts into one mutable record.
 
 Create one build-run directory outside active release storage.
 
-```bash
+`bash
 export BUILD_RUN_ID='build-run-id-from-the-build-farm-scheduler'
 export BUILD_ROOT="/var/lib/koa-build/runs/$BUILD_RUN_ID"
 export SOURCE_DIR="$BUILD_ROOT/source"
@@ -168,21 +168,21 @@ export CANDIDATE_DIR="$BUILD_ROOT/candidate"
 export EVIDENCE_DIR="$BUILD_ROOT/evidence"
 export HANDOFF_DIR="$BUILD_ROOT/handoff"
 export LOG_DIR="$BUILD_ROOT/logs"
-export APPLY_BUILD='0'  # 0 = inspect and prepare; 1 = execute after validation
+export APPLY_BUILD='0' # 0 = inspect and prepare; 1 = execute after validation
 
 install -d -m 0700 -- \
-  "$BUILD_ROOT" \
-  "$SOURCE_DIR" \
-  "$WORKSPACE_DIR" \
-  "$STAGE_DIR" \
-  "$CANDIDATE_DIR" \
-  "$EVIDENCE_DIR" \
-  "$HANDOFF_DIR" \
-  "$LOG_DIR"
+ "$BUILD_ROOT" \
+ "$SOURCE_DIR" \
+ "$WORKSPACE_DIR" \
+ "$STAGE_DIR" \
+ "$CANDIDATE_DIR" \
+ "$EVIDENCE_DIR" \
+ "$HANDOFF_DIR" \
+ "$LOG_DIR"
 
 printf '%s\n' "$BUILD_RUN_ID" > "$EVIDENCE_DIR/build_run_id.txt"
 date -u +'%Y-%m-%dT%H:%M:%SZ' > "$EVIDENCE_DIR/started_at.txt"
-```
+`
 
 The build worker account should own only this run’s mutable directories and approved shared read-only caches.
 
@@ -190,7 +190,7 @@ The build worker account should own only this run’s mutable directories and ap
 
 Set values from canonical contracts and the build scheduler.
 
-```bash
+`bash
 export ARTIFACT_ID='candidate-artifact-id'
 export ARTIFACT_CLASS='artifact-class-from-active-contract'
 export ARTIFACT_VERSION='candidate-semantic-version'
@@ -204,16 +204,16 @@ export BUILD_SCRIPT_REFERENCE='repository-relative-build-script-reference'
 export PROFILE_ID='build_farm'
 export PROFILE_VERSION='active-profile-version'
 export RELEASE_SET_CANDIDATE_ID='candidate-release-set-reference-if-assigned'
-```
+`
 
 Record the non-secret inputs:
 
-```bash
+`bash
 env \
-  | grep -E '^(BUILD_RUN_ID|ARTIFACT_ID|ARTIFACT_CLASS|ARTIFACT_VERSION|RELEASE_CHANNEL|SOURCE_SNAPSHOT_ID|SOURCE_REFERENCE|TOOLCHAIN_ID|TOOLCHAIN_VERSION|LOCKFILE_REFERENCE|BUILD_SCRIPT_REFERENCE|PROFILE_ID|PROFILE_VERSION|RELEASE_SET_CANDIDATE_ID)=' \
-  | sort \
-  > "$EVIDENCE_DIR/build_inputs.env"
-```
+ | grep -E '^(BUILD_RUN_ID|ARTIFACT_ID|ARTIFACT_CLASS|ARTIFACT_VERSION|RELEASE_CHANNEL|SOURCE_SNAPSHOT_ID|SOURCE_REFERENCE|TOOLCHAIN_ID|TOOLCHAIN_VERSION|LOCKFILE_REFERENCE|BUILD_SCRIPT_REFERENCE|PROFILE_ID|PROFILE_VERSION|RELEASE_SET_CANDIDATE_ID)=' \
+ | sort \
+ > "$EVIDENCE_DIR/build_inputs.env"
+`
 
 Review the record before execution.
 
@@ -221,13 +221,13 @@ Review the record before execution.
 
 Record the worker identity and mutable boundaries.
 
-```bash
+`bash
 id > "$EVIDENCE_DIR/worker_identity.txt"
 uname -a > "$EVIDENCE_DIR/kernel_environment.txt"
 printf '%s\n' "$PATH" > "$EVIDENCE_DIR/executable_search_path.txt"
 findmnt -rno TARGET,SOURCE,FSTYPE,OPTIONS \
-  > "$EVIDENCE_DIR/mounts.txt"
-```
+ > "$EVIDENCE_DIR/mounts.txt"
+`
 
 When a container or virtual machine is used, record:
 
@@ -244,19 +244,19 @@ Do not infer isolation merely because a container exists.
 
 Validate path containment:
 
-```bash
+`bash
 python - "$BUILD_ROOT" "$SOURCE_DIR" "$WORKSPACE_DIR" "$STAGE_DIR" "$CANDIDATE_DIR" "$EVIDENCE_DIR" "$HANDOFF_DIR" <<'PY'
 from pathlib import Path
 import sys
 
-root = Path(sys.argv[1]).resolve()
+root = Path(sys.argv[1]).resolve
 for raw in sys.argv[2:]:
-    path = Path(raw).resolve()
-    if path == root or root not in path.parents:
-        raise SystemExit(f"path escapes build root: {path}")
+ path = Path(raw).resolve
+ if path == root or root not in path.parents:
+ raise SystemExit(f"path escapes build root: {path}")
 print("build paths are contained")
 PY
-```
+`
 
 ## 9. Acquire the Source Snapshot
 
@@ -280,27 +280,27 @@ Do not copy an uncommitted developer workspace into the build worker.
 
 After acquisition:
 
-```bash
+`bash
 test -d "$SOURCE_DIR"
 test -r "$SOURCE_DIR"
 
 find "$SOURCE_DIR" -xdev -type f -print \
-  | LC_ALL=C sort \
-  > "$EVIDENCE_DIR/source_file_paths.txt"
-```
+ | LC_ALL=C sort \
+ > "$EVIDENCE_DIR/source_file_paths.txt"
+`
 
 The path list supports inventory and review. It is not an ordinary file-integrity manifest.
 
 Record source-control status when applicable:
 
-```bash
+`bash
 if git -C "$SOURCE_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-  git -C "$SOURCE_DIR" status --short \
-    > "$EVIDENCE_DIR/source_status.txt"
-  git -C "$SOURCE_DIR" submodule status --recursive \
-    > "$EVIDENCE_DIR/source_submodules.txt" 2>/dev/null || true
+ git -C "$SOURCE_DIR" status --short \
+ > "$EVIDENCE_DIR/source_status.txt"
+ git -C "$SOURCE_DIR" submodule status --recursive \
+ > "$EVIDENCE_DIR/source_submodules.txt" 2>/dev/null || true
 fi
-```
+`
 
 The source should be clean unless the active source contract explicitly identifies a patch set.
 
@@ -325,24 +325,24 @@ Dependency closure is valid when:
 
 When Python participates:
 
-```bash
+`bash
 cd "$SOURCE_DIR"
 
 uv lock --check
 
 UV_PROJECT_ENVIRONMENT="$WORKSPACE_DIR/.venv" \
-  uv sync --frozen --no-dev
-```
+ uv sync --frozen --no-dev
+`
 
 Add the exact dependency groups and extras selected by the active toolchain contract. Do not invent them from local developer preferences.
 
 Record the installed package inventory without secret-bearing environment values:
 
-```bash
+`bash
 UV_PROJECT_ENVIRONMENT="$WORKSPACE_DIR/.venv" \
-  uv pip list --format json \
-  > "$EVIDENCE_DIR/python_packages.json"
-```
+ uv pip list --format json \
+ > "$EVIDENCE_DIR/python_packages.json"
+`
 
 Do not publish the workspace `.venv` as a runtime artifact unless a separate artifact contract explicitly defines such packaging.
 
@@ -378,10 +378,10 @@ Permit only:
 
 Record network decisions:
 
-```bash
+`bash
 ss -lntup > "$EVIDENCE_DIR/listening_sockets_before_build.txt"
 ip route show table all > "$EVIDENCE_DIR/routes_before_build.txt"
-```
+`
 
 After dependency synchronization, disable retrieval egress where the build contract supports a fully closed build phase.
 
@@ -391,45 +391,45 @@ A build that unexpectedly reaches an undeclared destination is rejected or quara
 
 The default remains inspection-only.
 
-```bash
+`bash
 if [ "$APPLY_BUILD" != '1' ]; then
-  printf '%s\n' 'Inspection complete. Candidate build was not executed.'
-  exit 0
+ printf '%s\n' 'Inspection complete. Candidate build was not executed.'
+ exit 0
 fi
-```
+`
 
 Execute only the reviewed build script:
 
-```bash
+`bash
 cd "$SOURCE_DIR"
 
 test -f "$BUILD_SCRIPT_REFERENCE"
 test -r "$BUILD_SCRIPT_REFERENCE"
 
 env -i \
-  HOME="$WORKSPACE_DIR/home" \
-  PATH="$PATH" \
-  BUILD_RUN_ID="$BUILD_RUN_ID" \
-  ARTIFACT_ID="$ARTIFACT_ID" \
-  ARTIFACT_VERSION="$ARTIFACT_VERSION" \
-  SOURCE_DIR="$SOURCE_DIR" \
-  WORKSPACE_DIR="$WORKSPACE_DIR" \
-  STAGE_DIR="$STAGE_DIR" \
-  CANDIDATE_DIR="$CANDIDATE_DIR" \
-  EVIDENCE_DIR="$EVIDENCE_DIR" \
-  sh "$BUILD_SCRIPT_REFERENCE" \
-  > "$LOG_DIR/build.stdout.log" \
-  2> "$LOG_DIR/build.stderr.log"
-```
+ HOME="$WORKSPACE_DIR/home" \
+ PATH="$PATH" \
+ BUILD_RUN_ID="$BUILD_RUN_ID" \
+ ARTIFACT_ID="$ARTIFACT_ID" \
+ ARTIFACT_VERSION="$ARTIFACT_VERSION" \
+ SOURCE_DIR="$SOURCE_DIR" \
+ WORKSPACE_DIR="$WORKSPACE_DIR" \
+ STAGE_DIR="$STAGE_DIR" \
+ CANDIDATE_DIR="$CANDIDATE_DIR" \
+ EVIDENCE_DIR="$EVIDENCE_DIR" \
+ sh "$BUILD_SCRIPT_REFERENCE" \
+ > "$LOG_DIR/build.stdout.log" \
+ 2> "$LOG_DIR/build.stderr.log"
+`
 
 The active toolchain contract can permit additional bounded environment values. Do not pass the host environment wholesale.
 
 Record the terminal result:
 
-```bash
+`bash
 printf '%s\n' 'build_completed' > "$EVIDENCE_DIR/build_result.txt"
 date -u +'%Y-%m-%dT%H:%M:%SZ' > "$EVIDENCE_DIR/build_completed_at.txt"
-```
+`
 
 If the build fails, preserve bounded logs and continue to failure handling rather than generating a successful provenance record.
 
@@ -439,11 +439,11 @@ Move or copy only expected outputs into the candidate directory through the buil
 
 Create a path inventory:
 
-```bash
+`bash
 find "$CANDIDATE_DIR" -xdev -type f -print \
-  | LC_ALL=C sort \
-  > "$EVIDENCE_DIR/candidate_file_paths.txt"
-```
+ | LC_ALL=C sort \
+ > "$EVIDENCE_DIR/candidate_file_paths.txt"
+`
 
 Validate:
 
@@ -466,23 +466,23 @@ Use the SBOM generator selected by the active toolchain or artifact contract.
 
 This recipe assumes the build-farm implementation exposes a wrapper with the following logical interface:
 
-```text
+`text
 generate-sbom
-  --artifact-id
-  --artifact-class
-  --artifact-version
-  --input-root
-  --dependency-inventory
-  --format
-  --output
-  --evidence-output
-```
+ --artifact-id
+ --artifact-class
+ --artifact-version
+ --input-root
+ --dependency-inventory
+ --format
+ --output
+ --evidence-output
+`
 
 Map this interface to the approved implementation. Do not silently select another generator when the configured generator is unavailable.
 
 Example invocation pattern:
 
-```bash
+`bash
 export SBOM_FORMAT='format-selected-by-artifact-contract'
 export SBOM_PATH="$EVIDENCE_DIR/sbom.json"
 export SBOM_GENERATOR_BIN='/path/from-active-toolchain-contract'
@@ -490,15 +490,15 @@ export SBOM_GENERATOR_BIN='/path/from-active-toolchain-contract'
 test -x "$SBOM_GENERATOR_BIN"
 
 "$SBOM_GENERATOR_BIN" generate-sbom \
-  --artifact-id "$ARTIFACT_ID" \
-  --artifact-class "$ARTIFACT_CLASS" \
-  --artifact-version "$ARTIFACT_VERSION" \
-  --input-root "$CANDIDATE_DIR" \
-  --dependency-inventory "$EVIDENCE_DIR/python_packages.json" \
-  --format "$SBOM_FORMAT" \
-  --output "$SBOM_PATH" \
-  --evidence-output "$EVIDENCE_DIR/sbom_generation.json"
-```
+ --artifact-id "$ARTIFACT_ID" \
+ --artifact-class "$ARTIFACT_CLASS" \
+ --artifact-version "$ARTIFACT_VERSION" \
+ --input-root "$CANDIDATE_DIR" \
+ --dependency-inventory "$EVIDENCE_DIR/python_packages.json" \
+ --format "$SBOM_FORMAT" \
+ --output "$SBOM_PATH" \
+ --evidence-output "$EVIDENCE_DIR/sbom_generation.json"
+`
 
 Use the relevant dependency inventory when Python is not part of the artifact.
 
@@ -559,7 +559,7 @@ At minimum:
 
 A generic local check can verify JSON parsing and prohibited fields:
 
-```bash
+`bash
 python - "$SBOM_PATH" <<'PY'
 from pathlib import Path
 import json
@@ -569,26 +569,26 @@ path = Path(sys.argv[1])
 data = json.loads(path.read_text(encoding="utf-8"))
 
 prohibited_keys = {
-    "metadata_hash",
-    "source_hash",
-    "content_hash",
-    "sha256",
+ "metadata_hash",
+ "source_hash",
+ "content_hash",
+ "sha256",
 }
 
 def walk(value, location="$"):
-    if isinstance(value, dict):
-        for key, child in value.items():
-            if key.lower() in prohibited_keys:
-                raise SystemExit(f"prohibited key at {location}.{key}")
-            walk(child, f"{location}.{key}")
-    elif isinstance(value, list):
-        for index, child in enumerate(value):
-            walk(child, f"{location}[{index}]")
+ if isinstance(value, dict):
+ for key, child in value.items:
+ if key.lower in prohibited_keys:
+ raise SystemExit(f"prohibited key at {location}.{key}")
+ walk(child, f"{location}.{key}")
+ elif isinstance(value, list):
+ for index, child in enumerate(value):
+ walk(child, f"{location}[{index}]")
 
 walk(data)
 print("SBOM JSON and metadata-field check passed")
 PY
-```
+`
 
 A standard-specific validator remains required when the artifact contract selects a standard format.
 
@@ -631,56 +631,56 @@ Use references rather than duplicating full logs or protected evidence.
 
 The exact schema remains owned by the active provenance artifact contract. A candidate record can follow this shape before schema validation:
 
-```json
+`json
 {
-  "artifact_class": "provenance_receipt",
-  "provenance_id": "provenance-receipt-id",
-  "version": "1.0.0",
-  "record_status": "candidate",
-  "language": "en",
-  "issued_at": "2026-08-03T20:00:00-04:00",
-  "subject": {
-    "artifact_id": "candidate-artifact-id",
-    "artifact_class": "artifact-class-from-active-contract",
-    "artifact_version": "candidate-semantic-version",
-    "release_channel": "services"
-  },
-  "build": {
-    "build_run_id": "build-run-id-from-the-build-farm-scheduler",
-    "builder_id": "build-worker-identity",
-    "profile_id": "build_farm",
-    "source_snapshot_id": "immutable-source-snapshot-id",
-    "source_ref": "source-control-or-archive-reference",
-    "toolchain_id": "toolchain-id-from-active-contract",
-    "toolchain_version": "toolchain-contract-version",
-    "lockfile_ref": "repository-relative-lockfile-reference",
-    "build_script_ref": "repository-relative-build-script-reference",
-    "result": "succeeded"
-  },
-  "inputs": {
-    "artifact_refs": [],
-    "dependency_inventory_ref": "evidence/python-packages.json",
-    "environment_record_ref": "evidence/environment.json"
-  },
-  "outputs": {
-    "candidate_artifact_refs": [
-      "candidate/candidate-artifact"
-    ],
-    "sbom_ref": "evidence/sbom.json",
-    "test_evidence_refs": [
-      "evidence/test-results.json"
-    ]
-  },
-  "verification": {
-    "signature_artifact_ref": "handoff/signature-artifact",
-    "verification_result_ref": "evidence/signature-verification.json"
-  },
-  "cleanup_record_ref": "evidence/cleanup-result.json",
-  "limitations": [
-    "Candidate record remains non-authoritative until the active provenance schema and release process accept it."
-  ]
+ "artifact_class": "provenance_receipt",
+ "provenance_id": "provenance-receipt-id",
+ "version": "1.0.0",
+ "record_status": "candidate",
+ "language": "en",
+ "issued_at": "2026-08-03T20:00:00-04:00",
+ "subject": {
+ "artifact_id": "candidate-artifact-id",
+ "artifact_class": "artifact-class-from-active-contract",
+ "artifact_version": "candidate-semantic-version",
+ "release_channel": "services"
+ },
+ "build": {
+ "build_run_id": "build-run-id-from-the-build-farm-scheduler",
+ "builder_id": "build-worker-identity",
+ "profile_id": "build_farm",
+ "source_snapshot_id": "immutable-source-snapshot-id",
+ "source_ref": "source-control-or-archive-reference",
+ "toolchain_id": "toolchain-id-from-active-contract",
+ "toolchain_version": "toolchain-contract-version",
+ "lockfile_ref": "repository-relative-lockfile-reference",
+ "build_script_ref": "repository-relative-build-script-reference",
+ "result": "succeeded"
+ },
+ "inputs": {
+ "artifact_refs": [],
+ "dependency_inventory_ref": "evidence/python-packages.json",
+ "environment_record_ref": "evidence/environment.json"
+ },
+ "outputs": {
+ "candidate_artifact_refs": [
+ "candidate/candidate-artifact"
+ ],
+ "sbom_ref": "evidence/sbom.json",
+ "test_evidence_refs": [
+ "evidence/test-results.json"
+ ]
+ },
+ "verification": {
+ "signature_artifact_ref": "handoff/signature-artifact",
+ "verification_result_ref": "evidence/signature-verification.json"
+ },
+ "cleanup_record_ref": "evidence/cleanup-result.json",
+ "limitations": [
+ "Candidate record remains non-authoritative until the active provenance schema and release process accept it."
+ ]
 }
-```
+`
 
 Replace example identities with the active build records.
 
@@ -720,7 +720,7 @@ Do not record:
 
 Example environment record creation:
 
-```bash
+`bash
 python - "$EVIDENCE_DIR/environment.json" <<'PY'
 from pathlib import Path
 import json
@@ -731,34 +731,34 @@ from datetime import datetime, timezone
 
 output = Path(sys.argv[1])
 record = {
-    "record_type": "build_environment",
-    "version": "1.0.0",
-    "recorded_at": datetime.now(timezone.utc).isoformat(),
-    "build_run_id": os.environ["BUILD_RUN_ID"],
-    "profile_id": os.environ["PROFILE_ID"],
-    "profile_version": os.environ["PROFILE_VERSION"],
-    "platform": {
-        "system": platform.system(),
-        "release": platform.release(),
-        "machine": platform.machine(),
-        "python": platform.python_version(),
-    },
-    "toolchain": {
-        "toolchain_id": os.environ["TOOLCHAIN_ID"],
-        "toolchain_version": os.environ["TOOLCHAIN_VERSION"],
-    },
-    "network": {
-        "unrestricted_egress": False,
-        "approved_destinations_record_ref": "evidence/network-destinations.json",
-    },
-    "secrets_included": False,
+ "record_type": "build_environment",
+ "version": "1.0.0",
+ "recorded_at": datetime.now(timezone.utc).isoformat,
+ "build_run_id": os.environ["BUILD_RUN_ID"],
+ "profile_id": os.environ["PROFILE_ID"],
+ "profile_version": os.environ["PROFILE_VERSION"],
+ "platform": {
+ "system": platform.system,
+ "release": platform.release,
+ "machine": platform.machine,
+ "python": platform.python_version,
+ },
+ "toolchain": {
+ "toolchain_id": os.environ["TOOLCHAIN_ID"],
+ "toolchain_version": os.environ["TOOLCHAIN_VERSION"],
+ },
+ "network": {
+ "unrestricted_egress": False,
+ "approved_destinations_record_ref": "evidence/network-destinations.json",
+ },
+ "secrets_included": False,
 }
 output.write_text(
-    json.dumps(record, indent=2, sort_keys=True) + "\n",
-    encoding="utf-8",
+ json.dumps(record, indent=2, sort_keys=True) + "\n",
+ encoding="utf-8",
 )
 PY
-```
+`
 
 This example is an implementation record and not a canonical environment schema.
 
@@ -817,29 +817,29 @@ Create an evidence index that references rather than duplicates each evidence ob
 
 Example:
 
-```json
+`json
 {
-  "evidence_set_id": "build-evidence-set-id",
-  "build_run_id": "build-run-id-from-the-build-farm-scheduler",
-  "subject_artifact_id": "candidate-artifact-id",
-  "profile_id": "build_farm",
-  "evidence_refs": [
-    "evidence/build_inputs.env",
-    "evidence/environment.json",
-    "evidence/python_packages.json",
-    "evidence/sbom.json",
-    "evidence/provenance.json",
-    "evidence/test-results.json",
-    "evidence/signature-verification.json",
-    "evidence/cleanup-result.json"
-  ],
-  "limitations": [
-    "Build-farm evidence does not prove deployment behavior on an untested profile.",
-    "Candidate status does not imply release acceptance.",
-    "SBOM completeness remains bounded by the active generator and artifact contract."
-  ]
+ "evidence_set_id": "build-evidence-set-id",
+ "build_run_id": "build-run-id-from-the-build-farm-scheduler",
+ "subject_artifact_id": "candidate-artifact-id",
+ "profile_id": "build_farm",
+ "evidence_refs": [
+ "evidence/build_inputs.env",
+ "evidence/environment.json",
+ "evidence/python_packages.json",
+ "evidence/sbom.json",
+ "evidence/provenance.json",
+ "evidence/test-results.json",
+ "evidence/signature-verification.json",
+ "evidence/cleanup-result.json"
+ ],
+ "limitations": [
+ "Build-farm evidence does not prove deployment behavior on an untested profile.",
+ "Candidate status does not imply release acceptance.",
+ "SBOM completeness remains bounded by the active generator and artifact contract."
+ ]
 }
-```
+`
 
 Evidence remains scoped to:
 
@@ -909,40 +909,40 @@ The handoff manifest lists the exact candidate package.
 
 Example:
 
-```json
+`json
 {
-  "handoff_id": "candidate-handoff-id",
-  "handoff_type": "release_candidate",
-  "status": "ready_for_release_review",
-  "build_run_id": "build-run-id-from-the-build-farm-scheduler",
-  "candidate": {
-    "artifact_id": "candidate-artifact-id",
-    "artifact_class": "artifact-class-from-active-contract",
-    "artifact_version": "candidate-semantic-version",
-    "intended_release_channel": "services"
-  },
-  "artifact_refs": {
-    "payload": "candidate/candidate-artifact",
-    "sbom": "evidence/sbom.json",
-    "provenance": "evidence/provenance.json",
-    "environment": "evidence/environment.json",
-    "tests": "evidence/test-results.json",
-    "signature": "handoff/signature-artifact",
-    "signature_verification": "evidence/signature-verification.json",
-    "evidence_index": "evidence/evidence-index.json",
-    "cleanup": "evidence/cleanup-result.json"
-  },
-  "release_authority": {
-    "authority_ref": "release-authority-reference",
-    "acceptance_required": true,
-    "direct_activation_permitted": false
-  },
-  "release_set": {
-    "replacement_release_set_required": true,
-    "activation_permitted_before_compatibility_passes": false
-  }
+ "handoff_id": "candidate-handoff-id",
+ "handoff_type": "release_candidate",
+ "status": "ready_for_release_review",
+ "build_run_id": "build-run-id-from-the-build-farm-scheduler",
+ "candidate": {
+ "artifact_id": "candidate-artifact-id",
+ "artifact_class": "artifact-class-from-active-contract",
+ "artifact_version": "candidate-semantic-version",
+ "intended_release_channel": "services"
+ },
+ "artifact_refs": {
+ "payload": "candidate/candidate-artifact",
+ "sbom": "evidence/sbom.json",
+ "provenance": "evidence/provenance.json",
+ "environment": "evidence/environment.json",
+ "tests": "evidence/test-results.json",
+ "signature": "handoff/signature-artifact",
+ "signature_verification": "evidence/signature-verification.json",
+ "evidence_index": "evidence/evidence-index.json",
+ "cleanup": "evidence/cleanup-result.json"
+ },
+ "release_authority": {
+ "authority_ref": "release-authority-reference",
+ "acceptance_required": true,
+ "direct_activation_permitted": false
+ },
+ "release_set": {
+ "replacement_release_set_required": true,
+ "activation_permitted_before_compatibility_passes": false
+ }
 }
-```
+`
 
 Validate that every referenced file exists and belongs to the same build run.
 
@@ -1056,11 +1056,11 @@ Cleanup occurs after evidence is committed to the candidate handoff or after fai
 
 ### 26.1 Stop active processes
 
-```bash
+`bash
 if [ -f "$EVIDENCE_DIR/worker_processes.txt" ]; then
-  cat "$EVIDENCE_DIR/worker_processes.txt"
+ cat "$EVIDENCE_DIR/worker_processes.txt"
 fi
-```
+`
 
 Stop only processes owned by the build run.
 
@@ -1081,30 +1081,30 @@ Record revocation results without secret values.
 
 Remove only paths confirmed inside the build root:
 
-```bash
+`bash
 python - "$BUILD_ROOT" "$WORKSPACE_DIR" "$STAGE_DIR" <<'PY'
 from pathlib import Path
 import shutil
 import sys
 
-root = Path(sys.argv[1]).resolve()
-targets = [Path(value).resolve() for value in sys.argv[2:]]
+root = Path(sys.argv[1]).resolve
+targets = [Path(value).resolve for value in sys.argv[2:]]
 
 for target in targets:
-    if root not in target.parents:
-        raise SystemExit(f"refusing path outside build root: {target}")
-    if target.exists():
-        shutil.rmtree(target)
-        target.mkdir(mode=0o700)
+ if root not in target.parents:
+ raise SystemExit(f"refusing path outside build root: {target}")
+ if target.exists:
+ shutil.rmtree(target)
+ target.mkdir(mode=0o700)
 print("mutable build paths reset")
 PY
-```
+`
 
 Preserve candidate and evidence paths until release authority or retention policy permits deletion.
 
 ### 26.4 Record cleanup
 
-```bash
+`bash
 python - "$EVIDENCE_DIR/cleanup-result.json" <<'PY'
 from pathlib import Path
 import json
@@ -1114,23 +1114,23 @@ from datetime import datetime, timezone
 
 output = Path(sys.argv[1])
 record = {
-    "record_type": "build_cleanup_result",
-    "version": "1.0.0",
-    "build_run_id": os.environ["BUILD_RUN_ID"],
-    "completed_at": datetime.now(timezone.utc).isoformat(),
-    "temporary_credentials_revoked": True,
-    "temporary_network_access_removed": True,
-    "mutable_workspace_removed": True,
-    "candidate_preserved_for_handoff": True,
-    "evidence_preserved_for_handoff": True,
-    "result": "complete",
+ "record_type": "build_cleanup_result",
+ "version": "1.0.0",
+ "build_run_id": os.environ["BUILD_RUN_ID"],
+ "completed_at": datetime.now(timezone.utc).isoformat,
+ "temporary_credentials_revoked": True,
+ "temporary_network_access_removed": True,
+ "mutable_workspace_removed": True,
+ "candidate_preserved_for_handoff": True,
+ "evidence_preserved_for_handoff": True,
+ "result": "complete",
 }
 output.write_text(
-    json.dumps(record, indent=2, sort_keys=True) + "\n",
-    encoding="utf-8",
+ json.dumps(record, indent=2, sort_keys=True) + "\n",
+ encoding="utf-8",
 )
 PY
-```
+`
 
 When any step is incomplete, set the result to `cleanup_incomplete` and block worker reuse.
 
@@ -1140,7 +1140,7 @@ Run these checks before setting the handoff to ready:
 
 ### 27.1 File presence
 
-```bash
+`bash
 test -s "$EVIDENCE_DIR/sbom.json"
 test -s "$EVIDENCE_DIR/provenance.json"
 test -s "$EVIDENCE_DIR/environment.json"
@@ -1148,29 +1148,29 @@ test -s "$EVIDENCE_DIR/test-results.json"
 test -s "$EVIDENCE_DIR/signature-verification.json"
 test -s "$EVIDENCE_DIR/cleanup-result.json"
 test -s "$HANDOFF_DIR/candidate-handoff.json"
-```
+`
 
 ### 27.2 JSON parsing
 
-```bash
+`bash
 python - \
-  "$EVIDENCE_DIR/sbom.json" \
-  "$EVIDENCE_DIR/provenance.json" \
-  "$EVIDENCE_DIR/environment.json" \
-  "$EVIDENCE_DIR/test-results.json" \
-  "$EVIDENCE_DIR/signature-verification.json" \
-  "$EVIDENCE_DIR/cleanup-result.json" \
-  "$HANDOFF_DIR/candidate-handoff.json" <<'PY'
+ "$EVIDENCE_DIR/sbom.json" \
+ "$EVIDENCE_DIR/provenance.json" \
+ "$EVIDENCE_DIR/environment.json" \
+ "$EVIDENCE_DIR/test-results.json" \
+ "$EVIDENCE_DIR/signature-verification.json" \
+ "$EVIDENCE_DIR/cleanup-result.json" \
+ "$HANDOFF_DIR/candidate-handoff.json" <<'PY'
 from pathlib import Path
 import json
 import sys
 
 for raw in sys.argv[1:]:
-    path = Path(raw)
-    json.loads(path.read_text(encoding="utf-8"))
-    print(f"valid JSON: {path}")
+ path = Path(raw)
+ json.loads(path.read_text(encoding="utf-8"))
+ print(f"valid JSON: {path}")
 PY
-```
+`
 
 ### 27.3 Cross-record consistency
 
@@ -1192,37 +1192,37 @@ Validate:
 
 ### 27.4 Prohibited-field scan
 
-```bash
+`bash
 python - "$EVIDENCE_DIR" "$HANDOFF_DIR" <<'PY'
 from pathlib import Path
 import json
 import sys
 
 prohibited = {
-    "metadata_hash",
-    "source_hash",
-    "content_hash",
-    "sha256",
+ "metadata_hash",
+ "source_hash",
+ "content_hash",
+ "sha256",
 }
 
 def inspect(value, location):
-    if isinstance(value, dict):
-        for key, child in value.items():
-            if key.lower() in prohibited:
-                raise SystemExit(f"prohibited field: {location}.{key}")
-            inspect(child, f"{location}.{key}")
-    elif isinstance(value, list):
-        for index, child in enumerate(value):
-            inspect(child, f"{location}[{index}]")
+ if isinstance(value, dict):
+ for key, child in value.items:
+ if key.lower in prohibited:
+ raise SystemExit(f"prohibited field: {location}.{key}")
+ inspect(child, f"{location}.{key}")
+ elif isinstance(value, list):
+ for index, child in enumerate(value):
+ inspect(child, f"{location}[{index}]")
 
 for root_raw in sys.argv[1:]:
-    root = Path(root_raw)
-    for path in sorted(root.rglob("*.json")):
-        data = json.loads(path.read_text(encoding="utf-8"))
-        inspect(data, str(path))
+ root = Path(root_raw)
+ for path in sorted(root.rglob("*.json")):
+ data = json.loads(path.read_text(encoding="utf-8"))
+ inspect(data, str(path))
 print("prohibited-field scan passed")
 PY
-```
+`
 
 ### 27.5 Secret review
 
@@ -1267,7 +1267,7 @@ A clean automated result does not replace review of:
 
 ## 29. Example Execution Sequence
 
-```text
+`text
 resolve build_farm profile, overlays, toolchain, artifact contract, and release channel
 allocate one isolated build run
 record non-secret build inputs
@@ -1292,7 +1292,7 @@ revoke temporary credentials and remove mutable build state
 validate cross-record consistency
 submit the complete candidate set to release authority
 keep the active release and Release Set unchanged until acceptance
-```
+`
 
 ## 30. Completion Checklist
 

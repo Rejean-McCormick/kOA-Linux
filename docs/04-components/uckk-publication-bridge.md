@@ -15,7 +15,11 @@
     "contracts/artifact-contracts/uckk-publication-package.schema.json",
     "contracts/artifact-contracts/uckk-publication-receipt.schema.json",
     "02-system/12-koa-mediatheque-system-boundary.md",
-    "10-adrs/ADR-031-uckk-as-an-external-moodle-publication-target.md"
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json",
+    "04-components/uckk-import-bridge.md"
   ],
   "decision_ids": [
     "DEC-MEDIATHEQUE-001",
@@ -37,7 +41,13 @@
     "REQ-UCKK-PUB-009",
     "REQ-UCKK-PUB-010",
     "REQ-UCKK-PUB-011",
-    "REQ-UCKK-PUB-012"
+    "REQ-UCKK-PUB-012",
+    "REQ-UCKK-IMPORT-001",
+    "REQ-UCKK-IMPORT-002",
+    "REQ-UCKK-IMPORT-003",
+    "REQ-UCKK-IMPORT-004",
+    "REQ-UCKK-IMPORT-005",
+    "REQ-UCKK-IMPORT-006"
   ],
   "lock_ids": [
     "LOCK-UCKK-EXT-001",
@@ -45,12 +55,14 @@
     "LOCK-GATE-001",
     "LOCK-DATA-001",
     "LOCK-GOV-001",
-    "LOCK-OFFLINE-001"
+    "LOCK-OFFLINE-001",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
     "DOC-SYS-012",
-    "DOC-COMP-MEDIATHEQUE-001"
+    "DOC-COMP-MEDIATHEQUE-001",
+    "DOC-COMP-UCKK-IMPORT-001"
   ],
   "tags": [
     "integration",
@@ -60,7 +72,9 @@
     "bridge",
     "external-platform",
     "idempotency",
-    "offline-queue"
+    "offline-queue",
+    "import-from-uckk",
+    "offline-learning"
   ]
 }
 KOA:DOC-META:END -->
@@ -69,34 +83,37 @@ KOA:DOC-META:END -->
 
 ## 1. Purpose
 
-The UCKK publication bridge implements the `uckk-publication` external integration. It maps an explicitly authorized publication package to an external UCKK Moodle destination and returns a structured receipt.
+The UCKK Publication Bridge implements the outbound `publish_to_uckk` direction of the governed Mediatheque interchange boundary.
 
-The bridge is an adapter at the kOA-Linux boundary. It is not the UCKK platform, not the UCKK Mediatheque, and not an owner of local media records.
+It maps an explicitly authorized kOA publication package to the online UCKK Moodle platform and returns a structured receipt. It is not the UCKK platform, not either Mediatheque, not an authorization authority, and not an inbound import mechanism.
+
+The opposite `import_from_uckk` direction requires a separate controlled import contract. Keeping the directions separate prevents a publication adapter from becoming an implicit synchronization service.
 
 ## 2. Separation of Responsibilities
 
 | Owner | Responsibility |
 | --- | --- |
-| kOA Mediatheque | Local source records, versions, content bindings, rights, provenance, and export history |
-| Publication Gateway | Publication request, disclosure and authorization decision, obligations, and cross-domain publication receipt chain |
-| UCKK publication bridge | Moodle/UCKK capability discovery, mapping, packaging transport, idempotency, retry, and remote result normalization |
-| External UCKK platform | Remote Moodle and UCKK records, users, permissions, courses, repositories, and destination lifecycle |
+| kOA Mediatheque | Local source records, versions, content bindings, rights, provenance, export history, and accepted local copies of imported content |
+| Publication Gateway | Outbound disclosure request, authorization decision, obligations, and cross-domain receipt chain |
+| UCKK Publication Bridge | Outbound UCKK capability discovery, mapping, package transport, idempotency, retry, and remote result normalization |
+| Controlled UCKK import path | Inbound retrieval, source and license verification, integrity and compatibility validation, quarantine, and delivery to local acceptance |
+| External UCKK platform | Online Moodle courses, learning paths, activities, permissions, UCKK Mediatheque records, and remote lifecycle |
 
-The bridge must not combine these authority domains.
+The shared Mediatheque frame supports mapping but does not combine these authority domains.
 
 ## 3. Inputs and Outputs
 
 Input:
 
-```text
+`text
 uckk-publication-package.schema.json
-```
+`
 
 Output:
 
-```text
+`text
 uckk-publication-receipt.schema.json
-```
+`
 
 The package binds exact local versions, rights assertions, destination mapping, authorization, manifest, and idempotency key. The receipt records per-item remote outcomes and references.
 
@@ -152,15 +169,28 @@ When a local right, consent, or authorization is withdrawn:
 - history is not falsified;
 - deletion from the external platform is not claimed unless UCKK explicitly confirms it.
 
-## 8. Import Is Separate
+## 8. Inbound Import Is a Separate Direction
 
-This contract is outbound publication only. A future UCKK-to-kOA import requires a separate integration contract, quarantine, provenance, rights validation, and explicit acceptance into the kOA Mediatheque. It must not be implemented as background bidirectional synchronization.
+This contract is the outbound `publish_to_uckk` direction only. The active sibling contract `contracts/integrations/uckk-import.integration.json` owns `import_from_uckk`.
+
+UCKK-to-kOA acquisition is governed by the separate active UCKK Import integration, which requires:
+
+- explicit source and object selection;
+- course or learning-path dependency manifests;
+- license, rights, restriction, and provenance validation;
+- signature and content-integrity verification;
+- quarantine and malware controls;
+- compatibility and required-resource validation;
+- explicit acceptance into the kOA Mediatheque;
+- an import receipt and conflict policy.
+
+Outbound and inbound operations may share the Mediatheque frame and common transport utilities. They do not share authorization, queue state, retry decisions, receipts, or authority by implication. They must not be implemented as background bidirectional synchronization.
 
 ## 9. Failure Codes
 
 Recommended normalized codes include:
 
-```text
+`text
 AUTHENTICATION_FAILED
 AUTHORIZATION_EXPIRED
 SOURCE_VERSION_CHANGED
@@ -174,8 +204,11 @@ PARTIAL_PUBLICATION
 REMOTE_RESULT_AMBIGUOUS
 RECEIPT_INVALID
 CANCELLED
-```
+`
 
 ## 10. Conformance
 
-The bridge conforms only when it proves explicit authorization, least-privilege credentials, no direct database writes, bounded retry, per-item receipts, source-authority preservation, and local operation independent from UCKK.
+The bridge conforms only when it proves explicit Publication Gateway authorization, least-privilege credentials, no direct database writes, bounded retry, idempotent reconciliation, per-item receipts, source-authority preservation, and local operation independent from UCKK.
+
+Passing outbound conformance does not establish inbound import or complete two-direction Mediatheque interchange conformance.
+

@@ -527,7 +527,7 @@ State-changing interactions use:
 - Governance Policy Runtime where required;
 - kOA Node Agent for closed privileged node operations;
 - Publication Gateway for external publication;
-- UCKK Dimension Gateway for declared UCKK admission;
+- UCKK Import Bridge for declared inbound UCKK package retrieval and quarantine;
 - integration manifests for external services;
 - artifact and Release Set contracts for installation and activation.
 

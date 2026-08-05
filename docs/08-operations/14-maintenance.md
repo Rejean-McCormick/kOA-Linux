@@ -258,7 +258,7 @@ Recipes and implementation tools remain non-normative unless adopted by the acti
 
 The adjacent operations documents include:
 
-```text
+`text
 08-operations/00-operating-model.md
 08-operations/01-observability.md
 08-operations/02-health-and-readiness.md
@@ -278,17 +278,17 @@ The adjacent operations documents include:
 08-operations/17-user-lightweight-operations.md
 08-operations/18-sovereign-node-operations.md
 08-operations/19-build-farm-operations.md
-```
+`
 
 The authoritative lifecycle detail is defined in:
 
-```text
+`text
 06-lifecycle/04-release-sets.md
 06-lifecycle/13-activation-and-verification.md
 06-lifecycle/14-recovery.md
 06-lifecycle/15-data-schema-evolution.md
 06-lifecycle/16-forward-repair.md
-```
+`
 
 ## 4. Maintenance Model and Responsibilities
 
@@ -1129,7 +1129,7 @@ This document is conformant when:
 
 Applicable failure codes include:
 
-```text
+`text
 maintenance_identity_missing
 maintenance_target_mismatch
 maintenance_class_missing
@@ -1157,7 +1157,7 @@ maintenance_cleanup_incomplete
 maintenance_restricted_state_unreported
 maintenance_receipt_missing
 maintenance_review_overdue
-```
+`
 
 A required validator that cannot run produces `blocked`, not `pass`.
 

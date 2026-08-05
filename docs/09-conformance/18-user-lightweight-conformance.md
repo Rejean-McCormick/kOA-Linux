@@ -30,7 +30,12 @@
     "generated/test-catalog.json",
     "generated/evidence-catalog.json",
     "contracts/components/koa-mediatheque.component.json",
-    "contracts/integrations/uckk-publication.integration.json"
+    "contracts/integrations/uckk-publication.integration.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json",
+    "04-components/uckk-import-bridge.md"
   ],
   "decision_ids": [
     "DEC-PROFILE-001",
@@ -77,7 +82,13 @@
     "REQ-CONF-USER-027",
     "REQ-CONF-USER-028",
     "REQ-CONF-USER-029",
-    "REQ-CONF-USER-030"
+    "REQ-CONF-USER-030",
+    "REQ-UCKK-IMPORT-001",
+    "REQ-UCKK-IMPORT-002",
+    "REQ-UCKK-IMPORT-003",
+    "REQ-UCKK-IMPORT-004",
+    "REQ-UCKK-IMPORT-005",
+    "REQ-UCKK-IMPORT-006"
   ],
   "lock_ids": [
     "LOCK-PROFILE-001",
@@ -96,7 +107,8 @@
     "LOCK-IMPL-001",
     "LOCK-DOC-002",
     "LOCK-MEDIATHEQUE-001",
-    "LOCK-UCKK-EXT-001"
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -161,7 +173,8 @@
     "DOC-CONF-011",
     "DOC-CONF-012",
     "DOC-CONF-015",
-    "DOC-CONF-019"
+    "DOC-CONF-019",
+    "DOC-COMP-UCKK-IMPORT-001"
   ],
   "tags": [
     "conformance",
@@ -173,7 +186,9 @@
     "optional-containers",
     "no-kubernetes",
     "deterministic-media",
-    "external-ai-optional"
+    "external-ai-optional",
+    "import-from-uckk",
+    "offline-learning"
   ]
 }
 KOA:DOC-META:END -->
@@ -284,11 +299,11 @@ The base claim contains only the behavior selected by `user_lightweight`.
 
 An overlay claim is additional:
 
-```text
+`text
 user_lightweight
-    + optional compatible overlay
-    = composed profile claim
-```
+ + optional compatible overlay
+ = composed profile claim
+`
 
 The base claim does not inherit overlay requirements by naming similarity, deployment preference, or implementation choice.
 
@@ -425,7 +440,7 @@ The evidence package supports the claim. It does not alter the profile contract.
 - **REQ-CONF-USER-018 — SHALL:** Every permitted external artificial-intelligence operation is explicitly user initiated, capability scoped, explicit about transferred data, removable from core operation, unable to write directly to authoritative stores, and recorded through the applicable provenance or decision receipt.
 - **REQ-CONF-USER-019 — SHALL:** Native kOA Mediatheque ingestion and media processing remain deterministic and local for the capabilities selected by the user_lightweight profile.
 - **REQ-CONF-USER-020 — SHALL NOT:** Native kOA Mediatheque ingestion, indexing, classification, rendition, or routing automatically invokes Suno, Gamma, external voice, UCKK, or another external artificial-intelligence or publication surface.
-- **REQ-CONF-USER-021 — SHALL:** A user-selected UCKK publication workflow uses a kOA Mediatheque owner-authorized export, Publication Gateway disclosure authorization, the optional UCKK Publication Adapter, provenance, manifest integrity, a publication receipt, and no transfer of local source authority; any controlled import is a separate explicit operation.
+- **REQ-CONF-USER-021 — SHALL:** A user-selected outbound UCKK workflow shall use a kOA Mediatheque owner-authorized export, Publication Gateway disclosure authorization, the optional UCKK Publication Bridge, provenance, manifest integrity, a publication receipt, and no transfer of local source authority; a separate inbound workflow shall use UCKK Import Bridge retrieval, quarantine, deterministic validation, explicit local acceptance, a distinct local identity, and an import receipt.
 - **REQ-CONF-USER-022 — SHALL:** A shared PostgreSQL process is permitted only when each component retains a separate database or schema, separate database identity, and exclusive logical ownership.
 - **REQ-CONF-USER-023 — SHALL NOT:** Any component, observability service, conformance tool, operator workflow, or shared database identity writes directly to another component's authoritative source tables.
 - **REQ-CONF-USER-024 — SHALL:** Resource Governor is present as a baseline authority and Governance Policy Runtime is required only when another active profile or overlay claim introduces its governance obligations.
@@ -595,7 +610,7 @@ Conformance reporting cannot reinterpret a failed, blocked, stale, or out-of-sco
 | `DEC-AI-001` | Excludes native artificial-intelligence authority and controls approved external surfaces. |
 | `DEC-SENT-001` | Excludes SenTient from `user_lightweight`. |
 | `DEC-MEDIATHEQUE-001` | Establishes kOA Mediatheque as the internal local media authority with deterministic offline-capable processing. |
-| `DEC-UCKK-EXT-001` | Establishes UCKK as an optional external Moodle publication target with separate authority and storage. |
+| `DEC-UCKK-EXT-001` | Establishes UCKK as an optional external online Moodle and Mediatheque platform with separate authority, storage, and directional interchange. |
 | `DEC-ARI-001` | Separates local Ariane navigation from optional external voice. |
 | `DEC-DATA-001` | Permits profile-scoped process sharing while preserving databases, identities, and no-direct-write boundaries. |
 | `DEC-GOV-001` | Keeps Resource Governor in the baseline and profile-scopes Governance Policy Runtime. |
@@ -650,7 +665,7 @@ This document is conformant when:
 18. Native artificial-intelligence authority is absent.
 19. Ariane local navigation passes without external voice.
 20. External operations are user initiated, controlled, receipted, and non-authoritative until accepted.
-21. Native kOA Mediatheque processing remains deterministic and local; optional UCKK publication is explicit, queued when offline, separately authorized, and does not transfer local ownership.
+21. Native kOA Mediatheque processing remains deterministic and local; outbound UCKK publication and inbound learning-package import are explicit, separate, bounded, independently receipted, preserve both authorities, and leave accepted learning content available offline.
 22. Shared PostgreSQL use preserves component database or schema and identity separation.
 23. No direct cross-component write path exists.
 24. Resource Governor baseline behavior passes and Governance Policy Runtime applicability matches the effective composition.
@@ -665,9 +680,9 @@ This document is conformant when:
 
 The validation entry point is:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 ## 11. Non-Normative Examples
 

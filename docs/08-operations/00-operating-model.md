@@ -177,17 +177,17 @@ The operating model coordinates:
 
 The common operational control loop is:
 
-```text
+`text
 observe authoritative and derived state
-        ↓
+ ↓
 decide through the owning authority
-        ↓
+ ↓
 act through a registered interface or lifecycle transition
-        ↓
+ ↓
 verify actual resulting state
-        ↓
+ ↓
 retain the required evidence
-```
+`
 
 A runbook describes how to carry out this loop.
 
@@ -315,58 +315,58 @@ Canonical component and lifecycle states remain in their machine-readable contra
 
 ### 3.1 Active authority
 
-```text
+`text
 generated/authority-manifest.json
 generated/decision-index.json
 generated/requirements-index.json
 generated/assertion-index.json
 generated/decision-index.json
-```
+`
 
 ### 3.2 System and components
 
-```text
+`text
 contracts/system.contract.json
 generated/component-catalog.json
 generated/component-catalog.json
 contracts/components/*.component.json
-```
+`
 
 Component contracts own interfaces, readiness, data, state, failure, recovery, and compatibility.
 
 ### 3.3 Profiles
 
-```text
+`text
 generated/profile-catalog.json
 contracts/profiles/*.profile.json
-```
+`
 
 Profiles own topology, selection, resources, locality, assurance, offline behavior, and implementation choices.
 
 ### 3.4 Lifecycle
 
-```text
+`text
 contracts/release-channels.contract.json
 contracts/artifact-classes.contract.json
 contracts/artifact-contracts/release-set.schema.json
 contracts/artifact-contracts/*.schema.json
-```
+`
 
 Lifecycle contracts own artifact identity, publication, staging, activation, rollback, forward repair, retention, and retirement.
 
 ### 3.5 Integrations and evidence
 
-```text
+`text
 contracts/integration-types.contract.json
 generated/traceability.json
 generated/test-catalog.json
 generated/evidence-catalog.json
 generated/exception-index.json
-```
+`
 
 ### 3.6 Related documents
 
-```text
+`text
 05-development/16-development-to-release-transition.md
 06-lifecycle/13-activation-and-verification.md
 06-lifecycle/15-data-schema-evolution.md
@@ -374,7 +374,7 @@ generated/exception-index.json
 06-lifecycle/19-artifact-retention.md
 07-security/01-security-baseline.md
 07-security/12-external-integration-classification.md
-```
+`
 
 ## 4. Model and Responsibilities
 
@@ -393,7 +393,7 @@ Operational roles coordinate existing owners.
 | Artifact and release lifecycle | Artifact and release owners |
 | External publication | Publication Gateway |
 | kOA Mediatheque admission | kOA Mediatheque |
-| External UCKK publication | Publication Gateway with UCKK publication adapter |
+| External UCKK publication | Publication Gateway with UCKK Publication Bridge |
 | Security controls and incident containment | Security owner with affected owners |
 | Backup and restore of component state | Owning component and profile recovery contract |
 | Evidence handling | Audit Broker and evidence owner |
@@ -868,7 +868,7 @@ Integration operation includes:
 
 External AI remains optional and user-triggered.
 
-Suno and Gamma remain explicit external candidate-media adapters. UCKK remains a separate external Moodle publication target.
+Suno and Gamma remain explicit external candidate-media adapters. UCKK remains a separate online Moodle and Mediatheque platform reached through controlled publication and import integrations.
 
 Ariane external voice remains separate from local navigation.
 
@@ -1347,7 +1347,7 @@ Operations preserve native core independence and candidate-adoption boundaries.
 | `DEC-PROFILE-001` | Operating topology, resources, implementation, and strengthening remain profile-specific |
 | `DEC-DATA-001` | Operations preserve exclusive component data ownership |
 | `DEC-GOV-001` | Resource Governor and Governance Policy Runtime remain separate authorities |
-| `DEC-GATE-001` | Local Mediatheque admission and cross-domain publication remain separate; the UCKK adapter is publication-only |
+| `DEC-GATE-001` | Local Mediatheque admission, outbound disclosure, UCKK publication transport, and UCKK import quarantine remain separate; neither direction creates shared authority or implicit synchronization |
 | `DEC-AI-001` | External AI remains optional, explicit, removable, and non-authoritative |
 | `DEC-SENT-001` | SenTient remains an optional isolated developer and build workbench |
 | `DEC-CONTAINER-001` | Container runtime choices remain profile-scoped |
@@ -1475,39 +1475,39 @@ This document is conformant when:
 
 Expected test coverage includes:
 
-```text
-TEST-OPS-MODEL-001  Operating role and delegation resolution
-TEST-OPS-MODEL-002  Effective profile and Release Set identification
-TEST-OPS-MODEL-003  No operator-created authority
-TEST-OPS-MODEL-004  Direct foreign-write rejection
-TEST-OPS-MODEL-005  Registered operational interface use
-TEST-OPS-MODEL-006  Health and readiness distinction
-TEST-OPS-MODEL-007  Capability-level profile objectives
-TEST-OPS-MODEL-008  Runtime inventory reconciliation
-TEST-OPS-MODEL-009  Routine operating review completeness
-TEST-OPS-MODEL-010  Maintenance entry and exit controls
-TEST-OPS-MODEL-011  Resource pressure workload shedding
-TEST-OPS-MODEL-012  Observability and receipt separation
-TEST-OPS-MODEL-013  Visible capability degradation
-TEST-OPS-MODEL-014  Drift detection and reconciliation
-TEST-OPS-MODEL-015  Inactive staging and atomic activation
-TEST-OPS-MODEL-016  Known-good rollback readiness
-TEST-OPS-MODEL-017  Component-owned migration
-TEST-OPS-MODEL-018  Backup identity and ownership closure
-TEST-OPS-MODEL-019  Clean restore exercise
-TEST-OPS-MODEL-020  Incident containment and evidence preservation
-TEST-OPS-MODEL-021  Break-glass expiry and closure
-TEST-OPS-MODEL-022  Incident communication evidence accuracy
-TEST-OPS-MODEL-023  Optional integration removal
-TEST-OPS-MODEL-024  No silent external or local AI fallback
-TEST-OPS-MODEL-025  Offline local authority closure
-TEST-OPS-MODEL-026  Quarantined offline import
-TEST-OPS-MODEL-027  Handoff completeness
-TEST-OPS-MODEL-028  Idempotent bounded automation
-TEST-OPS-MODEL-029  No false pass for incomplete checks
-TEST-OPS-MODEL-030  Complete decommissioning
-TEST-OPS-MODEL-031  Credible-exit restore
-```
+`text
+TEST-OPS-MODEL-001 Operating role and delegation resolution
+TEST-OPS-MODEL-002 Effective profile and Release Set identification
+TEST-OPS-MODEL-003 No operator-created authority
+TEST-OPS-MODEL-004 Direct foreign-write rejection
+TEST-OPS-MODEL-005 Registered operational interface use
+TEST-OPS-MODEL-006 Health and readiness distinction
+TEST-OPS-MODEL-007 Capability-level profile objectives
+TEST-OPS-MODEL-008 Runtime inventory reconciliation
+TEST-OPS-MODEL-009 Routine operating review completeness
+TEST-OPS-MODEL-010 Maintenance entry and exit controls
+TEST-OPS-MODEL-011 Resource pressure workload shedding
+TEST-OPS-MODEL-012 Observability and receipt separation
+TEST-OPS-MODEL-013 Visible capability degradation
+TEST-OPS-MODEL-014 Drift detection and reconciliation
+TEST-OPS-MODEL-015 Inactive staging and atomic activation
+TEST-OPS-MODEL-016 Known-good rollback readiness
+TEST-OPS-MODEL-017 Component-owned migration
+TEST-OPS-MODEL-018 Backup identity and ownership closure
+TEST-OPS-MODEL-019 Clean restore exercise
+TEST-OPS-MODEL-020 Incident containment and evidence preservation
+TEST-OPS-MODEL-021 Break-glass expiry and closure
+TEST-OPS-MODEL-022 Incident communication evidence accuracy
+TEST-OPS-MODEL-023 Optional integration removal
+TEST-OPS-MODEL-024 No silent external or local AI fallback
+TEST-OPS-MODEL-025 Offline local authority closure
+TEST-OPS-MODEL-026 Quarantined offline import
+TEST-OPS-MODEL-027 Handoff completeness
+TEST-OPS-MODEL-028 Idempotent bounded automation
+TEST-OPS-MODEL-029 No false pass for incomplete checks
+TEST-OPS-MODEL-030 Complete decommissioning
+TEST-OPS-MODEL-031 Credible-exit restore
+`
 
 The test catalog and evidence registry own executable controls and evidence definitions.
 

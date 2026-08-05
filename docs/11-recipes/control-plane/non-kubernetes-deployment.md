@@ -1,98 +1,97 @@
 <!-- KOA:DOC-META:BEGIN GENERATED
 {
-  "doc_id": "DOC-RECIPE-CP-NOK8S-001",
-  "document_class": "non_normative_recipe",
-  "status": "active",
-  "language": "en",
-  "layer": "recipes",
-  "scope": [
-    "profile:control_plane",
-    "deployment_mode:non_kubernetes",
-    "profile_conditioned_operations"
-  ],
-  "canonical_refs": [
-    "generated/profile-catalog.json",
-    "contracts/profiles/control-plane.profile.json",
-    "contracts/release-channels.contract.json",
-    "contracts/artifact-classes.contract.json",
-    "generated/component-catalog.json",
-    "contracts/integration-types.contract.json",
-    "generated/requirements-index.json",
-    "generated/assertion-index.json#/locks/LOCK-PROFILE-001",
-    "generated/assertion-index.json#/locks/LOCK-IMPL-002",
-    "generated/assertion-index.json#/locks/LOCK-LIFE-001",
-    "generated/assertion-index.json#/locks/LOCK-LIFE-003",
-    "generated/decision-index.json",
-    "generated/test-catalog.json",
-    "generated/evidence-catalog.json"
-  ],
-  "decision_ids": [
-    "DEC-PROFILE-001",
-    "DEC-CONTAINER-001",
-    "DEC-K8S-001",
-    "DEC-DATA-001",
-    "DEC-GOV-001",
-    "DEC-GATE-001",
-    "DEC-AI-001",
-    "DEC-REL-001"
-  ],
-  "requirement_ids": [],
-  "lock_ids": [
-    "LOCK-PROFILE-001",
-    "LOCK-IMPL-001",
-    "LOCK-IMPL-002",
-    "LOCK-DATA-001",
-    "LOCK-GOV-001",
-    "LOCK-GATE-001",
-    "LOCK-AI-001",
-    "LOCK-AI-002",
-    "LOCK-LIFE-001",
-    "LOCK-LIFE-002",
-    "LOCK-LIFE-003",
-    "LOCK-LIFE-004"
-  ],
-  "exception_ids": [],
-  "depends_on": [
-    "DOC-RECIPES-000",
-    "DOC-SYS-002",
-    "DOC-SYS-004",
-    "DOC-SYS-007",
-    "DOC-SYS-014",
-    "DOC-SYS-015",
-    "DOC-SYS-016",
-    "DOC-SYS-017",
-    "DOC-DEV-006",
-    "DOC-DEV-016",
-    "DOC-SEC-001",
-    "DOC-SEC-008",
-    "DOC-OPS-000",
-    "DOC-OPS-009",
-    "DOC-CONF-010",
-    "ADR-014"
-  ],
-  "tags": [
-    "recipe",
-    "control-plane",
-    "non-kubernetes",
-    "systemd",
-    "oci-runtime",
-    "podman",
-    "docker",
-    "atomic-activation",
-    "rollback",
-    "service-readiness",
-    "data-isolation",
-    "non-normative"
-  ]
+ "doc_id": "DOC-RECIPE-CP-NOK8S-001",
+ "document_class": "non_normative_recipe",
+ "status": "active",
+ "language": "en",
+ "layer": "recipes",
+ "scope": [
+ "profile:control_plane",
+ "deployment_mode:non_kubernetes",
+ "profile_conditioned_operations"
+ ],
+ "canonical_refs": [
+ "generated/profile-catalog.json",
+ "contracts/profiles/control-plane.profile.json",
+ "contracts/release-channels.contract.json",
+ "contracts/artifact-classes.contract.json",
+ "generated/component-catalog.json",
+ "contracts/integration-types.contract.json",
+ "generated/requirements-index.json",
+ "generated/assertion-index.json#/locks/LOCK-PROFILE-001",
+ "generated/assertion-index.json#/locks/LOCK-IMPL-002",
+ "generated/assertion-index.json#/locks/LOCK-LIFE-001",
+ "generated/assertion-index.json#/locks/LOCK-LIFE-003",
+ "generated/decision-index.json",
+ "generated/test-catalog.json",
+ "generated/evidence-catalog.json"
+ ],
+ "decision_ids": [
+ "DEC-PROFILE-001",
+ "DEC-CONTAINER-001",
+ "DEC-K8S-001",
+ "DEC-DATA-001",
+ "DEC-GOV-001",
+ "DEC-GATE-001",
+ "DEC-AI-001",
+ "DEC-REL-001"
+ ],
+ "requirement_ids": [],
+ "lock_ids": [
+ "LOCK-PROFILE-001",
+ "LOCK-IMPL-001",
+ "LOCK-IMPL-002",
+ "LOCK-DATA-001",
+ "LOCK-GOV-001",
+ "LOCK-GATE-001",
+ "LOCK-AI-001",
+ "LOCK-AI-002",
+ "LOCK-LIFE-001",
+ "LOCK-LIFE-002",
+ "LOCK-LIFE-003",
+ "LOCK-LIFE-004"
+ ],
+ "exception_ids": [],
+ "depends_on": [
+ "DOC-RECIPES-000",
+ "DOC-SYS-002",
+ "DOC-SYS-004",
+ "DOC-SYS-007",
+ "DOC-SYS-014",
+ "DOC-SYS-015",
+ "DOC-SYS-016",
+ "DOC-SYS-017",
+ "DOC-DEV-006",
+ "DOC-DEV-016",
+ "DOC-SEC-001",
+ "DOC-SEC-008",
+ "DOC-OPS-000",
+ "DOC-OPS-009",
+ "DOC-CONF-010"
+ ],
+ "tags": [
+ "recipe",
+ "control-plane",
+ "non-kubernetes",
+ "systemd",
+ "oci-runtime",
+ "podman",
+ "docker",
+ "atomic-activation",
+ "rollback",
+ "service-readiness",
+ "data-isolation",
+ "non-normative"
+ ]
 }
 KOA:DOC-META:END -->
 
 # Non-Kubernetes Control-Plane Deployment
 
-> **Recipe classification:** Non-authoritative implementation guidance.  
-> **Risk class:** `operational_change`.  
-> **Primary profile:** `control_plane`.  
-> **Deployment mode:** `non_kubernetes`.  
+> **Recipe classification:** Non-authoritative implementation guidance.
+> **Risk class:** `operational_change`.
+> **Primary profile:** `control_plane`.
+> **Deployment mode:** `non_kubernetes`.
 > **Authority rule:** The active profile, component contracts, Release Set, security policy, operating authority, and conformance catalog take precedence over this recipe.
 
 ## 1. Purpose
@@ -116,21 +115,21 @@ The recipe demonstrates that Kubernetes is optional for the control-plane profil
 
 The deployment model is:
 
-```text
+`text
 verified control-plane profile
-        ↓
+ ↓
 complete compatible Release Set
-        ↓
+ ↓
 inactive staged artifacts and configuration
-        ↓
+ ↓
 systemd units and OCI runtime selected by profile
-        ↓
+ ↓
 atomic active-release switch
-        ↓
+ ↓
 service restart and readiness validation
-        ↓
+ ↓
 accepted control-plane capability
-```
+`
 
 ### 1.1 Result
 
@@ -157,7 +156,7 @@ This recipe does not:
 - create a Release Set;
 - define component data ownership;
 - merge Governance Policy Runtime and Resource Governor;
-- merge Publication Gateway and UCKK Dimension Gateway;
+- merge Publication Gateway, UCKK Publication Bridge, and UCKK Import Bridge;
 - create a shared database owner;
 - grant unrestricted root or production credentials;
 - configure arbitrary Internet ingress;
@@ -171,10 +170,10 @@ This recipe does not:
 
 This recipe applies when:
 
-```text
+`text
 primary_profile: control_plane
 orchestration_mode: non_kubernetes
-```
+`
 
 The active profile can select:
 
@@ -327,7 +326,7 @@ Verify:
 - Resource Governor controls resource admission;
 - kOA Node Agent or the profile-approved privileged boundary executes closed host operations;
 - Publication Gateway executes external publication;
-- UCKK Dimension Gateway coordinates UCKK admission;
+- UCKK Import Bridge coordinates inbound UCKK package retrieval and quarantine;
 - Audit Broker handles selected evidence.
 
 The non-Kubernetes deployment does not merge these responsibilities into one service or administrator account.
@@ -336,7 +335,7 @@ The non-Kubernetes deployment does not merge these responsibilities into one ser
 
 The reference helper uses:
 
-```text
+`text
 bash
 python3
 systemctl
@@ -348,17 +347,17 @@ curl
 ln
 mv
 grep
-```
+`
 
 Verify:
 
-```bash
+`bash
 for command_name in \
-  bash python3 systemctl readlink stat find flock curl ln mv grep; do
-  command -v "$command_name" >/dev/null ||
-    printf 'missing: %s\n' "$command_name"
+ bash python3 systemctl readlink stat find flock curl ln mv grep; do
+ command -v "$command_name" >/dev/null ||
+ printf 'missing: %s\n' "$command_name"
 done
-```
+`
 
 ### 3.7 Runtime selection
 
@@ -366,10 +365,10 @@ When containers are used, resolve one profile-approved OCI runtime.
 
 Example checks:
 
-```bash
+`bash
 command -v podman >/dev/null && podman version
 command -v docker >/dev/null && docker version
-```
+`
 
 Do not run both runtimes for the same component instance unless the active profile explicitly defines that split.
 
@@ -407,7 +406,7 @@ The reference helper uses:
 
 Create a reviewed environment file such as:
 
-```bash
+`bash
 KOA_PROFILE_MANIFEST=/etc/koa/authority/control-plane-profile.json
 KOA_RELEASE_ROOT=/var/lib/koa/releases
 KOA_RELEASE_SET_ID=rs-2026.08.03-cp-001
@@ -433,7 +432,7 @@ https://127.0.0.1:9444/ready \
 https://127.0.0.1:9445/ready"
 
 KOA_READY_TIMEOUT_SECONDS=10
-```
+`
 
 The units and URLs are examples.
 
@@ -441,22 +440,22 @@ The active profile and component contracts own the actual service set and endpoi
 
 ### 4.3 Reference release layout
 
-```text
+`text
 /var/lib/koa/releases/
 └── rs-2026.08.03-cp-001/
-    ├── release-set.json
-    ├── system/
-    ├── services/
-    ├── governance/
-    └── knowledge/
-```
+ ├── release-set.json
+ ├── system/
+ ├── services/
+ ├── governance/
+ └── knowledge/
+`
 
 The active and previous links are mutable selectors outside immutable release content:
 
-```text
+`text
 /var/lib/koa/control-plane/active
 /var/lib/koa/control-plane/previous
-```
+`
 
 ### 4.4 Reference service model
 
@@ -533,11 +532,11 @@ Every service uses a dedicated identity.
 
 Do not deploy all units as:
 
-```text
+`text
 root
 koa
 platform-admin
-```
+`
 
 unless the active profile and component contracts explicitly define a bounded identity model that preserves independent permissions.
 
@@ -547,9 +546,9 @@ Use system services only when the profile requires system scope.
 
 Rootless services can use:
 
-```text
+`text
 KOA_SYSTEMCTL_SCOPE=user
-```
+`
 
 with a dedicated service account and persistent user manager where the profile permits it.
 
@@ -628,7 +627,7 @@ External AI is not used for:
 - incident containment;
 - canonical data repair.
 
-Approved external AI remains explicit, optional, candidate-only, and profile-conditioned under `ADR-014`.
+Approved external AI remains explicit, optional, candidate-only, and profile-conditioned under .
 
 ### 5.9 Release boundary
 
@@ -652,105 +651,105 @@ Independent updates are allowed only when compatibility remains valid.
 
 Reference location:
 
-```bash
+`bash
 sudo install \
-  --directory \
-  --owner root \
-  --group root \
-  --mode 0750 \
-  /var/lib/koa/recipe-tools/control-plane
-```
+ --directory \
+ --owner root \
+ --group root \
+ --mode 0750 \
+ /var/lib/koa/recipe-tools/control-plane
+`
 
 For user-scoped services, use the dedicated service account's protected state directory instead.
 
 ### 6.2 Install the reference helper
 
-```bash
+`bash
 sudo tee \
-  /var/lib/koa/recipe-tools/control-plane/koa-control-plane-deploy \
-  >/dev/null <<'BASH'
+ /var/lib/koa/recipe-tools/control-plane/koa-control-plane-deploy \
+ >/dev/null <<'BASH'
 #!/usr/bin/env bash
 set -euo pipefail
 
-fail() {
-  printf 'error: %s\n' "$*" >&2
-  exit 1
+fail {
+ printf 'error: %s\n' "$*" >&2
+ exit 1
 }
 
-usage() {
-  cat >&2 <<'USAGE'
+usage {
+ cat >&2 <<'USAGE'
 Usage:
-  koa-control-plane-deploy preflight <environment-file>
-  koa-control-plane-deploy activate  <environment-file>
-  koa-control-plane-deploy status    <environment-file>
-  koa-control-plane-deploy rollback  <environment-file>
+ koa-control-plane-deploy preflight <environment-file>
+ koa-control-plane-deploy activate <environment-file>
+ koa-control-plane-deploy status <environment-file>
+ koa-control-plane-deploy rollback <environment-file>
 USAGE
-  exit 2
+ exit 2
 }
 
-require_command() {
-  command -v "$1" >/dev/null 2>&1 ||
-    fail "required command not found: $1"
+require_command {
+ command -v "$1" >/dev/null 2>&1 ||
+ fail "required command not found: $1"
 }
 
-require_variable() {
-  local name=$1
-  [ -n "${!name:-}" ] ||
-    fail "required variable is unset or empty: $name"
+require_variable {
+ local name=$1
+ [ -n "${!name:-}" ] ||
+ fail "required variable is unset or empty: $name"
 }
 
-require_file() {
-  [ -f "$1" ] || fail "required file not found: $1"
+require_file {
+ [ -f "$1" ] || fail "required file not found: $1"
 }
 
-require_directory() {
-  [ -d "$1" ] || fail "required directory not found: $1"
+require_directory {
+ [ -d "$1" ] || fail "required directory not found: $1"
 }
 
-load_environment() {
-  local environment_file=$1
+load_environment {
+ local environment_file=$1
 
-  require_file "$environment_file"
+ require_file "$environment_file"
 
-  # The environment file contains non-secret deployment references.
-  # shellcheck disable=SC1090
-  . "$environment_file"
+ # The environment file contains non-secret deployment references.
+ # shellcheck disable=SC1090
+ . "$environment_file"
 
-  require_variable KOA_PROFILE_MANIFEST
-  require_variable KOA_RELEASE_ROOT
-  require_variable KOA_RELEASE_SET_ID
-  require_variable KOA_ACTIVE_LINK
-  require_variable KOA_PREVIOUS_LINK
-  require_variable KOA_LOCK_FILE
-  require_variable KOA_SYSTEMCTL_SCOPE
-  require_variable KOA_UNITS
-  require_variable KOA_READY_URLS
+ require_variable KOA_PROFILE_MANIFEST
+ require_variable KOA_RELEASE_ROOT
+ require_variable KOA_RELEASE_SET_ID
+ require_variable KOA_ACTIVE_LINK
+ require_variable KOA_PREVIOUS_LINK
+ require_variable KOA_LOCK_FILE
+ require_variable KOA_SYSTEMCTL_SCOPE
+ require_variable KOA_UNITS
+ require_variable KOA_READY_URLS
 
-  case "$KOA_SYSTEMCTL_SCOPE" in
-    system|user)
-      ;;
-    *)
-      fail "KOA_SYSTEMCTL_SCOPE must be system or user"
-      ;;
-  esac
+ case "$KOA_SYSTEMCTL_SCOPE" in
+ system|user)
+ ;;
+ *)
+ fail "KOA_SYSTEMCTL_SCOPE must be system or user"
+ ;;
+ esac
 
-  KOA_RELEASE_DIRECTORY="${KOA_RELEASE_ROOT%/}/${KOA_RELEASE_SET_ID}"
-  KOA_RELEASE_MANIFEST="${KOA_RELEASE_DIRECTORY%/}/release-set.json"
+ KOA_RELEASE_DIRECTORY="${KOA_RELEASE_ROOT%/}/${KOA_RELEASE_SET_ID}"
+ KOA_RELEASE_MANIFEST="${KOA_RELEASE_DIRECTORY%/}/release-set.json"
 
-  export KOA_RELEASE_DIRECTORY
-  export KOA_RELEASE_MANIFEST
+ export KOA_RELEASE_DIRECTORY
+ export KOA_RELEASE_MANIFEST
 }
 
-systemctl_command() {
-  if [ "$KOA_SYSTEMCTL_SCOPE" = "user" ]; then
-    systemctl --user "$@"
-  else
-    systemctl "$@"
-  fi
+systemctl_command {
+ if [ "$KOA_SYSTEMCTL_SCOPE" = "user" ]; then
+ systemctl --user "$@"
+ else
+ systemctl "$@"
+ fi
 }
 
-check_manifest_content() {
-  python3 - "$KOA_PROFILE_MANIFEST" "$KOA_RELEASE_MANIFEST" <<'PY'
+check_manifest_content {
+ python3 - "$KOA_PROFILE_MANIFEST" "$KOA_RELEASE_MANIFEST" <<'PY'
 import json
 import sys
 from pathlib import Path
@@ -762,316 +761,316 @@ profile = json.loads(profile_path.read_text(encoding="utf-8"))
 release = json.loads(release_path.read_text(encoding="utf-8"))
 
 def strings(value):
-    if isinstance(value, dict):
-        for item in value.values():
-            yield from strings(item)
-    elif isinstance(value, list):
-        for item in value:
-            yield from strings(item)
-    elif isinstance(value, str):
-        yield value
+ if isinstance(value, dict):
+ for item in value.values:
+ yield from strings(item)
+ elif isinstance(value, list):
+ for item in value:
+ yield from strings(item)
+ elif isinstance(value, str):
+ yield value
 
 profile_strings = set(strings(profile))
 release_strings = set(strings(release))
 
 if "control_plane" not in profile_strings:
-    raise SystemExit(
-        "profile manifest does not identify control_plane"
-    )
+ raise SystemExit(
+ "profile manifest does not identify control_plane"
+ )
 
 if "kubernetes" in profile_strings:
-    raise SystemExit(
-        "profile manifest selects Kubernetes; use the Kubernetes deployment path"
-    )
+ raise SystemExit(
+ "profile manifest selects Kubernetes; use the Kubernetes deployment path"
+ )
 
 required_channels = {
-    "system",
-    "services",
-    "governance",
-    "knowledge",
+ "system",
+ "services",
+ "governance",
+ "knowledge",
 }
 missing = sorted(required_channels - release_strings)
 if missing:
-    raise SystemExit(
-        "release manifest is missing required channels: "
-        + ", ".join(missing)
-    )
+ raise SystemExit(
+ "release manifest is missing required channels: "
+ + ", ".join(missing)
+ )
 PY
 }
 
-check_environment_file_permissions() {
-  local environment_file=$1
-  local mode
+check_environment_file_permissions {
+ local environment_file=$1
+ local mode
 
-  mode=$(stat -c '%a' "$environment_file")
+ mode=$(stat -c '%a' "$environment_file")
 
-  case "$mode" in
-    *[2367][0-7]|??[2367])
-      fail "environment file is group- or world-writable: $environment_file"
-      ;;
-  esac
+ case "$mode" in
+ *[2367][0-7]|??[2367])
+ fail "environment file is group- or world-writable: $environment_file"
+ ;;
+ esac
 }
 
-check_release_permissions() {
-  local first_writable
+check_release_permissions {
+ local first_writable
 
-  first_writable=$(
-    find -L "$KOA_RELEASE_DIRECTORY" -xdev -perm /022 -print -quit
-  )
+ first_writable=$(
+ find -L "$KOA_RELEASE_DIRECTORY" -xdev -perm /022 -print -quit
+ )
 
-  [ -z "$first_writable" ] ||
-    fail "release content is group- or world-writable: $first_writable"
+ [ -z "$first_writable" ] ||
+ fail "release content is group- or world-writable: $first_writable"
 }
 
-check_profile_and_release() {
-  require_file "$KOA_PROFILE_MANIFEST"
-  require_file "$KOA_RELEASE_MANIFEST"
-  check_manifest_content ||
-    fail "profile or Release Set manifest validation failed"
+check_profile_and_release {
+ require_file "$KOA_PROFILE_MANIFEST"
+ require_file "$KOA_RELEASE_MANIFEST"
+ check_manifest_content ||
+ fail "profile or Release Set manifest validation failed"
 }
 
-check_tools() {
-  require_command python3
-  require_command systemctl
-  require_command readlink
-  require_command stat
-  require_command find
-  require_command flock
-  require_command curl
-  require_command ln
-  require_command mv
+check_tools {
+ require_command python3
+ require_command systemctl
+ require_command readlink
+ require_command stat
+ require_command find
+ require_command flock
+ require_command curl
+ require_command ln
+ require_command mv
 }
 
-check_units() {
-  local unit
-  for unit in $KOA_UNITS; do
-    systemctl_command cat "$unit" >/dev/null 2>&1 ||
-      fail "unit is not installed or readable: $unit"
-  done
+check_units {
+ local unit
+ for unit in $KOA_UNITS; do
+ systemctl_command cat "$unit" >/dev/null 2>&1 ||
+ fail "unit is not installed or readable: $unit"
+ done
 }
 
-check_no_kubernetes_commands() {
-  local unit rendered
+check_no_kubernetes_commands {
+ local unit rendered
 
-  for unit in $KOA_UNITS; do
-    rendered=$(systemctl_command cat "$unit")
-    if printf '%s\n' "$rendered" |
-      grep -Eiq '(^|[[:space:]/])(kubectl|kubelet|kubeadm|helm|kustomize)([[:space:]]|$)|kubeconfig|/var/lib/kubelet'; then
-      fail "Kubernetes-specific command or path found in unit: $unit"
-    fi
-  done
+ for unit in $KOA_UNITS; do
+ rendered=$(systemctl_command cat "$unit")
+ if printf '%s\n' "$rendered" |
+ grep -Eiq '(^|[[:space:]/])(kubectl|kubelet|kubeadm|helm|kustomize)([[:space:]]|$)|kubeconfig|/var/lib/kubelet'; then
+ fail "Kubernetes-specific command or path found in unit: $unit"
+ fi
+ done
 }
 
-ready_check() {
-  local url
-  for url in $KOA_READY_URLS; do
-    curl \
-      --fail \
-      --silent \
-      --show-error \
-      --max-time "${KOA_READY_TIMEOUT_SECONDS:-10}" \
-      "$url" >/dev/null ||
-      fail "readiness check failed: $url"
-  done
+ready_check {
+ local url
+ for url in $KOA_READY_URLS; do
+ curl \
+ --fail \
+ --silent \
+ --show-error \
+ --max-time "${KOA_READY_TIMEOUT_SECONDS:-10}" \
+ "$url" >/dev/null ||
+ fail "readiness check failed: $url"
+ done
 }
 
-check_active_units() {
-  local unit
-  for unit in $KOA_UNITS; do
-    systemctl_command is-active --quiet "$unit" ||
-      fail "unit is not active: $unit"
-  done
+check_active_units {
+ local unit
+ for unit in $KOA_UNITS; do
+ systemctl_command is-active --quiet "$unit" ||
+ fail "unit is not active: $unit"
+ done
 }
 
-atomic_link() {
-  local target=$1
-  local link=$2
-  local parent temporary
+atomic_link {
+ local target=$1
+ local link=$2
+ local parent temporary
 
-  parent=$(dirname "$link")
-  mkdir -p "$parent"
+ parent=$(dirname "$link")
+ mkdir -p "$parent"
 
-  temporary="${link}.new.$$"
-  rm -f "$temporary"
-  ln -s "$target" "$temporary"
-  mv -Tf "$temporary" "$link"
+ temporary="${link}.new.$$"
+ rm -f "$temporary"
+ ln -s "$target" "$temporary"
+ mv -Tf "$temporary" "$link"
 }
 
-record_previous_target() {
-  local current
+record_previous_target {
+ local current
 
-  if [ -L "$KOA_ACTIVE_LINK" ]; then
-    current=$(readlink -f "$KOA_ACTIVE_LINK")
-    [ -n "$current" ] ||
-      fail "active link cannot be resolved: $KOA_ACTIVE_LINK"
-    atomic_link "$current" "$KOA_PREVIOUS_LINK"
-  fi
+ if [ -L "$KOA_ACTIVE_LINK" ]; then
+ current=$(readlink -f "$KOA_ACTIVE_LINK")
+ [ -n "$current" ] ||
+ fail "active link cannot be resolved: $KOA_ACTIVE_LINK"
+ atomic_link "$current" "$KOA_PREVIOUS_LINK"
+ fi
 }
 
-restart_units() {
-  local unit
+restart_units {
+ local unit
 
-  systemctl_command daemon-reload
+ systemctl_command daemon-reload
 
-  for unit in $KOA_UNITS; do
-    systemctl_command restart "$unit"
-  done
+ for unit in $KOA_UNITS; do
+ systemctl_command restart "$unit"
+ done
 }
 
-preflight() {
-  local environment_file=$1
+preflight {
+ local environment_file=$1
 
-  check_tools
-  check_environment_file_permissions "$environment_file"
-  require_directory "$KOA_RELEASE_DIRECTORY"
-  check_release_permissions
-  check_profile_and_release
-  check_units
-  check_no_kubernetes_commands
+ check_tools
+ check_environment_file_permissions "$environment_file"
+ require_directory "$KOA_RELEASE_DIRECTORY"
+ check_release_permissions
+ check_profile_and_release
+ check_units
+ check_no_kubernetes_commands
 
-  printf 'preflight: pass\n'
-  printf 'release_set_id=%s\n' "$KOA_RELEASE_SET_ID"
-  printf 'release_directory=%s\n' "$KOA_RELEASE_DIRECTORY"
-  printf 'systemctl_scope=%s\n' "$KOA_SYSTEMCTL_SCOPE"
+ printf 'preflight: pass\n'
+ printf 'release_set_id=%s\n' "$KOA_RELEASE_SET_ID"
+ printf 'release_directory=%s\n' "$KOA_RELEASE_DIRECTORY"
+ printf 'systemctl_scope=%s\n' "$KOA_SYSTEMCTL_SCOPE"
 }
 
-activate() {
-  local environment_file=$1
-  local old_target=''
+activate {
+ local environment_file=$1
+ local old_target=''
 
-  preflight "$environment_file"
+ preflight "$environment_file"
 
-  mkdir -p "$(dirname "$KOA_LOCK_FILE")"
-  exec 9>"$KOA_LOCK_FILE"
-  flock -x 9
+ mkdir -p "$(dirname "$KOA_LOCK_FILE")"
+ exec 9>"$KOA_LOCK_FILE"
+ flock -x 9
 
-  if [ -L "$KOA_ACTIVE_LINK" ]; then
-    old_target=$(readlink -f "$KOA_ACTIVE_LINK")
-  fi
+ if [ -L "$KOA_ACTIVE_LINK" ]; then
+ old_target=$(readlink -f "$KOA_ACTIVE_LINK")
+ fi
 
-  record_previous_target
-  atomic_link "$KOA_RELEASE_DIRECTORY" "$KOA_ACTIVE_LINK"
+ record_previous_target
+ atomic_link "$KOA_RELEASE_DIRECTORY" "$KOA_ACTIVE_LINK"
 
-  if ! restart_units; then
-    if [ -n "$old_target" ] && [ -d "$old_target" ]; then
-      atomic_link "$old_target" "$KOA_ACTIVE_LINK"
-      systemctl_command daemon-reload
-      restart_units || true
-    fi
-    fail "unit restart failed during activation"
-  fi
+ if ! restart_units; then
+ if [ -n "$old_target" ] && [ -d "$old_target" ]; then
+ atomic_link "$old_target" "$KOA_ACTIVE_LINK"
+ systemctl_command daemon-reload
+ restart_units || true
+ fi
+ fail "unit restart failed during activation"
+ fi
 
-  if ! check_active_units || ! ready_check; then
-    if [ -n "$old_target" ] && [ -d "$old_target" ]; then
-      atomic_link "$old_target" "$KOA_ACTIVE_LINK"
-      systemctl_command daemon-reload
-      restart_units || true
-    fi
-    fail "initial acceptance failed during activation"
-  fi
+ if ! check_active_units || ! ready_check; then
+ if [ -n "$old_target" ] && [ -d "$old_target" ]; then
+ atomic_link "$old_target" "$KOA_ACTIVE_LINK"
+ systemctl_command daemon-reload
+ restart_units || true
+ fi
+ fail "initial acceptance failed during activation"
+ fi
 
-  printf 'activation: pass\n'
-  printf 'active_release=%s\n' "$(readlink -f "$KOA_ACTIVE_LINK")"
-  if [ -L "$KOA_PREVIOUS_LINK" ]; then
-    printf 'previous_release=%s\n' \
-      "$(readlink -f "$KOA_PREVIOUS_LINK")"
-  fi
+ printf 'activation: pass\n'
+ printf 'active_release=%s\n' "$(readlink -f "$KOA_ACTIVE_LINK")"
+ if [ -L "$KOA_PREVIOUS_LINK" ]; then
+ printf 'previous_release=%s\n' \
+ "$(readlink -f "$KOA_PREVIOUS_LINK")"
+ fi
 }
 
-status() {
-  check_profile_and_release
-  check_units
-  check_no_kubernetes_commands
+status {
+ check_profile_and_release
+ check_units
+ check_no_kubernetes_commands
 
-  printf 'active_release=%s\n' \
-    "$(readlink -f "$KOA_ACTIVE_LINK" 2>/dev/null || true)"
-  printf 'previous_release=%s\n' \
-    "$(readlink -f "$KOA_PREVIOUS_LINK" 2>/dev/null || true)"
+ printf 'active_release=%s\n' \
+ "$(readlink -f "$KOA_ACTIVE_LINK" 2>/dev/null || true)"
+ printf 'previous_release=%s\n' \
+ "$(readlink -f "$KOA_PREVIOUS_LINK" 2>/dev/null || true)"
 
-  local unit
-  for unit in $KOA_UNITS; do
-    printf '%s=' "$unit"
-    systemctl_command is-active "$unit" 2>/dev/null || true
-  done
+ local unit
+ for unit in $KOA_UNITS; do
+ printf '%s=' "$unit"
+ systemctl_command is-active "$unit" 2>/dev/null || true
+ done
 
-  ready_check
-  printf 'readiness=pass\n'
+ ready_check
+ printf 'readiness=pass\n'
 }
 
-rollback() {
-  local previous_target current_target=''
+rollback {
+ local previous_target current_target=''
 
-  [ -L "$KOA_PREVIOUS_LINK" ] ||
-    fail "previous release link does not exist: $KOA_PREVIOUS_LINK"
+ [ -L "$KOA_PREVIOUS_LINK" ] ||
+ fail "previous release link does not exist: $KOA_PREVIOUS_LINK"
 
-  previous_target=$(readlink -f "$KOA_PREVIOUS_LINK")
-  require_directory "$previous_target"
+ previous_target=$(readlink -f "$KOA_PREVIOUS_LINK")
+ require_directory "$previous_target"
 
-  mkdir -p "$(dirname "$KOA_LOCK_FILE")"
-  exec 9>"$KOA_LOCK_FILE"
-  flock -x 9
+ mkdir -p "$(dirname "$KOA_LOCK_FILE")"
+ exec 9>"$KOA_LOCK_FILE"
+ flock -x 9
 
-  if [ -L "$KOA_ACTIVE_LINK" ]; then
-    current_target=$(readlink -f "$KOA_ACTIVE_LINK")
-  fi
+ if [ -L "$KOA_ACTIVE_LINK" ]; then
+ current_target=$(readlink -f "$KOA_ACTIVE_LINK")
+ fi
 
-  atomic_link "$previous_target" "$KOA_ACTIVE_LINK"
+ atomic_link "$previous_target" "$KOA_ACTIVE_LINK"
 
-  if ! restart_units; then
-    if [ -n "$current_target" ] && [ -d "$current_target" ]; then
-      atomic_link "$current_target" "$KOA_ACTIVE_LINK"
-      systemctl_command daemon-reload
-      restart_units || true
-    fi
-    fail "unit restart failed during rollback"
-  fi
+ if ! restart_units; then
+ if [ -n "$current_target" ] && [ -d "$current_target" ]; then
+ atomic_link "$current_target" "$KOA_ACTIVE_LINK"
+ systemctl_command daemon-reload
+ restart_units || true
+ fi
+ fail "unit restart failed during rollback"
+ fi
 
-  check_active_units
-  ready_check
+ check_active_units
+ ready_check
 
-  printf 'rollback: pass\n'
-  printf 'active_release=%s\n' "$(readlink -f "$KOA_ACTIVE_LINK")"
+ printf 'rollback: pass\n'
+ printf 'active_release=%s\n' "$(readlink -f "$KOA_ACTIVE_LINK")"
 }
 
-main() {
-  [ "$#" -eq 2 ] || usage
+main {
+ [ "$#" -eq 2 ] || usage
 
-  local command_name=$1
-  local environment_file=$2
+ local command_name=$1
+ local environment_file=$2
 
-  load_environment "$environment_file"
+ load_environment "$environment_file"
 
-  case "$command_name" in
-    preflight)
-      preflight "$environment_file"
-      ;;
-    activate)
-      activate "$environment_file"
-      ;;
-    status)
-      status
-      ;;
-    rollback)
-      rollback
-      ;;
-    *)
-      usage
-      ;;
-  esac
+ case "$command_name" in
+ preflight)
+ preflight "$environment_file"
+ ;;
+ activate)
+ activate "$environment_file"
+ ;;
+ status)
+ status
+ ;;
+ rollback)
+ rollback
+ ;;
+ *)
+ usage
+ ;;
+ esac
 }
 
 main "$@"
 BASH
 
 sudo chown root:root \
-  /var/lib/koa/recipe-tools/control-plane/koa-control-plane-deploy
+ /var/lib/koa/recipe-tools/control-plane/koa-control-plane-deploy
 
 sudo chmod 0750 \
-  /var/lib/koa/recipe-tools/control-plane/koa-control-plane-deploy
+ /var/lib/koa/recipe-tools/control-plane/koa-control-plane-deploy
 
 sudo bash -n \
-  /var/lib/koa/recipe-tools/control-plane/koa-control-plane-deploy
-```
+ /var/lib/koa/recipe-tools/control-plane/koa-control-plane-deploy
+`
 
 Review the helper before operational use.
 
@@ -1079,25 +1078,25 @@ It is an example, not deployment authority.
 
 ### 6.3 Install the environment file
 
-```bash
+`bash
 sudo install \
-  --owner root \
-  --group root \
-  --mode 0640 \
-  ./control-plane-deploy.env \
-  /etc/koa/control-plane-deploy.env
-```
+ --owner root \
+ --group root \
+ --mode 0640 \
+ ./control-plane-deploy.env \
+ /etc/koa/control-plane-deploy.env
+`
 
 Check for accidental secret values:
 
-```bash
+`bash
 sudo grep -nEi \
-  '(password|private[_-]?key|secret[[:space:]]*=|token[[:space:]]*=)' \
-  /etc/koa/control-plane-deploy.env && {
-    printf '%s\n' 'possible secret material detected' >&2
-    exit 1
-  } || true
-```
+ '(password|private[_-]?key|secret[[:space:]]*=|token[[:space:]]*=)' \
+ /etc/koa/control-plane-deploy.env && {
+ printf '%s\n' 'possible secret material detected' >&2
+ exit 1
+ } || true
+`
 
 Review all matches manually.
 
@@ -1125,23 +1124,23 @@ The helper performs only recipe-level sanity checks.
 
 For each unit:
 
-```bash
+`bash
 sudo systemctl cat koa-governance-policy-runtime.service
 sudo systemctl show koa-governance-policy-runtime.service \
-  --property=User \
-  --property=Group \
-  --property=NoNewPrivileges \
-  --property=ProtectSystem \
-  --property=ProtectHome \
-  --property=PrivateTmp \
-  --property=PrivateDevices \
-  --property=CapabilityBoundingSet \
-  --property=RestrictAddressFamilies \
-  --property=IPAddressDeny \
-  --property=IPAddressAllow \
-  --property=ReadOnlyPaths \
-  --property=ReadWritePaths
-```
+ --property=User \
+ --property=Group \
+ --property=NoNewPrivileges \
+ --property=ProtectSystem \
+ --property=ProtectHome \
+ --property=PrivateTmp \
+ --property=PrivateDevices \
+ --property=CapabilityBoundingSet \
+ --property=RestrictAddressFamilies \
+ --property=IPAddressDeny \
+ --property=IPAddressAllow \
+ --property=ReadOnlyPaths \
+ --property=ReadWritePaths
+`
 
 Repeat for all selected units.
 
@@ -1160,21 +1159,21 @@ Confirm each unit:
 
 Podman examples:
 
-```bash
+`bash
 podman info
 podman ps --all
 podman network ls
 podman volume ls
-```
+`
 
 Docker examples:
 
-```bash
+`bash
 docker info
 docker ps --all
 docker network ls
 docker volume ls
-```
+`
 
 Use only the runtime selected by the profile.
 
@@ -1193,10 +1192,10 @@ Inventory database and storage identities.
 
 Example PostgreSQL inspection:
 
-```bash
+`bash
 sudo -u postgres psql --no-psqlrc --command '\du'
 sudo -u postgres psql --no-psqlrc --command '\l'
-```
+`
 
 For each component, verify:
 
@@ -1212,9 +1211,9 @@ Do not change grants through this recipe without the active storage and migratio
 
 ### 6.8 Validate network listeners
 
-```bash
+`bash
 sudo ss --listening --tcp --udp --numeric --process
-```
+`
 
 Map every listener to:
 
@@ -1232,18 +1231,18 @@ Unknown listeners block activation.
 
 ### 6.9 Run preflight
 
-```bash
+`bash
 sudo \
-  /var/lib/koa/recipe-tools/control-plane/koa-control-plane-deploy \
-  preflight \
-  /etc/koa/control-plane-deploy.env
-```
+ /var/lib/koa/recipe-tools/control-plane/koa-control-plane-deploy \
+ preflight \
+ /etc/koa/control-plane-deploy.env
+`
 
 Expected result:
 
-```text
+`text
 preflight: pass
-```
+`
 
 The helper checks:
 
@@ -1259,12 +1258,12 @@ The helper checks:
 
 ### 6.10 Activate atomically
 
-```bash
+`bash
 sudo \
-  /var/lib/koa/recipe-tools/control-plane/koa-control-plane-deploy \
-  activate \
-  /etc/koa/control-plane-deploy.env
-```
+ /var/lib/koa/recipe-tools/control-plane/koa-control-plane-deploy \
+ activate \
+ /etc/koa/control-plane-deploy.env
+`
 
 The helper:
 
@@ -1284,28 +1283,28 @@ Migrations occur through each owning component's migration contract before the a
 
 ### 6.11 Inspect deployment status
 
-```bash
+`bash
 sudo \
-  /var/lib/koa/recipe-tools/control-plane/koa-control-plane-deploy \
-  status \
-  /etc/koa/control-plane-deploy.env
-```
+ /var/lib/koa/recipe-tools/control-plane/koa-control-plane-deploy \
+ status \
+ /etc/koa/control-plane-deploy.env
+`
 
 Inspect bounded service state:
 
-```bash
+`bash
 sudo systemctl show \
-  koa-identity-trust.service \
-  koa-governance-policy-runtime.service \
-  koa-resource-governor.service \
-  koa-audit-broker.service \
-  koa-publication-gateway.service \
-  --property=ActiveState \
-  --property=SubState \
-  --property=Result \
-  --property=NRestarts \
-  --property=ExecMainStatus
-```
+ koa-identity-trust.service \
+ koa-governance-policy-runtime.service \
+ koa-resource-governor.service \
+ koa-audit-broker.service \
+ koa-publication-gateway.service \
+ --property=ActiveState \
+ --property=SubState \
+ --property=Result \
+ --property=NRestarts \
+ --property=ExecMainStatus
+`
 
 ### 6.12 Validate control separation
 
@@ -1314,7 +1313,7 @@ Run registered tests demonstrating:
 - Governance Policy Runtime does not allocate CPU, memory, queues, or worker placement;
 - Resource Governor does not grant application or policy authority;
 - Publication Gateway does not mutate source component data;
-- UCKK Dimension Gateway remains distinct where selected;
+- UCKK Import Bridge and UCKK Publication Bridge remain distinct where selected;
 - Audit Broker remains evidence infrastructure;
 - privileged operations use the closed broker;
 - no service shares unrestricted foreign credentials.
@@ -1339,9 +1338,9 @@ A running process or container is not readiness.
 
 Stop one non-critical selected service in a controlled test:
 
-```bash
+`bash
 sudo systemctl stop koa-publication-gateway.service
-```
+`
 
 Verify:
 
@@ -1354,9 +1353,9 @@ Verify:
 
 Restore the service:
 
-```bash
+`bash
 sudo systemctl start koa-publication-gateway.service
-```
+`
 
 Then rerun its readiness test.
 
@@ -1364,18 +1363,18 @@ Then rerun its readiness test.
 
 Inspect processes and files:
 
-```bash
+`bash
 ps -ef |
-  grep -E '[k]ube(apiserver|let|proxy|scheduler|controller)|[k]ubectl|[h]elm' &&
-  {
-    printf '%s\n' 'unexpected Kubernetes process or command found' >&2
-    exit 1
-  } || true
-```
+ grep -E '[k]ube(apiserver|let|proxy|scheduler|controller)|[k]ubectl|[h]elm' &&
+ {
+ printf '%s\n' 'unexpected Kubernetes process or command found' >&2
+ exit 1
+ } || true
+`
 
 Inspect units and configuration for:
 
-```text
+`text
 kubeconfig
 /var/lib/kubelet
 /etc/kubernetes
@@ -1384,7 +1383,7 @@ kubelet
 kubeadm
 helm
 kustomize
-```
+`
 
 Matches in documentation or historical evidence are not runtime dependencies. Review matches in active units, scripts, environment, and profile configuration.
 
@@ -1442,26 +1441,26 @@ The active test catalog owns exact identifiers.
 
 Expected coverage includes:
 
-```text
-TEST-CP-NOK8S-001  Control-plane profile resolution
-TEST-CP-NOK8S-002  Non-Kubernetes orchestration selection
-TEST-CP-NOK8S-003  Exact Release Set closure
-TEST-CP-NOK8S-004  Unit and artifact identity
-TEST-CP-NOK8S-005  No Kubernetes runtime dependency
-TEST-CP-NOK8S-006  Distinct service identities
-TEST-CP-NOK8S-007  Database and storage ownership
-TEST-CP-NOK8S-008  Default-deny network behavior
-TEST-CP-NOK8S-009  Secret isolation
-TEST-CP-NOK8S-010  OCI runtime profile compliance
-TEST-CP-NOK8S-011  Governance and resource separation
-TEST-CP-NOK8S-012  Gateway separation
-TEST-CP-NOK8S-013  Component readiness
-TEST-CP-NOK8S-014  Capability-scoped failure
-TEST-CP-NOK8S-015  Atomic activation
-TEST-CP-NOK8S-016  Known-good rollback
-TEST-CP-NOK8S-017  Backup and restore readiness
-TEST-CP-NOK8S-018  Evidence completeness
-```
+`text
+TEST-CP-NOK8S-001 Control-plane profile resolution
+TEST-CP-NOK8S-002 Non-Kubernetes orchestration selection
+TEST-CP-NOK8S-003 Exact Release Set closure
+TEST-CP-NOK8S-004 Unit and artifact identity
+TEST-CP-NOK8S-005 No Kubernetes runtime dependency
+TEST-CP-NOK8S-006 Distinct service identities
+TEST-CP-NOK8S-007 Database and storage ownership
+TEST-CP-NOK8S-008 Default-deny network behavior
+TEST-CP-NOK8S-009 Secret isolation
+TEST-CP-NOK8S-010 OCI runtime profile compliance
+TEST-CP-NOK8S-011 Governance and resource separation
+TEST-CP-NOK8S-012 Gateway separation
+TEST-CP-NOK8S-013 Component readiness
+TEST-CP-NOK8S-014 Capability-scoped failure
+TEST-CP-NOK8S-015 Atomic activation
+TEST-CP-NOK8S-016 Known-good rollback
+TEST-CP-NOK8S-017 Backup and restore readiness
+TEST-CP-NOK8S-018 Evidence completeness
+`
 
 ### 7.3 Negative tests
 
@@ -1482,14 +1481,14 @@ Negative validation includes:
 
 Use:
 
-```text
+`text
 pass
 fail
 blocked
 unavailable
 incomplete
 not applicable
-```
+`
 
 Do not report `pass` when:
 
@@ -1535,10 +1534,10 @@ When activation never completed:
 
 Remove the helper when it was created only for this recipe:
 
-```bash
+`bash
 sudo rm -f \
-  /var/lib/koa/recipe-tools/control-plane/koa-control-plane-deploy
-```
+ /var/lib/koa/recipe-tools/control-plane/koa-control-plane-deploy
+`
 
 Keep it only when it becomes a reviewed, managed operational tool.
 
@@ -1546,10 +1545,10 @@ Keep it only when it becomes a reviewed, managed operational tool.
 
 Remove temporary drop-ins and overrides created during testing:
 
-```bash
+`bash
 sudo systemctl revert <unit-name>
 sudo systemctl daemon-reload
-```
+`
 
 Replace `<unit-name>` only after resolving the exact target.
 
@@ -1561,19 +1560,19 @@ Remove only workspace- or deployment-scoped resources that are no longer referen
 
 Podman examples:
 
-```bash
+`bash
 podman ps --all
 podman network ls
 podman volume ls
-```
+`
 
 Docker examples:
 
-```bash
+`bash
 docker ps --all
 docker network ls
 docker volume ls
-```
+`
 
 Do not delete component-owned durable volumes through a generic cleanup command.
 
@@ -1621,12 +1620,12 @@ Rollback when:
 
 ### 9.2 Execute rollback
 
-```bash
+`bash
 sudo \
-  /var/lib/koa/recipe-tools/control-plane/koa-control-plane-deploy \
-  rollback \
-  /etc/koa/control-plane-deploy.env
-```
+ /var/lib/koa/recipe-tools/control-plane/koa-control-plane-deploy \
+ rollback \
+ /etc/koa/control-plane-deploy.env
+`
 
 The helper atomically restores `previous`, restarts units, and checks readiness.
 
@@ -1769,7 +1768,7 @@ Do not present the environment as clean until residual state is resolved.
 
 ### 11.1 Canonical references
 
-```text
+`text
 generated/profile-catalog.json
 contracts/profiles/control-plane.profile.json
 contracts/release-channels.contract.json
@@ -1778,11 +1777,11 @@ generated/component-catalog.json
 contracts/integration-types.contract.json
 generated/test-catalog.json
 generated/evidence-catalog.json
-```
+`
 
 ### 11.2 Decisions and locks
 
-```text
+`text
 DEC-PROFILE-001
 DEC-CONTAINER-001
 DEC-K8S-001
@@ -1804,11 +1803,11 @@ LOCK-LIFE-001
 LOCK-LIFE-002
 LOCK-LIFE-003
 LOCK-LIFE-004
-```
+`
 
 ### 11.3 Related documents
 
-```text
+`text
 11-recipes/README.md
 02-system/02-logical-architecture.md
 02-system/04-component-boundaries.md
@@ -1824,8 +1823,7 @@ LOCK-LIFE-004
 08-operations/00-operating-model.md
 08-operations/09-restore.md
 09-conformance/10-canonical-ownership-validation.md
-10-adrs/ADR-014-strict-external-ai-boundary.md
-```
+`
 
 ### 11.4 Recipe validation status
 

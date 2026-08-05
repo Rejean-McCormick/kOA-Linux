@@ -28,7 +28,10 @@
     "generated/assertion-index.json",
     "generated/traceability.json",
     "generated/test-catalog.json",
-    "generated/evidence-catalog.json"
+    "generated/evidence-catalog.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json"
   ],
   "decision_ids": [
     "DEC-SYS-001",
@@ -96,7 +99,8 @@
     "LOCK-ARI-001",
     "LOCK-ARI-002",
     "LOCK-IMPL-001",
-    "LOCK-IMPL-002"
+    "LOCK-IMPL-002",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -247,7 +251,7 @@ A machine meeting the numeric minimum still requires measured evidence. The Reso
 | Local navigation | Required | Operational without network, AI, or voice | Ariane external voice unavailable separately |
 | Local component data | Profile-selected | Read and write according to component authority | Read-only or unavailable according to integrity and policy |
 | Compiled language runtime | Profile-selected core | Uses admitted compiled artifacts | Construction workbenches remain absent |
-| kOA Mediatheque | Profile-selected core | Deterministic ingestion, verification, storage, export, backup, and restore | Heavy transforms serialized; UCKK publication remains optional |
+| kOA Mediatheque | Profile-selected core | Deterministic ingestion, verification, storage, offline retrieval, explicit import acceptance, export, backup, and restore | Heavy transforms serialized; UCKK interchange remains optional |
 | Resource governance | Required | Admits and limits all jobs | New affected work blocks if enforcement is unavailable |
 | Governance Policy Runtime | Not required by default | Present only through an explicit compatible overlay or profile extension | No policy authority inferred |
 | External AI and media | Optional | Explicit user workflow | Unavailable without local-core impact |
@@ -353,7 +357,7 @@ The default profile does not require Governance Policy Runtime. An explicit comp
 - **REQ-OPS-ULW-005 — SHALL:** Core local navigation, ordinary component reads and writes, compiled language-runtime use, local resource governance, and declared recovery controls shall be prioritized over optional and background work.
 - **REQ-OPS-ULW-006 — SHALL:** Thumbnail generation, preview generation, deterministic text extraction, indexing, synchronization, backup verification, media transformation, and equivalent heavy workers shall be task-activated, bounded, and stopped after completion or cancellation.
 - **REQ-OPS-ULW-007 — SHALL NOT:** SenTient, development workbenches, build-farm workers, permanent heavy search stacks, or equivalent high-consumption services shall be installed or continuously active in the default profile.
-- **REQ-OPS-ULW-008 — SHALL:** kOA Mediatheque operations shall remain deterministic and local and serialize heavy media work through the one-heavy-job limit; UCKK publication shall remain optional and queued or unavailable offline.
+- **REQ-OPS-ULW-008 — SHALL:** kOA Mediatheque operations shall remain deterministic and local and serialize heavy media work through the one-heavy-job limit; outbound UCKK publication and online retrieval shall remain optional, while validated packages transferred by approved offline media may be accepted and retained for offline learning.
 - **REQ-OPS-ULW-009 — SHALL:** Ariane local keyboard, pointer, touch, menu, shortcut, deterministic-command, and accessibility navigation shall remain available without external AI, voice, or network access.
 - **REQ-OPS-ULW-010 — SHALL:** External ChatGPT, Suno, Gamma, and Ariane voice operations shall be explicit, user-initiated, capability-scoped, removable, and unavailable without disabling unrelated local capabilities.
 - **REQ-OPS-ULW-011 — SHALL NOT:** The profile shall contain native generative AI, classifiers, summarizers, embedding models, autonomous routing, autonomous agents, AI-generated categories, or AI-based ingestion decisions.
@@ -500,8 +504,9 @@ No failure permits hidden heavy services, cross-component writes, plaintext fall
 | Ariane local navigation | User interface and components | Provides local deterministic navigation and accessibility | External voice is a separate optional capability |
 | Konnaxion and Orgo | Local user | Provide component-owned coordination and organizational data | Each retains source ownership |
 | Kristal Runtime and language runtime | Local applications | Consume admitted compiled artifacts | They do not become language-construction workbenches |
-| kOA Mediatheque | User-selected local media and collections | Performs deterministic local media operations | External generation and UCKK publication remain separate |
-| UCKK publication integration | Explicit approved publication packages | Delivers through Publication Gateway to external Moodle | Owns no local media or remote UCKK authority |
+| kOA Mediatheque | User-selected local media, collections, and accepted learning packages | Performs deterministic local media operations and owns accepted offline copies | External generation and both UCKK transfer directions remain separate |
+| UCKK publication integration | Explicit approved publication packages | Delivers through Publication Gateway to the online UCKK Mediatheque | Owns no local media or remote UCKK authority |
+| UCKK import integration | Selected online or offline-carried learning packages | Retrieves into quarantine, validates, and requests explicit local acceptance | Owns no remote source object or accepted local record |
 | Local database service | Owning components | Provides isolated databases or schemas and identities | Shared process does not permit cross-component writes |
 | Identity and Trust | Components, storage, and updates | Supplies identities, keys, signatures, trust, and revocation | Key or host access does not grant application authority |
 | Node lifecycle path | Updates and protected host changes | Verifies and applies closed profile-authorized operations | No generic shell or release authority |
@@ -527,7 +532,7 @@ No failure permits hidden heavy services, cross-component writes, plaintext fall
 | `DEC-AI-001` | Native AI is absent and external AI remains explicit and non-authoritative. |
 | `DEC-SENT-001` | SenTient is excluded from the default user installation. |
 | `DEC-MEDIATHEQUE-001` | kOA Mediatheque operation is deterministic and local. |
-| `DEC-UCKK-EXT-001` | UCKK is an optional external publication target. |
+| `DEC-UCKK-EXT-001` | UCKK is an optional external online learning and Mediatheque interchange target. |
 | `DEC-ARI-001` | Ariane local navigation does not depend on external voice or AI. |
 
 ### Prohibited assumptions
@@ -567,7 +572,7 @@ No failure permits hidden heavy services, cross-component writes, plaintext fall
 10. `TEST-OPS-ULW-005` verifies core service responsiveness under ordinary load.
 11. `TEST-OPS-ULW-006` verifies task activation, progress, cancellation, cleanup, and shutdown of heavy workers.
 12. `TEST-OPS-ULW-007` verifies absence or stopped state of SenTient, build workers, development workbenches, and permanent heavy search stacks.
-13. `TEST-OPS-ULW-008` verifies deterministic kOA Mediatheque operations, serialized heavy media work, and independence from UCKK availability.
+13. `TEST-OPS-ULW-008` verifies deterministic kOA Mediatheque operations, serialized heavy media work, explicit UCKK import acceptance, offline availability of accepted learning content, and independence from live UCKK availability.
 14. `TEST-OPS-ULW-009` verifies Ariane local navigation without network, AI, or voice.
 15. `TEST-OPS-ULW-010` verifies explicit optional external integrations and local-core continuity.
 16. `TEST-OPS-ULW-011` verifies absence of prohibited native AI capabilities.

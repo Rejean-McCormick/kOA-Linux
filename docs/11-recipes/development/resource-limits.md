@@ -214,7 +214,7 @@ This recipe does not merge those decisions.
 
 Run the inspection from the development workspace:
 
-```bash
+`bash
 printf 'workspace=%s\n' "$(basename "$PWD")"
 printf 'user=%s uid=%s\n' "$USER" "$(id -u)"
 printf 'logical_cpus=%s\n' "$(nproc)"
@@ -226,32 +226,32 @@ printf '\nMemory pressure\n'
 cat /proc/pressure/memory
 printf '\nI/O pressure\n'
 cat /proc/pressure/io
-```
+`
 
 For a cgroups v2 target:
 
-```bash
+`bash
 stat -fc %T /sys/fs/cgroup
-```
+`
 
 An expected result is:
 
-```text
+`text
 cgroup2fs
-```
+`
 
 For systemd user scopes:
 
-```bash
+`bash
 systemctl --user is-system-running
 systemd-run --user --scope --quiet true
-```
+`
 
 For rootless Podman:
 
-```bash
+`bash
 podman info --format 'rootless={.Host.Security.Rootless} cgroup={.Host.CgroupsVersion}'
-```
+`
 
 The exact output varies by host.
 
@@ -290,7 +290,7 @@ The class is metadata for applying the correct candidate limit. It is not busine
 
 Create a workspace-local, non-secret planning file:
 
-```bash
+`bash
 mkdir -p .koa/dev
 
 cat > .koa/dev/resource-limits.env <<'EOF'
@@ -304,7 +304,7 @@ KOA_IO_WEIGHT=200
 KOA_TMP_MAX=2G
 KOA_HEAVY_CONCURRENCY=1
 EOF
-```
+`
 
 Keep this file out of generated product artifacts unless its contract explicitly includes it.
 
@@ -316,17 +316,17 @@ Do not put credentials or governed payloads in the file.
 
 Load the candidate values:
 
-```bash
+`bash
 set -a
 . .koa/dev/resource-limits.env
 set +a
-```
+`
 
 Run a test command in a transient user scope:
 
-```bash
-systemd-run   --user   --scope   --unit="koa-dev-${KOA_WORKSPACE_ID}-test"   --property="CPUQuota=${KOA_CPU_QUOTA}"   --property="CPUWeight=${KOA_CPU_WEIGHT}"   --property="MemoryHigh=${KOA_MEMORY_HIGH}"   --property="MemoryMax=${KOA_MEMORY_MAX}"   --property="TasksMax=${KOA_TASKS_MAX}"   --property="IOWeight=${KOA_IO_WEIGHT}"   bash -lc 'exec uv run pytest -q'
-```
+`bash
+systemd-run --user --scope --unit="koa-dev-${KOA_WORKSPACE_ID}-test" --property="CPUQuota=${KOA_CPU_QUOTA}" --property="CPUWeight=${KOA_CPU_WEIGHT}" --property="MemoryHigh=${KOA_MEMORY_HIGH}" --property="MemoryMax=${KOA_MEMORY_MAX}" --property="TasksMax=${KOA_TASKS_MAX}" --property="IOWeight=${KOA_IO_WEIGHT}" bash -lc 'exec uv run pytest -q'
+`
 
 `MemoryHigh` provides pressure before the hard ceiling.
 
@@ -342,9 +342,9 @@ systemd-run   --user   --scope   --unit="koa-dev-${KOA_WORKSPACE_ID}-test"   --p
 
 Use a distinct unit identity:
 
-```bash
-systemd-run   --user   --scope   --unit="koa-dev-${KOA_WORKSPACE_ID}-build"   --property="CPUQuota=300%"   --property="CPUWeight=150"   --property="MemoryHigh=6G"   --property="MemoryMax=8G"   --property="TasksMax=768"   --property="IOWeight=150"   bash -lc 'exec uv build'
-```
+`bash
+systemd-run --user --scope --unit="koa-dev-${KOA_WORKSPACE_ID}-build" --property="CPUQuota=300%" --property="CPUWeight=150" --property="MemoryHigh=6G" --property="MemoryMax=8G" --property="TasksMax=768" --property="IOWeight=150" bash -lc 'exec uv build'
+`
 
 The example allows up to three logical CPUs but keeps the job below full-host capacity.
 
@@ -352,11 +352,11 @@ The example allows up to three logical CPUs but keeps the job below full-host ca
 
 Use a workspace-scoped lock to avoid accidental parallel heavy jobs:
 
-```bash
+`bash
 lock_file="${XDG_RUNTIME_DIR}/koa-${KOA_WORKSPACE_ID}-heavy.lock"
 
-flock --nonblock "$lock_file"   systemd-run     --user     --scope     --unit="koa-dev-${KOA_WORKSPACE_ID}-heavy"     --property="CPUQuota=400%"     --property="CPUWeight=100"     --property="MemoryHigh=8G"     --property="MemoryMax=10G"     --property="TasksMax=1024"     --property="IOWeight=100"     bash -lc 'exec ./scripts/run-heavy-validation.sh'
-```
+flock --nonblock "$lock_file" systemd-run --user --scope --unit="koa-dev-${KOA_WORKSPACE_ID}-heavy" --property="CPUQuota=400%" --property="CPUWeight=100" --property="MemoryHigh=8G" --property="MemoryMax=10G" --property="TasksMax=1024" --property="IOWeight=100" bash -lc 'exec ./scripts/run-heavy-validation.sh'
+`
 
 The example lock protects one workspace. A host-wide development coordinator can use a broader lock or Resource Governor queue when several workspaces share the same heavy-job pool.
 
@@ -364,16 +364,16 @@ The example lock protects one workspace. A host-wide development coordinator can
 
 Inspect:
 
-```bash
+`bash
 systemctl --user status "koa-dev-${KOA_WORKSPACE_ID}-test.scope"
-systemctl --user show   "koa-dev-${KOA_WORKSPACE_ID}-test.scope"   --property=ActiveState   --property=SubState   --property=Result   --property=CPUQuotaPerSecUSec   --property=CPUWeight   --property=MemoryHigh   --property=MemoryMax   --property=TasksMax   --property=IOWeight
-```
+systemctl --user show "koa-dev-${KOA_WORKSPACE_ID}-test.scope" --property=ActiveState --property=SubState --property=Result --property=CPUQuotaPerSecUSec --property=CPUWeight --property=MemoryHigh --property=MemoryMax --property=TasksMax --property=IOWeight
+`
 
 Stop a stuck candidate job:
 
-```bash
+`bash
 systemctl --user stop "koa-dev-${KOA_WORKSPACE_ID}-test.scope"
-```
+`
 
 A stopped process is not automatically a completed component operation. Check the owning tool's result and cleanup state.
 
@@ -383,9 +383,9 @@ Some user sessions or WSL configurations do not delegate every cgroup controller
 
 Check the properties actually applied:
 
-```bash
-systemctl --user show   "koa-dev-${KOA_WORKSPACE_ID}-test.scope"   --property=ControlGroup   --property=MemoryAccounting   --property=CPUAccounting   --property=IOAccounting   --property=TasksAccounting
-```
+`bash
+systemctl --user show "koa-dev-${KOA_WORKSPACE_ID}-test.scope" --property=ControlGroup --property=MemoryAccounting --property=CPUAccounting --property=IOAccounting --property=TasksAccounting
+`
 
 When a required controller is unavailable:
 
@@ -401,26 +401,26 @@ When a required controller is unavailable:
 
 Choose deterministic names:
 
-```bash
+`bash
 workspace_id=workspace-alpha
 database_name="koa-dev-${workspace_id}-database"
 network_name="koa-dev-${workspace_id}"
 volume_name="koa-dev-${workspace_id}-database-data"
 image_ref="localhost/koa-dev-database:validated-example"
-```
+`
 
 Create an isolated rootless network and volume:
 
-```bash
+`bash
 podman network create "$network_name"
 podman volume create "$volume_name"
-```
+`
 
 ### 6.2 Launch a bounded service
 
-```bash
-podman run   --detach   --replace   --name "$database_name"   --network "$network_name"   --cpus 2   --memory 3g   --memory-swap 3g   --pids-limit 256   --blkio-weight 200   --read-only   --tmpfs /tmp:rw,size=512m,mode=1777   --volume "${volume_name}:/var/lib/koa-data:Z"   --label "koa.workspace=${workspace_id}"   --label "koa.resource-class=service"   "$image_ref"
-```
+`bash
+podman run --detach --replace --name "$database_name" --network "$network_name" --cpus 2 --memory 3g --memory-swap 3g --pids-limit 256 --blkio-weight 200 --read-only --tmpfs /tmp:rw,size=512m,mode=1777 --volume "${volume_name}:/var/lib/koa-data:Z" --label "koa.workspace=${workspace_id}" --label "koa.resource-class=service" "$image_ref"
+`
 
 The example:
 
@@ -436,35 +436,35 @@ The image reference is illustrative. Use the exact validated image identity requ
 
 ### 6.3 Inspect limits and use
 
-```bash
-podman inspect "$database_name"   --format 'cpus={.HostConfig.NanoCpus} memory={.HostConfig.Memory} pids={.HostConfig.PidsLimit}'
+`bash
+podman inspect "$database_name" --format 'cpus={.HostConfig.NanoCpus} memory={.HostConfig.Memory} pids={.HostConfig.PidsLimit}'
 
-podman stats   --no-stream   --format 'name={.Name} cpu={.CPU} memory={.MemUsage} pids={.PIDs}'   "$database_name"
-```
+podman stats --no-stream --format 'name={.Name} cpu={.CPU} memory={.MemUsage} pids={.PIDs}' "$database_name"
+`
 
 Inspect the bounded temporary filesystem:
 
-```bash
+`bash
 podman exec "$database_name" df -h /tmp
-```
+`
 
 ### 6.4 Stop idle services
 
-```bash
+`bash
 podman stop --time 20 "$database_name"
-```
+`
 
 Remove the container after the workspace no longer needs it:
 
-```bash
+`bash
 podman rm "$database_name"
-```
+`
 
 Retain or remove the data volume according to the workspace and component-data contract:
 
-```bash
+`bash
 podman volume inspect "$volume_name"
-```
+`
 
 Do not remove a volume merely because its container is stopped.
 
@@ -474,13 +474,13 @@ A rootless Quadlet file can express the same limits for a persistent developer s
 
 Example user unit path:
 
-```text
+`text
 ~/.config/containers/systemd/koa-dev-workspace-alpha-database.container
-```
+`
 
 Example content:
 
-```ini
+`ini
 [Unit]
 Description=kOA example bounded development database
 
@@ -505,15 +505,15 @@ TimeoutStopSec=30
 
 [Install]
 WantedBy=default.target
-```
+`
 
 Reload and inspect:
 
-```bash
+`bash
 systemctl --user daemon-reload
 systemctl --user start koa-dev-workspace-alpha-database.service
 systemctl --user status koa-dev-workspace-alpha-database.service
-```
+`
 
 A Quadlet example remains a recipe until a profile explicitly adopts it.
 
@@ -523,15 +523,15 @@ A Quadlet example remains a recipe until a profile explicitly adopts it.
 
 Prefer a bounded temporary directory per job:
 
-```bash
+`bash
 runtime_root="${XDG_RUNTIME_DIR}/koa-${KOA_WORKSPACE_ID}"
 mkdir -p "$runtime_root"
 
-systemd-run   --user   --scope   --unit="koa-dev-${KOA_WORKSPACE_ID}-temporary-job"   --property="MemoryMax=2G"   --property="TasksMax=256"   bash -lc '
-    export TMPDIR="${XDG_RUNTIME_DIR}/koa-workspace-alpha"
-    exec uv run python scripts/create-derived-preview.py
-  '
-```
+systemd-run --user --scope --unit="koa-dev-${KOA_WORKSPACE_ID}-temporary-job" --property="MemoryMax=2G" --property="TasksMax=256" bash -lc '
+ export TMPDIR="${XDG_RUNTIME_DIR}/koa-workspace-alpha"
+ exec uv run python scripts/create-derived-preview.py
+ '
+`
 
 For containers, use `--tmpfs` with an explicit size.
 
@@ -543,16 +543,16 @@ A workspace queue record can use a small JSON file or local database owned by th
 
 Example planning record:
 
-```json
+`json
 {
-  "queue_id": "queue.workspace-alpha.heavy",
-  "resource_class": "heavy_compute",
-  "maximum_items": 4,
-  "maximum_age_seconds": 86400,
-  "concurrency": 1,
-  "overflow_behavior": "reject_new_with_existing_job_reference"
+ "queue_id": "queue.workspace-alpha.heavy",
+ "resource_class": "heavy_compute",
+ "maximum_items": 4,
+ "maximum_age_seconds": 86400,
+ "concurrency": 1,
+ "overflow_behavior": "reject_new_with_existing_job_reference"
 }
-```
+`
 
 The queue implementation should expose:
 
@@ -569,7 +569,7 @@ The record is an implementation example, not a canonical queue contract.
 
 A reusable helper:
 
-```bash
+`bash
 #!/usr/bin/env bash
 set -euo pipefail
 
@@ -577,19 +577,19 @@ workspace_id=${KOA_WORKSPACE_ID:-workspace-alpha}
 lock_file="${XDG_RUNTIME_DIR}/koa-${workspace_id}-heavy.lock"
 
 exec flock --nonblock "$lock_file" "$@"
-```
+`
 
 Save it as:
 
-```text
+`text
 scripts/run-one-heavy-job
-```
+`
 
 Example use:
 
-```bash
-scripts/run-one-heavy-job   systemd-run     --user     --scope     --unit="koa-dev-workspace-alpha-restore-validation"     --property="CPUQuota=400%"     --property="MemoryHigh=8G"     --property="MemoryMax=10G"     --property="TasksMax=1024"     bash -lc 'exec uv run python scripts/validate-restore.py'
-```
+`bash
+scripts/run-one-heavy-job systemd-run --user --scope --unit="koa-dev-workspace-alpha-restore-validation" --property="CPUQuota=400%" --property="MemoryHigh=8G" --property="MemoryMax=10G" --property="TasksMax=1024" bash -lc 'exec uv run python scripts/validate-restore.py'
+`
 
 ### 7.4 Stop idle workers
 
@@ -613,12 +613,12 @@ A Windows WSL installation can define an outer VM ceiling in the user's Windows 
 
 Illustrative configuration:
 
-```ini
+`ini
 [wsl2]
 memory=16GB
 processors=8
 swap=4GB
-```
+`
 
 This bounds the entire WSL virtual machine, not one workspace.
 
@@ -628,11 +628,11 @@ Inside WSL, continue to use per-process or per-container limits when supported.
 
 Inside WSL:
 
-```bash
+`bash
 ps -p 1 -o comm=
 stat -fc %T /sys/fs/cgroup
 systemctl --user is-system-running
-```
+`
 
 When systemd user scopes are unavailable, prefer:
 
@@ -649,13 +649,13 @@ Record which controls are enforced and which are only requested.
 
 Examples:
 
-```bash
+`bash
 export CARGO_BUILD_JOBS=4
 export MAKEFLAGS=-j4
 export NINJAFLAGS=-j4
 export UV_CONCURRENT_DOWNLOADS=4
 export UV_CONCURRENT_BUILDS=2
-```
+`
 
 These tool-level controls complement the outer cgroup or container envelope.
 
@@ -683,12 +683,12 @@ Avoid embedding host-specific absolute paths in portable workspace records.
 
 Record:
 
-```bash
+`bash
 cat .koa/dev/resource-limits.env
 systemctl --user --version
 podman --version
 stat -fc %T /sys/fs/cgroup
-```
+`
 
 Do not include credentials, tokens, private keys, or governed payloads in the evidence.
 
@@ -696,15 +696,15 @@ Do not include credentials, tokens, private keys, or governed payloads in the ev
 
 Launch a harmless short command:
 
-```bash
-systemd-run   --user   --scope   --unit=koa-dev-resource-limit-check   --property=CPUQuota=50%   --property=MemoryHigh=128M   --property=MemoryMax=256M   --property=TasksMax=64   --property=IOWeight=100   bash -lc 'sleep 5'
-```
+`bash
+systemd-run --user --scope --unit=koa-dev-resource-limit-check --property=CPUQuota=50% --property=MemoryHigh=128M --property=MemoryMax=256M --property=TasksMax=64 --property=IOWeight=100 bash -lc 'sleep 5'
+`
 
 While it runs:
 
-```bash
-systemctl --user show   koa-dev-resource-limit-check.scope   --property=ControlGroup   --property=CPUQuotaPerSecUSec   --property=MemoryHigh   --property=MemoryMax   --property=TasksMax   --property=IOWeight   --property=ActiveState
-```
+`bash
+systemctl --user show koa-dev-resource-limit-check.scope --property=ControlGroup --property=CPUQuotaPerSecUSec --property=MemoryHigh --property=MemoryMax --property=TasksMax --property=IOWeight --property=ActiveState
+`
 
 The expected evidence shows the requested values or clearly reports an unsupported property.
 
@@ -712,11 +712,11 @@ The expected evidence shows the requested values or clearly reports an unsupport
 
 For the running example service:
 
-```bash
+`bash
 podman inspect "$database_name"
 podman stats --no-stream "$database_name"
 podman top "$database_name" pid hpid pcpu pmem comm
-```
+`
 
 Validate:
 
@@ -731,18 +731,18 @@ Validate:
 
 ### 9.4 Observe host pressure
 
-```bash
+`bash
 watch -n 2 '
-  echo "CPU"
-  cat /proc/pressure/cpu
-  echo
-  echo "MEMORY"
-  cat /proc/pressure/memory
-  echo
-  echo "IO"
-  cat /proc/pressure/io
+ echo "CPU"
+ cat /proc/pressure/cpu
+ echo
+ echo "MEMORY"
+ cat /proc/pressure/memory
+ echo
+ echo "IO"
+ cat /proc/pressure/io
 '
-```
+`
 
 Pressure information helps determine whether effective limits should be narrowed or work deferred.
 
@@ -769,28 +769,28 @@ It does not increase the declared envelope.
 
 ### 9.6 Suggested evidence record
 
-```json
+`json
 {
-  "evidence_id": "evidence.workspace-alpha.resource-limits.2026-08-03",
-  "workspace_id": "workspace-alpha",
-  "profile_id": "developer_linux_workstation",
-  "mechanisms": [
-    "systemd_user_scope",
-    "cgroups_v2",
-    "rootless_podman",
-    "workspace_concurrency_lock"
-  ],
-  "checks": [
-    "cpu_limit_visible",
-    "memory_limits_visible",
-    "tasks_limit_visible",
-    "temporary_storage_bounded",
-    "heavy_concurrency_bounded",
-    "cleanup_complete"
-  ],
-  "result": "pass"
+ "evidence_id": "evidence.workspace-alpha.resource-limits.2026-08-03",
+ "workspace_id": "workspace-alpha",
+ "profile_id": "developer_linux_workstation",
+ "mechanisms": [
+ "systemd_user_scope",
+ "cgroups_v2",
+ "rootless_podman",
+ "workspace_concurrency_lock"
+ ],
+ "checks": [
+ "cpu_limit_visible",
+ "memory_limits_visible",
+ "tasks_limit_visible",
+ "temporary_storage_bounded",
+ "heavy_concurrency_bounded",
+ "cleanup_complete"
+ ],
+ "result": "pass"
 }
-```
+`
 
 This example records implementation evidence only. It does not create a profile conformance claim.
 
@@ -815,36 +815,36 @@ This example records implementation evidence only. It does not create a profile 
 
 Stop transient scopes:
 
-```bash
+`bash
 systemctl --user stop 'koa-dev-workspace-alpha-*.scope'
-```
+`
 
 List remaining user units:
 
-```bash
+`bash
 systemctl --user list-units 'koa-dev-workspace-alpha-*'
-```
+`
 
 Stop and remove workspace containers:
 
-```bash
+`bash
 podman ps --filter label=koa.workspace=workspace-alpha
 podman stop --filter label=koa.workspace=workspace-alpha
 podman rm --filter label=koa.workspace=workspace-alpha
-```
+`
 
 Inspect volumes before removal:
 
-```bash
+`bash
 podman volume ls --filter label=koa.workspace=workspace-alpha
-```
+`
 
 Remove transient runtime files:
 
-```bash
+`bash
 rm -rf "${XDG_RUNTIME_DIR}/koa-workspace-alpha"
 rm -f "${XDG_RUNTIME_DIR}/koa-workspace-alpha-heavy.lock"
-```
+`
 
 Data volumes and component state follow their owner contracts and are not removed by a generic cleanup command.
 

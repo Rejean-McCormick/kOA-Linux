@@ -187,17 +187,17 @@ Profile Markdown explains the profile contracts. It does not maintain a second c
 
 The effective deployment configuration is evaluated in this order:
 
-```text
+`text
 global system baseline
-    ↓
+ ↓
 one primary profile
-    ↓
+ ↓
 zero or more compatible overlays
-    ↓
+ ↓
 applicable component contracts
-    ↓
+ ↓
 applicable artifact, toolchain, security, lifecycle, operations, and conformance contracts
-```
+`
 
 The global baseline defines behavior that applies to every profile.
 
@@ -707,13 +707,8 @@ It includes overlays, conditions, exceptions, platform facts, component membersh
 
 | ADR | Profile-model effect |
 | --- | --- |
-| `ADR-013` | Separates the system baseline from deployment profiles. |
-| `ADR-014` | Preserves the external AI boundary across profiles. |
 | `ADR-015` | Defines isolated development workspaces with UV. |
-| `ADR-017` | Defines the user-lightweight hardware and service model. |
-| `ADR-018` | Defines SenTient as an isolated optional workbench. |
 | `ADR-019` | Separates resource and policy authorities. |
-| `ADR-023` | Defines explicit primary-profile and overlay composition. |
 | `ADR-024` | Defines logical ownership with profile-dependent physical isolation. |
 
 ### 9.3 Prohibited assumptions
@@ -772,7 +767,7 @@ This document conforms when all of the following checks pass:
 
 The validator reports actionable failures, including:
 
-```text
+`text
 profile_missing_index_entry
 profile_missing_contract
 profile_identifier_collision
@@ -790,7 +785,7 @@ profile_required_component_unavailable
 profile_prohibited_component_enabled
 profile_claim_missing_evidence
 profile_claim_invalid_exception
-```
+`
 
 ## 11. Non-Normative Examples
 

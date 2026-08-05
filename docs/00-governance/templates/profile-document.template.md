@@ -48,8 +48,8 @@ profile or one composable profile overlay.
 
 Canonical ownership:
 - The profile contract under contracts/profiles/ owns profile membership,
-  inheritance, capabilities, components, hardware envelopes, implementation
-  adoptions, security claims, offline behavior, and conformance claims.
+ inheritance, capabilities, components, hardware envelopes, implementation
+ adoptions, security claims, offline behavior, and conformance claims.
 - requirements.registry.json owns normative requirement statements.
 - locks.registry.json owns cross-file invariants.
 - decisions.registry.json owns accepted architectural decisions.
@@ -65,38 +65,38 @@ Template status:
 
 <!-- KOA:TARGET-DOC-META:BEGIN
 {
-  "doc_id": "{{DOC-PROFILE-NNN}}",
-  "document_class": "normative_markdown",
-  "status": "{{draft|active|deprecated|archived}}",
-  "language": "en",
-  "layer": "profile",
-  "scope": ["{{profile:PROFILE_ID|profile_overlay:PROFILE_ID}}"],
-  "canonical_refs": [
-    "contracts/profiles/{{PROFILE_ID}}.profile.json"
-  ],
-  "decision_ids": ["{{DEC-PROFILE-NNN}}"],
-  "requirement_ids": ["{{REQ-PROFILE-NNN}}"],
-  "lock_ids": ["{{LOCK-PROFILE-NNN}}"],
-  "exception_ids": [],
-  "depends_on": [
-    "DOC-PROFILE-000",
-    "DOC-PROFILE-001",
-    "{{DOC-SYS-NNN}}"
-  ],
-  "tags": [
-    "deployment-profile",
-    "{{PROFILE_ID}}",
-    "{{primary-profile|profile-overlay}}"
-  ]
+ "doc_id": "{{DOC-PROFILE-NNN}}",
+ "document_class": "normative_markdown",
+ "status": "{{draft|active|deprecated|archived}}",
+ "language": "en",
+ "layer": "profile",
+ "scope": ["{{profile:PROFILE_ID|profile_overlay:PROFILE_ID}}"],
+ "canonical_refs": [
+ "contracts/profiles/{{PROFILE_ID}}.profile.json"
+ ],
+ "decision_ids": ["{{DEC-PROFILE-NNN}}"],
+ "requirement_ids": ["{{REQ-PROFILE-NNN}}"],
+ "lock_ids": ["{{LOCK-PROFILE-NNN}}"],
+ "exception_ids": [],
+ "depends_on": [
+ "DOC-PROFILE-000",
+ "DOC-PROFILE-001",
+ "{{DOC-SYS-NNN}}"
+ ],
+ "tags": [
+ "deployment-profile",
+ "{{PROFILE_ID}}",
+ "{{primary-profile|profile-overlay}}"
+ ]
 }
 KOA:TARGET-DOC-META:END -->
 
 # {{Profile Display Name}}
 
-> **Document status:** Normative profile explanation.  
-> **Profile ID:** `{{PROFILE_ID}}`  
-> **Profile kind:** `{{primary_profile|profile_overlay}}`  
-> **Canonical profile contract:** `contracts/profiles/{{PROFILE_ID}}.profile.json`  
+> **Document status:** Normative profile explanation.
+> **Profile ID:** `{{PROFILE_ID}}`
+> **Profile kind:** `{{primary_profile|profile_overlay}}`
+> **Canonical profile contract:** `contracts/profiles/{{PROFILE_ID}}.profile.json`
 > **Authority rule:** The canonical profile contract owns profile facts. This document explains how those facts apply.
 
 ## 1. Purpose
@@ -175,9 +175,9 @@ Inheritance is explicit. A capability or requirement is not inherited unless rep
 
 ### 3.1 Primary profile authority
 
-```text
+`text
 contracts/profiles/{{PROFILE_ID}}.profile.json
-```
+`
 
 ### 3.2 Global authority
 
@@ -228,9 +228,9 @@ The profile selects, constrains, or strengthens capabilities already represented
 
 ### 4.2 Profile type
 
-```text
+`text
 {{primary_profile|profile_overlay}}
-```
+`
 
 A primary profile defines a deployable system identity.
 
@@ -555,12 +555,12 @@ An overlay may be removed only when no retained artifact or claim depends on it 
 
 Canonical failure codes include:
 
-```text
+`text
 invalid_profile_identity
 incompatible_profile_composition
 missing_inherited_profile
 missing_owner_decision
-```
+`
 
 No similar profile or fallback is inferred automatically.
 
@@ -655,15 +655,15 @@ An AI agent or maintainer must not assume that a profile rule is global, an over
 
 Missing profile authority returns:
 
-```json
+`json
 {
-  "validation_status": "blocked",
-  "reason": "missing_profile_authority",
-  "profile_id": "{{PROFILE_ID}}",
-  "affected_objects": [],
-  "prohibited_inference": true
+ "validation_status": "blocked",
+ "reason": "missing_profile_authority",
+ "profile_id": "{{PROFILE_ID}}",
+ "affected_objects": [],
+ "prohibited_inference": true
 }
-```
+`
 
 ## 10. Validation Criteria
 
@@ -673,7 +673,7 @@ A deployment may claim conformance only when the effective profile and overlays 
 
 Required checks:
 
-```bash
+`bash
 python docs/tools/check_profile_inheritance.py
 python docs/tools/check_component_boundaries.py
 python docs/tools/check_canonical_ownership.py
@@ -683,7 +683,7 @@ python docs/tools/check_generated_content.py
 python docs/tools/check_document_graph.py
 python docs/tools/compute_impact.py --check-clean
 python docs/tools/validate_docs.py
-```
+`
 
 Conformance output includes profile ID and version, overlays, authority version, requirements evaluated and passed, failures, tests, evidence, exceptions, undeclared and excluded capabilities, and validation status.
 

@@ -1,122 +1,121 @@
 <!-- KOA:DOC-META:BEGIN GENERATED
 {
-  "doc_id": "RECIPE-BUILD-FARM-001",
-  "document_class": "non_normative_recipe",
-  "status": "active",
-  "language": "en",
-  "layer": "recipes",
-  "scope": [
-    "build_farm"
-  ],
-  "canonical_refs": [
-    "generated/authority-manifest.json",
-    "generated/decision-index.json",
-    "contracts/system.contract.json#/development_model",
-    "contracts/system.contract.json#/resource_model",
-    "generated/component-catalog.json",
-    "contracts/profiles/build-farm.profile.json",
-    "generated/profile-catalog.json",
-    "contracts/toolchains/python-uv.toolchain.json",
-    "contracts/artifact-classes.contract.json",
-    "contracts/release-channels.contract.json",
-    "contracts/integration-types.contract.json",
-    "generated/requirements-index.json",
-    "generated/assertion-index.json",
-    "generated/traceability.json",
-    "generated/test-catalog.json",
-    "generated/evidence-catalog.json",
-    "generated/exception-index.json"
-  ],
-  "decision_ids": [
-    "DEC-PROFILE-BUILD-FARM-001",
-    "DEC-DEV-001",
-    "DEC-SYS-RESOURCE-001",
-    "DEC-SYS-COMP-001",
-    "DEC-LIFE-001",
-    "DEC-REL-001"
-  ],
-  "requirement_ids": [
-    "REQ-DEV-PAR-001",
-    "REQ-DEV-PAR-002",
-    "REQ-DEV-PAR-003",
-    "REQ-DEV-PAR-009",
-    "REQ-DEV-PAR-010",
-    "REQ-DEV-PAR-011",
-    "REQ-DEV-PAR-012",
-    "REQ-DEV-PAR-013",
-    "REQ-DEV-PAR-014",
-    "REQ-DEV-PAR-015",
-    "REQ-DEV-PAR-016",
-    "REQ-DEV-PAR-017",
-    "REQ-DEV-PAR-018",
-    "REQ-DEV-PAR-019",
-    "REQ-DEV-PAR-020",
-    "REQ-DEV-PAR-024",
-    "REQ-DEV-PAR-028",
-    "REQ-DEV-PAR-031",
-    "REQ-DEV-PAR-032",
-    "REQ-DEV-PAR-033",
-    "REQ-DEV-PAR-034",
-    "REQ-DEV-PAR-035",
-    "REQ-DEV-PAR-037",
-    "REQ-DEV-PAR-038",
-    "REQ-DEV-PAR-040",
-    "REQ-CONF-GATE-010",
-    "REQ-CONF-GATE-011",
-    "REQ-CONF-GATE-012",
-    "REQ-CONF-GATE-016",
-    "REQ-CONF-GATE-018"
-  ],
-  "lock_ids": [
-    "LOCK-DEV-001",
-    "LOCK-DEV-002",
-    "LOCK-DEV-003",
-    "LOCK-DEV-004",
-    "LOCK-DEV-005",
-    "LOCK-COMP-001",
-    "LOCK-COMP-002",
-    "LOCK-DATA-001",
-    "LOCK-PROFILE-001",
-    "LOCK-PROFILE-002",
-    "LOCK-LIFE-001",
-    "LOCK-LIFE-002",
-    "LOCK-LIFE-003",
-    "LOCK-LIFE-004",
-    "LOCK-OPS-001",
-    "LOCK-OPS-002",
-    "LOCK-OPS-003",
-    "LOCK-OPS-004"
-  ],
-  "exception_ids": [],
-  "depends_on": [
-    "DOC-DEV-000",
-    "DOC-DEV-010",
-    "DOC-PROFILE-001",
-    "DOC-PROFILE-002",
-    "DOC-COMP-001",
-    "DOC-LIFE-003",
-    "DOC-LIFE-013",
-    "DOC-SEC-005",
-    "DOC-SEC-016",
-    "DOC-OPS-003",
-    "DOC-OPS-013",
-    "DOC-CONF-003",
-    "DOC-CONF-019",
-    "ADR-008"
-  ],
-  "tags": [
-    "recipe",
-    "build-farm",
-    "artifact-cache",
-    "content-addressed",
-    "cache-poisoning",
-    "provenance",
-    "immutable-keys",
-    "eviction",
-    "offline-build",
-    "reproducibility",
-    "safe-cleanup"
-  ]
+ "doc_id": "RECIPE-BUILD-FARM-001",
+ "document_class": "non_normative_recipe",
+ "status": "active",
+ "language": "en",
+ "layer": "recipes",
+ "scope": [
+ "build_farm"
+ ],
+ "canonical_refs": [
+ "generated/authority-manifest.json",
+ "generated/decision-index.json",
+ "contracts/system.contract.json#/development_model",
+ "contracts/system.contract.json#/resource_model",
+ "generated/component-catalog.json",
+ "contracts/profiles/build-farm.profile.json",
+ "generated/profile-catalog.json",
+ "contracts/toolchains/python-uv.toolchain.json",
+ "contracts/artifact-classes.contract.json",
+ "contracts/release-channels.contract.json",
+ "contracts/integration-types.contract.json",
+ "generated/requirements-index.json",
+ "generated/assertion-index.json",
+ "generated/traceability.json",
+ "generated/test-catalog.json",
+ "generated/evidence-catalog.json",
+ "generated/exception-index.json"
+ ],
+ "decision_ids": [
+ "DEC-PROFILE-BUILD-FARM-001",
+ "DEC-DEV-001",
+ "DEC-SYS-RESOURCE-001",
+ "DEC-SYS-COMP-001",
+ "DEC-LIFE-001",
+ "DEC-REL-001"
+ ],
+ "requirement_ids": [
+ "REQ-DEV-PAR-001",
+ "REQ-DEV-PAR-002",
+ "REQ-DEV-PAR-003",
+ "REQ-DEV-PAR-009",
+ "REQ-DEV-PAR-010",
+ "REQ-DEV-PAR-011",
+ "REQ-DEV-PAR-012",
+ "REQ-DEV-PAR-013",
+ "REQ-DEV-PAR-014",
+ "REQ-DEV-PAR-015",
+ "REQ-DEV-PAR-016",
+ "REQ-DEV-PAR-017",
+ "REQ-DEV-PAR-018",
+ "REQ-DEV-PAR-019",
+ "REQ-DEV-PAR-020",
+ "REQ-DEV-PAR-024",
+ "REQ-DEV-PAR-028",
+ "REQ-DEV-PAR-031",
+ "REQ-DEV-PAR-032",
+ "REQ-DEV-PAR-033",
+ "REQ-DEV-PAR-034",
+ "REQ-DEV-PAR-035",
+ "REQ-DEV-PAR-037",
+ "REQ-DEV-PAR-038",
+ "REQ-DEV-PAR-040",
+ "REQ-CONF-GATE-010",
+ "REQ-CONF-GATE-011",
+ "REQ-CONF-GATE-012",
+ "REQ-CONF-GATE-016",
+ "REQ-CONF-GATE-018"
+ ],
+ "lock_ids": [
+ "LOCK-DEV-001",
+ "LOCK-DEV-002",
+ "LOCK-DEV-003",
+ "LOCK-DEV-004",
+ "LOCK-DEV-005",
+ "LOCK-COMP-001",
+ "LOCK-COMP-002",
+ "LOCK-DATA-001",
+ "LOCK-PROFILE-001",
+ "LOCK-PROFILE-002",
+ "LOCK-LIFE-001",
+ "LOCK-LIFE-002",
+ "LOCK-LIFE-003",
+ "LOCK-LIFE-004",
+ "LOCK-OPS-001",
+ "LOCK-OPS-002",
+ "LOCK-OPS-003",
+ "LOCK-OPS-004"
+ ],
+ "exception_ids": [],
+ "depends_on": [
+ "DOC-DEV-000",
+ "DOC-DEV-010",
+ "DOC-PROFILE-001",
+ "DOC-PROFILE-002",
+ "DOC-COMP-001",
+ "DOC-LIFE-003",
+ "DOC-LIFE-013",
+ "DOC-SEC-005",
+ "DOC-SEC-016",
+ "DOC-OPS-003",
+ "DOC-OPS-013",
+ "DOC-CONF-003",
+ "DOC-CONF-019"
+ ],
+ "tags": [
+ "recipe",
+ "build-farm",
+ "artifact-cache",
+ "content-addressed",
+ "cache-poisoning",
+ "provenance",
+ "immutable-keys",
+ "eviction",
+ "offline-build",
+ "reproducibility",
+ "safe-cleanup"
+ ]
 }
 KOA:DOC-META:END -->
 
@@ -154,7 +153,7 @@ It does not replace:
 
 The target result is:
 
-```text
+`text
 exact input identity
 + deterministic cache key
 + isolated namespace
@@ -163,7 +162,7 @@ exact input identity
 + attributable hit or miss
 + safe eviction
 + clean rebuild on loss
-```
+`
 
 This recipe is non-normative. The build-farm profile, artifact contracts, toolchain contracts, component contracts, release-channel registry, and release gates remain authoritative.
 
@@ -191,12 +190,12 @@ Do not combine all classes into one anonymous directory.
 
 A practical build-farm design uses:
 
-```text
+`text
 bootstrap_read_only
 worker_local
 shared_verified
 quarantine
-```
+`
 
 `bootstrap_read_only` contains preloaded objects admitted during image or node provisioning.
 
@@ -231,26 +230,26 @@ The cache can retain a copy for acceleration, but the repository remains the dis
 
 A system-scoped build-farm node can use:
 
-```text
+`text
 /var/cache/koa-build/
-  bootstrap/
-  workers/
-    <worker-id>/
-  shared/
-    dependency-blob/
-    source-mirror/
-    toolchain-blob/
-    build-intermediate/
-    container-layer/
-    test-fixture/
-    test-result/
-    candidate-artifact/
-    index-snapshot/
-  quarantine/
-  manifests/
-  leases/
-  receipts/
-```
+ bootstrap/
+ workers/
+ <worker-id>/
+ shared/
+ dependency-blob/
+ source-mirror/
+ toolchain-blob/
+ build-intermediate/
+ container-layer/
+ test-fixture/
+ test-result/
+ candidate-artifact/
+ index-snapshot/
+ quarantine/
+ manifests/
+ leases/
+ receipts/
+`
 
 Suggested ownership:
 
@@ -272,7 +271,7 @@ They do not receive write permission to the shared object directory.
 
 Every object namespace includes applicable:
 
-```text
+`text
 cache_class
 project_or_component_id
 target_profile
@@ -282,7 +281,7 @@ toolchain_family
 toolchain_version
 build_mode
 trust_domain
-```
+`
 
 Branch names are display metadata, not sufficient identity.
 
@@ -310,7 +309,7 @@ It cannot inspect or mutate another worker's in-progress build.
 
 A build-intermediate key commonly includes:
 
-```text
+`text
 cache schema version
 cache class
 project or component identity
@@ -326,11 +325,11 @@ feature set
 environment contract version
 generator versions
 declared input artifact digests
-```
+`
 
 A test-result key additionally includes:
 
-```text
+`text
 test identity
 test version
 test configuration
@@ -340,7 +339,7 @@ required service versions
 clock or locale constraints
 random-seed policy
 validity policy
-```
+`
 
 A candidate-artifact key additionally includes the output artifact class and build recipe identity.
 
@@ -350,34 +349,34 @@ Build the key from a canonical JSON document.
 
 Example:
 
-```json
+`json
 {
-  "cache_schema_version": "1.0.0",
-  "cache_class": "build_intermediate",
-  "component_id": "publication_gateway",
-  "source_tree_digest": "sha256:4ea8c6d6...",
-  "dependency_lock": {
-    "toolchain": "uv",
-    "lockfile": "uv.lock",
-    "lock_version": "1"
-  },
-  "toolchain": {
-    "python": "3.13.5",
-    "uv": "0.8.4",
-    "compiler_image": "artifact://toolchains/python-build/3.13.5-2"
-  },
-  "target": {
-    "profile": "build_farm",
-    "platform": "linux",
-    "architecture": "x86_64"
-  },
-  "build": {
-    "recipe": "python-wheel-v3",
-    "mode": "release",
-    "features": []
-  }
+ "cache_schema_version": "1.0.0",
+ "cache_class": "build_intermediate",
+ "component_id": "publication_gateway",
+ "source_tree_digest": "sha256:4ea8c6d6...",
+ "dependency_lock": {
+ "toolchain": "uv",
+ "lockfile": "uv.lock",
+ "lock_version": "1"
+ },
+ "toolchain": {
+ "python": "3.13.5",
+ "uv": "0.8.4",
+ "compiler_image": "artifact://toolchains/python-build/3.13.5-2"
+ },
+ "target": {
+ "profile": "build_farm",
+ "platform": "linux",
+ "architecture": "x86_64"
+ },
+ "build": {
+ "recipe": "python-wheel-v3",
+ "mode": "release",
+ "features": []
+ }
 }
-```
+`
 
 Serialize with:
 
@@ -458,13 +457,13 @@ A worker-local hit is usable only by the same worker trust domain unless it pass
 
 The worker records:
 
-```text
+`text
 cache_result: hit
 cache_zone: worker_local
 object_key
 manifest_ref
 verification_result
-```
+`
 
 ### 5.3 Shared cache hit
 
@@ -494,7 +493,7 @@ The build does not write directly into the final cache path.
 
 Shared admission proceeds through:
 
-```text
+`text
 candidate_received
 request_authenticated
 namespace_authorized
@@ -508,7 +507,7 @@ compatibility_validated
 duplicate_checked
 object_committed
 admission_receipt_durable
-```
+`
 
 Commit uses an atomic rename, object-store conditional put, or validated equivalent.
 
@@ -531,9 +530,9 @@ Different output for the same complete key indicates missing inputs, nondetermin
 
 Expose a local cache service through:
 
-```text
+`text
 /run/koa/build-cache/cache.sock
-```
+`
 
 The socket authenticates the worker identity.
 
@@ -541,28 +540,28 @@ Request authorization is separate from socket access.
 
 ### 6.2 Example request
 
-```json
+`json
 {
-  "request_id": "cachereq_01J4H19P82R2F6X7N32JY7M8KD",
-  "worker_id": "buildworker_07",
-  "operation": "get",
-  "cache_class": "build_intermediate",
-  "object_key": "sha256:8d3164f7...",
-  "target_profile": "build_farm",
-  "deadline_at": "2026-08-03T20:10:00-04:00"
+ "request_id": "cachereq_01J4H19P82R2F6X7N32JY7M8KD",
+ "worker_id": "buildworker_07",
+ "operation": "get",
+ "cache_class": "build_intermediate",
+ "object_key": "sha256:8d3164f7...",
+ "target_profile": "build_farm",
+ "deadline_at": "2026-08-03T20:10:00-04:00"
 }
-```
+`
 
 The operation vocabulary remains closed:
 
-```text
+`text
 get
 put_candidate
 verify
 lease
 release_lease
 quarantine
-```
+`
 
 No operation accepts an arbitrary filesystem path or shell command.
 
@@ -570,7 +569,7 @@ No operation accepts an arbitrary filesystem path or shell command.
 
 Illustrative `/usr/lib/systemd/system/koa-build-cache.service`:
 
-```ini
+`ini
 [Unit]
 Description=kOA build-farm artifact cache
 After=local-fs.target
@@ -581,7 +580,7 @@ Type=notify
 User=koa-build-cache
 Group=koa-build-cache
 ExecStart=/usr/lib/koa/active/services/build-cache/bin/build-cache serve \
-  --socket /run/koa/build-cache/cache.sock
+ --socket /run/koa/build-cache/cache.sock
 Restart=on-failure
 RestartSec=5s
 RuntimeDirectory=koa/build-cache
@@ -615,7 +614,7 @@ ReadWritePaths=/var/cache/koa-build
 ReadWritePaths=/run/koa/build-cache
 ReadOnlyPaths=/etc/koa
 ReadOnlyPaths=/usr/lib/koa/active
-```
+`
 
 The active build-farm profile owns exact hardening and resource limits.
 
@@ -623,11 +622,11 @@ The active build-farm profile owns exact hardening and resource limits.
 
 Workers receive cache references without storage credentials:
 
-```bash
+`bash
 export KOA_CACHE_SOCKET="/run/koa/build-cache/cache.sock"
 export KOA_CACHE_NAMESPACE="publication_gateway/linux/x86_64"
 export KOA_CACHE_MODE="read-write-candidate"
-```
+`
 
 The cache client authenticates through the local service identity or another registered mechanism.
 
@@ -678,9 +677,9 @@ A cached package does not alter `uv.lock`.
 
 Python builds still use:
 
-```bash
+`bash
 uv sync --frozen
-```
+`
 
 The cache accelerates retrieval. It does not permit dependency resolution drift.
 
@@ -791,7 +790,7 @@ A lease protects an object while a build uses it.
 
 A lease includes:
 
-```text
+`text
 lease_id
 object_key
 worker_id
@@ -799,7 +798,7 @@ build_invocation_id
 created_at
 expires_at
 renewal_policy
-```
+`
 
 A crashed worker does not create a permanent lease.
 
@@ -921,12 +920,12 @@ Remote cache acceptance does not publish a release artifact.
 
 Example:
 
-```bash
+`bash
 uv run python -m build_cache.cli stats \
-  --by-class \
-  --by-namespace \
-  --include-leases
-```
+ --by-class \
+ --by-namespace \
+ --include-leases
+`
 
 A useful report shows:
 
@@ -945,11 +944,11 @@ A useful report shows:
 
 Example:
 
-```bash
+`bash
 uv run python -m build_cache.cli verify \
-  --cache-class build_intermediate \
-  --object-key "sha256:8d3164f7..."
-```
+ --cache-class build_intermediate \
+ --object-key "sha256:8d3164f7..."
+`
 
 Verification reads the manifest and recomputes required integrity.
 
@@ -959,12 +958,12 @@ It does not rewrite the object on failure.
 
 Example:
 
-```bash
+`bash
 uv run python -m build_cache.cli evict \
-  --namespace "publication_gateway/linux/x86_64" \
-  --cache-class build_intermediate \
-  --policy unleased-low-value
-```
+ --namespace "publication_gateway/linux/x86_64" \
+ --cache-class build_intermediate \
+ --policy unleased-low-value
+`
 
 The command lists selected objects, checks leases, and records the result.
 
@@ -991,7 +990,7 @@ Do not run a recursive remove against `/var/cache/koa-build/shared`.
 
 Run repository validation:
 
-```bash
+`bash
 uv run python docs/tools/validate_docs.py
 uv run python docs/tools/check_artifact_contracts.py
 uv run python docs/tools/check_component_boundaries.py
@@ -1000,7 +999,7 @@ uv run python docs/tools/check_release_sets.py
 uv run python docs/tools/check_interfile_locks.py
 uv run python docs/tools/check_traceability.py
 uv run python docs/tools/check_no_unresolved_state.py
-```
+`
 
 Run build-farm tests for:
 

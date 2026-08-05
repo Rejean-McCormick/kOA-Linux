@@ -274,10 +274,8 @@
       "kristal_runtime",
       "semantik_architect_runtime",
       "koa_mediatheque",
-      "uckk_dimension_gateway",
       "governance_policy_runtime",
-      "publication_gateway",
-      "gf_wordbench"
+      "publication_gateway"
     ],
     "optional_isolated_workbenches": [
       "sentient"
@@ -305,10 +303,8 @@
       "kristal_runtime",
       "semantik_architect_runtime",
       "koa_mediatheque",
-      "uckk_dimension_gateway",
       "governance_policy_runtime",
-      "publication_gateway",
-      "gf_wordbench"
+      "publication_gateway"
     ],
     "manual_isolated_only": [
       "sentient"
@@ -678,5 +674,33 @@
     "missing_reference_result": "blocked",
     "missing_evidence_result": "blocked",
     "file_content_hashes_required": false
-  }
+  },
+  "external_integrations": {
+    "uckk_publication": {
+      "integration_id": "uckk-publication",
+      "contract_ref": "contracts/integrations/uckk-publication.integration.json",
+      "availability": "optional",
+      "direction": "outbound",
+      "required_for_local_operation": false,
+      "required_for_offline_operation": false
+    },
+    "uckk_import": {
+      "integration_id": "uckk-import",
+      "contract_ref": "contracts/integrations/uckk-import.integration.json",
+      "availability": "optional",
+      "direction": "inbound",
+      "offline_bundle_supported": true,
+      "accepted_content_available_offline": true,
+      "automatic_sync": false
+    }
+  },
+  "decision_ids": [
+    "DEC-UCKK-EXT-001",
+    "DEC-MEDIATHEQUE-001"
+  ],
+  "lock_ids": [
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-002"
+  ]
 }

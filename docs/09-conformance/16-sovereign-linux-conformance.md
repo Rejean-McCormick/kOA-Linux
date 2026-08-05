@@ -183,9 +183,9 @@ KOA:DOC-META:END -->
 
 # Sovereign Linux Conformance
 
-> **Document status:** Normative conformance architecture.  
-> **Primary profile:** `sovereign_linux_node`  
-> **Optional overlays:** `high_assurance`, `sovereign_offline`, `appliance_shell`, only when compatibility is declared.  
+> **Document status:** Normative conformance architecture.
+> **Primary profile:** `sovereign_linux_node`
+> **Optional overlays:** `high_assurance`, `sovereign_offline`, `appliance_shell`, only when compatibility is declared.
 > **Claim rule:** A sovereign Linux claim applies to one exact node, profile composition, environment, artifact set, and evidence set.
 
 ## 1. Purpose
@@ -294,13 +294,13 @@ A recipe becomes a conformance requirement only when the active profile or overl
 
 The accepted sovereign Linux node minimum is:
 
-```text
+`text
 CPU: 8 modern cores minimum
 RAM: 32 GiB minimum
 Storage: 1 TB encrypted SSD minimum
 Recovery target: required
 Verified backup target: required
-```
+`
 
 `64 GiB` is recommended memory. It is not a baseline minimum unless a composed profile raises the requirement.
 
@@ -308,12 +308,12 @@ Verified backup target: required
 
 The exact active Release Set binds:
 
-```text
+`text
 system
 services
 governance
 knowledge
-```
+`
 
 The conformance claim references the exact Release Set identity and version.
 
@@ -321,7 +321,7 @@ The conformance claim references the exact Release Set identity and version.
 
 A claim identifies:
 
-```text
+`text
 claim_id
 node_id
 primary_profile_id
@@ -335,7 +335,7 @@ evidence_set
 claim_outcome
 issued_at
 validity and invalidation rules
-```
+`
 
 The claim schema and registry own exact field names.
 
@@ -360,21 +360,21 @@ Failure in one required layer prevents a full claim.
 
 The claim lifecycle is:
 
-```text
+`text
 candidate
 → evaluated
 → conformant
-```
+`
 
 Alternative states are:
 
-```text
+`text
 nonconformant
 blocked
 expired
 revoked
 superseded
-```
+`
 
 A conformant claim is not permanent.
 
@@ -548,13 +548,13 @@ Security evaluation includes:
 
 The aggregate resolves every applicable profile requirement to:
 
-```text
+`text
 requirement
 → traceability
 → test
 → exact evidence
 → result
-```
+`
 
 The aggregate exposes all missing, blocked, failing, expired, revoked, and exception-dependent items.
 
@@ -909,7 +909,7 @@ Sovereign Linux conformance validates when:
 
 Applicable checks include:
 
-```bash
+`bash
 python docs/tools/check_profile_composition.py
 python docs/tools/check_component_boundaries.py
 python docs/tools/check_release_sets.py
@@ -918,7 +918,7 @@ python docs/tools/check_traceability.py
 python docs/tools/check_canonical_ownership.py
 python docs/tools/check_interfile_locks.py
 python docs/tools/validate_docs.py
-```
+`
 
 ## 11. Non-Normative Examples
 

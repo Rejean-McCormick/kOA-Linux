@@ -512,7 +512,7 @@ Release-channel authorities confirm channel membership. Activating components va
 
 Publication approvals, requests, and receipts can be signed within an explicit publication trust scope.
 
-A publication signer does not gain authority over UCKK Dimension Gateway ingestion, source-component data, destination-component state, or general release signing.
+A publication signer does not gain authority over UCKK Import Bridge retrieval, local import acceptance, source-component data, destination-component state, or general release signing.
 
 ### 8.5 Resource Governor and privileged operations
 
@@ -536,7 +536,7 @@ Public evidence can expose root identifiers, statuses, algorithms, and verificat
 | `DEC-DEV-001` | Establishes isolated workspace secrets, local identities, and generated local certificate material for development. |
 | `DEC-REL-001` | Establishes independent release channels, Release Sets, and owner-controlled artifact verification and activation. |
 | `DEC-DATA-001` | Preserves component data authority independently from trust verification and shared infrastructure. |
-| `DEC-GATE-001` | Preserves the separate Publication Gateway and UCKK Dimension Gateway authority boundaries. |
+| `DEC-GATE-001` | Preserves separate Publication Gateway, UCKK publication transport, UCKK import, and local acceptance boundaries. |
 
 ### Prohibited assumptions
 
@@ -594,9 +594,9 @@ This document is conformant when:
 
 The validation entry point is:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 ## 11. Non-Normative Examples
 

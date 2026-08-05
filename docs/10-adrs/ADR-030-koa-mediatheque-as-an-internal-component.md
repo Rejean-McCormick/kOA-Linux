@@ -12,9 +12,7 @@
   "canonical_refs": [
     "contracts/components/koa-mediatheque.component.json",
     "contracts/artifact-contracts/koa-media-record.schema.json",
-    "02-system/12-koa-mediatheque-system-boundary.md",
-    "10-adrs/ADR-022-deterministic-native-uckk-pipeline.md",
-    "10-adrs/ADR-029-native-uckk-mediatheque.md"
+    "02-system/12-koa-mediatheque-system-boundary.md"
   ],
   "decision_ids": [
     "DEC-MEDIATHEQUE-001"
@@ -40,10 +38,7 @@
   "created_at": "2026-08-04",
   "accepted_at": "2026-08-04",
   "effective_at": "2026-08-04",
-  "supersedes": [
-    "ADR-022",
-    "ADR-029"
-  ],
+  "supersedes": [],
   "superseded_by": null
 }
 KOA:DOC-META:END -->
@@ -74,21 +69,18 @@ The component:
 
 ## Consequences
 
-- `koa_mediatheque` replaces the incorrectly modeled native UCKK media capability.
+- `koa_mediatheque` replaces the incorrectly modeled internal UCKK media capability.
 - Local media and files can be UCKK-relevant or unrelated to UCKK.
 - The local component owns backup and restore of its own data only.
 - UCKK publication becomes an optional external integration.
 - Profiles may include the local Mediatheque without including UCKK.
 - Documentation and validation must reject claims that the kOA Mediatheque is owned by UCKK.
 
-## Superseded Decisions
+## Replaced Model
 
-This ADR supersedes the active architectural effects of:
+This ADR replaces the earlier documentation model that described a deterministic internal UCKK pipeline inside kOA-Linux and treated the Mediatheque as native to UCKK.
 
-- ADR-022, which established a deterministic native UCKK pipeline inside kOA-Linux;
-- ADR-029, which declared the Mediatheque native to UCKK.
-
-Those ADRs remain historical records and must be marked superseded by ADR-030 and ADR-031 as applicable.
+The removed ADR files are not active canonical dependencies. Git history preserves the former rationale, while current authority resides in this ADR, the kOA Mediatheque component contract, and the system-boundary documentation.
 
 ## Rejected Alternatives
 

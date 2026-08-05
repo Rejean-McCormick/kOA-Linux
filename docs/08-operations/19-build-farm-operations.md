@@ -162,23 +162,23 @@ This document defines how the kOA build farm executes reproducible builds, valid
 
 The build farm exists to transform declared inputs into traceable candidate outputs:
 
-```text
+`text
 accepted change and exact source
-        ↓
+ ↓
 admitted isolated job
-        ↓
+ ↓
 clean worker and declared toolchains
-        ↓
+ ↓
 reproducible build
-        ↓
+ ↓
 candidate artifact identity
-        ↓
+ ↓
 tests, provenance, SBOM, and evidence
-        ↓
+ ↓
 publication request
-        ↓
+ ↓
 immutable published artifact
-```
+`
 
 The build farm produces evidence and candidates.
 
@@ -320,10 +320,10 @@ Runtime selection does not change component, artifact, profile, or release autho
 
 ### 3.1 Build-farm profile
 
-```text
+`text
 contracts/profiles/build-farm.profile.json
 generated/profile-catalog.json
-```
+`
 
 The profile owns:
 
@@ -339,46 +339,46 @@ The profile owns:
 
 ### 3.2 Toolchains
 
-```text
+`text
 generated/toolchain-catalog.json
 contracts/toolchains/python-uv.toolchain.json
-```
+`
 
 Toolchain contracts own exact versions, lock behavior, build inputs, environment rules, and reproducibility expectations.
 
 ### 3.3 Components and artifacts
 
-```text
+`text
 generated/component-catalog.json
 generated/component-catalog.json
 contracts/artifact-classes.contract.json
 contracts/release-channels.contract.json
 contracts/artifact-contracts/*.schema.json
-```
+`
 
 ### 3.4 Provenance, tests, and evidence
 
-```text
+`text
 contracts/artifact-contracts/provenance-receipt.schema.json
 generated/traceability.json
 generated/test-catalog.json
 generated/evidence-catalog.json
 generated/exception-index.json
-```
+`
 
 ### 3.5 Authority and decisions
 
-```text
+`text
 generated/authority-manifest.json
 generated/decision-index.json
 generated/requirements-index.json
 generated/assertion-index.json
 generated/decision-index.json
-```
+`
 
 ### 3.6 Related documents
 
-```text
+`text
 05-development/06-service-containers.md
 05-development/16-development-to-release-transition.md
 06-lifecycle/12-artifact-verification.md
@@ -388,7 +388,7 @@ generated/decision-index.json
 07-security/19-software-supply-chain.md
 08-operations/00-operating-model.md
 08-operations/09-restore.md
-```
+`
 
 ## 4. Model and Responsibilities
 
@@ -471,32 +471,32 @@ A hostname alone is not sufficient worker identity.
 
 A conceptual worker lifecycle is:
 
-```text
+`text
 provisioning
-    ↓
+ ↓
 verifying
-    ↓
+ ↓
 ready
-    ↓
+ ↓
 assigned
-    ↓
+ ↓
 running
-    ↓
+ ↓
 cleaning
-    ↓
+ ↓
 ready
-```
+`
 
 Exceptional transitions include:
 
-```text
+`text
 verifying → blocked
 running → failed
 running → quarantined
 cleaning → quarantined
 ready → draining
 draining → retired
-```
+`
 
 The profile owns exact state identifiers.
 
@@ -504,27 +504,27 @@ The profile owns exact state identifiers.
 
 A conceptual job lifecycle is:
 
-```text
+`text
 submitted
-    ↓
+ ↓
 validated
-    ↓
+ ↓
 admitted
-    ↓
+ ↓
 queued
-    ↓
+ ↓
 assigned
-    ↓
+ ↓
 preparing
-    ↓
+ ↓
 running
-    ↓
+ ↓
 validating
-    ↓
+ ↓
 collecting_evidence
-    ↓
+ ↓
 completed
-```
+`
 
 Other terminal or blocked states can include:
 
@@ -1736,41 +1736,41 @@ This document is conformant when:
 
 Expected test coverage includes:
 
-```text
-TEST-OPS-BF-001  Job request completeness
-TEST-OPS-BF-002  Worker identity and trust
-TEST-OPS-BF-003  Cross-job workspace isolation
-TEST-OPS-BF-004  Service, database, and secret isolation
-TEST-OPS-BF-005  OCI-compatible runtime
-TEST-OPS-BF-006  No mandatory Kubernetes dependency
-TEST-OPS-BF-007  UV and job-local virtual environment
-TEST-OPS-BF-008  Exact source and dependency closure
-TEST-OPS-BF-009  No mutable release inputs
-TEST-OPS-BF-010  Clean reproducible environment
-TEST-OPS-BF-011  Candidate identity before validation
-TEST-OPS-BF-012  Provenance completeness
-TEST-OPS-BF-013  SBOM or dependency-inventory completeness
-TEST-OPS-BF-014  Cache subordination and poisoning resistance
-TEST-OPS-BF-015  Resource and queue bounds
-TEST-OPS-BF-016  Scheduling and policy-authority separation
-TEST-OPS-BF-017  SenTient isolation and non-authority
-TEST-OPS-BF-018  Credential-class separation
-TEST-OPS-BF-019  No production signing or activation authority
-TEST-OPS-BF-020  Default-deny network behavior
-TEST-OPS-BF-021  Hermetic-build egress denial
-TEST-OPS-BF-022  Exact test-result binding
-TEST-OPS-BF-023  No false pass for incomplete tests
-TEST-OPS-BF-024  Reproducibility comparison
-TEST-OPS-BF-025  Exact candidate publication
-TEST-OPS-BF-026  No rebuild during promotion
-TEST-OPS-BF-027  Worker readiness
-TEST-OPS-BF-028  Worker quarantine
-TEST-OPS-BF-029  Complete job cleanup
-TEST-OPS-BF-030  Clean worker reset
-TEST-OPS-BF-031  Capability-scoped failure
-TEST-OPS-BF-032  Declarative build-farm recovery
-TEST-OPS-BF-033  Complete worker and pool decommissioning
-```
+`text
+TEST-OPS-BF-001 Job request completeness
+TEST-OPS-BF-002 Worker identity and trust
+TEST-OPS-BF-003 Cross-job workspace isolation
+TEST-OPS-BF-004 Service, database, and secret isolation
+TEST-OPS-BF-005 OCI-compatible runtime
+TEST-OPS-BF-006 No mandatory Kubernetes dependency
+TEST-OPS-BF-007 UV and job-local virtual environment
+TEST-OPS-BF-008 Exact source and dependency closure
+TEST-OPS-BF-009 No mutable release inputs
+TEST-OPS-BF-010 Clean reproducible environment
+TEST-OPS-BF-011 Candidate identity before validation
+TEST-OPS-BF-012 Provenance completeness
+TEST-OPS-BF-013 SBOM or dependency-inventory completeness
+TEST-OPS-BF-014 Cache subordination and poisoning resistance
+TEST-OPS-BF-015 Resource and queue bounds
+TEST-OPS-BF-016 Scheduling and policy-authority separation
+TEST-OPS-BF-017 SenTient isolation and non-authority
+TEST-OPS-BF-018 Credential-class separation
+TEST-OPS-BF-019 No production signing or activation authority
+TEST-OPS-BF-020 Default-deny network behavior
+TEST-OPS-BF-021 Hermetic-build egress denial
+TEST-OPS-BF-022 Exact test-result binding
+TEST-OPS-BF-023 No false pass for incomplete tests
+TEST-OPS-BF-024 Reproducibility comparison
+TEST-OPS-BF-025 Exact candidate publication
+TEST-OPS-BF-026 No rebuild during promotion
+TEST-OPS-BF-027 Worker readiness
+TEST-OPS-BF-028 Worker quarantine
+TEST-OPS-BF-029 Complete job cleanup
+TEST-OPS-BF-030 Clean worker reset
+TEST-OPS-BF-031 Capability-scoped failure
+TEST-OPS-BF-032 Declarative build-farm recovery
+TEST-OPS-BF-033 Complete worker and pool decommissioning
+`
 
 The test catalog and evidence registry own executable controls and evidence definitions.
 

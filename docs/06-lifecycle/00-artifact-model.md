@@ -133,7 +133,7 @@ The artifact model provides a common lifecycle for:
 - language runtime packs;
 - approved knowledge packages;
 - Ariane runtime material;
-- kOA Mediatheque packages and optional UCKK publication packages;
+- kOA Mediatheque packages, optional outbound UCKK publication packages, and inbound UCKK learning packages for quarantine and explicit local acceptance;
 - offline bundles;
 - release manifests;
 - migration packages;
@@ -143,13 +143,13 @@ Not every lifecycle object is itself a release-channel artifact. A Release Set b
 
 The model separates five concepts:
 
-```text
+`text
 artifact identity
 artifact bytes and manifest
 release-channel membership
 compatibility context
 deployment activation state
-```
+`
 
 An artifact can exist and verify successfully without being active anywhere. The same immutable artifact can be active in one deployment, staged in another, rejected in a third, and retained only for rollback in a fourth.
 
@@ -193,7 +193,7 @@ It does not define one packaging technology, repository product, operating-syste
 
 The canonical sources for this document are:
 
-```text
+`text
 generated/authority-manifest.json
 generated/decision-index.json
 contracts/system.contract.json#/release_and_artifact_identity
@@ -210,7 +210,7 @@ generated/traceability.json
 generated/test-catalog.json
 generated/evidence-catalog.json
 generated/exception-index.json
-```
+`
 
 Their ownership roles are:
 
@@ -239,7 +239,7 @@ This document explains the model. It does not independently own the active artif
 
 A canonical artifact identity contains at least:
 
-```text
+`text
 artifact_id
 artifact_class
 artifact_version
@@ -250,7 +250,7 @@ content_digest
 manifest_identity
 provenance_reference
 compatibility_declaration
-```
+`
 
 Artifact-class contracts can require additional identity dimensions.
 
@@ -272,7 +272,7 @@ A content digest contributes integrity evidence. It is not a human-readable subs
 
 An artifact logically consists of:
 
-```text
+`text
 manifest
 payload
 integrity evidence
@@ -280,7 +280,7 @@ provenance
 compatibility declaration
 class-required evidence
 optional signatures
-```
+`
 
 The manifest describes the artifact rather than relying on its filename or storage location.
 
@@ -328,12 +328,12 @@ The registry owns the exact active catalog and its mapping.
 
 The canonical release channels are:
 
-```text
+`text
 system
 services
 governance
 knowledge
-```
+`
 
 The channels are independent version domains with declared compatibility relationships.
 
@@ -353,7 +353,7 @@ A Release Set identifies the tested compatible versions selected across all four
 
 Its logical content includes:
 
-```text
+`text
 release_set_id
 release_set_version
 system_channel_selection
@@ -367,7 +367,7 @@ test_evidence
 signer_identity
 signature
 validity
-```
+`
 
 The effective active channel vector of a deployment resolves to one Release Set context.
 
@@ -379,7 +379,7 @@ Artifact lifecycle and deployment lifecycle are separate.
 
 Artifact state describes the object itself:
 
-```text
+`text
 available
 quarantined
 verified
@@ -387,11 +387,11 @@ rejected
 superseded
 retired
 revoked
-```
+`
 
 Deployment activation state describes use at a target:
 
-```text
+`text
 not_present
 cached
 staged
@@ -400,7 +400,7 @@ active
 rollback_available
 failed
 recovery_required
-```
+`
 
 An immutable artifact can have different activation states across deployments.
 
@@ -809,11 +809,11 @@ Kristal, PGF, Atlases, language runtime packs, and approved knowledge packages b
 
 The owning component validates semantic or runtime suitability in addition to generic artifact verification.
 
-### 8.6 kOA Mediatheque and UCKK publication
+### 8.6 kOA and UCKK Mediatheque interchange
 
-The kOA Mediatheque can store, export, import, back up, or restore class-approved local content packages. UCKK receives only explicitly authorized publication packages through the external publication bridge.
+The kOA Mediatheque can store, export, import, back up, or restore class-approved local content packages. UCKK receives only explicitly authorized publication packages through the outbound bridge. The kOA Mediatheque can also accept selected UCKK learning packages through the separate import contract after quarantine and validation.
 
-A kOA Mediatheque object identity does not replace release-artifact identity. External Suno or Gamma results remain candidates until accepted into the kOA Mediatheque; publication to UCKK is a separate governed operation.
+A kOA Mediatheque object identity does not replace release-artifact identity or an UCKK source identity. Imported content receives separate local identities. External Suno or Gamma results remain candidates until accepted into the kOA Mediatheque; publication to UCKK and import from UCKK remain separate governed operations.
 
 ### 8.7 Publication Gateway
 
@@ -922,7 +922,7 @@ This document is conformant when all of the following checks pass:
 
 Expected validator failure codes include:
 
-```text
+`text
 artifact_identity_incomplete
 artifact_class_unknown
 artifact_channel_invalid
@@ -945,7 +945,7 @@ artifact_offline_bundle_invalid
 artifact_receipt_missing
 artifact_retention_violation
 artifact_state_mismatch
-```
+`
 
 ## 11. Non-Normative Examples
 

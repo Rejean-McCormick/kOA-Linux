@@ -122,7 +122,8 @@ This document applies to:
 - CPU, memory, I/O, process, concurrency, queue, and scheduling limits;
 - foreground and background work;
 - task-activated heavy services;
-- UCKK ingestion, preview, thumbnail, extraction, transcoding, indexing, synchronization, backup, and restore jobs;
+- kOA Mediatheque ingestion, preview, thumbnail, extraction, transcoding, indexing, backup, and restore jobs;
+- UCKK publication packaging and transport jobs, plus inbound learning-package retrieval, quarantine scanning, compatibility validation, and acceptance preparation;
 - SenTient and other optional heavy workbenches;
 - development workspaces and parallel branches;
 - recovery, maintenance, lifecycle, and conformance jobs;
@@ -244,7 +245,7 @@ Priority affects resource ordering only. It does not grant business or data auth
 
 Managed work uses these states:
 
-```text
+`text
 declared
 eligible
 queued
@@ -257,7 +258,7 @@ completed
 failed
 cancelled
 blocked
-```
+`
 
 A job becomes `eligible` only after applicable component and policy prerequisites resolve. Admission then evaluates resource budgets and current measured state.
 
@@ -511,15 +512,15 @@ This document is conformant when:
 
 The validation entry point is:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 ## 11. Non-Normative Examples
 
 > **Non-normative example:** This example illustrates one valid implementation. It does not prescribe a global enforcement mechanism.
 
-A user-lightweight node can run one UCKK transcoding job at low I/O priority while preserving Ariane navigation and ordinary document access. A second heavy job remains queued.
+A user-lightweight node can run one kOA Mediatheque transcoding or UCKK learning-package validation job at low I/O priority while preserving Ariane navigation and ordinary document access. A second heavy job remains queued.
 
 > **Non-normative example:** This example illustrates one valid implementation. It does not prescribe a global enforcement mechanism.
 

@@ -129,9 +129,9 @@ It separates:
 
 The canonical machine-readable owner is:
 
-```text
+`text
 contracts/toolchains/python-uv.toolchain.json
-```
+`
 
 This document explains that contract for developers, build systems, validators, maintainers, and AI agents. It does not replace the contract or profile-specific realization.
 
@@ -259,9 +259,9 @@ The installed dependency environment belongs to one workspace.
 
 The ordinary location is:
 
-```text
+`text
 <workspace>/.venv
-```
+`
 
 The environment contains mutable installed state derived from:
 
@@ -293,7 +293,7 @@ Cache corruption or loss can require reacquisition but does not redefine project
 
 The reproducible synchronization boundary is:
 
-```text
+`text
 committed pyproject.toml
 +
 committed uv.lock
@@ -303,7 +303,7 @@ declared compatible Python
 declared profile and platform
 -> uv sync --frozen
 -> workspace-local .venv
-```
+`
 
 A frozen synchronization failure reveals one of the following classes:
 
@@ -340,17 +340,17 @@ Two branches or applications can run simultaneously.
 
 A workspace identity can be derived from:
 
-```text
+`text
 component + branch_or_purpose + unique_suffix
-```
+`
 
 Examples:
 
-```text
+`text
 konnaxion-main-a31f
 konnaxion-feature-voting-92cd
 orgo-main-b114
-```
+`
 
 The identity is reused consistently for:
 
@@ -487,15 +487,15 @@ The command-oriented recipe owns exact creation commands.
 
 A reproducible validation sequence begins with:
 
-```bash
+`bash
 uv sync --frozen
-```
+`
 
 After synchronization, project commands run inside the synchronized workspace context, for example:
 
-```bash
+`bash
 uv run --frozen <project-command>
-```
+`
 
 The command placeholder is resolved by the project or validation contract.
 
@@ -767,18 +767,18 @@ A failed required check blocks the affected workspace, build, release, or confor
 
 A developer creates:
 
-```text
+`text
 konnaxion-main-a31f
 konnaxion-feature-voting-92cd
-```
+`
 
 Each directory has its own:
 
-```text
+`text
 pyproject.toml
 uv.lock
 .venv
-```
+`
 
 They can share the UV download cache.
 
@@ -788,10 +788,10 @@ Their databases, ports, service projects, volumes, queues, secrets, and logs use
 
 A clean workspace checks out a source revision and runs:
 
-```bash
+`bash
 uv sync --frozen
 uv run --frozen pytest
-```
+`
 
 A mismatch between `pyproject.toml` and `uv.lock` causes validation failure rather than an automatic lock refresh.
 

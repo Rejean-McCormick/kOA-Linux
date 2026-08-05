@@ -193,14 +193,14 @@ General generated regions use a recognized start marker, metadata lines, payload
 
 The canonical form is represented here with escaped delimiters so it is not interpreted as a live region:
 
-```text
+`text
 &lt;!-- GENERATED:BEGIN
 source=contracts/components/example.component.json#/interfaces/commands
 renderer=canonical-table-v1
 --&gt;
 generated payload
 &lt;!-- GENERATED:END --&gt;
-```
+`
 
 The specialized requirement form declares the complete identifier set in its start marker and ends with its specialized requirement end marker.
 

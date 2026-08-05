@@ -32,7 +32,7 @@ KOA:DOC-META:END -->
 
 # Network Layout
 
-> **Recipe status:** Active, non-authoritative implementation guidance.  
+> **Recipe status:** Active, non-authoritative implementation guidance.
 > **Canonical boundary:** This recipe does not define profile membership, network authority, component interfaces, tenant boundaries, trust, consent, publication authority, firewall policy, or service ownership. Resolve those facts from the active `sovereign_linux_node` profile, component contracts, integration contracts, network-boundary policy, Release Set, and deployment records before applying any command.
 
 ## 1. Purpose
@@ -64,7 +64,7 @@ The completed layout has these properties:
 5. Egress is limited to declared local infrastructure, update, backup, federation, or external-integration destinations.
 6. Public, private, governance, administration, federation, backup, quarantine, and external-integration traffic remain logically distinguishable when those zones are active.
 7. Component databases, queues, object stores, and local administrative sockets remain unexposed.
-8. Publication Gateway and UCKK Dimension Gateway use separate application contracts even when they share a physical interface.
+8. Publication Gateway, UCKK Publication Bridge, and UCKK Import Bridge use separate application contracts even when they share a physical interface.
 9. Internet loss does not break minimum local operation.
 10. A failed candidate firewall or network configuration can be rolled back through local console access.
 
@@ -152,14 +152,14 @@ Use one tagged trunk for logical zones and one untagged or dedicated recovery in
 
 Example logical interfaces:
 
-```text
-eno1.110  public
-eno1.120  private
-eno1.130  administration
-eno1.140  federation
-eno1.150  backup
-eno2      local recovery
-```
+`text
+eno1.110 public
+eno1.120 private
+eno1.130 administration
+eno1.140 federation
+eno1.150 backup
+eno2 local recovery
+`
 
 This pattern requires switch, VLAN, and recovery-path validation.
 
@@ -186,20 +186,20 @@ An air-gapped cable state does not replace firewall, service binding, local iden
 
 Create a protected local working directory and record operator-supplied values.
 
-```bash
+`bash
 export NETWORK_CHANGE_ID='network-change-id-from-local-change-record'
 export WORK_DIR="/var/lib/koa/network-changes/$NETWORK_CHANGE_ID"
-export APPLY_CHANGES='0'  # 0 = inspect and generate only; 1 = apply after review
+export APPLY_CHANGES='0' # 0 = inspect and generate only; 1 = apply after review
 
 sudo install -d -m 0700 -o root -g root -- "$WORK_DIR"
 sudo sh -c "printf '%s\n' '$NETWORK_CHANGE_ID' > '$WORK_DIR/change_id.txt'"
 date -u +'%Y-%m-%dT%H:%M:%SZ' \
-  | sudo tee "$WORK_DIR/started_at.txt" >/dev/null
-```
+ | sudo tee "$WORK_DIR/started_at.txt" >/dev/null
+`
 
 Set values from the approved deployment record. The following values are examples only:
 
-```bash
+`bash
 export IF_PUBLIC='eno1.110'
 export IF_PRIVATE='eno1.120'
 export IF_ADMIN='eno1.130'
@@ -224,88 +224,88 @@ export LOCAL_TIME_IP='10.77.20.123'
 export LOCAL_UPDATE_MIRROR_IP='10.77.20.80'
 export BACKUP_TARGET_IP='10.77.50.20'
 export FEDERATION_PEER_IP='10.77.40.20'
-```
+`
 
 `192.0.2.0/24` is used above as documentation space. Replace every sample value with the approved deployment address.
 
 Record the values without secret material:
 
-```bash
+`bash
 env \
-  | grep -E '^(NETWORK_CHANGE_ID|IF_|ADDR_|NET_|LOCAL_|BACKUP_TARGET_IP|FEDERATION_PEER_IP)=' \
-  | sort \
-  | sudo tee "$WORK_DIR/operator_inputs.txt" >/dev/null
-```
+ | grep -E '^(NETWORK_CHANGE_ID|IF_|ADDR_|NET_|LOCAL_|BACKUP_TARGET_IP|FEDERATION_PEER_IP)=' \
+ | sort \
+ | sudo tee "$WORK_DIR/operator_inputs.txt" >/dev/null
+`
 
 ## 8. Inventory the Existing Node
 
 ### 8.1 Interfaces, addresses, and routes
 
-```bash
+`bash
 ip -brief link \
-  | sudo tee "$WORK_DIR/ip_link_before.txt" >/dev/null
+ | sudo tee "$WORK_DIR/ip_link_before.txt" >/dev/null
 
 ip -brief address \
-  | sudo tee "$WORK_DIR/ip_address_before.txt" >/dev/null
+ | sudo tee "$WORK_DIR/ip_address_before.txt" >/dev/null
 
 ip route show table all \
-  | sudo tee "$WORK_DIR/ip_route_before.txt" >/dev/null
+ | sudo tee "$WORK_DIR/ip_route_before.txt" >/dev/null
 
 ip -6 route show table all \
-  | sudo tee "$WORK_DIR/ip6_route_before.txt" >/dev/null
+ | sudo tee "$WORK_DIR/ip6_route_before.txt" >/dev/null
 
 networkctl list 2>/dev/null \
-  | sudo tee "$WORK_DIR/networkctl_before.txt" >/dev/null || true
-```
+ | sudo tee "$WORK_DIR/networkctl_before.txt" >/dev/null || true
+`
 
 ### 8.2 Listening services
 
-```bash
+`bash
 ss -lntup \
-  | sudo tee "$WORK_DIR/listening_sockets_before.txt" >/dev/null
+ | sudo tee "$WORK_DIR/listening_sockets_before.txt" >/dev/null
 
 systemctl --type=service --state=running --no-pager \
-  | sudo tee "$WORK_DIR/running_services_before.txt" >/dev/null
-```
+ | sudo tee "$WORK_DIR/running_services_before.txt" >/dev/null
+`
 
 Review every wildcard binding such as `0.0.0.0`, `[::]`, or an address assigned to the wrong zone.
 
 ### 8.3 Existing firewall
 
-```bash
+`bash
 sudo nft list ruleset \
-  | sudo tee "$WORK_DIR/nft_ruleset_before.nft" >/dev/null
+ | sudo tee "$WORK_DIR/nft_ruleset_before.nft" >/dev/null
 
 sudo nft list tables \
-  | sudo tee "$WORK_DIR/nft_tables_before.txt" >/dev/null
-```
+ | sudo tee "$WORK_DIR/nft_tables_before.txt" >/dev/null
+`
 
 Do not overwrite a distribution, hypervisor, container, VPN, or security-tool table.
 
 ### 8.4 Kernel forwarding and reverse-path settings
 
-```bash
+`bash
 sysctl net.ipv4.ip_forward \
-  | sudo tee "$WORK_DIR/ip_forward_before.txt" >/dev/null
+ | sudo tee "$WORK_DIR/ip_forward_before.txt" >/dev/null
 
 sysctl net.ipv6.conf.all.forwarding \
-  | sudo tee "$WORK_DIR/ip6_forward_before.txt" >/dev/null
+ | sudo tee "$WORK_DIR/ip6_forward_before.txt" >/dev/null
 
 sysctl net.ipv4.conf.all.rp_filter \
-  | sudo tee "$WORK_DIR/rp_filter_before.txt" >/dev/null
-```
+ | sudo tee "$WORK_DIR/rp_filter_before.txt" >/dev/null
+`
 
 ### 8.5 Container and namespace networking
 
 When applicable:
 
-```bash
+`bash
 podman network ls \
-  | sudo tee "$WORK_DIR/podman_networks_before.txt" >/dev/null 2>&1 || true
+ | sudo tee "$WORK_DIR/podman_networks_before.txt" >/dev/null 2>&1 || true
 
 ip netns list \
-  | sudo tee "$WORK_DIR/network_namespaces_before.txt" >/dev/null
-```
+ | sudo tee "$WORK_DIR/network_namespaces_before.txt" >/dev/null
+`
 
 A container network does not define component authority. Record the component and workspace owner of every writable network namespace.
 
@@ -371,7 +371,7 @@ This section demonstrates one implementation. Skip it when the active network ma
 
 Create one `.netdev` file per selected VLAN.
 
-```ini
+`ini
 # /etc/systemd/network/20-koa-public.netdev
 [NetDev]
 Name=eno1.110
@@ -379,9 +379,9 @@ Kind=vlan
 
 [VLAN]
 Id=110
-```
+`
 
-```ini
+`ini
 # /etc/systemd/network/20-koa-private.netdev
 [NetDev]
 Name=eno1.120
@@ -389,9 +389,9 @@ Kind=vlan
 
 [VLAN]
 Id=120
-```
+`
 
-```ini
+`ini
 # /etc/systemd/network/20-koa-admin.netdev
 [NetDev]
 Name=eno1.130
@@ -399,13 +399,13 @@ Kind=vlan
 
 [VLAN]
 Id=130
-```
+`
 
 Add federation and backup VLAN files only when those zones are active.
 
 ### 11.2 Trunk interface
 
-```ini
+`ini
 # /etc/systemd/network/20-koa-trunk.network
 [Match]
 Name=eno1
@@ -419,13 +419,13 @@ VLAN=eno1.150
 LinkLocalAddressing=no
 IPv6AcceptRA=no
 DHCP=no
-```
+`
 
 Remove inactive VLAN entries instead of leaving unused interfaces configured.
 
 ### 11.3 Zone addresses
 
-```ini
+`ini
 # /etc/systemd/network/30-koa-private.network
 [Match]
 Name=eno1.120
@@ -436,9 +436,9 @@ DNS=10.77.20.53
 Domains=~koa.local
 IPv6AcceptRA=no
 DHCP=no
-```
+`
 
-```ini
+`ini
 # /etc/systemd/network/30-koa-admin.network
 [Match]
 Name=eno1.130
@@ -447,11 +447,11 @@ Name=eno1.130
 Address=10.77.30.10/24
 IPv6AcceptRA=no
 DHCP=no
-```
+`
 
 Provide a default route only on the approved egress interface:
 
-```ini
+`ini
 # /etc/systemd/network/30-koa-public.network
 [Match]
 Name=eno1.110
@@ -461,18 +461,18 @@ Address=192.0.2.10/24
 Gateway=192.0.2.1
 IPv6AcceptRA=no
 DHCP=no
-```
+`
 
 When IPv6 is active, configure explicit IPv6 addresses, routes, DNS, neighbor discovery, and firewall policy. Do not disable or ignore IPv6 while services continue to bind to it.
 
 ### 11.4 Validate networkd files
 
-```bash
+`bash
 sudo networkctl cat eno1 2>/dev/null || true
 sudo systemd-analyze verify \
-  /etc/systemd/network/*.network \
-  /etc/systemd/network/*.netdev
-```
+ /etc/systemd/network/*.network \
+ /etc/systemd/network/*.netdev
+`
 
 Use a maintenance window and console access before restarting the network manager.
 
@@ -493,22 +493,22 @@ For each service:
 
 Examples of preferred binding:
 
-```text
-database               Unix socket or owning-component network only
-governance API          Unix socket, loopback, or protected governance address
-local metrics           loopback or local collector socket
-administrator API       administration address or protected local socket
-public web              public address
-private workflow        private address
-federation adapter      federation address
-backup agent            backup address or outbound-only connection
-```
+`text
+database Unix socket or owning-component network only
+governance API Unix socket, loopback, or protected governance address
+local metrics loopback or local collector socket
+administrator API administration address or protected local socket
+public web public address
+private workflow private address
+federation adapter federation address
+backup agent backup address or outbound-only connection
+`
 
 Verify after each change:
 
-```bash
+`bash
 ss -lntup
-```
+`
 
 Keep a before-and-after service-binding record in the change directory.
 
@@ -516,102 +516,102 @@ Keep a before-and-after service-binding record in the change directory.
 
 Create a candidate table without altering unrelated tables.
 
-```bash
+`bash
 sudo tee "$WORK_DIR/koa-node.nft" >/dev/null <<'NFT'
 table inet koa_node {
-  set admin_ipv4_sources {
-    type ipv4_addr
-    flags interval
-    elements = { 10.77.30.0/24 }
-  }
+ set admin_ipv4_sources {
+ type ipv4_addr
+ flags interval
+ elements = { 10.77.30.0/24 }
+ }
 
-  set private_ipv4_sources {
-    type ipv4_addr
-    flags interval
-    elements = { 10.77.20.0/24 }
-  }
+ set private_ipv4_sources {
+ type ipv4_addr
+ flags interval
+ elements = { 10.77.20.0/24 }
+ }
 
-  set federation_ipv4_peers {
-    type ipv4_addr
-    elements = { 10.77.40.20 }
-  }
+ set federation_ipv4_peers {
+ type ipv4_addr
+ elements = { 10.77.40.20 }
+ }
 
-  set backup_ipv4_targets {
-    type ipv4_addr
-    elements = { 10.77.50.20 }
-  }
+ set backup_ipv4_targets {
+ type ipv4_addr
+ elements = { 10.77.50.20 }
+ }
 
-  set local_infrastructure_ipv4 {
-    type ipv4_addr
-    elements = {
-      10.77.20.53,
-      10.77.20.123,
-      10.77.20.80
-    }
-  }
+ set local_infrastructure_ipv4 {
+ type ipv4_addr
+ elements = {
+ 10.77.20.53,
+ 10.77.20.123,
+ 10.77.20.80
+ }
+ }
 
-  chain input {
-    type filter hook input priority 0; policy drop;
+ chain input {
+ type filter hook input priority 0; policy drop;
 
-    iifname "lo" accept
-    ct state invalid drop
-    ct state established,related accept
+ iifname "lo" accept
+ ct state invalid drop
+ ct state established,related accept
 
-    ip protocol icmp accept
-    ip6 nexthdr ipv6-icmp accept
+ ip protocol icmp accept
+ ip6 nexthdr ipv6-icmp accept
 
-    iifname "eno1.130" ip saddr @admin_ipv4_sources tcp dport 22 accept
+ iifname "eno1.130" ip saddr @admin_ipv4_sources tcp dport 22 accept
 
-    iifname "eno1.110" tcp dport { 80, 443 } accept
+ iifname "eno1.110" tcp dport { 80, 443 } accept
 
-    iifname "eno1.120" ip saddr @private_ipv4_sources tcp dport {
-      443
-    } accept
+ iifname "eno1.120" ip saddr @private_ipv4_sources tcp dport {
+ 443
+ } accept
 
-    iifname "eno1.140" ip saddr @federation_ipv4_peers tcp dport {
-      7443
-    } accept
+ iifname "eno1.140" ip saddr @federation_ipv4_peers tcp dport {
+ 7443
+ } accept
 
-    iifname "eno1.150" ip saddr @backup_ipv4_targets tcp dport {
-      9443
-    } accept
+ iifname "eno1.150" ip saddr @backup_ipv4_targets tcp dport {
+ 9443
+ } accept
 
-    counter log prefix "koa-node-input-deny " flags all limit rate 10/minute drop
-  }
+ counter log prefix "koa-node-input-deny " flags all limit rate 10/minute drop
+ }
 
-  chain forward {
-    type filter hook forward priority 0; policy drop;
+ chain forward {
+ type filter hook forward priority 0; policy drop;
 
-    ct state invalid drop
-    ct state established,related accept
+ ct state invalid drop
+ ct state established,related accept
 
-    counter log prefix "koa-node-forward-deny " flags all limit rate 10/minute drop
-  }
+ counter log prefix "koa-node-forward-deny " flags all limit rate 10/minute drop
+ }
 
-  chain output {
-    type filter hook output priority 0; policy drop;
+ chain output {
+ type filter hook output priority 0; policy drop;
 
-    oifname "lo" accept
-    ct state invalid drop
-    ct state established,related accept
+ oifname "lo" accept
+ ct state invalid drop
+ ct state established,related accept
 
-    ip protocol icmp accept
-    ip6 nexthdr ipv6-icmp accept
+ ip protocol icmp accept
+ ip6 nexthdr ipv6-icmp accept
 
-    ip daddr 10.77.20.53 udp dport 53 accept
-    ip daddr 10.77.20.53 tcp dport 53 accept
-    ip daddr 10.77.20.123 udp dport 123 accept
+ ip daddr 10.77.20.53 udp dport 53 accept
+ ip daddr 10.77.20.53 tcp dport 53 accept
+ ip daddr 10.77.20.123 udp dport 123 accept
 
-    ip daddr 10.77.20.80 tcp dport 443 accept
+ ip daddr 10.77.20.80 tcp dport 443 accept
 
-    ip daddr @backup_ipv4_targets tcp dport 9443 accept
-    ip daddr @federation_ipv4_peers tcp dport 7443 accept
+ ip daddr @backup_ipv4_targets tcp dport 9443 accept
+ ip daddr @federation_ipv4_peers tcp dport 7443 accept
 
-    counter log prefix "koa-node-output-deny " flags all limit rate 10/minute drop
-  }
+ counter log prefix "koa-node-output-deny " flags all limit rate 10/minute drop
+ }
 }
 NFT
-```
+`
 
 This example intentionally permits only illustrative ports and addresses. Replace them from active component and integration contracts.
 
@@ -628,15 +628,15 @@ Do not add:
 
 Check syntax without applying:
 
-```bash
+`bash
 sudo nft --check --file "$WORK_DIR/koa-node.nft"
-```
+`
 
 Inspect the candidate:
 
-```bash
+`bash
 sudo sed -n '1,260p' "$WORK_DIR/koa-node.nft"
-```
+`
 
 Confirm:
 
@@ -657,7 +657,7 @@ Record review approval in the local change record before applying.
 
 Create a rollback script using the previously captured ruleset.
 
-```bash
+`bash
 sudo tee "$WORK_DIR/rollback-network.sh" >/dev/null <<EOF
 #!/bin/sh
 set -eu
@@ -666,26 +666,26 @@ nft -f '$WORK_DIR/nft_ruleset_before.nft'
 EOF
 
 sudo chmod 0700 "$WORK_DIR/rollback-network.sh"
-```
+`
 
 Review the script and test it in a controlled environment.
 
 Arm a short rollback timer immediately before applying:
 
-```bash
+`bash
 sudo systemd-run \
-  --unit="koa-network-rollback-$NETWORK_CHANGE_ID" \
-  --on-active=3m \
-  --property=Type=oneshot \
-  "$WORK_DIR/rollback-network.sh"
-```
+ --unit="koa-network-rollback-$NETWORK_CHANGE_ID" \
+ --on-active=3m \
+ --property=Type=oneshot \
+ "$WORK_DIR/rollback-network.sh"
+`
 
 Record the generated unit name:
 
-```bash
+`bash
 printf '%s\n' "koa-network-rollback-$NETWORK_CHANGE_ID.service" \
-  | sudo tee "$WORK_DIR/rollback_unit.txt" >/dev/null
-```
+ | sudo tee "$WORK_DIR/rollback_unit.txt" >/dev/null
+`
 
 Do not cancel the timer until local and remote validation succeeds.
 
@@ -693,19 +693,19 @@ Do not cancel the timer until local and remote validation succeeds.
 
 The default remains inspection-only.
 
-```bash
+`bash
 if [ "$APPLY_CHANGES" != '1' ]; then
-  printf '%s\n' 'Inspection complete. No network changes applied.'
-  exit 0
+ printf '%s\n' 'Inspection complete. No network changes applied.'
+ exit 0
 fi
-```
+`
 
 Apply only the dedicated table:
 
-```bash
+`bash
 sudo nft delete table inet koa_node 2>/dev/null || true
 sudo nft --file "$WORK_DIR/koa-node.nft"
-```
+`
 
 Persist the table through the distribution’s active `nftables` configuration only after live validation. Do not assume `/etc/nftables.conf` already includes `/etc/nftables.d/`.
 
@@ -759,7 +759,7 @@ Recommended placement:
 | Component database | Unix socket, loopback, or owning-component-only network. |
 | Audit evidence submission | Bounded application interface with evidence references. |
 | Publication request | Publication Gateway interface only. |
-| UCKK admission | UCKK Dimension Gateway interface only. |
+| UCKK import | UCKK Import Bridge interface and quarantine path only. |
 
 Do not create a broad “trusted internal services” subnet that bypasses application authentication.
 
@@ -873,12 +873,12 @@ When rootless Podman is selected:
 
 Example inspection:
 
-```bash
+`bash
 podman ps --format \
-  '{{.ID}}\t{{.Names}}\t{{.Networks}}\t{{.Ports}}\t{{.Labels}}'
+ '{{.ID}}\t{{.Names}}\t{{.Networks}}\t{{.Ports}}\t{{.Labels}}'
 
 podman network inspect network-name
-```
+`
 
 Do not infer network ownership from a container name alone.
 
@@ -886,40 +886,40 @@ Do not infer network ownership from a container name alone.
 
 ### 23.1 Interface and route validation
 
-```bash
+`bash
 ip -brief link \
-  | sudo tee "$WORK_DIR/ip_link_after.txt" >/dev/null
+ | sudo tee "$WORK_DIR/ip_link_after.txt" >/dev/null
 
 ip -brief address \
-  | sudo tee "$WORK_DIR/ip_address_after.txt" >/dev/null
+ | sudo tee "$WORK_DIR/ip_address_after.txt" >/dev/null
 
 ip route show table all \
-  | sudo tee "$WORK_DIR/ip_route_after.txt" >/dev/null
+ | sudo tee "$WORK_DIR/ip_route_after.txt" >/dev/null
 
 ip -6 route show table all \
-  | sudo tee "$WORK_DIR/ip6_route_after.txt" >/dev/null
-```
+ | sudo tee "$WORK_DIR/ip6_route_after.txt" >/dev/null
+`
 
 Confirm there is no unintended default route or route between protected zones.
 
 ### 23.2 Firewall validation
 
-```bash
+`bash
 sudo nft list table inet koa_node \
-  | sudo tee "$WORK_DIR/koa_node_table_after.nft" >/dev/null
+ | sudo tee "$WORK_DIR/koa_node_table_after.nft" >/dev/null
 
 sudo nft list ruleset \
-  | sudo tee "$WORK_DIR/nft_ruleset_after.nft" >/dev/null
-```
+ | sudo tee "$WORK_DIR/nft_ruleset_after.nft" >/dev/null
+`
 
 Confirm unrelated tables remain present.
 
 ### 23.3 Service binding validation
 
-```bash
+`bash
 ss -lntup \
-  | sudo tee "$WORK_DIR/listening_sockets_after.txt" >/dev/null
-```
+ | sudo tee "$WORK_DIR/listening_sockets_after.txt" >/dev/null
+`
 
 Confirm:
 
@@ -953,11 +953,11 @@ Use bounded tools such as `curl`, `nc`, `openssl s_client`, or the component’s
 
 ### 23.5 Kernel validation
 
-```bash
+`bash
 sysctl net.ipv4.ip_forward
 sysctl net.ipv6.conf.all.forwarding
 sysctl net.ipv4.conf.all.rp_filter
-```
+`
 
 Unless the node has an approved routing role, forwarding should remain disabled.
 
@@ -992,23 +992,23 @@ After all validation succeeds:
 
 Cancel the rollback unit:
 
-```bash
+`bash
 sudo systemctl stop "koa-network-rollback-$NETWORK_CHANGE_ID.timer" \
-  "koa-network-rollback-$NETWORK_CHANGE_ID.service" 2>/dev/null || true
+ "koa-network-rollback-$NETWORK_CHANGE_ID.service" 2>/dev/null || true
 
 sudo systemctl reset-failed \
-  "koa-network-rollback-$NETWORK_CHANGE_ID.service" 2>/dev/null || true
-```
+ "koa-network-rollback-$NETWORK_CHANGE_ID.service" 2>/dev/null || true
+`
 
 Record completion:
 
-```bash
+`bash
 date -u +'%Y-%m-%dT%H:%M:%SZ' \
-  | sudo tee "$WORK_DIR/completed_at.txt" >/dev/null
+ | sudo tee "$WORK_DIR/completed_at.txt" >/dev/null
 
 printf '%s\n' 'complete' \
-  | sudo tee "$WORK_DIR/change_status.txt" >/dev/null
-```
+ | sudo tee "$WORK_DIR/change_status.txt" >/dev/null
+`
 
 ### 24.2 Rollback
 
@@ -1023,9 +1023,9 @@ Run rollback immediately when:
 - offline local operation fails;
 - tenant or component isolation fails.
 
-```bash
+`bash
 sudo "$WORK_DIR/rollback-network.sh"
-```
+`
 
 Restore network-manager files through the recorded predecessor configuration, reload the selected manager, and revalidate the last known working layout.
 
@@ -1054,7 +1054,7 @@ Record the result as `rolled_back` or `rollback_incomplete`.
 
 ## 26. Example Implementation Sequence
 
-```text
+`text
 resolve active profile, overlays, components, integrations, and Release Set
 obtain console or out-of-band recovery
 inventory interfaces, routes, services, firewall, and namespaces
@@ -1078,7 +1078,7 @@ verify queues remain pending after reconnection until revalidated
 persist the validated configuration
 cancel rollback
 record evidence and completion
-```
+`
 
 ## 27. Completion Checklist
 
@@ -1128,7 +1128,6 @@ Use this recipe with the active versions of:
 - `08-operations/05-capacity-management.md`;
 - `08-operations/15-support-and-diagnostics.md`;
 - `09-conformance/04-profile-test-matrices.md`;
-- `10-adrs/ADR-023-explicit-profile-overlays.md`;
 - `contracts/profiles/sovereign-linux-node.profile.json`;
 - the active component contracts;
 - the active integration contracts;

@@ -148,8 +148,8 @@ KOA:DOC-META:END -->
 
 # Test Evidence
 
-> **Document status:** Normative conformance architecture.  
-> **Definition:** Test evidence is a registered, immutable record of one declared test execution, its exact subjects, its assertions, its outcome, and the material required to validate that conclusion.  
+> **Document status:** Normative conformance architecture.
+> **Definition:** Test evidence is a registered, immutable record of one declared test execution, its exact subjects, its assertions, its outcome, and the material required to validate that conclusion.
 > **Authority rule:** The test catalog defines what must be tested; the evidence registry records what occurred; traceability determines which claims the evidence can support.
 
 ## 1. Purpose
@@ -273,14 +273,14 @@ The test catalog owns the allowed class for each test.
 
 ### 3.2 Expected registry relationship
 
-```text
+`text
 requirement or lock
 → traceability link
 → test catalog entry
 → test execution
 → evidence registry entry
 → conformance or release claim
-```
+`
 
 A direct prose link from a claim to a test name is insufficient.
 
@@ -288,7 +288,7 @@ A direct prose link from a claim to a test name is insufficient.
 
 Evidence binds to subjects through canonical identifiers such as:
 
-```text
+`text
 requirement_id
 lock_id
 decision_id
@@ -301,7 +301,7 @@ schema_id and schema_version
 toolchain_id and toolchain_version
 test_id and test_version
 exception_id
-```
+`
 
 Cryptographic digests are added when intrinsic to an artifact, signed manifest, release bundle, provenance chain, or content-addressed object.
 
@@ -343,37 +343,37 @@ A composite claim references multiple evidence IDs rather than merging their ato
 
 The execution lifecycle is:
 
-```text
+`text
 scheduled
 → preparing
 → running
 → evaluating
 → finalized
-```
+`
 
 Alternative terminal states are:
 
-```text
+`text
 cancelled
 blocked
 internal_error
-```
+`
 
 The evidence lifecycle is:
 
-```text
+`text
 candidate
 → validated
 → registered
-```
+`
 
 Later states can be:
 
-```text
+`text
 revoked
 superseded
 expired
-```
+`
 
 Registered evidence is immutable.
 
@@ -920,7 +920,7 @@ Test-evidence conformance validates when:
 
 Applicable checks include:
 
-```bash
+`bash
 python docs/tools/check_traceability.py
 python docs/tools/check_artifact_contracts.py
 python docs/tools/check_profile_composition.py
@@ -929,7 +929,7 @@ python docs/tools/check_component_boundaries.py
 python docs/tools/check_canonical_ownership.py
 python docs/tools/check_interfile_locks.py
 python docs/tools/validate_docs.py
-```
+`
 
 ## 11. Non-Normative Examples
 

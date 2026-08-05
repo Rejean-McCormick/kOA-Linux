@@ -21,7 +21,11 @@
     "generated/traceability.json",
     "generated/test-catalog.json",
     "generated/evidence-catalog.json",
-    "generated/exception-index.json"
+    "generated/exception-index.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json",
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json"
   ],
   "decision_ids": [
     "DEC-SYS-CAP-001",
@@ -76,12 +80,12 @@
     "LOCK-ARI-002",
     "LOCK-MEDIATHEQUE-001",
     "LOCK-UCKK-EXT-001",
-    "LOCK-UCKK-EXT-001",
     "LOCK-SENT-001",
     "LOCK-GOV-001",
     "LOCK-GATE-001",
     "LOCK-PROFILE-001",
-    "LOCK-PROFILE-002"
+    "LOCK-PROFILE-002",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -319,17 +323,17 @@ Capability state is represented in three independent dimensions.
 
 **Availability state**
 
-```text
+`text
 available
 degraded
 deferred_only
 blocked
 unavailable
-```
+`
 
 **Execution state**
 
-```text
+`text
 not_started
 accepted
 queued
@@ -341,11 +345,11 @@ cancelled
 failed
 conflicted
 expired
-```
+`
 
 **Authoritative outcome**
 
-```text
+`text
 no_effect
 candidate_created
 request_recorded
@@ -354,7 +358,7 @@ policy_decision_recorded
 evidence_recorded
 external_effect_confirmed
 rolled_back
-```
+`
 
 A user-facing status is derived from these dimensions. The system does not compress them into a misleading binary success flag.
 
@@ -387,7 +391,7 @@ Degradation never creates additional authority.
 
 Each capability maps to a resource class such as:
 
-```text
+`text
 core_interactive
 core_background
 bounded_batch
@@ -396,7 +400,7 @@ indexing
 build
 external_wait
 optional_workbench
-```
+`
 
 The active profile provides an envelope for applicable classes. The Resource Governor enforces or protects that envelope deterministically.
 
@@ -419,7 +423,7 @@ SenTient is an optional, isolated, non-authoritative developer or build workbenc
 The capability model preserves these non-interchangeable responsibilities:
 
 - Resource Governor and Governance Policy Runtime;
-- Publication Gateway and UCKK Publication Bridge;
+- Publication Gateway, UCKK Publication Bridge, and UCKK Import Bridge;
 - component-owned authoritative state and cross-component workflow coordination;
 - native deterministic processing and optional external AI processing;
 - Ariane local navigation and optional external voice;
@@ -456,7 +460,7 @@ A composed feature can use both sides of a separation while retaining distinct c
 - **REQ-SYS-CAP-023 — SHALL NOT:** Output from an external AI surface become authoritative without explicit acceptance through the owning local workflow.
 - **REQ-SYS-CAP-024 — SHALL:** Ariane local non-voice navigation remain a native continuous capability independent of external AI and the approved voice adapter.
 - **REQ-SYS-CAP-025 — SHALL:** Native kOA Mediatheque ingestion, organization, validation, local indexing, retrieval, export, backup, and restore remain deterministic non-AI capabilities.
-- **REQ-SYS-CAP-026 — SHALL NOT:** UCKK Publication Bridge bypass Publication Gateway authorization, own local media, or be represented as a substitute disclosure authority.
+- **REQ-SYS-CAP-026 — SHALL NOT:** UCKK Publication Bridge bypass Publication Gateway authorization or own local media; UCKK Import Bridge shall not bypass quarantine and local acceptance, own accepted local records, or be represented with publication as one synchronization capability.
 - **REQ-SYS-CAP-027 — SHALL:** SenTient capabilities remain optional, isolated, non-authoritative, profile-scoped workbench capabilities limited to eligible development or build environments.
 - **REQ-SYS-CAP-028 — SHALL NOT:** A profile claim include a capability unless the profile contract explicitly enables or inherits it and all applicable dependencies, locks, tests, and evidence resolve.
 - **REQ-SYS-CAP-029 — SHALL:** Every active capability have traceability to its owner decision, requirements, locks, profiles, component contract, tests, and current evidence.
@@ -505,7 +509,7 @@ A profile can expose a subset of a global capability when that subset is defined
 
 An invocation proceeds through:
 
-```text
+`text
 requested
 scope_checked
 identity_and_trust_checked
@@ -516,11 +520,11 @@ accepted
 executing
 outcome_recorded
 completed
-```
+`
 
 Alternative states include:
 
-```text
+`text
 blocked
 deferred
 cancelled
@@ -528,7 +532,7 @@ failed
 conflicted
 expired
 rolled_back
-```
+`
 
 Long-running and external operations re-evaluate time-sensitive authority, compatibility, and dependencies before committing an authoritative result.
 
@@ -629,6 +633,8 @@ An exception cannot:
 - authorize direct cross-component writes;
 - merge Resource Governor with Governance Policy Runtime;
 - merge Publication Gateway with UCKK Publication Bridge;
+- merge UCKK Publication Bridge with UCKK Import Bridge into a generic synchronization capability;
+- treat shared Mediatheque frame compatibility as shared storage or authority;
 - introduce native AI into the baseline;
 - make external AI output authoritative;
 - make Ariane local navigation depend on external voice;
@@ -659,7 +665,7 @@ This document is conformant when validation confirms:
 14. the four approved external AI surfaces remain optional adapters;
 15. Ariane local navigation remains available without external voice;
 16. native kOA Mediatheque capabilities remain deterministic and non-AI;
-17. UCKK publication requires gateway authorization followed by target-specific bridge transport;
+17. UCKK publication requires gateway authorization followed by target-specific outbound bridge transport; UCKK import requires retrieval, quarantine, validation, and explicit local acceptance;
 18. SenTient remains optional, isolated, non-authoritative, and profile-scoped;
 19. cross-component capabilities use declared contracts and never direct writes;
 20. state-changing capabilities identify authority, policy, receipts, and evidence;
@@ -670,13 +676,13 @@ This document is conformant when validation confirms:
 
 The principal validation entry point is:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 Supporting checks include:
 
-```text
+`text
 tools/check_component_boundaries.py
 tools/check_profile_inheritance.py
 tools/check_interfile_locks.py
@@ -684,7 +690,7 @@ tools/check_ai_boundary.py
 tools/check_traceability.py
 tools/check_artifact_contracts.py
 tools/check_no_unresolved_state.py
-```
+`
 
 ## 11. Non-Normative Examples
 
@@ -700,9 +706,11 @@ tools/check_no_unresolved_state.py
 
 A publication workflow coordinates a component-owned candidate, Governance Policy Runtime authorization, Publication Gateway disclosure, and Audit Broker evidence. Each stage retains its own capability identity and authority effect.
 
-### 11.4 UCKK Moodle destination transfer
+### 11.4 UCKK Mediatheque interchange
 
-UCKK Publication Bridge packages and transports an authorized representation to the user's external UCKK Moodle destination. It does not own local media or acquire cross-domain disclosure authority.
+UCKK Publication Bridge packages and transports an authorized representation to the online UCKK Mediatheque. It does not own local media or acquire cross-domain disclosure authority.
+
+UCKK Import Bridge retrieves a selected learning package from UCKK or an approved offline carrier, holds it in quarantine, validates source, licence, rights, integrity, provenance, and shared-frame compatibility, and requests explicit kOA Mediatheque acceptance. Accepted courses, learning paths, instructions, and manuals remain available offline under a distinct local identity. No reconnect event starts a background synchronization cycle.
 
 ### 11.5 Resource pressure
 

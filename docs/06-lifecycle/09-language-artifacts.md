@@ -128,25 +128,25 @@ This document defines the lifecycle of compiled language artifacts used by kOA.
 
 The lifecycle separates language construction from runtime language execution:
 
-```text
+`text
 authoritative language project
-        ↓
+ ↓
 GF Wordbench build and validation
-        ↓
+ ↓
 compiled PGF candidate
-        ↓
+ ↓
 language runtime pack candidate
-        ↓
+ ↓
 knowledge-channel publication
-        ↓
+ ↓
 compatible Release Set
-        ↓
+ ↓
 SemantiK Architect Runtime staging
-        ↓
+ ↓
 atomic activation
-        ↓
+ ↓
 deterministic runtime rendering
-```
+`
 
 GF Wordbench owns language construction and candidate production.
 
@@ -272,11 +272,11 @@ The global baseline does not require every available language pack.
 
 ### 3.1 Components
 
-```text
+`text
 generated/component-catalog.json
 contracts/components/gf-wordbench.component.json
 contracts/components/semantik-architect-runtime.component.json
-```
+`
 
 GF Wordbench owns the build workflow.
 
@@ -284,22 +284,22 @@ SemantiK Architect Runtime owns deterministic consumption, loading, active-pack 
 
 ### 3.2 Artifact contracts
 
-```text
+`text
 contracts/artifact-contracts/language-pack.schema.json
 contracts/artifact-contracts/runtime-pack.schema.json
 contracts/artifact-contracts/release-set.schema.json
 contracts/artifact-contracts/provenance-receipt.schema.json
-```
+`
 
 The artifact contracts own exact structure, required fields, identifiers, verification, compatibility, and lifecycle metadata.
 
 ### 3.3 Release authority
 
-```text
+`text
 contracts/release-channels.contract.json
 contracts/artifact-classes.contract.json
 generated/authority-manifest.json
-```
+`
 
 PGF artifacts and language runtime packs belong to the `knowledge` release channel.
 
@@ -307,7 +307,7 @@ The active authority index changes only after complete validation and activation
 
 ### 3.4 Validation and change authority
 
-```text
+`text
 generated/decision-index.json
 generated/requirements-index.json
 generated/assertion-index.json
@@ -315,11 +315,11 @@ generated/traceability.json
 generated/test-catalog.json
 generated/evidence-catalog.json
 generated/exception-index.json
-```
+`
 
 ### 3.5 Related documents
 
-```text
+`text
 02-system/02-logical-architecture.md
 05-development/16-development-to-release-transition.md
 06-lifecycle/00-artifact-model.md
@@ -330,7 +330,7 @@ generated/exception-index.json
 06-lifecycle/12-artifact-verification.md
 06-lifecycle/13-activation-and-verification.md
 06-lifecycle/18-sbom-provenance-and-signing.md
-```
+`
 
 ## 4. Model and Responsibilities
 
@@ -633,23 +633,23 @@ Activation changes the active language-pack pointer or equivalent active mapping
 
 The logical sequence is:
 
-```text
+`text
 verify package
-    ↓
+ ↓
 verify compatibility
-    ↓
+ ↓
 stage complete pack
-    ↓
+ ↓
 load and test staged pack
-    ↓
+ ↓
 retain current pack
-    ↓
+ ↓
 atomically switch active mapping
-    ↓
+ ↓
 run acceptance checks
-    ↓
+ ↓
 retain or restore
-```
+`
 
 The previous compatible pack remains available until acceptance succeeds.
 
@@ -1271,31 +1271,31 @@ This document is conformant when:
 
 Expected test coverage includes:
 
-```text
-TEST-LIFE-LANG-001  GF Wordbench and runtime separation
-TEST-LIFE-LANG-002  One active language project per build session
-TEST-LIFE-LANG-003  Release-grade source and toolchain closure
-TEST-LIFE-LANG-004  PGF compilation
-TEST-LIFE-LANG-005  Language-pack schema validation
-TEST-LIFE-LANG-006  Candidate provenance
-TEST-LIFE-LANG-007  Reproducible language build
-TEST-LIFE-LANG-008  Deterministic rendering
-TEST-LIFE-LANG-009  Structured-input compatibility
-TEST-LIFE-LANG-010  Regression and coverage
-TEST-LIFE-LANG-011  External AI non-authority
-TEST-LIFE-LANG-012  Knowledge-channel publication
-TEST-LIFE-LANG-013  Release Set compatibility
-TEST-LIFE-LANG-014  Inactive staging
-TEST-LIFE-LANG-015  Atomic language-pack activation
-TEST-LIFE-LANG-016  Previous-pack rollback
-TEST-LIFE-LANG-017  Forward-repair readiness
-TEST-LIFE-LANG-018  Multiple installed language isolation
-TEST-LIFE-LANG-019  Derived-cache rebuild
-TEST-LIFE-LANG-020  Offline bundle installation
-TEST-LIFE-LANG-021  Deprecation and retirement
-TEST-LIFE-LANG-022  Caller data-authority preservation
-TEST-LIFE-LANG-023  Receipt and evidence completeness
-```
+`text
+TEST-LIFE-LANG-001 GF Wordbench and runtime separation
+TEST-LIFE-LANG-002 One active language project per build session
+TEST-LIFE-LANG-003 Release-grade source and toolchain closure
+TEST-LIFE-LANG-004 PGF compilation
+TEST-LIFE-LANG-005 Language-pack schema validation
+TEST-LIFE-LANG-006 Candidate provenance
+TEST-LIFE-LANG-007 Reproducible language build
+TEST-LIFE-LANG-008 Deterministic rendering
+TEST-LIFE-LANG-009 Structured-input compatibility
+TEST-LIFE-LANG-010 Regression and coverage
+TEST-LIFE-LANG-011 External AI non-authority
+TEST-LIFE-LANG-012 Knowledge-channel publication
+TEST-LIFE-LANG-013 Release Set compatibility
+TEST-LIFE-LANG-014 Inactive staging
+TEST-LIFE-LANG-015 Atomic language-pack activation
+TEST-LIFE-LANG-016 Previous-pack rollback
+TEST-LIFE-LANG-017 Forward-repair readiness
+TEST-LIFE-LANG-018 Multiple installed language isolation
+TEST-LIFE-LANG-019 Derived-cache rebuild
+TEST-LIFE-LANG-020 Offline bundle installation
+TEST-LIFE-LANG-021 Deprecation and retirement
+TEST-LIFE-LANG-022 Caller data-authority preservation
+TEST-LIFE-LANG-023 Receipt and evidence completeness
+`
 
 The test catalog and evidence registry own executable tests and evidence definitions.
 

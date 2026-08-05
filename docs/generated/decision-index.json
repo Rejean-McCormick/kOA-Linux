@@ -104,13 +104,7 @@
       "id": "DEC-DOC-005"
     },
     {
-      "id": "DEC-DOC-ARCH-001"
-    },
-    {
       "id": "DEC-DOC-CHANGE-001"
-    },
-    {
-      "id": "DEC-DOC-EDITORIAL-001"
     },
     {
       "id": "DEC-DOC-EXC-001"
@@ -167,13 +161,7 @@
       "id": "DEC-LINUX-001"
     },
     {
-      "id": "DEC-MIG-001"
-    },
-    {
-      "id": "DEC-MIG-002"
-    },
-    {
-      "id": "DEC-MIG-003"
+      "id": "DEC-MEDIATHEQUE-001"
     },
     {
       "id": "DEC-OFFLINE-001"
@@ -314,7 +302,7 @@
       "id": "DEC-SYS-SENT-001"
     },
     {
-      "id": "DEC-UCKK-001"
+      "id": "DEC-UCKK-EXT-001"
     },
     {
       "id": "DEC-USER-001"

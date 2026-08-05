@@ -119,9 +119,9 @@ It is not:
 
 The canonical requirement statement and its strength belong to:
 
-```text
+`text
 generated/requirements-index.json
-```
+`
 
 Normative Markdown explains context, responsibilities, procedures, failure behavior, and examples. It selects canonical requirements by identifier and displays them through generated requirement blocks.
 
@@ -141,11 +141,11 @@ The identification model supports:
 
 The principal identity rule is:
 
-```text
+`text
 one normative obligation
-    ↔
+ ↔
 one canonical requirement identifier
-```
+`
 
 A requirement can appear in several valid projections, but those projections refer to the same canonical identifier and do not create additional obligations.
 
@@ -173,7 +173,7 @@ This document applies to every normative requirement used by:
 
 It applies from initial requirement discovery through:
 
-```text
+`text
 candidate obligation
 canonical-owner selection
 atomic statement design
@@ -189,7 +189,7 @@ supersession
 deprecation
 retirement
 historical retention
-```
+`
 
 It governs requirement identity and the minimum metadata needed to interpret that identity.
 
@@ -237,26 +237,26 @@ A Markdown occurrence is a generated view.
 
 The canonical human-readable form is:
 
-```text
+`text
 REQ-<DOMAIN-PATH>-<NUMBER>
-```
+`
 
 The effective grammar is equivalent to:
 
-```text
+`text
 ^REQ-[A-Z][A-Z0-9]*(?:-[A-Z][A-Z0-9]*)*-[0-9]{3}$
-```
+`
 
 Examples of valid families include:
 
-```text
+`text
 REQ-DOC-006
 REQ-DEV-UV-001
 REQ-SEC-ID-003
 REQ-SEC-CULT-014
 REQ-OPS-HEALTH-002
 REQ-CONF-ID-001
-```
+`
 
 The first segment is always `REQ`.
 
@@ -371,12 +371,12 @@ One requirement describes one compliance proposition.
 
 A useful statement identifies:
 
-```text
+`text
 subject
 normative action or prohibition
 object or result
 scope or condition when needed
-```
+`
 
 A requirement is atomic when one conformance result can evaluate it without producing independent pass and fail outcomes for unrelated obligations.
 
@@ -541,7 +541,7 @@ Traceability records the graph around a requirement.
 
 Typical relationships include:
 
-```text
+`text
 decision → requirement
 requirement → canonical fact
 requirement → lock
@@ -554,7 +554,7 @@ test → evidence
 requirement → exception
 requirement → conformance claim
 requirement → superseding requirement
-```
+`
 
 The traceability registry owns these graph relationships where the relationship is not already an intrinsic requirement field.
 
@@ -1120,14 +1120,8 @@ An AI agent does not allocate, merge, split, or reinterpret requirements without
 
 | ADR | Relevance |
 | --- | --- |
-| `ADR-006` | Preserves first-class component boundaries that requirements can target. |
-| `ADR-008` | Preserves independent release-channel requirement scope. |
-| `ADR-013` | Separates global requirements from profile-specific implementation. |
 | `ADR-015` | Provides stable development-workspace requirement families. |
-| `ADR-016` | Keeps generated documentation and AI contexts non-authoritative. |
-| `ADR-023` | Keeps overlay requirements explicit. |
 | `ADR-024` | Preserves logical requirement meaning across physical deployment forms. |
-| `ADR-026` | Blocks active authority that depends on a missing decision. |
 
 ### 9.3 Prohibited assumptions
 
@@ -1219,7 +1213,7 @@ This document conforms when all of the following checks pass:
 
 The validator reports focused failures, including:
 
-```text
+`text
 requirement_identifier_missing
 requirement_identifier_grammar_invalid
 requirement_namespace_unregistered
@@ -1253,7 +1247,7 @@ requirement_claim_version_missing
 requirement_generated_alias_authoritative
 requirement_historical_version_missing
 requirement_orphaned
-```
+`
 
 ## 11. Non-Normative Examples
 
@@ -1267,11 +1261,11 @@ The requirement identifier remains unchanged because the obligation remains unch
 
 The active family contains:
 
-```text
+`text
 REQ-OPS-HEALTH-001
 REQ-OPS-HEALTH-002
 REQ-OPS-HEALTH-003
-```
+`
 
 A new obligation receives the next unused allocation in that namespace. Existing requirements are not renumbered to match a preferred reading order.
 

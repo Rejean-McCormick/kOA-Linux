@@ -1606,7 +1606,7 @@
     "A failed or cancelled result does not claim publication.",
     "Duplicate requests return the existing compatible receipt rather than create duplicate publication effects.",
     "A retry is preceded by revalidation when authority, connectivity, destination, source, or contract state changed.",
-    "Publication Gateway and UCKK Dimension Gateway remain separate authorities.",
+    "When the destination is UCKK, Publication Gateway authorization precedes UCKK Publication Bridge packaging and transport, and the local source authority remains unchanged.",
     "The receipt records historical truth even after consent revocation, withdrawal, expiry, correction, or downstream remediation.",
     "Revocation stops future and reversible pending operations but does not erase the prior receipt.",
     "External deletion is not reported as guaranteed when the destination does not provide that capability.",

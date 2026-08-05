@@ -17,7 +17,12 @@
     "generated/profile-catalog.json",
     "generated/requirements-index.json",
     "generated/assertion-index.json",
-    "generated/traceability.json"
+    "generated/traceability.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json",
+    "04-components/uckk-import-bridge.md"
   ],
   "decision_ids": [
     "DEC-MEDIATHEQUE-001",
@@ -37,7 +42,13 @@
     "REQ-MEDIATHEQUE-007",
     "REQ-MEDIATHEQUE-008",
     "REQ-MEDIATHEQUE-009",
-    "REQ-MEDIATHEQUE-010"
+    "REQ-MEDIATHEQUE-010",
+    "REQ-UCKK-IMPORT-001",
+    "REQ-UCKK-IMPORT-002",
+    "REQ-UCKK-IMPORT-003",
+    "REQ-UCKK-IMPORT-004",
+    "REQ-UCKK-IMPORT-005",
+    "REQ-UCKK-IMPORT-006"
   ],
   "lock_ids": [
     "LOCK-MEDIATHEQUE-001",
@@ -47,7 +58,8 @@
     "LOCK-COMP-001",
     "LOCK-COMP-002",
     "LOCK-GOV-001",
-    "LOCK-OFFLINE-001"
+    "LOCK-OFFLINE-001",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -55,7 +67,8 @@
     "DOC-COMP-000",
     "DOC-COMP-001",
     "DOC-COMP-002",
-    "DOC-COMP-003"
+    "DOC-COMP-003",
+    "DOC-COMP-UCKK-IMPORT-001"
   ],
   "tags": [
     "component",
@@ -67,7 +80,9 @@
     "rights",
     "offline",
     "backup",
-    "restore"
+    "restore",
+    "import-from-uckk",
+    "offline-learning"
   ]
 }
 KOA:DOC-META:END -->
@@ -76,153 +91,185 @@ KOA:DOC-META:END -->
 
 ## 1. Responsibility
 
-`koa_mediatheque` is the internal kOA-Linux component that manages local media and file records.
+`koa_mediatheque` is the private local and offline Mediatheque authority of kOA-Linux Operating System.
 
-It owns the complete local lifecycle from staging and verification through classification, active use, controlled export, withdrawal, archival, backup, and restore. It is a general kOA capability; records do not need to be relevant to UCKK.
+It manages local media, files, instructions, manuals, organization-specific knowledge, accepted learning packages, and related metadata. It owns the local lifecycle from staging and verification through classification, active use, controlled import and export, withdrawal, archival, backup, and restore.
+
+The component is useful without UCKK. A local installation may contain only private material and may never publish it.
 
 ## 2. Owned State
 
 The component owns:
 
-- stable media-record identities;
-- version identities and integrity bindings;
-- managed local content references;
-- collections, dimensions, tags, and relationships;
-- rights, restrictions, consent references, and cultural conditions;
+- stable local record and version identities;
+- managed local content bindings;
+- integrity state and verified hashes;
+- collections, dimensions, tags, relationships, and local search projections;
+- rights, restrictions, consent references, licenses, and cultural conditions;
 - provenance and derivation history;
-- accepted renditions and their transformation references;
-- import and export history;
-- external-publication receipt references;
+- accepted renditions and transformation references;
+- quarantine, import, export, publication-request, and update-candidate state;
+- UCKK package and receipt references;
 - backup and restore checkpoints.
 
-It does not own UCKK Moodle records, UCKK users, UCKK courses, remote permissions, or UCKK's own Mediatheque state.
+It does not own UCKK Moodle courses, remote UCKK records, UCKK users, remote permissions, or the online UCKK Mediatheque lifecycle.
 
-## 3. Data Model
+## 3. Shared Mediatheque Frame
 
-The canonical exchange representation is `koa-media-record.schema.json`.
+The kOA and UCKK Mediatheques implement `shared-mediatheque-frame.schema.json` or declared compatible versions.
 
-A record is not the same thing as its content hash:
+The frame carries compatible concepts for:
+
+- source and local identity references;
+- version references;
+- integrity and manifests;
+- media description and renditions;
+- collections, dimensions, tags, and relationships;
+- language and accessibility;
+- rights, licenses, restrictions, consent, and cultural conditions;
+- provenance and derivation;
+- lifecycle state;
+- mapping versions and transfer receipts.
+
+A shared frame does not create a shared database, identifier namespace, access-control system, lifecycle, or authority. A mapping that cannot preserve a required right, restriction, provenance field, or lifecycle condition blocks acceptance or requires explicit review.
+
+## 4. Local Data Model
+
+The canonical local representation is `koa-media-record.schema.json`, which binds the shared frame to kOA-local identity and storage state.
 
 ```text
-record_id   = stable local conceptual/catalog identity
-version_id  = accepted version of record state and content binding
-content hash = integrity identity of bytes
-remote UCKK ref = destination reference only
+record_id        = stable local catalog identity
+version_id       = accepted local version identity
+content digest   = integrity identity of bytes
+UCKK source ref  = preserved external provenance reference
+UCKK target ref  = preserved publication destination reference
 ```
 
-Two records may intentionally reference identical bytes under different provenance, rights, classification, or organizational contexts. Exact-duplicate detection therefore proposes a relationship or reuse decision; it does not silently merge records.
+Identical bytes do not imply identical records, rights contexts, provenance, or authority.
 
-## 4. Local Storage Baseline
+## 5. Local Storage Baseline
 
-For the user-lightweight profile, the expected baseline is:
+The user-lightweight baseline uses:
 
 ```text
-SQLite database
-managed content root
-staging and quarantine directories
-bounded rendition queue
+SQLite structured state
+managed local content root
+separate staging and quarantine roots
+bounded rendition and import-validation queues
 export and publication-package area
-receipt references
-backup checkpoints
+package and receipt evidence
+coordinated backup checkpoints
 ```
 
-Search indexes, thumbnails, previews, XLSX exports, and publication packages are projections or exchange artifacts. They are not authoritative stores.
+Indexes, thumbnails, previews, spreadsheets, packages, and remote catalogs are projections or exchange artifacts, not authoritative stores.
 
-## 5. Ingest Workflow
+## 6. Ordinary Local Ingest
 
-1. Stage content and candidate metadata.
+1. Stage selected content and candidate metadata.
 2. Validate format, size, rights prerequisites, and policy.
 3. Compute and verify integrity.
-4. Detect exact duplicate bytes and existing record relationships.
-5. Resolve record and version identity.
-6. Accept or quarantine the version.
-7. Schedule bounded renditions.
+4. Detect duplicate bytes and existing relationships.
+5. Resolve local record and version identity.
+6. Accept, reject, or quarantine the version.
+7. Schedule bounded deterministic renditions.
 8. Emit events and required receipts.
 
-Unverified content cannot become an accepted version.
+AI may propose descriptions or classifications, but the local workflow must accept them. Technical facts come from deterministic local processing.
 
-## 6. Classification and Provenance
+## 7. `import_from_uckk`
 
-Classification is explicit and versioned. The component can represent collections, dimensions, tags, relationships, source type, creators, custodians, acquisition, derivations, evidence, and validation state.
-
-AI may propose descriptions, tags, relationships, or classifications. Such output remains candidate data until an authorized workflow accepts it. Technical facts such as file size, media type, and verified hash come from deterministic local processing.
-
-## 7. Rights and Restrictions
-
-Every export or publication resolves the active rights and restriction state for the exact version and destination. The model supports:
-
-- disclosure class;
-- publication state;
-- allowed targets;
-- consent references;
-- cultural-rights references;
-- license;
-- embargo;
-- retention;
-- AI-use restrictions;
-- purpose-specific restrictions.
-
-Missing or incompatible rights block publication.
-
-## 8. Publication Relationship
-
-The component prepares a candidate package but does not grant publication authority and does not send directly to UCKK.
+Inbound UCKK learning content uses the separate UCKK Import Bridge:
 
 ```text
-kOA Mediatheque candidate
-→ Publication Gateway allow decision
+selected UCKK course, path, manual, or resource graph
+→ authenticated retrieval or complete offline bundle
+→ quarantine
+→ manifest, source, signature, hash, license, rights, provenance,
+  malware-policy, resource-graph, and shared-frame validation
+→ explicit local acceptance
+→ separate kOA record and version identities
+→ offline availability
+→ UCKK import receipt
+```
+
+Transport into quarantine is not acceptance. UCKK source identifiers remain provenance references. A later remote version becomes an update candidate and never overwrites the local copy automatically.
+
+Accepted content can remain available for long periods without UCKK connectivity. Local progress, annotations, adaptations, and private derivative material remain local unless separately selected for publication.
+
+## 8. `publish_to_uckk`
+
+Outbound publication uses the separate authorization and transport path:
+
+```text
+selected kOA record versions
+→ Publication Gateway disclosure decision
 → UCKK publication package
-→ UCKK publication bridge
-→ external UCKK Moodle platform
+→ UCKK Publication Bridge
+→ online UCKK Mediatheque
 → publication receipt
 → local export history
 ```
 
-The local record remains authoritative after publication.
+The local source remains authoritative. The remote UCKK object is a separate object under UCKK authority.
 
-## 9. Offline Operation
+## 9. No Implicit Synchronization
 
-The component supports local cataloging, classification, browsing, content access, deterministic processing, export preparation, backup, and restore without UCKK.
+The component does not run a generic Mediatheque synchronization service.
 
-External publication remains visibly queued or unavailable. A queued package is cancelled when its source version, rights, authorization, destination, or expiry no longer matches.
+`publish_to_uckk` and `import_from_uckk` have separate selections, policies, credentials, queues, packages, receipts, retries, and reconciliation. Reconnection does not authorize upload, download, overwrite, deletion, or progress transfer.
 
-## 10. Resource Model
+## 10. Rights and Restrictions
 
-Background jobs are admitted by Resource Governor. The user-lightweight baseline uses one worker by default. Interactive browsing, local playback, policy checks, identity, audit, and recovery take priority over:
+Every import or export resolves the exact version, purpose, audience, destination or source, license, restrictions, consent, cultural conditions, retention, and expiry.
 
-- thumbnails;
-- previews;
-- transcription;
-- transcoding;
-- bulk hashing;
-- indexing;
-- publication packaging;
-- remote publication retries.
+- missing or incompatible outbound rights block publication;
+- unknown or incompatible inbound licenses block local acceptance;
+- lossy shared-frame mapping blocks or requires review;
+- a remote acknowledgement does not prove local rights;
+- a local acceptance does not authorize redistribution.
 
-## 11. Backup and Restore
+## 11. Offline Operation
 
-A valid backup binds the structured database checkpoint to the managed-content manifest. Restore occurs in staging and verifies:
+Without Internet or UCKK, the component continues:
 
-- database integrity;
-- content hashes;
-- permissions;
-- missing or orphaned bindings;
-- queue state;
-- publication-package and receipt references;
-- active schema compatibility.
+- local ingest, cataloging, browsing, search, and playback;
+- use of accepted courses, learning paths, manuals, and instructions;
+- local annotations and private adaptations;
+- deterministic rendition and validation work within resource limits;
+- export preparation;
+- backup and restore.
 
-The backup does not claim to contain external UCKK records.
+Live UCKK discovery, download, publication delivery, and update checks are unavailable or deferred. Complete offline packages can still be validated when all required evidence is present locally.
 
-## 12. Conformance
+## 12. Resource Model
+
+Resource Governor controls background work. Interactive use, integrity, policy, identity, audit, and recovery take priority over thumbnails, previews, transcription, transcoding, bulk hashing, indexing, package validation, publication packaging, and remote retry.
+
+## 13. Backup and Restore
+
+A valid backup binds:
+
+- the structured database checkpoint;
+- managed content manifest;
+- quarantine and accepted-package state;
+- import and publication receipts;
+- update candidates and queues;
+- permissions and schema compatibility.
+
+Restore occurs in staging and activates only after all references reconcile. The backup does not claim to contain authoritative remote UCKK state.
+
+## 14. Conformance
 
 A conforming implementation proves:
 
-- local operation without UCKK;
-- unique local authority;
+- private local operation without UCKK;
+- shared-frame version and mapping validation;
 - integrity verification before acceptance;
+- quarantine before UCKK package acceptance;
+- separate local identities with preserved UCKK provenance;
+- explicit Publication Gateway authorization before outbound transfer;
+- accepted learning material remains available offline;
 - no direct cross-domain database writes;
-- explicit publication authorization;
-- retry-safe external publication;
-- safe handling of partial and ambiguous remote results;
+- no implicit bidirectional synchronization or automatic overwrite;
 - coordinated backup and restore;
 - candidate-only AI behavior.

@@ -75,7 +75,7 @@
     "DEC-GATE-001",
     "DEC-AI-001",
     "DEC-SENT-001",
-    "DEC-UCKK-001",
+    "DEC-UCKK-EXT-001",
     "DEC-ARI-001",
     "DEC-CONTAINER-001",
     "DEC-K8S-001",
@@ -83,7 +83,8 @@
     "DEC-REL-001",
     "DEC-AUDIT-001",
     "DEC-OFFLINE-001",
-    "DEC-SEC-001"
+    "DEC-SEC-001",
+    "DEC-MEDIATHEQUE-001"
   ],
   "requirement_ids": [
     "REQ-PROFILE-001",
@@ -134,14 +135,16 @@
     "LOCK-AI-001",
     "LOCK-AI-002",
     "LOCK-SENT-001",
-    "LOCK-UCKK-001",
+    "LOCK-MEDIATHEQUE-001",
     "LOCK-AUDIT-001",
     "LOCK-OFFLINE-001",
     "LOCK-SEC-001",
     "LOCK-LIFE-001",
     "LOCK-LIFE-002",
     "LOCK-LIFE-003",
-    "LOCK-LIFE-004"
+    "LOCK-LIFE-004",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "scope": {
@@ -328,13 +331,13 @@
     },
     {
       "component_id": "konnaxion",
-      "contract_ref": "contracts/components/konnaxion.component.json",
+      "contract_ref": "contracts/subsystems/konnaxion.subsystem.json",
       "role": "controlled_local_web_and_public_domain_services",
       "activation": "always_on"
     },
     {
       "component_id": "orgo",
-      "contract_ref": "contracts/components/orgo.component.json",
+      "contract_ref": "contracts/subsystems/orgo.subsystem.json",
       "role": "private_workflow_and_operational_services",
       "activation": "always_on"
     },
@@ -357,19 +360,15 @@
       "contract_ref": "contracts/components/koa-mediatheque.component.json",
       "activation": "declared_capability"
     },
-    {
-      "component_id": "uckk_dimension_gateway",
-      "contract_ref": "contracts/components/uckk-dimension-gateway.component.json",
-      "activation": "declared_capability"
-    },
+    null,
     {
       "component_id": "ariane_runtime",
-      "contract_ref": "contracts/components/ariane-runtime.component.json",
+      "contract_ref": "contracts/subsystems/ariane.subsystem.json",
       "activation": "declared_local_interface"
     },
     {
       "component_id": "sentient",
-      "contract_ref": "contracts/components/sentient.component.json",
+      "contract_ref": "contracts/subsystems/sentient.subsystem.json",
       "activation": "explicit_task",
       "non_authoritative": true
     }
@@ -488,7 +487,7 @@
       "authenticated component API",
       "declared event contract",
       "publication gateway",
-      "UCKK dimension gateway when applicable",
+      "UCKK directional integration contract when applicable",
       "governed import or synchronization contract",
       "signed or verified artifact"
     ],
@@ -845,7 +844,7 @@
     "The hub profile silently inherits sovereign_linux_node or a high-assurance overlay.",
     "A hub conformance claim proves each physical node conforms to sovereign_linux_node.",
     "Governance Policy Runtime and Resource Governor are one authority.",
-    "Publication Gateway and UCKK Dimension Gateway are interchangeable.",
+    "Publication Gateway and UCKK Import Bridge are interchangeable.",
     "External AI is a native or authoritative hub capability.",
     "SenTient is required, authoritative, installed by default, or always active.",
     "A valid artifact can activate without Release Set compatibility.",
@@ -893,5 +892,24 @@
     ],
     "activation_requires_outcome": "pass",
     "ordinary_file_hashes_required": false
+  },
+  "external_integrations": {
+    "uckk_publication": {
+      "integration_id": "uckk-publication",
+      "contract_ref": "contracts/integrations/uckk-publication.integration.json",
+      "availability": "optional",
+      "direction": "outbound",
+      "required_for_local_operation": false,
+      "required_for_offline_operation": false
+    },
+    "uckk_import": {
+      "integration_id": "uckk-import",
+      "contract_ref": "contracts/integrations/uckk-import.integration.json",
+      "availability": "optional",
+      "direction": "inbound",
+      "offline_bundle_supported": true,
+      "accepted_content_available_offline": true,
+      "automatic_sync": false
+    }
   }
 }

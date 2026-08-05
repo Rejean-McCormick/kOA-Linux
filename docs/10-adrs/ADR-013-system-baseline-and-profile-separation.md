@@ -1146,7 +1146,7 @@ Regeneration includes:
 | `TEST-CROSS-008` | Policy decision precedes governed privilege | `pass` |
 | `TEST-CROSS-009` | Audit Broker does not become an authorization engine | `pass` |
 | `TEST-CROSS-011` | Ariane voice remains externally optional | `pass` |
-| `TEST-CROSS-012` | UCKK native ingestion remains deterministic | `pass` |
+| `TEST-CROSS-012` | kOA Mediatheque ingestion and UCKK learning-package validation remain deterministic and independent of AI | `pass` |
 | `TEST-CROSS-013` | External AI cannot directly mutate authority | `pass` |
 | `TEST-CROSS-014` | Identity layers remain distinct | `pass` |
 | `TEST-CROSS-015` | All cross-component mutations are contract-bound | `pass` |

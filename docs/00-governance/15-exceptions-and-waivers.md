@@ -117,31 +117,31 @@ It does not permit deviations from non-waivable authority or constitutional prot
 
 Canonical sources:
 
-```text
+`text
 generated/exception-index.json
 generated/decision-index.json
 generated/requirements-index.json
 generated/assertion-index.json
 generated/traceability.json
 generated/document-index.json
-```
+`
 
 Governing schemas:
 
-```text
+`text
 schemas/exception.schema.json
 schemas/test-evidence.schema.json
-```
+`
 
 Principal validators:
 
-```text
+`text
 tools/check_traceability.py
 tools/check_interfile_locks.py
 tools/check_decision_closure.py
 tools/check_profile_inheritance.py
 tools/validate_docs.py
-```
+`
 
 Markdown summaries, generated exception indexes, tickets, comments, or release notes do not create an exception.
 
@@ -171,7 +171,7 @@ Global exceptions are prohibited.
 
 Every exception or waiver has one exact scope. Permitted kinds are:
 
-```text
+`text
 deployment_instance
 release
 profile_claim
@@ -180,7 +180,7 @@ component_release
 artifact_instance
 development_workspace
 migration_action
-```
+`
 
 Concrete target identifiers are mandatory. Global, all-deployment, all-profile, all-future-release, wildcard, or indefinite scopes are prohibited.
 
@@ -212,7 +212,7 @@ The following cannot be waived or excepted:
 8. Interfile Alignment Lock enforcement;
 9. prohibition on direct writes to another component’s authoritative source tables;
 10. separation of Resource Governor and Governance Policy Runtime;
-11. separation of Publication Gateway and UCKK Dimension Gateway;
+11. separation of Publication Gateway, UCKK Publication Bridge, and UCKK Import Bridge responsibilities;
 12. global absence of native AI capabilities;
 13. non-authoritative status of external AI output;
 14. explicit profile scoping;
@@ -282,7 +282,7 @@ A waiver means the requirement is not fully satisfied. The claim is labeled `con
 
 Lifecycle states:
 
-```text
+`text
 proposed
 under_review
 approved
@@ -293,7 +293,7 @@ revoked
 superseded
 closed
 rejected
-```
+`
 
 A proposal has no authority. Review evaluates scope, requirements, risk, controls, evidence, remediation, and conformance effect. Approval requires accepted decisions, owner reviews, risk acceptance, control and remediation ownership, traceability, successful validation, and no non-waivable lock violation. Activation occurs only after controls and evidence exist and emits a receipt.
 
@@ -351,14 +351,14 @@ Validation confirms schema conformance, unique IDs, accepted decisions, resolvab
 
 Required commands:
 
-```bash
+`bash
 python docs/tools/check_decision_closure.py
 python docs/tools/check_interfile_locks.py
 python docs/tools/check_traceability.py
 python docs/tools/check_profile_inheritance.py
 python docs/tools/generate_docs.py --check
 python docs/tools/validate_docs.py
-```
+`
 
 ---
 
@@ -374,20 +374,20 @@ A valid waiver names one target, explains the temporary constraint, defines conc
 
 ### 11.3 Invalid global exception
 
-```json
+`json
 {
-  "scope": {"kind": "global", "targets": ["all"]},
-  "description": "Allow all components to share databases where convenient."
+ "scope": {"kind": "global", "targets": ["all"]},
+ "description": "Allow all components to share databases where convenient."
 }
-```
+`
 
 This is invalid because it changes architecture and conflicts with data-authority locks.
 
 ### 11.4 Invalid indefinite waiver
 
-```json
+`json
 {"expires_at": "until_fixed"}
-```
+`
 
 Expiration must be an exact timestamp within the permitted duration.
 
@@ -395,13 +395,13 @@ Expiration must be an exact timestamp within the permitted duration.
 
 An AI agent may draft:
 
-```json
+`json
 {
-  "status": "proposed",
-  "approval_status": "human_approval_required",
-  "risk_acceptance": null
+ "status": "proposed",
+ "approval_status": "human_approval_required",
+ "risk_acceptance": null
 }
-```
+`
 
 It may not convert that object to active approval without recorded human authorization.
 

@@ -36,9 +36,7 @@
 | DEC-DOC-003 |  |  |  |
 | DEC-DOC-004 |  |  |  |
 | DEC-DOC-005 |  |  |  |
-| DEC-DOC-ARCH-001 |  |  |  |
 | DEC-DOC-CHANGE-001 |  |  |  |
-| DEC-DOC-EDITORIAL-001 |  |  |  |
 | DEC-DOC-EXC-001 |  |  |  |
 | DEC-DOC-GEN-001 |  |  |  |
 | DEC-GATE-001 |  |  |  |
@@ -57,9 +55,7 @@
 | DEC-LIFE-ACT-001 |  |  |  |
 | DEC-LIFE-CHANNEL-001 |  |  |  |
 | DEC-LINUX-001 |  |  |  |
-| DEC-MIG-001 |  |  |  |
-| DEC-MIG-002 |  |  |  |
-| DEC-MIG-003 |  |  |  |
+| DEC-MEDIATHEQUE-001 |  |  |  |
 | DEC-OFFLINE-001 |  |  |  |
 | DEC-OPS-DR-001 |  |  |  |
 | DEC-OPS-INC-001 |  |  |  |
@@ -106,5 +102,5 @@
 | DEC-SYS-RES-004 |  |  |  |
 | DEC-SYS-RESOURCE-001 |  |  |  |
 | DEC-SYS-SENT-001 |  |  |  |
-| DEC-UCKK-001 |  |  |  |
+| DEC-UCKK-EXT-001 |  |  |  |
 | DEC-USER-001 |  |  |  |

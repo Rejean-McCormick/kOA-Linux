@@ -184,7 +184,7 @@ This document applies to registered artifact classes, including:
 - knowledge packages;
 - Kristal artifacts;
 - Ariane artifacts;
-- kOA Mediatheque artifacts and retained UCKK publication packages or receipts;
+- kOA Mediatheque artifacts, accepted offline learning content, retained UCKK publication or learning packages, quarantine dispositions, source mappings, and directional receipts;
 - offline bundles;
 - sovereignty bundles;
 - Release Sets;
@@ -200,7 +200,7 @@ This document applies to registered artifact classes, including:
 
 Retention policy covers at least these conceptual states:
 
-```text
+`text
 source
 candidate
 validated
@@ -218,7 +218,7 @@ revoked
 quarantined
 deletion_eligible
 deleted
-```
+`
 
 The exact canonical state names and valid transitions belong to artifact-class and lifecycle contracts.
 
@@ -264,12 +264,12 @@ Evidence retention remains canonical in `generated/evidence-catalog.json` and ap
 
 ### 3.1 Artifact and release authority
 
-```text
+`text
 contracts/artifact-classes.contract.json
 contracts/release-channels.contract.json
 contracts/artifact-contracts/release-set.schema.json
 generated/authority-manifest.json
-```
+`
 
 The artifact-class registry owns artifact-class lifecycle and retention fields.
 
@@ -279,37 +279,37 @@ A Release Set owns the exact cross-channel compatibility set selected for a rele
 
 ### 3.2 Profiles and offline authority
 
-```text
+`text
 generated/profile-catalog.json
 contracts/profiles/*.profile.json
 contracts/artifact-contracts/offline-bundle.schema.json
 contracts/artifact-contracts/sovereignty-bundle.schema.json
-```
+`
 
 Profiles own locality, redundancy, offline, assurance, and restoration requirements.
 
 ### 3.3 Provenance and evidence
 
-```text
+`text
 contracts/artifact-contracts/provenance-receipt.schema.json
 generated/traceability.json
 generated/test-catalog.json
 generated/evidence-catalog.json
 generated/exception-index.json
-```
+`
 
 ### 3.4 Change and invariant authority
 
-```text
+`text
 generated/decision-index.json
 generated/requirements-index.json
 generated/assertion-index.json
 generated/decision-index.json
-```
+`
 
 ### 3.5 Related lifecycle documents
 
-```text
+`text
 05-development/16-development-to-release-transition.md
 06-lifecycle/00-artifact-model.md
 06-lifecycle/01-artifact-classes.md
@@ -322,7 +322,7 @@ generated/decision-index.json
 06-lifecycle/15-data-schema-evolution.md
 06-lifecycle/16-forward-repair.md
 06-lifecycle/18-sbom-provenance-and-signing.md
-```
+`
 
 ## 4. Model and Responsibilities
 
@@ -1394,32 +1394,32 @@ This document is conformant when:
 
 Expected test coverage includes:
 
-```text
-TEST-LIFE-RET-001  Artifact-class retention policy completeness
-TEST-LIFE-RET-002  Retention and activation separation
-TEST-LIFE-RET-003  Candidate disposition retention
-TEST-LIFE-RET-004  Failed candidate repository isolation
-TEST-LIFE-RET-005  Active and previous known-good retention
-TEST-LIFE-RET-006  Release Set dependency closure
-TEST-LIFE-RET-007  Cross-channel deletion protection
-TEST-LIFE-RET-008  Provenance and dependency-inventory retention
-TEST-LIFE-RET-009  Migration and forward-repair retention
-TEST-LIFE-RET-010  Deprecation and retirement behavior
-TEST-LIFE-RET-011  Identifier non-reuse
-TEST-LIFE-RET-012  Revocation and quarantine isolation
-TEST-LIFE-RET-013  Hold overrides routine deletion
-TEST-LIFE-RET-014  Offline local retention closure
-TEST-LIFE-RET-015  Backup restoration validity
-TEST-LIFE-RET-016  Integrity and readability verification
-TEST-LIFE-RET-017  Encryption-key and trust-history retention
-TEST-LIFE-RET-018  Sensitive-content minimization
-TEST-LIFE-RET-019  Deletion eligibility
-TEST-LIFE-RET-020  Scoped idempotent deletion
-TEST-LIFE-RET-021  Distributed copy accounting
-TEST-LIFE-RET-022  Immutable published-artifact replacement
-TEST-LIFE-RET-023  Derived-cache rebuildability
-TEST-LIFE-RET-024  Current compatibility verification before restore
-```
+`text
+TEST-LIFE-RET-001 Artifact-class retention policy completeness
+TEST-LIFE-RET-002 Retention and activation separation
+TEST-LIFE-RET-003 Candidate disposition retention
+TEST-LIFE-RET-004 Failed candidate repository isolation
+TEST-LIFE-RET-005 Active and previous known-good retention
+TEST-LIFE-RET-006 Release Set dependency closure
+TEST-LIFE-RET-007 Cross-channel deletion protection
+TEST-LIFE-RET-008 Provenance and dependency-inventory retention
+TEST-LIFE-RET-009 Migration and forward-repair retention
+TEST-LIFE-RET-010 Deprecation and retirement behavior
+TEST-LIFE-RET-011 Identifier non-reuse
+TEST-LIFE-RET-012 Revocation and quarantine isolation
+TEST-LIFE-RET-013 Hold overrides routine deletion
+TEST-LIFE-RET-014 Offline local retention closure
+TEST-LIFE-RET-015 Backup restoration validity
+TEST-LIFE-RET-016 Integrity and readability verification
+TEST-LIFE-RET-017 Encryption-key and trust-history retention
+TEST-LIFE-RET-018 Sensitive-content minimization
+TEST-LIFE-RET-019 Deletion eligibility
+TEST-LIFE-RET-020 Scoped idempotent deletion
+TEST-LIFE-RET-021 Distributed copy accounting
+TEST-LIFE-RET-022 Immutable published-artifact replacement
+TEST-LIFE-RET-023 Derived-cache rebuildability
+TEST-LIFE-RET-024 Current compatibility verification before restore
+`
 
 The test catalog and evidence registry own executable tests and evidence definitions.
 

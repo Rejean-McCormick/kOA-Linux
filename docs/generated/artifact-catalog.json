@@ -30,6 +30,20 @@
       "version": null
     },
     {
+      "id": "https://schemas.koa.local/artifact-contracts/koa-media-record.schema.json",
+      "path": "contracts/artifact-contracts/koa-media-record.schema.json",
+      "title": "kOA Media Record",
+      "status": null,
+      "version": null
+    },
+    {
+      "id": "https://schemas.koa.local/artifact-contracts/kristal-artifact.schema.json",
+      "path": "contracts/artifact-contracts/kristal-artifact.schema.json",
+      "title": "Kristal Artifact",
+      "status": null,
+      "version": null
+    },
+    {
       "id": "https://schemas.koa.local/artifact-contracts/language-pack.schema.json",
       "path": "contracts/artifact-contracts/language-pack.schema.json",
       "title": "kOA Language Runtime Pack Artifact Contract",
@@ -100,6 +114,13 @@
       "version": null
     },
     {
+      "id": "https://schemas.koa.local/artifact-contracts/shared-mediatheque-frame.schema.json",
+      "path": "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
+      "title": "Shared Mediatheque Frame",
+      "status": null,
+      "version": null
+    },
+    {
       "id": "https://schemas.koa.local/artifact-contracts/sovereignty-bundle.schema.json",
       "path": "contracts/artifact-contracts/sovereignty-bundle.schema.json",
       "title": "kOA Sovereignty Bundle Schema",
@@ -107,9 +128,30 @@
       "version": null
     },
     {
-      "id": "https://schemas.koa.local/artifact-contracts/uckk-media-reference.schema.json",
-      "path": "contracts/artifact-contracts/uckk-media-reference.schema.json",
-      "title": "https://schemas.koa.local/artifact-contracts/uckk-media-reference.schema.json",
+      "id": "https://schemas.koa.local/artifact-contracts/uckk-import-receipt.schema.json",
+      "path": "contracts/artifact-contracts/uckk-import-receipt.schema.json",
+      "title": "UCKK Import Receipt",
+      "status": null,
+      "version": null
+    },
+    {
+      "id": "https://schemas.koa.local/artifact-contracts/uckk-learning-package.schema.json",
+      "path": "contracts/artifact-contracts/uckk-learning-package.schema.json",
+      "title": "UCKK Learning Package",
+      "status": null,
+      "version": null
+    },
+    {
+      "id": "https://schemas.koa.local/artifact-contracts/uckk-publication-package.schema.json",
+      "path": "contracts/artifact-contracts/uckk-publication-package.schema.json",
+      "title": "UCKK Publication Package",
+      "status": null,
+      "version": null
+    },
+    {
+      "id": "https://schemas.koa.local/artifact-contracts/uckk-publication-receipt.schema.json",
+      "path": "contracts/artifact-contracts/uckk-publication-receipt.schema.json",
+      "title": "UCKK Publication Receipt",
       "status": null,
       "version": null
     },

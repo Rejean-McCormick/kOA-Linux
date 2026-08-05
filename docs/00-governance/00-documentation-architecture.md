@@ -31,7 +31,7 @@ The documentation system is contract-first. Source contracts and focused explana
 
 ## 2. Source Model
 
-Canonical sources are governance documents, accepted ADRs, system contracts, internal component contracts, subsystem boundary contracts, profile contracts, integration contracts, toolchain contracts, and artifact schemas.
+Canonical sources are governance documents, system contracts, internal component contracts, subsystem boundary contracts, profile contracts, integration contracts, toolchain contracts, artifact schemas, and the small set of accepted ADRs that preserve non-obvious regression-prone implementation choices.
 
 ## 3. Generated Model
 

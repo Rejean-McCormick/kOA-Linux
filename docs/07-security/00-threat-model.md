@@ -113,7 +113,8 @@
     "LOCK-MEDIATHEQUE-002",
     "LOCK-UCKK-EXT-001",
     "LOCK-PROFILE-001",
-    "LOCK-PROFILE-002"
+    "LOCK-PROFILE-002",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -419,7 +420,7 @@ These assumptions narrow claims. They do not grant authority.
 - **REQ-SEC-THREAT-014 — SHALL:** Supply-chain controls reject identity collision, substitution, downgrade, signature stripping, manifest replacement, trust-root substitution, and incomplete evidence.
 - **REQ-SEC-THREAT-015 — SHALL:** Offline and removable-media imports use quarantine, bounded parsing, complete inventory checks, trust verification, revocation context, compatibility checks, and no automatic execution or activation.
 - **REQ-SEC-THREAT-016 — SHALL:** Public-to-private and private-to-public information flows use explicit domain gateways and preserve source, destination, classification, transformation, approval, and receipt identity.
-- **REQ-SEC-THREAT-017 — SHALL:** Publication Gateway remain separate from kOA Mediatheque admission, and its UCKK publication adapter shall not become a generic bypass around component ownership, disclosure policy, or external-destination authorization.
+- **REQ-SEC-THREAT-017 — SHALL:** Publication Gateway remain separate from kOA Mediatheque admission, and its UCKK Publication Bridge shall not become a generic bypass around component ownership, disclosure policy, or external-destination authorization.
 - **REQ-SEC-THREAT-018 — SHALL:** Native core correctness, authorization, policy, activation, deterministic rendering, kOA Mediatheque ingestion, recovery, and offline operation remain independent of generative AI and of UCKK availability.
 - **REQ-SEC-THREAT-019 — SHALL:** External AI use remains explicit, removable, data-class constrained, provenance-bearing, non-authoritative, and unable to mutate authority or privileged state directly.
 - **REQ-SEC-THREAT-020 — SHALL:** No-AI, consent, cultural-rights, audience, attribution, export, withdrawal, and steward-authority restrictions are enforced at ingest, storage, query, render, publication, synchronization, backup, export, federation, and AI boundaries.
@@ -535,7 +536,7 @@ Documentation-only changes that do not alter behavior can use normal documentati
 
 ### 6.7 Incident transition
 
-```text
+`text
 suspected
 -> triaged
 -> contained
@@ -548,7 +549,7 @@ suspected
 -> recovery
 -> review and control update
 -> closed
-```
+`
 
 Containment does not fabricate emergency authority.
 
@@ -706,7 +707,7 @@ Every interaction inherits the owner component's detailed contract.
 | `DEC-GATE-001` | Local media admission and cross-domain publication are separate security boundaries; the UCKK adapter is subordinate to Publication Gateway authorization. |
 | `DEC-SENT-001` | SenTient remains isolated, task activated, and non-authoritative. |
 | `DEC-MEDIATHEQUE-001` | kOA Mediatheque ingestion and identity remain deterministic and preserve original media. |
-| `DEC-UCKK-EXT-001` | UCKK remains an external Moodle publication target with separate authority and storage. |
+| `DEC-UCKK-EXT-001` | UCKK remains an external online Moodle and Mediatheque authority with separate storage and controlled directional interchange. |
 | `DEC-ARI-001` | Ariane guidance and automation remain deterministic, user-controlled, and independent of optional voice. |
 | `DEC-LANG-001` | GF Wordbench build authority remains separate from SemantiK runtime activation. |
 | `DEC-KRISTAL-001` | Kristal is an epistemic foundation, not a workflow authority or universal operational database. |

@@ -39,7 +39,9 @@
     "DEC-PRIV-001",
     "DEC-LIFE-001",
     "DEC-AI-001",
-    "DEC-DATA-001"
+    "DEC-DATA-001",
+    "DEC-UCKK-EXT-001",
+    "DEC-MEDIATHEQUE-001"
   ],
   "requirement_ids": [
     "REQ-PROF-HA-001",
@@ -99,7 +101,10 @@
     "LOCK-LIFE-004",
     "LOCK-AI-001",
     "LOCK-AI-002",
-    "LOCK-COMP-001"
+    "LOCK-COMP-001",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "canonical_ownership": {
@@ -1051,5 +1056,24 @@
     ],
     "failure_outcome": "fail",
     "missing_dependency_outcome": "blocked"
+  },
+  "external_integrations": {
+    "uckk_publication": {
+      "integration_id": "uckk-publication",
+      "contract_ref": "contracts/integrations/uckk-publication.integration.json",
+      "availability": "optional",
+      "direction": "outbound",
+      "required_for_local_operation": false,
+      "required_for_offline_operation": false
+    },
+    "uckk_import": {
+      "integration_id": "uckk-import",
+      "contract_ref": "contracts/integrations/uckk-import.integration.json",
+      "availability": "optional",
+      "direction": "inbound",
+      "offline_bundle_supported": true,
+      "accepted_content_available_offline": true,
+      "automatic_sync": false
+    }
   }
 }

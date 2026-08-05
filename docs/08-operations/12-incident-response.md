@@ -278,7 +278,7 @@ One person can hold several roles in a small profile, but each authority remains
 
 The explanatory state sequence is:
 
-```text
+`text
 detected
 under_assessment
 declared
@@ -287,7 +287,7 @@ recovery_in_progress
 monitoring
 resolved
 closed
-```
+`
 
 An incident can also be `blocked`, `escalated`, `merged`, `split`, or transferred to disaster recovery according to its canonical contract.
 
@@ -643,9 +643,9 @@ This document is conformant when:
 
 The validation entry point is:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 ## 11. Non-Normative Examples
 

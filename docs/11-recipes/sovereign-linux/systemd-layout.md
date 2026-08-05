@@ -27,7 +27,10 @@
     "generated/traceability.json",
     "generated/test-catalog.json",
     "generated/evidence-catalog.json",
-    "generated/exception-index.json"
+    "generated/exception-index.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json"
   ],
   "decision_ids": [
     "DEC-PROFILE-SOV-LINUX-001",
@@ -109,8 +112,7 @@
     "DOC-OPS-003",
     "DOC-OPS-013",
     "DOC-CONF-003",
-    "DOC-CONF-019",
-    "ADR-008"
+    "DOC-CONF-019"
   ],
   "tags": [
     "recipe",
@@ -178,9 +180,8 @@ koa-policy
 koa-resource
 koa-audit
 koa-publication
-koa-uckk
 koa-ariane
-koa-media
+koa-mediatheque
 koa-node-agent
 ```
 
@@ -200,9 +201,8 @@ Examples:
 /var/lib/koa/resource/
 /var/lib/koa/audit/
 /var/lib/koa/publication/
-/var/lib/koa/uckk/
 /var/lib/koa/ariane/
-/var/lib/koa/media/
+/var/lib/koa/mediatheque/
 ```
 
 A component reaches another component through a registered API, event, socket, or governed export.
@@ -299,9 +299,8 @@ u koa-policy      - "kOA Governance Policy Runtime"  /var/lib/koa/policy
 u koa-resource    - "kOA Resource Governor"           /var/lib/koa/resource
 u koa-audit       - "kOA Audit Broker"                /var/lib/koa/audit
 u koa-publication - "kOA Publication Gateway"         /var/lib/koa/publication
-u koa-uckk        - "kOA UCKK Dimension Gateway"      /var/lib/koa/uckk
 u koa-ariane      - "kOA Ariane"                      /var/lib/koa/ariane
-u koa-media       - "kOA Media Component"             /var/lib/koa/media
+u koa-mediatheque - "kOA Mediatheque"                /var/lib/koa/mediatheque
 u koa-node-agent  - "kOA Node Agent"                  /var/lib/koa/node-agent
 ```
 
@@ -317,9 +316,8 @@ d /var/lib/koa/policy        0750 koa-policy      koa-policy      -
 d /var/lib/koa/resource      0750 koa-resource    koa-resource    -
 d /var/lib/koa/audit         0750 koa-audit       koa-audit       -
 d /var/lib/koa/publication   0750 koa-publication koa-publication -
-d /var/lib/koa/uckk          0750 koa-uckk        koa-uckk        -
 d /var/lib/koa/ariane        0750 koa-ariane      koa-ariane      -
-d /var/lib/koa/media         0750 koa-media       koa-media       -
+d /var/lib/koa/mediatheque   0750 koa-mediatheque koa-mediatheque -
 d /var/lib/koa/node-agent    0750 koa-node-agent  koa-node-agent  -
 
 d /run/koa                    0755 root            root            -
@@ -328,9 +326,8 @@ d /run/koa/policy             0750 koa-policy      koa-policy      -
 d /run/koa/resource           0750 koa-resource    koa-resource    -
 d /run/koa/audit              0750 koa-audit       koa-audit       -
 d /run/koa/publication        0750 koa-publication koa-publication -
-d /run/koa/uckk               0750 koa-uckk        koa-uckk        -
 d /run/koa/ariane             0750 koa-ariane      koa-ariane      -
-d /run/koa/media              0750 koa-media       koa-media       -
+d /run/koa/mediatheque        0750 koa-mediatheque koa-mediatheque -
 d /run/koa/node-agent         0750 koa-node-agent  koa-node-agent  -
 d /run/koa/activation         0750 root            root            -
 d /run/koa/recovery           0750 root            root            -
@@ -383,13 +380,24 @@ Example `/usr/lib/systemd/system/koa-core.target`:
 Description=kOA core local services
 Requires=koa-critical.target
 Wants=koa-ariane.service
-Wants=koa-uckk.service
+Wants=koa-mediatheque.service
 After=koa-critical.target
 ```
 
 Ariane local navigation remains available without external AI or voice.
 
-UCKK native processing remains deterministic.
+kOA Mediatheque native processing remains deterministic. UCKK publication and online retrieval are optional external integrations and are not part of the core-local target. A learning package already received through an approved offline carrier can be quarantined, validated, explicitly accepted, and consulted without network access.
+
+### 4.3.1 Optional directional UCKK services
+
+Deploy outbound and inbound services separately when selected by the active profile:
+
+`text
+koa-uckk-publication-bridge.service
+koa-uckk-import-bridge.service
+`
+
+The publication service depends on Publication Gateway authorization. The import service owns retrieval and quarantine only; accepted local records are created by kOA Mediatheque. Neither service belongs to the core-local target, and neither starts a reconnect-triggered synchronization sweep.
 
 ### 4.4 Background target
 
@@ -400,7 +408,7 @@ Example `/usr/lib/systemd/system/koa-background.target`:
 Description=kOA required background services
 Requires=koa-critical.target
 Wants=koa-publication.service
-Wants=koa-media-scheduler.service
+Wants=koa-mediatheque-scheduler.service
 After=koa-critical.target
 ```
 
@@ -836,7 +844,7 @@ After applying a change:
 
 ```bash
 systemctl daemon-reload
-systemctl show koa-media.service   --property=CPUQuotaPerSecUSec   --property=MemoryHigh   --property=IOWeight
+systemctl show koa-mediatheque.service   --property=CPUQuotaPerSecUSec   --property=MemoryHigh   --property=IOWeight
 ```
 
 Verify actual state and record the result.

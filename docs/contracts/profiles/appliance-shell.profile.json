@@ -22,7 +22,7 @@
     "contracts/system.contract.json#/ariane",
     "generated/profile-catalog.json",
     "generated/component-catalog.json",
-    "contracts/components/ariane-runtime.component.json",
+    "contracts/subsystems/ariane.subsystem.json",
     "generated/requirements-index.json",
     "generated/assertion-index.json",
     "generated/traceability.json",
@@ -32,13 +32,13 @@
     "DEC-PROFILE-001",
     "DEC-SHELL-001",
     "DEC-ARI-001",
-    "DEC-AI-001"
+    "DEC-AI-001",
+    "DEC-UCKK-EXT-001",
+    "DEC-MEDIATHEQUE-001"
   ],
   "adr_ids": [
     "ADR-003",
-    "ADR-004",
-    "ADR-021",
-    "ADR-023"
+    "ADR-021"
   ],
   "requirement_ids": [
     "REQ-PROFILE-APP-001",
@@ -71,7 +71,10 @@
     "LOCK-ARI-001",
     "LOCK-ARI-002",
     "LOCK-LIFE-001",
-    "LOCK-LIFE-002"
+    "LOCK-LIFE-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "composition": {
@@ -458,5 +461,24 @@
       "appliance_shell_unrestricted_desktop_fallback",
       "profile_conformance_evidence_incomplete"
     ]
+  },
+  "external_integrations": {
+    "uckk_publication": {
+      "integration_id": "uckk-publication",
+      "contract_ref": "contracts/integrations/uckk-publication.integration.json",
+      "availability": "optional",
+      "direction": "outbound",
+      "required_for_local_operation": false,
+      "required_for_offline_operation": false
+    },
+    "uckk_import": {
+      "integration_id": "uckk-import",
+      "contract_ref": "contracts/integrations/uckk-import.integration.json",
+      "availability": "optional",
+      "direction": "inbound",
+      "offline_bundle_supported": true,
+      "accepted_content_available_offline": true,
+      "automatic_sync": false
+    }
   }
 }

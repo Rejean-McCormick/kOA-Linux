@@ -110,7 +110,7 @@ This recipe is non-normative. The development model, parallel-application rules,
 
 The target result is:
 
-```text
+`text
 one workspace identity
 + one application-instance identity
 + one component identity
@@ -119,7 +119,7 @@ one workspace identity
 + one owned volume
 + one allocated loopback port
 + one migration history
-```
+`
 
 The database remains disposable development state. It is not a production database, release artifact, evidence store, or substitute for component-owned backup and recovery contracts.
 
@@ -161,22 +161,22 @@ The workspace needs:
 
 This recipe uses these local paths:
 
-```text
+`text
 .koa/
-  runtime/
-    <application-instance-id>/
-      database.env
-      database.identity.env
-      compose.database.yaml
-      migration-state.json
-      fixtures/
-```
+ runtime/
+ <application-instance-id>/
+ database.env
+ database.identity.env
+ compose.database.yaml
+ migration-state.json
+ fixtures/
+`
 
 Add this rule to the workspace `.gitignore`:
 
-```gitignore
+`gitignore
 .koa/runtime/
-```
+`
 
 The runtime directory contains mutable state and local credentials. It is not canonical source.
 
@@ -196,7 +196,7 @@ The worked example uses a separate PostgreSQL server instance in a workspace-own
 
 The isolation boundary is complete only when the following values are distinct:
 
-```text
+`text
 container project
 container name
 network
@@ -206,7 +206,7 @@ database name
 database role
 migration history
 fixture namespace
-```
+`
 
 A different branch name alone does not provide database isolation.
 
@@ -216,14 +216,14 @@ A different branch name alone does not provide database isolation.
 
 Export values already present in the workspace manifest:
 
-```bash
+`bash
 export KOA_WORKSPACE_ID="ws_4d3a8c71"
 export KOA_INSTANCE_ID="appinst_orders_01"
 export KOA_COMPONENT_ID="orders"
 export KOA_SOURCE_REVISION="$(git rev-parse HEAD)"
 export KOA_DB_HOST_PORT="55431"
 export KOA_POSTGRES_IMAGE="postgres:16.4-bookworm"
-```
+`
 
 `KOA_DB_HOST_PORT` comes from the workspace port-allocation record. Allocation occurs before database startup and checks that the loopback port is unused.
 
@@ -233,7 +233,7 @@ The image value is an example for this recipe. An active profile or build workfl
 
 PostgreSQL identifiers have practical length limits. Generate short stable names from the three ownership identities rather than using a raw branch name or path.
 
-```bash
+`bash
 mkdir -p ".koa/runtime/${KOA_INSTANCE_ID}"
 
 uv run python - <<'PY' > ".koa/runtime/${KOA_INSTANCE_ID}/database.identity.env"
@@ -248,10 +248,10 @@ instance = os.environ["KOA_INSTANCE_ID"]
 component = os.environ["KOA_COMPONENT_ID"]
 
 def compact(value: str, limit: int = 12) -> str:
-    normalized = re.sub(r"[^a-z0-9]+", "_", value.lower()).strip("_")
-    digest = hashlib.sha256(value.encode("utf-8")).hexdigest()[:8]
-    prefix = normalized[:limit].rstrip("_") or "id"
-    return f"{prefix}_{digest}"
+ normalized = re.sub(r"[^a-z0-9]+", "_", value.lower).strip("_")
+ digest = hashlib.sha256(value.encode("utf-8")).hexdigest[:8]
+ prefix = normalized[:limit].rstrip("_") or "id"
+ return f"{prefix}_{digest}"
 
 workspace_key = compact(workspace)
 instance_key = compact(instance)
@@ -259,24 +259,24 @@ component_key = compact(component)
 base = f"koa_{workspace_key}_{component_key}_{instance_key}"
 
 values = {
-    "KOA_DB_NAME": base,
-    "KOA_DB_USER": f"{base}_rw",
-    "KOA_DB_CONTAINER": f"{base}_db",
-    "KOA_DB_VOLUME": f"{base}_pgdata",
-    "KOA_DB_NETWORK": f"koa_{workspace_key}_net",
-    "KOA_CONTAINER_PROJECT": f"koa_{workspace_key}",
+ "KOA_DB_NAME": base,
+ "KOA_DB_USER": f"{base}_rw",
+ "KOA_DB_CONTAINER": f"{base}_db",
+ "KOA_DB_VOLUME": f"{base}_pgdata",
+ "KOA_DB_NETWORK": f"koa_{workspace_key}_net",
+ "KOA_CONTAINER_PROJECT": f"koa_{workspace_key}",
 }
 
-for key, value in values.items():
-    print(f"{key}={value}")
+for key, value in values.items:
+ print(f"{key}={value}")
 PY
-```
+`
 
 Review the generated non-secret identities:
 
-```bash
+`bash
 cat ".koa/runtime/${KOA_INSTANCE_ID}/database.identity.env"
-```
+`
 
 Record these identities in the workspace manifest or its generated runtime projection.
 
@@ -284,7 +284,7 @@ Record these identities in the workspace manifest or its generated runtime proje
 
 Create credentials with restrictive permissions:
 
-```bash
+`bash
 umask 077
 
 uv run python - <<'PY' > ".koa/runtime/${KOA_INSTANCE_ID}/database.env"
@@ -296,7 +296,7 @@ print(f"POSTGRES_PASSWORD={secrets.token_urlsafe(32)}")
 PY
 
 chmod 600 ".koa/runtime/${KOA_INSTANCE_ID}/database.env"
-```
+`
 
 Do not print the password during normal operation. Do not add the credential file to Git, logs, receipts, screenshots, test evidence, or shell history.
 
@@ -306,54 +306,54 @@ Do not print the password during normal operation. Do not add the credential fil
 
 Create `.koa/runtime/<application-instance-id>/compose.database.yaml`:
 
-```yaml
+`yaml
 services:
-  database:
-    image: ${KOA_POSTGRES_IMAGE}
-    container_name: ${KOA_DB_CONTAINER}
-    restart: "no"
-    environment:
-      POSTGRES_DB: ${KOA_DB_NAME}
-      POSTGRES_USER: ${KOA_DB_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    ports:
-      - "127.0.0.1:${KOA_DB_HOST_PORT}:5432"
-    volumes:
-      - database_data:/var/lib/postgresql/data
-    networks:
-      - workspace
-    labels:
-      koa.workspace.id: ${KOA_WORKSPACE_ID}
-      koa.instance.id: ${KOA_INSTANCE_ID}
-      koa.component.id: ${KOA_COMPONENT_ID}
-      koa.profile.id: developer
-      koa.source.revision: ${KOA_SOURCE_REVISION}
-      koa.created.by: local-database-isolation-recipe
-    healthcheck:
-      test:
-        - CMD-SHELL
-        - pg_isready -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"
-      interval: 2s
-      timeout: 3s
-      retries: 30
-    security_opt:
-      - no-new-privileges:true
+ database:
+ image: ${KOA_POSTGRES_IMAGE}
+ container_name: ${KOA_DB_CONTAINER}
+ restart: "no"
+ environment:
+ POSTGRES_DB: ${KOA_DB_NAME}
+ POSTGRES_USER: ${KOA_DB_USER}
+ POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+ ports:
+ - "127.0.0.1:${KOA_DB_HOST_PORT}:5432"
+ volumes:
+ - database_data:/var/lib/postgresql/data
+ networks:
+ - workspace
+ labels:
+ koa.workspace.id: ${KOA_WORKSPACE_ID}
+ koa.instance.id: ${KOA_INSTANCE_ID}
+ koa.component.id: ${KOA_COMPONENT_ID}
+ koa.profile.id: developer
+ koa.source.revision: ${KOA_SOURCE_REVISION}
+ koa.created.by: local-database-isolation-recipe
+ healthcheck:
+ test:
+ - CMD-SHELL
+ - pg_isready -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"
+ interval: 2s
+ timeout: 3s
+ retries: 30
+ security_opt:
+ - no-new-privileges:true
 
 volumes:
-  database_data:
-    name: ${KOA_DB_VOLUME}
-    labels:
-      koa.workspace.id: ${KOA_WORKSPACE_ID}
-      koa.instance.id: ${KOA_INSTANCE_ID}
-      koa.component.id: ${KOA_COMPONENT_ID}
+ database_data:
+ name: ${KOA_DB_VOLUME}
+ labels:
+ koa.workspace.id: ${KOA_WORKSPACE_ID}
+ koa.instance.id: ${KOA_INSTANCE_ID}
+ koa.component.id: ${KOA_COMPONENT_ID}
 
 networks:
-  workspace:
-    name: ${KOA_DB_NETWORK}
-    labels:
-      koa.workspace.id: ${KOA_WORKSPACE_ID}
-      koa.instance.id: ${KOA_INSTANCE_ID}
-```
+ workspace:
+ name: ${KOA_DB_NETWORK}
+ labels:
+ koa.workspace.id: ${KOA_WORKSPACE_ID}
+ koa.instance.id: ${KOA_INSTANCE_ID}
+`
 
 The explicit volume and network names make ownership inspectable. The loopback bind prevents accidental LAN exposure.
 
@@ -361,40 +361,40 @@ The explicit volume and network names make ownership inspectable. The loopback b
 
 Use a subshell so credentials do not remain in the parent shell longer than needed:
 
-```bash
+`bash
 (
-  set -a
-  . ".koa/runtime/${KOA_INSTANCE_ID}/database.identity.env"
-  . ".koa/runtime/${KOA_INSTANCE_ID}/database.env"
-  set +a
+ set -a
+ . ".koa/runtime/${KOA_INSTANCE_ID}/database.identity.env"
+ . ".koa/runtime/${KOA_INSTANCE_ID}/database.env"
+ set +a
 
-  podman compose     --project-name "${KOA_CONTAINER_PROJECT}"     --file ".koa/runtime/${KOA_INSTANCE_ID}/compose.database.yaml"     up --detach
+ podman compose --project-name "${KOA_CONTAINER_PROJECT}" --file ".koa/runtime/${KOA_INSTANCE_ID}/compose.database.yaml" up --detach
 )
-```
+`
 
 A rootless Docker-compatible environment can use `docker compose` with the same project and file arguments.
 
 ### 6.3 Wait for readiness
 
-```bash
+`bash
 (
-  set -a
-  . ".koa/runtime/${KOA_INSTANCE_ID}/database.identity.env"
-  . ".koa/runtime/${KOA_INSTANCE_ID}/database.env"
-  set +a
+ set -a
+ . ".koa/runtime/${KOA_INSTANCE_ID}/database.identity.env"
+ . ".koa/runtime/${KOA_INSTANCE_ID}/database.env"
+ set +a
 
-  for attempt in $(seq 1 30); do
-    if podman exec "${KOA_DB_CONTAINER}"       pg_isready -U "${KOA_DB_USER}" -d "${KOA_DB_NAME}" >/dev/null 2>&1
-    then
-      exit 0
-    fi
-    sleep 1
-  done
+ for attempt in $(seq 1 30); do
+ if podman exec "${KOA_DB_CONTAINER}" pg_isready -U "${KOA_DB_USER}" -d "${KOA_DB_NAME}" >/dev/null 2>&1
+ then
+ exit 0
+ fi
+ sleep 1
+ done
 
-  echo "Database did not become ready." >&2
-  exit 1
+ echo "Database did not become ready." >&2
+ exit 1
 )
-```
+`
 
 Readiness confirms that the isolated server accepts its intended database and role. It does not confirm that migrations or component invariants are valid.
 
@@ -404,13 +404,13 @@ Readiness confirms that the isolated server accepts its intended database and ro
 
 Prefer discrete PostgreSQL variables over a logged connection URL:
 
-```bash
+`bash
 export PGHOST="127.0.0.1"
 export PGPORT="${KOA_DB_HOST_PORT}"
 export PGDATABASE="${KOA_DB_NAME}"
 export PGUSER="${KOA_DB_USER}"
-export PGPASSWORD="$(sed -n 's/^POSTGRES_PASSWORD=//p'   ".koa/runtime/${KOA_INSTANCE_ID}/database.env")"
-```
+export PGPASSWORD="$(sed -n 's/^POSTGRES_PASSWORD=//p' ".koa/runtime/${KOA_INSTANCE_ID}/database.env")"
+`
 
 Pass these values through the component's registered local configuration mechanism.
 
@@ -420,7 +420,7 @@ Do not store `PGPASSWORD` in the workspace manifest.
 
 Before applying migrations, connect and verify the current target:
 
-```bash
+`bash
 uv run python - <<'PY'
 from __future__ import annotations
 
@@ -431,24 +431,24 @@ expected_database = os.environ["KOA_DB_NAME"]
 expected_user = os.environ["KOA_DB_USER"]
 
 with psycopg.connect(
-    host=os.environ["PGHOST"],
-    port=int(os.environ["PGPORT"]),
-    dbname=os.environ["PGDATABASE"],
-    user=os.environ["PGUSER"],
-    password=os.environ["PGPASSWORD"],
+ host=os.environ["PGHOST"],
+ port=int(os.environ["PGPORT"]),
+ dbname=os.environ["PGDATABASE"],
+ user=os.environ["PGUSER"],
+ password=os.environ["PGPASSWORD"],
 ) as connection:
-    with connection.cursor() as cursor:
-        cursor.execute("select current_database(), current_user")
-        actual_database, actual_user = cursor.fetchone()
+ with connection.cursor as cursor:
+ cursor.execute("select current_database, current_user")
+ actual_database, actual_user = cursor.fetchone
 
 if actual_database != expected_database or actual_user != expected_user:
-    raise SystemExit(
-        f"Target mismatch: database={actual_database!r}, user={actual_user!r}"
-    )
+ raise SystemExit(
+ f"Target mismatch: database={actual_database!r}, user={actual_user!r}"
+ )
 
 print("Database identity verified.")
 PY
-```
+`
 
 The example uses `psycopg`. A component can use its own registered database driver or migration tool for the same identity check.
 
@@ -458,9 +458,9 @@ Run the component's canonical migration command inside the workspace's UV enviro
 
 For an Alembic-based component, an example is:
 
-```bash
+`bash
 uv run alembic upgrade head
-```
+`
 
 For another migration system, use the component contract or development documentation.
 
@@ -479,9 +479,9 @@ Record:
 
 A simple local record can be written to:
 
-```text
+`text
 .koa/runtime/<application-instance-id>/migration-state.json
-```
+`
 
 This local record is runtime metadata, not canonical evidence.
 
@@ -500,9 +500,9 @@ A fixture loader should:
 
 Example:
 
-```bash
-uv run python -m orders.tools.load_dev_fixtures   --fixture-set minimal-local   --workspace "${KOA_WORKSPACE_ID}"   --instance "${KOA_INSTANCE_ID}"
-```
+`bash
+uv run python -m orders.tools.load_dev_fixtures --fixture-set minimal-local --workspace "${KOA_WORKSPACE_ID}" --instance "${KOA_INSTANCE_ID}"
+`
 
 Use the actual component-owned fixture command. Do not copy another workspace's mutable database as a fixture shortcut.
 
@@ -510,25 +510,25 @@ Use the actual component-owned fixture command. Do not copy another workspace's 
 
 ### 8.1 Inspect ownership
 
-```bash
+`bash
 (
-  set -a
-  . ".koa/runtime/${KOA_INSTANCE_ID}/database.identity.env"
-  set +a
+ set -a
+ . ".koa/runtime/${KOA_INSTANCE_ID}/database.identity.env"
+ set +a
 
-  podman inspect "${KOA_DB_CONTAINER}" | jq '.[0].Config.Labels'
-  podman volume inspect "${KOA_DB_VOLUME}" | jq '.[0].Labels'
-  podman network inspect "${KOA_DB_NETWORK}" | jq '.[0].Labels'
+ podman inspect "${KOA_DB_CONTAINER}" | jq '.[0].Config.Labels'
+ podman volume inspect "${KOA_DB_VOLUME}" | jq '.[0].Labels'
+ podman network inspect "${KOA_DB_NETWORK}" | jq '.[0].Labels'
 )
-```
+`
 
 The labels should match the current workspace, component, and application instance.
 
 ### 8.2 Confirm loopback binding
 
-```bash
+`bash
 ss -ltn | grep -F "127.0.0.1:${KOA_DB_HOST_PORT}"
-```
+`
 
 The listener should not appear on `0.0.0.0`, the LAN address, or an undeclared interface.
 
@@ -572,11 +572,11 @@ A successful migration in one branch does not validate another branch's database
 
 Run the component's registered tests, for example:
 
-```bash
+`bash
 uv run pytest tests/component/orders
 uv run pytest tests/contracts/orders
 uv run python docs/tools/validate_docs.py
-```
+`
 
 Use the actual test paths registered for the component.
 
@@ -604,7 +604,7 @@ A branch switch does not make the old database compatible with the new source au
 
 Each worktree gets:
 
-```text
+`text
 distinct workspace_id
 distinct application_instance_id
 distinct port
@@ -612,7 +612,7 @@ distinct database name
 distinct database user
 distinct volume
 distinct migration history
-```
+`
 
 The image cache can be shared when the image identity is immutable and compatible. The mutable data volume cannot be shared.
 
@@ -656,16 +656,16 @@ Do not grant one workspace direct access to another workspace's database.
 
 ### 10.1 Stop without deleting data
 
-```bash
+`bash
 (
-  set -a
-  . ".koa/runtime/${KOA_INSTANCE_ID}/database.identity.env"
-  . ".koa/runtime/${KOA_INSTANCE_ID}/database.env"
-  set +a
+ set -a
+ . ".koa/runtime/${KOA_INSTANCE_ID}/database.identity.env"
+ . ".koa/runtime/${KOA_INSTANCE_ID}/database.env"
+ set +a
 
-  podman compose     --project-name "${KOA_CONTAINER_PROJECT}"     --file ".koa/runtime/${KOA_INSTANCE_ID}/compose.database.yaml"     stop
+ podman compose --project-name "${KOA_CONTAINER_PROJECT}" --file ".koa/runtime/${KOA_INSTANCE_ID}/compose.database.yaml" stop
 )
-```
+`
 
 ### 10.2 Recreate one isolated database
 
@@ -673,24 +673,24 @@ First verify that the recorded identities match the current workspace and compon
 
 Then:
 
-```bash
+`bash
 (
-  set -a
-  . ".koa/runtime/${KOA_INSTANCE_ID}/database.identity.env"
-  . ".koa/runtime/${KOA_INSTANCE_ID}/database.env"
-  set +a
+ set -a
+ . ".koa/runtime/${KOA_INSTANCE_ID}/database.identity.env"
+ . ".koa/runtime/${KOA_INSTANCE_ID}/database.env"
+ set +a
 
-  podman compose     --project-name "${KOA_CONTAINER_PROJECT}"     --file ".koa/runtime/${KOA_INSTANCE_ID}/compose.database.yaml"     down
+ podman compose --project-name "${KOA_CONTAINER_PROJECT}" --file ".koa/runtime/${KOA_INSTANCE_ID}/compose.database.yaml" down
 
-  podman volume inspect "${KOA_DB_VOLUME}"     | jq -r '.[0].Labels["koa.workspace.id"]'     | grep -Fx "${KOA_WORKSPACE_ID}"
+ podman volume inspect "${KOA_DB_VOLUME}" | jq -r '.[0].Labels["koa.workspace.id"]' | grep -Fx "${KOA_WORKSPACE_ID}"
 
-  podman volume inspect "${KOA_DB_VOLUME}"     | jq -r '.[0].Labels["koa.component.id"]'     | grep -Fx "${KOA_COMPONENT_ID}"
+ podman volume inspect "${KOA_DB_VOLUME}" | jq -r '.[0].Labels["koa.component.id"]' | grep -Fx "${KOA_COMPONENT_ID}"
 
-  podman volume rm "${KOA_DB_VOLUME}"
+ podman volume rm "${KOA_DB_VOLUME}"
 
-  podman compose     --project-name "${KOA_CONTAINER_PROJECT}"     --file ".koa/runtime/${KOA_INSTANCE_ID}/compose.database.yaml"     up --detach
+ podman compose --project-name "${KOA_CONTAINER_PROJECT}" --file ".koa/runtime/${KOA_INSTANCE_ID}/compose.database.yaml" up --detach
 )
-```
+`
 
 The positive label checks occur before deletion.
 

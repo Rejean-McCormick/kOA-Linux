@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.koa.local/artifact-contracts/uckk-publication-receipt.schema.json",
   "title": "UCKK Publication Receipt",
-  "description": "Receipt for a publication attempt from kOA-Linux to an external UCKK Moodle platform. The receipt records destination results without transferring source authority.",
+  "description": "Receipt for a publication attempt from kOA-Linux to an external UCKK Moodle platform. The receipt records destination results without transferring source authority. The declared shared Mediatheque frame governs compatible field mapping without merging source and destination authority.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -235,6 +235,27 @@
       "type": "array",
       "items": {
         "type": "string"
+      }
+    },
+    "frame_mapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "frame_id": {
+          "const": "koa-uckk-shared-mediatheque-frame"
+        },
+        "mapping_version": {
+          "type": "string"
+        },
+        "mapping_validated": {
+          "type": "boolean"
+        },
+        "rights_preserved": {
+          "type": "boolean"
+        },
+        "provenance_preserved": {
+          "type": "boolean"
+        }
       }
     }
   }

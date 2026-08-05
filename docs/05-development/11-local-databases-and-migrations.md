@@ -234,7 +234,7 @@ The owning component and toolchain contracts select those implementations within
 
 The related ownership and workspace documents are:
 
-```text
+`text
 04-components/02-component-data-ownership.md
 05-development/01-development-profile-boundaries.md
 05-development/02-workspace-identity.md
@@ -244,7 +244,7 @@ The related ownership and workspace documents are:
 05-development/09-secrets-and-local-identities.md
 05-development/10-parallel-applications-and-branches.md
 05-development/16-development-to-release-transition.md
-```
+`
 
 ## 4. Model and Responsibilities
 
@@ -661,7 +661,7 @@ They verify:
 
 A migration release package contains:
 
-```text
+`text
 component identity
 component contract version
 migration identifiers and ordered dependencies
@@ -678,7 +678,7 @@ rollback or forward-repair procedure
 required tests
 required evidence
 operator-facing failure codes
-```
+`
 
 The package is immutable once published in an active release candidate.
 
@@ -873,7 +873,7 @@ This document is conformant when:
 
 Applicable failure codes include:
 
-```text
+`text
 development_database_identity_missing
 development_database_identity_duplicate
 workspace_database_collision
@@ -898,7 +898,7 @@ mutable_database_promoted
 migration_release_metadata_missing
 migration_evidence_missing
 workspace_database_cleanup_incomplete
-```
+`
 
 A required validator that cannot run produces `blocked`, not `pass`.
 

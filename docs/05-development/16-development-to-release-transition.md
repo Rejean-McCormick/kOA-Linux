@@ -154,17 +154,17 @@ This document defines the controlled transition from mutable development work to
 
 The transition separates five states that are often incorrectly collapsed:
 
-```text
+`text
 development state
-    ↓
+ ↓
 release candidate
-    ↓
+ ↓
 published channel artifacts
-    ↓
+ ↓
 compatible Release Set
-    ↓
+ ↓
 active release
-```
+`
 
 Each state has a different authority.
 
@@ -302,37 +302,37 @@ It does not redefine lifecycle enums or artifact structures.
 
 ### 3.1 Development authority
 
-```text
+`text
 contracts/profiles/developer-linux-workstation.profile.json
 contracts/profiles/developer-windows-wsl.profile.json
 contracts/profiles/build-farm.profile.json
 generated/toolchain-catalog.json
 contracts/toolchains/python-uv.toolchain.json
-```
+`
 
 ### 3.2 Product and component authority
 
-```text
+`text
 contracts/system.contract.json
 generated/component-catalog.json
 generated/component-catalog.json
 contracts/components/*.component.json
 generated/profile-catalog.json
 contracts/profiles/*.profile.json
-```
+`
 
 ### 3.3 Release authority
 
-```text
+`text
 contracts/release-channels.contract.json
 contracts/artifact-classes.contract.json
 contracts/artifact-contracts/release-set.schema.json
 contracts/artifact-contracts/provenance-receipt.schema.json
-```
+`
 
 ### 3.4 Change and validation authority
 
-```text
+`text
 generated/decision-index.json
 generated/requirements-index.json
 generated/assertion-index.json
@@ -342,13 +342,13 @@ generated/test-catalog.json
 generated/evidence-catalog.json
 generated/exception-index.json
 schemas/impact-report.schema.json
-```
+`
 
 ### 3.5 Active authority
 
-```text
+`text
 generated/authority-manifest.json
-```
+`
 
 The active-authority pointer is updated last.
 
@@ -356,7 +356,7 @@ A candidate, artifact repository, release manifest, or deployment environment do
 
 ### 3.6 Related lifecycle documents
 
-```text
+`text
 06-lifecycle/00-artifact-model.md
 06-lifecycle/01-artifact-classes.md
 06-lifecycle/02-release-model.md
@@ -367,7 +367,7 @@ A candidate, artifact repository, release manifest, or deployment environment do
 06-lifecycle/15-data-schema-evolution.md
 06-lifecycle/16-forward-repair.md
 06-lifecycle/18-sbom-provenance-and-signing.md
-```
+`
 
 ## 4. Model and Responsibilities
 
@@ -787,17 +787,17 @@ Promotion moves the same immutable artifact identity through permitted repositor
 
 Examples include:
 
-```text
+`text
 candidate repository
-    ↓
+ ↓
 release repository
-    ↓
+ ↓
 offline bundle
-    ↓
+ ↓
 staging node
-    ↓
+ ↓
 production node
-```
+`
 
 Promotion preserves identity and provenance.
 
@@ -1279,7 +1279,6 @@ Any adopted result enters the release process as changed source or canonical aut
 
 | Decision or ADR | Closed choice |
 | --- | --- |
-| `DEC-REL-001` / `ADR-008` | Four independently versioned release channels are bound by compatible Release Sets |
 | `DEC-PROFILE-001` | Target-profile behavior and conformance remain explicit |
 | `DEC-CONTAINER-001` | Build and runtime container choices remain profile-scoped |
 | `DEC-DATA-001` | Release and migration workflows preserve component data ownership |
@@ -1395,32 +1394,32 @@ This document is conformant when:
 
 Expected test coverage includes:
 
-```text
-TEST-DEV-REL-001  Exact source and change-packet identity
-TEST-DEV-REL-002  Clean release source
-TEST-DEV-REL-003  Toolchain and dependency closure
-TEST-DEV-REL-004  Isolated reproducible candidate build
-TEST-DEV-REL-005  Candidate reproducibility
-TEST-DEV-REL-006  Provenance and SBOM completeness
-TEST-DEV-REL-007  Clean generated-content regeneration
-TEST-DEV-REL-008  Applicable test-matrix execution
-TEST-DEV-REL-009  No false pass for skipped or blocked tests
-TEST-DEV-REL-010  Candidate-specific evidence completeness
-TEST-DEV-REL-011  Exception disclosure and controls
-TEST-DEV-REL-012  Secret and environment separation
-TEST-DEV-REL-013  Candidate immutability
-TEST-DEV-REL-014  Artifact-class and channel ownership
-TEST-DEV-REL-015  Four-channel independence
-TEST-DEV-REL-016  Release Set compatibility
-TEST-DEV-REL-017  Migration rollback boundary
-TEST-DEV-REL-018  Forward-repair readiness
-TEST-DEV-REL-019  Inactive staging
-TEST-DEV-REL-020  Atomic activation
-TEST-DEV-REL-021  Known-good rollback
-TEST-DEV-REL-022  Identity-preserving promotion
-TEST-DEV-REL-023  Authority pointer updated last
-TEST-DEV-REL-024  Machine-readable return to development
-```
+`text
+TEST-DEV-REL-001 Exact source and change-packet identity
+TEST-DEV-REL-002 Clean release source
+TEST-DEV-REL-003 Toolchain and dependency closure
+TEST-DEV-REL-004 Isolated reproducible candidate build
+TEST-DEV-REL-005 Candidate reproducibility
+TEST-DEV-REL-006 Provenance and SBOM completeness
+TEST-DEV-REL-007 Clean generated-content regeneration
+TEST-DEV-REL-008 Applicable test-matrix execution
+TEST-DEV-REL-009 No false pass for skipped or blocked tests
+TEST-DEV-REL-010 Candidate-specific evidence completeness
+TEST-DEV-REL-011 Exception disclosure and controls
+TEST-DEV-REL-012 Secret and environment separation
+TEST-DEV-REL-013 Candidate immutability
+TEST-DEV-REL-014 Artifact-class and channel ownership
+TEST-DEV-REL-015 Four-channel independence
+TEST-DEV-REL-016 Release Set compatibility
+TEST-DEV-REL-017 Migration rollback boundary
+TEST-DEV-REL-018 Forward-repair readiness
+TEST-DEV-REL-019 Inactive staging
+TEST-DEV-REL-020 Atomic activation
+TEST-DEV-REL-021 Known-good rollback
+TEST-DEV-REL-022 Identity-preserving promotion
+TEST-DEV-REL-023 Authority pointer updated last
+TEST-DEV-REL-024 Machine-readable return to development
+`
 
 The test catalog and evidence registry own executable controls and evidence definitions.
 

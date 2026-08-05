@@ -5,8 +5,8 @@
   "version": "1.0.0",
   "status": "active",
   "integration_type": "external_moodle_publication",
-  "role": "Optional governed publication of selected kOA Mediatheque records to an external UCKK Moodle platform.",
-  "authority": "non_authoritative_external_destination",
+  "role": "Optional governed publication of selected private or local kOA Mediatheque records to the online UCKK Mediatheque and Moodle learning surfaces.",
+  "authority": "non_authoritative",
   "undeclared_substitution": "prohibited",
   "availability": "optional",
   "direction": "outbound_publication",
@@ -27,7 +27,9 @@
     "contracts/artifact-contracts/uckk-publication-package.schema.json",
     "contracts/artifact-contracts/uckk-publication-receipt.schema.json",
     "04-components/uckk-publication-bridge.md",
-    "10-adrs/ADR-031-uckk-as-an-external-moodle-publication-target.md"
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "02-system/12-koa-mediatheque-system-boundary.md"
   ],
   "decision_ids": [
     "DEC-UCKK-EXT-001",
@@ -57,7 +59,8 @@
     "LOCK-GATE-001",
     "LOCK-DATA-001",
     "LOCK-GOV-001",
-    "LOCK-OFFLINE-001"
+    "LOCK-OFFLINE-001",
+    "LOCK-UCKK-EXT-002"
   ],
   "boundary": {
     "source_system": "koa-linux",
@@ -136,11 +139,12 @@
     "rate_limits_required": true
   },
   "compatibility": {
-    "shared_mediatheque_frame": "The kOA and UCKK Mediatheques may implement compatible concepts, but compatibility does not create a shared authority domain.",
+    "shared_mediatheque_frame": "Both sides implement the declared shared Mediatheque frame or a validated compatible version; this does not create shared authority, storage, identity, access control, or lifecycle.",
     "mapping_version_required": true,
     "moodle_api_version_required": true,
     "unsupported_destination_behavior": "block the unsupported mapping; do not silently discard fields or restrictions",
-    "import": "Any future controlled import is a distinct integration and is not part of this contract."
+    "import": "Inbound retrieval and local acceptance are implemented by the separate uckk-import integration; neither direction implies background synchronization.",
+    "shared_mediatheque_frame_ref": "contracts/artifact-contracts/shared-mediatheque-frame.schema.json"
   },
   "validation": {
     "validator_ref": "tools/check_uckk_external_boundary.py",

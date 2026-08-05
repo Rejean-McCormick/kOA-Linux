@@ -718,7 +718,7 @@ It does not own:
 
 - Orgo workflow data;
 - Konnaxion domain data;
-- UCKK media data;
+- local kOA Mediatheque records or remote UCKK Mediatheque state;
 - Kristal epistemic content;
 - Ariane interaction state beyond its own contract;
 - Publication Gateway transfer state;
@@ -1028,14 +1028,14 @@ The runtime does not modify identity source records.
 
 A workflow can require both policy and resource control.
 
-```text
+`text
 request
-  -> policy evaluation
-  -> authoritative component acceptance
-  -> resource-governor admission and scheduling
-  -> component execution
-  -> execution evidence
-```
+ -> policy evaluation
+ -> authoritative component acceptance
+ -> resource-governor admission and scheduling
+ -> component execution
+ -> execution evidence
+`
 
 The order can vary where the active contract permits preflight resource checks, but authority remains separate.
 
@@ -1142,7 +1142,7 @@ The policy runtime consumes only adopted active authority.
 | `DEC-AI-001` | External AI remains optional and non-authoritative |
 | `DEC-PROFILE-001` | Component applicability and overlays are explicit and machine-readable |
 | `DEC-DATA-001` | Logical data ownership is mandatory and foreign source-state writes are prohibited |
-| `DEC-GATE-001` | Publication Gateway remains distinct from UCKK Dimension Gateway |
+| `DEC-GATE-001` | Publication Gateway remains distinct from UCKK publication transport and inbound UCKK import |
 
 ### 9.2 Protected locks
 
@@ -1150,7 +1150,7 @@ The policy runtime consumes only adopted active authority.
 | --- | --- |
 | `LOCK-GOV-001` | Resource Governor and Governance Policy Runtime do not merge authority |
 | `LOCK-DATA-001` | Policy evaluation cannot justify direct foreign source-state mutation |
-| `LOCK-GATE-001` | Publication execution remains in Publication Gateway and not UCKK Dimension Gateway |
+| `LOCK-GATE-001` | Publication authorization remains in Publication Gateway; UCKK bridges cannot grant disclosure authority |
 | `LOCK-AI-002` | External AI output cannot directly mutate authoritative state or policy |
 | `LOCK-PROFILE-001` | Profile-specific governance behavior does not become global |
 | `LOCK-LIFE-001` | Policy and release artifacts do not activate partially |
@@ -1236,28 +1236,28 @@ This document is conformant when all applicable checks pass.
 
 Expected test coverage includes:
 
-```text
-TEST-SYS-GOV-001  Resource and policy authority separation
-TEST-SYS-GOV-002  Profile-conditioned component applicability
-TEST-SYS-GOV-003  Policy request completeness
-TEST-SYS-GOV-004  Policy result and obligation completeness
-TEST-SYS-GOV-005  Fail-closed indeterminate evaluation
-TEST-SYS-GOV-006  Calling-component enforcement boundary
-TEST-SYS-GOV-007  Foreign authoritative-state write rejection
-TEST-SYS-GOV-008  Identity assertion verification
-TEST-SYS-GOV-009  Policy-bundle compatibility
-TEST-SYS-GOV-010  Atomic policy activation and predecessor retention
-TEST-SYS-GOV-011  Offline governed operation
-TEST-SYS-GOV-012  External AI non-authority
-TEST-SYS-GOV-013  Registered exception applicability
-TEST-SYS-GOV-014  Underlying requirement preservation
-TEST-SYS-GOV-015  Privilege evaluation and execution separation
-TEST-SYS-GOV-016  Disclosure evaluation and publication separation
-TEST-SYS-GOV-017  Consent-context completeness
-TEST-SYS-GOV-018  Decision receipt generation
-TEST-SYS-GOV-019  Decision and execution evidence distinction
-TEST-SYS-GOV-020  Capability-scoped policy-runtime degradation
-```
+`text
+TEST-SYS-GOV-001 Resource and policy authority separation
+TEST-SYS-GOV-002 Profile-conditioned component applicability
+TEST-SYS-GOV-003 Policy request completeness
+TEST-SYS-GOV-004 Policy result and obligation completeness
+TEST-SYS-GOV-005 Fail-closed indeterminate evaluation
+TEST-SYS-GOV-006 Calling-component enforcement boundary
+TEST-SYS-GOV-007 Foreign authoritative-state write rejection
+TEST-SYS-GOV-008 Identity assertion verification
+TEST-SYS-GOV-009 Policy-bundle compatibility
+TEST-SYS-GOV-010 Atomic policy activation and predecessor retention
+TEST-SYS-GOV-011 Offline governed operation
+TEST-SYS-GOV-012 External AI non-authority
+TEST-SYS-GOV-013 Registered exception applicability
+TEST-SYS-GOV-014 Underlying requirement preservation
+TEST-SYS-GOV-015 Privilege evaluation and execution separation
+TEST-SYS-GOV-016 Disclosure evaluation and publication separation
+TEST-SYS-GOV-017 Consent-context completeness
+TEST-SYS-GOV-018 Decision receipt generation
+TEST-SYS-GOV-019 Decision and execution evidence distinction
+TEST-SYS-GOV-020 Capability-scoped policy-runtime degradation
+`
 
 The test catalog and evidence registry own executable tests and evidence definitions.
 

@@ -159,9 +159,9 @@ The operating model separates:
 
 The canonical primary-profile owner is:
 
-```text
+`text
 contracts/profiles/sovereign-linux-node.profile.json
-```
+`
 
 This document owns the node operational states, checks, procedures, degradation, maintenance, incident, recovery, and retirement projection.
 
@@ -237,17 +237,17 @@ GNOME or KDE can provide the standard Linux desktop. The `appliance_shell` overl
 
 A sovereign node has exactly one primary profile:
 
-```text
+`text
 sovereign_linux_node
-```
+`
 
 Compatible overlays can include:
 
-```text
+`text
 high_assurance
 sovereign_offline
 appliance_shell
-```
+`
 
 Composition follows the profile registry.
 
@@ -269,7 +269,7 @@ The operational control foundation includes the applicable instances of:
 
 Application components are selected by the primary profile and node purpose.
 
-A node can host Konnaxion, Orgo, Kristal Runtime, SemantiK Architect Runtime, the kOA Mediatheque, Ariane Runtime, Publication Gateway, and other registered components when profile membership and resources permit them. UCKK remains an external Moodle platform reached only through its optional publication integration.
+A node can host Konnaxion, Orgo, Kristal Runtime, SemantiK Architect Runtime, the kOA Mediatheque, Ariane Runtime, Publication Gateway, and other registered components when profile membership and resources permit them. UCKK remains an online external Moodle platform reached through separately optional publication and import integrations. Accepted learning packages remain local and offline-capable; the node does not operate UCKK or access its database directly.
 
 SenTient and build-time language tooling remain optional and are not default sovereign-node requirements.
 
@@ -329,7 +329,7 @@ Each check produces an explicit pass, fail, blocked, degraded, stale, or not-app
 
 The logical startup order is:
 
-```text
+`text
 host and encrypted storage
 -> node identity and local trust
 -> governance policy
@@ -341,7 +341,7 @@ host and encrypted storage
 -> active artifact verification
 -> local user and application surfaces
 -> optional synchronization, federation, support, and external integrations
-```
+`
 
 A concrete service manager can parallelize steps when dependencies and failure behavior remain correct.
 
@@ -423,7 +423,7 @@ The active node records exact selections for:
 
 A candidate passes:
 
-```text
+`text
 obtain
 -> quarantine
 -> bounded parse
@@ -437,7 +437,7 @@ obtain
 -> run health vectors
 -> retain last-known-good predecessor
 -> record evidence
-```
+`
 
 Each release channel can change independently.
 

@@ -55,36 +55,36 @@ Authoring rules:
 - Do not use SHALL, SHALL NOT, SHOULD, SHOULD NOT, or MAY as normative language.
 - Reference canonical registries instead of copying their values.
 - Use generated blocks when canonical lists, matrices, defaults, or state models
-  must be visible.
+ must be visible.
 - Record every semantic dependency in documentation.registry.json.
 - Keep examples explicitly non-normative.
 -->
 
 <!-- KOA:TARGET-DOC-META:BEGIN
 {
-  "doc_id": "{{DOC_ID}}",
-  "document_class": "explanatory_markdown",
-  "status": "{{draft|active|deprecated|archived}}",
-  "language": "en",
-  "layer": "{{governance|constitution|system|profile|component|development|lifecycle|security|operations|conformance}}",
-  "scope": [
-    "{{global|profile:<profile_id>|component:<component_id>|artifact_class:<artifact_class_id>|development_toolchain:<toolchain_id>|migration_only}}"
-  ],
-  "canonical_refs": [
-    "{{repo-relative-path}}#{{json-pointer}}"
-  ],
-  "decision_ids": ["{{DEC-DOMAIN-NNN}}"],
-  "requirement_ids": [],
-  "lock_ids": ["{{LOCK-DOMAIN-NNN}}"],
-  "exception_ids": [],
-  "depends_on": ["{{DOC-DOMAIN-NNN}}"],
-  "tags": ["{{tag}}"]
+ "doc_id": "{{DOC_ID}}",
+ "document_class": "explanatory_markdown",
+ "status": "{{draft|active|deprecated|archived}}",
+ "language": "en",
+ "layer": "{{governance|constitution|system|profile|component|development|lifecycle|security|operations|conformance}}",
+ "scope": [
+ "{{global|profile:<profile_id>|component:<component_id>|artifact_class:<artifact_class_id>|development_toolchain:<toolchain_id>|migration_only}}"
+ ],
+ "canonical_refs": [
+ "{{repo-relative-path}}#{{json-pointer}}"
+ ],
+ "decision_ids": ["{{DEC-DOMAIN-NNN}}"],
+ "requirement_ids": [],
+ "lock_ids": ["{{LOCK-DOMAIN-NNN}}"],
+ "exception_ids": [],
+ "depends_on": ["{{DOC-DOMAIN-NNN}}"],
+ "tags": ["{{tag}}"]
 }
 KOA:TARGET-DOC-META:END -->
 
 # {{Document Title}}
 
-> **Document status:** Explanatory and non-normative.  
+> **Document status:** Explanatory and non-normative.
 > **Canonical authority:** This document explains the canonical references listed below. It does not independently define requirements, defaults, enums, profile membership, component ownership, interfaces, or state models.
 
 ## 1. Purpose
@@ -156,9 +156,9 @@ This document must be updated or reviewed when any listed canonical reference or
 
 The relevant documentation layer is:
 
-```text
+`text
 {{constitution|system_baseline|deployment_profile|component_contract|implementation_recipe}}
-```
+`
 
 The distinction matters because:
 
@@ -256,9 +256,9 @@ renderer={{renderer-id}}
 
 Canonical profile reference:
 
-```text
+`text
 contracts/profiles/{{profile_id}}.profile.json#{{json-pointer}}
-```
+`
 
 ### 9.2 `{{profile_id}}`
 
@@ -292,9 +292,9 @@ Relevant considerations include:
 
 Canonical security references:
 
-```text
+`text
 {{canonical-security-reference}}
-```
+`
 
 ## 12. Resource and Operational Considerations
 
@@ -311,9 +311,9 @@ Relevant resource dimensions:
 
 Canonical resource references:
 
-```text
+`text
 {{canonical-resource-reference}}
-```
+`
 
 Operational implications:
 
@@ -331,23 +331,23 @@ An AI agent must not infer a missing canonical value, undeclared profile inherit
 
 When required authority is absent:
 
-```json
+`json
 {
-  "validation_status": "blocked",
-  "reason": "missing_canonical_authority",
-  "affected_objects": [],
-  "prohibited_inference": true
+ "validation_status": "blocked",
+ "reason": "missing_canonical_authority",
+ "affected_objects": [],
+ "prohibited_inference": true
 }
-```
+`
 
 ## 14. Validation References
 
 Applicable validation tools:
 
-```bash
+`bash
 {{validation command}}
 {{validation command}}
-```
+`
 
 Applicable tests:
 
@@ -374,9 +374,9 @@ This document is valid only when its metadata matches `documentation.registry.js
 
 **Illustration:**
 
-```text
+`text
 {{example content}}
-```
+`
 
 This example is non-normative. Canonical contracts remain authoritative.
 
@@ -384,9 +384,9 @@ This example is non-normative. Canonical contracts remain authoritative.
 
 Incorrect pattern:
 
-```text
+`text
 {{incorrect pattern}}
-```
+`
 
 It is incorrect because:
 

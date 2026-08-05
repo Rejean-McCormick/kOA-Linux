@@ -18,6 +18,16 @@
       "integration_type": "external_voice",
       "authority": "input_surface_only",
       "undeclared_substitution": "prohibited"
+    },
+    {
+      "integration_type": "external_moodle_publication",
+      "authority": "non_authoritative",
+      "undeclared_substitution": "prohibited"
+    },
+    {
+      "integration_type": "external_moodle_import",
+      "authority": "non_authoritative",
+      "undeclared_substitution": "prohibited"
     }
   ]
 }

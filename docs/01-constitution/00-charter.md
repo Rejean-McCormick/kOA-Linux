@@ -28,6 +28,8 @@
     "DEC-DATA-001",
     "DEC-GATE-001",
     "DEC-GOV-001",
+    "DEC-UCKK-EXT-001",
+    "DEC-MEDIATHEQUE-001",
     "DEC-INTEGRATION-001",
     "DEC-OFFLINE-001",
     "DEC-PORT-001",
@@ -61,6 +63,9 @@
     "LOCK-DATA-001",
     "LOCK-GATE-001",
     "LOCK-GOV-001",
+    "LOCK-UCKK-EXT-002",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-MEDIATHEQUE-001",
     "LOCK-LIFE-001",
     "LOCK-PROFILE-001",
     "LOCK-PROFILE-002"
@@ -97,7 +102,7 @@ KOA:DOC-META:END -->
 
 ## 1. Purpose
 
-This charter defines the constitutional commitments that constrain every active part of the kOA operating environment.
+This charter defines the constitutional commitments that constrain every active part of the kOA-Linux Operating System.
 
 It establishes the common frame for:
 
@@ -221,8 +226,11 @@ The constitutional commitments are:
 - The Governance Policy Runtime evaluates authorization, disclosure, consent, and privilege policy where deployed.
 - The Resource Governor manages deterministic resource allocation and does not grant policy authority.
 - The privileged broker performs only declared host mutations for profiles that require it.
-- Publication Gateway governs controlled cross-domain disclosure.
-- UCKK Dimension Gateway ingests user-selected media into the UCKK domain and does not replace Publication Gateway.
+- The kOA Mediatheque owns private local and offline media records, versions, storage bindings, rights state, provenance, and lifecycle.
+- UCKK owns its online Moodle courses, learning paths, activities, permissions, remote media records, and UCKK Mediatheque lifecycle.
+- Publication Gateway governs disclosure before any local representation is sent to UCKK.
+- The UCKK publication path performs target-specific packaging and transport only after authorization.
+- The controlled UCKK import path verifies source, license, integrity, compatibility, and provenance before the kOA Mediatheque may accept a local copy.
 - External AI adapters provide optional user-triggered capabilities and do not own authoritative system state.
 - The audit and evidence systems record critical transitions without requiring indiscriminate disclosure.
 
@@ -318,13 +326,31 @@ A profile that permits governed host mutation routes the minimal allowlisted ope
 
 The broker verifies the request, executes only the declared host operation, and records the result. Ordinary application actions do not use host privilege.
 
-### 8.5 Cross-domain publication and ingestion
+### 8.5 Cross-domain Mediatheque interchange
 
-Publication Gateway controls governed disclosure from one authority domain to another.
+The kOA Mediatheque and UCKK Mediatheque use a shared conceptual frame but remain separate authority domains.
 
-UCKK Dimension Gateway imports user-selected media into the UCKK domain.
+Outbound publication follows this authority order:
 
-These gateways have different owners, contracts, state, and failure behavior. They do not share or exchange authority by implication.
+```text
+local source selection
+→ Publication Gateway disclosure authorization
+→ UCKK-specific packaging and transport
+→ UCKK acceptance
+→ local receipt preservation
+```
+
+Inbound offline acquisition follows a different authority order:
+
+```text
+UCKK course, learning path, instruction, or resource selection
+→ source, license, integrity, and compatibility verification
+→ quarantine
+→ explicit kOA Mediatheque acceptance
+→ local record and version creation with UCKK provenance
+```
+
+`publish_to_uckk` and `import_from_uckk` are separate operations. Neither direction transfers source authority, grants direct database access, or creates background bidirectional synchronization.
 
 ### 8.6 External AI and service adapters
 
@@ -390,13 +416,13 @@ This charter is conformant when all of the following checks pass:
 
 The validation entry point is:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 Applicable failure codes include:
 
-```text
+`text
 missing_owner_decision
 constitutional_scope_violation
 authority_ambiguity
@@ -409,7 +435,7 @@ critical_receipt_missing
 portability_evidence_missing
 consent_boundary_violation
 parallel_active_authority
-```
+`
 
 A required validator that cannot run produces `blocked`, not `pass`.
 
@@ -419,7 +445,7 @@ A required validator that cannot run produces `blocked`, not `pass`.
 
 A `user_lightweight` deployment loses Internet access.
 
-Local authoritative data, deterministic UCKK processing, non-voice Ariane navigation, and other declared local capabilities remain available. ChatGPT, Suno, Gamma, remote synchronization, and external voice capabilities become unavailable. No substitute external provider is selected automatically.
+Local authoritative data, the kOA Mediatheque, installed offline learning packages, non-voice Ariane navigation, and other declared local capabilities remain available. The online UCKK platform, new UCKK downloads, UCKK publication delivery, ChatGPT, Suno, Gamma, and external voice capabilities become unavailable. No substitute external provider is selected automatically.
 
 ### Example 2 — Cross-component data request
 

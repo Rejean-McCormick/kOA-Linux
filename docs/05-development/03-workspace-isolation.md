@@ -137,9 +137,9 @@ KOA:DOC-META:END -->
 
 # Workspace Isolation
 
-> **Document status:** Normative development architecture.  
-> **Canonical workspace artifact:** `contracts/artifact-contracts/developer-workspace.schema.json`  
-> **Canonical allocation artifact:** `contracts/artifact-contracts/workspace-port-allocation.schema.json`  
+> **Document status:** Normative development architecture.
+> **Canonical workspace artifact:** `contracts/artifact-contracts/developer-workspace.schema.json`
+> **Canonical allocation artifact:** `contracts/artifact-contracts/workspace-port-allocation.schema.json`
 > **Authority rule:** Workspace contracts own structured workspace facts. This document defines the global isolation behavior those contracts must satisfy.
 
 ## 1. Purpose
@@ -181,7 +181,7 @@ This document applies to workspaces used by:
 
 The workspace boundary includes:
 
-```text
+`text
 identity
 source checkout
 mutable dependency environments
@@ -197,7 +197,7 @@ temporary files and logs
 secrets and generated certificates
 resource reservations and limits
 workspace-owned receipts and diagnostics
-```
+`
 
 ### 2.3 Excluded scope
 
@@ -262,17 +262,17 @@ Every active workspace has one stable `workspace_id`.
 
 The canonical derivation model is:
 
-```text
+`text
 component-or-application + branch-or-purpose + unique-suffix
-```
+`
 
 Examples:
 
-```text
+`text
 konnaxion-main-a31f
 konnaxion-feature-voting-92cd
 orgo-main-b114
-```
+`
 
 The unique suffix prevents collisions between simultaneous workspaces with otherwise equal human-readable names.
 
@@ -371,18 +371,18 @@ The declaration is a contract. A recipe may explain commands but cannot add unde
 
 Every Python workspace owns:
 
-```text
+`text
 pyproject.toml
 uv.lock
 declared Python version
 workspace-specific .venv
-```
+`
 
 Normal reproducible validation uses:
 
-```bash
+`bash
 uv sync --frozen
-```
+`
 
 The shared content-addressed UV cache can reduce downloads and builds. It does not contain the workspace's authoritative installed environment.
 
@@ -462,7 +462,7 @@ Resource Governor does not authorize the business action performed by the worksp
 
 The workspace lifecycle is:
 
-```text
+`text
 defined
 → validated
 → allocated
@@ -472,7 +472,7 @@ defined
 → active
 → retired
 → archived
-```
+`
 
 A workspace can move directly from `allocated` or `active` to `retired` after controlled cleanup.
 
@@ -791,14 +791,14 @@ Workspace isolation validates when:
 
 Applicable checks include:
 
-```bash
+`bash
 python docs/tools/check_profile_composition.py
 python docs/tools/check_component_boundaries.py
 python docs/tools/check_canonical_ownership.py
 python docs/tools/check_interfile_locks.py
 python docs/tools/check_traceability.py
 python docs/tools/validate_docs.py
-```
+`
 
 ## 11. Non-Normative Examples
 
@@ -806,10 +806,10 @@ python docs/tools/validate_docs.py
 
 Two workspaces run:
 
-```text
+`text
 konnaxion-main-a31f
 konnaxion-feature-voting-92cd
-```
+`
 
 Each has its own worktree, `.venv`, host ports, database identity, queue namespace, secrets, logs, temporary paths, processes, and resource envelope.
 

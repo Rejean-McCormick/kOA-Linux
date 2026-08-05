@@ -206,9 +206,9 @@ Local identity names are deterministic and collision-resistant.
 
 A canonical local name is derived from:
 
-```text
+`text
 workspace_id + component_or_service_id + identity_purpose
-```
+`
 
 A platform-specific representation can shorten or encode that name while retaining a reversible mapping in workspace state.
 
@@ -498,9 +498,9 @@ This document is conformant when:
 
 The validation entry point is:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 ## 11. Non-Normative Examples
 

@@ -29,7 +29,12 @@
     "generated/traceability.json",
     "generated/exception-index.json",
     "generated/test-catalog.json",
-    "generated/evidence-catalog.json"
+    "generated/evidence-catalog.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json",
+    "04-components/uckk-import-bridge.md"
   ],
   "decision_ids": [
     "DEC-SEC-001",
@@ -82,7 +87,13 @@
     "REQ-SEC-OFFLINE-029",
     "REQ-SEC-OFFLINE-030",
     "REQ-SEC-OFFLINE-031",
-    "REQ-SEC-OFFLINE-032"
+    "REQ-SEC-OFFLINE-032",
+    "REQ-UCKK-IMPORT-001",
+    "REQ-UCKK-IMPORT-002",
+    "REQ-UCKK-IMPORT-003",
+    "REQ-UCKK-IMPORT-004",
+    "REQ-UCKK-IMPORT-005",
+    "REQ-UCKK-IMPORT-006"
   ],
   "lock_ids": [
     "LOCK-SEC-001",
@@ -106,7 +117,8 @@
     "LOCK-AI-002",
     "LOCK-PORT-001",
     "LOCK-IMPL-001",
-    "LOCK-IMPL-002"
+    "LOCK-IMPL-002",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -146,7 +158,8 @@
     "DOC-CONST-005",
     "DOC-CONST-009",
     "DOC-CONST-010",
-    "DOC-CONST-011"
+    "DOC-CONST-011",
+    "DOC-COMP-UCKK-IMPORT-001"
   ],
   "tags": [
     "security",
@@ -163,7 +176,9 @@
     "staging",
     "activation",
     "recovery",
-    "receipts"
+    "receipts",
+    "import-from-uckk",
+    "offline-learning"
   ]
 }
 KOA:DOC-META:END -->
@@ -265,7 +280,7 @@ This document does not authorize arbitrary file copying, general removable-media
 
 The adjacent lifecycle and security documents are:
 
-```text
+`text
 06-lifecycle/04-release-sets.md
 06-lifecycle/11-offline-bundles.md
 06-lifecycle/12-artifact-verification.md
@@ -280,7 +295,7 @@ The adjacent lifecycle and security documents are:
 07-security/07-secrets-and-keys.md
 07-security/19-software-supply-chain.md
 07-security/20-break-glass-security.md
-```
+`
 
 ## 4. Threat, Trust, and State Model
 
@@ -825,7 +840,7 @@ Evidence excludes unrestricted payload content and secret values.
 
 ### 8.8 kOA Mediatheque and external UCKK publication
 
-Offline media admission remains governed by the kOA Mediatheque component contract. An offline bundle may carry a queued UCKK publication package, but remote delivery occurs only through Publication Gateway and the UCKK adapter after connectivity, revalidation, and authorization.
+Offline media admission remains governed by the kOA Mediatheque component contract. An offline bundle may carry a complete UCKK learning package into quarantine for local validation and acceptance, or carry a queued outbound UCKK publication package. Remote delivery occurs only through Publication Gateway and the publication adapter after connectivity, revalidation, and authorization. The two directions never form an implicit synchronization channel.
 
 Governed publication remains controlled by Publication Gateway.
 
@@ -930,7 +945,7 @@ This document is conformant when:
 
 Applicable failure codes include:
 
-```text
+`text
 offline_media_identity_missing
 offline_automount_execution_detected
 offline_quarantine_isolation_failed
@@ -961,7 +976,7 @@ offline_component_owner_bypass
 offline_import_activation_collision
 offline_evidence_path_unavailable
 offline_cleanup_incomplete
-```
+`
 
 A required validator that cannot run produces `blocked`, not `pass`.
 

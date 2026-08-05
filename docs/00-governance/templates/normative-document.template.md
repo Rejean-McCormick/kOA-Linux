@@ -38,44 +38,44 @@ KOA:DOC-META:END -->
 
 <!-- KOA:TARGET-DOC-META:BEGIN
 {
-  "doc_id": "DOC-GOV-TPL-001",
-  "document_class": "explanatory_markdown",
-  "status": "active",
-  "language": "en",
-  "layer": "governance",
-  "scope": ["global"],
-  "canonical_refs": [
-    "generated/document-index.json",
-    "generated/requirements-index.json",
-    "generated/assertion-index.json",
-    "generated/decision-index.json",
-    "generated/traceability.json"
-  ],
-  "decision_ids": [
-    "DEC-DOC-001"
-  ],
-  "requirement_ids": [],
-  "lock_ids": [
-    "LOCK-DOC-003",
-    "LOCK-DOC-004",
-    "LOCK-DOC-005",
-    "LOCK-DOC-008",
-    "LOCK-DOC-016",
-    "LOCK-DOC-021"
-  ],
-  "exception_ids": [],
-  "depends_on": [
-    "DOC-GOV-000",
-    "DOC-GOV-002",
-    "DOC-GOV-003",
-    "DOC-GOV-008"
-  ],
-  "tags": [
-    "template",
-    "normative-markdown",
-    "ai-authoring",
-    "generated-metadata"
-  ]
+ "doc_id": "DOC-GOV-TPL-001",
+ "document_class": "explanatory_markdown",
+ "status": "active",
+ "language": "en",
+ "layer": "governance",
+ "scope": ["global"],
+ "canonical_refs": [
+ "generated/document-index.json",
+ "generated/requirements-index.json",
+ "generated/assertion-index.json",
+ "generated/decision-index.json",
+ "generated/traceability.json"
+ ],
+ "decision_ids": [
+ "DEC-DOC-001"
+ ],
+ "requirement_ids": [],
+ "lock_ids": [
+ "LOCK-DOC-003",
+ "LOCK-DOC-004",
+ "LOCK-DOC-005",
+ "LOCK-DOC-008",
+ "LOCK-DOC-016",
+ "LOCK-DOC-021"
+ ],
+ "exception_ids": [],
+ "depends_on": [
+ "DOC-GOV-000",
+ "DOC-GOV-002",
+ "DOC-GOV-003",
+ "DOC-GOV-008"
+ ],
+ "tags": [
+ "template",
+ "normative-markdown",
+ "ai-authoring",
+ "generated-metadata"
+ ]
 }
 KOA:TARGET-DOC-META:END -->
 
@@ -143,29 +143,29 @@ The generator or authoring workflow SHALL resolve at least these tokens:
 
 The exact normative-document skeleton is located between:
 
-```text
+`text
 KOA:NORMATIVE-TEMPLATE:BEGIN
 KOA:NORMATIVE-TEMPLATE:END
-```
+`
 
 Generators SHALL extract only the content between these markers.
 
 <!-- KOA:NORMATIVE-TEMPLATE:BEGIN -->
 <!-- KOA:TARGET-DOC-META:BEGIN
 {
-  "doc_id": "{{DOC_ID}}",
-  "document_class": "normative_markdown",
-  "status": "{{STATUS}}",
-  "language": "en",
-  "layer": "{{LAYER}}",
-  "scope": {{SCOPE_JSON}},
-  "canonical_refs": {{CANONICAL_REFS_JSON}},
-  "decision_ids": {{DECISION_IDS_JSON}},
-  "requirement_ids": {{REQUIREMENT_IDS_JSON}},
-  "lock_ids": {{LOCK_IDS_JSON}},
-  "exception_ids": {{EXCEPTION_IDS_JSON}},
-  "depends_on": {{DEPENDS_ON_JSON}},
-  "tags": {{TAGS_JSON}}
+ "doc_id": "{{DOC_ID}}",
+ "document_class": "normative_markdown",
+ "status": "{{STATUS}}",
+ "language": "en",
+ "layer": "{{LAYER}}",
+ "scope": {{SCOPE_JSON}},
+ "canonical_refs": {{CANONICAL_REFS_JSON}},
+ "decision_ids": {{DECISION_IDS_JSON}},
+ "requirement_ids": {{REQUIREMENT_IDS_JSON}},
+ "lock_ids": {{LOCK_IDS_JSON}},
+ "exception_ids": {{EXCEPTION_IDS_JSON}},
+ "depends_on": {{DEPENDS_ON_JSON}},
+ "tags": {{TAGS_JSON}}
 }
 KOA:TARGET-DOC-META:END -->
 
@@ -245,11 +245,11 @@ Canonical enums and state values MUST be generated from their owning registries 
 
 The generated block MUST use this form:
 
-```markdown
+`markdown
 <!-- GENERATED:REQUIREMENTS:BEGIN ids={{COMMA_SEPARATED_REQUIREMENT_IDS}} -->
 - **{{REQ_ID}} — {{STRENGTH}}:** {{STATEMENT}}
 <!-- GENERATED:REQUIREMENTS:END -->
-```
+`
 
 Rules:
 
@@ -262,9 +262,9 @@ Rules:
 
 If no normative requirement applies, the generated section MUST contain:
 
-```text
+`text
 Not applicable.
-```
+`
 
 and the metadata `requirement_ids` array MUST be empty.
 
@@ -368,9 +368,9 @@ Rules:
 
 If there are no additional prohibited assumptions beyond global governance rules, state:
 
-```text
+`text
 No document-specific prohibited assumptions apply beyond the global governance locks.
-```
+`
 
 ## 10. Validation Criteria
 
@@ -396,9 +396,9 @@ Use numbered criteria and include, as applicable:
 
 Reference exact test IDs where available:
 
-```text
+`text
 TEST-{{DOMAIN}}-{{NUMBER}}
-```
+`
 
 A criterion MUST NOT claim successful validation unless the test or manual control has actually run and produced evidence.
 

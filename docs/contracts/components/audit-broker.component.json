@@ -100,9 +100,7 @@
     "LOCK-AI-001",
     "LOCK-AI-002"
   ],
-  "adr_ids": [
-    "ADR-010"
-  ],
+  "adr_ids": [],
   "profile_relationship": {
     "membership_owner": "generated/profile-catalog.json",
     "profile_contracts_may_require_or_allow_component": true,

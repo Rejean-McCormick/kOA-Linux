@@ -13,7 +13,6 @@
     "object_kind": "provenance_evidence",
     "release_treatment": {
       "kind": "lifecycle_evidence",
-      "release_channel": null,
       "creates_release_channel": false
     },
     "canonical_refs": [

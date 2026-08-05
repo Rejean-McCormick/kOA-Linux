@@ -264,13 +264,13 @@ The service class affects alerting, budget response, recovery priority, and acce
 
 SLO applicability is defined separately for:
 
-```text
+`text
 normal
 degraded
 offline
 recovery
 maintenance
-```
+`
 
 A capability can have a different objective or no applicability in a given state. The profile declares the expected state behavior.
 
@@ -375,7 +375,7 @@ A suspension is not a passing result.
 
 Every SLI defines:
 
-```text
+`text
 sli_id
 version
 outcome_statement
@@ -393,7 +393,7 @@ sampling
 low_volume_behavior
 data_sources
 quality_checks
-```
+`
 
 The outcome statement is understandable without reading the metric implementation.
 
@@ -403,7 +403,7 @@ Availability and success indicators classify every eligible outcome.
 
 Common result categories include:
 
-```text
+`text
 completed
 rejected
 blocked
@@ -414,7 +414,7 @@ conflicted
 expired
 cancelled
 recovery_required
-```
+`
 
 The SLO contract determines which categories count as good, bad, or outside the eligible population.
 
@@ -522,7 +522,7 @@ Dimensions are bounded and meaningful.
 
 Typical dimensions include:
 
-```text
+`text
 profile
 capability
 component
@@ -532,7 +532,7 @@ operating state
 release set
 dependency class
 priority class
-```
+`
 
 High-cardinality identities remain in protected traces or evidence rather than unrestricted metric labels.
 
@@ -555,7 +555,7 @@ A missing sample does not become a successful sample.
 
 A window declaration includes:
 
-```text
+`text
 window_type
 window_length
 effective_at
@@ -563,7 +563,7 @@ minimum_coverage
 retention
 late_event_policy
 correction_policy
-```
+`
 
 Supported window types can include rolling, calendar, event-count, and state-interval windows.
 
@@ -614,15 +614,15 @@ A profile or SLO can include, exclude, or evaluate maintenance under a separate 
 
 For an event-based objective:
 
-```text
+`text
 error budget = eligible events × permitted bad-event fraction
-```
+`
 
 For an interval-based objective:
 
-```text
+`text
 error budget = eligible service time × permitted non-conforming fraction
-```
+`
 
 The contract defines rounding, partial intervals, late events, and corrections.
 
@@ -775,7 +775,7 @@ A degraded state cannot be presented as full conformance.
 
 A canonical SLO record includes:
 
-```text
+`text
 slo_id
 version
 owner_ref
@@ -794,7 +794,7 @@ incident_policy_ref
 test_refs
 evidence_refs
 effective_at
-```
+`
 
 The target representation supports the indicator type without forcing every objective into a percentage.
 
@@ -917,13 +917,13 @@ This document is conformant when validation confirms:
 
 The principal validation entry point is:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 Supporting checks include:
 
-```text
+`text
 tools/check_slo_contracts.py
 tools/check_observability_coverage.py
 tools/check_profile_inheritance.py
@@ -933,7 +933,7 @@ tools/check_release_sets.py
 tools/check_traceability.py
 tools/check_decision_closure.py
 tools/check_no_unresolved_state.py
-```
+`
 
 A failed SLO check blocks the affected reliability claim, release gate, profile claim, or incident closure.
 

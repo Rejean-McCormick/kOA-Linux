@@ -77,7 +77,8 @@
     "LOCK-ARI-002",
     "LOCK-MEDIATHEQUE-001",
     "LOCK-MEDIATHEQUE-002",
-    "LOCK-UCKK-EXT-001"
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -135,9 +136,9 @@ A release channel organizes independent versioning, signing, publication, and co
 
 The canonical artifact-class inventory and machine-readable properties are owned by:
 
-```text
+`text
 contracts/artifact-classes.contract.json
-```
+`
 
 This document provides interpretation and procedures. It does not become a second owner of the class identifiers, schemas, defaults, channel membership, or validation rules.
 
@@ -160,15 +161,15 @@ This document applies globally to:
 
 It governs artifact classification from creation through:
 
-```text
+`text
 built
-  → verified
-  → approved
-  → published
-  → imported or staged
-  → active when the class supports activation
-  → superseded, revoked, retired, or retained as evidence
-```
+ → verified
+ → approved
+ → published
+ → imported or staged
+ → active when the class supports activation
+ → superseded, revoked, retired, or retained as evidence
+`
 
 Not every class enters every state.
 
@@ -375,7 +376,7 @@ Independent channel updates remain permitted only when all declared compatibilit
 
 The common lifecycle vocabulary is:
 
-```text
+`text
 built
 verified
 approved
@@ -388,7 +389,7 @@ revoked
 retired
 rejected
 quarantined
-```
+`
 
 The artifact-class registry defines the states and transitions applicable to each class.
 
@@ -536,9 +537,9 @@ Ariane artifacts define deterministic local interaction structures, navigation, 
 
 Optional external voice remains a separate integration. An Ariane artifact does not embed an unapproved provider or make local navigation unavailable when voice is absent.
 
-#### kOA Mediatheque artifacts and UCKK publication packages
+#### kOA Mediatheque artifacts and directional UCKK interchange packages
 
-The kOA Mediatheque remains deterministic. Local media identity, derivatives, exports, and packages preserve declared lineage. UCKK publication packages remain external-delivery artifacts and do not transfer authority over the local source object.
+The kOA Mediatheque remains deterministic. Local media identity, derivatives, exports, accepted learning content, and packages preserve declared lineage. UCKK publication packages remain external-delivery artifacts and do not transfer authority over the local source object. UCKK learning packages remain inbound candidate artifacts until quarantine, validation, and explicit local acceptance create a distinct local record.
 
 External Suno or Gamma results enter as user-triggered candidate media with provenance and controlled kOA Mediatheque admission; they do not silently become authoritative local media or UCKK publications.
 
@@ -645,7 +646,7 @@ A cache is not a retention mechanism for authoritative recovery material.
 - **REQ-LIFE-CLASS-020 — SHALL:** Kristal content identity shall remain independent from tenant workflow, interface state, distribution status, and recognition status.
 - **REQ-LIFE-CLASS-021 — SHALL:** Compiled language artifacts and language runtime packs shall remain distinct from development-time grammar sources and build workspaces.
 - **REQ-LIFE-CLASS-022 — SHALL NOT:** Ariane artifacts shall introduce native AI authority or make local navigation depend on optional external voice.
-- **REQ-LIFE-CLASS-023 — SHALL NOT:** kOA Mediatheque artifacts shall encode AI-generated classification, routing, tagging, summarization, transcription, translation, or content generation as baseline authority; UCKK publication packages shall contain only explicitly admitted and authorized content.
+- **REQ-LIFE-CLASS-023 — SHALL NOT:** kOA Mediatheque artifacts shall encode AI-generated classification, routing, tagging, summarization, transcription, translation, or content generation as baseline authority; outbound UCKK publication packages shall contain only explicitly admitted and authorized content, and inbound UCKK learning packages shall not become local authority before deterministic validation and explicit acceptance.
 - **REQ-LIFE-CLASS-024 — SHALL:** Evidence-only artifacts and receipts shall be immutable, attributable, integrity-verifiable, and incapable of directly activating or mutating the state they describe.
 - **REQ-LIFE-CLASS-025 — SHALL:** Artifact retention shall preserve the active artifact, required previous known-good state, applicable recovery material, manifests, signatures, compatibility metadata, and evidence for the period owned by the artifact-class and profile contracts.
 - **REQ-LIFE-CLASS-026 — SHALL:** Creating or materially changing an artifact class shall require an accepted decision, registry and schema updates, impact analysis, requirements, locks, tests, evidence expectations, and lifecycle documentation before activation.
@@ -878,11 +879,11 @@ Ariane Runtime loads verified deterministic interaction artifacts.
 
 External voice remains an optional integration and is not activated by an Ariane local artifact.
 
-### 8.11 kOA Mediatheque and external UCKK target
+### 8.11 kOA and UCKK Mediatheque artifact boundaries
 
-The kOA Mediatheque preserves source and derived-media lineage and consumes only declared artifact or import classes. The external UCKK Moodle platform consumes only authorized publication packages through its declared integration.
+The kOA Mediatheque preserves source and derived-media lineage and consumes only declared artifact or import classes. The online UCKK Moodle platform consumes only authorized publication packages through its declared outbound integration. Selected UCKK courses, learning paths, manuals, and resource graphs enter kOA only as declared UCKK learning packages through the separate import integration.
 
-External AI results use controlled export and re-import with provenance and user approval.
+Shared-frame mapping does not merge artifact identity or authority. External AI results use controlled export and re-import with provenance and user approval.
 
 ### 8.12 Data-owning components
 
@@ -902,24 +903,15 @@ A lifecycle tool does not write another component's authoritative data outside t
 | `DEC-AI-001` | Prevents native AI from becoming hidden artifact authority and requires controlled acceptance of external AI output. |
 | `DEC-ARI-001` | Keeps Ariane local navigation independent from optional external voice. |
 | `DEC-MEDIATHEQUE-001` | Keeps kOA Mediatheque ingestion and processing deterministic and non-AI. |
-| `DEC-UCKK-EXT-001` | Keeps UCKK external and limits integration to explicit governed publication. |
+| `DEC-UCKK-EXT-001` | Keeps UCKK online and externally authoritative while allowing separate explicit publication and import integrations. |
 
 ### 9.2 Related ADRs
 
 | ADR | Relevance |
 | --- | --- |
-| `ADR-002` | Defines immutable signed system-image behavior for applicable sovereign profiles. |
-| `ADR-008` | Defines the four release channels. |
-| `ADR-013` | Separates global lifecycle semantics from profile-specific implementation. |
-| `ADR-014` | Preserves the external AI boundary. |
-| `ADR-016` | Keeps generated documentation projections separate from canonical authority. |
 | `ADR-019` | Separates resource and governance-policy authority. |
 | `ADR-021` | Preserves Ariane local navigation when external voice is absent. |
-| `ADR-030` | Establishes the kOA Mediatheque as an internal component. |
-| `ADR-031` | Establishes UCKK as an external Moodle publication target. |
-| `ADR-023` | Makes overlay effects explicit. |
 | `ADR-024` | Preserves logical ownership across physical deployment forms. |
-| `ADR-026` | Blocks active artifact authority that depends on missing implementation decisions. |
 
 ### 9.3 Prohibited assumptions
 
@@ -984,7 +976,7 @@ This document conforms when all of the following checks pass:
 31. Kristal tests cover lineage, query compatibility, substitution, downgrade, activation, and revocation;
 32. language tests cover PGF integrity, runtime compatibility, loading, and rollback;
 33. Ariane tests prove local operation without external voice;
-34. kOA Mediatheque tests prove local artifacts remain deterministic and non-AI, and UCKK integration tests prove publication is explicit and external;
+34. kOA Mediatheque tests prove local artifacts remain deterministic and non-AI, and UCKK integration tests prove publication and import are explicit, separately receipted, authority-preserving, and free of implicit synchronization;
 35. migration tests cover checkpoints, restart, backup, unsupported jumps, and forward repair;
 36. trust-update tests cover scope, sequence, replay, revocation, and recovery;
 37. evidence receipts cannot mutate described state;
@@ -994,7 +986,7 @@ This document conforms when all of the following checks pass:
 
 The validator reports actionable failures, including:
 
-```text
+`text
 artifact_class_missing
 artifact_class_identifier_collision
 artifact_class_schema_missing
@@ -1016,7 +1008,7 @@ artifact_import_activation_conflated
 artifact_release_set_incompatible
 artifact_migration_repair_missing
 artifact_receipt_mutation_attempt
-```
+`
 
 ## 11. Non-Normative Examples
 

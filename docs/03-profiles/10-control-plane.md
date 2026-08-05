@@ -128,9 +128,9 @@ The profile supports both Kubernetes and non-Kubernetes realizations. The orches
 
 This document applies only to deployments whose selected primary profile is:
 
-```text
+`text
 control_plane
-```
+`
 
 It covers:
 
@@ -223,10 +223,10 @@ The profile permits two implementation classes:
 
 Implementation recipes are stored separately:
 
-```text
+`text
 11-recipes/control-plane/kubernetes-deployment.md
 11-recipes/control-plane/non-kubernetes-deployment.md
-```
+`
 
 Those recipes illustrate deployment methods. They do not independently define the profile contract.
 
@@ -248,12 +248,12 @@ Observed state does not become authoritative business state. A health signal rep
 
 Control-plane release coordination uses the four canonical channels:
 
-```text
+`text
 system
 services
 governance
 knowledge
-```
+`
 
 A Release Set identifies tested compatible versions across those channels.
 
@@ -265,13 +265,13 @@ The `control_plane` profile participates in overlay composition only when each s
 
 Composition follows:
 
-```text
+`text
 global constitutional and system baseline
 + control_plane primary profile
 + compatible overlays
 + active scoped exceptions
 = effective control-plane configuration
-```
+`
 
 The profile contract owns compatible overlays and merge behavior. No overlay compatibility is inferred from names or implementation similarity.
 
@@ -485,9 +485,9 @@ This document is conformant when:
 
 The validation entry point is:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 ## 11. Non-Normative Examples
 

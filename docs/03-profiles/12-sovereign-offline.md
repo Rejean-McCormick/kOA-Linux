@@ -87,8 +87,8 @@
     "LOCK-LIFE-004",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-MEDIATHEQUE-002",
     "LOCK-SENT-001"
   ],
   "exception_ids": [],
@@ -231,14 +231,14 @@ A primary profile that does not list this overlay as compatible cannot claim sov
 
 The effective profile is calculated as:
 
-```text
+`text
 active global baseline
 + one compatible sovereign primary profile
 + sovereign_offline
 + zero or more compatible overlays
 + applicable active exceptions
 = one validated sovereign-offline effective profile
-```
+`
 
 Composition preserves the authority order. The overlay cannot weaken the global baseline or the primary profile's required local capabilities.
 
@@ -248,7 +248,7 @@ An effective profile records every contributing object and version.
 
 The sovereign-offline operating model uses explicit states:
 
-```text
+`text
 connected_restricted
 preparing_disconnection
 disconnected
@@ -256,7 +256,7 @@ offline_transfer_import
 offline_transfer_export
 reconnection_assessment
 recovery
-```
+`
 
 `connected_restricted` permits only network paths declared by the effective profile.
 
@@ -353,12 +353,12 @@ A bundle does not inherit authority from its transport medium. The target valida
 
 The effective profile consumes compatible versions of the four release channels:
 
-```text
+`text
 system
 services
 governance
 knowledge
-```
+`
 
 A Release Set identifies one tested version per channel. Offline distribution preserves the Release Set identity, manifests, compatibility evidence, signatures, and rollback information.
 
@@ -427,7 +427,7 @@ The Governance Policy Runtime remains separate and does not become a resource sc
 
 Ariane local non-voice navigation remains available offline.
 
-Native UCKK ingestion, validation, routing, local indexing, retrieval, and dimension transfer remain deterministic and local within the effective resource envelope.
+Local kOA Mediatheque ingestion, validation, indexing, retrieval, and accepted UCKK package processing remain deterministic and local within the effective resource envelope.
 
 ChatGPT, Suno, Gamma, and the approved Ariane voice adapter remain external surfaces. They are unavailable during complete disconnection unless a future accepted decision and registered controlled transfer mechanism explicitly supports a bounded operation. Their absence does not alter the native baseline.
 
@@ -477,8 +477,8 @@ Recovery does not depend on a central service being reachable.
 - **REQ-PROFILE-SOFF-024 — SHALL NOT:** The Resource Governor decide authorization, consent, disclosure, publication, privilege, or governance policy while enforcing offline resource limits.
 - **REQ-PROFILE-SOFF-025 — SHALL:** The native capability baseline remain non-AI, and ChatGPT, Suno, Gamma, and the approved Ariane voice adapter remain unavailable while no explicitly authorized external transfer path exists.
 - **REQ-PROFILE-SOFF-026 — SHALL:** Ariane local non-voice navigation remain continuously available without Internet access, external AI, or the approved external voice adapter.
-- **REQ-PROFILE-SOFF-027 — SHALL:** Native UCKK ingestion, validation, routing, local indexing, retrieval, and UCKK dimension transfer remain deterministic and locally operable within the effective profile's declared resource envelope.
-- **REQ-PROFILE-SOFF-028 — SHALL NOT:** The Publication Gateway and the UCKK Dimension Gateway be merged or substituted for one another in offline-transfer workflows.
+- **REQ-PROFILE-SOFF-027 — SHALL:** Local kOA Mediatheque ingestion, validation, indexing, retrieval, and complete offline UCKK package intake remain deterministic and locally operable within the effective profile's resource envelope.
+- **REQ-PROFILE-SOFF-028 — SHALL NOT:** Publication Gateway, UCKK Publication Bridge, UCKK Import Bridge, and local acceptance be merged or substituted for one another in offline-transfer workflows.
 - **REQ-PROFILE-SOFF-029 — SHALL NOT:** The sovereign_offline overlay add SenTient, a local AI runtime, an external AI dependency, or an undeclared developer workbench to an otherwise ineligible primary profile.
 - **REQ-PROFILE-SOFF-030 — SHALL:** Backup, restore, disaster recovery, portability, exit, and replacement-node procedures remain executable from locally controlled artifacts and documented offline procedures.
 - **REQ-PROFILE-SOFF-031 — SHALL:** An effective sovereign_offline conformance claim identify the primary profile, all overlays, active exceptions, release set, trust state, offline interval assumptions, network policy, transfer controls, tests, and current evidence.
@@ -525,7 +525,7 @@ Disconnected operation is a normal governed state, not break-glass authority.
 
 Import proceeds through:
 
-```text
+`text
 media_received
 device_or_medium_identified
 bundle_quarantined
@@ -543,7 +543,7 @@ owner_acceptance_recorded
 staged
 activated_or_imported
 receipt_recorded
-```
+`
 
 Failure at any validation stage preserves the current active state.
 
@@ -652,7 +652,7 @@ Physical connectivity does not automatically exit sovereign-offline authority.
 | Power loss | Recover committed state and explicit pending state from local durable records. |
 | External AI unavailable | Preserve all native capability claims. |
 | Ariane voice unavailable | Preserve local non-voice navigation. |
-| External UCKK adapter unavailable | Preserve deterministic native UCKK behavior. |
+| Online UCKK endpoint unavailable | Preserve deterministic local Mediatheque behavior and all previously accepted offline learning packages. |
 | Corrupted recovery artifact | Quarantine it and retain the last verified recoverable state. |
 | Profile or authority contract invalid | Block new activation and claims while preserving the last validated local state. |
 
@@ -686,7 +686,7 @@ Transfer devices and removable media remain outside local authority until valida
 
 External AI is not a local trust authority. External AI outputs do not enter the system during disconnection through undocumented copying or unregistered media.
 
-The Publication Gateway governs applicable disclosure. The UCKK Dimension Gateway governs applicable user-selected UCKK dimension transfer. Their offline artifacts, receipts, policies, and ownership remain distinct.
+Publication Gateway governs applicable outbound disclosure, followed by the UCKK Publication Bridge. The UCKK Import Bridge governs inbound transfer and quarantine before local acceptance. Their offline artifacts, receipts, policies, credentials, queues, and ownership remain distinct.
 
 ## 9. Exceptions and Compatibility
 
@@ -703,7 +703,7 @@ It cannot:
 - bypass replay, downgrade, or compatibility controls;
 - make external AI native or authoritative;
 - make Ariane navigation depend on external voice;
-- merge Publication Gateway with UCKK Dimension Gateway;
+- merge Publication Gateway, UCKK Publication Bridge, and UCKK Import Bridge;
 - change component data ownership;
 - authorize a sovereign-offline claim without required tests and evidence.
 
@@ -752,7 +752,7 @@ This document is conformant when validation confirms:
 21. the native baseline remains non-AI;
 22. external AI surfaces remain unavailable without an authorized boundary;
 23. Ariane local non-voice navigation passes without network or voice;
-24. native UCKK processing remains deterministic and local;
+24. local kOA Mediatheque processing and offline UCKK package validation remain deterministic and local;
 25. gateway and component ownership separations remain intact;
 26. exceptions remain bounded and visible;
 27. every requirement, lock, component, profile, release, artifact, test, and evidence reference resolves;
@@ -760,13 +760,13 @@ This document is conformant when validation confirms:
 
 The principal validation entry point is:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 Supporting checks include:
 
-```text
+`text
 tools/check_profile_inheritance.py
 tools/check_offline_continuity.py
 tools/check_interfile_locks.py
@@ -776,7 +776,7 @@ tools/check_release_sets.py
 tools/check_artifact_contracts.py
 tools/check_traceability.py
 tools/check_no_unresolved_state.py
-```
+`
 
 ## 11. Non-Normative Examples
 
@@ -798,7 +798,7 @@ A sovereign hub uses an explicitly declared isolated local segment for trusted n
 
 ### 11.5 UCKK transfer
 
-A user exports selected media through the UCKK Dimension Gateway into a destination-bound offline bundle. The Publication Gateway is not substituted, and no general disclosure authority is inferred.
+A user receives a selected UCKK learning package through the UCKK Import Bridge in a source-bound offline bundle. The package remains quarantined until validation and local acceptance; no outbound disclosure authority is inferred.
 
 ### 11.6 Ariane during complete disconnection
 

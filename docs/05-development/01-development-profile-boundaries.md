@@ -232,7 +232,7 @@ This document does not define detailed workspace naming, UV commands, port-alloc
 
 The detailed development corpus is:
 
-```text
+`text
 05-development/00-development-model.md
 05-development/02-workspace-identity.md
 05-development/03-workspace-isolation.md
@@ -249,7 +249,7 @@ The detailed development corpus is:
 05-development/14-build-test-and-validation.md
 05-development/15-artifact-publication.md
 05-development/16-development-to-release-transition.md
-```
+`
 
 ## 4. Development Profile Model
 
@@ -452,17 +452,17 @@ A directory copy without a distinct workspace identity is not sufficient for par
 
 The Python workspace contains:
 
-```text
+`text
 pyproject.toml
 uv.lock
 .venv/
-```
+`
 
 Dependency realization uses:
 
-```bash
+`bash
 uv sync --frozen
-```
+`
 
 A shared download cache is permitted.
 
@@ -813,7 +813,7 @@ This document is conformant when:
 
 Applicable failure codes include:
 
-```text
+`text
 development_profile_missing
 development_profile_role_collision
 workspace_identity_missing
@@ -838,7 +838,7 @@ release_transition_bypass
 development_migration_target_invalid
 workspace_cleanup_incomplete
 development_evidence_missing
-```
+`
 
 A required validator that cannot run produces `blocked`, not `pass`.
 

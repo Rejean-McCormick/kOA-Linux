@@ -145,7 +145,7 @@ A security domain is not merely a deployment mechanism.
 
 The following objects can support domain enforcement:
 
-```text
+`text
 process
 operating-system account
 container
@@ -159,7 +159,7 @@ service identity
 encryption context
 gateway
 policy scope
-```
+`
 
 None of those objects alone defines the complete domain.
 
@@ -182,15 +182,15 @@ The model protects boundaries among:
 
 The model establishes a consistent rule:
 
-```text
+`text
 crossing a domain boundary
-    → explicit identity
-    → explicit contract
-    → explicit authority
-    → minimized data
-    → explicit outcome
-    → evidence where required
-```
+ → explicit identity
+ → explicit contract
+ → explicit authority
+ → minimized data
+ → explicit outcome
+ → evidence where required
+`
 
 A successful transport connection, authenticated session, container attachment, database login, or signature verification never fills a missing authority decision.
 
@@ -247,7 +247,7 @@ Those values belong to their canonical registries and contracts.
 
 The canonical sources for this document are:
 
-```text
+`text
 generated/authority-manifest.json
 generated/decision-index.json
 contracts/system.contract.json#/component_boundaries
@@ -267,7 +267,7 @@ generated/traceability.json
 generated/test-catalog.json
 generated/evidence-catalog.json
 generated/exception-index.json
-```
+`
 
 Their ownership roles are:
 
@@ -301,7 +301,7 @@ This document explains the domain model and does not create a parallel security-
 
 A complete security-domain descriptor includes:
 
-```text
+`text
 domain_id
 domain_type
 canonical_owner
@@ -322,7 +322,7 @@ external integrations
 audit and receipt policy
 backup and restore policy
 lifecycle state
-```
+`
 
 The descriptor can be distributed across canonical contracts. It does not need to be stored in one file, but every value has one owner.
 
@@ -430,12 +430,12 @@ A workload can be authorized and resource-constrained. It can also have availabl
 
 ### 4.8 Gateway domains
 
-The Publication Gateway and kOA Mediatheque admission boundary have different security-domain roles. The UCKK publication adapter operates only under Publication Gateway authorization.
+Publication Gateway, kOA Mediatheque admission, UCKK publication transport, and UCKK import quarantine have different security-domain roles. The UCKK Publication Bridge operates only under Publication Gateway authorization; the UCKK import adapter cannot cross the local acceptance boundary.
 
 | Gateway | Owns |
 | --- | --- |
 | kOA Mediatheque | User-selected local source, integrity verification, quarantine, controlled admission, rights, and provenance |
-| UCKK publication adapter | Authenticated external target, packaging, transfer, remote response, and receipt; no local data ownership |
+| UCKK Publication Bridge | Authenticated external target, packaging, transfer, remote response, and receipt; no local data ownership |
 | Publication Gateway | Disclosure decision, audience, destination, publication transfer, commit result |
 
 One gateway does not act as the other.
@@ -459,7 +459,7 @@ Shared immutable downloads or caches do not create a shared mutable workspace do
 
 Each external integration declares:
 
-```text
+`text
 integration identity
 capabilities
 endpoints
@@ -473,7 +473,7 @@ failure behavior
 removal behavior
 provenance
 receipts
-```
+`
 
 Approved external AI surfaces remain outside native authority. Their results are candidate inputs until an owning component accepts them through a controlled workflow.
 
@@ -496,7 +496,7 @@ It does not own canonical component data, host privilege, or offline core operat
 
 The supply chain separates:
 
-```text
+`text
 source authority
 development workspace
 build worker
@@ -506,7 +506,7 @@ distribution or mirror
 target verification
 deployment activation
 recovery
-```
+`
 
 An artifact producer does not become the target activation authority. A repository does not become the producer. A valid signature does not prove compatibility.
 
@@ -768,9 +768,9 @@ Publication Gateway is the disclosure boundary for external audiences and destin
 
 It does not become a raw component-data store, a kOA Mediatheque admission interface, or a direct UCKK database gateway.
 
-### 8.5 kOA Mediatheque and UCKK publication adapter
+### 8.5 kOA Mediatheque and UCKK Publication Bridge
 
-The kOA Mediatheque controls selected local import, integrity verification, quarantine, rights review, and admission. The UCKK publication adapter controls only authenticated delivery of an already authorized publication package.
+The kOA Mediatheque controls selected local import, integrity verification, quarantine, rights review, and admission. The UCKK Publication Bridge controls only authenticated delivery of an already authorized publication package.
 
 It does not authorize public disclosure.
 
@@ -886,7 +886,7 @@ This document is conformant when all of the following checks pass:
 
 Expected validator failure codes include:
 
-```text
+`text
 security_domain_identity_missing
 security_domain_owner_missing
 security_domain_tenant_mismatch
@@ -909,7 +909,7 @@ security_domain_receipt_path_unavailable
 security_domain_selective_disclosure_failed
 security_domain_restore_boundary_failed
 security_domain_status_ambiguous
-```
+`
 
 ## 11. Non-Normative Examples
 

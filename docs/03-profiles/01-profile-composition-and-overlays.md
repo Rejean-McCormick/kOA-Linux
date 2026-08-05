@@ -224,13 +224,13 @@ The exact compatible bases, prerequisites, exclusions, component changes, capabi
 
 An effective profile is the validated result of:
 
-```text
+`text
 global constitutional and system baseline
 + one active primary profile
 + zero or more compatible active overlays
 + zero or more active scoped exceptions
 = one effective deployment configuration
-```
+`
 
 The effective profile records:
 
@@ -511,9 +511,9 @@ This document is conformant when:
 
 The validation entry point is:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 ## 11. Non-Normative Examples
 

@@ -253,7 +253,7 @@ A generated profile matrix, dashboard, report, certificate, badge, or user inter
 
 A profile claim contains:
 
-```text
+`text
 claim_id
 claim_version
 claim_class
@@ -273,7 +273,7 @@ non_claims
 invalidation_triggers
 lifecycle
 receipt_refs
-```
+`
 
 The claim is immutable after issue except through linked lifecycle records. Renewal creates a new claim version or new claim identity according to the claim contract.
 
@@ -281,12 +281,12 @@ The claim is immutable after issue except through linked lifecycle records. Rene
 
 The effective profile is:
 
-```text
+`text
 global baseline
 + exactly one primary profile
 + zero or more explicitly compatible overlays
 + zero or more bounded approved exceptions
-```
+`
 
 Global baseline application is not profile inheritance.
 
@@ -298,7 +298,7 @@ Overlays are non-deployable modifiers. An overlay claim always identifies its pr
 
 The current primary profile identities are:
 
-```text
+`text
 user_lightweight
 developer_linux_workstation
 developer_windows_wsl
@@ -306,7 +306,7 @@ sovereign_linux_node
 sovereign_hub
 build_farm
 control_plane
-```
+`
 
 A whole-profile claim identifies exactly one of these identities.
 
@@ -314,11 +314,11 @@ A whole-profile claim identifies exactly one of these identities.
 
 The current overlay identities are:
 
-```text
+`text
 high_assurance
 sovereign_offline
 appliance_shell
-```
+`
 
 Compatibility is determined by the canonical profile contracts. Similar hardware or observed behavior does not establish compatibility.
 
@@ -362,7 +362,7 @@ A claim does not extend beyond these values.
 
 Claim lifecycle states are:
 
-```text
+`text
 candidate
 evaluated
 issued
@@ -372,7 +372,7 @@ revoked
 superseded
 rejected
 archived
-```
+`
 
 The conformance result remains separate from lifecycle state.
 
@@ -486,14 +486,14 @@ An exception changes disposition only inside its approved scope. It does not rem
 
 Each applicable requirement receives:
 
-```text
+`text
 pass
 fail
 not_applicable
 blocked
 waived_by_approved_exception
 measurement_blocked
-```
+`
 
 The result records:
 
@@ -523,7 +523,7 @@ Implementation absence alone does not establish non-applicability.
 
 The test matrix maps:
 
-```text
+`text
 profile composition
 claim class
 requirement
@@ -533,7 +533,7 @@ operating state
 expected result
 evidence class
 validity
-```
+`
 
 Whole-profile claims cover every applicable matrix row.
 
@@ -610,10 +610,10 @@ A user-facing summary cannot omit exceptions or non-claims.
 
 The development primary profiles are:
 
-```text
+`text
 developer_linux_workstation
 developer_windows_wsl
-```
+`
 
 Their claims can cover:
 
@@ -694,9 +694,9 @@ The claim remains the primary sovereign profile plus `sovereign_offline`.
 
 A high-assurance claim identifies:
 
-```text
+`text
 primary profile + high_assurance
-```
+`
 
 The overlay strengthens applicable security, trust, evidence, review, isolation, and lifecycle obligations. It does not replace the primary profile.
 
@@ -744,12 +744,12 @@ A claim identifies enabled and disabled integrations.
 
 External AI remains optional and non-authoritative. The approved external surfaces are:
 
-```text
+`text
 chatgpt
 suno
 gamma
 approved_ariane_voice_adapter
-```
+`
 
 Profile conformance depends on the local non-AI baseline, controlled export and reimport, provenance, and local acceptance. Provider success is not profile success.
 
@@ -959,13 +959,13 @@ This document is conformant when validation confirms:
 
 The principal validation entry point is:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 Supporting checks include:
 
-```text
+`text
 tools/check_profile_claims.py
 tools/check_profile_inheritance.py
 tools/check_release_sets.py
@@ -975,7 +975,7 @@ tools/check_traceability.py
 tools/check_artifact_contracts.py
 tools/check_decision_closure.py
 tools/check_no_unresolved_state.py
-```
+`
 
 A failed profile-claim check blocks issue, renewal, continued reliance, public verification, or the affected conformance assertion.
 

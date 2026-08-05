@@ -23,7 +23,10 @@
     "generated/traceability.json",
     "generated/test-catalog.json",
     "generated/evidence-catalog.json",
-    "generated/exception-index.json"
+    "generated/exception-index.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json"
   ],
   "decision_ids": [
     "DEC-OPS-DR-001",
@@ -256,7 +259,7 @@ A method can be combined with another method when the plan defines ordering and 
 
 The recovery lifecycle distinguishes:
 
-```text
+`text
 declared
 contained
 authority_frozen
@@ -270,18 +273,18 @@ post_recovery_validation
 evidence_durable
 service_restored
 closed
-```
+`
 
 Alternative states are:
 
-```text
+`text
 blocked
 failed
 conflicted
 cancelled
 forward_repair_required
 recovery_required
-```
+`
 
 ### 4.3 Recovery priority classes
 
@@ -299,14 +302,14 @@ Priority influences ordering and resource protection. It does not transfer data 
 
 Every applicable capability defines:
 
-```text
+`text
 recovery_point_objective
 recovery_time_objective
 maximum_tolerable_degradation
 minimum_restored_capability
 evidence_recovery_objective
 offline_recovery_objective
-```
+`
 
 Values are profile-specific.
 
@@ -425,7 +428,7 @@ The artifact contract defines authority, contents, retention, integrity, and res
 
 Every backup manifest identifies:
 
-```text
+`text
 backup_id
 artifact_class
 owner_ref
@@ -444,7 +447,7 @@ storage_destination_ref
 restore_method_ref
 test_refs
 evidence_refs
-```
+`
 
 The manifest contains references to managed keys, not key values.
 
@@ -452,14 +455,14 @@ The manifest contains references to managed keys, not key values.
 
 A backup declares one consistency model:
 
-```text
+`text
 transaction_consistent
 application_consistent
 crash_consistent
 journal_replay_required
 component_export_consistent
 reconstructable
-```
+`
 
 The restore procedure performs the required replay, migration, or component validation.
 
@@ -637,6 +640,7 @@ Recovery classifies pending:
 
 - publication requests;
 - queued or in-flight UCKK publication transfers;
+- queued inbound UCKK retrievals, quarantined learning packages, validation state, and pending local acceptance requests;
 - external exports;
 - imports;
 - activation requests;
@@ -679,14 +683,14 @@ Validation covers:
 
 Recovery reporting distinguishes:
 
-```text
+`text
 service_restored
 service_restored_degraded
 authority_restored_reconciliation_pending
 forward_repair_required
 recovery_blocked
 recovery_failed
-```
+`
 
 Closure occurs only after required evidence and remediation records are durable.
 
@@ -818,7 +822,7 @@ Tabletop work complements executable tests.
 
 An exercise record includes:
 
-```text
+`text
 exercise_id
 scenario_ref
 plan_ref
@@ -837,7 +841,7 @@ objective_results
 evidence_refs
 findings
 remediation_refs
-```
+`
 
 Production data use follows protected test-data policy.
 
@@ -942,13 +946,13 @@ This document is conformant when validation confirms:
 
 The principal validation entry point is:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 Supporting checks include:
 
-```text
+`text
 tools/check_disaster_recovery.py
 tools/check_backup_restore_coverage.py
 tools/check_release_sets.py
@@ -959,7 +963,7 @@ tools/check_interfile_locks.py
 tools/check_traceability.py
 tools/check_decision_closure.py
 tools/check_no_unresolved_state.py
-```
+`
 
 A failed disaster-recovery check blocks the affected recovery claim, profile claim, exercise closure, replacement-node activation, or incident closure.
 

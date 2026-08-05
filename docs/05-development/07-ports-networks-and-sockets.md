@@ -117,11 +117,11 @@ The goal is to allow multiple applications, branches, worktrees, and component v
 
 The model separates three endpoint spaces:
 
-```text
+`text
 workspace-internal endpoint
 host-exposed endpoint
 workspace-local IPC endpoint
-```
+`
 
 A service can use a stable internal port inside its isolated workspace network. Host exposure uses a separately allocated host port. Local IPC uses a socket path or platform-equivalent endpoint inside the workspace runtime namespace.
 
@@ -142,10 +142,10 @@ This model prevents:
 
 This document applies to development workspaces under:
 
-```text
+`text
 developer_linux_workstation
 developer_windows_wsl
-```
+`
 
 It applies to:
 
@@ -176,7 +176,7 @@ A recipe can select an implementation such as Podman networks, Docker networks, 
 
 The canonical sources for this document are:
 
-```text
+`text
 generated/authority-manifest.json
 generated/decision-index.json
 contracts/system.contract.json#/operating_modes
@@ -188,7 +188,7 @@ generated/assertion-index.json
 generated/traceability.json
 generated/evidence-catalog.json
 generated/exception-index.json
-```
+`
 
 Their ownership roles are:
 
@@ -211,9 +211,9 @@ This document explains the behavior. It does not become a second owner of schema
 
 The canonical workspace identifier is derived from:
 
-```text
+`text
 component + branch_or_purpose + unique_suffix
-```
+`
 
 It prefixes or otherwise scopes:
 
@@ -232,11 +232,11 @@ It prefixes or otherwise scopes:
 
 Examples of workspace identities include:
 
-```text
+`text
 konnaxion-main-a31f
 konnaxion-feature-voting-92cd
 orgo-main-b114
-```
+`
 
 The exact formatting is validated by the workspace schema.
 
@@ -254,12 +254,12 @@ The same internal port can be reused by multiple workspaces because the network 
 
 A component can declare stable internal ports such as:
 
-```text
+`text
 web: 8080/tcp
 database: 5432/tcp
 queue: 6379/tcp
 metrics: 9090/tcp
-```
+`
 
 These values remain inside the workspace network. They improve reproducibility because service-to-service configuration does not change when the host allocation changes.
 
@@ -271,7 +271,7 @@ A host-port allocation is a registry object with a lifecycle.
 
 The logical record includes:
 
-```text
+`text
 allocation_id
 workspace_id
 service_id
@@ -286,11 +286,11 @@ activated_at
 expires_at
 released_at
 release_condition
-```
+`
 
 Logical states include:
 
-```text
+`text
 requested
 reserved
 active
@@ -298,7 +298,7 @@ release_pending
 released
 expired
 recovery_required
-```
+`
 
 The allocation registry is the exclusive owner of host-port availability. Process inspection is validation evidence, not a replacement registry.
 
@@ -308,12 +308,12 @@ Default development exposure is local-only.
 
 Bind-address classes include:
 
-```text
+`text
 loopback
 workspace_bridge
 declared_lan
 declared_test_interface
-```
+`
 
 Broader exposure is explicit because it changes who can reach the endpoint. A service that needs LAN access declares the purpose, profile allowance, security context, and owning workspace.
 
@@ -327,10 +327,10 @@ The network name is derived from `workspace_id`. Services inside the workspace u
 
 The default behavior is:
 
-```text
+`text
 workspace A cannot resolve or connect to workspace B
 workspace B cannot resolve or connect to workspace A
-```
+`
 
 An explicit cross-workspace link identifies:
 
@@ -348,12 +348,12 @@ Such a link does not merge the workspaces.
 
 Service discovery uses workspace-local names, for example:
 
-```text
+`text
 api
 database
 queue
 worker
-```
+`
 
 The runtime resolves those names only within the workspace boundary. Host-global aliases and manually edited global name mappings are avoided because they create collision and cleanup risks.
 
@@ -365,7 +365,7 @@ Local IPC can use Unix-domain sockets or a platform-equivalent endpoint.
 
 The logical socket identity includes:
 
-```text
+`text
 workspace_id
 service_id
 socket_name
@@ -374,7 +374,7 @@ runtime_namespace
 owner
 permissions
 lifecycle_state
-```
+`
 
 A typical Linux or WSL implementation places sockets beneath a workspace-specific runtime directory. The architectural requirement is the namespace and lifecycle, not one absolute filesystem path.
 
@@ -735,7 +735,7 @@ This document is conformant when all of the following checks pass:
 
 Expected validator failure codes include:
 
-```text
+`text
 workspace_network_name_conflict
 workspace_network_isolation_failed
 workspace_cross_link_undefined
@@ -754,7 +754,7 @@ workspace_endpoint_identity_missing
 workspace_teardown_partial
 workspace_diagnostic_secret_exposure
 workspace_runtime_specific_assumption
-```
+`
 
 ## 11. Non-Normative Examples
 

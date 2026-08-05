@@ -112,7 +112,7 @@ This document does not require a total system shutdown after every authority fai
 
 The canonical sources for this document are:
 
-```text
+`text
 generated/authority-manifest.json
 generated/decision-index.json
 contracts/system.contract.json#/authority_model/fail_closed
@@ -120,7 +120,7 @@ generated/requirements-index.json
 generated/assertion-index.json
 generated/exception-index.json
 generated/traceability.json
-```
+`
 
 Their ownership roles are:
 
@@ -142,7 +142,7 @@ This Markdown document explains the constitutional model and operating consequen
 
 An authority decision is evaluated against a complete tuple:
 
-```text
+`text
 actor
 action
 target
@@ -153,7 +153,7 @@ authority evidence
 validity interval
 contract version
 decision provenance
-```
+`
 
 A positive result applies only to the tuple that was evaluated. Permission for one actor, action, target, scope, or condition does not imply permission for another.
 
@@ -373,9 +373,9 @@ The Governance Policy Runtime evaluates authorization, disclosure, and privilege
 
 Each component enforces transitions over its authoritative data. Another component uses the declared interface, event, artifact, or gateway contract instead of direct writes to the owner's source tables.
 
-### 8.4 Publication Gateway and UCKK Dimension Gateway
+### 8.4 Publication Gateway and UCKK Import Bridge
 
-The Publication Gateway controls governed cross-domain disclosure. The UCKK Dimension Gateway controls user-selected ingestion into a UCKK dimension. A grant for one gateway does not authorize the other.
+Publication Gateway controls governed outbound disclosure. The UCKK Import Bridge controls inbound retrieval and quarantine, while the kOA Mediatheque owns local acceptance. Authority for one direction does not authorize the other.
 
 ### 8.5 Lifecycle and release services
 
@@ -446,7 +446,7 @@ This document is conformant when all of the following checks pass:
 
 Expected validator failure codes include:
 
-```text
+`text
 missing_owner_decision
 canonical_reference_not_found
 canonical_ownership_conflict
@@ -458,7 +458,7 @@ atomic_transition_not_proven
 break_glass_control_incomplete
 ai_output_authority_violation
 false_success_result
-```
+`
 
 ## 11. Non-Normative Examples
 

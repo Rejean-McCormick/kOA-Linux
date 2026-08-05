@@ -31,7 +31,10 @@
     "generated/traceability.json",
     "generated/exception-index.json",
     "generated/test-catalog.json",
-    "generated/evidence-catalog.json"
+    "generated/evidence-catalog.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json"
   ],
   "decision_ids": [
     "DEC-DATA-001",
@@ -146,9 +149,9 @@ KOA:DOC-META:END -->
 
 # Job Scheduling
 
-> **Document status:** Normative operations architecture.  
-> **Scheduling authority:** `Resource Governor`  
-> **Domain authority:** The component or capability that owns the requested work.  
+> **Document status:** Normative operations architecture.
+> **Scheduling authority:** `Resource Governor`
+> **Domain authority:** The component or capability that owns the requested work.
 > **Authority rule:** Scheduling decides whether and when authorized work can consume resources; it never authorizes the domain action itself.
 
 ## 1. Purpose
@@ -251,10 +254,10 @@ Interactive user actions are not converted into durable background jobs unless t
 
 ### 3.1 Primary scheduling authority
 
-```text
+`text
 generated/component-catalog.json#/components/resource_governor
 contracts/components/resource-governor.component.json
-```
+`
 
 ### 3.2 Supporting authority
 
@@ -297,7 +300,7 @@ A more specific envelope can further restrict an enclosing hard boundary. It can
 
 The complete decision path is:
 
-```text
+`text
 domain request and preconditions
 → identity and trust resolution
 → governance decision when required
@@ -305,7 +308,7 @@ domain request and preconditions
 → queue or execution binding
 → owning component execution
 → domain result and receipts
-```
+`
 
 These decisions remain separate.
 
@@ -334,7 +337,7 @@ Retries preserve the job request ID and receive new attempt IDs.
 
 A complete request includes:
 
-```text
+`text
 request_id
 workload_owner_ref
 workload_class
@@ -344,11 +347,11 @@ priority
 resource_request
 submitted_at
 execution_semantics
-```
+`
 
 It also declares, when applicable:
 
-```text
+`text
 first_eligible_at
 deadline
 expires_at
@@ -366,7 +369,7 @@ cancellation_policy
 checkpoint_policy
 policy_decision_ref
 exception_refs
-```
+`
 
 The exact interface encoding remains owned by the component and Resource Governor contracts.
 
@@ -391,7 +394,7 @@ Admission does not commit the domain action.
 
 The operational job lifecycle is:
 
-```text
+`text
 submitted
 → validating
 → admitted
@@ -400,11 +403,11 @@ submitted
 → starting
 → running
 → completed
-```
+`
 
 Optional and alternative states are:
 
-```text
+`text
 queued
 deferred
 blocked
@@ -416,7 +419,7 @@ failed
 cancelled
 expired
 restoring
-```
+`
 
 The job lifecycle is distinct from the global capability states `normal`, `degraded`, `blocked`, and `restoring`.
 
@@ -892,7 +895,7 @@ The scheduler stores references and required scheduling metadata rather than cop
 
 Build Farm uses isolated workers, clean execution, bounded queues, and exact candidate identities.
 
-Task-activated components such as SenTient, GF Wordbench, intensive kOA Mediatheque workers, and UCKK publication workers release resources after completion and remain non-authoritative outside their declared result contracts.
+Task-activated components such as SenTient, GF Wordbench, intensive kOA Mediatheque workers, UCKK publication workers, and UCKK import retrieval or validation workers release resources after completion and remain non-authoritative outside their declared result contracts. Publication and import use separate queues and never become a reconnect-triggered synchronization sweep.
 
 ## 9. Decision Closure and Prohibited Assumptions
 
@@ -973,14 +976,14 @@ Job scheduling validates when:
 
 Applicable checks include:
 
-```bash
+`bash
 python docs/tools/check_component_boundaries.py
 python docs/tools/check_profile_composition.py
 python docs/tools/check_canonical_ownership.py
 python docs/tools/check_interfile_locks.py
 python docs/tools/check_traceability.py
 python docs/tools/validate_docs.py
-```
+`
 
 ## 11. Non-Normative Examples
 

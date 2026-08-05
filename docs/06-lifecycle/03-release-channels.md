@@ -148,12 +148,12 @@ Release channels separate independently versioned classes of system change while
 
 The canonical channels are:
 
-```text
+`text
 system
 services
 governance
 knowledge
-```
+`
 
 Every active deployment identifies one complete signed Release Set containing exactly one compatible version of each channel.
 
@@ -300,7 +300,7 @@ Membership changes are semantic. Moving an artifact class between channels chang
 
 A channel version includes:
 
-```text
+`text
 channel_id
 channel_version
 manifest_ref
@@ -312,7 +312,7 @@ test_refs
 evidence_refs
 activation_policy
 recovery_policy
-```
+`
 
 The manifest binds the complete artifact selection for that version.
 
@@ -387,13 +387,13 @@ Compatibility can be directional. A services version can require a minimum gover
 
 Constraints can be enforced at:
 
-```text
+`text
 publication
 release_set_assembly
 activation
 rollback
 forward_repair
-```
+`
 
 A constraint is evaluated at every declared point because trust, revocation, profile, or artifact state can change after initial publication.
 
@@ -403,7 +403,7 @@ A Release Set is the canonical compatible unit of activation.
 
 It contains:
 
-```text
+`text
 release_set_id
 version
 status
@@ -416,7 +416,7 @@ compatibility_result
 test_refs
 evidence_refs
 signature
-```
+`
 
 The machine-readable registry represents channel versions as four entries, one for each channel.
 
@@ -554,7 +554,7 @@ A staged Release Set remains inactive.
 
 Activation proceeds through:
 
-```text
+`text
 requested
 identity_and_authority_verified
 expected_state_verified
@@ -567,7 +567,7 @@ authority_pointer_committed
 post_activation_tests_passed
 receipt_durable
 active
-```
+`
 
 A failure before the authority pointer commit preserves the prior active Release Set.
 
@@ -601,11 +601,11 @@ The receipt is locally durable before final success is reported.
 
 Each channel and Release Set declares:
 
-```text
+`text
 rollback
 forward_repair
 rollback_or_forward_repair
-```
+`
 
 The strategy identifies the maximum recovery window where applicable and the required locally or remotely available artifacts.
 
@@ -819,13 +819,13 @@ This document is conformant when validation confirms:
 
 The principal validation entry point is:
 
-```bash
+`bash
 python docs/tools/validate_docs.py
-```
+`
 
 Supporting checks include:
 
-```text
+`text
 tools/check_release_sets.py
 tools/check_artifact_contracts.py
 tools/check_interfile_locks.py
@@ -834,7 +834,7 @@ tools/check_profile_inheritance.py
 tools/check_traceability.py
 tools/check_decision_closure.py
 tools/check_no_unresolved_state.py
-```
+`
 
 A failed release-channel check blocks publication, Release Set validation, activation, rollback, repair, or the affected conformance claim.
 

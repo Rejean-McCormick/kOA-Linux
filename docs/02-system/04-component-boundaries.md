@@ -46,13 +46,13 @@
     "LOCK-SENT-001",
     "LOCK-MEDIATHEQUE-001",
     "LOCK-UCKK-EXT-001",
-    "LOCK-UCKK-EXT-001",
     "LOCK-AI-001",
     "LOCK-AI-002",
     "LOCK-PROFILE-001",
     "LOCK-PROFILE-002",
     "LOCK-ARI-001",
-    "LOCK-ARI-002"
+    "LOCK-ARI-002",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -320,7 +320,7 @@ A policy decision may constrain resource use. Resource pressure does not create,
 
 The Publication Gateway owns governed disclosure and publication across domains.
 
-The UCKK Publication Bridge owns only UCKK-specific package, transfer, retry, and destination-receipt state after Publication Gateway authorization.
+The UCKK Publication Bridge owns only outbound UCKK package, transfer, retry, and destination-receipt state after Publication Gateway authorization. The separate UCKK Import Bridge owns inbound retrieval and quarantine transport state; the kOA Mediatheque owns local acceptance and local identities.
 
 Ingestion does not imply publication. Publication does not imply ownership of kOA Mediatheque source media or dimensions.
 
@@ -674,9 +674,6 @@ Their interactions use declared contracts and preserve their respective authorit
 
 | ADR | Boundary effect |
 | --- | --- |
-| `ADR-006` | Defines expanded first-class component boundaries. |
-| `ADR-009` | Defines the Governance Policy Runtime. |
-| `ADR-018` | Isolates SenTient as an optional workbench. |
 | `ADR-019` | Separates resource and policy authority. |
 | `ADR-020` | Separates publication and kOA Mediatheque ingestion. |
 | `ADR-022` | Preserves deterministic native kOA Mediatheque responsibilities. |
@@ -740,7 +737,7 @@ This document conforms when all of the following checks pass:
 
 The validator reports actionable failures, including:
 
-```text
+`text
 component_missing_registry_entry
 component_missing_contract
 component_identifier_collision
@@ -756,7 +753,7 @@ component_optional_dependency_became_mandatory
 component_authority_overlap
 component_projection_missing_provenance
 component_replacement_incompatible
-```
+`
 
 ## 11. Non-Normative Examples
 

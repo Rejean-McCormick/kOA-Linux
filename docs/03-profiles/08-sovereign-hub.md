@@ -23,7 +23,10 @@
     "generated/assertion-index.json",
     "generated/traceability.json",
     "generated/evidence-catalog.json",
-    "generated/exception-index.json"
+    "generated/exception-index.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json"
   ],
   "decision_ids": [
     "DEC-PROFILE-001",
@@ -32,7 +35,7 @@
     "DEC-K8S-001",
     "DEC-REL-001",
     "DEC-AI-001",
-    "DEC-UCKK-001",
+    "DEC-UCKK-EXT-001",
     "DEC-GATE-001"
   ],
   "requirement_ids": [
@@ -64,8 +67,8 @@
     "LOCK-PROFILE-002",
     "LOCK-AI-001",
     "LOCK-AI-002",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-MEDIATHEQUE-002",
     "LOCK-DATA-001",
     "LOCK-GOV-001",
     "LOCK-GATE-001",
@@ -137,7 +140,7 @@ The profile is intended for deployments that need a managed location for shared 
 - receipt and evidence services;
 - controlled artifact and release distribution;
 - backup and recovery coordination;
-- shared deterministic UCKK services where selected;
+- shared deterministic kOA Mediatheque services and controlled UCKK package staging where selected;
 - controlled publication and external-integration boundaries;
 - operational status and resource governance;
 - local or restricted-connectivity continuity.
@@ -183,7 +186,7 @@ A deployment that also performs control-plane or build-farm functions declares t
 
 The canonical sources for this document are:
 
-```text
+`text
 generated/authority-manifest.json
 generated/decision-index.json
 contracts/system.contract.json#/profile_model
@@ -199,7 +202,7 @@ generated/assertion-index.json
 generated/traceability.json
 generated/evidence-catalog.json
 generated/exception-index.json
-```
+`
 
 Their ownership roles are:
 
@@ -227,7 +230,7 @@ The sovereign hub is a primary deployment profile.
 
 Its role is to host or coordinate shared services within one declared sovereign authority domain. The domain identifies:
 
-```text
+`text
 domain identity
 tenants
 operators
@@ -238,7 +241,7 @@ release sources
 data residency boundary
 external integration boundary
 backup and recovery boundary
-```
+`
 
 No domain value is inferred from network location alone.
 
@@ -281,9 +284,9 @@ Common hub capabilities can include:
 - node registration and status;
 - artifact and release distribution;
 - backup and restore coordination;
-- deterministic UCKK services;
+- deterministic kOA Mediatheque services;
 - publication gateway;
-- UCKK Dimension Gateway;
+- UCKK Import Bridge and UCKK Publication Bridge;
 - selected Konnaxion, Orgo, Kristal, SemantiK, language-runtime, or Ariane services.
 
 Selection of a capability does not merge component data.
@@ -300,12 +303,12 @@ For sovereign deployments:
 
 The profile contract declares one of these topology classes:
 
-```text
+`text
 single_instance
 redundant_pair
 clustered
 federated_hubs
-```
+`
 
 The topology declaration includes:
 
@@ -343,12 +346,12 @@ Application contracts remain independent from runtime-specific behavior unless t
 
 The hub recognizes four release channels:
 
-```text
+`text
 system
 services
 governance
 knowledge
-```
+`
 
 A signed Release Set identifies tested compatible versions across those channels.
 
@@ -393,7 +396,7 @@ The hub has no native AI baseline.
 
 Approved external AI surfaces remain optional, explicit, capability-scoped, removable, and unable to write directly to authoritative stores. Their outputs remain candidate inputs until accepted by an owning component.
 
-Native UCKK operation remains deterministic and local. Suno and Gamma remain optional external adapters. The UCKK Dimension Gateway controls selected media admission; the Publication Gateway controls cross-domain disclosure and publication.
+Local kOA Mediatheque operation and UCKK package validation remain deterministic. Suno and Gamma remain optional external adapters. The UCKK Import Bridge controls inbound retrieval and quarantine; Publication Gateway authorizes outbound disclosure before the UCKK Publication Bridge transports it.
 
 ### 4.10 Overlays
 
@@ -422,9 +425,9 @@ Overlay composition is explicit and conflict-checked. An overlay does not silent
 - **REQ-PROFILE-HUB-010 — SHALL:** Artifact, policy, service, and release activation complete atomically or preserve the last valid authoritative state through rollback or declared forward repair.
 - **REQ-PROFILE-HUB-011 — SHALL:** The profile maintain verified backup and recovery targets for every authoritative data class and critical shared service.
 - **REQ-PROFILE-HUB-012 — SHALL:** The profile declare and test its connected, restricted-connectivity, and offline capability envelopes.
-- **REQ-PROFILE-HUB-013 — SHALL NOT:** Loss of external connectivity, optional external AI, or an optional integration disable independently valid local governance, identity, receipt, artifact, recovery, or deterministic UCKK capabilities.
+- **REQ-PROFILE-HUB-013 — SHALL NOT:** Loss of external connectivity, optional external AI, or an optional integration disable independently valid local governance, identity, receipt, artifact, recovery, kOA Mediatheque, or previously accepted offline UCKK learning capabilities.
 - **REQ-PROFILE-HUB-014 — SHALL:** External AI surfaces remain explicit user-initiated or operator-initiated adapters whose outputs are candidate inputs until accepted by an authoritative component workflow.
-- **REQ-PROFILE-HUB-015 — SHALL:** Native UCKK processing remain deterministic and non-AI, and UCKK Dimension Gateway responsibilities remain separate from Publication Gateway responsibilities.
+- **REQ-PROFILE-HUB-015 — SHALL:** Local Mediatheque processing and UCKK package validation remain deterministic and non-AI, and inbound import responsibilities remain separate from Publication Gateway authorization and outbound transport.
 - **REQ-PROFILE-HUB-016 — SHALL:** Kubernetes be optional and used only when measured scale, availability, or operational requirements justify it in the active hub contract.
 - **REQ-PROFILE-HUB-017 — SHALL NOT:** Hub conformance depend on Kubernetes, a graphical desktop, an appliance shell, or one specific container implementation.
 - **REQ-PROFILE-HUB-018 — SHALL:** Every privileged host mutation use an explicit authority path and the profile's declared privileged boundary.
@@ -635,7 +638,7 @@ The hub retains sovereign policy, component, data, receipt, release, and recover
 
 Publication Gateway controls cross-domain disclosure and publication.
 
-UCKK Dimension Gateway controls selected media transfer, verification, quarantine, and admission. Neither gateway substitutes for the other.
+UCKK Import Bridge controls selected inbound package transfer, verification, and quarantine; kOA Mediatheque controls local acceptance. Publication Gateway and UCKK Publication Bridge govern the separate outbound path. No boundary substitutes for another.
 
 ### 8.9 External integrations and AI
 
@@ -661,8 +664,8 @@ This document closes the sovereign-hub interpretation as follows:
 - Kubernetes is optional and evidence-driven;
 - offline and restricted-connectivity behavior is explicit;
 - native AI is absent;
-- deterministic UCKK remains available without external AI;
-- Publication Gateway and UCKK Dimension Gateway remain separate;
+- deterministic kOA Mediatheque operation and accepted offline UCKK learning content remain available without external AI;
+- Publication Gateway, UCKK Publication Bridge, and UCKK Import Bridge remain separate;
 - capacity, topology, retention, and recovery facts belong to the canonical profile contract.
 
 The following assumptions are prohibited:
@@ -717,7 +720,7 @@ This document is conformant when all of the following checks pass:
 
 Expected validator failure codes include:
 
-```text
+`text
 sovereign_hub_domain_undefined
 sovereign_hub_profile_contract_invalid
 sovereign_hub_policy_runtime_missing
@@ -736,7 +739,7 @@ sovereign_hub_kubernetes_mandatory
 sovereign_hub_capacity_undefined
 sovereign_hub_overlay_conflict
 sovereign_hub_conformance_evidence_incomplete
-```
+`
 
 ## 11. Non-Normative Examples
 
@@ -750,7 +753,7 @@ Measured availability and workload requirements justify a three-node cluster. Th
 
 ### 11.3 Offline distribution
 
-The hub receives a signed offline Release Set, verifies all four channels, and distributes approved bundles to enrolled nodes. External integrations remain unavailable, while local governance, identity, receipts, recovery, and deterministic UCKK capabilities continue within the offline envelope.
+The hub receives a signed offline Release Set, verifies all four channels, and distributes approved bundles to enrolled nodes. External integrations remain unavailable, while local governance, identity, receipts, recovery, and deterministic kOA Mediatheque capabilities and previously accepted UCKK learning content continue within the offline envelope.
 
 ### 11.4 Failed policy update
 

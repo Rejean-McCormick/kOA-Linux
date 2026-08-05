@@ -196,12 +196,12 @@ A release gate is a versioned, evidence-backed conformance decision applied to o
 
 A release is not a collection of individually acceptable artifacts. It is one compatible Release Set containing exactly four channel versions:
 
-```text
+`text
 system
 services
 governance
 knowledge
-```
+`
 
 The release-gate model verifies the complete set, its claimed profiles, its artifacts, its operational readiness, and its activation path.
 
@@ -272,7 +272,7 @@ Dashboards, CI pipelines, release notes, and approval interfaces are projections
 
 The mandatory gate classes are:
 
-```text
+`text
 canonical_authority
 documentation
 component_contracts
@@ -291,7 +291,7 @@ integrations
 profile_claims
 ai_context
 activation_readiness
-```
+`
 
 A release policy can add narrower gates. It cannot omit a mandatory applicable class.
 
@@ -299,7 +299,7 @@ A release policy can add narrower gates. It cannot omit a mandatory applicable c
 
 A gate record contains:
 
-```text
+`text
 gate_id
 gate_version
 gate_class
@@ -319,7 +319,7 @@ finished_at
 valid_until
 invalidation_triggers
 receipt_ref
-```
+`
 
 A gate result belongs to one candidate Release Set and one evaluated scope.
 
@@ -343,7 +343,7 @@ Gate results are:
 
 Release decisions are:
 
-```text
+`text
 approved
 approved_with_exceptions
 rejected
@@ -352,7 +352,7 @@ expired
 invalidated
 superseded
 revoked
-```
+`
 
 A release decision is separate from Release Set lifecycle state and activation state.
 
@@ -360,7 +360,7 @@ A release decision is separate from Release Set lifecycle state and activation s
 
 The default dependency order is:
 
-```text
+`text
 canonical authority
 documentation and generated content
 component contracts
@@ -379,7 +379,7 @@ profile claims
 AI context
 activation readiness
 final release decision
-```
+`
 
 Independent checks can run in parallel when they do not rely on incomplete inputs. Final evaluation respects the dependency graph.
 
@@ -511,12 +511,12 @@ Direct cross-component authoritative-store writes fail the gate.
 
 This gate evaluates every claimed effective profile:
 
-```text
+`text
 global baseline
 + exactly one primary profile
 + compatible overlays
 + approved bounded exceptions
-```
+`
 
 It verifies:
 
@@ -555,12 +555,12 @@ For every artifact, this gate verifies:
 
 This gate verifies exactly one version of each channel:
 
-```text
+`text
 system
 services
 governance
 knowledge
-```
+`
 
 It validates directional compatibility for:
 
@@ -767,7 +767,7 @@ This gate verifies:
 
 A gate exception record identifies:
 
-```text
+`text
 exception_id
 gate_ref
 requirement_refs
@@ -785,7 +785,7 @@ evidence_refs
 release_impact
 exit_criteria
 revocation_conditions
-```
+`
 
 An exception cannot silently transform a failing gate into `pass`.
 
@@ -917,14 +917,14 @@ Post-activation checks include:
 
 Outcomes are:
 
-```text
+`text
 validated_active
 active_degraded
 rollback_required
 forward_repair_required
 recovery_required
 quarantined
-```
+`
 
 `active_degraded` requires an explicit allowed degraded state and does not conceal failed mandatory safety checks.
 
@@ -1057,13 +1057,13 @@ This document is conformant when validation confirms:
 
 The principal validation entry point is:
 
-```bash
+`bash
 uv run python docs/tools/validate_docs.py
-```
+`
 
 Supporting checks include:
 
-```text
+`text
 docs/tools/check_release_sets.py
 docs/tools/check_artifact_contracts.py
 docs/tools/check_component_boundaries.py
@@ -1074,7 +1074,7 @@ docs/tools/check_traceability.py
 docs/tools/check_decision_closure.py
 docs/tools/check_generated_content.py
 docs/tools/check_no_unresolved_state.py
-```
+`
 
 A failed release-gate check blocks final release approval, activation readiness, activation, continued profile claim reliance, or the affected public release assertion.
 

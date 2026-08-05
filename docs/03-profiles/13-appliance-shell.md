@@ -125,10 +125,10 @@ KOA:DOC-META:END -->
 
 # Appliance Shell
 
-> **Document status:** Normative profile-overlay explanation.  
-> **Profile ID:** `appliance_shell`  
-> **Profile kind:** `profile_overlay`  
-> **Canonical profile contract:** `contracts/profiles/appliance-shell.profile.json`  
+> **Document status:** Normative profile-overlay explanation.
+> **Profile ID:** `appliance_shell`
+> **Profile kind:** `profile_overlay`
+> **Canonical profile contract:** `contracts/profiles/appliance-shell.profile.json`
 > **Authority rule:** The canonical profile contract owns overlay facts. This document explains how those facts apply.
 
 ## 1. Purpose
@@ -197,17 +197,17 @@ The overlay does not prohibit GNOME, KDE Plasma, or another maintained desktop g
 
 ### 2.3 Profile classification
 
-```text
+`text
 profile_overlay
-```
+`
 
 The overlay modifies a compatible primary profile and is not independently deployable.
 
 ### 2.4 Profile status
 
-```text
+`text
 active
-```
+`
 
 ### 2.5 Operating modes
 
@@ -656,7 +656,7 @@ This document is conformant when:
 
 Applicable failure codes include:
 
-```text
+`text
 appliance_shell_primary_profile_missing
 appliance_shell_implicit_activation
 appliance_shell_composition_conflict
@@ -677,7 +677,7 @@ shell_crash_unsafe_fallback
 shell_offline_capability_regression
 shell_critical_receipt_missing
 shell_conformance_evidence_missing
-```
+`
 
 A required validator that cannot run produces `blocked`, not `pass`.
 

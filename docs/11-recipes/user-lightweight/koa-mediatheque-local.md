@@ -16,7 +16,12 @@
     "contracts/integrations/uckk-publication.integration.json",
     "04-components/koa-mediatheque.md",
     "04-components/uckk-publication-bridge.md",
-    "04-components/resource-governor.md"
+    "04-components/resource-governor.md",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json",
+    "04-components/uckk-import-bridge.md"
   ],
   "decision_ids": [
     "DEC-MEDIATHEQUE-001",
@@ -31,18 +36,26 @@
     "REQ-MEDIATHEQUE-002",
     "REQ-MEDIATHEQUE-004",
     "REQ-MEDIATHEQUE-007",
-    "REQ-UCKK-PUB-001"
+    "REQ-UCKK-PUB-001",
+    "REQ-UCKK-IMPORT-001",
+    "REQ-UCKK-IMPORT-002",
+    "REQ-UCKK-IMPORT-003",
+    "REQ-UCKK-IMPORT-004",
+    "REQ-UCKK-IMPORT-005",
+    "REQ-UCKK-IMPORT-006"
   ],
   "lock_ids": [
     "LOCK-MEDIATHEQUE-001",
     "LOCK-MEDIATHEQUE-002",
     "LOCK-UCKK-EXT-001",
-    "LOCK-OFFLINE-001"
+    "LOCK-OFFLINE-001",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
     "DOC-COMP-MEDIATHEQUE-001",
-    "DOC-COMP-UCKK-PUB-001"
+    "DOC-COMP-UCKK-PUB-001",
+    "DOC-COMP-UCKK-IMPORT-001"
   ],
   "tags": [
     "recipe",
@@ -51,7 +64,9 @@
     "sqlite",
     "local-storage",
     "offline",
-    "publication-queue"
+    "publication-queue",
+    "import-from-uckk",
+    "offline-learning"
   ]
 }
 KOA:DOC-META:END -->
@@ -60,7 +75,14 @@ KOA:DOC-META:END -->
 
 ## 1. Purpose
 
-This non-normative recipe shows a lightweight local layout for the kOA Mediatheque. It does not install or embed UCKK. Optional publication to UCKK uses the separate bridge and can remain disabled.
+This non-normative recipe shows a lightweight private and offline deployment of the kOA Mediatheque. It does not install or embed UCKK.
+
+The deployment may enable either or both directional UCKK integrations:
+
+- `uckk-import` for selected courses, learning paths, manuals, and resources;
+- `uckk-publication` for selected local material after Publication Gateway authorization.
+
+Both remain optional.
 
 ## 2. Target Result
 
@@ -69,130 +91,136 @@ local authoritative catalog
 + managed local content
 + SQLite
 + deterministic hashes
-+ one bounded worker
-+ offline browsing
++ separate staging and quarantine
++ one bounded background worker
++ offline browsing and learning
 + coordinated backup
-+ optional queued publication to UCKK
++ optional UCKK import queue
++ optional UCKK publication queue
 ```
 
 ## 3. Suggested User-Scoped Layout
 
 ```text
 ~/.local/share/koa/mediatheque/
-  mediatheque.sqlite3
-  content/
-    sha256/
-  staging/
-  quarantine/
-  renditions/
-  exports/
-  publication-queue/
-  receipts/
-  backup-checkpoints/
-
-~/.config/koa/mediatheque/
-  settings.json
-  endpoint-allowlist.json
+├── db/mediatheque.sqlite3
+├── content/
+├── staging/
+├── quarantine/
+│   └── uckk-import/
+├── renditions/
+├── imports/
+│   ├── packages/
+│   └── receipts/
+├── exports/
+│   ├── packages/
+│   └── receipts/
+├── update-candidates/
+└── backup-state/
 ```
 
-The database stores component-owned structured state. Content files remain under the managed content root. Credentials belong in the platform's secret store, not this directory.
+Quarantine is not exposed as accepted catalog content. Secrets and remote credentials remain outside this tree.
 
 ## 4. Minimal SQLite Settings
 
-A lightweight implementation can use:
+Use WAL mode only when the selected storage and backup procedure support it. Enable foreign keys, bounded busy timeout, and explicit checkpoint coordination.
 
 ```sql
-PRAGMA journal_mode = WAL;
 PRAGMA foreign_keys = ON;
+PRAGMA journal_mode = WAL;
 PRAGMA synchronous = FULL;
 PRAGMA busy_timeout = 5000;
 ```
 
-Use explicit migrations. Back up a consistent checkpoint rather than copying a live database and content tree independently.
-
 ## 5. Content Placement
 
-A deterministic content-addressed layout can use:
+Accepted content is stored under the managed content root using local record and version identities. Original filenames, UCKK source references, remote version references, and package identifiers are metadata; they are not trusted filesystem paths.
 
-```text
-content/sha256/ab/cd/<full-digest>
-```
-
-The digest identifies bytes, not the record. The database binds records and versions to content objects, rights, provenance, and lifecycle state.
+Use verified digests to bind content to manifests. Do not infer local identity solely from a digest or UCKK identifier.
 
 ## 6. Worker Limits
 
-For a lightweight device:
+For a lightweight node:
 
 ```text
-hash workers:          1
-metadata workers:      1
-thumbnail workers:     1
-transcode concurrency: 1 or 0 by default
-publication workers:   1 when enabled
+maximum heavy Mediatheque jobs: 1
+maximum UCKK package validation jobs: 1
+maximum remote transfer jobs: 1 per direction
+idle heavy workers: 0
+background CPU and I/O priority: below interactive
 ```
 
-Resource Governor should pause background work while the user is interacting, storage is under pressure, or recovery and backup tasks are active.
+Interactive reading and playback take priority over indexing, transcoding, package validation, and remote retry.
 
 ## 7. Local Ingest Example
 
-```text
-copy or reference candidate
-→ stage
-→ compute hash
-→ validate media type and size
-→ check exact duplicates
-→ resolve rights and provenance
-→ accept or quarantine
-→ create record/version
-→ queue optional renditions
-```
+1. Copy or select a local file into staging.
+2. Validate type and size.
+3. Compute the digest.
+4. resolve rights and provenance;
+5. create a local record and version;
+6. move accepted bytes into managed storage;
+7. schedule bounded renditions;
+8. record the transition receipt.
 
-Never accept a version merely because an AI service produced metadata for it.
+## 8. Optional UCKK Import
 
-## 8. Optional UCKK Publication
-
-Enable UCKK publication only when an endpoint, credentials, destination mapping, and policy are configured.
+Enable `uckk-import` only when an endpoint or offline package source, trust policy, shared-frame mapping, license policy, quarantine capacity, and local acceptance role are configured.
 
 ```text
-select exact record version
-→ request Publication Gateway authorization
-→ build package
-→ write package to protected publication queue
-→ bridge transmits when online
-→ validate receipt
-→ attach receipt to local export history
+select UCKK source object and version
+→ retrieve online or receive complete offline bundle
+→ quarantine
+→ validate manifest, source, signature, digest, license, restrictions,
+  provenance, malware policy, required resources, and frame mapping
+→ accept or reject
+→ create separate local identities
+→ expose accepted learning material offline
+→ preserve import receipt
 ```
 
-The local user interface should display `queued`, `submitted`, `published`, `partial`, or `failed`. It must not display `published` based only on local queue insertion.
+A remote update is written to `update-candidates/`. It does not replace the accepted copy automatically.
 
-## 9. Backup
+## 9. Optional UCKK Publication
 
-A practical backup sequence is:
-
-1. pause new writes or obtain a database checkpoint;
-2. create a SQLite backup;
-3. create a manifest of accepted content and required renditions;
-4. include queued packages and receipt references according to retention policy;
-5. hash and sign the backup package when the profile requires it;
-6. verify the backup before marking it complete.
-
-Do not represent the backup as a backup of UCKK. It contains only local kOA state and references to external publication results.
-
-## 10. Restore
-
-Restore into staging, then verify database integrity, schema compatibility, content hashes, permissions, missing objects, orphaned objects, queue state, and receipts before activation.
-
-## 11. Operational Checks
+Enable `uckk-publication` only when an endpoint, credentials, destination mapping, Publication Gateway policy, shared-frame mapping, and receipt handling are configured.
 
 ```text
-database writable and foreign keys enabled
-managed content root accessible
-no unexpected world-readable files
-staging and quarantine bounded
-worker concurrency enforced
-storage reserve available
-publication queue visible
-last backup verified
-last restore test recorded
+select exact local record versions
+→ resolve rights and restrictions
+→ obtain Publication Gateway allow decision
+→ create bounded UCKK publication package
+→ transmit through UCKK Publication Bridge
+→ validate remote result
+→ preserve publication receipt
 ```
+
+No package is transmitted merely because connectivity returns.
+
+## 10. Offline School Pattern
+
+An intermittently connected hub can obtain a complete learning package and transfer it to an isolated school. The school validates and accepts the package locally, uses it for months without Internet access, records progress locally, and later decides whether to import a newer version.
+
+The school does not need the entire online UCKK catalog. It may retain only its selected curriculum plus private locally created procedures and adaptations.
+
+## 11. Backup
+
+Coordinate the SQLite checkpoint with the content manifest, accepted learning packages, quarantine state, import and publication receipts, and update-candidate inventory.
+
+Do not mark a backup complete until database and content references match.
+
+## 12. Restore
+
+Restore into staging, verify database integrity, content digests, permissions, package and receipt references, and shared-frame compatibility, then activate atomically.
+
+Remote UCKK availability is not required to restore locally accepted material.
+
+## 13. Operational Checks
+
+- no UCKK or external AI dependency for ordinary local use;
+- quarantine is inaccessible to ordinary readers;
+- accepted UCKK packages retain source, version, license, and receipt provenance;
+- import and publication queues are visibly separate;
+- no automatic upload, download, or overwrite on reconnection;
+- one bounded heavy worker by default;
+- backup and restore include both structured state and managed content.

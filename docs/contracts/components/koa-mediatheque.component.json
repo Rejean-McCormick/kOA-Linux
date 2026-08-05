@@ -9,7 +9,7 @@
   "aliases": [
     "Mediatheque kOA"
   ],
-  "purpose": "Provide the authoritative local catalog, managed-content, classification, provenance, rights, rendition, lifecycle, import, export, backup, and restore service for media and files owned by kOA-Linux Operating System.",
+  "purpose": "Provide the authoritative private local and offline catalog, managed-content, classification, provenance, rights, rendition, lifecycle, import, export, backup, and restore service for media, files, instructions, manuals, and accepted learning packages owned by kOA-Linux Operating System.",
   "scope": {
     "kind": "component",
     "identifier": "koa_mediatheque",
@@ -40,8 +40,11 @@
     "generated/exception-index.json",
     "02-system/12-koa-mediatheque-system-boundary.md",
     "04-components/koa-mediatheque.md",
-    "10-adrs/ADR-030-koa-mediatheque-as-an-internal-component.md",
-    "10-adrs/ADR-031-uckk-as-an-external-moodle-publication-target.md"
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json",
+    "04-components/uckk-import-bridge.md"
   ],
   "decision_ids": [
     "DEC-MEDIATHEQUE-001",
@@ -66,7 +69,13 @@
     "REQ-MEDIATHEQUE-010",
     "REQ-UCKK-PUB-001",
     "REQ-UCKK-PUB-002",
-    "REQ-UCKK-PUB-003"
+    "REQ-UCKK-PUB-003",
+    "REQ-UCKK-IMPORT-001",
+    "REQ-UCKK-IMPORT-002",
+    "REQ-UCKK-IMPORT-003",
+    "REQ-UCKK-IMPORT-004",
+    "REQ-UCKK-IMPORT-005",
+    "REQ-UCKK-IMPORT-006"
   ],
   "lock_ids": [
     "LOCK-MEDIATHEQUE-001",
@@ -77,7 +86,8 @@
     "LOCK-COMP-002",
     "LOCK-GOV-001",
     "LOCK-OFFLINE-001",
-    "LOCK-LIFE-001"
+    "LOCK-LIFE-001",
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "ownership": {
@@ -89,7 +99,7 @@
       "rights_and_restrictions": "Locally governed rights, restrictions, consent, cultural conditions, retention, disclosure, and AI-use constraints.",
       "provenance": "Source, acquisition, creator, custodian, transformation, validation, and lineage records owned by the local Mediatheque.",
       "rendition_state": "Derivation relationships and acceptance state for thumbnails, previews, normalized media, transcripts, and other renditions.",
-      "import_export_history": "Import, export, packaging, publication-request, and external-publication receipt references.",
+      "import_export_history": "Import requests, quarantine state, local acceptance decisions, export packages, publication requests, UCKK package and receipt references, and update-candidate state.",
       "backup_restore_state": "Mediatheque-specific backup manifests, restore checkpoints, and verification results."
     },
     "does_not_own": [
@@ -116,6 +126,10 @@
       {
         "fact": "host storage implementation, mounts, encryption mechanism, and physical topology",
         "owner_ref": "the active deployment profile and storage toolchain"
+      },
+      {
+        "fact": "UCKK import transport, remote source discovery, package retrieval, and quarantine transport state",
+        "owner_ref": "contracts/integrations/uckk-import.integration.json"
       }
     ]
   },
@@ -130,7 +144,11 @@
     "Prepare governed export candidates without granting publication authority.",
     "Preserve publication package and receipt references without making the external destination authoritative over the local source record.",
     "Participate in backup, restore, portability, and credible-exit procedures.",
-    "Expose health, queue, storage-pressure, and integrity state without disclosing restricted media content."
+    "Expose health, queue, storage-pressure, and integrity state without disclosing restricted media content.",
+    "Accept validated UCKK learning packages only after quarantine, source, license, integrity, provenance, compatibility, and local-acceptance checks succeed.",
+    "Create separate local identities for imported UCKK resources while preserving source and version provenance.",
+    "Keep accepted courses, learning paths, manuals, and instructions available for offline consultation within the active profile.",
+    "Treat later UCKK versions as explicit update candidates rather than automatic overwrites."
   ],
   "non_responsibilities": [
     "Operating or administering UCKK or any Moodle instance.",
@@ -140,14 +158,17 @@
     "Treating a successful UCKK publication as transfer of local source authority.",
     "Inventing rights, consent, provenance, classification, or semantic truth from AI output.",
     "Allowing XLSX, a search index, a generated catalog, or an external service to become the authoritative store.",
-    "Writing directly into another component or external platform database."
+    "Writing directly into another component or external platform database.",
+    "Automatically importing the public UCKK catalog.",
+    "Treating UCKK source identity, metadata, or policy as local authority.",
+    "Uploading local progress, private adaptations, or local content merely because connectivity returns."
   ],
   "authority_boundary": {
     "local_source_authority": "The kOA Mediatheque remains authoritative for its local records and managed versions.",
     "external_destination_authority": "UCKK remains authoritative for records created inside the external Moodle platform.",
-    "compatibility_rule": "Compatible fields or a shared conceptual frame do not create shared storage or shared authority.",
+    "compatibility_rule": "Both Mediatheques conform to the declared shared Mediatheque frame for interchange; frame compatibility never creates shared storage, identity, access control, lifecycle, or authority.",
     "publication_rule": "Publication creates a governed external representation and receipt; it does not merge the source and destination Mediatheques.",
-    "import_rule": "Any future UCKK-to-kOA import is a separate explicitly authorized operation and is not implicit synchronization."
+    "import_rule": "UCKK-to-kOA import uses the separate UCKK Import integration. Retrieval and quarantine precede an explicit local acceptance decision; accepted copies receive local identities and preserve UCKK provenance."
   },
   "data_model": {
     "canonical_schema_ref": "contracts/artifact-contracts/koa-media-record.schema.json",
@@ -166,14 +187,19 @@
       "import_record",
       "export_record",
       "publication_reference",
-      "backup_checkpoint"
+      "backup_checkpoint",
+      "learning_package",
+      "quarantine_record",
+      "import_receipt",
+      "remote_update_candidate"
     ],
     "identity_rules": [
       "Record identity is stable across versions.",
       "Version identity changes when accepted content or canonical metadata changes according to the active versioning policy.",
       "A content hash identifies bytes and does not alone identify a record, rights context, or semantic object.",
       "External UCKK identifiers are destination references and never replace local record or version identifiers."
-    ]
+    ],
+    "shared_frame_schema_ref": "contracts/artifact-contracts/shared-mediatheque-frame.schema.json"
   },
   "storage_model": {
     "user_lightweight_baseline": {
@@ -221,6 +247,20 @@
         "interface_id": "publication_result",
         "artifact_contract_ref": "contracts/artifact-contracts/uckk-publication-receipt.schema.json",
         "role": "Attach an external publication result to the local export history without changing source authority."
+      },
+      {
+        "interface_id": "uckk_learning_package_acceptance",
+        "operations": [
+          "stage_uckk_package",
+          "validate_uckk_package",
+          "accept_uckk_package",
+          "reject_uckk_package",
+          "record_update_candidate"
+        ],
+        "authentication_required": true,
+        "authorization_required": true,
+        "idempotency_required": true,
+        "contract_ref": "contracts/integrations/uckk-import.integration.json"
       }
     ],
     "outbound": [

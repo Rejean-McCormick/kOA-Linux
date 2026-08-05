@@ -24,7 +24,11 @@
     "generated/exception-index.json",
     "contracts/components/audit-broker.component.json",
     "contracts/components/governance-policy-runtime.component.json",
-    "contracts/components/publication-gateway.component.json"
+    "contracts/components/publication-gateway.component.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/uckk-learning-package.schema.json",
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json",
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json"
   ],
   "decision_ids": [
     "DEC-AI-001",
@@ -141,7 +145,7 @@ This document applies globally to critical transitions involving:
 - governed publication and cross-domain disclosure;
 - controlled external data transfer;
 - external AI requests and authoritative acceptance of returned candidates;
-- UCKK publication, export, re-import, deletion, restoration, and publication handoff;
+- UCKK publication, learning-package retrieval, quarantine, validation, import acceptance, export, deletion, restoration, and directional handoff;
 - artifact and release verification;
 - activation, rollback, forward repair, supersession, and recovery;
 - backup restoration;
@@ -160,7 +164,7 @@ The model does not classify every event as critical. Routine reads, ordinary int
 
 The canonical sources for this document are:
 
-```text
+`text
 generated/authority-manifest.json
 generated/decision-index.json
 contracts/system.contract.json#/receipts_and_critical_transitions
@@ -177,7 +181,7 @@ generated/exception-index.json
 contracts/components/audit-broker.component.json
 contracts/components/governance-policy-runtime.component.json
 contracts/components/publication-gateway.component.json
-```
+`
 
 Their ownership roles are:
 
@@ -235,7 +239,7 @@ A single workflow can produce multiple receipts because different components own
 
 The logical common envelope contains:
 
-```text
+`text
 receipt_id
 receipt_schema_version
 receipt_class
@@ -268,7 +272,7 @@ test_refs
 evidence_refs
 disclosure_class
 retention_class
-```
+`
 
 Fields not applicable to a particular class are omitted rather than populated with ambiguous values.
 
@@ -290,7 +294,7 @@ An authorized decision does not guarantee successful execution. Successful execu
 
 Receipt outcomes use explicit states such as:
 
-```text
+`text
 authorized
 denied
 indeterminate
@@ -304,7 +308,7 @@ expired
 revoked
 superseded
 closed
-```
+`
 
 Component contracts can define narrower internal states, but their receipts map those states to the global outcome model.
 
@@ -318,7 +322,8 @@ Examples:
 - Publication Gateway produces its publication or disclosure decision and commit receipts;
 - a privileged broker produces host-mutation execution and commit receipts;
 - lifecycle services produce activation, rollback, repair, and recovery receipts;
-- UCKK Publication Bridge produces package, transfer, retry, destination-response, and publication-result receipts within its boundary;
+- UCKK Publication Bridge produces outbound package, transfer, retry, destination-response, and publication-result receipts within its boundary;
+- UCKK Import Bridge produces retrieval, quarantine, validation, rejection, expiry, and acceptance-handoff receipts within its boundary;
 - kOA Mediatheque produces object-lifecycle receipts within its boundary;
 - the owning component produces acceptance receipts for external candidate data;
 - documentation governance tooling produces authority-cutover receipts.
@@ -347,13 +352,13 @@ A receipt has a disclosure class appropriate to its content and audience.
 
 Typical classes include:
 
-```text
+`text
 public_summary
 tenant_visible
 operator_restricted
 security_restricted
 evidence_restricted
-```
+`
 
 An ordinary view can expose:
 
@@ -431,7 +436,7 @@ Integrity mechanisms can include:
 - **REQ-SYS-RCT-012 — SHALL:** Policy authorization, privilege grants and uses, break-glass activation and closure, governed publication, cross-domain disclosure, and controlled external data transfer be classified as critical transitions.
 - **REQ-SYS-RCT-013 — SHALL:** Artifact and release verification, activation, rollback, forward repair, supersession, and recovery be classified as critical transitions.
 - **REQ-SYS-RCT-014 — SHALL:** Backup restoration, authoritative data migration, trust-root or revocation change, governed host mutation, and documentation authority cutover be classified as critical transitions.
-- **REQ-SYS-RCT-015 — SHALL:** Local Mediatheque lifecycle changes and external UCKK publication transitions produce distinct receipts linked to the affected local record and external destination result.
+- **REQ-SYS-RCT-015 — SHALL:** Local Mediatheque lifecycle changes, outbound UCKK publication transitions, and inbound UCKK retrieval, quarantine, validation, and acceptance transitions produce distinct linked receipts without merging local and remote identities or authority.
 - **REQ-SYS-RCT-016 — SHALL:** External AI operations record explicit user initiation, transferred data classes, destination surface, purpose, returned candidate identity, provenance, and authoritative acceptance outcome when applicable.
 - **REQ-SYS-RCT-017 — SHALL NOT:** Routine reads, ordinary navigation, transient health sampling, internal debug events, or non-authoritative interface actions require constitutional transition receipts unless a canonical policy classifies the specific action as critical.
 - **REQ-SYS-RCT-018 — SHALL:** A transition spanning multiple components use a shared correlation identifier while each component emits the receipt for the decision or commit it owns.
@@ -616,9 +621,11 @@ The Publication Gateway produces receipts for disclosure decisions, transfer pre
 
 The source component retains ownership of its canonical source state.
 
-### 8.5 kOA Mediatheque and UCKK publication integration
+### 8.5 kOA and UCKK Mediatheque interchange
 
-kOA Mediatheque records local object creation, version and rendition registration, candidate acceptance, deletion, restoration, and lifecycle changes. After Publication Gateway authorization, UCKK Publication Bridge records package creation, transport attempts, destination responses, and publication results.
+kOA Mediatheque records local object creation, version and rendition registration, import acceptance, deletion, restoration, and lifecycle changes. After Publication Gateway authorization, UCKK Publication Bridge records outbound package creation, transport attempts, destination responses, and publication results.
+
+For inbound learning content, UCKK Import Bridge records source selection, retrieval or offline-carrier receipt, quarantine, source and licence checks, integrity and compatibility validation, rejection or expiry, and acceptance handoff. kOA Mediatheque then records the explicit acceptance decision and new local identity. The receipt chain preserves remote provenance without claiming shared authority or automatic synchronization.
 
 Publication remains with the Publication Gateway.
 
@@ -695,7 +702,7 @@ This document is conformant when all of the following checks pass:
 13. restricted-evidence access produces accountable access records;
 14. lifecycle tests cover verification, activation, rollback, forward repair, supersession, restore, and recovery;
 15. publication tests cover selection, disclosure decision, transfer, commit, denial, failure, and reconciliation;
-16. kOA Mediatheque tests cover local ingestion, candidate acceptance, deletion, restoration, export, and import; UCKK integration tests separately cover authorization, package transport, and destination receipts;
+16. kOA Mediatheque tests cover local ingestion, explicit import acceptance, deletion, restoration, export, and offline retrieval; UCKK integration tests separately cover outbound authorization and transport, inbound quarantine and validation, distinct receipts, and the absence of implicit synchronization;
 17. external AI tests record explicit initiation, transferred data, destination, provenance, candidate state, and acceptance outcome;
 18. break-glass tests cover grant, use, expiration, review, and closure;
 19. offline tests cover durable local append, bounded buffering, synchronization, and exhaustion;
@@ -709,7 +716,7 @@ This document is conformant when all of the following checks pass:
 
 Expected validator failure codes include:
 
-```text
+`text
 receipt_schema_invalid
 receipt_identifier_conflict
 receipt_reference_unresolved
@@ -723,7 +730,7 @@ receipt_retention_conflict
 receipt_version_unsupported
 critical_transition_receipt_missing
 transition_commit_partial
-```
+`
 
 ## 11. Non-Normative Examples
 

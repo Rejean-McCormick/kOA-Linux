@@ -104,6 +104,8 @@
 | LOCK-LIFE-002 |  |  |  |
 | LOCK-LIFE-003 |  |  |  |
 | LOCK-LIFE-004 |  |  |  |
+| LOCK-MEDIATHEQUE-001 |  |  |  |
+| LOCK-MEDIATHEQUE-002 |  |  |  |
 | LOCK-OFFLINE-001 |  |  |  |
 | LOCK-OPS-001 |  |  |  |
 | LOCK-OPS-002 |  |  |  |
@@ -141,8 +143,8 @@
 | LOCK-SYS-RES-002 |  |  |  |
 | LOCK-SYS-RES-003 |  |  |  |
 | LOCK-SYS-RES-004 |  |  |  |
-| LOCK-UCKK-001 |  |  |  |
-| LOCK-UCKK-002 |  |  |  |
+| LOCK-UCKK-EXT-001 |  |  |  |
+| LOCK-UCKK-EXT-002 |  |  |  |
 | LOCK-USER-001 |  |  |  |
 | LOCK-USER-002 |  |  |  |
 | LOCK-USER-003 |  |  |  |

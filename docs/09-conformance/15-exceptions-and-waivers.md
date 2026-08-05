@@ -181,7 +181,7 @@ The following classes remain non-waivable unless a new canonical decision explic
 - automatic expiry;
 - release and claim disclosure;
 - preservation of current valid recovery state;
-- separation of Publication Gateway and UCKK Dimension Gateway;
+- separation of Publication Gateway, UCKK Publication Bridge, and UCKK Import Bridge responsibilities;
 - prohibition on external AI becoming native authority;
 - prohibition on an exception record redefining canonical requirements or locks.
 
@@ -191,24 +191,24 @@ A deviation that affects non-waivable authority is invalid rather than approvabl
 
 The recognized lifecycle states are:
 
-```text
+`text
 proposed
-  -> under_review
-  -> approved
-  -> active
-  -> suspended
-  -> active
-  -> expired | revoked | superseded | closed
-```
+ -> under_review
+ -> approved
+ -> active
+ -> suspended
+ -> active
+ -> expired | revoked | superseded | closed
+`
 
 Alternative terminal paths include:
 
-```text
+`text
 proposed -> rejected
 under_review -> rejected
 approved -> revoked
 active -> revoked
-```
+`
 
 A terminal record remains historical and cannot return to active state.
 

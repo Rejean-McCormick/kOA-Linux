@@ -52,7 +52,7 @@
     "DEC-GOV-001",
     "DEC-AI-001",
     "DEC-ARI-001",
-    "DEC-UCKK-001"
+    "DEC-UCKK-EXT-001"
   ],
   "requirement_ids": [
     "REQ-LIFE-CLASS-001",
@@ -146,8 +146,8 @@
     "LOCK-AI-002",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
-    "LOCK-UCKK-001",
-    "LOCK-UCKK-002"
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-MEDIATHEQUE-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -178,7 +178,7 @@ KOA:DOC-META:END -->
 
 # Sovereign Linux Release Activation
 
-> **Recipe status:** Active, non-normative implementation guidance.  
+> **Recipe status:** Active, non-normative implementation guidance.
 > **Authority rule:** This recipe does not define release identities, signers, compatibility, activation order, migrations, policy outcomes, health contracts, or rollback floors. It executes values already accepted by the active Release Set, artifact-class contracts, profile contracts, component contracts, and authority release.
 
 ## Recipe Identity
@@ -222,22 +222,22 @@ A Release Set is a signed compatibility statement for a tested combination. It d
 
 The recipe uses this operational sequence:
 
-```text
+`text
 receive
-  → quarantine
-  → verify envelope
-  → verify each artifact
-  → resolve Release Set
-  → calculate compatibility
-  → stage every channel independently
-  → establish backup and known-good state
-  → validate activation plan
-  → activate through channel adapters
-  → cross reboot boundary when declared
-  → accept capabilities
-  → commit active Release Set identity
-  → retain evidence and recovery material
-```
+ → quarantine
+ → verify envelope
+ → verify each artifact
+ → resolve Release Set
+ → calculate compatibility
+ → stage every channel independently
+ → establish backup and known-good state
+ → validate activation plan
+ → activate through channel adapters
+ → cross reboot boundary when declared
+ → accept capabilities
+ → commit active Release Set identity
+ → retain evidence and recovery material
+`
 
 A staged artifact is not active.
 
@@ -354,7 +354,7 @@ The activation plan records which scope is used.
 - `DEC-GOV-001`
 - `DEC-AI-001`
 - `DEC-ARI-001`
-- `DEC-UCKK-001`
+- `DEC-UCKK-EXT-001`
 
 ### 4.2 Lifecycle and operations
 
@@ -478,7 +478,7 @@ The operator invokes the Node Agent or an approved management surface. The Node 
 
 The transaction directory contains:
 
-```text
+`text
 activation-plan.json
 activation-plan.sha256
 activation-order.txt
@@ -486,7 +486,7 @@ transaction-state.json
 logs/
 evidence/
 channel-specific adapter state
-```
+`
 
 The directory contains references and bounded evidence. It does not store private keys or unrestricted component data.
 
@@ -500,13 +500,13 @@ An operator or orchestration surface submits a validated request.
 
 Channel adapters expose only declared operations:
 
-```text
+`text
 prepare
 activate
 accept
 rollback
 status
-```
+`
 
 An adapter does not expose an arbitrary shell command.
 
@@ -631,142 +631,142 @@ The illustrative plan below is not a canonical default order.
 
 ### 9.3 Illustrative plan
 
-```json
+`json
 {
-  "schema_version": "1.0.0",
-  "transaction_id": "release-20260803-001",
-  "target_profile": "sovereign_linux_node",
-  "activation_scope": "release_set",
-  "release_set": {
-    "id": "koa-release-set:2026.08.03.1",
-    "version": "2026.08.03.1",
-    "digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
-  },
-  "source": {
-    "kind": "offline_bundle",
-    "reference": "offline-bundle:2026.08.03.1",
-    "carrier_id": "carrier:verified-transfer-01"
-  },
-  "maintenance_window": {
-    "starts_at": "2026-08-04T01:00:00Z",
-    "ends_at": "2026-08-04T03:00:00Z"
-  },
-  "operator_receipt_ref": "receipt:maintenance-approval-20260803-01",
-  "steps": [
-    {
-      "step_id": "activate-governance",
-      "channel": "governance",
-      "artifact": {
-        "id": "governance-policy-bundle:2026.08.03.1",
-        "version": "2026.08.03.1",
-        "digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
-      },
-      "depends_on": [],
-      "acceptance_checks": [
-        "contract",
-        "identity_trust",
-        "policy",
-        "representative_behavior",
-        "receipts"
-      ],
-      "requires_reboot": false,
-      "reversible": true,
-      "rollback_floor": "governance-policy-bundle:2026.07.20.2",
-      "migration_ids": []
-    },
-    {
-      "step_id": "activate-knowledge",
-      "channel": "knowledge",
-      "artifact": {
-        "id": "knowledge-release:2026.08.03.1",
-        "version": "2026.08.03.1",
-        "digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
-      },
-      "depends_on": [
-        "activate-governance"
-      ],
-      "acceptance_checks": [
-        "contract",
-        "data",
-        "local_read",
-        "representative_behavior"
-      ],
-      "requires_reboot": false,
-      "reversible": true,
-      "rollback_floor": "knowledge-release:2026.07.28.1",
-      "migration_ids": []
-    },
-    {
-      "step_id": "activate-services",
-      "channel": "services",
-      "artifact": {
-        "id": "service-bundle:2026.08.03.1",
-        "version": "2026.08.03.1",
-        "digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444"
-      },
-      "depends_on": [
-        "activate-governance",
-        "activate-knowledge"
-      ],
-      "acceptance_checks": [
-        "startup",
-        "contract",
-        "dependencies",
-        "data",
-        "policy",
-        "local_read",
-        "write",
-        "representative_behavior",
-        "receipts"
-      ],
-      "requires_reboot": false,
-      "reversible": true,
-      "rollback_floor": "service-bundle:2026.07.28.3",
-      "migration_ids": [
-        "migration:services-20260803-01"
-      ]
-    },
-    {
-      "step_id": "activate-system",
-      "channel": "system",
-      "artifact": {
-        "id": "system-image:2026.08.03.1",
-        "version": "2026.08.03.1",
-        "digest": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
-      },
-      "depends_on": [
-        "activate-services"
-      ],
-      "acceptance_checks": [
-        "boot",
-        "startup",
-        "contract",
-        "dependencies",
-        "data",
-        "identity_trust",
-        "policy",
-        "local_read",
-        "write",
-        "execution",
-        "recovery",
-        "representative_behavior",
-        "receipts"
-      ],
-      "requires_reboot": true,
-      "reversible": true,
-      "rollback_floor": "system-image:2026.07.15.2",
-      "migration_ids": []
-    }
-  ],
-  "notes": "Illustrative order only; the accepted Release Set and migration graph own the real order."
+ "schema_version": "1.0.0",
+ "transaction_id": "release-20260803-001",
+ "target_profile": "sovereign_linux_node",
+ "activation_scope": "release_set",
+ "release_set": {
+ "id": "koa-release-set:2026.08.03.1",
+ "version": "2026.08.03.1",
+ "digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+ },
+ "source": {
+ "kind": "offline_bundle",
+ "reference": "offline-bundle:2026.08.03.1",
+ "carrier_id": "carrier:verified-transfer-01"
+ },
+ "maintenance_window": {
+ "starts_at": "2026-08-04T01:00:00Z",
+ "ends_at": "2026-08-04T03:00:00Z"
+ },
+ "operator_receipt_ref": "receipt:maintenance-approval-20260803-01",
+ "steps": [
+ {
+ "step_id": "activate-governance",
+ "channel": "governance",
+ "artifact": {
+ "id": "governance-policy-bundle:2026.08.03.1",
+ "version": "2026.08.03.1",
+ "digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+ },
+ "depends_on": [],
+ "acceptance_checks": [
+ "contract",
+ "identity_trust",
+ "policy",
+ "representative_behavior",
+ "receipts"
+ ],
+ "requires_reboot": false,
+ "reversible": true,
+ "rollback_floor": "governance-policy-bundle:2026.07.20.2",
+ "migration_ids": []
+ },
+ {
+ "step_id": "activate-knowledge",
+ "channel": "knowledge",
+ "artifact": {
+ "id": "knowledge-release:2026.08.03.1",
+ "version": "2026.08.03.1",
+ "digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+ },
+ "depends_on": [
+ "activate-governance"
+ ],
+ "acceptance_checks": [
+ "contract",
+ "data",
+ "local_read",
+ "representative_behavior"
+ ],
+ "requires_reboot": false,
+ "reversible": true,
+ "rollback_floor": "knowledge-release:2026.07.28.1",
+ "migration_ids": []
+ },
+ {
+ "step_id": "activate-services",
+ "channel": "services",
+ "artifact": {
+ "id": "service-bundle:2026.08.03.1",
+ "version": "2026.08.03.1",
+ "digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444"
+ },
+ "depends_on": [
+ "activate-governance",
+ "activate-knowledge"
+ ],
+ "acceptance_checks": [
+ "startup",
+ "contract",
+ "dependencies",
+ "data",
+ "policy",
+ "local_read",
+ "write",
+ "representative_behavior",
+ "receipts"
+ ],
+ "requires_reboot": false,
+ "reversible": true,
+ "rollback_floor": "service-bundle:2026.07.28.3",
+ "migration_ids": [
+ "migration:services-20260803-01"
+ ]
+ },
+ {
+ "step_id": "activate-system",
+ "channel": "system",
+ "artifact": {
+ "id": "system-image:2026.08.03.1",
+ "version": "2026.08.03.1",
+ "digest": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+ },
+ "depends_on": [
+ "activate-services"
+ ],
+ "acceptance_checks": [
+ "boot",
+ "startup",
+ "contract",
+ "dependencies",
+ "data",
+ "identity_trust",
+ "policy",
+ "local_read",
+ "write",
+ "execution",
+ "recovery",
+ "representative_behavior",
+ "receipts"
+ ],
+ "requires_reboot": true,
+ "reversible": true,
+ "rollback_floor": "system-image:2026.07.15.2",
+ "migration_ids": []
+ }
+ ],
+ "notes": "Illustrative order only; the accepted Release Set and migration graph own the real order."
 }
-```
+`
 
 ### 9.4 Reference plan validator
 
 The following validator is a reference implementation for development, test, recovery rehearsal, or a profile-selected equivalent. Production installation belongs to a signed system or service artifact.
 
-```python
+`python
 #!/usr/bin/env python3
 from __future__ import annotations
 
@@ -781,20 +781,20 @@ from typing import Any
 CHANNELS = {"system", "services", "governance", "knowledge"}
 SOURCE_KINDS = {"offline_bundle", "local_registry", "verified_transfer"}
 ACCEPTANCE_CHECKS = {
-    "startup",
-    "boot",
-    "contract",
-    "dependencies",
-    "data",
-    "identity_trust",
-    "policy",
-    "local_read",
-    "write",
-    "execution",
-    "background_work",
-    "recovery",
-    "representative_behavior",
-    "receipts",
+ "startup",
+ "boot",
+ "contract",
+ "dependencies",
+ "data",
+ "identity_trust",
+ "policy",
+ "local_read",
+ "write",
+ "execution",
+ "background_work",
+ "recovery",
+ "representative_behavior",
+ "receipts",
 }
 ID_PATTERN = re.compile(r"^[a-z0-9][a-z0-9._:-]{2,127}$")
 DIGEST_PATTERN = re.compile(r"^sha256:[0-9a-f]{64}$")
@@ -802,450 +802,450 @@ TRANSACTION_PATTERN = re.compile(r"^[a-z0-9][a-z0-9._-]{2,95}$")
 
 
 def fail(message: str) -> None:
-    print(f"error: {message}", file=sys.stderr)
-    raise SystemExit(1)
+ print(f"error: {message}", file=sys.stderr)
+ raise SystemExit(1)
 
 
 def load(path: Path) -> dict[str, Any]:
-    try:
-        value = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
-        fail(f"cannot read activation plan {path}: {exc}")
-    if not isinstance(value, dict):
-        fail("activation plan root must be an object")
-    return value
+ try:
+ value = json.loads(path.read_text(encoding="utf-8"))
+ except (OSError, json.JSONDecodeError) as exc:
+ fail(f"cannot read activation plan {path}: {exc}")
+ if not isinstance(value, dict):
+ fail("activation plan root must be an object")
+ return value
 
 
 def require_exact_keys(
-    value: dict[str, Any],
-    required: set[str],
-    optional: set[str],
-    context: str,
+ value: dict[str, Any],
+ required: set[str],
+ optional: set[str],
+ context: str,
 ) -> None:
-    missing = required - set(value)
-    extra = set(value) - required - optional
-    if missing:
-        fail(f"{context} is missing keys: {sorted(missing)}")
-    if extra:
-        fail(f"{context} has unsupported keys: {sorted(extra)}")
+ missing = required - set(value)
+ extra = set(value) - required - optional
+ if missing:
+ fail(f"{context} is missing keys: {sorted(missing)}")
+ if extra:
+ fail(f"{context} has unsupported keys: {sorted(extra)}")
 
 
 def text(value: Any, context: str, pattern: re.Pattern[str] | None = None) -> str:
-    if not isinstance(value, str) or not value:
-        fail(f"{context} must be a non-empty string")
-    if pattern is not None and not pattern.fullmatch(value):
-        fail(f"{context} has an invalid value: {value}")
-    return value
+ if not isinstance(value, str) or not value:
+ fail(f"{context} must be a non-empty string")
+ if pattern is not None and not pattern.fullmatch(value):
+ fail(f"{context} has an invalid value: {value}")
+ return value
 
 
 def boolean(value: Any, context: str) -> bool:
-    if not isinstance(value, bool):
-        fail(f"{context} must be a boolean")
-    return value
+ if not isinstance(value, bool):
+ fail(f"{context} must be a boolean")
+ return value
 
 
 def validate_artifact(value: Any, context: str) -> dict[str, str]:
-    if not isinstance(value, dict):
-        fail(f"{context} must be an object")
-    require_exact_keys(
-        value,
-        {"id", "version", "digest"},
-        {"channel_manifest_ref"},
-        context,
-    )
-    artifact_id = text(value["id"], f"{context}.id", ID_PATTERN)
-    version = text(value["version"], f"{context}.version", ID_PATTERN)
-    digest = text(value["digest"], f"{context}.digest", DIGEST_PATTERN)
-    result = {
-        "id": artifact_id,
-        "version": version,
-        "digest": digest,
-    }
-    if "channel_manifest_ref" in value:
-        result["channel_manifest_ref"] = text(
-            value["channel_manifest_ref"],
-            f"{context}.channel_manifest_ref",
-        )
-    return result
+ if not isinstance(value, dict):
+ fail(f"{context} must be an object")
+ require_exact_keys(
+ value,
+ {"id", "version", "digest"},
+ {"channel_manifest_ref"},
+ context,
+ )
+ artifact_id = text(value["id"], f"{context}.id", ID_PATTERN)
+ version = text(value["version"], f"{context}.version", ID_PATTERN)
+ digest = text(value["digest"], f"{context}.digest", DIGEST_PATTERN)
+ result = {
+ "id": artifact_id,
+ "version": version,
+ "digest": digest,
+ }
+ if "channel_manifest_ref" in value:
+ result["channel_manifest_ref"] = text(
+ value["channel_manifest_ref"],
+ f"{context}.channel_manifest_ref",
+ )
+ return result
 
 
 def topological_order(steps: list[dict[str, Any]]) -> list[str]:
-    step_ids = {step["step_id"] for step in steps}
-    dependencies = {
-        step["step_id"]: set(step["depends_on"])
-        for step in steps
-    }
+ step_ids = {step["step_id"] for step in steps}
+ dependencies = {
+ step["step_id"]: set(step["depends_on"])
+ for step in steps
+ }
 
-    for step_id, values in dependencies.items():
-        unknown = values - step_ids
-        if unknown:
-            fail(
-                f"step {step_id} depends on unknown steps: "
-                f"{sorted(unknown)}"
-            )
-        if step_id in values:
-            fail(f"step {step_id} depends on itself")
+ for step_id, values in dependencies.items:
+ unknown = values - step_ids
+ if unknown:
+ fail(
+ f"step {step_id} depends on unknown steps: "
+ f"{sorted(unknown)}"
+ )
+ if step_id in values:
+ fail(f"step {step_id} depends on itself")
 
-    ready = sorted(
-        step_id
-        for step_id, values in dependencies.items()
-        if not values
-    )
-    order: list[str] = []
+ ready = sorted(
+ step_id
+ for step_id, values in dependencies.items
+ if not values
+ )
+ order: list[str] = []
 
-    while ready:
-        current = ready.pop(0)
-        order.append(current)
+ while ready:
+ current = ready.pop(0)
+ order.append(current)
 
-        for step_id in sorted(dependencies):
-            if current in dependencies[step_id]:
-                dependencies[step_id].remove(current)
-                if (
-                    not dependencies[step_id]
-                    and step_id not in order
-                    and step_id not in ready
-                ):
-                    ready.append(step_id)
-                    ready.sort()
+ for step_id in sorted(dependencies):
+ if current in dependencies[step_id]:
+ dependencies[step_id].remove(current)
+ if (
+ not dependencies[step_id]
+ and step_id not in order
+ and step_id not in ready
+ ):
+ ready.append(step_id)
+ ready.sort
 
-    if len(order) != len(steps):
-        remaining = sorted(set(step_ids) - set(order))
-        fail(f"activation dependency cycle detected: {remaining}")
+ if len(order) != len(steps):
+ remaining = sorted(set(step_ids) - set(order))
+ fail(f"activation dependency cycle detected: {remaining}")
 
-    return order
+ return order
 
 
 def validate(plan: dict[str, Any]) -> tuple[dict[str, Any], list[str]]:
-    require_exact_keys(
-        plan,
-        {
-            "schema_version",
-            "transaction_id",
-            "target_profile",
-            "activation_scope",
-            "release_set",
-            "source",
-            "steps",
-        },
-        {
-            "maintenance_window",
-            "operator_receipt_ref",
-            "notes",
-        },
-        "activation plan",
-    )
+ require_exact_keys(
+ plan,
+ {
+ "schema_version",
+ "transaction_id",
+ "target_profile",
+ "activation_scope",
+ "release_set",
+ "source",
+ "steps",
+ },
+ {
+ "maintenance_window",
+ "operator_receipt_ref",
+ "notes",
+ },
+ "activation plan",
+ )
 
-    if plan["schema_version"] != "1.0.0":
-        fail("schema_version must be 1.0.0")
+ if plan["schema_version"] != "1.0.0":
+ fail("schema_version must be 1.0.0")
 
-    transaction_id = text(
-        plan["transaction_id"],
-        "transaction_id",
-        TRANSACTION_PATTERN,
-    )
+ transaction_id = text(
+ plan["transaction_id"],
+ "transaction_id",
+ TRANSACTION_PATTERN,
+ )
 
-    if plan["target_profile"] != "sovereign_linux_node":
-        fail("target_profile must be sovereign_linux_node")
+ if plan["target_profile"] != "sovereign_linux_node":
+ fail("target_profile must be sovereign_linux_node")
 
-    if plan["activation_scope"] not in {
-        "release_set",
-        "channel_subset",
-    }:
-        fail(
-            "activation_scope must be release_set or channel_subset"
-        )
+ if plan["activation_scope"] not in {
+ "release_set",
+ "channel_subset",
+ }:
+ fail(
+ "activation_scope must be release_set or channel_subset"
+ )
 
-    release_set = plan["release_set"]
-    if not isinstance(release_set, dict):
-        fail("release_set must be an object")
-    require_exact_keys(
-        release_set,
-        {"id", "version", "digest"},
-        set(),
-        "release_set",
-    )
-    release_set_id = text(
-        release_set["id"],
-        "release_set.id",
-        ID_PATTERN,
-    )
-    release_set_version = text(
-        release_set["version"],
-        "release_set.version",
-        ID_PATTERN,
-    )
-    release_set_digest = text(
-        release_set["digest"],
-        "release_set.digest",
-        DIGEST_PATTERN,
-    )
+ release_set = plan["release_set"]
+ if not isinstance(release_set, dict):
+ fail("release_set must be an object")
+ require_exact_keys(
+ release_set,
+ {"id", "version", "digest"},
+ set,
+ "release_set",
+ )
+ release_set_id = text(
+ release_set["id"],
+ "release_set.id",
+ ID_PATTERN,
+ )
+ release_set_version = text(
+ release_set["version"],
+ "release_set.version",
+ ID_PATTERN,
+ )
+ release_set_digest = text(
+ release_set["digest"],
+ "release_set.digest",
+ DIGEST_PATTERN,
+ )
 
-    source = plan["source"]
-    if not isinstance(source, dict):
-        fail("source must be an object")
-    require_exact_keys(
-        source,
-        {"kind", "reference"},
-        {"carrier_id"},
-        "source",
-    )
-    if source["kind"] not in SOURCE_KINDS:
-        fail(f"unsupported source kind: {source['kind']}")
-    text(source["reference"], "source.reference")
-    if "carrier_id" in source:
-        text(source["carrier_id"], "source.carrier_id", ID_PATTERN)
+ source = plan["source"]
+ if not isinstance(source, dict):
+ fail("source must be an object")
+ require_exact_keys(
+ source,
+ {"kind", "reference"},
+ {"carrier_id"},
+ "source",
+ )
+ if source["kind"] not in SOURCE_KINDS:
+ fail(f"unsupported source kind: {source['kind']}")
+ text(source["reference"], "source.reference")
+ if "carrier_id" in source:
+ text(source["carrier_id"], "source.carrier_id", ID_PATTERN)
 
-    steps = plan["steps"]
-    if not isinstance(steps, list) or not steps:
-        fail("steps must be a non-empty array")
+ steps = plan["steps"]
+ if not isinstance(steps, list) or not steps:
+ fail("steps must be a non-empty array")
 
-    validated_steps: list[dict[str, Any]] = []
-    seen_ids: set[str] = set()
-    seen_channels: set[str] = set()
+ validated_steps: list[dict[str, Any]] = []
+ seen_ids: set[str] = set
+ seen_channels: set[str] = set
 
-    for index, step in enumerate(steps):
-        context = f"steps[{index}]"
-        if not isinstance(step, dict):
-            fail(f"{context} must be an object")
-        require_exact_keys(
-            step,
-            {
-                "step_id",
-                "channel",
-                "artifact",
-                "depends_on",
-                "acceptance_checks",
-                "requires_reboot",
-                "reversible",
-            },
-            {
-                "forward_repair_id",
-                "migration_ids",
-                "rollback_floor",
-            },
-            context,
-        )
+ for index, step in enumerate(steps):
+ context = f"steps[{index}]"
+ if not isinstance(step, dict):
+ fail(f"{context} must be an object")
+ require_exact_keys(
+ step,
+ {
+ "step_id",
+ "channel",
+ "artifact",
+ "depends_on",
+ "acceptance_checks",
+ "requires_reboot",
+ "reversible",
+ },
+ {
+ "forward_repair_id",
+ "migration_ids",
+ "rollback_floor",
+ },
+ context,
+ )
 
-        step_id = text(
-            step["step_id"],
-            f"{context}.step_id",
-            ID_PATTERN,
-        )
-        if step_id in seen_ids:
-            fail(f"duplicate step_id: {step_id}")
-        seen_ids.add(step_id)
+ step_id = text(
+ step["step_id"],
+ f"{context}.step_id",
+ ID_PATTERN,
+ )
+ if step_id in seen_ids:
+ fail(f"duplicate step_id: {step_id}")
+ seen_ids.add(step_id)
 
-        channel = step["channel"]
-        if channel not in CHANNELS:
-            fail(f"{context}.channel is unsupported: {channel}")
-        if channel in seen_channels:
-            fail(f"channel appears more than once: {channel}")
-        seen_channels.add(channel)
+ channel = step["channel"]
+ if channel not in CHANNELS:
+ fail(f"{context}.channel is unsupported: {channel}")
+ if channel in seen_channels:
+ fail(f"channel appears more than once: {channel}")
+ seen_channels.add(channel)
 
-        artifact = validate_artifact(
-            step["artifact"],
-            f"{context}.artifact",
-        )
+ artifact = validate_artifact(
+ step["artifact"],
+ f"{context}.artifact",
+ )
 
-        depends_on = step["depends_on"]
-        if (
-            not isinstance(depends_on, list)
-            or not all(isinstance(item, str) for item in depends_on)
-            or len(depends_on) != len(set(depends_on))
-        ):
-            fail(
-                f"{context}.depends_on must be a unique string array"
-            )
+ depends_on = step["depends_on"]
+ if (
+ not isinstance(depends_on, list)
+ or not all(isinstance(item, str) for item in depends_on)
+ or len(depends_on) != len(set(depends_on))
+ ):
+ fail(
+ f"{context}.depends_on must be a unique string array"
+ )
 
-        checks = step["acceptance_checks"]
-        if (
-            not isinstance(checks, list)
-            or not checks
-            or not all(isinstance(item, str) for item in checks)
-            or len(checks) != len(set(checks))
-        ):
-            fail(
-                f"{context}.acceptance_checks must be a "
-                "non-empty unique string array"
-            )
-        unsupported_checks = set(checks) - ACCEPTANCE_CHECKS
-        if unsupported_checks:
-            fail(
-                f"{context}.acceptance_checks contains unsupported "
-                f"values: {sorted(unsupported_checks)}"
-            )
+ checks = step["acceptance_checks"]
+ if (
+ not isinstance(checks, list)
+ or not checks
+ or not all(isinstance(item, str) for item in checks)
+ or len(checks) != len(set(checks))
+ ):
+ fail(
+ f"{context}.acceptance_checks must be a "
+ "non-empty unique string array"
+ )
+ unsupported_checks = set(checks) - ACCEPTANCE_CHECKS
+ if unsupported_checks:
+ fail(
+ f"{context}.acceptance_checks contains unsupported "
+ f"values: {sorted(unsupported_checks)}"
+ )
 
-        requires_reboot = boolean(
-            step["requires_reboot"],
-            f"{context}.requires_reboot",
-        )
-        reversible = boolean(
-            step["reversible"],
-            f"{context}.reversible",
-        )
+ requires_reboot = boolean(
+ step["requires_reboot"],
+ f"{context}.requires_reboot",
+ )
+ reversible = boolean(
+ step["reversible"],
+ f"{context}.reversible",
+ )
 
-        if requires_reboot and channel != "system":
-            fail(
-                f"{context}.requires_reboot is permitted only "
-                "for the system channel"
-            )
+ if requires_reboot and channel != "system":
+ fail(
+ f"{context}.requires_reboot is permitted only "
+ "for the system channel"
+ )
 
-        if not reversible and not step.get("forward_repair_id"):
-            fail(
-                f"{context} is irreversible and requires "
-                "forward_repair_id"
-            )
+ if not reversible and not step.get("forward_repair_id"):
+ fail(
+ f"{context} is irreversible and requires "
+ "forward_repair_id"
+ )
 
-        if "forward_repair_id" in step:
-            text(
-                step["forward_repair_id"],
-                f"{context}.forward_repair_id",
-                ID_PATTERN,
-            )
+ if "forward_repair_id" in step:
+ text(
+ step["forward_repair_id"],
+ f"{context}.forward_repair_id",
+ ID_PATTERN,
+ )
 
-        migration_ids = step.get("migration_ids", [])
-        if (
-            not isinstance(migration_ids, list)
-            or not all(isinstance(item, str) for item in migration_ids)
-            or len(migration_ids) != len(set(migration_ids))
-        ):
-            fail(
-                f"{context}.migration_ids must be a unique "
-                "string array"
-            )
+ migration_ids = step.get("migration_ids", [])
+ if (
+ not isinstance(migration_ids, list)
+ or not all(isinstance(item, str) for item in migration_ids)
+ or len(migration_ids) != len(set(migration_ids))
+ ):
+ fail(
+ f"{context}.migration_ids must be a unique "
+ "string array"
+ )
 
-        if "rollback_floor" in step:
-            text(
-                step["rollback_floor"],
-                f"{context}.rollback_floor",
-                ID_PATTERN,
-            )
+ if "rollback_floor" in step:
+ text(
+ step["rollback_floor"],
+ f"{context}.rollback_floor",
+ ID_PATTERN,
+ )
 
-        validated_step = {
-            "step_id": step_id,
-            "channel": channel,
-            "artifact": artifact,
-            "depends_on": list(depends_on),
-            "acceptance_checks": list(checks),
-            "requires_reboot": requires_reboot,
-            "reversible": reversible,
-            "migration_ids": list(migration_ids),
-        }
+ validated_step = {
+ "step_id": step_id,
+ "channel": channel,
+ "artifact": artifact,
+ "depends_on": list(depends_on),
+ "acceptance_checks": list(checks),
+ "requires_reboot": requires_reboot,
+ "reversible": reversible,
+ "migration_ids": list(migration_ids),
+ }
 
-        if "forward_repair_id" in step:
-            validated_step["forward_repair_id"] = step[
-                "forward_repair_id"
-            ]
+ if "forward_repair_id" in step:
+ validated_step["forward_repair_id"] = step[
+ "forward_repair_id"
+ ]
 
-        if "rollback_floor" in step:
-            validated_step["rollback_floor"] = step[
-                "rollback_floor"
-            ]
+ if "rollback_floor" in step:
+ validated_step["rollback_floor"] = step[
+ "rollback_floor"
+ ]
 
-        validated_steps.append(validated_step)
+ validated_steps.append(validated_step)
 
-    if (
-        plan["activation_scope"] == "release_set"
-        and seen_channels != CHANNELS
-    ):
-        fail(
-            "release_set activation must include exactly the "
-            "system, services, governance, and knowledge channels"
-        )
+ if (
+ plan["activation_scope"] == "release_set"
+ and seen_channels != CHANNELS
+ ):
+ fail(
+ "release_set activation must include exactly the "
+ "system, services, governance, and knowledge channels"
+ )
 
-    order = topological_order(validated_steps)
+ order = topological_order(validated_steps)
 
-    canonical = {
-        "schema_version": "1.0.0",
-        "transaction_id": transaction_id,
-        "target_profile": "sovereign_linux_node",
-        "activation_scope": plan["activation_scope"],
-        "release_set": {
-            "id": release_set_id,
-            "version": release_set_version,
-            "digest": release_set_digest,
-        },
-        "source": source,
-        "steps": validated_steps,
-    }
+ canonical = {
+ "schema_version": "1.0.0",
+ "transaction_id": transaction_id,
+ "target_profile": "sovereign_linux_node",
+ "activation_scope": plan["activation_scope"],
+ "release_set": {
+ "id": release_set_id,
+ "version": release_set_version,
+ "digest": release_set_digest,
+ },
+ "source": source,
+ "steps": validated_steps,
+ }
 
-    for optional_key in (
-        "maintenance_window",
-        "operator_receipt_ref",
-        "notes",
-    ):
-        if optional_key in plan:
-            canonical[optional_key] = plan[optional_key]
+ for optional_key in (
+ "maintenance_window",
+ "operator_receipt_ref",
+ "notes",
+ ):
+ if optional_key in plan:
+ canonical[optional_key] = plan[optional_key]
 
-    return canonical, order
+ return canonical, order
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("plan", type=Path)
-    parser.add_argument(
-        "--emit-order",
-        action="store_true",
-        help="Print one validated step identifier per line",
-    )
-    parser.add_argument(
-        "--emit-canonical",
-        action="store_true",
-        help="Print normalized validated JSON",
-    )
-    args = parser.parse_args()
+def main -> None:
+ parser = argparse.ArgumentParser
+ parser.add_argument("plan", type=Path)
+ parser.add_argument(
+ "--emit-order",
+ action="store_true",
+ help="Print one validated step identifier per line",
+ )
+ parser.add_argument(
+ "--emit-canonical",
+ action="store_true",
+ help="Print normalized validated JSON",
+ )
+ args = parser.parse_args
 
-    canonical, order = validate(load(args.plan))
+ canonical, order = validate(load(args.plan))
 
-    if args.emit_order:
-        print("\n".join(order))
-        return
+ if args.emit_order:
+ print("\n".join(order))
+ return
 
-    if args.emit_canonical:
-        print(
-            json.dumps(
-                canonical,
-                indent=2,
-                sort_keys=True,
-            )
-        )
-        return
+ if args.emit_canonical:
+ print(
+ json.dumps(
+ canonical,
+ indent=2,
+ sort_keys=True,
+ )
+ )
+ return
 
-    digest = hashlib.sha256(
-        json.dumps(
-            canonical,
-            sort_keys=True,
-            separators=(",", ":"),
-        ).encode("utf-8")
-    ).hexdigest()
+ digest = hashlib.sha256(
+ json.dumps(
+ canonical,
+ sort_keys=True,
+ separators=(",", ":"),
+ ).encode("utf-8")
+ ).hexdigest
 
-    print(
-        json.dumps(
-            {
-                "result": "pass",
-                "transaction_id": canonical["transaction_id"],
-                "target_profile": canonical["target_profile"],
-                "activation_scope": canonical["activation_scope"],
-                "release_set_id": canonical["release_set"]["id"],
-                "release_set_version": canonical[
-                    "release_set"
-                ]["version"],
-                "channels": [
-                    step["channel"]
-                    for step in canonical["steps"]
-                ],
-                "activation_order": order,
-                "canonical_plan_digest": f"sha256:{digest}",
-            },
-            indent=2,
-        )
-    )
+ print(
+ json.dumps(
+ {
+ "result": "pass",
+ "transaction_id": canonical["transaction_id"],
+ "target_profile": canonical["target_profile"],
+ "activation_scope": canonical["activation_scope"],
+ "release_set_id": canonical["release_set"]["id"],
+ "release_set_version": canonical[
+ "release_set"
+ ]["version"],
+ "channels": [
+ step["channel"]
+ for step in canonical["steps"]
+ ],
+ "activation_order": order,
+ "canonical_plan_digest": f"sha256:{digest}",
+ },
+ indent=2,
+ )
+ )
 
 
 if __name__ == "__main__":
-    main()
+ main
 
-```
+`
 
 It validates structure, channel uniqueness, full Release Set coverage, artifact digests, reboot constraints, irreversible-step repair identity, acceptance classes, dependency references, and acyclic order.
 
@@ -1255,18 +1255,18 @@ It validates structure, channel uniqueness, full Release Set coverage, artifact 
 
 The reference orchestrator invokes:
 
-```text
+`text
 koa-release-adapter-system
 koa-release-adapter-services
 koa-release-adapter-governance
 koa-release-adapter-knowledge
-```
+`
 
 Each adapter receives:
 
-```text
+`text
 OPERATION PLAN_PATH STEP_ID TRANSACTION_DIRECTORY
-```
+`
 
 ### 10.2 Prepare
 
@@ -1332,7 +1332,7 @@ An adapter returns failure when forward repair is required instead.
 
 It distinguishes:
 
-```text
+`text
 absent
 verified
 staged
@@ -1343,7 +1343,7 @@ rollback_requested
 rolled_back
 forward_repair_required
 failed
-```
+`
 
 ## 11. Reference Activation Orchestrator
 
@@ -1351,40 +1351,40 @@ The following orchestrator demonstrates durable transaction state, one global ac
 
 Production installation and privilege belong to the active Node Agent and profile artifacts.
 
-```bash
+`bash
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-die() {
-  printf 'error: %s\n' "$*" >&2
-  exit 1
+die {
+ printf 'error: %s\n' "$*" >&2
+ exit 1
 }
 
-note() {
-  printf '%s\n' "$*"
+note {
+ printf '%s\n' "$*"
 }
 
-require_command() {
-  command -v "$1" >/dev/null 2>&1 ||
-    die "required command not found: $1"
+require_command {
+ command -v "$1" >/dev/null 2>&1 ||
+ die "required command not found: $1"
 }
 
-adapter_for() {
-  local channel=$1
-  printf 'koa-release-adapter-%s' "$channel"
+adapter_for {
+ local channel=$1
+ printf 'koa-release-adapter-%s' "$channel"
 }
 
-state_update() {
-  local state_file=$1
-  local status=$2
-  local step_id=${3:-}
-  local detail=${4:-}
+state_update {
+ local state_file=$1
+ local status=$2
+ local step_id=${3:-}
+ local detail=${4:-}
 
-  python3 - \
-    "$state_file" \
-    "$status" \
-    "$step_id" \
-    "$detail" <<'PY'
+ python3 - \
+ "$state_file" \
+ "$status" \
+ "$step_id" \
+ "$detail" <<'PY'
 import json
 import os
 import sys
@@ -1396,65 +1396,65 @@ status = sys.argv[2]
 step_id = sys.argv[3]
 detail = sys.argv[4]
 
-if state_file.exists():
-    state = json.loads(state_file.read_text(encoding="utf-8"))
+if state_file.exists:
+ state = json.loads(state_file.read_text(encoding="utf-8"))
 else:
-    state = {
-        "schema_version": "1.0.0",
-        "events": [],
-        "completed_steps": [],
-        "activated_steps": [],
-        "rolled_back_steps": [],
-    }
+ state = {
+ "schema_version": "1.0.0",
+ "events": [],
+ "completed_steps": [],
+ "activated_steps": [],
+ "rolled_back_steps": [],
+ }
 
 event = {
-    "observed_at": datetime.now(timezone.utc)
-    .isoformat()
-    .replace("+00:00", "Z"),
-    "status": status,
+ "observed_at": datetime.now(timezone.utc)
+ .isoformat
+ .replace("+00:00", "Z"),
+ "status": status,
 }
 if step_id:
-    event["step_id"] = step_id
+ event["step_id"] = step_id
 if detail:
-    event["detail"] = detail
+ event["detail"] = detail
 
 state["status"] = status
 state["events"].append(event)
 
 if status == "step_activated" and step_id:
-    if step_id not in state["activated_steps"]:
-        state["activated_steps"].append(step_id)
+ if step_id not in state["activated_steps"]:
+ state["activated_steps"].append(step_id)
 
 if status == "step_accepted" and step_id:
-    if step_id not in state["completed_steps"]:
-        state["completed_steps"].append(step_id)
-    if step_id not in state["activated_steps"]:
-        state["activated_steps"].append(step_id)
+ if step_id not in state["completed_steps"]:
+ state["completed_steps"].append(step_id)
+ if step_id not in state["activated_steps"]:
+ state["activated_steps"].append(step_id)
 
 if status == "step_rolled_back" and step_id:
-    if step_id not in state["rolled_back_steps"]:
-        state["rolled_back_steps"].append(step_id)
+ if step_id not in state["rolled_back_steps"]:
+ state["rolled_back_steps"].append(step_id)
 
 if status == "reboot_pending" and step_id:
-    state["pending_reboot_step"] = step_id
+ state["pending_reboot_step"] = step_id
 elif status == "reboot_accepted":
-    state.pop("pending_reboot_step", None)
+ state.pop("pending_reboot_step", None)
 
 temporary = state_file.with_suffix(".tmp")
 temporary.write_text(
-    json.dumps(state, indent=2, sort_keys=True) + "\n",
-    encoding="utf-8",
+ json.dumps(state, indent=2, sort_keys=True) + "\n",
+ encoding="utf-8",
 )
 os.chmod(temporary, 0o600)
 temporary.replace(state_file)
 PY
 }
 
-state_value() {
-  local state_file=$1
-  local key=$2
+state_value {
+ local state_file=$1
+ local key=$2
 
-  python3 - "$state_file" "$key" <<'PY'
+ python3 - "$state_file" "$key" <<'PY'
 import json
 import sys
 from pathlib import Path
@@ -1462,27 +1462,27 @@ from pathlib import Path
 path = Path(sys.argv[1])
 key = sys.argv[2]
 
-if not path.exists():
-    print("")
-    raise SystemExit(0)
+if not path.exists:
+ print("")
+ raise SystemExit(0)
 
 value = json.loads(path.read_text(encoding="utf-8")).get(key, "")
 if isinstance(value, list):
-    if value:
-        sys.stdout.write(
-            "\n".join(str(item) for item in value) + "\n"
-        )
+ if value:
+ sys.stdout.write(
+ "\n".join(str(item) for item in value) + "\n"
+ )
 elif value is not None:
-    sys.stdout.write(str(value) + "\n")
+ sys.stdout.write(str(value) + "\n")
 PY
 }
 
-plan_value() {
-  local plan_file=$1
-  local step_id=$2
-  local key=$3
+plan_value {
+ local plan_file=$1
+ local step_id=$2
+ local key=$3
 
-  python3 - "$plan_file" "$step_id" "$key" <<'PY'
+ python3 - "$plan_file" "$step_id" "$key" <<'PY'
 import json
 import sys
 from pathlib import Path
@@ -1492,302 +1492,302 @@ step_id = sys.argv[2]
 key = sys.argv[3]
 
 step = next(
-    item for item in plan["steps"]
-    if item["step_id"] == step_id
+ item for item in plan["steps"]
+ if item["step_id"] == step_id
 )
 value = step[key]
 
 if isinstance(value, bool):
-    print("true" if value else "false")
+ print("true" if value else "false")
 elif isinstance(value, list):
-    print("\n".join(str(item) for item in value))
+ print("\n".join(str(item) for item in value))
 elif value is None:
-    print("")
+ print("")
 else:
-    print(value)
+ print(value)
 PY
 }
 
-contains_line() {
-  local needle=$1
-  shift
-  printf '%s\n' "$@" | grep -Fxq "$needle"
+contains_line {
+ local needle=$1
+ shift
+ printf '%s\n' "$@" | grep -Fxq "$needle"
 }
 
-rollback_steps() {
-  local plan_file=$1
-  local transaction_dir=$2
-  local state_file=$3
-  shift 3
-  local activated=("$@")
-  local index step_id channel reversible adapter
+rollback_steps {
+ local plan_file=$1
+ local transaction_dir=$2
+ local state_file=$3
+ shift 3
+ local activated=("$@")
+ local index step_id channel reversible adapter
 
-  for ((index=${#activated[@]} - 1; index >= 0; index -= 1)); do
-    step_id=${activated[$index]}
-    channel=$(plan_value "$plan_file" "$step_id" channel)
-    reversible=$(plan_value "$plan_file" "$step_id" reversible)
-    adapter=$(adapter_for "$channel")
+ for ((index=${#activated[@]} - 1; index >= 0; index -= 1)); do
+ step_id=${activated[$index]}
+ channel=$(plan_value "$plan_file" "$step_id" channel)
+ reversible=$(plan_value "$plan_file" "$step_id" reversible)
+ adapter=$(adapter_for "$channel")
 
-    if test "$reversible" != "true"; then
-      state_update \
-        "$state_file" \
-        "forward_repair_required" \
-        "$step_id" \
-        "activated step is not reversible"
-      return 1
-    fi
+ if test "$reversible" != "true"; then
+ state_update \
+ "$state_file" \
+ "forward_repair_required" \
+ "$step_id" \
+ "activated step is not reversible"
+ return 1
+ fi
 
-    if ! "$adapter" rollback "$plan_file" "$step_id" "$transaction_dir"; then
-      state_update \
-        "$state_file" \
-        "forward_repair_required" \
-        "$step_id" \
-        "rollback adapter failed"
-      return 1
-    fi
+ if ! "$adapter" rollback "$plan_file" "$step_id" "$transaction_dir"; then
+ state_update \
+ "$state_file" \
+ "forward_repair_required" \
+ "$step_id" \
+ "rollback adapter failed"
+ return 1
+ fi
 
-    state_update "$state_file" "step_rolled_back" "$step_id"
-  done
+ state_update "$state_file" "step_rolled_back" "$step_id"
+ done
 
-  state_update "$state_file" "rolled_back"
+ state_update "$state_file" "rolled_back"
 }
 
-main() {
-  require_command python3
-  require_command sha256sum
-  require_command flock
+main {
+ require_command python3
+ require_command sha256sum
+ require_command flock
 
-  local mode=start
-  if test "${1:-}" = "--resume"; then
-    mode=resume
-    shift
-  fi
+ local mode=start
+ if test "${1:-}" = "--resume"; then
+ mode=resume
+ shift
+ fi
 
-  local plan_input=${1:-}
-  local state_root=${2:-}
+ local plan_input=${1:-}
+ local state_root=${2:-}
 
-  test -n "$plan_input" && test -n "$state_root" ||
-    die "usage: koa-release-activate [--resume] PLAN STATE_ROOT"
+ test -n "$plan_input" && test -n "$state_root" ||
+ die "usage: koa-release-activate [--resume] PLAN STATE_ROOT"
 
-  plan_input=$(realpath "$plan_input")
-  state_root=$(realpath -m "$state_root")
+ plan_input=$(realpath "$plan_input")
+ state_root=$(realpath -m "$state_root")
 
-  test -f "$plan_input" ||
-    die "activation plan not found: $plan_input"
+ test -f "$plan_input" ||
+ die "activation plan not found: $plan_input"
 
-  local checker=${KOA_RELEASE_PLAN_CHECK:-koa-release-plan-check}
-  require_command "$checker"
+ local checker=${KOA_RELEASE_PLAN_CHECK:-koa-release-plan-check}
+ require_command "$checker"
 
-  "$checker" "$plan_input" >/dev/null
+ "$checker" "$plan_input" >/dev/null
 
-  local transaction_id
-  transaction_id=$(
-    python3 - "$plan_input" <<'PY'
+ local transaction_id
+ transaction_id=$(
+ python3 - "$plan_input" <<'PY'
 import json
 import sys
 from pathlib import Path
 print(
-    json.loads(
-        Path(sys.argv[1]).read_text(encoding="utf-8")
-    )["transaction_id"]
+ json.loads(
+ Path(sys.argv[1]).read_text(encoding="utf-8")
+ )["transaction_id"]
 )
 PY
-  )
+ )
 
-  local transaction_dir="$state_root/$transaction_id"
-  local state_file="$transaction_dir/transaction-state.json"
-  local plan_file="$transaction_dir/activation-plan.json"
-  local order_file="$transaction_dir/activation-order.txt"
-  local lock_file="$state_root/.activation.lock"
+ local transaction_dir="$state_root/$transaction_id"
+ local state_file="$transaction_dir/transaction-state.json"
+ local plan_file="$transaction_dir/activation-plan.json"
+ local order_file="$transaction_dir/activation-order.txt"
+ local lock_file="$state_root/.activation.lock"
 
-  mkdir -p "$state_root"
-  chmod 700 "$state_root"
+ mkdir -p "$state_root"
+ chmod 700 "$state_root"
 
-  exec 9>"$lock_file"
-  flock -n 9 ||
-    die "another release activation transaction is running"
+ exec 9>"$lock_file"
+ flock -n 9 ||
+ die "another release activation transaction is running"
 
-  if test "$mode" = "start"; then
-    test ! -e "$transaction_dir" ||
-      die "transaction directory already exists: $transaction_dir"
+ if test "$mode" = "start"; then
+ test ! -e "$transaction_dir" ||
+ die "transaction directory already exists: $transaction_dir"
 
-    mkdir -p "$transaction_dir/logs" "$transaction_dir/evidence"
-    chmod 700 "$transaction_dir"
+ mkdir -p "$transaction_dir/logs" "$transaction_dir/evidence"
+ chmod 700 "$transaction_dir"
 
-    "$checker" "$plan_input" --emit-canonical >"$plan_file"
-    "$checker" "$plan_file" --emit-order >"$order_file"
+ "$checker" "$plan_input" --emit-canonical >"$plan_file"
+ "$checker" "$plan_file" --emit-order >"$order_file"
 
-    chmod 600 "$plan_file" "$order_file"
+ chmod 600 "$plan_file" "$order_file"
 
-    sha256sum "$plan_file" >"$transaction_dir/activation-plan.sha256"
-    chmod 600 "$transaction_dir/activation-plan.sha256"
+ sha256sum "$plan_file" >"$transaction_dir/activation-plan.sha256"
+ chmod 600 "$transaction_dir/activation-plan.sha256"
 
-    state_update "$state_file" "validated"
-  else
-    test -d "$transaction_dir" ||
-      die "transaction directory not found: $transaction_dir"
-    test -f "$plan_file" && test -f "$state_file" ||
-      die "transaction state is incomplete"
-    (
-      cd "$transaction_dir"
-      sha256sum --check activation-plan.sha256
-    ) >/dev/null
-  fi
+ state_update "$state_file" "validated"
+ else
+ test -d "$transaction_dir" ||
+ die "transaction directory not found: $transaction_dir"
+ test -f "$plan_file" && test -f "$state_file" ||
+ die "transaction state is incomplete"
+ (
+ cd "$transaction_dir"
+ sha256sum --check activation-plan.sha256
+ ) >/dev/null
+ fi
 
-  mapfile -t order <"$order_file"
-  mapfile -t completed < <(
-    state_value "$state_file" completed_steps
-  )
-  mapfile -t activated < <(
-    state_value "$state_file" activated_steps
-  )
+ mapfile -t order <"$order_file"
+ mapfile -t completed < <(
+ state_value "$state_file" completed_steps
+ )
+ mapfile -t activated < <(
+ state_value "$state_file" activated_steps
+ )
 
-  local pending_reboot
-  pending_reboot=$(
-    state_value "$state_file" pending_reboot_step
-  )
+ local pending_reboot
+ pending_reboot=$(
+ state_value "$state_file" pending_reboot_step
+ )
 
-  if test "$mode" = "resume"; then
-    test -n "$pending_reboot" ||
-      die "transaction has no pending reboot step"
+ if test "$mode" = "resume"; then
+ test -n "$pending_reboot" ||
+ die "transaction has no pending reboot step"
 
-    local pending_channel pending_adapter
-    pending_channel=$(
-      plan_value "$plan_file" "$pending_reboot" channel
-    )
-    pending_adapter=$(adapter_for "$pending_channel")
-    require_command "$pending_adapter"
+ local pending_channel pending_adapter
+ pending_channel=$(
+ plan_value "$plan_file" "$pending_reboot" channel
+ )
+ pending_adapter=$(adapter_for "$pending_channel")
+ require_command "$pending_adapter"
 
-    state_update \
-      "$state_file" \
-      "reboot_acceptance_started" \
-      "$pending_reboot"
+ state_update \
+ "$state_file" \
+ "reboot_acceptance_started" \
+ "$pending_reboot"
 
-    if ! "$pending_adapter" \
-      accept \
-      "$plan_file" \
-      "$pending_reboot" \
-      "$transaction_dir"; then
-      state_update \
-        "$state_file" \
-        "acceptance_failed" \
-        "$pending_reboot" \
-        "post-reboot acceptance failed"
+ if ! "$pending_adapter" \
+ accept \
+ "$plan_file" \
+ "$pending_reboot" \
+ "$transaction_dir"; then
+ state_update \
+ "$state_file" \
+ "acceptance_failed" \
+ "$pending_reboot" \
+ "post-reboot acceptance failed"
 
-      if ! rollback_steps \
-        "$plan_file" \
-        "$transaction_dir" \
-        "$state_file" \
-        "${activated[@]}"; then
-        die "post-reboot acceptance failed; forward repair is required"
-      fi
+ if ! rollback_steps \
+ "$plan_file" \
+ "$transaction_dir" \
+ "$state_file" \
+ "${activated[@]}"; then
+ die "post-reboot acceptance failed; forward repair is required"
+ fi
 
-      die "post-reboot acceptance failed; activated steps were rolled back"
-    fi
+ die "post-reboot acceptance failed; activated steps were rolled back"
+ fi
 
-    state_update \
-      "$state_file" \
-      "reboot_accepted" \
-      "$pending_reboot"
-    state_update \
-      "$state_file" \
-      "step_accepted" \
-      "$pending_reboot"
+ state_update \
+ "$state_file" \
+ "reboot_accepted" \
+ "$pending_reboot"
+ state_update \
+ "$state_file" \
+ "step_accepted" \
+ "$pending_reboot"
 
-    completed+=("$pending_reboot")
-    if ! contains_line "$pending_reboot" "${activated[@]}"; then
-      activated+=("$pending_reboot")
-    fi
-  fi
+ completed+=("$pending_reboot")
+ if ! contains_line "$pending_reboot" "${activated[@]}"; then
+ activated+=("$pending_reboot")
+ fi
+ fi
 
-  local step_id channel adapter requires_reboot
+ local step_id channel adapter requires_reboot
 
-  for step_id in "${order[@]}"; do
-    if contains_line "$step_id" "${completed[@]}"; then
-      continue
-    fi
+ for step_id in "${order[@]}"; do
+ if contains_line "$step_id" "${completed[@]}"; then
+ continue
+ fi
 
-    channel=$(plan_value "$plan_file" "$step_id" channel)
-    adapter=$(adapter_for "$channel")
-    requires_reboot=$(
-      plan_value "$plan_file" "$step_id" requires_reboot
-    )
+ channel=$(plan_value "$plan_file" "$step_id" channel)
+ adapter=$(adapter_for "$channel")
+ requires_reboot=$(
+ plan_value "$plan_file" "$step_id" requires_reboot
+ )
 
-    require_command "$adapter"
+ require_command "$adapter"
 
-    state_update "$state_file" "step_prepare_started" "$step_id"
-    if ! "$adapter" prepare "$plan_file" "$step_id" "$transaction_dir"; then
-      state_update \
-        "$state_file" \
-        "prepare_failed" \
-        "$step_id"
-      rollback_steps \
-        "$plan_file" \
-        "$transaction_dir" \
-        "$state_file" \
-        "${activated[@]}" || true
-      die "prepare failed for step $step_id"
-    fi
-    state_update "$state_file" "step_prepared" "$step_id"
+ state_update "$state_file" "step_prepare_started" "$step_id"
+ if ! "$adapter" prepare "$plan_file" "$step_id" "$transaction_dir"; then
+ state_update \
+ "$state_file" \
+ "prepare_failed" \
+ "$step_id"
+ rollback_steps \
+ "$plan_file" \
+ "$transaction_dir" \
+ "$state_file" \
+ "${activated[@]}" || true
+ die "prepare failed for step $step_id"
+ fi
+ state_update "$state_file" "step_prepared" "$step_id"
 
-    state_update "$state_file" "step_activation_started" "$step_id"
-    if ! "$adapter" activate "$plan_file" "$step_id" "$transaction_dir"; then
-      state_update \
-        "$state_file" \
-        "activation_failed" \
-        "$step_id"
-      rollback_steps \
-        "$plan_file" \
-        "$transaction_dir" \
-        "$state_file" \
-        "${activated[@]}" || true
-      die "activation failed for step $step_id"
-    fi
+ state_update "$state_file" "step_activation_started" "$step_id"
+ if ! "$adapter" activate "$plan_file" "$step_id" "$transaction_dir"; then
+ state_update \
+ "$state_file" \
+ "activation_failed" \
+ "$step_id"
+ rollback_steps \
+ "$plan_file" \
+ "$transaction_dir" \
+ "$state_file" \
+ "${activated[@]}" || true
+ die "activation failed for step $step_id"
+ fi
 
-    if ! contains_line "$step_id" "${activated[@]}"; then
-      activated+=("$step_id")
-    fi
+ if ! contains_line "$step_id" "${activated[@]}"; then
+ activated+=("$step_id")
+ fi
 
-    state_update "$state_file" "step_activated" "$step_id"
+ state_update "$state_file" "step_activated" "$step_id"
 
-    if test "$requires_reboot" = "true"; then
-      state_update "$state_file" "reboot_pending" "$step_id"
-      note "release activation paused for reboot"
-      note "transaction: $transaction_id"
-      note "after the node boots into the requested system state, run:"
-      note "  koa-release-activate --resume '$plan_input' '$state_root'"
-      exit 75
-    fi
+ if test "$requires_reboot" = "true"; then
+ state_update "$state_file" "reboot_pending" "$step_id"
+ note "release activation paused for reboot"
+ note "transaction: $transaction_id"
+ note "after the node boots into the requested system state, run:"
+ note " koa-release-activate --resume '$plan_input' '$state_root'"
+ exit 75
+ fi
 
-    state_update "$state_file" "step_acceptance_started" "$step_id"
-    if ! "$adapter" accept "$plan_file" "$step_id" "$transaction_dir"; then
-      state_update \
-        "$state_file" \
-        "acceptance_failed" \
-        "$step_id"
-      if ! rollback_steps \
-        "$plan_file" \
-        "$transaction_dir" \
-        "$state_file" \
-        "${activated[@]}"; then
-        die "acceptance failed for $step_id; forward repair is required"
-      fi
-      die "acceptance failed for $step_id; activated steps were rolled back"
-    fi
+ state_update "$state_file" "step_acceptance_started" "$step_id"
+ if ! "$adapter" accept "$plan_file" "$step_id" "$transaction_dir"; then
+ state_update \
+ "$state_file" \
+ "acceptance_failed" \
+ "$step_id"
+ if ! rollback_steps \
+ "$plan_file" \
+ "$transaction_dir" \
+ "$state_file" \
+ "${activated[@]}"; then
+ die "acceptance failed for $step_id; forward repair is required"
+ fi
+ die "acceptance failed for $step_id; activated steps were rolled back"
+ fi
 
-    state_update "$state_file" "step_accepted" "$step_id"
-    completed+=("$step_id")
-  done
+ state_update "$state_file" "step_accepted" "$step_id"
+ completed+=("$step_id")
+ done
 
-  state_update "$state_file" "accepted"
-  note "release activation accepted"
-  note "transaction: $transaction_id"
-  note "state: $state_file"
+ state_update "$state_file" "accepted"
+ note "release activation accepted"
+ note "transaction: $transaction_id"
+ note "state: $state_file"
 }
 
 main "$@"
 
-```
+`
 
 The orchestrator intentionally knows nothing about system-image, service, governance, or knowledge internals. Those semantics remain in the adapters.
 
@@ -2038,10 +2038,10 @@ The plan contains no arbitrary commands or embedded secrets.
 
 **Reference command**
 
-```bash
+`bash
 koa-release-plan-check activation-plan.json
 koa-release-plan-check activation-plan.json --emit-order
-```
+`
 
 **Expected result**
 
@@ -2055,9 +2055,9 @@ Correct the canonical source, migration graph, or generated plan. Do not hand-ed
 
 **Reference command**
 
-```bash
-koa-release-activate   activation-plan.json   /var/lib/koa/release-transactions
-```
+`bash
+koa-release-activate activation-plan.json /var/lib/koa/release-transactions
+`
 
 The actual transaction root belongs to the selected profile and Node Agent contract. The path above is an implementation example.
 
@@ -2083,9 +2083,9 @@ After boot:
 - enter local recovery if the expected system identity does not start;
 - otherwise resume:
 
-```bash
-koa-release-activate   --resume   activation-plan.json   /var/lib/koa/release-transactions
-```
+`bash
+koa-release-activate --resume activation-plan.json /var/lib/koa/release-transactions
+`
 
 The Node Agent resolves the transaction from its protected state. An implementation does not rely only on an operator's shell history.
 
@@ -2109,7 +2109,7 @@ Common checks include:
 - publication capability where selected;
 - Kristal and language runtime identity;
 - Ariane local navigation;
-- deterministic UCKK capability;
+- deterministic kOA Mediatheque processing and bounded UCKK publication or learning-package import capability;
 - offline behavior;
 - representative commands, queries, events, and recovery checks.
 
@@ -2169,9 +2169,9 @@ Broad filesystem, container, image, or volume pruning is not used.
 
 ## 13. Idempotency
 
-```text
+`text
 Idempotent: transaction-scoped and conditional
-```
+`
 
 The same validated transaction can be resumed when:
 
@@ -2386,9 +2386,9 @@ A recovery action emits its own receipt and remains separate from the original a
 
 ## 18. Offline Behavior
 
-```text
+`text
 offline_after_verified_local_inputs
-```
+`
 
 The entire recipe can run offline when the node has:
 
@@ -2591,25 +2591,25 @@ An AI agent assisting this recipe:
 
 Suggested execution summary:
 
-```json
+`json
 {
-  "recipe_id": "RECIPE-SOV-001",
-  "recipe_version": "1.0.0",
-  "target_profile": "sovereign_linux_node",
-  "transaction_id": "recorded-at-runtime",
-  "release_set_id": "recorded-at-runtime",
-  "activation_scope": "recorded-at-runtime",
-  "selected_channels": [],
-  "staged_channels": [],
-  "accepted_channels": [],
-  "rollback_channels": [],
-  "forward_repair_required": false,
-  "reboot_boundary_crossed": false,
-  "tests_run": [],
-  "receipts": [],
-  "result": "pass"
+ "recipe_id": "RECIPE-SOV-001",
+ "recipe_version": "1.0.0",
+ "target_profile": "sovereign_linux_node",
+ "transaction_id": "recorded-at-runtime",
+ "release_set_id": "recorded-at-runtime",
+ "activation_scope": "recorded-at-runtime",
+ "selected_channels": [],
+ "staged_channels": [],
+ "accepted_channels": [],
+ "rollback_channels": [],
+ "forward_repair_required": false,
+ "reboot_boundary_crossed": false,
+ "tests_run": [],
+ "receipts": [],
+ "result": "pass"
 }
-```
+`
 
 Runtime values replace the explanatory strings before the summary is retained as evidence.
 

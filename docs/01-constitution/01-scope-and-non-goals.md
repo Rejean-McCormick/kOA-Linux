@@ -11,7 +11,9 @@
   "canonical_refs": [
     "contracts/system.contract.json",
     "generated/requirements-index.json",
-    "generated/assertion-index.json"
+    "generated/assertion-index.json",
+    "contracts/integrations/uckk-import.integration.json",
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json"
   ],
   "decision_ids": [
     "DEC-AI-001",
@@ -68,7 +70,7 @@
     "LOCK-SENT-001",
     "LOCK-MEDIATHEQUE-001",
     "LOCK-UCKK-EXT-001",
-    "LOCK-UCKK-EXT-001"
+    "LOCK-UCKK-EXT-002"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -275,13 +277,15 @@ SenTient is an optional isolated research and enrichment workbench. It is not pa
 
 Its dependencies, storage, service identity, temporary data, network access, and resource use remain isolated. Its outputs require provenance, review, controlled import, and component-level acceptance.
 
-### 4.6 kOA Mediatheque and external UCKK boundary
+### 4.6 kOA and UCKK Mediatheque boundary
 
-The native kOA Mediatheque pipeline is deterministic and local. Its baseline responsibilities include controlled ingestion, integrity verification where the artifact contract requires it, user-supplied metadata, deterministic media processing, storage, export, backup, and restoration.
+The kOA Mediatheque is the private local and offline authority. Its deterministic baseline includes controlled ingestion, integrity verification where the artifact contract requires it, user-supplied metadata, deterministic media processing, storage, offline retrieval, export, backup, and restoration.
 
-Native kOA Mediatheque behavior does not include AI classification, AI summarization, AI-generated categories, AI routing, AI tagging, AI transcription, AI translation, or AI content generation.
+The online UCKK Mediatheque is a separate Moodle authority for UCKK courses, learning paths, activities, permissions, and remote content lifecycle. Both Mediatheques implement the same shared frame or declared compatible versions, but never share a database, record identity, access-control state, lifecycle, or authority.
 
-Suno and Gamma are optional external adapters. They are not automatic ingestion or routing dependencies.
+`publish_to_uckk` and `import_from_uckk` are separate explicit operations. Publication requires disclosure authorization before outbound packaging and transport. Import requires source, licence, integrity, compatibility, quarantine, and local acceptance checks before a new local record is admitted. Reconnection never triggers implicit synchronization.
+
+Native kOA Mediatheque behavior does not include AI classification, AI summarization, AI-generated categories, AI routing, AI tagging, AI transcription, AI translation, or AI content generation. Suno and Gamma remain optional external adapters rather than automatic ingestion or routing dependencies.
 
 ### 4.7 Ariane boundary
 
@@ -297,7 +301,7 @@ A shared physical database process may be permitted by a lightweight profile, bu
 
 Resource Governor controls deterministic resource allocation and scheduling. Governance Policy Runtime controls authorization, disclosure, consent, privilege, and governed exceptions in profiles that deploy it. Neither authority substitutes for the other.
 
-Publication Gateway authorizes cross-domain disclosure. After that authorization, the UCKK Publication Bridge packages and transports explicitly selected kOA Mediatheque records to the external UCKK Moodle platform. The bridge cannot bypass or replace the gateway.
+Publication Gateway authorizes cross-domain disclosure. After that authorization, the UCKK Publication Bridge packages and transports explicitly selected kOA Mediatheque records to the external UCKK Moodle platform. The separate UCKK Import Bridge retrieves selected learning packages, quarantines them, validates their source, licence, integrity, compatibility, and provenance, and submits them for explicit local acceptance. Neither bridge can bypass its governing boundary or create a generic synchronization service.
 
 ### 4.9 Implementation boundary
 
@@ -327,7 +331,7 @@ Matching version numbers, recency, or co-installation do not prove compatibility
 - **REQ-CONST-SCOPE-011 — SHALL:** Every component retain explicit logical ownership of its authoritative data.
 - **REQ-CONST-SCOPE-012 — SHALL NOT:** A component write directly to another component’s authoritative source tables.
 - **REQ-CONST-SCOPE-013 — SHALL:** Resource Governor and Governance Policy Runtime remain separate authorities with non-overlapping canonical responsibilities.
-- **REQ-CONST-SCOPE-014 — SHALL:** Publication Gateway authorize disclosure before the UCKK Publication Bridge performs target-specific packaging and transport; the bridge shall not create publication authority.
+- **REQ-CONST-SCOPE-014 — SHALL:** Publication Gateway authorize disclosure before the UCKK Publication Bridge performs target-specific packaging and transport; the separate UCKK Import Bridge shall quarantine and validate inbound learning packages before explicit local acceptance, and neither direction shall create shared authority or implicit synchronization.
 - **REQ-CONST-SCOPE-015 — SHALL NOT:** Kubernetes be required by a single-node user or developer endpoint baseline.
 - **REQ-CONST-SCOPE-016 — SHALL NOT:** A specific desktop shell, service manager, container runtime, or host layout become a global requirement unless an accepted global decision activates it.
 - **REQ-CONST-SCOPE-017 — SHALL:** Failure or removal of an optional integration leave unrelated core capabilities operational.
@@ -416,9 +420,11 @@ Components declare resource needs and work classes to Resource Governor. Resourc
 
 Where a profile deploys Governance Policy Runtime, governed authorization precedes privileged or disclosure-sensitive action. Governance Policy Runtime does not allocate CPU, memory, I/O, or job concurrency.
 
-### 8.4 Publication and ingestion gateways
+### 8.4 Directional UCKK interchange
 
 Publication Gateway mediates outward or cross-domain disclosure. The UCKK Publication Bridge then performs authorized target-specific packaging and transport to the external UCKK platform. The local source remains owned by the kOA Mediatheque, and the transfer retains provenance and receipt state.
+
+The UCKK Import Bridge implements the reverse direction without reversing authority. It retrieves a selected online or offline learning package into quarantine, verifies its declared source, licence, rights, integrity, frame compatibility, and provenance, and requests explicit local acceptance. Accepted content receives a distinct local identity and can remain available offline. Remote changes never overwrite the local copy automatically.
 
 ### 8.5 External services
 

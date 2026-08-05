@@ -147,7 +147,7 @@ Disclosure governs when a representation leaves its current authority or audienc
 
 The model distinguishes:
 
-```text
+`text
 collection
 internal use
 cross-component access
@@ -157,7 +157,7 @@ publication
 audit disclosure
 public proof
 retention and deletion
-```
+`
 
 These stages are not interchangeable.
 
@@ -228,7 +228,7 @@ It does not authorize collection merely by describing it.
 
 The canonical sources for this document are:
 
-```text
+`text
 generated/authority-manifest.json
 generated/decision-index.json
 contracts/system.contract.json#/data_authority_and_ownership
@@ -252,7 +252,7 @@ generated/traceability.json
 generated/test-catalog.json
 generated/evidence-catalog.json
 generated/exception-index.json
-```
+`
 
 Their ownership roles are:
 
@@ -285,7 +285,7 @@ This Markdown document explains the model and does not replace the canonical pol
 
 Every protected-data operation has a processing context:
 
-```text
+`text
 operation identity
 owning component
 tenant
@@ -302,7 +302,7 @@ validity
 retention
 correlation
 expected result
-```
+`
 
 An incomplete context cannot support a governed disclosure.
 
@@ -310,7 +310,7 @@ An incomplete context cannot support a governed disclosure.
 
 The privacy lifecycle is:
 
-```text
+`text
 admit or collect
 classify
 store under owner authority
@@ -322,7 +322,7 @@ retain or restrict
 correct, revoke, or delete
 export and exit
 preserve required evidence
-```
+`
 
 Each transition preserves provenance and scope.
 
@@ -508,7 +508,7 @@ Selective disclosure provides the smallest evidence view needed for the recipien
 
 An ordinary receipt view can expose:
 
-```text
+`text
 receipt identity
 producer component
 authority class
@@ -519,11 +519,11 @@ target class
 time
 outcome
 reason code
-```
+`
 
 Restricted fields can remain referenced:
 
-```text
+`text
 subject identity details
 policy inputs
 source payload
@@ -533,7 +533,7 @@ personal data
 cultural content
 secret values
 external transfer payload
-```
+`
 
 A restricted evidence request receives a separately authorized view and can generate an access receipt.
 
@@ -606,7 +606,7 @@ The view is adapted to the actor and does not expose unrelated protected informa
 - **REQ-SEC-PRIV-009 — SHALL:** Every cross-component data request use a declared interface and return an authorized view rather than direct access to another component's authoritative source records.
 - **REQ-SEC-PRIV-010 — SHALL NOT:** A component, analytics process, indexer, workbench, integration, gateway, or auditor write directly to another component's authoritative source tables or convert a derived view into authoritative state without owner acceptance.
 - **REQ-SEC-PRIV-011 — SHALL:** Every external transfer identify the selected source objects, representations, data classes, destination, audience, purpose, integration identity, authority references, consent or rights context, expiry, and failure behavior.
-- **REQ-SEC-PRIV-012 — SHALL:** Publication Gateway control cross-domain disclosure, publication, and release to external audiences separately from kOA Mediatheque admission; UCKK publication shall use the authorized adapter and disclose only the approved package.
+- **REQ-SEC-PRIV-012 — SHALL:** Publication Gateway control cross-domain disclosure, publication, and release to external audiences separately from kOA Mediatheque admission; UCKK publication shall use the authorized outbound adapter and disclose only the approved package, while UCKK import shall use a separate quarantined inbound path and preserve local acceptance authority.
 - **REQ-SEC-PRIV-013 — SHALL NOT:** Successful transfer, upload, staging, or destination acceptance be reported as publication unless the Publication Gateway's authoritative commit state records completion.
 - **REQ-SEC-PRIV-014 — SHALL:** External AI operations require explicit user initiation, a registered integration, a bounded capability, declared transferred data, an approved destination, and candidate-output handling.
 - **REQ-SEC-PRIV-015 — SHALL NOT:** External AI outputs, voice-derived intents, enrichment results, or imported metadata become authoritative or trigger protected actions before provenance, validation, review, and owner acceptance.
@@ -969,7 +969,7 @@ This document is conformant when all of the following checks pass:
 
 Expected validator failure codes include:
 
-```text
+`text
 privacy_owner_missing
 privacy_purpose_missing
 privacy_data_class_unknown
@@ -994,7 +994,7 @@ privacy_receipt_path_unavailable
 privacy_status_ambiguous
 privacy_backup_scope_mismatch
 privacy_recourse_path_missing
-```
+`
 
 ## 11. Non-Normative Examples
 

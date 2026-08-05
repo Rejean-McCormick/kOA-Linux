@@ -177,7 +177,7 @@ This document does not define compatibility by informal convention. The owning c
 
 A compatibility relation identifies:
 
-```text
+`text
 producer object and version
 consumer or target object and version
 primary profile and overlays
@@ -190,7 +190,7 @@ security and trust state
 hardware and resource envelope
 validity conditions
 registered tests and evidence
-```
+`
 
 A result applies only to the declared matrix cell. Another profile, overlay, version, architecture, data state, Release Set, or recovery path requires its own declaration or an explicitly broader tested claim.
 
