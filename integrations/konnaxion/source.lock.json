@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0.0",
+  "subsystem_id": "konnaxion",
+  "lock_status": "blocked_missing_authoritative_source",
+  "activation_allowed": false,
+  "source": {
+    "repository": null,
+    "revision_kind": null,
+    "revision": null,
+    "content_digest": null,
+    "license_expression": null,
+    "license_files": [],
+    "reason": "The authoritative kOA corpus does not provide a Konnaxion source repository, immutable revision, digest, or license declaration."
+  },
+  "authoritative_contract_pin": {
+    "path": "docs/contracts/subsystems/konnaxion.subsystem.json",
+    "version": "1.0.0",
+    "sha256": "3da500f69f31e7416ba8fa5adf5b5d796a51c56f7b31948ccee296fb0e3bdbac"
+  },
+  "official_documentation": {
+    "mount_path": "subsystems/konnaxion",
+    "required_for_final_alignment": true,
+    "mounted": false,
+    "expected_release": null
+  },
+  "admission_policy": {
+    "require_repository": true,
+    "require_immutable_revision": true,
+    "require_content_digest": true,
+    "require_license_metadata": true,
+    "require_official_documentation": true,
+    "failure_result": "disabled"
+  }
+}

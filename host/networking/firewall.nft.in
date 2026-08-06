@@ -1,0 +1,30 @@
+{{GENERATED_HEADER}}
+table {{TABLE_FAMILY}} {{TABLE_NAME}} {
+    chain input {
+        type filter hook input priority 0; policy drop;
+        iifname "lo" accept comment "koa:loopback"
+        ct state invalid drop
+        ct state established,related accept
+{{INPUT_ICMP_RULES}}
+{{INPUT_RULES}}
+{{INPUT_TERMINAL}}
+    }
+
+    chain forward {
+        type filter hook forward priority 0; policy drop;
+        ct state invalid drop
+        ct state established,related accept
+{{FORWARD_RULES}}
+{{FORWARD_TERMINAL}}
+    }
+
+    chain output {
+        type filter hook output priority 0; policy drop;
+        oifname "lo" accept comment "koa:loopback"
+        ct state invalid drop
+        ct state established,related accept
+{{OUTPUT_ICMP_RULES}}
+{{OUTPUT_RULES}}
+{{OUTPUT_TERMINAL}}
+    }
+}

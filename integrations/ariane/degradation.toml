@@ -1,0 +1,65 @@
+schema_version = "1.0.0"
+integration_id = "ariane"
+state_model_ref = "docs/contracts/system.contract.json#/capability_degradation"
+authoritative_local_state_preserved = true
+undeclared_substitution = "prohibited"
+
+[preserved_baseline]
+capabilities = [
+  "local_non_voice_navigation_when_ariane_is_healthy",
+  "application_authoritative_state",
+  "identity_and_policy_authority",
+  "other_subsystem_operation",
+]
+
+[[conditions]]
+condition_id = "source_unpinned"
+result_state = "blocked"
+affected_capabilities = ["ariane_local_navigation", "ariane_guidance", "ariane_bounded_automation"]
+action = "keep_integration_disabled"
+recovery_preconditions = ["verified_immutable_source_pin", "verified_license", "official_documentation_mounted", "compatibility_pass"]
+
+[[conditions]]
+condition_id = "ariane_unavailable"
+result_state = "unavailable"
+affected_capabilities = ["ariane_local_navigation", "ariane_guidance", "ariane_bounded_automation"]
+action = "show_explicit_unavailable_state"
+preserved_capabilities = ["native_application_operation", "other_koa_components"]
+silent_substitute_allowed = false
+
+[[conditions]]
+condition_id = "external_voice_unavailable"
+result_state = "degraded"
+affected_capabilities = ["ariane_voice_input"]
+action = "disable_voice_control_only"
+preserved_capabilities = ["ariane_local_navigation", "keyboard_navigation", "pointer_navigation", "structured_controls", "accessibility_navigation"]
+silent_substitute_allowed = false
+
+[[conditions]]
+condition_id = "atlas_or_driver_incompatible"
+result_state = "blocked"
+affected_capabilities = ["navigation_for_affected_application"]
+action = "reject_navigation_without_guessing_state_or_action"
+preserved_capabilities = ["unaffected_application_navigation", "manual_application_operation"]
+
+[[conditions]]
+condition_id = "post_action_verification_failed"
+result_state = "blocked"
+affected_capabilities = ["continued_automation_for_current_route"]
+action = "stop_and_offer_declared_recovery"
+authoritative_success_prohibited = true
+
+[[conditions]]
+condition_id = "receipt_path_unavailable"
+result_state = "blocked"
+affected_capabilities = ["critical_transition_execution"]
+action = "reject_transition_before_execution"
+authoritative_success_prohibited = true
+
+[recovery]
+automatic_authority_expansion_allowed = false
+fresh_health_required = true
+fresh_compatibility_check_required = true
+fresh_identity_and_policy_context_required = true
+fresh_resource_admission_required = true
+terminal_evidence_required = true

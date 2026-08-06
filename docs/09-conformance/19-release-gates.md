@@ -25,7 +25,17 @@
     "contracts/ai-navigation.contract.json",
     "generated/test-catalog.json",
     "generated/evidence-catalog.json",
-    "contracts/examples/release-set.example.json"
+    "contracts/examples/release-set.example.json",
+    "contracts/architecture-patterns.contract.json",
+    "02-system/34-architecture-patterns.md",
+    "06-lifecycle/20-resilience-and-projection-artifacts.md",
+    "08-operations/20-architecture-pattern-operations.md",
+    "09-conformance/22-architecture-pattern-conformance.md",
+    "contracts/security-controls.contract.json",
+    "schemas/security-controls.contract.schema.json",
+    "contracts/artifact-contracts/security-evidence.schema.json",
+    "07-security/21-security-control-architecture.md",
+    "07-security/22-security-control-profile-matrix.md"
   ],
   "decision_ids": [
     "DEC-CONF-GATE-001",
@@ -36,7 +46,14 @@
     "DEC-SYS-COMP-001",
     "DEC-SYS-AUDIT-001",
     "DEC-SYS-RESOURCE-001",
-    "DEC-SYS-OFFLINE-001"
+    "DEC-SYS-OFFLINE-001",
+    "DEC-RES-001",
+    "DEC-MSG-001",
+    "DEC-WF-001",
+    "DEC-PAYLOAD-001",
+    "DEC-BFF-001",
+    "DEC-CQRS-001",
+    "DEC-CACHE-001"
   ],
   "requirement_ids": [
     "REQ-CONF-GATE-001",
@@ -106,7 +123,14 @@
     "LOCK-OPS-001",
     "LOCK-OPS-002",
     "LOCK-OPS-003",
-    "LOCK-OPS-004"
+    "LOCK-OPS-004",
+    "LOCK-RES-001",
+    "LOCK-MSG-001",
+    "LOCK-WF-001",
+    "LOCK-PAYLOAD-001",
+    "LOCK-BFF-001",
+    "LOCK-CQRS-001",
+    "LOCK-CACHE-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -167,7 +191,10 @@
     "DOC-CONF-001",
     "DOC-CONF-002",
     "DOC-CONF-003",
-    "DOC-CONF-013"
+    "DOC-CONF-013",
+    "DOC-CONF-022",
+    "DOC-SEC-021",
+    "DOC-SEC-022"
   ],
   "tags": [
     "conformance",
@@ -181,7 +208,10 @@
     "operations",
     "rollback",
     "activation",
-    "exceptions"
+    "exceptions",
+    "architecture-patterns",
+    "security-controls",
+    "security-evidence"
   ]
 }
 KOA:DOC-META:END -->
@@ -253,6 +283,9 @@ Canonical ownership is distributed as follows:
 | Documentation ownership and generated content | `generated/document-index.json` |
 | Components and contracts | `generated/component-catalog.json` and `contracts/components/*.component.json` |
 | Profiles and effective composition | `contracts/profiles/*.profile.json` |
+| Security-control identity, profile applicability, validation binding, failure behavior, and evidence class | `contracts/security-controls.contract.json` |
+| Security-control evidence structure | `contracts/artifact-contracts/security-evidence.schema.json` |
+| Security-control architecture and human-readable profile matrix | `07-security/21-security-control-architecture.md` and `07-security/22-security-control-profile-matrix.md` |
 | External integrations and AI surfaces | `contracts/integration-types.contract.json` |
 | Requirements and strength | `generated/requirements-index.json` |
 | Cross-file invariants | `generated/assertion-index.json` |
@@ -589,6 +622,15 @@ Security validation covers:
 - integration boundaries;
 - recovery security.
 
+The security gate additionally resolves the effective profile against `contracts/security-controls.contract.json` and verifies:
+
+- every `required` control has current passing evidence bound to the candidate subject and implementation;
+- every `prohibited` control has negative-test or verified-absence evidence;
+- every `not_applicable` state has a machine-resolvable predicate and source fact;
+- every `recommended` control is implemented and validated or has an accepted bounded rationale;
+- every control exception is active, scoped, time-bounded, compensating, tested, evidence-backed, and reflected in release wording;
+- no unresolved control, validation binding, evidence class, or failure behavior remains.
+
 AI-boundary validation covers:
 
 - no native AI authority;
@@ -637,6 +679,8 @@ Evidence validation confirms:
 - traceability.
 
 Missing required evidence blocks release approval.
+
+Security-control evidence validates against `contracts/artifact-contracts/security-evidence.schema.json`. Evidence with a mismatched profile, subject, implementation version, control contract version, test binding, exception state, or validity period does not satisfy the gate.
 
 ### 6.10 Operations gate
 
@@ -1055,6 +1099,13 @@ This document is conformant when validation confirms:
 30. all releases, channels, profiles, components, artifacts, integrations, tests, evidence, exceptions, incidents, recoveries, decisions, and receipts resolve;
 31. no prohibited open-state marker enters active conformance authority.
 
+32. every effective required security control has current passing candidate-bound evidence;
+33. every prohibited security control has negative-test or verified-absence evidence;
+34. every not-applicable security control has a machine-resolvable predicate;
+35. every recommended security control has implementation evidence or an accepted bounded rationale;
+36. security exceptions are current, scoped, time-bounded, tested, evidence-backed, and reflected in release wording;
+37. `docs/tools/check_security_architecture.py` passes.
+
 The principal validation entry point is:
 
 `bash
@@ -1070,6 +1121,7 @@ docs/tools/check_component_boundaries.py
 docs/tools/check_profile_inheritance.py
 docs/tools/check_interfile_locks.py
 docs/tools/check_ai_boundary.py
+docs/tools/check_security_architecture.py
 docs/tools/check_traceability.py
 docs/tools/check_decision_closure.py
 docs/tools/check_generated_content.py
@@ -1119,3 +1171,7 @@ A services artifact is rebuilt after gate completion. The Release Set identity c
 ### 11.10 Public release receipt
 
 A public receipt shows the Release Set, four channel versions, approval result, exception presence, activation state, and recourse reference. Restricted gate evidence remains protected.
+
+## Architecture-pattern release gate
+
+A release that activates one of the seven patterns must include the validated artifact, compatibility statement, failure-injection results, operational telemetry identifiers, and recovery, redrive, repair, rebuild, or invalidation evidence applicable to that pattern. Missing evidence blocks the dependent release claim.

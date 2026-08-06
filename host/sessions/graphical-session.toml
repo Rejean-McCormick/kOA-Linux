@@ -1,0 +1,40 @@
+schema_version = "1.0.0"
+policy_id = "koa_appliance_graphical_session"
+config_kind = "graphical_policy"
+profile_overlay = "appliance_shell"
+display_protocol = "wayland"
+
+[compositor]
+class = "minimal_wayland_compositor"
+full_desktop_environment = false
+x11_fallback = false
+application_allowlist = true
+implementation_is_global_requirement = false
+
+[application_surface]
+arbitrary_application_launcher = false
+unrestricted_terminal = false
+package_manager_ui = false
+host_administration_ui = false
+development_tools = false
+unrestricted_file_browser = false
+unrestricted_external_navigation = false
+route_authority = "active_component_profile_policy_and_session_state"
+
+[input]
+methods = ["keyboard", "pointer", "touch", "accessibility_controls", "local_deterministic_commands"]
+raw_device_access = false
+seat_managed = true
+
+[accessibility]
+keyboard_only_operation = true
+visible_focus = true
+scalable_text_and_controls = true
+non_color_only_status = true
+voice_is_required = false
+
+[failure]
+fallback_to_unrestricted_desktop = false
+preserve_authoritative_application_state = true
+restart_bounded_shell_components = true
+recovery_after_repeated_or_integrity_failure = true

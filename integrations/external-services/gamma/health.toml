@@ -1,0 +1,80 @@
+schema_version = "1.0.0"
+
+[health]
+integration_id = "gamma"
+health_is_authority = false
+active_network_probe = false
+provider_probe_on_status_request = false
+raw_payload_collection = false
+secret_collection = false
+
+[states.disabled]
+healthy = true
+ready = false
+reason = "optional integration is not enabled"
+core_impact = "none"
+
+[states.ready]
+healthy = true
+ready = true
+reason = "all local admission gates resolve and the configured endpoint is permitted"
+core_impact = "none"
+
+[states.degraded]
+healthy = true
+ready = false
+reason = "the optional Gamma capability is temporarily unavailable"
+core_impact = "gamma_capability_only"
+
+[states.blocked]
+healthy = true
+ready = false
+reason = "policy, audit, terms, credentials, endpoint, or profile admission is unresolved"
+core_impact = "gamma_capability_only"
+
+[states.unavailable]
+healthy = false
+ready = false
+reason = "the configured external service cannot complete the requested operation"
+core_impact = "gamma_capability_only"
+
+[states.unknown_result]
+healthy = false
+ready = false
+reason = "a timed-out operation requires explicit reconciliation before another attempt"
+core_impact = "gamma_capability_only"
+
+[readiness]
+required_local_checks = [
+  "integration_contract_loaded",
+  "active_profile_permits_gamma",
+  "governance_policy_runtime_ready",
+  "audit_broker_ready",
+  "provider_terms_resolved",
+  "credential_reference_resolved",
+  "endpoint_reference_resolved",
+  "network_policy_permits_endpoint",
+]
+provider_reachability_is_sufficient = false
+credential_presence_is_sufficient = false
+network_reachability_is_sufficient = false
+
+[failure_evidence]
+required_fields = [
+  "operation_id",
+  "correlation_id",
+  "integration_id",
+  "capability_id",
+  "failure_class",
+  "occurred_at",
+  "authoritative_state_mutated",
+]
+authoritative_state_mutated_must_be = false
+include_raw_payload = false
+include_secret = false
+
+[offline]
+state = "unavailable"
+local_capabilities_preserved = true
+queued_for_automatic_replay = false
+alternate_provider_selected = false

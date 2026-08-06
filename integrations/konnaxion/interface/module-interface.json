@@ -1,0 +1,88 @@
+{
+  "$schema": "../../../docs/contracts/artifact-contracts/module-interface-manifest.schema.json",
+  "manifest_id": "konnaxion.module-interface",
+  "manifest_version": "1.0.0",
+  "module_id": "konnaxion",
+  "public_name": "Konnaxion",
+  "description": "Presentation-only status surface for the independently owned Konnaxion subsystem. No internal Konnaxion workflow or business capability is declared here.",
+  "icon_ref": null,
+  "home_route_id": "konnaxion.home",
+  "required_capabilities": ["konnaxion.integration_status"],
+  "routes": [
+    {
+      "$schema": "../../../docs/contracts/artifact-contracts/route-contribution.schema.json",
+      "route_id": "konnaxion.home",
+      "module_id": "konnaxion",
+      "path": "/konnaxion",
+      "page_ref": "adapter://konnaxion/integration-status",
+      "default_label": "Konnaxion",
+      "label_key": "konnaxion.navigation.home",
+      "availability": "conditional",
+      "offline_behavior": "unavailable",
+      "deep_link_allowed": true,
+      "safe_fallback_route_id": null,
+      "aliases": [],
+      "capability_policy": {
+        "required_capabilities": ["konnaxion.integration_status"],
+        "denied_behavior": "hidden"
+      }
+    }
+  ],
+  "sidebar": {
+    "$schema": "../../../docs/contracts/artifact-contracts/sidebar-navigation.schema.json",
+    "module_id": "konnaxion",
+    "visible_depth": 2,
+    "items": [
+      {
+        "item_id": "konnaxion.home",
+        "label": "Konnaxion",
+        "label_key": "konnaxion.navigation.home",
+        "icon_ref": null,
+        "order": 100,
+        "required_capabilities": ["konnaxion.integration_status"],
+        "availability": "conditional",
+        "badge_provider_ref": "adapter://konnaxion/health",
+        "route_id": "konnaxion.home"
+      }
+    ]
+  },
+  "topbar_widgets": [
+    {
+      "$schema": "../../../docs/contracts/artifact-contracts/topbar-widget.schema.json",
+      "widget_id": "konnaxion.availability",
+      "module_id": "konnaxion",
+      "scope": "module",
+      "slot": "status",
+      "kind": "status",
+      "label": "Konnaxion status",
+      "label_key": "konnaxion.status.availability",
+      "icon_ref": null,
+      "priority": 100,
+      "required_capabilities": ["konnaxion.integration_status"],
+      "offline_behavior": "unavailable",
+      "compact_only": true,
+      "activation": {
+        "kind": "status_provider",
+        "route_id": null,
+        "command_ref": null,
+        "status_provider_ref": "adapter://konnaxion/health"
+      }
+    }
+  ],
+  "localization_refs": [],
+  "accessibility": {
+    "keyboard_navigation": true,
+    "screen_reader_labels": true,
+    "reduced_motion": "not_applicable"
+  },
+  "offline_behavior": {
+    "module_state": "unavailable",
+    "fallback_route_id": null
+  },
+  "authority_boundary": {
+    "presentation_only": true,
+    "may_grant_capabilities": false,
+    "direct_domain_writes": false,
+    "menu_visibility_is_authorization": false
+  }
+}

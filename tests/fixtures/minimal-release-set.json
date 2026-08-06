@@ -1,0 +1,150 @@
+{
+  "artifact_class": "release_set",
+  "release_set_id": "release-set-id:test:001",
+  "version": "1.0.0",
+  "lifecycle_status": "candidate",
+  "language": "en",
+  "issued_at": "2026-08-06T16:00:00Z",
+  "issuer": {
+    "issuer_id": "issuer-id:test:001",
+    "issuer_type": "release_authority",
+    "authority_ref": "urn:koa:test:authority-ref:001"
+  },
+  "authority": {
+    "release_authority_ref": "urn:koa:test:release-authority-ref:001",
+    "approval_refs": [
+      "urn:koa:test:approval-refs:001"
+    ],
+    "decision_refs": [
+      "urn:koa:test:decision-refs:001"
+    ]
+  },
+  "channels": {
+    "system": {
+      "channel_id": "system",
+      "release_namespace": "koa.system",
+      "release_id": "release-id:test:001",
+      "version": "1.0.0",
+      "release_manifest_ref": "urn:koa:test:release-manifest-ref:001",
+      "artifact_refs": [
+        "urn:koa:test:artifact-refs:001"
+      ],
+      "provenance_ref": "urn:koa:test:provenance-ref:001",
+      "validation_evidence_refs": [
+        "urn:koa:test:validation-evidence-refs:001"
+      ],
+      "recovery": {
+        "mode": "rollback",
+        "procedure_ref": "urn:koa:test:procedure-ref:001"
+      }
+    },
+    "services": {
+      "channel_id": "services",
+      "release_namespace": "koa.services",
+      "release_id": "release-id:test:001",
+      "version": "1.0.0",
+      "release_manifest_ref": "urn:koa:test:release-manifest-ref:001",
+      "artifact_refs": [
+        "urn:koa:test:artifact-refs:001"
+      ],
+      "provenance_ref": "urn:koa:test:provenance-ref:001",
+      "validation_evidence_refs": [
+        "urn:koa:test:validation-evidence-refs:001"
+      ],
+      "recovery": {
+        "mode": "rollback",
+        "procedure_ref": "urn:koa:test:procedure-ref:001"
+      }
+    },
+    "governance": {
+      "channel_id": "governance",
+      "release_namespace": "koa.governance",
+      "release_id": "release-id:test:001",
+      "version": "1.0.0",
+      "release_manifest_ref": "urn:koa:test:release-manifest-ref:001",
+      "artifact_refs": [
+        "urn:koa:test:artifact-refs:001"
+      ],
+      "provenance_ref": "urn:koa:test:provenance-ref:001",
+      "validation_evidence_refs": [
+        "urn:koa:test:validation-evidence-refs:001"
+      ],
+      "recovery": {
+        "mode": "rollback",
+        "procedure_ref": "urn:koa:test:procedure-ref:001"
+      }
+    },
+    "knowledge": {
+      "channel_id": "knowledge",
+      "release_namespace": "koa.knowledge",
+      "release_id": "release-id:test:001",
+      "version": "1.0.0",
+      "release_manifest_ref": "urn:koa:test:release-manifest-ref:001",
+      "artifact_refs": [
+        "urn:koa:test:artifact-refs:001"
+      ],
+      "provenance_ref": "urn:koa:test:provenance-ref:001",
+      "validation_evidence_refs": [
+        "urn:koa:test:validation-evidence-refs:001"
+      ],
+      "recovery": {
+        "mode": "rollback",
+        "procedure_ref": "urn:koa:test:procedure-ref:001"
+      }
+    }
+  },
+  "compatibility": {
+    "status": "not_evaluated",
+    "evaluated_at": "2026-08-06T16:00:00Z",
+    "evaluator_ref": "urn:koa:test:evaluator-ref:001",
+    "constraint_results": [
+      {
+        "constraint_id": "constraint-id:test:001",
+        "kind": "channel_release_identity",
+        "subject_ref": "urn:koa:test:subject-ref:001",
+        "operator": "equals",
+        "expected": "test-expected-1",
+        "actual": "test-actual-1",
+        "result": "pass",
+        "evidence_refs": [
+          "urn:koa:test:evidence-refs:001"
+        ]
+      }
+    ],
+    "test_evidence_refs": [
+      "urn:koa:test:test-evidence-refs:001"
+    ]
+  },
+  "activation": {
+    "eligibility": "not_evaluated",
+    "strategy": "atomic_set_switch",
+    "partial_activation_allowed": false,
+    "activation_evidence_refs": [
+      "urn:koa:test:activation-evidence-refs:001"
+    ],
+    "failure_result": "retain_current_active_set"
+  },
+  "signature": {
+    "signature_artifact_ref": "urn:koa:test:signature-artifact-ref:001",
+    "signer_identity_ref": "urn:koa:test:signer-identity-ref:001",
+    "signing_authority_ref": "urn:koa:test:signing-authority-ref:001",
+    "signed_at": "2026-08-06T16:00:00Z",
+    "verification_status": "unverified",
+    "verification_evidence_refs": [
+      "urn:koa:test:verification-evidence-refs:001"
+    ]
+  },
+  "provenance": {
+    "provenance_receipt_ref": "urn:koa:test:provenance-receipt-ref:001",
+    "release_channels_registry_ref": "contracts/release-channels.contract.json",
+    "artifact_classes_registry_ref": "contracts/artifact-classes.contract.json",
+    "generator_id": "generator-id:test:001",
+    "generator_version": "1.0.0",
+    "source_release_refs": [
+      "urn:koa:test:source-release-refs:001",
+      "urn:koa:test:source-release-refs:002",
+      "urn:koa:test:source-release-refs:003",
+      "urn:koa:test:source-release-refs:004"
+    ]
+  }
+}

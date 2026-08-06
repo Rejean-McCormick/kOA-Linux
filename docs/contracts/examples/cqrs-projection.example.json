@@ -1,0 +1,41 @@
+{
+  "$schema": "../artifact-contracts/cqrs-projection.schema.json",
+  "example": true,
+  "authority": "non_authoritative_example",
+  "artifact_class": "cqrs_projection",
+  "projection_id": "mediatheque-recent-learning",
+  "version": "1.0.0",
+  "owner_component_id": "koa-mediatheque",
+  "authoritative_source_ref": "koa-mediatheque://records",
+  "source_feed": {
+    "feed_ref": "koa-mediatheque://events/accepted-records",
+    "checkpoint_model": "owner_sequence",
+    "idempotent_consumer": true
+  },
+  "storage": {
+    "store_id": "sqlite:recent-learning-view",
+    "rebuildable": true,
+    "commands_allowed": false
+  },
+  "consistency": {
+    "model": "eventual",
+    "maximum_staleness_seconds": 60,
+    "fresh_authorization_allowed": false,
+    "read_your_write_strategy": "query_owner"
+  },
+  "rebuild": {
+    "strategy": "owner_export_then_tail",
+    "source_complete": true,
+    "deletion_propagation": true
+  },
+  "authority_boundary": {
+    "authoritative": false,
+    "may_accept_commands": false,
+    "may_change_source_ownership": false
+  },
+  "observability": {
+    "lag_metric": "projection_lag_seconds",
+    "last_checkpoint_metric": "projection_checkpoint",
+    "rebuild_status_metric": "projection_rebuild_state"
+  }
+}

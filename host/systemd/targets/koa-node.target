@@ -1,0 +1,13 @@
+# Service membership is rendered from the active profile; do not list services here.
+[Unit]
+Description=kOA sovereign node
+Documentation=file:/usr/share/doc/koa/recipes/sovereign-linux/systemd-layout.md
+Requires=koa-critical.target
+Wants=koa-core.target koa-background.target koa-optional.target
+After=local-fs.target koa-critical.target koa-core.target koa-background.target koa-optional.target
+Before=multi-user.target
+Conflicts=koa-recovery.target
+AllowIsolate=yes
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,84 @@
+schema_version = "1.0.0"
+
+[integration]
+id = "semantik-architect"
+subsystem_id = "semantik_architect"
+display_name = "SemantiK Architect"
+relationship = "integrated_subsystem"
+status = "preparation_only"
+owner = "koa-integration-architecture"
+adapter_entrypoint = "koa_semantik_architect_adapter.bootstrap:main"
+source_lock = "source.lock.json"
+compatibility_manifest = "compatibility.json"
+
+[role]
+purpose = "Bridge a separately owned language build environment that produces verified compiled artifacts."
+build_runtime_separation_required = true
+runtime_compilation_allowed = false
+internal_behavior_duplication_allowed = false
+
+[capabilities]
+provided = [
+  "semantik_architect.status.read",
+  "semantik_architect.compiler_job.submit",
+  "semantik_architect.compiler_job.read",
+  "semantik_architect.runtime_pack.export"
+]
+required = [
+  "identity_and_trust.artifact.verify",
+  "governance_policy_runtime.evaluate",
+  "audit_broker.record",
+  "resource_governor.admit"
+]
+undeclared_capability_result = "blocked"
+
+[authority]
+koa_owns = [
+  "deployment_profile_membership",
+  "process_lifecycle_and_activation",
+  "resource_envelope",
+  "identity_and_trust_boundary",
+  "network_and_storage_exposure",
+  "artifact_admission",
+  "cross_subsystem_interactions",
+  "health_integration",
+  "backup_coordination",
+  "safe_degradation"
+]
+subsystem_owns = [
+  "internal_domain_model",
+  "internal_workflow",
+  "internal_state_machine",
+  "complete_subsystem_api",
+  "internal_user_interface",
+  "subsystem_specific_validation_logic"
+]
+direct_cross_subsystem_writes = false
+presentation_grants_authority = false
+menu_visibility_is_authorization = false
+
+[transport]
+kind = "http_over_unix"
+socket_path = "/run/koa/semantik-architect/adapter.sock"
+request_schema = "interfaces/jobs/job-request.schema.json"
+status_schema = "interfaces/jobs/job-status.schema.json"
+error_schema = "interfaces/transport/error-envelope.schema.json"
+receipt_schema = "interfaces/receipts/receipt-envelope.schema.json"
+version_negotiation_schema = "interfaces/transport/version-negotiation.schema.json"
+implicit_retry = false
+
+[admission]
+source_pin_required = true
+official_documentation_required_for_final_alignment = true
+compatibility_resolution_required = true
+identity_verification_required = true
+governance_decision_required = true
+resource_admission_required = true
+unresolved_result = "blocked"
+
+[interface]
+module_manifest = "interface/module-interface.json"
+sidebar_manifest = "interface/sidebar.json"
+widgets_manifest = "interface/widgets.json"
+interface_owner = "koa_spaces_presentation_boundary"
+presentation_only = true

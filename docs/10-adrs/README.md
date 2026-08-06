@@ -10,21 +10,29 @@
   ],
   "canonical_refs": [
     "00-governance/04-change-protocol.md",
-    "00-governance/05-decision-closure-and-prohibited-ambiguity.md"
+    "00-governance/05-decision-closure-and-prohibited-ambiguity.md",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "03-profiles/14-koa-spaces-deployment.md"
   ],
   "decision_ids": [],
   "requirement_ids": [],
-  "lock_ids": [],
+  "lock_ids": [
+    "LOCK-SPACES-001"
+  ],
   "exception_ids": [],
   "depends_on": [
     "DOC-GOV-004",
-    "DOC-GOV-005"
+    "DOC-GOV-005",
+    "ADR-033"
   ],
   "tags": [
     "adr",
     "architecture-decisions",
     "minimal-history",
-    "regression-guard"
+    "regression-guard",
+    "koa-spaces",
+    "experience-layer"
   ]
 }
 KOA:DOC-META:END -->
@@ -83,6 +91,7 @@ An ADR remains short and contains only:
 | [ADR-019](ADR-019-resource-governor-and-policy-runtime-separation.md) | Separation of resource admission from governance authorization |
 | [ADR-021](ADR-021-ariane-local-navigation-with-optional-external-voice.md) | Local navigation with voice isolated as an optional external capability |
 | [ADR-024](ADR-024-logical-data-ownership-with-profile-dependent-physical-isolation.md) | Fixed logical ownership with profile-dependent physical storage isolation |
+| [ADR-033](ADR-033-koa-spaces-as-optional-replaceable-experience-subsystem.md) | Optional, replaceable, non-authoritative experience layer instead of a privileged or business-owned shell |
 
 ## Removal
 

@@ -1,0 +1,23 @@
+[build-system]
+requires = ["uv_build>=0.10,<0.11"]
+build-backend = "uv_build"
+
+[project]
+name = "koa-spaces-adapter"
+version = "0.1.0"
+description = "kOA-Linux boundary adapter for the independently versioned kOA Spaces subsystem"
+requires-python = ">=3.13,<3.14"
+dependencies = []
+
+[tool.uv.build-backend]
+module-name = "koa_spaces_adapter"
+module-root = "src"
+
+[tool.koa]
+integration_id = "koa_spaces"
+source_lock = "../source.lock.json"
+compatibility_manifest = "../compatibility.json"
+interface_bindings_root = "../../../interfaces/python"
+interface_bindings_required = true
+upstream_source_required = true
+upstream_source_unresolved_action = "block_build"

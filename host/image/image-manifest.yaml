@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "manifest_id": "koa.system-image.build-definition",
+  "artifact_class": "system_image",
+  "release_channel": "system",
+  "profile_id": "sovereign_linux_node",
+  "build": {
+    "format": "deterministic-tar",
+    "digest_algorithm": "sha256",
+    "execute_candidate_code": false,
+    "preserve_component_owned_state": true,
+    "source_date_epoch_required": true
+  },
+  "inputs": {
+    "base_packages": "host/image/base-packages.yaml",
+    "filesystem_layout": "host/image/filesystem-layout.yaml",
+    "partition_layout": "host/image/partition-layout.yaml"
+  },
+  "required_evidence": [
+    "verified_release_set_receipt",
+    "provenance_receipt",
+    "sbom",
+    "verified_signature_attestation"
+  ],
+  "activation": {
+    "strategy": "inactive_slot",
+    "partial_activation_allowed": false,
+    "acceptance_separate_from_boot": true,
+    "rollback_target": "previous_good",
+    "recovery_target_required": true
+  },
+  "prohibited_payload_prefixes": [
+    "/run/koa",
+    "/var/cache/koa",
+    "/var/lib/koa/boot",
+    "/var/lib/koa/components"
+  ]
+}

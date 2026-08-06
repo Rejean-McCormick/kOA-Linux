@@ -1,0 +1,18 @@
+{
+  "$schema": "../../../docs/contracts/artifact-contracts/sidebar-navigation.schema.json",
+  "module_id": "konnaxion",
+  "visible_depth": 2,
+  "items": [
+    {
+      "item_id": "konnaxion.home",
+      "label": "Konnaxion",
+      "label_key": "konnaxion.navigation.home",
+      "icon_ref": null,
+      "order": 100,
+      "required_capabilities": ["konnaxion.integration_status"],
+      "availability": "conditional",
+      "badge_provider_ref": "adapter://konnaxion/health",
+      "route_id": "konnaxion.home"
+    }
+  ]
+}

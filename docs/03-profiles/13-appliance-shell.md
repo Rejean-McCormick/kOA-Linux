@@ -24,7 +24,11 @@
     "generated/traceability.json",
     "generated/exception-index.json",
     "generated/test-catalog.json",
-    "generated/evidence-catalog.json"
+    "generated/evidence-catalog.json",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md",
+    "03-profiles/14-koa-spaces-deployment.md"
   ],
   "decision_ids": [
     "DEC-PROFILE-001",
@@ -82,7 +86,8 @@
     "LOCK-AI-002",
     "LOCK-LIFE-001",
     "LOCK-IMPL-001",
-    "LOCK-IMPL-002"
+    "LOCK-IMPL-002",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -105,7 +110,10 @@
     "DOC-SYS-007",
     "DOC-SYS-011",
     "DOC-SYS-017",
-    "DOC-SYS-020"
+    "DOC-SYS-020",
+    "DOC-SYS-021",
+    "DOC-SYS-022",
+    "DOC-PROFILE-014"
   ],
   "tags": [
     "deployment-profile",
@@ -118,7 +126,10 @@
     "administrative-separation",
     "accessibility",
     "offline-operation",
-    "safe-degradation"
+    "safe-degradation",
+    "koa-spaces",
+    "experience-layer",
+    "profile"
   ]
 }
 KOA:DOC-META:END -->
@@ -730,3 +741,7 @@ Publication Gateway and the applicable policy path deny the operation. The shell
 A sovereign node composes `sovereign_linux_node`, `sovereign_offline`, and `appliance_shell`.
 
 The appliance shell continues to provide local navigation. Remote integrations are absent under the offline overlay. The conformance claim identifies all three composition elements and runs the combined test set.
+
+## kOA Spaces as an Appliance Surface
+
+A compatible appliance deployment can select kOA Spaces as its primary full-screen experience. The appliance overlay still owns shell escape restrictions, maintenance entry, recovery entry, input, and host-session controls. kOA Spaces remains replaceable and cannot be the only recovery or privileged administration path.

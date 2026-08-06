@@ -1,0 +1,36 @@
+{
+  "$schema": "../artifact-contracts/large-payload-reference.schema.json",
+  "example": true,
+  "authority": "non_authoritative_example",
+  "artifact_class": "large_payload_reference",
+  "reference_id": "lpr-01J00000000000000000000000",
+  "owner_component_id": "koa-mediatheque",
+  "object_id": "course-video-42",
+  "object_version": "7",
+  "locator": "koa-object://mediatheque/course-video-42/v7",
+  "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "media_type": "video/mp4",
+  "byte_length": 734003200,
+  "routing_metadata": {
+    "content_kind": "course_video",
+    "priority": 2
+  },
+  "authorization": {
+    "audience": [
+      "uckk-publication-bridge"
+    ],
+    "capability": "read_for_publish_to_uckk",
+    "bearer_secret_embedded": false,
+    "expires_at": "2026-08-06T22:00:00Z"
+  },
+  "retention": {
+    "retain_until_workflow_terminal": true,
+    "minimum_until": "2026-08-06T22:00:00Z",
+    "maximum_until": "2026-09-05T22:00:00Z"
+  },
+  "cleanup": {
+    "orphan_detection": true,
+    "cleanup_owner": "koa-mediatheque",
+    "deletion_requires_terminal_state": true
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "lock_version": "1.0.0",
+  "subsystem_id": "semantik_architect",
+  "relationship_to_koa": "integrated_subsystem",
+  "status": "blocked_missing_authoritative_source_metadata",
+  "admission_enabled": false,
+  "source": {
+    "repository": null,
+    "release": null,
+    "commit": null,
+    "source_sha256": null,
+    "required_fields": [
+      "repository",
+      "commit",
+      "source_sha256",
+      "license.spdx_expression",
+      "documentation.expected_release"
+    ]
+  },
+  "license": {
+    "spdx_expression": null,
+    "metadata_verified": false
+  },
+  "documentation": {
+    "mount_path": "subsystems/semantik-architect",
+    "mount_kind": "directory_junction_or_symbolic_link",
+    "required_for_final_alignment": true,
+    "mounted_in_supplied_corpus": false,
+    "expected_release": null
+  },
+  "boundary_inputs": [
+    {
+      "path": "docs/contracts/subsystems/semantik-architect.subsystem.json",
+      "sha256": "7491a5a0d469aaae3f1908e39362e4e9bc8968d0f54410f6ec69133446f1fc03"
+    },
+    {
+      "path": "docs/04-components/subsystems/semantik-architect.md",
+      "sha256": "fbaefb3ac178c77c25f1986d39e27db47749a86812a67253838db35d91f64e37"
+    }
+  ],
+  "pin_policy": {
+    "unresolved_result": "blocked",
+    "mutable_revision_allowed": false,
+    "digest_verification_required_before_build": true,
+    "license_verification_required_before_build": true,
+    "documentation_alignment_required_before_release": true
+  }
+}

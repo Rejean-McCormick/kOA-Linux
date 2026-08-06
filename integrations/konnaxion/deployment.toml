@@ -1,0 +1,47 @@
+schema_version = "1.0.0"
+integration_id = "konnaxion"
+status = "disabled"
+deployment_model = "independent_subsystem_with_koa_adapter"
+activation_mode = "explicit_operator_action"
+automatic_start = false
+activation_allowed = false
+source_lock_required = true
+official_documentation_required = true
+compatibility_check_required = true
+
+[processes.adapter]
+identity = "koa-konnaxion-adapter"
+entrypoint = "koa_konnaxion_adapter.bootstrap:create_adapter"
+privileged = false
+network_listener = false
+restart_policy = "on-failure-bounded"
+
+[processes.subsystem]
+identity = "konnaxion"
+source = "source_lock"
+entrypoint = "subsystem_documentation_defined"
+privileged = false
+activation_allowed = false
+
+[transport.adapter]
+kind = "http_over_unix"
+socket_path_source = "profile_runtime_path"
+public_tcp_listener = false
+peer_authentication = "local_identity_context"
+version_negotiation = true
+
+[network]
+default_policy = "deny"
+inbound_endpoints = []
+outbound_endpoints = []
+endpoint_resolution = "requires_official_documentation_and_profile_policy"
+
+[profiles]
+supported = ["developer_linux_workstation", "developer_windows_wsl", "sovereign_linux_node", "sovereign_hub"]
+unsupported_result = "capability_unavailable"
+
+[shutdown]
+graceful = true
+timeout_source = "active_profile"
+force_kill_after_timeout = true
+pending_work_result = "cancelled_or_preserved_by_declared_adapter_policy"

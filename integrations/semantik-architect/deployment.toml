@@ -1,0 +1,57 @@
+schema_version = "1.0.0"
+status = "preparation_only"
+
+[profiles]
+admitted = [
+  "developer_linux_workstation",
+  "developer_windows_wsl",
+  "build_farm"
+]
+default_for_other_profiles = "disabled"
+overlay_required_for_additional_profile = true
+
+[adapter]
+execution_mode = "managed_local_process"
+service_user = "koa-semantik-architect"
+service_group = "koa-semantik-architect"
+command = "/usr/lib/koa/integrations/semantik-architect/venv/bin/koa-semantik-architect-adapter"
+runtime_directory = "/run/koa/semantik-architect"
+state_directory = "/var/lib/koa/integrations/semantik-architect"
+cache_directory = "/var/cache/koa/integrations/semantik-architect"
+restart_policy = "on_failure_bounded"
+
+[subsystem]
+implementation_is_vendored = false
+launch_authority = "profile_or_operator"
+endpoint_source = "profile_configuration"
+source_pin_required = true
+unresolved_endpoint_result = "blocked"
+
+[startup]
+after = [
+  "identity-and-trust",
+  "governance-policy-runtime",
+  "audit-broker",
+  "resource-governor"
+]
+readiness_required_before_jobs = true
+activation_is_atomic = true
+
+[network]
+default_egress = "deny"
+inbound_network_listener = false
+unix_socket_only_for_koa_adapter = true
+declared_subsystem_endpoint_required = true
+
+[sandbox]
+no_new_privileges = true
+private_tmp = true
+protect_system = "strict"
+protect_home = true
+host_privilege_allowed = false
+
+[admission]
+source_lock_status_required = "pinned"
+compatibility_status_required = "accepted"
+official_documentation_alignment_required_for_release = true
+current_unresolved_result = "blocked"

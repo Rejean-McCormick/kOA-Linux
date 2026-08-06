@@ -1,0 +1,66 @@
+{
+  "lock_version": 1,
+  "subsystem_id": "koa_spaces",
+  "source_model": "independent_repository_mount",
+  "official_mount_path": "subsystems/koa-spaces",
+  "implementation_source": {
+    "status": "unresolved_not_mounted",
+    "repository_uri": null,
+    "revision_kind": "git_commit",
+    "revision": null,
+    "required_for_final_alignment": true,
+    "required_for_build": true,
+    "required_for_activation": true,
+    "failure_action": "block_build_and_activation"
+  },
+  "available_boundary_pins": [
+    {
+      "path": "docs/contracts/subsystems/koa-spaces.subsystem.json",
+      "algorithm": "sha256",
+      "digest": "5e516e9a77ff110aea98c5bd6c98a2ceb1cf6decf1f5d9d126f75b9a28424f90"
+    },
+    {
+      "path": "docs/contracts/artifact-contracts/space-definition.schema.json",
+      "algorithm": "sha256",
+      "digest": "2b22e67bfca97288494ee204a656688a83202cbc0ca08f64c145200943c1609d"
+    },
+    {
+      "path": "docs/contracts/artifact-contracts/module-interface-manifest.schema.json",
+      "algorithm": "sha256",
+      "digest": "a607174b96b59ed0d1facff3f6a57a64968de617e8e30b0b97152122dfc0ac08"
+    },
+    {
+      "path": "integrations/koa-spaces/compatibility.json",
+      "algorithm": "sha256",
+      "digest": "3dac452fa73dbfa41af3322d01f62d71654bb6c8fd8da652cfc28fe5a37c9dd7"
+    },
+    {
+      "path": "integrations/koa-spaces/interface/default-space.json",
+      "algorithm": "sha256",
+      "digest": "c819b03a4ce2a6da30643dd549cba64d1161432702175db4e9d6d3bf5ba60ed5"
+    },
+    {
+      "path": "integrations/koa-spaces/interface/school-space.json",
+      "algorithm": "sha256",
+      "digest": "b402d47672c960cb88e9fc9c0acd81da457ef81cb9a865a93a40efd1cc6bc4a6"
+    },
+    {
+      "path": "integrations/koa-spaces/interface/community-space.json",
+      "algorithm": "sha256",
+      "digest": "ee235f0b30caaffddcccb98361b28f9b60d2aa43b21ac72bba90d9b8f1560aae"
+    },
+    {
+      "path": "integrations/koa-spaces/interface/global-widgets.json",
+      "algorithm": "sha256",
+      "digest": "278a71df118f6da837baca03e078a42cea183a9fb3bf3a6ac2c92e19b4ca4dde"
+    }
+  ],
+  "vendored_source": false,
+  "generated_at": null,
+  "resolution_instructions": {
+    "accepted_revision": "full_lowercase_git_commit_sha",
+    "accepted_repository_uri": "verified_independent_repository_uri",
+    "review_required": true,
+    "do_not_replace_with_branch_tag_or_latest": true
+  }
+}

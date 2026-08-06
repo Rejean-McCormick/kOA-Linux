@@ -20,7 +20,15 @@
     "generated/assertion-index.json",
     "generated/traceability.json",
     "generated/test-catalog.json",
-    "generated/evidence-catalog.json"
+    "generated/evidence-catalog.json",
+    "contracts/architecture-patterns.contract.json",
+    "02-system/34-architecture-patterns.md",
+    "06-lifecycle/20-resilience-and-projection-artifacts.md",
+    "08-operations/20-architecture-pattern-operations.md",
+    "09-conformance/22-architecture-pattern-conformance.md",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md"
   ],
   "decision_ids": [
     "DEC-SYS-001",
@@ -37,7 +45,14 @@
     "DEC-CONTAINER-001",
     "DEC-K8S-001",
     "DEC-HW-001",
-    "DEC-REL-001"
+    "DEC-REL-001",
+    "DEC-RES-001",
+    "DEC-MSG-001",
+    "DEC-WF-001",
+    "DEC-PAYLOAD-001",
+    "DEC-BFF-001",
+    "DEC-CQRS-001",
+    "DEC-CACHE-001"
   ],
   "requirement_ids": [
     "REQ-SYS-OVR-001",
@@ -59,7 +74,12 @@
     "REQ-SYS-OVR-017",
     "REQ-SYS-OVR-018",
     "REQ-SYS-OVR-019",
-    "REQ-SYS-OVR-020"
+    "REQ-SYS-OVR-020",
+    "REQ-PATTERN-001",
+    "REQ-PATTERN-002",
+    "REQ-PATTERN-003",
+    "REQ-PATTERN-004",
+    "REQ-PATTERN-005"
   ],
   "lock_ids": [
     "LOCK-SYS-001",
@@ -85,7 +105,15 @@
     "LOCK-PROFILE-001",
     "LOCK-IMPL-001",
     "LOCK-IMPL-002",
-    "LOCK-UCKK-EXT-002"
+    "LOCK-UCKK-EXT-002",
+    "LOCK-RES-001",
+    "LOCK-MSG-001",
+    "LOCK-WF-001",
+    "LOCK-PAYLOAD-001",
+    "LOCK-BFF-001",
+    "LOCK-CQRS-001",
+    "LOCK-CACHE-001",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -107,7 +135,10 @@
     "profiles",
     "offline",
     "ai-boundary",
-    "release-model"
+    "release-model",
+    "architecture-patterns",
+    "koa-spaces",
+    "experience-layer"
   ]
 }
 KOA:DOC-META:END -->
@@ -553,3 +584,11 @@ These criteria define required validation. They do not claim that implementation
 > **Non-normative example:** A new services-channel artifact is compatible with the active system, governance, and knowledge versions. Validation, integrity, signature, and recovery checks pass. The complete candidate is staged and activated atomically. A receipt records the transition and the prior version remains available for rollback.
 
 > **Non-normative example:** A sovereign node uses rootless Podman, Quadlet, a minimal Wayland appliance shell, encrypted storage, and verified activation. Those choices are valid because the active profile and overlays adopt them; they do not become requirements for a standard developer workstation.
+
+## Cross-cutting architecture patterns
+
+The system baseline includes a final condition-triggered pattern policy for remote resilience, asynchronous quarantine, multi-owner workflows, large payload references, experience-specific view adapters, read projections, and cache-aside. These mechanisms preserve component authority and offline continuity rather than creating a new platform layer.
+
+## kOA Spaces Placement
+
+kOA Spaces sits above profile-selected systems as the optional global experience layer. It composes the module selector, active-module sidebar, top bar, presentation routing, and shared page surface from validated artifacts. It is outside the privileged core and outside every contributing system's business authority.

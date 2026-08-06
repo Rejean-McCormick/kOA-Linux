@@ -1,0 +1,169 @@
+format = "koa-linux-container-policy/v1"
+version = "1.0.0"
+component_id = "koa_mediatheque"
+component_slug = "koa-mediatheque"
+component_contract_ref = "docs/contracts/components/koa-mediatheque.component.json"
+containerfile = "Containerfile"
+artifact_class = "service_artifact"
+release_channel = "services"
+entrypoint = ["python", "-m", "koa_mediatheque"]
+specialization = "media_record_and_package_service"
+
+[dependencies]
+package_manifest_ref = "packaging/components/koa-mediatheque.toml"
+package_manifest_bundle = "B-0095"
+package_manifest_missing = "block_build_and_activation"
+capability_defaults_ref = "host/security/capabilities/component-defaults.json"
+seccomp_profile_ref = "host/security/seccomp/component-default.json"
+security_bundle = "B-0086"
+security_profile_missing = "block_activation"
+
+[build]
+context_format = "koa-component-wheelhouse/v1"
+context_owner = "packaging_pipeline"
+context_generated_from_package_manifest = true
+required_paths = ["package-manifest.sha256", "runtime-requirements.lock", "wheelhouse/"]
+package_manifest_digest_file_format = "sha256_colon_hex"
+requirements_lock_format = "fully_pinned_with_sha256_for_every_distribution"
+wheels_only = true
+source_builds_during_image_assembly = false
+network = "none"
+build_secrets_allowed = false
+source_date_epoch_required = true
+layer_timestamp_normalization_required = true
+output_reproducibility_check_required = true
+
+[build.base_images]
+build_argument = "KOA_PYTHON_BUILD_IMAGE"
+runtime_argument = "KOA_PYTHON_RUNTIME_IMAGE"
+immutable_digest_required = true
+mutable_tag_as_authority = false
+builder_and_runtime_python_abi_must_match = true
+sbom_required = true
+vulnerability_disposition_required = true
+provenance_required = true
+
+[build.arguments]
+required = ["KOA_PYTHON_BUILD_IMAGE", "KOA_PYTHON_RUNTIME_IMAGE", "KOA_SOURCE_REVISION", "KOA_IMAGE_VERSION", "KOA_PACKAGE_MANIFEST_DIGEST", "SOURCE_DATE_EPOCH"]
+secret_arguments = []
+undeclared_arguments = "reject"
+
+[runtime.identity]
+uid = 65532
+gid = 65532
+run_as_root = false
+allow_setuid = false
+allow_setgid = false
+no_new_privileges = true
+service_identity_source = "profile_and_workspace"
+shared_unscoped_identity = false
+
+[runtime.filesystem]
+read_only_rootfs = true
+writable_rootfs = false
+tmpfs_required = ["/tmp", "/run/koa"]
+persistent_mounts_resolved_from_package_manifest = true
+required_mount_missing = "not_ready"
+foreign_component_mounts = "prohibited"
+foreign_authoritative_writes = "prohibited"
+state_policy = "owned_media_metadata_and_object_storage_from_package_manifest"
+
+[runtime.capabilities]
+profile = "ordinary_component"
+drop = ["ALL"]
+add = []
+ambient = []
+inheritable = []
+unknown_capability = "deny_and_block_activation"
+
+[runtime.seccomp]
+profile_ref = "host/security/seccomp/component-default.json"
+default_action = "SCMP_ACT_ERRNO"
+denial_errno = "EPERM"
+denial_logging = true
+unconfined = false
+profile_override = "explicit_profile_exception_only"
+
+[runtime.namespaces]
+privileged = false
+host_pid = false
+host_ipc = false
+host_network = false
+host_user_namespace = false
+unrestricted_devices = false
+broad_host_mounts = false
+
+[runtime.network]
+default = "deny"
+private_component_interfaces_only = true
+published_host_ports = []
+host_port_allocation = "workspace_allocator_only"
+ingress = "generated_from_registered_component_interfaces"
+egress = "generated_from_registered_component_interfaces"
+external_egress = "publication_gateway_or_registered_import_adapter_only"
+direct_foreign_database_access = false
+host_access = "prohibited"
+
+[runtime.secrets]
+source = "profile_approved_runtime_secret_reference"
+embedded_in_image = false
+build_arguments = false
+committed_values = false
+general_logs = false
+missing_required_secret = "not_ready"
+
+[runtime.health]
+health_and_readiness_are_distinct = true
+containerfile_healthcheck = "disabled_profile_generated_probe"
+health_source = "public_component_health_interface"
+readiness_source = "public_component_readiness_contract"
+mutates_authoritative_state = false
+startup_timeout_seconds = 60
+readiness_timeout_seconds = 90
+terminal_failure_after_retries = 5
+bounded_diagnostics = true
+secret_values_permitted = false
+
+[runtime.restart]
+policy = "on-failure"
+maximum_restarts = 5
+backoff = "bounded_exponential"
+endless_restart_loop = false
+terminal_failure_state = "blocked_or_unavailable"
+
+[runtime.resources]
+limits_required = true
+source = "resource_governor_profile_envelope"
+unbounded_cpu = false
+unbounded_memory = false
+unbounded_processes = false
+unbounded_io = false
+unbounded_storage = false
+unbounded_concurrency = false
+heavy_optional = true
+activate_heavy_workers_on_demand = true
+
+[runtime.lifecycle]
+activation_requires_verified_image_identity = true
+activation_requires_package_manifest = true
+activation_requires_compatible_release_set = true
+activation_requires_profile_compatibility = true
+activation_requires_security_profile = true
+migration_is_separate_owned_workflow = true
+implicit_migration_on_start = false
+rollback_or_forward_repair_required = true
+
+[evidence]
+record_image_digest = true
+record_base_image_digests = true
+record_source_revision = true
+record_package_manifest_digest = true
+record_dependency_lock_digest = true
+record_build_definition_digest = true
+record_target_architecture = true
+record_tests = true
+record_sbom = true
+record_provenance = true
+record_capabilities = true
+record_seccomp_profile = true
+secret_values_permitted = false

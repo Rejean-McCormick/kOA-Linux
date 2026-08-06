@@ -1,0 +1,37 @@
+schema_version = 1
+policy_id = "koa.release.promotion"
+policy_version = "1.0.0"
+canonical_channels = ["system", "services", "governance", "knowledge"]
+required_compatibility_status = "tested_compatible"
+required_signature_status = "verified"
+required_activation_eligibility = "eligible"
+partial_activation_allowed = false
+state_canonicalization = "utf8-json-sorted-keys-v1"
+receipt_schema_version = "2.0.0"
+
+[promotion]
+allowed_source_states = ["validated"]
+target_state = "active"
+require_expected_current = true
+require_verification_receipt = true
+require_release_decision_receipt = true
+
+[rollback]
+allowed_target_states = ["superseded", "validated", "active"]
+require_distinct_target = true
+require_expected_current = true
+require_recovery_declaration = true
+require_verification_receipt = true
+require_release_decision_receipt = true
+
+[authority]
+issuer_id = "authority:koa-release-lifecycle"
+issuer_type = "lifecycle_authority"
+software_version = "1.0.0"
+contract_ref = "docs/contracts/release-channels.contract.json"
+
+[verification_receipt]
+verification_class = "release_set_signature_verification"
+required_status = "verified"
+required_signer_trust_status = "trusted"
+required_digest_algorithm = "sha256"

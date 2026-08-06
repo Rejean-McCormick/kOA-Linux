@@ -1,0 +1,28 @@
+{
+  "format_version": "1.0.0",
+  "module_id": "orgo_schoolwork",
+  "schema": "docs/contracts/artifact-contracts/topbar-widget.schema.json",
+  "widgets": [
+    {
+      "$schema": "../../../docs/contracts/artifact-contracts/topbar-widget.schema.json",
+      "widget_id": "orgo_schoolwork.status",
+      "module_id": "orgo_schoolwork",
+      "scope": "module",
+      "slot": "status",
+      "kind": "status",
+      "label": "Orgo status",
+      "label_key": "orgo_schoolwork.status",
+      "icon_ref": null,
+      "priority": 200,
+      "required_capabilities": [],
+      "offline_behavior": "unavailable",
+      "compact_only": true,
+      "activation": {
+        "kind": "status_provider",
+        "route_id": null,
+        "command_ref": null,
+        "status_provider_ref": "koa://orgo/health"
+      }
+    }
+  ]
+}

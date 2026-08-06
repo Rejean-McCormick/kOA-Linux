@@ -25,7 +25,10 @@
     "contracts/integrations/uckk-import.integration.json",
     "contracts/artifact-contracts/uckk-learning-package.schema.json",
     "contracts/artifact-contracts/uckk-import-receipt.schema.json",
-    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json"
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md"
   ],
   "decision_ids": [
     "DEC-SYS-CAP-001",
@@ -85,7 +88,8 @@
     "LOCK-GATE-001",
     "LOCK-PROFILE-001",
     "LOCK-PROFILE-002",
-    "LOCK-UCKK-EXT-002"
+    "LOCK-UCKK-EXT-002",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -113,7 +117,9 @@
     "safe-degradation",
     "ai-boundary",
     "resource-governance",
-    "conformance"
+    "conformance",
+    "koa-spaces",
+    "experience-layer"
   ]
 }
 KOA:DOC-META:END -->
@@ -727,3 +733,7 @@ An external export adapter is unavailable. The local capability records a pendin
 ### 11.8 Profile-specific build capability
 
 A build farm profile enables a compiler capability and associated artifact-production capabilities. The user profile does not inherit them merely because compiled artifacts are consumed at runtime.
+
+## Presentation Capabilities
+
+The capability model distinguishes presentation visibility from executable authority. kOA Spaces can evaluate whether a contribution should be shown, hidden, degraded, cached read-only, or unavailable. It cannot mint capabilities or execute a protected operation without the owning service performing its own authorization and state transition.

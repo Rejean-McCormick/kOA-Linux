@@ -1,0 +1,32 @@
+format_version = "1.0.0"
+integration_id = "orgo"
+backup_owner = "orgo"
+coordination_owner = "koa_operations"
+source_root = "/var/lib/koa/orgo/"
+
+[export]
+mode = "orgo_contract"
+consistent_snapshot_required = true
+schema_version_required = true
+source_version_required = true
+provenance_required = true
+integrity_digest_required = true
+secrets_excluded = true
+
+[restore]
+mode = "orgo_restore_contract"
+generic_importer_may_write_tables = false
+quarantine_before_validation = true
+compatibility_validation_required = true
+identity_validation_required = true
+migration_validation_required = true
+atomic_activation_required = true
+
+[availability]
+backup_without_official_restore_contract = false
+restore_without_official_documentation = false
+
+[evidence]
+backup_receipt_required = true
+restore_receipt_required = true
+verification_receipt_required = true

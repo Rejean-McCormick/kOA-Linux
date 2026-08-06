@@ -1,0 +1,134 @@
+schema_version = "1.0.0"
+
+[component]
+id = "kristal_runtime"
+name = "Kristal Runtime"
+contract_ref = "docs/contracts/components/kristal-runtime.component.json"
+contract_version = "1.0.0"
+component_kind = "transversal_runtime"
+system_role = "epistemic_artifact_runtime"
+native = true
+profile_conditioned = true
+standalone_profile = false
+user_facing = false
+external_service = false
+ai_component = false
+
+[runtime]
+language = "python"
+package = "koa-kristal-runtime"
+module = "koa_kristal_runtime"
+entrypoint = "koa_kristal_runtime.__main__:main"
+activation_modes = ["always_available", "embedded_behind_registered_interface", "socket_activated", "task_activated"]
+selected_mode_owner = "docs/contracts/profiles/*.profile.json"
+
+[authority]
+primary_responsibility = "verified_kristal_identity_and_runtime_pack_lifecycle_state"
+identity_basis = "canonical_epistemic_content"
+identity_independent_from = ["deployment_topology", "interface_state", "runtime_cache_state", "tenant_workflow_state"]
+owned_state = ["active_runtime_pack_record", "kristal_runtime_health_state", "runtime_pack_activation_record", "runtime_pack_verification_record"]
+workflow_authority = false
+policy_authority = false
+resource_authority = false
+host_privilege = false
+release_channel_authority = false
+cross_component_direct_writes_allowed = false
+partial_authoritative_activation_allowed = false
+implicit_downgrade_allowed = false
+implicit_substitution_allowed = false
+unverified_artifact_execution_allowed = false
+native_ai_capability = false
+
+[[interfaces.provided]]
+id = "kristal_identity_resolution"
+direction = "inbound"
+kind = "query"
+authoritative_effect = "none"
+
+[[interfaces.provided]]
+id = "runtime_pack_validation"
+direction = "inbound"
+kind = "command"
+authoritative_effect = "runtime_pack_verification_record_only"
+
+[[interfaces.provided]]
+id = "runtime_pack_activation"
+direction = "inbound"
+kind = "command"
+authoritative_effect = "atomic_active_runtime_pack_record_replacement"
+
+[[interfaces.provided]]
+id = "runtime_pack_rollback"
+direction = "inbound"
+kind = "command"
+authoritative_effect = "atomic_last_valid_runtime_state_restoration"
+
+[[interfaces.provided]]
+id = "runtime_status_query"
+direction = "inbound"
+kind = "query"
+authoritative_effect = "none"
+
+[[dependencies.consumed]]
+id = "identity_and_trust"
+kind = "component"
+authority_retained = ["credential_verification", "identity_verification", "signature_trust_verification"]
+direct_data_write_allowed = false
+
+[[dependencies.consumed]]
+id = "resource_governor"
+kind = "component"
+authority_retained = ["resource_admission", "resource_budget_interpretation", "resource_scheduling"]
+direct_data_write_allowed = false
+
+[[dependencies.consumed]]
+id = "governance_policy_runtime"
+kind = "component"
+authority_retained = ["authorization", "consent", "governed_exceptions", "privilege_policy"]
+direct_data_write_allowed = false
+
+[[dependencies.consumed]]
+id = "audit_broker"
+kind = "component"
+authority_retained = ["authorized_audit_views", "evidence_custody"]
+direct_data_write_allowed = false
+
+[[dependencies.consumed]]
+id = "knowledge_release_channel"
+kind = "canonical_registry"
+canonical_ref = "docs/contracts/release-channels.contract.json#/channels/knowledge"
+authority_retained = ["release_channel_identity", "release_channel_membership"]
+direct_data_write_allowed = false
+
+[artifacts]
+accepted_classes = ["kristal_artifact", "runtime_pack"]
+runtime_pack_schema_ref = "docs/contracts/artifact-contracts/runtime-pack.schema.json"
+kristal_artifact_schema_ref = "docs/contracts/artifact-contracts/kristal-artifact.schema.json"
+release_channel = "knowledge"
+secrets_in_runtime_pack_allowed = false
+
+[state]
+configuration_path = "/etc/koa/components/kristal-runtime/config.toml"
+socket_path = "/run/koa/sockets/kristal-runtime.sock"
+persistent_root = "/var/lib/koa/kristal"
+quarantine_root = "/var/lib/koa/quarantine/kristal"
+foreign_authoritative_state_write_allowed = false
+loaded_runtime_cache_authority = "derived"
+last_valid_state_retained_until_success = true
+
+[health]
+exposed_states = ["inactive", "verification_pending", "verified", "active", "blocked", "degraded", "rollback_in_progress", "failed"]
+health_checks = ["active_record_accessible", "local_state_accessible", "process_responsive", "receipt_store_accessible"]
+readiness_checks = ["artifact_contracts_resolve", "evidence_path_resolves", "interface_version_compatible", "knowledge_release_channel_resolves", "profile_membership_resolves", "runtime_state_resolves"]
+process_health_implies_readiness = false
+silent_fallback_allowed = false
+
+[receipts]
+critical_types = ["runtime_pack_activation_receipt", "runtime_pack_failure_receipt", "runtime_pack_rollback_receipt", "runtime_pack_verification_receipt"]
+owner = "kristal_runtime"
+evidence_custody_owner = "audit_broker_or_active_evidence_authority"
+receipt_is_credential = false
+
+[packaging]
+python_requires = ">=3.11"
+release_channel = "knowledge"

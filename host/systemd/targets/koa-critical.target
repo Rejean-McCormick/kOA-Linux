@@ -1,0 +1,7 @@
+# Service membership is rendered from the active profile; do not list services here.
+[Unit]
+Description=kOA critical authority services
+Documentation=file:/usr/share/doc/koa/recipes/sovereign-linux/systemd-layout.md
+After=local-fs.target systemd-tmpfiles-setup.service koa-release-set-verify.service
+Before=koa-core.target koa-background.target koa-optional.target koa-node.target
+Conflicts=koa-recovery.target

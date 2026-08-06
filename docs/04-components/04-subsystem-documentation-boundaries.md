@@ -12,7 +12,8 @@
     "contracts/system.contract.json",
     "contracts/terminology.contract.json",
     "contracts/ai-navigation.contract.json",
-    "schemas/subsystem.schema.json"
+    "schemas/subsystem.schema.json",
+    "contracts/subsystems/koa-spaces.subsystem.json"
   ],
   "decision_ids": [
     "DEC-MEDIATHEQUE-001",
@@ -22,7 +23,8 @@
   "lock_ids": [
     "LOCK-MEDIATHEQUE-001",
     "LOCK-UCKK-EXT-001",
-    "LOCK-UCKK-EXT-002"
+    "LOCK-UCKK-EXT-002",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [],
@@ -31,7 +33,9 @@
     "documentation-boundary",
     "external-platforms",
     "uckk",
-    "mediatheque"
+    "mediatheque",
+    "koa-spaces",
+    "experience-layer"
   ]
 }
 KOA:DOC-META:END -->
@@ -44,7 +48,7 @@ This document separates kOA-Linux operating boundaries from the authoritative in
 
 ## 2. Scope
 
-The subsystem documentation-mount model applies to Ariane, Konnaxion, Orgo, SenTient, and SemantiK Architect.
+The subsystem documentation-mount model applies to Ariane, Konnaxion, Orgo, SenTient, SemantiK Architect, and the optional kOA Spaces experience subsystem.
 
 UCKK is excluded from this model. UCKK is an external Moodle platform, not a native kOA-Linux subsystem. It has its own authority, storage, lifecycle, identity, access control, operations, and Mediatheque.
 
@@ -60,7 +64,7 @@ External-platform interactions are declared under `contracts/integrations/`. Pub
 
 kOA-Linux owns installation, activation, runtime dependencies, identity and authorization boundaries, data exchange, resources, health, offline availability, degradation, update compatibility, and backup or recovery boundaries.
 
-Each mounted subsystem owns its internal domain model and product behavior.
+Each mounted subsystem owns its internal domain model and product behavior. kOA Spaces owns only its presentation implementation and validated activation state; contributing modules continue to own their pages, actions, authorization, workflows, and business data.
 
 The kOA Mediatheque owns local kOA media records and storage state. The UCKK Mediatheque owns its separate Moodle-side records and storage state. A compatible Mediatheque frame does not create shared authority or shared storage.
 
@@ -94,6 +98,11 @@ Missing internal subsystem details are resolved in the owning subsystem document
 
 The following assumptions are prohibited:
 
+- kOA Spaces is part of the privileged core;
+- a visible module, route, menu item, public alias, or top-bar widget grants authority;
+- a Space definition transfers ownership of a contributing system or its data;
+- replacing or disabling kOA Spaces permits deletion or reinterpretation of business state;
+
 - UCKK is installed as a kOA-Linux subsystem;
 - UCKK is required by any kOA-Linux runtime profile;
 - UCKK owns local kOA media, rights, provenance, backup, or restore state;
@@ -105,14 +114,16 @@ The following assumptions are prohibited:
 
 Validation confirms:
 
-- the five reserved subsystem identities and mount paths;
+- the six reserved subsystem identities and mount paths;
 - absence of an active UCKK subsystem contract or mount;
 - unique subsystem identities;
 - resolved boundary pages;
 - absence of duplicated internal subsystem catalogs;
 - kOA Mediatheque classification as an internal component;
 - UCKK classification as an external Moodle platform;
-- publication through a declared integration rather than direct database access.
+- publication through a declared integration rather than direct database access;
+- kOA Spaces classification as optional, replaceable, offline-capable, and non-authoritative;
+- presentation contributions remain bound to the owning module authorization path.
 
 ## 11. Non-Normative Examples
 

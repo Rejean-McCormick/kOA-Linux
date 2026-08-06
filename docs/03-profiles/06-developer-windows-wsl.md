@@ -19,7 +19,11 @@
     "generated/assertion-index.json",
     "generated/traceability.json",
     "generated/test-catalog.json",
-    "generated/evidence-catalog.json"
+    "generated/evidence-catalog.json",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md",
+    "03-profiles/14-koa-spaces-deployment.md"
   ],
   "decision_ids": [
     "DEC-PROFILE-001",
@@ -68,7 +72,8 @@
     "LOCK-AI-001",
     "LOCK-AI-002",
     "LOCK-IMPL-001",
-    "LOCK-IMPL-002"
+    "LOCK-IMPL-002",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -79,7 +84,10 @@
     "DOC-PROFILE-005",
     "DOC-DEV-001",
     "DOC-DEV-002",
-    "DOC-DEV-003"
+    "DOC-DEV-003",
+    "DOC-SYS-021",
+    "DOC-SYS-022",
+    "DOC-PROFILE-014"
   ],
   "tags": [
     "profile",
@@ -91,7 +99,9 @@
     "uv",
     "containers",
     "parallel-workspaces",
-    "non-sovereign"
+    "non-sovereign",
+    "koa-spaces",
+    "experience-layer"
   ]
 }
 KOA:DOC-META:END -->
@@ -539,3 +549,7 @@ These criteria define required validation. They do not claim that a particular W
 > **Non-normative example:** Local tests pass in WSL. The release contract requires reproducible Linux build-farm evidence, so the same locked source is built and tested by a clean build worker before release activation.
 
 > **Non-normative example:** A developer explicitly asks ChatGPT to review a selected error message. The selected text is disclosed and transferred. The response remains advice and cannot change source, tests, services, or release state without local developer action.
+
+## kOA Spaces Development Under WSL
+
+The profile can run kOA Spaces on demand for contract validation and interface preview. The Windows host or browser can provide the visible surface, but workspace state, manifests, ports, caches, and test data remain isolated. WSL preview does not establish appliance-shell, sovereign-host, or production activation conformance.

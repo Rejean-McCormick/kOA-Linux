@@ -26,6 +26,12 @@
       "id": "DEC-AUTH-001"
     },
     {
+      "id": "DEC-BFF-001"
+    },
+    {
+      "id": "DEC-CACHE-001"
+    },
+    {
       "id": "DEC-COMP-001"
     },
     {
@@ -54,6 +60,9 @@
     },
     {
       "id": "DEC-CONTAINER-001"
+    },
+    {
+      "id": "DEC-CQRS-001"
     },
     {
       "id": "DEC-CULT-001"
@@ -164,6 +173,9 @@
       "id": "DEC-MEDIATHEQUE-001"
     },
     {
+      "id": "DEC-MSG-001"
+    },
+    {
       "id": "DEC-OFFLINE-001"
     },
     {
@@ -180,6 +192,9 @@
     },
     {
       "id": "DEC-OS-001"
+    },
+    {
+      "id": "DEC-PAYLOAD-001"
     },
     {
       "id": "DEC-PORT-001"
@@ -216,6 +231,9 @@
     },
     {
       "id": "DEC-REL-001"
+    },
+    {
+      "id": "DEC-RES-001"
     },
     {
       "id": "DEC-SEC-001"
@@ -306,6 +324,9 @@
     },
     {
       "id": "DEC-USER-001"
+    },
+    {
+      "id": "DEC-WF-001"
     }
   ]
 }

@@ -1,0 +1,75 @@
+# Deny-by-default source admission policy. Concrete identities live in signed provenance and release locks.
+format = "koa.package-sources"
+format_version = "1.0.0"
+status = "active_policy_no_concrete_sources_admitted"
+default_action = "reject"
+network_during_activation = false
+mutable_branch_allowed = false
+floating_version_allowed = false
+mutable_container_tag_allowed = false
+undeclared_mirror_allowed = false
+transport_confers_authority = false
+
+[identity]
+canonical_source_identity = "immutable_revision_or_content_digest"
+location_is_identity = false
+required_fields = ["source_kind", "owner", "immutable_identity", "content_digest", "trust_scope", "provenance_ref"]
+
+[workspace_source]
+kind = "repository_source"
+admission = "release_provenance_only"
+required_clean_tree = true
+required_review_evidence = true
+required_immutable_commit = true
+working_tree_as_release_input = false
+
+[language_dependencies]
+python_resolution = "uv.lock"
+rust_resolution = "Cargo.lock"
+frozen_resolution_required = true
+exact_artifact_digests_required = true
+package_index_name_is_authority = false
+
+[system_base]
+kind = "system_channel_artifact"
+admission = "signed_manifest_and_digest_only"
+profile_compatibility_required = true
+release_set_required = true
+package_manager_latest_selector_allowed = false
+
+[container_base]
+kind = "container_image"
+admission = "immutable_digest_only"
+mutable_tag_may_be_display_alias_only = true
+sbom_required = true
+provenance_required = true
+
+[offline_transport]
+kind = "offline_bundle"
+admission = "sealed_verified_bundle_only"
+import_is_activation = false
+manifest_binds_every_payload = true
+
+[mirror_policy]
+mirror_is_authority = false
+source_identity_preserved = true
+digest_verification_required = true
+substitution_on_unavailability = "prohibited"
+
+[secrets]
+build_secret_in_output = "prohibited"
+build_secret_in_cache = "prohibited"
+build_secret_in_log = "prohibited"
+build_secret_in_provenance_payload = "prohibited"
+
+[validation]
+required = [
+  "source_owner_resolved",
+  "immutable_identity_resolved",
+  "digest_verified",
+  "trust_scope_verified",
+  "provenance_verified",
+  "revocation_checked",
+  "license_policy_checked",
+  "no_secret_exposure",
+]

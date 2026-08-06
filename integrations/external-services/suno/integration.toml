@@ -1,0 +1,75 @@
+schema_version = "1.0"
+integration_id = "suno"
+title = "Suno"
+version = "1.0.0"
+status = "active"
+contract_ref = "docs/contracts/integrations/suno.integration.json"
+integration_type = "external_media_service"
+classification = "external_media_generation"
+role = "Optional external media-generation surface."
+authority = "non_authoritative"
+authority_class = "non_authoritative_candidate_source"
+availability = "optional"
+direction = "request_response"
+trigger = "explicit_user_action"
+owner_component = "koa-mediatheque"
+undeclared_substitution = "prohibited"
+enabled_by_default = false
+background_invocation = false
+automatic_invocation = false
+direct_authoritative_store_write = false
+privilege_authority = false
+policy_authority = false
+publication_authority = false
+release_authority = false
+removal_breaks_core = false
+
+capabilities = [
+  "user_requested_audio_generation",
+  "user_requested_music_generation",
+  "candidate_media_artifact_return",
+]
+
+[activation]
+profile_permission_required = true
+explicit_user_action_required = true
+continuous_activation = false
+background_sessions = false
+operation_scoped = true
+
+[data_transfer]
+disclosure_required = true
+explicit_selection_required = true
+minimization_required = true
+repository_access = false
+component_store_access = false
+tenant_wide_access = false
+profile_state_access = false
+host_access = false
+secret_access = false
+
+[output]
+result_class = "candidate_media_artifact"
+authoritative = false
+controlled_reimport_required = true
+quarantine_before_acceptance = true
+owning_component_validation_required = true
+user_approval_required = true
+provenance_receipt_required = true
+publication_is_separate = true
+
+[network]
+required_for_operation = true
+default_enabled = false
+implicit_retry = false
+provider_substitution = false
+local_model_substitution = false
+
+[removal]
+new_operations_blocked = true
+active_operations_cancelled_safely = true
+provider_credentials_removed = true
+temporary_session_data_cleared = true
+accepted_output_provenance_preserved = true
+authoritative_local_data_preserved = true
+local_core_capabilities_preserved = true

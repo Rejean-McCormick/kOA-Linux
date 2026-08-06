@@ -1,0 +1,37 @@
+schema_version = "1.0.0"
+integration_id = "konnaxion"
+status = "inactive"
+
+[authority]
+subsystem_authoritative_storage_owner = "konnaxion"
+koa_adapter_authoritative_storage = false
+direct_database_access_from_adapter = false
+direct_cross_subsystem_write = false
+storage_layout_source = "official_subsystem_documentation_and_active_profile"
+
+[adapter]
+persistent_business_state = false
+cache_authoritative = false
+cache_optional = true
+cache_empty_safe = true
+cache_location_source = "profile_runtime_path"
+cache_tenant_scoped = true
+cache_ttl_source = "active_profile"
+
+[separation]
+subsystem_data_root = "profile_resolved_subsystem_owned_path"
+adapter_runtime_root = "profile_resolved_runtime_path"
+backup_staging_root = "profile_resolved_backup_path"
+shared_writable_root = false
+
+[security]
+encryption_policy_source = "active_profile"
+owner_identity_required = true
+least_privilege = true
+secrets_in_storage_manifest = false
+
+[removal]
+preserve_subsystem_authoritative_data = true
+remove_adapter_cache = true
+revoke_adapter_access = true
+verify_unrelated_capabilities = true

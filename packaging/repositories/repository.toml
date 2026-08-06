@@ -1,0 +1,103 @@
+[repository]
+policy_id = "koa.artifact_repository.offline_capable"
+policy_version = "1.0.0"
+status = "active"
+repository_kind = "immutable_artifact_repository"
+repository_identity_source = "deployment_configuration"
+backend_implementation = "profile_defined"
+network_required_for_local_operation = false
+activation_authority = false
+verification_authority = false
+release_channel_authority = false
+component_data_authority = false
+
+[repository.identity]
+artifact_identity_independent_from_location = true
+repository_path_is_artifact_identity = false
+filename_or_tag_is_artifact_identity = false
+immutable_identity_collision_action = "security_failure"
+overwrite_existing_identity = false
+same_identity_same_content_result = "idempotent_existing_object"
+same_identity_different_content_result = "reject_and_quarantine_candidate"
+
+[repository.storage]
+content_addressed_objects = true
+digest_algorithm_policy_source = "artifact_contract_and_trust_policy"
+canonical_manifest_stored_with_payload = true
+signatures_stored_separately_from_private_keys = true
+private_keys_allowed = false
+partial_object_visibility = false
+atomic_manifest_and_payload_visibility = true
+durable_acknowledgement_required = true
+repository_state_rebuildable_from_immutable_records = true
+
+[repository.channels]
+canonical = ["system", "services", "governance", "knowledge"]
+physical_colocation_merges_authority = false
+independent_namespaces_required = true
+independent_versions_preserved = true
+implicit_membership_allowed = false
+multiple_membership_allowed = false
+cross_channel_release_set_stored_as_compatibility_record = true
+
+[repository.records]
+required_record_kinds = [
+  "artifact_manifest",
+  "payload_integrity",
+  "signature_and_verification_reference",
+  "provenance_reference",
+  "sbom_reference_when_required",
+  "publication_receipt",
+  "revocation_record",
+  "supersession_record",
+  "release_manifest",
+  "release_set",
+  "offline_bundle_manifest",
+]
+mutable_record_replacement = false
+revocation_or_supersession_appends_record = true
+
+[repository.publication]
+authenticate_publisher_and_destination = true
+revalidate_scope_signature_revocation_and_approval = true
+reserve_or_verify_immutable_identity = true
+verify_received_identity = true
+publish_visibility_atomically = true
+record_durable_acknowledgement = true
+idempotent_replay_preserves_prior_result = true
+partial_upload_state = "unavailable_or_quarantined"
+
+[repository.offline]
+local_verified_copy_required_for_disconnected_use = true
+remote_fetch_on_cache_miss = false
+remote_mirror_substitution_allowed = false
+network_loss_changes_artifact_identity = false
+network_loss_revokes_valid_local_copy = false
+remote_publication_when_disconnected = "deferred"
+queued_publication_revalidated_after_reconnection = true
+external_ai_or_cloud_dependency = "none"
+
+[repository.mirrors_and_caches]
+mirror_possession_grants_trust = false
+cache_is_source_of_truth = false
+mirror_identity_verified_after_transfer = true
+unverifiable_mirror_result = "blocked"
+cache_eviction_changes_authority = false
+
+[repository.retention]
+retain_exact_manifests = true
+retain_verification_and_publication_receipts = true
+retain_revocation_and_supersession_history = true
+retention_policy_source = "artifact_class_and_active_profile"
+cleanup_requires_evidence = true
+
+[repository.export_restore]
+export_exact_identities = true
+export_manifests_and_relationships = true
+export_revocations_and_supersession = true
+export_evidence = true
+restore_into_clean_repository = true
+verify_export_before_restore = true
+revalidate_trust_and_revocation = true
+retrieval_tests_required = true
+restore_receipt_required = true

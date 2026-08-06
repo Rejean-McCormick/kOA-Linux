@@ -23,7 +23,19 @@
     "generated/requirements-index.json",
     "generated/assertion-index.json",
     "generated/traceability.json",
-    "generated/exception-index.json"
+    "generated/exception-index.json",
+    "contracts/architecture-patterns.contract.json",
+    "contracts/artifact-contracts/integration-resilience-policy.schema.json",
+    "contracts/artifact-contracts/dead-letter-record.schema.json",
+    "contracts/artifact-contracts/distributed-workflow.schema.json",
+    "contracts/artifact-contracts/large-payload-reference.schema.json",
+    "contracts/artifact-contracts/experience-view-adapter.schema.json",
+    "contracts/artifact-contracts/cqrs-projection.schema.json",
+    "contracts/artifact-contracts/cache-policy.schema.json",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md",
+    "03-profiles/14-koa-spaces-deployment.md"
   ],
   "decision_ids": [
     "DEC-COMP-001",
@@ -35,7 +47,14 @@
     "DEC-DEV-002",
     "DEC-AI-001",
     "DEC-SENT-001",
-    "DEC-ARI-001"
+    "DEC-ARI-001",
+    "DEC-RES-001",
+    "DEC-MSG-001",
+    "DEC-WF-001",
+    "DEC-PAYLOAD-001",
+    "DEC-BFF-001",
+    "DEC-CQRS-001",
+    "DEC-CACHE-001"
   ],
   "requirement_ids": [
     "REQ-OPS-HEALTH-001",
@@ -67,7 +86,45 @@
     "REQ-OPS-HEALTH-027",
     "REQ-OPS-HEALTH-028",
     "REQ-OPS-HEALTH-029",
-    "REQ-OPS-HEALTH-030"
+    "REQ-OPS-HEALTH-030",
+    "REQ-PATTERN-005",
+    "REQ-PATTERN-006",
+    "REQ-PATTERN-007",
+    "REQ-PATTERN-008",
+    "REQ-PATTERN-009",
+    "REQ-PATTERN-010",
+    "REQ-PATTERN-011",
+    "REQ-PATTERN-012",
+    "REQ-PATTERN-013",
+    "REQ-PATTERN-014",
+    "REQ-PATTERN-015",
+    "REQ-PATTERN-016",
+    "REQ-PATTERN-017",
+    "REQ-PATTERN-018",
+    "REQ-PATTERN-019",
+    "REQ-PATTERN-020",
+    "REQ-PATTERN-021",
+    "REQ-PATTERN-022",
+    "REQ-PATTERN-023",
+    "REQ-PATTERN-024",
+    "REQ-PATTERN-025",
+    "REQ-PATTERN-026",
+    "REQ-PATTERN-027",
+    "REQ-PATTERN-028",
+    "REQ-PATTERN-029",
+    "REQ-PATTERN-030",
+    "REQ-PATTERN-031",
+    "REQ-PATTERN-032",
+    "REQ-PATTERN-033",
+    "REQ-PATTERN-034",
+    "REQ-PATTERN-035",
+    "REQ-PATTERN-036",
+    "REQ-PATTERN-037",
+    "REQ-PATTERN-038",
+    "REQ-PATTERN-039",
+    "REQ-PATTERN-040",
+    "REQ-PATTERN-041",
+    "REQ-PATTERN-042"
   ],
   "lock_ids": [
     "LOCK-OPS-001",
@@ -90,7 +147,15 @@
     "LOCK-AI-002",
     "LOCK-SENT-001",
     "LOCK-ARI-001",
-    "LOCK-ARI-002"
+    "LOCK-ARI-002",
+    "LOCK-RES-001",
+    "LOCK-MSG-001",
+    "LOCK-WF-001",
+    "LOCK-PAYLOAD-001",
+    "LOCK-BFF-001",
+    "LOCK-CQRS-001",
+    "LOCK-CACHE-001",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -114,7 +179,11 @@
     "DOC-SEC-003",
     "DOC-SEC-014",
     "DOC-OPS-000",
-    "DOC-OPS-001"
+    "DOC-OPS-001",
+    "DOC-SYS-034",
+    "DOC-SYS-021",
+    "DOC-SYS-022",
+    "DOC-PROFILE-014"
   ],
   "tags": [
     "operations",
@@ -126,7 +195,10 @@
     "safe-degradation",
     "activation-acceptance",
     "recovery",
-    "offline-operations"
+    "offline-operations",
+    "architecture-patterns",
+    "koa-spaces",
+    "experience-layer"
   ]
 }
 KOA:DOC-META:END -->
@@ -1310,3 +1382,11 @@ Local storage, active policy, trust state, Konnaxion reads, Orgo critical work, 
 A lightweight profile runs Konnaxion and Orgo in one process supervisor and one PostgreSQL service.
 
 Konnaxion reports a failed outbox while Orgo remains healthy. The node summary preserves both component results rather than collapsing them into one database or process status.
+
+## Pattern-aware health vector
+
+Health reporting includes breaker state, dead-letter backlog and age, workflow state and age, referenced-payload verification failures, view-adapter dependency health, projection lag and rebuild state, and cache invalidation failures. A component may remain locally ready while one remote circuit is open or one projection is rebuilding, but affected capabilities must be reported explicitly.
+
+## kOA Spaces Health and Readiness
+
+kOA Spaces reports process health, active Space identity, manifest resolution, route composition, required contribution availability, and presentation readiness. Core node readiness and each contributing system's readiness remain separate. The experience layer cannot mask a failed authoritative service as healthy.

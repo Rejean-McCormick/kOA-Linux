@@ -1,0 +1,99 @@
+format_version = "1.0.0"
+health_contract_id = "ariane-voice.health"
+integration_id = "ariane-voice"
+health_schema_ref = "interfaces/health/health-status.schema.json"
+readiness_schema_ref = "interfaces/health/readiness.schema.json"
+receipt_schema_ref = "interfaces/receipts/receipt-envelope.schema.json"
+correlation_schema_ref = "interfaces/receipts/correlation.schema.json"
+
+[health]
+process_liveness_separate_from_readiness = true
+startup_separate_from_provider_availability = true
+provider_unavailable_overall_state = "degraded"
+provider_unavailable_process_liveness = "alive"
+provider_unavailable_readiness = false
+core_system_health_affected = false
+local_ariane_navigation_affected = false
+
+[probe.adapter_process]
+kind = "local_process"
+network_access = false
+required_for_liveness = true
+failure_reason_code = "ariane_voice.adapter_process_unavailable"
+
+[probe.configuration]
+kind = "local_configuration"
+network_access = false
+required_for_readiness = true
+required_items = ["managed_endpoint_reference", "managed_credential_reference", "active_profile_permission", "active_policy_contract"]
+failure_reason_code = "ariane_voice.configuration_incomplete"
+
+[probe.provider]
+kind = "explicit_operation_or_operator_check"
+network_access = true
+run_on_startup = false
+run_in_background = false
+user_operation_may_trigger = true
+operator_check_may_trigger = true
+timeout_seconds = 5
+failure_reason_code = "ariane_voice.provider_unavailable"
+
+[readiness]
+capability_id = "external_ariane_voice"
+readiness_class = "optional_external_capability"
+operation_classes = ["voice_candidate_generation"]
+ready_conditions = ["adapter_alive", "configuration_resolved", "profile_permits_integration", "policy_allows_transfer", "provider_available", "circuit_closed"]
+denied_reason_codes = [
+  "ariane_voice.profile_not_permitted",
+  "ariane_voice.policy_denied",
+  "ariane_voice.configuration_incomplete",
+  "ariane_voice.provider_unavailable",
+  "ariane_voice.circuit_open",
+  "ariane_voice.offline"
+]
+
+[failure_evidence]
+receipt_class = "transfer_receipt"
+transition_type = "external_voice_operation"
+decision_values = ["authorized", "denied", "indeterminate", "not_applicable"]
+terminal_outcomes = ["failed", "cancelled", "denied", "expired"]
+commit_state = "not_applicable"
+emit_for_each_terminal_failure = true
+correlation_required = true
+reason_codes_required = true
+raw_audio_in_receipt = false
+transcript_in_receipt = false
+candidate_parameters_in_receipt = false
+credentials_in_receipt = false
+
+[failure_evidence.reason_codes]
+profile_not_permitted = "ariane_voice.profile_not_permitted"
+policy_denied = "ariane_voice.policy_denied"
+user_cancelled = "ariane_voice.user_cancelled"
+data_ineligible = "ariane_voice.data_ineligible"
+transfer_failed = "ariane_voice.transfer_failed"
+provider_timeout = "ariane_voice.provider_timeout"
+provider_unavailable = "ariane_voice.provider_unavailable"
+provider_rate_limited = "ariane_voice.provider_rate_limited"
+response_invalid = "ariane_voice.response_invalid"
+candidate_incomplete = "ariane_voice.candidate_incomplete"
+candidate_ambiguous = "ariane_voice.candidate_ambiguous"
+candidate_unrecognized = "ariane_voice.candidate_unrecognized"
+candidate_unsafe = "ariane_voice.candidate_unsafe"
+local_validation_failed = "ariane_voice.local_validation_failed"
+circuit_open = "ariane_voice.circuit_open"
+offline = "ariane_voice.offline"
+
+[observability]
+operation_id_required = true
+correlation_id_required = true
+profile_ref_required = true
+endpoint_reference_required = true
+result_required = true
+duration_required = true
+retry_state_required = true
+candidate_reference_when_present = true
+raw_audio_logged = false
+transcript_logged_by_default = false
+candidate_parameters_logged_by_default = false
+secret_values_logged = false

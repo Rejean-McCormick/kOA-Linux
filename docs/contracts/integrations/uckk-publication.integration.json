@@ -2,7 +2,7 @@
   "$schema": "../../schemas/integration.schema.json",
   "integration_id": "uckk-publication",
   "title": "UCKK Publication",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "status": "active",
   "integration_type": "external_moodle_publication",
   "role": "Optional governed publication of selected private or local kOA Mediatheque records to the online UCKK Mediatheque and Moodle learning surfaces.",
@@ -37,7 +37,11 @@
     "DEC-GATE-001",
     "DEC-GOV-001",
     "DEC-DATA-001",
-    "DEC-OFFLINE-001"
+    "DEC-OFFLINE-001",
+    "DEC-RES-001",
+    "DEC-MSG-001",
+    "DEC-WF-001",
+    "DEC-PAYLOAD-001"
   ],
   "requirement_ids": [
     "REQ-UCKK-PUB-001",
@@ -60,7 +64,11 @@
     "LOCK-DATA-001",
     "LOCK-GOV-001",
     "LOCK-OFFLINE-001",
-    "LOCK-UCKK-EXT-002"
+    "LOCK-UCKK-EXT-002",
+    "LOCK-RES-001",
+    "LOCK-MSG-001",
+    "LOCK-WF-001",
+    "LOCK-PAYLOAD-001"
   ],
   "boundary": {
     "source_system": "koa-linux",
@@ -158,5 +166,18 @@
       "source authority preserved",
       "destination mapping version enforced"
     ]
+  },
+  "architecture_pattern_contract_ref": "contracts/architecture-patterns.contract.json",
+  "required_patterns": [
+    "distributed_workflow",
+    "large_payload_reference",
+    "circuit_breaker",
+    "dead_letter_queue"
+  ],
+  "pattern_artifact_refs": {
+    "integration_resilience_policy": "contracts/artifact-contracts/integration-resilience-policy.schema.json",
+    "dead_letter_record": "contracts/artifact-contracts/dead-letter-record.schema.json",
+    "distributed_workflow": "contracts/artifact-contracts/distributed-workflow.schema.json",
+    "large_payload_reference": "contracts/artifact-contracts/large-payload-reference.schema.json"
   }
 }

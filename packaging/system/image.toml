@@ -1,0 +1,137 @@
+# System-channel packaging input. Exact versions and digests are supplied by the signed Release Set.
+format = "koa.system-image-package"
+format_version = "1.0.0"
+status = "blocked_missing_assembly_and_component_bundles"
+artifact_id_namespace = "koa.system.image"
+artifact_class_key = "system_image"
+release_channel = "system"
+profile_contract = "docs/contracts/profiles/sovereign-linux-node.profile.json"
+package_sources = "packaging/system/package-sources.toml"
+runtime_path_registry = ".koa/runtime-paths.json"
+assembly_plan_bundle = "B-0092"
+activation_ready = false
+
+[identity]
+version_source = "signed_artifact_manifest"
+content_digest_required = true
+manifest_identity_required = true
+provenance_required = true
+sbom_required = true
+signature_required = true
+complete_release_set_required = true
+filename_or_tag_as_identity = false
+
+[payload_selection]
+registry = ".koa/runtime-paths.json#repository_payload_mappings"
+include_owners = [
+  "documentation_governance",
+  "host",
+  "interfaces",
+  "koa-node-agent",
+  "packaging",
+  "profiles",
+  "release",
+  "repository_tools",
+]
+include_path_classes = ["immutable_payload"]
+component_service_payloads_embedded = false
+unknown_destination = "reject"
+duplicate_destination = "reject"
+
+[exclusions]
+roots = ["/run/koa", "/var/lib/koa", "/var/lib/koa-recovery", "/var/cache/koa", "/var/cache/koa-build", "/etc/koa/secrets.d"]
+secrets = true
+mutable_component_state = true
+operator_credentials = true
+build_cache = true
+developer_workspace = true
+
+[configuration_seeds]
+policy = "seed_if_absent_only"
+overwrite_operator_configuration = false
+secret_values_allowed = false
+source_manifests = [
+  "packaging/components/audit-broker.toml#configuration",
+  "packaging/components/governance-policy-runtime.toml#configuration",
+  "packaging/components/identity-and-trust.toml#configuration",
+  "packaging/components/koa-mediatheque.toml#configuration",
+  "packaging/components/koa-node-agent.toml#configuration",
+  "packaging/components/kristal-runtime.toml#configuration",
+  "packaging/components/publication-gateway.toml#configuration",
+  "packaging/components/resource-governor.toml#configuration",
+]
+
+[executables.koa-activation]
+destination = "/usr/libexec/koa/koa-activation"
+provider = "assembly_generated_entrypoint"
+provider_bundle = "B-0092"
+missing_provider = "block_build"
+
+[executables.koa-health-aggregate]
+destination = "/usr/libexec/koa/koa-health-aggregate"
+provider = "assembly_generated_entrypoint"
+provider_bundle = "B-0092"
+missing_provider = "block_build"
+
+[executables.koa-offline-import]
+destination = "/usr/libexec/koa/koa-offline-import"
+provider = "assembly_generated_entrypoint"
+provider_bundle = "B-0092"
+missing_provider = "block_build"
+
+[share.appliance-shell]
+destination = "/usr/share/koa/appliance-shell/"
+selection = "effective_profile_manifest"
+missing_selection = "omit_without_substitution"
+
+[share.defaults]
+destination = "/usr/share/koa/defaults/"
+selection = "effective_profile_manifest"
+missing_selection = "block_if_profile_requires"
+
+[share.locales]
+destination = "/usr/share/koa/locales/"
+selection = "effective_profile_manifest"
+missing_selection = "block_if_profile_requires"
+
+[staging]
+active_target_overwrite = false
+recovery_target_overwrite = false
+inactive_stage_required = true
+atomic_boot_selection_required = true
+previous_good_retained = true
+failed_candidate_auto_retry = false
+
+[acceptance]
+boot_success_is_acceptance = false
+required_checks = [
+  "artifact_identity",
+  "signature_and_revocation",
+  "profile_compatibility",
+  "hardware_and_boot_compatibility",
+  "complete_release_set",
+  "storage_availability",
+  "governance_runtime",
+  "required_service_health",
+  "recovery_readiness",
+]
+
+[recovery]
+recovery_manifest = "packaging/system/recovery-image.toml"
+rollback_is_data_restore = false
+forward_repair_when_rollback_unsafe = true
+
+[validation]
+blocked_by = ["B-0092", "B-0023", "B-0028", "B-0033", "B-0038", "B-0043", "B-0048", "B-0053", "B-0058"]
+required = [
+  "all_payload_destinations_declared",
+  "all_sources_immutable",
+  "no_secret_payload",
+  "no_mutable_state_payload",
+  "reproducible_build",
+  "sbom_complete",
+  "provenance_verifiable",
+  "signature_valid",
+  "recovery_artifact_valid",
+  "release_set_compatible",
+]

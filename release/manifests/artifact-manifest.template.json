@@ -1,0 +1,113 @@
+{
+  "template_format": "koa.artifact-manifest.template.v1",
+  "template_status": "non_authoritative_candidate",
+  "canonical_schema_ref": "docs/schemas/artifact-manifest.schema.json",
+  "schema_resolution": "required_before_publication",
+  "authority_refs": [
+    "docs/contracts/artifact-classes.contract.json",
+    "docs/contracts/release-channels.contract.json",
+    "docs/06-lifecycle/01-artifact-classes.md#45-common-manifest"
+  ],
+  "artifact_identity": {
+    "artifact_id": "replace.artifact",
+    "artifact_class": "replace_with_canonical_artifact_class_key",
+    "artifact_class_contract_version": "1.2.0",
+    "version": "0.0.0",
+    "human_version": "replace-version",
+    "release_channel": "services"
+  },
+  "created_at": "1970-01-01T00:00:00Z",
+  "producer": {
+    "producer_id": "replace.producer",
+    "authority_ref": "docs/contracts/artifact-classes.contract.json"
+  },
+  "source_identities": [
+    {
+      "source_id": "replace.source",
+      "source_ref": "replace/source.lock.json",
+      "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ],
+  "toolchain_identities": [
+    {
+      "toolchain_id": "replace.toolchain",
+      "version": "0.0.0",
+      "contract_ref": "docs/contracts/toolchains/replace.toolchain.json"
+    }
+  ],
+  "payload": {
+    "inventory_ref": "generated/release/inventory/replace.json",
+    "content_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "size_bytes": 0
+  },
+  "integrity": {
+    "algorithm": "sha256",
+    "manifest_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "verification_status": "unverified"
+  },
+  "signatures": [
+    {
+      "signature_ref": "generated/release/signatures/replace.json",
+      "verification_status": "unverified"
+    }
+  ],
+  "target": {
+    "profile_refs": [
+      "docs/contracts/profiles/replace.profile.json"
+    ],
+    "architectures": [
+      "replace-architecture"
+    ],
+    "platforms": [
+      "replace-platform"
+    ]
+  },
+  "compatibility": {
+    "status": "not_evaluated",
+    "component_contract_refs": [
+      "docs/contracts/components/replace.component.json"
+    ],
+    "schema_refs": [
+      "docs/contracts/artifact-contracts/replace.schema.json"
+    ],
+    "peer_artifact_refs": [
+      "generated/release/artifacts/replace.json"
+    ],
+    "dependency_refs": [
+      "generated/release/artifacts/replace-dependency.json"
+    ],
+    "evidence_refs": [
+      "generated/release/evidence/replace-compatibility.json"
+    ]
+  },
+  "migration": {
+    "required": false,
+    "plan_ref": "generated/release/migrations/replace.json"
+  },
+  "recovery": {
+    "mode": "rollback_or_forward_repair",
+    "procedure_ref": "generated/release/recovery/replace.json"
+  },
+  "evidence_refs": [
+    "generated/release/evidence/replace-validation.json"
+  ],
+  "sbom_ref": "generated/release/sbom/replace.json",
+  "provenance_ref": "generated/release/provenance/replace.json",
+  "revocation": {
+    "status": "not_evaluated",
+    "policy_ref": "generated/release/revocation/replace.json"
+  },
+  "downgrade": {
+    "allowed": false,
+    "floor_ref": "generated/release/policy/replace-downgrade-floor.json"
+  },
+  "retention_class": "replace_with_canonical_retention_class",
+  "publication": {
+    "eligible": false,
+    "reason": "template_contains_unresolved_replace_values"
+  },
+  "activation": {
+    "eligible": false,
+    "partial_activation_allowed": false
+  }
+}

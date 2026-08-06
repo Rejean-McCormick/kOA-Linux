@@ -1,0 +1,1795 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.koa.local/interfaces/jobs/job-status.schema.json",
+  "title": "kOA Job Status",
+  "description": "Represents the observable state of one job request and its latest closed lifecycle transition. It separates scheduler state, admission, attempts, resource binding, and owner-verified domain outcome; scheduler acknowledgement is never synthesized as successful domain completion.",
+  "$comment": "Canonical sources: docs/08-operations/06-job-scheduling.md; docs/02-system/06-capability-model.md; docs/02-system/20-receipts-and-critical-transitions.md. Correlation and failure envelopes are referenced from B-0015/B-0014 rather than redefined here.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "status_id",
+    "request_id",
+    "workload_owner_ref",
+    "target_scope",
+    "observed_at",
+    "current_state",
+    "state_entered_at",
+    "terminal",
+    "transition",
+    "attempt_count",
+    "authoritative_outcome",
+    "scheduler_acknowledgement_is_completion",
+    "correlation",
+    "receipt_refs"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "status_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$"
+    },
+    "request_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$"
+    },
+    "workload_owner_ref": {
+      "type": "string",
+      "pattern": "^\\S{1,512}$"
+    },
+    "target_scope": {
+      "$ref": "#/$defs/target_scope"
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "current_state": {
+      "type": "string",
+      "enum": [
+        "submitted",
+        "validating",
+        "admitted",
+        "eligible",
+        "dispatched",
+        "starting",
+        "running",
+        "completed",
+        "queued",
+        "deferred",
+        "blocked",
+        "rejected",
+        "checkpointing",
+        "suspended",
+        "retry_wait",
+        "failed",
+        "cancelled",
+        "expired",
+        "restoring"
+      ]
+    },
+    "state_entered_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "terminal": {
+      "type": "boolean"
+    },
+    "transition": {
+      "$ref": "#/$defs/job_transition"
+    },
+    "state_history": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/job_transition"
+      }
+    },
+    "admission": {
+      "$ref": "#/$defs/admission"
+    },
+    "queue": {
+      "$ref": "#/$defs/queue_state"
+    },
+    "attempt_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "attempt": {
+      "$ref": "#/$defs/attempt"
+    },
+    "execution_binding": {
+      "$ref": "#/$defs/execution_binding"
+    },
+    "worker": {
+      "$ref": "#/$defs/worker"
+    },
+    "checkpoint": {
+      "$ref": "#/$defs/checkpoint"
+    },
+    "retry": {
+      "$ref": "#/$defs/retry_state"
+    },
+    "cancellation": {
+      "$ref": "#/$defs/cancellation"
+    },
+    "expiration": {
+      "$ref": "#/$defs/expiration"
+    },
+    "timing": {
+      "$ref": "#/$defs/timing"
+    },
+    "resource_observations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/resource_observation"
+      }
+    },
+    "progress": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "authoritative_outcome": {
+      "type": "string",
+      "enum": [
+        "no_effect",
+        "candidate_created",
+        "request_recorded",
+        "change_committed",
+        "policy_decision_recorded",
+        "evidence_recorded",
+        "external_effect_confirmed",
+        "rolled_back"
+      ]
+    },
+    "result": {
+      "$ref": "#/$defs/result"
+    },
+    "failure": {
+      "$ref": "../transport/error-envelope.schema.json"
+    },
+    "current_authorization_state": {
+      "type": "string",
+      "enum": [
+        "not_evaluated",
+        "valid",
+        "revoked",
+        "expired",
+        "indeterminate",
+        "not_required"
+      ]
+    },
+    "scheduler_acknowledgement_is_completion": {
+      "const": false
+    },
+    "correlation": {
+      "$ref": "../receipts/correlation.schema.json"
+    },
+    "receipt_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "current_state": {
+          "const": "submitted"
+        },
+        "transition": {
+          "properties": {
+            "to_state": {
+              "const": "submitted"
+            }
+          },
+          "required": [
+            "to_state"
+          ]
+        }
+      },
+      "required": [
+        "current_state",
+        "transition"
+      ]
+    },
+    {
+      "properties": {
+        "current_state": {
+          "const": "validating"
+        },
+        "transition": {
+          "properties": {
+            "to_state": {
+              "const": "validating"
+            }
+          },
+          "required": [
+            "to_state"
+          ]
+        }
+      },
+      "required": [
+        "current_state",
+        "transition"
+      ]
+    },
+    {
+      "properties": {
+        "current_state": {
+          "const": "admitted"
+        },
+        "transition": {
+          "properties": {
+            "to_state": {
+              "const": "admitted"
+            }
+          },
+          "required": [
+            "to_state"
+          ]
+        }
+      },
+      "required": [
+        "current_state",
+        "transition"
+      ]
+    },
+    {
+      "properties": {
+        "current_state": {
+          "const": "eligible"
+        },
+        "transition": {
+          "properties": {
+            "to_state": {
+              "const": "eligible"
+            }
+          },
+          "required": [
+            "to_state"
+          ]
+        }
+      },
+      "required": [
+        "current_state",
+        "transition"
+      ]
+    },
+    {
+      "properties": {
+        "current_state": {
+          "const": "dispatched"
+        },
+        "transition": {
+          "properties": {
+            "to_state": {
+              "const": "dispatched"
+            }
+          },
+          "required": [
+            "to_state"
+          ]
+        }
+      },
+      "required": [
+        "current_state",
+        "transition"
+      ]
+    },
+    {
+      "properties": {
+        "current_state": {
+          "const": "starting"
+        },
+        "transition": {
+          "properties": {
+            "to_state": {
+              "const": "starting"
+            }
+          },
+          "required": [
+            "to_state"
+          ]
+        }
+      },
+      "required": [
+        "current_state",
+        "transition"
+      ]
+    },
+    {
+      "properties": {
+        "current_state": {
+          "const": "running"
+        },
+        "transition": {
+          "properties": {
+            "to_state": {
+              "const": "running"
+            }
+          },
+          "required": [
+            "to_state"
+          ]
+        }
+      },
+      "required": [
+        "current_state",
+        "transition"
+      ]
+    },
+    {
+      "properties": {
+        "current_state": {
+          "const": "completed"
+        },
+        "transition": {
+          "properties": {
+            "to_state": {
+              "const": "completed"
+            }
+          },
+          "required": [
+            "to_state"
+          ]
+        }
+      },
+      "required": [
+        "current_state",
+        "transition"
+      ]
+    },
+    {
+      "properties": {
+        "current_state": {
+          "const": "queued"
+        },
+        "transition": {
+          "properties": {
+            "to_state": {
+              "const": "queued"
+            }
+          },
+          "required": [
+            "to_state"
+          ]
+        }
+      },
+      "required": [
+        "current_state",
+        "transition"
+      ]
+    },
+    {
+      "properties": {
+        "current_state": {
+          "const": "deferred"
+        },
+        "transition": {
+          "properties": {
+            "to_state": {
+              "const": "deferred"
+            }
+          },
+          "required": [
+            "to_state"
+          ]
+        }
+      },
+      "required": [
+        "current_state",
+        "transition"
+      ]
+    },
+    {
+      "properties": {
+        "current_state": {
+          "const": "blocked"
+        },
+        "transition": {
+          "properties": {
+            "to_state": {
+              "const": "blocked"
+            }
+          },
+          "required": [
+            "to_state"
+          ]
+        }
+      },
+      "required": [
+        "current_state",
+        "transition"
+      ]
+    },
+    {
+      "properties": {
+        "current_state": {
+          "const": "rejected"
+        },
+        "transition": {
+          "properties": {
+            "to_state": {
+              "const": "rejected"
+            }
+          },
+          "required": [
+            "to_state"
+          ]
+        }
+      },
+      "required": [
+        "current_state",
+        "transition"
+      ]
+    },
+    {
+      "properties": {
+        "current_state": {
+          "const": "checkpointing"
+        },
+        "transition": {
+          "properties": {
+            "to_state": {
+              "const": "checkpointing"
+            }
+          },
+          "required": [
+            "to_state"
+          ]
+        }
+      },
+      "required": [
+        "current_state",
+        "transition"
+      ]
+    },
+    {
+      "properties": {
+        "current_state": {
+          "const": "suspended"
+        },
+        "transition": {
+          "properties": {
+            "to_state": {
+              "const": "suspended"
+            }
+          },
+          "required": [
+            "to_state"
+          ]
+        }
+      },
+      "required": [
+        "current_state",
+        "transition"
+      ]
+    },
+    {
+      "properties": {
+        "current_state": {
+          "const": "retry_wait"
+        },
+        "transition": {
+          "properties": {
+            "to_state": {
+              "const": "retry_wait"
+            }
+          },
+          "required": [
+            "to_state"
+          ]
+        }
+      },
+      "required": [
+        "current_state",
+        "transition"
+      ]
+    },
+    {
+      "properties": {
+        "current_state": {
+          "const": "failed"
+        },
+        "transition": {
+          "properties": {
+            "to_state": {
+              "const": "failed"
+            }
+          },
+          "required": [
+            "to_state"
+          ]
+        }
+      },
+      "required": [
+        "current_state",
+        "transition"
+      ]
+    },
+    {
+      "properties": {
+        "current_state": {
+          "const": "cancelled"
+        },
+        "transition": {
+          "properties": {
+            "to_state": {
+              "const": "cancelled"
+            }
+          },
+          "required": [
+            "to_state"
+          ]
+        }
+      },
+      "required": [
+        "current_state",
+        "transition"
+      ]
+    },
+    {
+      "properties": {
+        "current_state": {
+          "const": "expired"
+        },
+        "transition": {
+          "properties": {
+            "to_state": {
+              "const": "expired"
+            }
+          },
+          "required": [
+            "to_state"
+          ]
+        }
+      },
+      "required": [
+        "current_state",
+        "transition"
+      ]
+    },
+    {
+      "properties": {
+        "current_state": {
+          "const": "restoring"
+        },
+        "transition": {
+          "properties": {
+            "to_state": {
+              "const": "restoring"
+            }
+          },
+          "required": [
+            "to_state"
+          ]
+        }
+      },
+      "required": [
+        "current_state",
+        "transition"
+      ]
+    }
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "current_state": {
+            "enum": [
+              "completed",
+              "deferred",
+              "rejected",
+              "failed",
+              "cancelled",
+              "expired"
+            ]
+          }
+        },
+        "required": [
+          "current_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "terminal": {
+            "const": true
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "terminal": {
+            "const": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "current_state": {
+            "enum": [
+              "admitted",
+              "eligible",
+              "queued",
+              "deferred",
+              "blocked",
+              "rejected"
+            ]
+          }
+        },
+        "required": [
+          "current_state"
+        ]
+      },
+      "then": {
+        "required": [
+          "admission"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "current_state": {
+            "const": "queued"
+          }
+        },
+        "required": [
+          "current_state"
+        ]
+      },
+      "then": {
+        "required": [
+          "queue"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "current_state": {
+            "enum": [
+              "dispatched",
+              "starting",
+              "running",
+              "checkpointing",
+              "suspended",
+              "retry_wait",
+              "completed",
+              "failed"
+            ]
+          }
+        },
+        "required": [
+          "current_state"
+        ]
+      },
+      "then": {
+        "required": [
+          "attempt"
+        ],
+        "properties": {
+          "attempt_count": {
+            "minimum": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "current_state": {
+            "const": "completed"
+          }
+        },
+        "required": [
+          "current_state"
+        ]
+      },
+      "then": {
+        "required": [
+          "result"
+        ],
+        "properties": {
+          "result": {
+            "properties": {
+              "owner_verified": {
+                "const": true
+              },
+              "scheduler_synthesized": {
+                "const": false
+              }
+            },
+            "required": [
+              "owner_verified",
+              "scheduler_synthesized"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "current_state": {
+            "const": "failed"
+          }
+        },
+        "required": [
+          "current_state"
+        ]
+      },
+      "then": {
+        "required": [
+          "failure"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "current_state": {
+            "const": "cancelled"
+          }
+        },
+        "required": [
+          "current_state"
+        ]
+      },
+      "then": {
+        "required": [
+          "cancellation"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "current_state": {
+            "const": "expired"
+          }
+        },
+        "required": [
+          "current_state"
+        ]
+      },
+      "then": {
+        "required": [
+          "expiration"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "current_state": {
+            "const": "suspended"
+          }
+        },
+        "required": [
+          "current_state"
+        ]
+      },
+      "then": {
+        "required": [
+          "checkpoint"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "current_state": {
+            "const": "retry_wait"
+          }
+        },
+        "required": [
+          "current_state"
+        ]
+      },
+      "then": {
+        "required": [
+          "retry"
+        ]
+      }
+    }
+  ],
+  "$defs": {
+    "target_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "component_ref",
+        "capability_id",
+        "target_ref",
+        "environment",
+        "profile_ref"
+      ],
+      "properties": {
+        "component_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "capability_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$"
+        },
+        "target_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "environment": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "profile_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "overlay_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "tenant_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "workspace_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "node_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        }
+      }
+    },
+    "job_transition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "from_state",
+        "to_state",
+        "transitioned_at",
+        "reason_codes"
+      ],
+      "properties": {
+        "from_state": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            null,
+            "submitted",
+            "validating",
+            "admitted",
+            "eligible",
+            "queued",
+            "dispatched",
+            "starting",
+            "running",
+            "checkpointing",
+            "suspended",
+            "retry_wait",
+            "blocked",
+            "restoring"
+          ]
+        },
+        "to_state": {
+          "type": "string",
+          "enum": [
+            "submitted",
+            "validating",
+            "admitted",
+            "eligible",
+            "dispatched",
+            "starting",
+            "running",
+            "completed",
+            "queued",
+            "deferred",
+            "blocked",
+            "rejected",
+            "checkpointing",
+            "suspended",
+            "retry_wait",
+            "failed",
+            "cancelled",
+            "expired",
+            "restoring"
+          ]
+        },
+        "transitioned_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "reason_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{2,127}$"
+          }
+        },
+        "actor_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "receipt_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "from_state": {
+                "type": "null"
+              }
+            },
+            "required": [
+              "from_state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "to_state": {
+                "enum": [
+                  "submitted"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "from_state": {
+                "const": "submitted"
+              }
+            },
+            "required": [
+              "from_state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "to_state": {
+                "enum": [
+                  "validating",
+                  "cancelled",
+                  "expired"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "from_state": {
+                "const": "validating"
+              }
+            },
+            "required": [
+              "from_state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "to_state": {
+                "enum": [
+                  "admitted",
+                  "queued",
+                  "deferred",
+                  "blocked",
+                  "rejected",
+                  "cancelled",
+                  "expired"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "from_state": {
+                "const": "admitted"
+              }
+            },
+            "required": [
+              "from_state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "to_state": {
+                "enum": [
+                  "eligible",
+                  "queued",
+                  "deferred",
+                  "blocked",
+                  "cancelled",
+                  "expired"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "from_state": {
+                "const": "eligible"
+              }
+            },
+            "required": [
+              "from_state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "to_state": {
+                "enum": [
+                  "dispatched",
+                  "queued",
+                  "blocked",
+                  "cancelled",
+                  "expired"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "from_state": {
+                "const": "queued"
+              }
+            },
+            "required": [
+              "from_state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "to_state": {
+                "enum": [
+                  "eligible",
+                  "blocked",
+                  "rejected",
+                  "cancelled",
+                  "expired",
+                  "restoring"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "from_state": {
+                "const": "dispatched"
+              }
+            },
+            "required": [
+              "from_state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "to_state": {
+                "enum": [
+                  "starting",
+                  "retry_wait",
+                  "failed",
+                  "cancelled",
+                  "expired",
+                  "restoring"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "from_state": {
+                "const": "starting"
+              }
+            },
+            "required": [
+              "from_state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "to_state": {
+                "enum": [
+                  "running",
+                  "retry_wait",
+                  "failed",
+                  "cancelled",
+                  "expired",
+                  "restoring"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "from_state": {
+                "const": "running"
+              }
+            },
+            "required": [
+              "from_state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "to_state": {
+                "enum": [
+                  "completed",
+                  "checkpointing",
+                  "retry_wait",
+                  "failed",
+                  "cancelled",
+                  "expired",
+                  "restoring"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "from_state": {
+                "const": "checkpointing"
+              }
+            },
+            "required": [
+              "from_state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "to_state": {
+                "enum": [
+                  "suspended",
+                  "running",
+                  "failed",
+                  "cancelled",
+                  "expired",
+                  "restoring"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "from_state": {
+                "const": "suspended"
+              }
+            },
+            "required": [
+              "from_state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "to_state": {
+                "enum": [
+                  "restoring",
+                  "cancelled",
+                  "expired"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "from_state": {
+                "const": "retry_wait"
+              }
+            },
+            "required": [
+              "from_state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "to_state": {
+                "enum": [
+                  "eligible",
+                  "queued",
+                  "blocked",
+                  "failed",
+                  "cancelled",
+                  "expired",
+                  "restoring"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "from_state": {
+                "const": "blocked"
+              }
+            },
+            "required": [
+              "from_state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "to_state": {
+                "enum": [
+                  "restoring",
+                  "cancelled",
+                  "expired"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "from_state": {
+                "const": "restoring"
+              }
+            },
+            "required": [
+              "from_state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "to_state": {
+                "enum": [
+                  "eligible",
+                  "queued",
+                  "dispatched",
+                  "starting",
+                  "running",
+                  "suspended",
+                  "retry_wait",
+                  "completed",
+                  "blocked",
+                  "rejected",
+                  "failed",
+                  "cancelled",
+                  "expired"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "admission": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "decision_id",
+        "outcome",
+        "decided_at",
+        "reason_codes"
+      ],
+      "properties": {
+        "decision_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$"
+        },
+        "outcome": {
+          "type": "string",
+          "enum": [
+            "admitted",
+            "queued",
+            "deferred",
+            "rejected",
+            "blocked"
+          ]
+        },
+        "decided_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "resolved_envelope_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "reason_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{2,127}$"
+          },
+          "minItems": 1
+        },
+        "receipt_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        }
+      }
+    },
+    "queue_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "queue_item_id",
+        "owner_ref",
+        "delivery_state",
+        "updated_at",
+        "retry_count"
+      ],
+      "properties": {
+        "queue_item_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$"
+        },
+        "owner_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "delivery_state": {
+          "type": "string",
+          "enum": [
+            "accepted",
+            "waiting",
+            "eligible",
+            "dequeued",
+            "cancelled",
+            "expired",
+            "rejected",
+            "completed"
+          ]
+        },
+        "position_or_priority": {
+          "type": [
+            "integer",
+            "string"
+          ],
+          "minLength": 1
+        },
+        "fairness_group": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "retry_count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "attempt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "attempt_id",
+        "attempt_number",
+        "state",
+        "started_at"
+      ],
+      "properties": {
+        "attempt_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$"
+        },
+        "attempt_number": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "created",
+            "dispatching",
+            "starting",
+            "running",
+            "checkpointing",
+            "suspended",
+            "retry_wait",
+            "completed",
+            "failed",
+            "cancelled",
+            "expired",
+            "restoring"
+          ]
+        },
+        "started_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "ended_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lease_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        }
+      }
+    },
+    "execution_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "binding_id",
+        "target_execution_ref",
+        "applied_limits",
+        "effective_at"
+      ],
+      "properties": {
+        "binding_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$"
+        },
+        "target_execution_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "applied_limits": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": [
+              "number",
+              "integer",
+              "string",
+              "boolean"
+            ]
+          }
+        },
+        "lease_or_reservation_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "effective_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "worker": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "worker_id",
+        "identity_ref",
+        "profile_ref",
+        "readiness"
+      ],
+      "properties": {
+        "worker_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$"
+        },
+        "identity_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "profile_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "capability_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "artifact_version_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "readiness": {
+          "type": "string",
+          "enum": [
+            "ready",
+            "not_ready",
+            "unknown"
+          ]
+        }
+      }
+    },
+    "checkpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "checkpoint_id",
+        "owner_ref",
+        "durability",
+        "created_at",
+        "version_ref"
+      ],
+      "properties": {
+        "checkpoint_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$"
+        },
+        "owner_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "durability": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "version_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "storage_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        }
+      }
+    },
+    "retry_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "retry_count",
+        "maximum_attempts",
+        "next_eligible_at",
+        "failure_class"
+      ],
+      "properties": {
+        "retry_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "maximum_attempts": {
+          "type": "integer",
+          "minimum": 2
+        },
+        "next_eligible_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "failure_class": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      }
+    },
+    "cancellation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cancelled_at",
+        "cause",
+        "prevents_retry"
+      ],
+      "properties": {
+        "cancelled_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "actor_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "cause": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "prevents_retry": {
+          "const": true
+        },
+        "receipt_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        }
+      }
+    },
+    "expiration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "expired_at",
+        "cause",
+        "prevents_retry"
+      ],
+      "properties": {
+        "expired_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "cause": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "prevents_retry": {
+          "const": true
+        },
+        "receipt_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        }
+      }
+    },
+    "timing": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "submitted_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "first_eligible_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "deadline": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "started_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "completed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "queue_wait_seconds": {
+          "type": "number",
+          "minimum": 0
+        },
+        "execution_seconds": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "resource_observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "observation_id",
+        "observed_at",
+        "measurement_source",
+        "measurements"
+      ],
+      "properties": {
+        "observation_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$"
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "measurement_source": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "measurements": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": [
+              "number",
+              "integer"
+            ]
+          }
+        }
+      }
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "result_id",
+        "owner_result_ref",
+        "owner_verified",
+        "scheduler_synthesized",
+        "recorded_at"
+      ],
+      "properties": {
+        "result_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$"
+        },
+        "owner_result_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "owner_verified": {
+          "type": "boolean"
+        },
+        "scheduler_synthesized": {
+          "const": false
+        },
+        "recorded_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "result_contract_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "result_payload_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        }
+      }
+    }
+  }
+}

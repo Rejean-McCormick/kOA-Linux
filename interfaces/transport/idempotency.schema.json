@@ -1,0 +1,501 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.koa.local/interfaces/transport/idempotency.schema.json",
+  "title": "kOA Idempotency Context",
+  "description": "Binds one retryable operation to a stable identity and canonical request fingerprint. The receiving owner enforces the declared duplicate behavior; transport carries the context but does not decide authority or completion.",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "semantic_version": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"
+    },
+    "identifier": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,254}$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "component_endpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "component_id"
+      ],
+      "properties": {
+        "component_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "instance_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "profile_id": {
+          "$ref": "#/$defs/identifier"
+        }
+      }
+    },
+    "receiver_selector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "identifier"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "component",
+            "capability",
+            "subscription",
+            "topic"
+          ]
+        },
+        "identifier": {
+          "$ref": "#/$defs/identifier"
+        }
+      }
+    },
+    "interface_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "interface_id",
+        "interface_version"
+      ],
+      "properties": {
+        "interface_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "interface_version": {
+          "$ref": "#/$defs/semantic_version"
+        },
+        "contract_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        }
+      }
+    },
+    "correlation_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "correlation_id"
+      ],
+      "properties": {
+        "correlation_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "causation_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "request_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "trace_id": {
+          "$ref": "#/$defs/identifier"
+        }
+      }
+    },
+    "payload_representation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "media_type",
+        "schema_ref",
+        "schema_version"
+      ],
+      "properties": {
+        "media_type": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9!#$&^_.+-]+/[A-Za-z0-9!#$&^_.+-]+(?:\\s*;\\s*[A-Za-z0-9!#$&^_.+-]+=[^;]+)*$"
+        },
+        "schema_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "schema_version": {
+          "$ref": "#/$defs/semantic_version"
+        },
+        "encoding": {
+          "type": "string",
+          "enum": [
+            "identity",
+            "base64",
+            "uri_reference"
+          ]
+        },
+        "content_digest": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "algorithm",
+            "value"
+          ],
+          "properties": {
+            "algorithm": {
+              "const": "sha256"
+            },
+            "value": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          }
+        }
+      }
+    },
+    "release_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "release_set_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "sender_release": {
+          "$ref": "#/$defs/semantic_version"
+        },
+        "receiver_release": {
+          "$ref": "#/$defs/semantic_version"
+        }
+      },
+      "minProperties": 1
+    },
+    "evidence_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "receipt_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/identifier"
+          }
+        },
+        "evidence_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          }
+        }
+      },
+      "minProperties": 1
+    }
+  },
+  "required": [
+    "schema_version",
+    "idempotency_key",
+    "operation",
+    "owner_component_id",
+    "scope",
+    "canonical_request",
+    "duplicate_handling",
+    "validity",
+    "authority"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "idempotency_key": {
+      "$ref": "#/$defs/identifier"
+    },
+    "request_id": {
+      "$ref": "#/$defs/identifier"
+    },
+    "correlation_id": {
+      "$ref": "#/$defs/identifier"
+    },
+    "operation": {
+      "$ref": "#/$defs/identifier"
+    },
+    "owner_component_id": {
+      "$ref": "#/$defs/identifier"
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "owner_operation",
+            "owner_operation_target",
+            "workflow_step"
+          ]
+        },
+        "target_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "workflow_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "step_id": {
+          "$ref": "#/$defs/identifier"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "owner_operation_target"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "target_ref"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "workflow_step"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "workflow_id",
+              "step_id"
+            ]
+          }
+        }
+      ]
+    },
+    "canonical_request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "algorithm",
+        "digest",
+        "media_type"
+      ],
+      "properties": {
+        "algorithm": {
+          "const": "sha256"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "media_type": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9!#$&^_.+-]+/[A-Za-z0-9!#$&^_.+-]+(?:\\s*;\\s*[A-Za-z0-9!#$&^_.+-]+=[^;]+)*$"
+        },
+        "schema_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "schema_version": {
+          "$ref": "#/$defs/semantic_version"
+        }
+      },
+      "dependentRequired": {
+        "schema_ref": [
+          "schema_version"
+        ],
+        "schema_version": [
+          "schema_ref"
+        ]
+      }
+    },
+    "expected_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "value"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "version",
+            "etag",
+            "digest",
+            "state_id"
+          ]
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        }
+      }
+    },
+    "duplicate_handling": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "action",
+        "result_consistency"
+      ],
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "return_prior_result",
+            "resume_existing_operation",
+            "reject_duplicate",
+            "reconcile_before_retry"
+          ]
+        },
+        "result_consistency": {
+          "type": "string",
+          "enum": [
+            "exact_prior_result",
+            "current_status",
+            "reconciled_result"
+          ]
+        },
+        "terminal_result_ref_required": {
+          "type": "boolean"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "action": {
+                "const": "return_prior_result"
+              }
+            },
+            "required": [
+              "action"
+            ]
+          },
+          "then": {
+            "properties": {
+              "result_consistency": {
+                "const": "exact_prior_result"
+              },
+              "terminal_result_ref_required": {
+                "const": true
+              }
+            },
+            "required": [
+              "terminal_result_ref_required"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "action": {
+                "const": "resume_existing_operation"
+              }
+            },
+            "required": [
+              "action"
+            ]
+          },
+          "then": {
+            "properties": {
+              "result_consistency": {
+                "const": "current_status"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "action": {
+                "const": "reconcile_before_retry"
+              }
+            },
+            "required": [
+              "action"
+            ]
+          },
+          "then": {
+            "properties": {
+              "result_consistency": {
+                "const": "reconciled_result"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "validity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "created_at"
+      ],
+      "properties": {
+        "created_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "expires_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "retain_terminal_result_seconds": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "anti_replay": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "nonce": {
+          "$ref": "#/$defs/identifier"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "challenge_ref": {
+          "$ref": "#/$defs/identifier"
+        }
+      },
+      "minProperties": 1
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "receiving_owner_enforces",
+        "transport_grants_authority",
+        "duplicate_effects_permitted"
+      ],
+      "properties": {
+        "receiving_owner_enforces": {
+          "const": true
+        },
+        "transport_grants_authority": {
+          "const": false
+        },
+        "duplicate_effects_permitted": {
+          "const": false
+        }
+      }
+    }
+  }
+}

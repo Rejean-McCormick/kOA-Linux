@@ -1,0 +1,43 @@
+{
+  "$schema": "../../docs/contracts/artifact-contracts/space-definition.schema.json",
+  "space_id": "development_fixture_space",
+  "title": "Development Fixture Space",
+  "version": "1.0.0",
+  "description": "Synthetic presentation-only Space used by local contract tests.",
+  "default_module_id": "fixture_home",
+  "module_instances": [
+    {
+      "module_id": "fixture_home",
+      "manifest_ref": "fixtures/module-manifests/fixture-home.json",
+      "enabled": true,
+      "required": true,
+      "order": 0,
+      "public_label": "Fixture Home",
+      "public_icon_ref": null,
+      "home_route_override": "fixture.home"
+    }
+  ],
+  "global_topbar": [],
+  "appearance": {
+    "theme_ref": "themes/development-default",
+    "density": "comfortable",
+    "logo_ref": null,
+    "accent_token": null,
+    "allow_module_accent": false
+  },
+  "offline_policy": {
+    "shell_available": true,
+    "retain_last_validated_definition": true,
+    "unavailable_module_behavior": "show_unavailable",
+    "network_state_indicator": true
+  },
+  "assignment_scope": "user",
+  "authority_boundary": {
+    "presentation_only": true,
+    "may_grant_capabilities": false,
+    "contains_business_state": false,
+    "contains_executable_extension": false
+  },
+  "example": true,
+  "authority": "non_authoritative_example"
+}

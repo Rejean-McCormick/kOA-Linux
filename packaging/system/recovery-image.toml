@@ -1,0 +1,90 @@
+# Independently verifiable recovery artifact for the system release channel.
+format = "koa.recovery-image-package"
+format_version = "1.0.0"
+status = "blocked_missing_recovery_payload_and_assembly_plan"
+artifact_id_namespace = "koa.system.recovery"
+artifact_class_key = "recovery_artifact"
+release_channel = "system"
+profile_contract = "docs/contracts/profiles/sovereign-linux-node.profile.json"
+package_sources = "packaging/system/package-sources.toml"
+runtime_path_registry = ".koa/runtime-paths.json"
+assembly_plan_bundle = "B-0092"
+activation_ready = false
+
+[identity]
+version_source = "signed_artifact_manifest"
+content_digest_required = true
+manifest_identity_required = true
+provenance_required = true
+sbom_required = true
+signature_required = true
+independent_invocation_test_required = true
+
+[payload_selection]
+registry = ".koa/runtime-paths.json#repository_payload_mappings"
+required_sources = [
+  "host/recovery/",
+  "docs/contracts/system.contract.json",
+  "docs/contracts/terminology.contract.json",
+  "docs/contracts/release-channels.contract.json",
+  "docs/contracts/artifact-classes.contract.json",
+  "docs/contracts/artifact-contracts/",
+]
+required_destinations = [
+  "/usr/share/koa/recovery/",
+  "/usr/lib/koa/contracts/system.contract.json",
+  "/usr/lib/koa/contracts/terminology.contract.json",
+  "/usr/lib/koa/contracts/release-channels.contract.json",
+  "/usr/lib/koa/contracts/artifact-classes.contract.json",
+  "/usr/lib/koa/contracts/artifact-contracts/",
+]
+unknown_destination = "reject"
+
+[authority]
+production_profile = false
+release_authority = false
+general_host_authority = false
+activation_requires_node_agent_or_recovery_controller = true
+privileged_operations_use_closed_catalog = true
+all_actions_receipted = true
+
+[secrets]
+ordinary_application_secrets = "excluded"
+external_integration_credentials = "excluded"
+private_signing_keys = "excluded"
+recovery_credentials = "protected_delivery_only"
+production_secret_mounts_inherited = false
+
+[state_access]
+production_state_default = "read_only_or_unmounted"
+component_database_direct_write = false
+restore_requires_owner_validation = true
+rollback_and_restore_evaluated_independently = true
+forward_repair_evaluated_independently = true
+
+[network]
+default = "offline"
+remote_source_required = false
+automatic_reconnection_action = false
+undeclared_endpoint = "reject"
+
+[retention]
+active_image_preserved = true
+previous_good_preserved = true
+current_recovery_preserved_until_replacement_verified = true
+failed_candidate_evidence_preserved = true
+
+[validation]
+blocked_by = ["B-0092"]
+required = [
+  "independent_boot",
+  "artifact_identity",
+  "signature_and_revocation",
+  "profile_compatibility",
+  "release_set_inspection",
+  "active_and_previous_good_inspection",
+  "no_production_secret_inheritance",
+  "closed_privileged_catalog",
+  "offline_operation",
+  "receipt_emission",
+]

@@ -1,0 +1,48 @@
+[
+  {
+    "$schema": "../../../docs/contracts/artifact-contracts/topbar-widget.schema.json",
+    "activation": {
+      "command_ref": null,
+      "kind": "route",
+      "route_id": "ariane.home",
+      "status_provider_ref": null
+    },
+    "compact_only": true,
+    "icon_ref": null,
+    "kind": "action",
+    "label": "Open Ariane",
+    "label_key": "ariane.open",
+    "module_id": "ariane",
+    "offline_behavior": "available",
+    "priority": 10,
+    "required_capabilities": [
+      "ariane_local_navigation"
+    ],
+    "scope": "module",
+    "slot": "primary",
+    "widget_id": "ariane.open"
+  },
+  {
+    "$schema": "../../../docs/contracts/artifact-contracts/topbar-widget.schema.json",
+    "activation": {
+      "command_ref": null,
+      "kind": "status_provider",
+      "route_id": null,
+      "status_provider_ref": "koa://integrations/ariane/route-status"
+    },
+    "compact_only": true,
+    "icon_ref": null,
+    "kind": "status",
+    "label": "Route status",
+    "label_key": "ariane.route_status",
+    "module_id": "ariane",
+    "offline_behavior": "available",
+    "priority": 20,
+    "required_capabilities": [
+      "ariane_local_navigation"
+    ],
+    "scope": "module",
+    "slot": "status",
+    "widget_id": "ariane.route_status"
+  }
+]

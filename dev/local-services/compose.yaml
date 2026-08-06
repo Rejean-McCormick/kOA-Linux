@@ -1,0 +1,109 @@
+name: "${KOA_WORKSPACE_ID:?KOA_WORKSPACE_ID is required}"
+
+services:
+  postgres:
+    profiles: ["local-services"]
+    image: "${KOA_POSTGRES_IMAGE:?Set KOA_POSTGRES_IMAGE to an immutable OCI image reference}"
+    restart: "no"
+    environment:
+      POSTGRES_DB: "${KOA_POSTGRES_DATABASE:-koa_development}"
+      POSTGRES_USER: "${KOA_POSTGRES_USER:-koa_development}"
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      PGDATA: /var/lib/postgresql/data/pgdata
+    secrets:
+      - postgres_password
+    networks:
+      - workspace
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:${KOA_POSTGRES_HOST_PORT:?KOA_POSTGRES_HOST_PORT must be allocated}:5432/tcp"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\" -h 127.0.0.1 -p 5432"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+    tmpfs:
+      - /run/postgresql:rw,noexec,nosuid,nodev,size=16m
+      - /tmp:rw,noexec,nosuid,nodev,size=64m
+    cap_drop: ["ALL"]
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 256
+    mem_limit: 768m
+    cpus: 1.0
+    labels:
+      org.koa.workspace-id: "${KOA_WORKSPACE_ID}"
+      org.koa.owner: "dev.local-services.postgres"
+      org.koa.lifecycle: "workspace-scoped"
+
+  object-store:
+    profiles: ["local-services"]
+    image: "${KOA_OBJECT_STORE_IMAGE:?Set KOA_OBJECT_STORE_IMAGE to an immutable OCI image reference}"
+    restart: "no"
+    command: ["server", "/data", "--console-address", ":9001"]
+    environment:
+      MINIO_ROOT_USER_FILE: /run/secrets/object_store_root_user
+      MINIO_ROOT_PASSWORD_FILE: /run/secrets/object_store_root_password
+    secrets:
+      - object_store_root_user
+      - object_store_root_password
+    networks:
+      - workspace
+    volumes:
+      - object_store_data:/data
+    ports:
+      - "127.0.0.1:${KOA_OBJECT_STORE_API_HOST_PORT:?KOA_OBJECT_STORE_API_HOST_PORT must be allocated}:9000/tcp"
+      - "127.0.0.1:${KOA_OBJECT_STORE_CONSOLE_HOST_PORT:?KOA_OBJECT_STORE_CONSOLE_HOST_PORT must be allocated}:9001/tcp"
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail --silent --show-error http://127.0.0.1:9000/minio/health/live >/dev/null"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=64m
+    cap_drop: ["ALL"]
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 256
+    mem_limit: 512m
+    cpus: 1.0
+    labels:
+      org.koa.workspace-id: "${KOA_WORKSPACE_ID}"
+      org.koa.owner: "dev.local-services.object-store"
+      org.koa.lifecycle: "workspace-scoped"
+
+networks:
+  workspace:
+    name: "${KOA_WORKSPACE_ID}_local_services"
+    driver: bridge
+    internal: true
+    labels:
+      org.koa.workspace-id: "${KOA_WORKSPACE_ID}"
+      org.koa.owner: "dev.local-services"
+      org.koa.lifecycle: "workspace-scoped"
+
+volumes:
+  postgres_data:
+    name: "${KOA_WORKSPACE_ID}_postgres_data"
+    labels:
+      org.koa.workspace-id: "${KOA_WORKSPACE_ID}"
+      org.koa.owner: "dev.local-services.postgres"
+      org.koa.lifecycle: "delete-on-workspace-removal"
+  object_store_data:
+    name: "${KOA_WORKSPACE_ID}_object_store_data"
+    labels:
+      org.koa.workspace-id: "${KOA_WORKSPACE_ID}"
+      org.koa.owner: "dev.local-services.object-store"
+      org.koa.lifecycle: "delete-on-workspace-removal"
+
+secrets:
+  postgres_password:
+    file: "${KOA_DEV_SECRETS_DIR:?KOA_DEV_SECRETS_DIR is required}/postgres_password"
+  object_store_root_user:
+    file: "${KOA_DEV_SECRETS_DIR:?KOA_DEV_SECRETS_DIR is required}/object_store_root_user"
+  object_store_root_password:
+    file: "${KOA_DEV_SECRETS_DIR:?KOA_DEV_SECRETS_DIR is required}/object_store_root_password"

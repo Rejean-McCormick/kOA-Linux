@@ -15,6 +15,7 @@ REQUIRED_SUBSYSTEMS = {
     "orgo": "orgo",
     "sentient": "sentient",
     "semantik_architect": "semantik-architect",
+    "koa_spaces": "koa-spaces",
 }
 
 FORBIDDEN_SUBSYSTEM_IDS = {"uckk"}
@@ -70,7 +71,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--require-mounted",
         action="store_true",
-        help="Fail when one of the five reserved subsystem documentation mounts is absent.",
+        help="Fail when one of the six reserved subsystem documentation mounts is absent.",
     )
     args = parser.parse_args(argv)
 
@@ -115,6 +116,20 @@ def main(argv: list[str] | None = None) -> int:
             failures.append(f"{path}: cross-write prohibition missing")
         if rules.get("internal_behavior_duplication") != "prohibited":
             failures.append(f"{path}: duplication prohibition missing")
+
+        if subsystem_id == "koa_spaces":
+            if document.get("optional") is not True:
+                failures.append(f"{path}: kOA Spaces must remain optional")
+            if document.get("replaceable") is not True:
+                failures.append(f"{path}: kOA Spaces must remain replaceable")
+            if document.get("authority") != "non_authoritative_presentation":
+                failures.append(f"{path}: kOA Spaces authority must be non_authoritative_presentation")
+            if rules.get("presentation_grants_authority") is not False:
+                failures.append(f"{path}: presentation_grants_authority must be false")
+            if rules.get("menu_visibility_is_authorization") is not False:
+                failures.append(f"{path}: menu_visibility_is_authorization must be false")
+            if rules.get("replacement_preserves_business_state") is not True:
+                failures.append(f"{path}: replacement_preserves_business_state must be true")
 
     missing = sorted(set(REQUIRED_SUBSYSTEMS) - seen)
     if missing:

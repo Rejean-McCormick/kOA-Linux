@@ -1,0 +1,137 @@
+[manifest]
+format_id = "koa.offline_bundle.manifest_policy"
+format_version = "1.0.0"
+status = "active"
+artifact_class = "offline_bundle"
+artifact_contract_ref = "docs/contracts/artifact-contracts/offline-bundle.schema.json"
+artifact_contract_id = "offline_bundle"
+artifact_contract_version = "1.0.0"
+artifact_class_ref = "docs/contracts/artifact-classes.contract.json#/artifact_classes/offline_bundle"
+creates_release_channel = false
+transport_only = true
+activation_authority = false
+payload_authority_merged = false
+
+[manifest.identity]
+envelope_identity_separate_from_payload_identities = true
+repository_path_is_identity = false
+filename_is_identity = false
+release_set_is_bundle_identity = false
+identity_changes_when_signed_scope_changes = true
+identity_inputs = [
+  "canonical_manifest",
+  "payload_inventory",
+  "payload_integrity",
+  "recipient_scope",
+  "environment_scope",
+  "profile_scope",
+  "release_channel_scope",
+  "compatibility",
+  "confidentiality",
+  "sequence_and_replay_state",
+  "signed_envelope_content",
+]
+
+[manifest.schema]
+required_top_level_fields = [
+  "$schema",
+  "contract_type",
+  "contract_version",
+  "bundle_id",
+  "bundle_version",
+  "status",
+  "producer",
+  "release_set_ref",
+  "artifact_refs",
+  "target_profiles",
+  "sequence",
+  "validity",
+  "integrity",
+  "signatures",
+  "trust_material",
+  "migration_plan",
+  "application_order",
+  "rollback_material",
+  "compatibility",
+  "provenance",
+  "receipt_policy",
+]
+unknown_top_level_fields = "reject_when_not_permitted_by_contract"
+duplicate_keys = "reject"
+canonical_serialization_required_for_signing = true
+semantic_validation_required = true
+
+[manifest.channels]
+canonical = ["system", "services", "governance", "knowledge"]
+identities_independent = true
+versions_independent = true
+implicit_membership_allowed = false
+multiple_membership_allowed = false
+unknown_channel_result = "blocked"
+channel_scope_must_match_each_payload = true
+
+[manifest.inventory]
+minimum_entries = 1
+maximum_entries = 4096
+entry_order = "canonical_path_then_artifact_identity"
+normalized_paths_unique = true
+undeclared_archive_entries = "reject"
+payload_selects_extraction_destination = false
+required_entry_fields = [
+  "artifact_ref",
+  "artifact_id",
+  "artifact_class",
+  "artifact_version",
+  "release_channel",
+  "manifest_path",
+  "payload_paths",
+  "manifest_digest",
+  "required_for_application",
+  "application_role",
+]
+allowed_application_roles = [
+  "target",
+  "dependency",
+  "migration",
+  "rollback",
+  "forward_repair",
+  "recovery",
+  "trust_support",
+  "evidence",
+]
+
+[manifest.lifecycle]
+envelope_verification_precedes_payload_verification = true
+payloads_verified_independently = true
+import_is_activation = false
+staging_is_activation = false
+partial_activation_allowed = false
+previous_authoritative_state_preserved_until_commit = true
+application_order_required = true
+receipt_policy_required = true
+false_success_reporting = false
+
+[manifest.provenance]
+source_publication_ref_required = true
+provenance_receipt_required = true
+signature_verification_ref_required = true
+sbom_required_for_software_artifacts = true
+compatibility_evidence_required = true
+test_evidence_required = true
+
+[manifest.offline_behavior]
+network_required_for_manifest_resolution = false
+network_required_for_verification = false
+remote_fetch_during_import = false
+missing_required_local_input = "blocked"
+missing_remote_dependency = "capability_scoped_unavailable"
+automatic_substitution_allowed = false
+external_ai_invocation_allowed = false
+
+[manifest.authority]
+producer_may_modify_payload = false
+repository_possession_grants_trust = false
+bundle_signature_grants_payload_activation = false
+release_set_merges_channel_authority = false
+importer_may_write_component_authoritative_storage = false
+activation_owner = "artifact_class_contract"

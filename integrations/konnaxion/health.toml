@@ -1,0 +1,37 @@
+schema_version = "1.0.0"
+integration_id = "konnaxion"
+health_owner = "koa-konnaxion-adapter"
+source_of_truth = "declared_adapter_probes"
+internal_subsystem_endpoint_assumptions = false
+
+[states]
+healthy = "source pinned, contracts compatible, adapter responsive, subsystem responsive"
+degraded = "adapter responsive but a declared optional dependency is impaired"
+unavailable = "adapter or subsystem is unavailable, incompatible, unauthenticated, or resource admission is denied"
+not_configured = "source pin, documentation mount, common interfaces, or profile configuration is absent"
+
+[readiness]
+require_source_pin = true
+require_official_documentation = true
+require_contract_compatibility = true
+require_common_interfaces = true
+require_resource_admission = true
+require_adapter_transport = true
+require_subsystem_probe = true
+failure_result = "not_ready"
+
+[probe]
+transport = "http_over_unix"
+path = "/health"
+timeout_source = "active_profile"
+retries = 0
+payload = "bounded_status_only"
+
+[reporting]
+include_component = true
+include_capabilities = true
+include_contract_versions = true
+include_source_revision = true
+include_correlation_id = true
+include_credentials = false
+include_private_payload = false

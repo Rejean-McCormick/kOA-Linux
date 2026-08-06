@@ -1,9 +1,9 @@
 {
   "$schema": "../schemas/terminology.contract.schema.json",
-  "version": "2.0.0",
+  "version": "2.2.0",
   "status": "active",
   "language": "en",
-  "effective_at": "2026-08-04T20:59:00-04:00",
+  "effective_at": "2026-08-05T19:14:00-04:00",
   "purpose": "Own the canonical names, identifiers, definitions, aliases, replacements, capitalization, and distinction rules used by the active kOA documentation corpus.",
   "language_policy": {
     "active_documentation_language": "en",
@@ -344,6 +344,24 @@
       "left_term_id": "TERM-GOV-OWNER-DECISION",
       "right_term_id": "TERM-GOV-ADR",
       "required_distinction": "Owner authorization is separate from the record of context, rationale, and consequences."
+    },
+    {
+      "rule_id": "TERM-DIST-015",
+      "left_term_id": "TERM-SUBSYSTEM-KOA-SPACES",
+      "right_term_id": "TERM-SYS-GOVERNANCE-POLICY-RUNTIME",
+      "required_distinction": "kOA Spaces composes presentation; Governance Policy Runtime owns applicable authorization, disclosure, consent, and governed privilege decisions."
+    },
+    {
+      "rule_id": "TERM-DIST-016",
+      "left_term_id": "TERM-SPACES-SPACE",
+      "right_term_id": "TERM-PROFILE-PROFILE",
+      "required_distinction": "A Space configures presentation for a context; a deployment profile defines system membership, resources, security, offline claims, and conformance."
+    },
+    {
+      "rule_id": "TERM-DIST-017",
+      "left_term_id": "TERM-ART-MODULE-INTERFACE-MANIFEST",
+      "right_term_id": "TERM-COMP-COMPONENT-CONTRACT",
+      "required_distinction": "An interface manifest contributes presentation metadata; a component or subsystem contract owns architecture, authority, behavior, and integration boundaries."
     }
   ],
   "terms": [
@@ -2362,6 +2380,302 @@
       "forbidden_aliases": [],
       "status": "active",
       "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-SUBSYSTEM-KOA-SPACES",
+      "canonical_name": "kOA Spaces",
+      "canonical_identifier": "koa_spaces",
+      "category": "subsystem",
+      "definition": "The optional, independently versioned, replaceable experience subsystem that composes navigation and interface contributions without owning business authority.",
+      "semantic_owner_ref": "contracts/subsystems/koa-spaces.subsystem.json",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [
+        "the kOA Spaces subsystem"
+      ],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [
+        "kOA Context Shell",
+        "koa_context_shell"
+      ],
+      "status": "active",
+      "first_use_rule": "use_full_name_then_registered_alias"
+    },
+    {
+      "term_id": "TERM-SPACES-SPACE",
+      "canonical_name": "Space",
+      "canonical_identifier": "space",
+      "category": "experience_configuration",
+      "definition": "A user-facing arrangement that selects, orders, labels, and configures available interface modules for a declared context while preserving stable technical module identities.",
+      "semantic_owner_ref": "contracts/artifact-contracts/space-definition.schema.json",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [
+        "kOA Space"
+      ],
+      "deprecated_aliases": [
+        "context pack"
+      ],
+      "forbidden_aliases": [
+        "tenant authority",
+        "security profile"
+      ],
+      "status": "active",
+      "first_use_rule": "use_capitalized_name_for_the_registered_object"
+    },
+    {
+      "term_id": "TERM-ART-SPACE-DEFINITION",
+      "canonical_name": "Space definition",
+      "canonical_identifier": "space_definition",
+      "category": "artifact_class",
+      "definition": "The validated configuration artifact that identifies a Space, selects interface modules, applies public labels, defines ordering, and declares offline presentation behavior.",
+      "semantic_owner_ref": "contracts/artifact-classes.contract.json#/artifact_classes/space_definition",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [
+        "context pack"
+      ],
+      "forbidden_aliases": [
+        "authorization policy"
+      ],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-ART-MODULE-INTERFACE-MANIFEST",
+      "canonical_name": "module interface manifest",
+      "canonical_identifier": "module_interface_manifest",
+      "category": "artifact_class",
+      "definition": "A module-owned manifest that contributes routes, sidebar entries, top-bar widgets, labels, capability requirements, and offline presentation behavior to kOA Spaces.",
+      "semantic_owner_ref": "contracts/artifact-classes.contract.json#/artifact_classes/module_interface_manifest",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [
+        "interface manifest"
+      ],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [
+        "module authorization manifest"
+      ],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-SPACES-MODULE-SELECTOR",
+      "canonical_name": "module selector",
+      "canonical_identifier": "module_selector",
+      "category": "interface_element",
+      "definition": "The upper-left control rendered by kOA Spaces for choosing among installed, activated, visible, and permitted interface modules.",
+      "semantic_owner_ref": "02-system/22-koa-spaces-interface-composition.md",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [
+        "application authority selector"
+      ],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-SPACES-SIDEBAR-CONTRIBUTION",
+      "canonical_name": "sidebar contribution",
+      "canonical_identifier": "sidebar_contribution",
+      "category": "interface_contribution",
+      "definition": "A module-owned, validated navigation tree rendered in the left sidebar while that module is active.",
+      "semantic_owner_ref": "contracts/artifact-contracts/sidebar-navigation.schema.json",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [
+        "permission tree"
+      ],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-SPACES-TOPBAR-WIDGET",
+      "canonical_name": "top-bar widget",
+      "canonical_identifier": "topbar_widget",
+      "category": "interface_contribution",
+      "definition": "A compact global or active-module contribution rendered in an approved top-bar slot as a shortcut, status indicator, or bounded action surface.",
+      "semantic_owner_ref": "contracts/artifact-contracts/topbar-widget.schema.json",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [
+        "topbar widget"
+      ],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [
+        "privilege widget"
+      ],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-PATTERN-CIRCUIT-BREAKER",
+      "canonical_name": "circuit breaker",
+      "canonical_identifier": "circuit_breaker",
+      "category": "architecture_pattern",
+      "definition": "A three-state resilience policy that stops repeated calls to a failing dependency, fails fast while open, and admits bounded recovery probes.",
+      "semantic_owner_ref": "contracts/architecture-patterns.contract.json#/patterns/circuit_breaker",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [
+        "breaker"
+      ],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [
+        "infinite retry"
+      ],
+      "status": "active",
+      "first_use_rule": "use_canonical_name_then_registered_alias"
+    },
+    {
+      "term_id": "TERM-PATTERN-DEAD-LETTER",
+      "canonical_name": "dead-letter record",
+      "canonical_identifier": "dead_letter_record",
+      "category": "artifact_class",
+      "definition": "The quarantined immutable record of asynchronous work that exhausted bounded retry or failed permanently and awaits governed closure.",
+      "semantic_owner_ref": "contracts/artifact-classes.contract.json#/artifact_classes/dead_letter_record",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [
+        "DLQ record"
+      ],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [
+        "black-hole queue"
+      ],
+      "status": "active",
+      "first_use_rule": "use_canonical_name_then_registered_alias"
+    },
+    {
+      "term_id": "TERM-PATTERN-DISTRIBUTED-WORKFLOW",
+      "canonical_name": "distributed workflow",
+      "canonical_identifier": "distributed_workflow",
+      "category": "architecture_pattern",
+      "definition": "An explicit multi-owner state machine using local transactions, idempotency, compensation, forward repair, and terminal evidence instead of a global lock.",
+      "semantic_owner_ref": "contracts/architecture-patterns.contract.json#/patterns/distributed_workflow",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [
+        "orchestrated workflow",
+        "Saga"
+      ],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [
+        "global distributed transaction"
+      ],
+      "status": "active",
+      "first_use_rule": "use_canonical_name_then_registered_alias"
+    },
+    {
+      "term_id": "TERM-PATTERN-LARGE-PAYLOAD-REFERENCE",
+      "canonical_name": "large payload reference",
+      "canonical_identifier": "large_payload_reference",
+      "category": "artifact_class",
+      "definition": "A bounded verified reference to an owner-controlled object used instead of embedding a large payload in a general message or event.",
+      "semantic_owner_ref": "contracts/artifact-classes.contract.json#/artifact_classes/large_payload_reference",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [
+        "claim check"
+      ],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [
+        "public blob URL"
+      ],
+      "status": "active",
+      "first_use_rule": "use_canonical_name_then_registered_alias"
+    },
+    {
+      "term_id": "TERM-PATTERN-EXPERIENCE-VIEW-ADAPTER",
+      "canonical_name": "experience view adapter",
+      "canonical_identifier": "experience_view_adapter",
+      "category": "artifact_class",
+      "definition": "A presentation-owned adapter that shapes and aggregates owner queries for one experience without acquiring business authority.",
+      "semantic_owner_ref": "contracts/artifact-classes.contract.json#/artifact_classes/experience_view_adapter",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [
+        "BFF",
+        "backend for frontend"
+      ],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [
+        "universal authority API"
+      ],
+      "status": "active",
+      "first_use_rule": "use_canonical_name_then_registered_alias"
+    },
+    {
+      "term_id": "TERM-PATTERN-CQRS-PROJECTION",
+      "canonical_name": "CQRS projection",
+      "canonical_identifier": "cqrs_projection",
+      "category": "artifact_class",
+      "definition": "A non-authoritative command-free read model rebuilt from a declared authoritative source with explicit lag and deletion propagation.",
+      "semantic_owner_ref": "contracts/artifact-classes.contract.json#/artifact_classes/cqrs_projection",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [
+        "read projection"
+      ],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [
+        "secondary source of truth"
+      ],
+      "status": "active",
+      "first_use_rule": "use_canonical_name_then_registered_alias"
+    },
+    {
+      "term_id": "TERM-PATTERN-CACHE-POLICY",
+      "canonical_name": "cache policy",
+      "canonical_identifier": "cache_policy",
+      "category": "artifact_class",
+      "definition": "A versioned cache-aside policy defining source ownership, keys, TTL, invalidation, staleness, security, failure behavior, and metrics.",
+      "semantic_owner_ref": "contracts/artifact-classes.contract.json#/artifact_classes/cache_policy",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [
+        "cache-aside policy"
+      ],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [
+        "cache authority"
+      ],
+      "status": "active",
+      "first_use_rule": "use_canonical_name_then_registered_alias"
     }
   ],
   "validation": {
@@ -2389,12 +2703,17 @@
       "uckk_dimension_gateway",
       "uckk-platform",
       "uckk-dimension-gateway",
-      "sync_mediatheques"
+      "sync_mediatheques",
+      "koa_context_shell",
+      "context_shell"
     ],
     "required_active_identifiers": [
       "koa_mediatheque",
       "uckk",
-      "uckk_publication_bridge"
+      "uckk_publication_bridge",
+      "koa_spaces",
+      "space_definition",
+      "module_interface_manifest"
     ]
   },
   "contract_id": "terminology.registry",

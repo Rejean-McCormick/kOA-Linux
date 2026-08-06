@@ -1,0 +1,25 @@
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "koa-konnaxion-adapter"
+version = "0.1.0"
+description = "kOA-owned boundary adapter for the independently owned Konnaxion subsystem."
+readme = "../README.md"
+requires-python = ">=3.12"
+license = { text = "NOASSERTION" }
+authors = [{ name = "kOA contributors" }]
+dependencies = [
+  "koa-interfaces>=1.0.0,<2.0.0",
+]
+
+[project.entry-points."koa.integrations"]
+konnaxion = "koa_konnaxion_adapter.bootstrap:create_adapter"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/koa_konnaxion_adapter"]
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-config --strict-markers"
+testpaths = ["../tests"]

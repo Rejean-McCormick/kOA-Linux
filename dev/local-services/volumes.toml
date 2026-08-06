@@ -1,0 +1,38 @@
+schema_version = "1.0.0"
+workspace_id_env = "KOA_WORKSPACE_ID"
+default_workspace_scoped = true
+shared_mutable_state = false
+promotion_to_release_artifact = false
+cleanup_verification_required = true
+
+[[volumes]]
+logical_name = "postgres_data"
+runtime_name_template = "${KOA_WORKSPACE_ID}_postgres_data"
+owner = "dev.local-services.postgres"
+purpose = "workspace-local PostgreSQL state"
+storage_class = "persistent_service_state"
+access_mode = "single_writer"
+mount_target = "/var/lib/postgresql/data"
+workspace_scoped = true
+mutable = true
+retention_policy = "delete_on_workspace_removal"
+backup_class = "development_test_state"
+restore_requires_target_identity_check = true
+contains_secrets = false
+release_artifact_eligible = false
+
+[[volumes]]
+logical_name = "object_store_data"
+runtime_name_template = "${KOA_WORKSPACE_ID}_object_store_data"
+owner = "dev.local-services.object-store"
+purpose = "workspace-local object-store state"
+storage_class = "persistent_service_state"
+access_mode = "single_writer"
+mount_target = "/data"
+workspace_scoped = true
+mutable = true
+retention_policy = "delete_on_workspace_removal"
+backup_class = "development_test_state"
+restore_requires_target_identity_check = true
+contains_secrets = false
+release_artifact_eligible = false

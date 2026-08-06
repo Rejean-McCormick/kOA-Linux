@@ -27,7 +27,14 @@
     "generated/requirements-index.json",
     "generated/assertion-index.json",
     "generated/traceability.json",
-    "generated/exception-index.json"
+    "generated/exception-index.json",
+    "contracts/security-controls.contract.json",
+    "schemas/security-controls.contract.schema.json",
+    "contracts/artifact-contracts/security-evidence.schema.json",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md",
+    "03-profiles/14-koa-spaces-deployment.md"
   ],
   "decision_ids": [
     "DEC-PROFILE-001",
@@ -75,7 +82,8 @@
     "LOCK-AI-001",
     "LOCK-AI-002",
     "LOCK-SENT-001",
-    "LOCK-GOV-001"
+    "LOCK-GOV-001",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -90,7 +98,10 @@
     "DOC-SYS-009",
     "DOC-SYS-014",
     "DOC-SYS-017",
-    "DOC-SYS-018"
+    "DOC-SYS-018",
+    "DOC-SYS-021",
+    "DOC-SYS-022",
+    "DOC-PROFILE-014"
   ],
   "tags": [
     "profiles",
@@ -99,7 +110,11 @@
     "composition",
     "inheritance",
     "conformance",
-    "scope"
+    "scope",
+    "security-controls",
+    "security-applicability",
+    "koa-spaces",
+    "profile-membership"
   ]
 }
 KOA:DOC-META:END -->
@@ -160,6 +175,8 @@ It governs the relationship between:
 
 This document does not define the complete content of each profile. Each profile contract owns its own capability membership, component membership, defaults, constraints, and claims.
 
+Profile contracts do not own the cross-profile security-control matrix. `contracts/security-controls.contract.json` owns security-control identifiers, categories, profile applicability, implementation bindings, validation bindings, failure behavior, and evidence classes. A profile may supply facts used to resolve conditional applicability, but it SHALL NOT duplicate or override the canonical mapping.
+
 This document does not make a deployment profile mandatory merely because it exists.
 
 ## 3. Canonical References
@@ -178,6 +195,9 @@ This document does not make a deployment profile mandatory merely because it exi
 | `generated/exception-index.json` | Owns approved profile-specific deviations and compensating controls. |
 | `schemas/deployment-profile.schema.json` | Defines structural validity for profile contracts. |
 | `schemas/profile-index.schema.json` | Defines structural validity for the profile index. |
+| `contracts/security-controls.contract.json` | Owns security-control identifiers and applicability for every primary profile and overlay. |
+| `schemas/security-controls.contract.schema.json` | Defines structural validity for the security-control contract. |
+| `contracts/artifact-contracts/security-evidence.schema.json` | Defines evidence records for evaluated security controls. |
 
 Profile Markdown explains the profile contracts. It does not maintain a second capability matrix or component list.
 
@@ -423,13 +443,17 @@ A profile conformance claim identifies:
 - applicable requirements;
 - applicable locks;
 - applicable tests;
-- evidence records;
+- effective security-control applicability;
+- required security-control results and security-evidence records;
+- machine-resolvable `not_applicable` justifications;
 - active exceptions;
 - result;
 - issue date;
 - validity conditions.
 
 A complete profile claim is valid only when every mandatory requirement and test passes or is covered by an active approved exception.
+
+It also requires current evidence for every security control whose effective applicability is `required`, negative or absence evidence for every `prohibited` control, and a machine-resolvable predicate for every `not_applicable` control. A semantic change to `contracts/security-controls.contract.json` invalidates the affected claim until re-evaluation.
 
 A capability-specific claim may be issued for a bounded capability without claiming complete profile conformance.
 
@@ -688,6 +712,8 @@ The conformance system evaluates the effective profile, not only the primary pro
 
 It includes overlays, conditions, exceptions, platform facts, component membership, and evidence.
 
+It also resolves the effective security-control set from `contracts/security-controls.contract.json`. Profile-local summaries are projections and cannot replace that contract.
+
 ## 9. Decision Closure and Prohibited Assumptions
 
 ### 9.1 Accepted decisions
@@ -765,6 +791,10 @@ This document conforms when all of the following checks pass:
 26. active content is English;
 27. no unresolved-authority marker or template token appears.
 
+28. every effective profile resolves one applicability state for every active security control;
+29. no profile contract or Markdown table duplicates or overrides the canonical security-control matrix;
+30. every required, prohibited, and not-applicable security-control disposition has the validation or predicate required by the security-control contract.
+
 The validator reports actionable failures, including:
 
 `text
@@ -836,3 +866,7 @@ Each component retains a separate schema or database, identity, migration path, 
 An overlay requires a capability that the selected primary profile prohibits, and no accepted decision defines a compatible override.
 
 The composition result is `blocked`. The system does not select the later declaration or assume that the overlay wins.
+
+## kOA Spaces Profile Membership
+
+Each profile contract states whether kOA Spaces is optional, unavailable, inherited, or selected as a presentation surface. Membership never makes the subsystem part of the privileged core or a prerequisite for business authority. Security-control applicability remains owned by `contracts/security-controls.contract.json`; kOA Spaces membership only selects presentation behavior and its own operational obligations.

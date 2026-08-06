@@ -1,0 +1,33 @@
+format_version = "1.0.0"
+integration_id = "orgo"
+activation_mode = "profile_selected"
+default_enabled = false
+source_alignment_required = true
+compatibility_gate_required = true
+resource_admission_required = true
+identity_binding_required = true
+health_gate_required = true
+
+[profiles]
+documented_applicability = ["developer_linux_workstation", "sovereign_linux_node", "sovereign_hub", "appliance_shell"]
+implicit_global_activation = false
+sovereign_offline_support = "not_claimed_without_official_orgo_documentation"
+
+[process]
+manager = "profile_renderer"
+service_identity = "orgo"
+adapter_identity = "koa-orgo-adapter"
+run_as_root = false
+shared_process_identity = false
+privileged_broker_access = false
+
+[network]
+zone = "private"
+public_listener = false
+adapter_socket = "/run/koa/orgo/adapter.sock"
+direct_database_access_from_other_components = false
+outbound_network = "profile_and_policy_resolved"
+
+[activation]
+allowed = false
+blockers = ["source_lock_not_pinned", "official_documentation_not_mounted", "common_contract_set_incomplete"]

@@ -1,0 +1,28 @@
+{
+  "plan_id": "profile-plan:test:minimal-001",
+  "plan_version": "1.0.0",
+  "generated_at": "2026-08-06T16:00:00Z",
+  "generator": {
+    "id": "koa-assembly",
+    "version": "1.0.0",
+    "deterministic": true
+  },
+  "selected_profile_id": "user_lightweight",
+  "overlay_profile_ids": [],
+  "profile_contracts": [
+    {"profile_id": "appliance_shell", "source": "docs/contracts/profiles/appliance-shell.profile.json"},
+    {"profile_id": "build_farm", "source": "docs/contracts/profiles/build-farm.profile.json"},
+    {"profile_id": "control_plane", "source": "docs/contracts/profiles/control-plane.profile.json"},
+    {"profile_id": "developer_linux_workstation", "source": "docs/contracts/profiles/developer-linux-workstation.profile.json"},
+    {"profile_id": "developer_windows_wsl", "source": "docs/contracts/profiles/developer-windows-wsl.profile.json"},
+    {"profile_id": "high_assurance", "source": "docs/contracts/profiles/high-assurance.profile.json"},
+    {"profile_id": "sovereign_hub", "source": "docs/contracts/profiles/sovereign-hub.profile.json"},
+    {"profile_id": "sovereign_linux_node", "source": "docs/contracts/profiles/sovereign-linux-node.profile.json"},
+    {"profile_id": "sovereign_offline", "source": "docs/contracts/profiles/sovereign-offline.profile.json"},
+    {"profile_id": "user_lightweight", "source": "docs/contracts/profiles/user-lightweight.profile.json"}
+  ],
+  "capability_resolution": {
+    "missing_capability_result": "unavailable",
+    "silent_substitution": false
+  }
+}

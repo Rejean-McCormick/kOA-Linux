@@ -22,7 +22,10 @@
     "generated/traceability.json",
     "generated/test-catalog.json",
     "generated/evidence-catalog.json",
-    "generated/profile-catalog.json"
+    "generated/profile-catalog.json",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md"
   ],
   "decision_ids": [
     "DEC-SYS-001",
@@ -87,7 +90,8 @@
     "LOCK-SENT-001",
     "LOCK-PROFILE-001",
     "LOCK-PROFILE-002",
-    "LOCK-UCKK-EXT-002"
+    "LOCK-UCKK-EXT-002",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -119,7 +123,9 @@
     "trust-boundaries",
     "offline-baseline",
     "ai-boundary",
-    "component-boundaries"
+    "component-boundaries",
+    "koa-spaces",
+    "experience-layer"
   ]
 }
 KOA:DOC-META:END -->
@@ -836,3 +842,7 @@ The external result returns as a new candidate artifact with provenance. The use
 A low-resource node starts a heavy derivative job while the user is navigating and uploading media.
 
 Resource Governor reduces or pauses background work, preserves interactive navigation and transfer capacity, and records queue state. It does not approve publication, grant privilege, or modify component business data.
+
+## kOA Spaces Context Boundary
+
+In the system context, kOA Spaces is an independently owned subsystem inside the local operating boundary only when selected by the active profile. It consumes identity and capability assertions, connectivity state, Space definitions, and interface manifests. It returns presentation state and activation evidence; business commands continue directly to their owning systems.

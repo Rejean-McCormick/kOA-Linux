@@ -1,0 +1,130 @@
+{
+  "format_version": "1.0.0",
+  "policy_id": "offline-gates",
+  "status": "active",
+  "language": "en",
+  "default_decision": "block",
+  "authority": {
+    "offline_operations": "docs/08-operations/11-offline-operations.md",
+    "offline_profile": "docs/contracts/profiles/sovereign-offline.profile.json",
+    "release_gates": "docs/09-conformance/19-release-gates.md"
+  },
+  "evidence": {
+    "report_kind": "ci_gate_candidate_evidence",
+    "authoritative": false,
+    "output_name": "offline-gate-report.json",
+    "deterministic": true,
+    "retention_days": 30,
+    "contains_sensitive_data": false
+  },
+  "gates": [
+    {
+      "gate_id": "offline_operation_tests",
+      "suite": "offline",
+      "blocking": true,
+      "pytest_paths": [
+        "tests/offline",
+        "tests/profiles/test_sovereign_offline.py"
+      ],
+      "pytest_arguments": [
+        "-q",
+        "--disable-warnings",
+        "-p",
+        "no:cacheprovider"
+      ],
+      "required_paths": [
+        "tests/offline",
+        "tests/profiles/test_sovereign_offline.py"
+      ],
+      "environment": {
+        "KOA_TEST_CONNECTIVITY": "offline",
+        "KOA_EXTERNAL_NETWORK": "disabled",
+        "NO_PROXY": "*",
+        "no_proxy": "*"
+      },
+      "requirement_ids": [
+        "REQ-DEV-BTV-007",
+        "REQ-DEV-BTV-011",
+        "REQ-DEV-BTV-017"
+      ]
+    },
+    {
+      "gate_id": "offline_static_validation",
+      "suite": "offline",
+      "blocking": true,
+      "commands": [
+        [
+          "{python}",
+          "docs/tools/check_release_sets.py"
+        ],
+        [
+          "{python}",
+          "docs/tools/check_subsystem_alignment.py"
+        ],
+        [
+          "{python}",
+          "docs/tools/check_artifact_contracts.py"
+        ]
+      ],
+      "required_paths": [
+        "docs/08-operations/11-offline-operations.md"
+      ],
+      "requirement_ids": [
+        "REQ-DEV-BTV-006",
+        "REQ-DEV-BTV-017"
+      ]
+    },
+    {
+      "gate_id": "reproducibility_tests",
+      "suite": "reproducibility",
+      "blocking": true,
+      "pytest_paths": [
+        "tests/reproducibility"
+      ],
+      "pytest_arguments": [
+        "-q",
+        "--disable-warnings",
+        "-p",
+        "no:cacheprovider"
+      ],
+      "required_paths": [
+        "tests/reproducibility"
+      ],
+      "environment": {
+        "PYTHONHASHSEED": "0",
+        "TZ": "UTC",
+        "LC_ALL": "C.UTF-8",
+        "SOURCE_DATE_EPOCH": "0"
+      },
+      "requirement_ids": [
+        "REQ-DEV-BTV-002",
+        "REQ-DEV-BTV-007",
+        "REQ-DEV-BTV-014"
+      ]
+    }
+  ],
+  "expected_inventory": {
+    "offline": [
+      "tests/offline/test_offline_boot.py",
+      "tests/offline/test_offline_navigation.py",
+      "tests/offline/test_offline_import.py",
+      "tests/offline/test_cached_artifacts.py",
+      "tests/offline/test_network_loss.py",
+      "tests/offline/test_no_undeclared_substitution.py"
+    ],
+    "reproducibility": [
+      "tests/reproducibility/test_contract_generation.py",
+      "tests/reproducibility/test_profile_plan_determinism.py",
+      "tests/reproducibility/test_image_manifest_determinism.py",
+      "tests/reproducibility/test_bundle_determinism.py",
+      "tests/reproducibility/test_sbom_determinism.py"
+    ]
+  },
+  "prohibited": [
+    "undeclared network access or provider substitution",
+    "treating queued or staged work as remotely completed",
+    "collapsing release-channel identity",
+    "accepting nondeterministic output as reproducibility evidence",
+    "counting missing tests as passing evidence"
+  ]
+}

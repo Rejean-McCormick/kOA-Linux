@@ -18,7 +18,16 @@
     "contracts/integrations/uckk-publication.integration.json",
     "contracts/integrations/uckk-import.integration.json",
     "contracts/artifact-contracts/uckk-learning-package.schema.json",
-    "contracts/artifact-contracts/uckk-import-receipt.schema.json"
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json",
+    "contracts/security-controls.contract.json",
+    "schemas/security-controls.contract.schema.json",
+    "contracts/artifact-contracts/security-evidence.schema.json",
+    "07-security/21-security-control-architecture.md",
+    "07-security/22-security-control-profile-matrix.md",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md",
+    "03-profiles/14-koa-spaces-deployment.md"
   ],
   "decision_ids": [
     "DEC-PROFILE-001",
@@ -91,13 +100,17 @@
     "LOCK-LIFE-004",
     "LOCK-MEDIATHEQUE-001",
     "LOCK-UCKK-EXT-001",
-    "LOCK-UCKK-EXT-002"
+    "LOCK-UCKK-EXT-002",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
     "DOC-GOV-000",
     "DOC-GOV-013",
-    "DOC-CONF-000"
+    "DOC-CONF-000",
+    "DOC-SYS-021",
+    "DOC-SYS-022",
+    "DOC-PROFILE-014"
   ],
   "tags": [
     "conformance",
@@ -105,7 +118,11 @@
     "04",
     "profile",
     "test",
-    "matrices"
+    "matrices",
+    "security-controls",
+    "security-evidence",
+    "koa-spaces",
+    "experience-layer"
   ]
 }
 KOA:DOC-META:END -->
@@ -243,6 +260,10 @@ This document does not:
 | `generated/traceability.json` | Owns requirement-to-test, lock-to-test, decision-to-test, artifact-to-test, and evidence traceability. |
 | `generated/test-catalog.json` | Owns test identities, descriptions, procedures, applicability predicates, expected outcomes, and evidence types. |
 | `generated/evidence-catalog.json` | Owns evidence identities, subjects, producers, scope, results, validity, and lifecycle. |
+| `contracts/security-controls.contract.json` | Owns security-control identities, categories, profile applicability, implementation bindings, validation bindings, failure behavior, and evidence classes. |
+| `contracts/artifact-contracts/security-evidence.schema.json` | Owns the structure of control-specific security evidence. |
+| `07-security/21-security-control-architecture.md` | Defines control composition, lifecycle, exception, and conformance rules. |
+| `07-security/22-security-control-profile-matrix.md` | Renders the canonical control applicability matrix for human review. |
 
 Profile contracts under `contracts/profiles/` own:
 
@@ -281,6 +302,8 @@ A profile test matrix instance identifies:
 - test-catalog version;
 - traceability-registry version;
 - evidence-registry version;
+- security-control contract version;
+- effective security-control applicability set;
 - generation time;
 - generator identity and version;
 - matrix state;
@@ -301,6 +324,8 @@ Every catalog test receives one matrix applicability state:
 | `blocked` | Applicability cannot be resolved because required contracts, versions, configuration, or authority are unavailable. |
 
 `not_applicable` is not a successful test result. `prohibited` tests are active negative tests and require execution.
+
+Security-control applicability is first resolved from `contracts/security-controls.contract.json`. A control state of `required` activates its declared validation binding; `prohibited` activates a negative test or verified-absence check; `not_applicable` requires a recorded machine-resolvable predicate; `recommended` activates either implementation validation or a bounded accepted rationale. Test applicability cannot silently weaken the control state.
 
 ### 4.3 Result states
 
@@ -327,7 +352,7 @@ Every base profile includes these common families:
 | `PF-COMMON-TRACE` | Traceability | Decisions, requirements, locks, tests, and evidence resolve without gaps. |
 | `PF-COMMON-RELEASE` | Release compatibility | Active Release Set is complete, signed, compatible, and profile-supported. |
 | `PF-COMMON-COMPONENT` | Component boundaries | Required components exist; non-responsibilities and data ownership are preserved. |
-| `PF-COMMON-SECURITY` | Security baseline | Identity, least privilege, network boundaries, secret handling, and safe denial. |
+| `PF-COMMON-SECURITY` | Security baseline and control orchestration | Identity, least privilege, network boundaries, secret handling, safe denial, control applicability, validation bindings, and security evidence. |
 | `PF-COMMON-GOVERNANCE` | Governance boundary | Governance Policy Runtime remains distinct from Resource Governor and application authority. |
 | `PF-COMMON-GATEWAY` | Gateway separation | Publication Gateway authorizes disclosure; the UCKK Publication Bridge performs target-specific packaging and transport; neither owns kOA Mediatheque source records. |
 | `PF-COMMON-OFFLINE` | Local continuity | Minimum local operation continues without Internet or upstream control plane. |
@@ -636,12 +661,15 @@ Matrix generation proceeds through:
 8. Resolve tenants, authority domains, workspaces, and zones where applicable.
 9. Resolve the active Release Set.
 10. Load requirements, locks, traceability, test catalog, and evidence rules.
-11. Evaluate every test applicability predicate.
-12. Add prohibited-behavior tests.
-13. Record not-applicable reasons.
-14. Detect unresolved predicates.
-15. Emit the immutable execution matrix.
-16. validate matrix completeness.
+11. Load `contracts/security-controls.contract.json` and resolve every control for the effective profile composition.
+12. Add each required control's declared validation binding.
+13. Add negative tests or verified-absence checks for prohibited controls.
+14. Record machine-resolvable reasons for not-applicable controls.
+15. Resolve recommended controls to implementation validation or an accepted bounded rationale.
+16. Evaluate every remaining test applicability predicate.
+17. Detect unresolved predicates or control bindings.
+18. Emit the immutable execution matrix.
+19. Validate matrix completeness.
 
 ### 6.2 Matrix lifecycle
 
@@ -705,7 +733,7 @@ A destructive test runs only in its declared isolated environment or approved ma
 A conditional test is resolved through:
 
 1. Read the catalog predicate.
-2. Read the relevant profile, overlay, component, integration, or configuration value.
+2. Read the relevant profile, overlay, component, integration, security-control, or configuration value.
 3. Record the value and source.
 4. Set applicability to required when true.
 5. Set applicability to not applicable only when false and catalog exclusion is permitted.
@@ -724,6 +752,8 @@ A prohibited-behavior test:
 6. Produces pass only when the prohibited behavior remains unavailable.
 
 Examples include direct database writes, unselected service startup, automatic queue release, native-AI dependency, hidden external fallback, and gateway bypass.
+
+A security control with applicability `prohibited` remains active in the matrix even when the prohibited implementation is absent. Its evidence confirms absence, denial, quarantine, or containment for the evaluated subject.
 
 ### 6.7 Result evaluation
 
@@ -830,6 +860,8 @@ Profile contracts declare:
 
 The matrix reads these declarations and does not rewrite them.
 
+Profile contracts provide composition facts. `contracts/security-controls.contract.json` separately owns cross-profile security-control applicability, and the matrix combines both without copying either authority.
+
 ### 8.2 Component contracts
 
 Component contracts add tests for:
@@ -875,6 +907,8 @@ The test catalog owns:
 - reuse rules.
 
 The matrix owns the resolved selection and execution status for one composition.
+
+For security controls, the declared validation binding is authoritative for coverage. A test catalog entry counts toward a `control_id` only when that binding resolves explicitly.
 
 ### 8.5 Evidence registry
 
@@ -992,6 +1026,16 @@ This document is conformant when:
 35. No unresolved marker, provisional value, parallel authority, or file-content hash requirement appears.
 36. Complete documentation validation returns `pass`.
 
+Additional security-control validation confirms:
+
+1. every active control resolves to exactly one applicability state for the effective profile;
+2. every required control resolves to at least one applicable validation binding;
+3. every prohibited control resolves to a negative test or verified-absence method;
+4. every not-applicable control records a machine-resolvable predicate and source fact;
+5. every recommended control records implementation validation or an accepted bounded rationale;
+6. every security result references evidence valid against `contracts/artifact-contracts/security-evidence.schema.json`;
+7. `docs/tools/check_security_architecture.py` passes.
+
 ## 11. Non-Normative Examples
 
 ### 11.1 Lightweight profile without SenTient
@@ -1033,3 +1077,7 @@ A temporary hardware exception authorizes reduced redundancy. The redundancy tes
 ### 11.10 Control-plane outage
 
 A node matrix includes a test that disconnects the control plane. The node continues its declared local capabilities, retains local identity and governance behavior, queues eligible remote work, and requires revalidation before reconnection release.
+
+## kOA Spaces Test Projection
+
+When a profile selects kOA Spaces, its effective test matrix includes subsystem presence, artifact-schema validation, route collision checks, capability visibility, authorization non-bypass, offline behavior, accessibility, resource bounds, health, activation, rollback, backup scope, and fallback availability. Omitted kOA Spaces does not fail a profile that classifies it as optional.

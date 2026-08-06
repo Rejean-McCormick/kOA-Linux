@@ -9,15 +9,18 @@
     "global"
   ],
   "canonical_refs": [
-    "contracts/proposals/koa-spaces.subsystem.json",
+    "contracts/subsystems/koa-spaces.subsystem.json",
     "02-system/21-koa-spaces-experience-layer.md",
     "02-system/22-koa-spaces-interface-composition.md",
     "contracts/artifact-contracts/space-definition.schema.json",
-    "contracts/artifact-contracts/module-interface-manifest.schema.json"
+    "contracts/artifact-contracts/module-interface-manifest.schema.json",
+    "contracts/subsystems/koa-spaces.subsystem.json"
   ],
   "decision_ids": [],
   "requirement_ids": [],
-  "lock_ids": [],
+  "lock_ids": [
+    "LOCK-SPACES-001"
+  ],
   "exception_ids": [],
   "depends_on": [
     "DOC-SYS-021",
@@ -43,7 +46,7 @@ This page defines the kOA operating and integration boundary for kOA Spaces. It 
 
 The official subsystem documentation is expected at `subsystems/koa-spaces/`.
 
-That path is reserved for a directory junction or symbolic link to the independent kOA Spaces repository when it is created and mounted. The current proposal contract remains under `contracts/proposals/` until the core subsystem registry and alignment validator are updated deliberately.
+That path is reserved for a directory junction or symbolic link to the independent kOA Spaces repository when it is created and mounted. The active kOA boundary contract is `contracts/subsystems/koa-spaces.subsystem.json`; the mounted repository remains authoritative for the subsystem's internal implementation documentation.
 
 ## Role in kOA
 

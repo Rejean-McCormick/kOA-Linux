@@ -1,0 +1,51 @@
+schema_version = 1
+profile_id = "sovereign_linux_node"
+mount_activation_authority = "koa_node_agent"
+arbitrary_mount_sources_permitted = false
+mount_changes_require_receipt = true
+mount_changes_require_atomic_or_recoverable_transition = true
+
+[[mount]]
+id = "active"
+target = "/var/lib/koa"
+description = "kOA active component, artifact, and evidence storage"
+required = true
+network_source_permitted = false
+separate_from = ["recovery", "backup"]
+required_options = ["nodev", "nosuid", "noexec"]
+forbidden_options = ["dev", "suid", "exec", "user", "users"]
+directory_mode = "0750"
+timeout_seconds = 90
+local_install_target = "local-fs.target"
+network_install_target = ""
+write_authority = "owner_scoped_component_and_store_identities"
+
+[[mount]]
+id = "recovery"
+target = "/var/lib/koa-recovery"
+description = "kOA admitted recovery material"
+required = true
+network_source_permitted = false
+separate_from = ["active", "backup"]
+required_options = ["nodev", "nosuid", "noexec"]
+forbidden_options = ["dev", "suid", "exec", "user", "users"]
+directory_mode = "0750"
+timeout_seconds = 90
+local_install_target = "local-fs.target"
+network_install_target = ""
+write_authority = "recovery_authority_only"
+
+[[mount]]
+id = "backup"
+target = "/mnt/koa-backup"
+description = "kOA backup target in a distinct failure domain"
+required = true
+network_source_permitted = true
+separate_from = ["active", "recovery"]
+required_options = ["nodev", "nosuid", "noexec"]
+forbidden_options = ["dev", "suid", "exec", "user", "users"]
+directory_mode = "0750"
+timeout_seconds = 120
+local_install_target = "local-fs.target"
+network_install_target = "remote-fs.target"
+write_authority = "approved_backup_authority_only"

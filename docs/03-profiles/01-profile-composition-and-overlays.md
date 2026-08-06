@@ -35,7 +35,11 @@
     "generated/assertion-index.json",
     "generated/traceability.json",
     "generated/exception-index.json",
-    "contracts/artifact-contracts/node-profile.schema.json"
+    "contracts/artifact-contracts/node-profile.schema.json",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md",
+    "03-profiles/14-koa-spaces-deployment.md"
   ],
   "decision_ids": [
     "DEC-PROFILE-001",
@@ -78,7 +82,8 @@
     "LOCK-DATA-001",
     "LOCK-GOV-001",
     "LOCK-AI-001",
-    "LOCK-LIFE-001"
+    "LOCK-LIFE-001",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -104,7 +109,10 @@
     "DOC-SYS-014",
     "DOC-SYS-015",
     "DOC-SYS-017",
-    "DOC-SYS-018"
+    "DOC-SYS-018",
+    "DOC-SYS-021",
+    "DOC-SYS-022",
+    "DOC-PROFILE-014"
   ],
   "tags": [
     "profiles",
@@ -113,7 +121,9 @@
     "deterministic-merge",
     "scope-containment",
     "conformance",
-    "explicit-inheritance"
+    "explicit-inheritance",
+    "koa-spaces",
+    "profile-membership"
   ]
 }
 KOA:DOC-META:END -->
@@ -536,3 +546,7 @@ A high-assurance composition can require stronger evidence and physical isolatio
 > **Non-normative example:** This example illustrates projection behavior.
 
 An effective-profile JSON file can list the resolved components, capabilities, limits, and evidence requirements. The file is generated from active contracts and does not replace them.
+
+## Composition of the Experience Layer
+
+A primary profile can select kOA Spaces, and compatible overlays can restrict its assets, routes, network exposure, switching behavior, evidence, or recovery path. An overlay cannot use the experience layer to broaden capabilities, merge data ownership, weaken security controls, or make presentation visibility equivalent to authorization.

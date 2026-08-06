@@ -1,0 +1,69 @@
+schema_version = "1.0.0"
+transport_id = "http-over-unix"
+transport_kind = "http_over_unix"
+authority_effect = "transport_only"
+network_exposure = "local_only"
+contract_version_source = "message_envelope"
+
+[protocol]
+name = "HTTP"
+supported_versions = ["1.1"]
+request_target_form = "origin"
+content_types = ["application/json"]
+connection_reuse = true
+
+[socket]
+endpoint_type = "unix_stream"
+runtime_namespace_required = true
+path_source = "profile_or_workspace_contract"
+fixed_global_path = false
+workspace_isolation_required = true
+stale_endpoint_owner_check = true
+peer_credentials_required = true
+owner_permissions_required = true
+
+[security]
+reachability_is_authorization = false
+application_identity_required = true
+trust_verification_when_applicable = true
+component_authorization_required = true
+contract_version_required = true
+request_size_limit_required = true
+request_deadline_required = true
+correlation_required = true
+credentials_in_transport_metadata = false
+
+[headers]
+interface_id = "x-koa-interface-id"
+interface_version = "x-koa-interface-version"
+message_id = "x-koa-message-id"
+request_id = "x-koa-request-id"
+correlation_id = "x-koa-correlation-id"
+causation_id = "x-koa-causation-id"
+idempotency_key = "x-koa-idempotency-key"
+payload_schema_ref = "x-koa-payload-schema-ref"
+payload_schema_version = "x-koa-payload-schema-version"
+deadline = "x-koa-deadline"
+
+[limits]
+request_body_limit_source = "profile_or_interface_contract"
+response_body_limit_source = "profile_or_interface_contract"
+queue_limit_source = "profile_or_interface_contract"
+rate_limit_source = "profile_or_interface_contract"
+
+[timeouts]
+connect_timeout_source = "profile_or_interface_contract"
+request_deadline_source = "request_and_interface_contract"
+unknown_outcome_requires_status_resolution = true
+blind_replay_after_unknown_outcome = false
+
+[semantics]
+transport_success_proves_authorization = false
+transport_success_proves_authoritative_commit = false
+socket_access_transfers_ownership = false
+receiver_validates_identity = true
+receiver_validates_scope = true
+receiver_validates_policy = true
+receiver_validates_payload = true
+receiver_validates_compatibility = true
+receiver_validates_idempotency = true

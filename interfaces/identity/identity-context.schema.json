@@ -1,0 +1,482 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.koa.local/interfaces/identity/identity-context.schema.json",
+  "title": "kOA Identity Context",
+  "description": "Carries explicit actor, subject, authentication, trust, scope, and externally resolved authority references across a kOA interface boundary. The context reports identity and trust evidence but never grants business, disclosure, policy, resource, or host authority by itself.",
+  "$comment": "Canonical sources: docs/contracts/components/identity-and-trust.component.json#/identity_model; docs/01-constitution/04-explicit-authority.md; docs/02-system/07-cross-component-communication.md. The context remains separate from authorization and transport correlation envelopes.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "context_id",
+    "observed_at",
+    "actor",
+    "subject",
+    "actor_subject_relation",
+    "scope",
+    "authentication",
+    "trust",
+    "authority",
+    "grants_action_authority"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "context_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$",
+      "description": "Stable identity of this observed identity context."
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "valid_until": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "actor": {
+      "$ref": "#/$defs/identity_reference"
+    },
+    "subject": {
+      "$ref": "#/$defs/identity_reference"
+    },
+    "actor_subject_relation": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "description": "Declared relationship between the actor initiating the request and the subject affected by it."
+    },
+    "requesting_component_ref": {
+      "type": "string",
+      "pattern": "^\\S{1,512}$",
+      "description": "Component constructing or forwarding the context."
+    },
+    "scope": {
+      "$ref": "#/$defs/identity_scope"
+    },
+    "authentication": {
+      "$ref": "#/$defs/authentication_result"
+    },
+    "trust": {
+      "$ref": "#/$defs/trust_result"
+    },
+    "authority": {
+      "$ref": "#/$defs/authority_context"
+    },
+    "delegation_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "grants_action_authority": {
+      "const": false,
+      "description": "Authentication and identity context never grant action authority by themselves."
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "authority": {
+            "properties": {
+              "authorization_status": {
+                "const": "granted"
+              }
+            },
+            "required": [
+              "authorization_status"
+            ]
+          }
+        },
+        "required": [
+          "authority"
+        ]
+      },
+      "then": {
+        "properties": {
+          "authority": {
+            "anyOf": [
+              {
+                "properties": {
+                  "authority_refs": {
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "authority_refs"
+                ]
+              },
+              {
+                "properties": {
+                  "policy_decision_refs": {
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "policy_decision_refs"
+                ]
+              },
+              {
+                "properties": {
+                  "delegation_refs": {
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "delegation_refs"
+                ]
+              },
+              {
+                "properties": {
+                  "consent_refs": {
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "consent_refs"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "identity_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "identity_id",
+        "subject_type",
+        "identity_state"
+      ],
+      "properties": {
+        "identity_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$",
+          "description": "Stable identity identifier; a display name is not an identity."
+        },
+        "subject_type": {
+          "type": "string",
+          "enum": [
+            "human",
+            "service",
+            "component_instance",
+            "node",
+            "device",
+            "workspace",
+            "tenant",
+            "organization",
+            "external_integration",
+            "artifact_signer",
+            "recovery_operator"
+          ]
+        },
+        "identity_state": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "active",
+            "suspended",
+            "revoked",
+            "expired",
+            "retired"
+          ]
+        },
+        "owner_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "tenant_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "credential_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "evidence_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "identity_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "environment",
+        "profile_ref",
+        "component_ref",
+        "capability_id",
+        "target_ref"
+      ],
+      "properties": {
+        "tenant_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "organization_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "environment": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "profile_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "overlay_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "component_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "capability_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$"
+        },
+        "target_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      }
+    },
+    "authentication_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "result",
+        "authenticated_at",
+        "assurance_level",
+        "factor_classes"
+      ],
+      "properties": {
+        "result": {
+          "type": "string",
+          "enum": [
+            "established",
+            "not_established",
+            "indeterminate"
+          ]
+        },
+        "authenticated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "assurance_level": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "factor_classes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "knowledge",
+              "possession",
+              "inherence",
+              "service_credential",
+              "device_credential",
+              "recovery_credential"
+            ]
+          }
+        },
+        "authentication_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "reason_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{2,127}$"
+          }
+        }
+      }
+    },
+    "trust_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "result",
+        "verified_at",
+        "intended_use"
+      ],
+      "properties": {
+        "result": {
+          "type": "string",
+          "enum": [
+            "trusted",
+            "untrusted",
+            "indeterminate"
+          ]
+        },
+        "verified_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "intended_use": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "verification_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "trust_root_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "validated_scope_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "reason_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{2,127}$"
+          }
+        }
+      }
+    },
+    "authority_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authorization_status",
+        "identity_context_grants_authority",
+        "authority_refs",
+        "policy_decision_refs",
+        "consent_refs",
+        "delegation_refs"
+      ],
+      "properties": {
+        "authorization_status": {
+          "type": "string",
+          "enum": [
+            "not_evaluated",
+            "granted",
+            "denied",
+            "indeterminate"
+          ]
+        },
+        "identity_context_grants_authority": {
+          "const": false
+        },
+        "authority_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "policy_decision_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "consent_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "delegation_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "obligation_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "exception_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "reason_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{2,127}$"
+          }
+        }
+      }
+    }
+  }
+}

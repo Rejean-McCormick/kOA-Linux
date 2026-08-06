@@ -1,0 +1,76 @@
+schema_version = "1.0.0"
+integration_id = "konnaxion"
+display_name = "Konnaxion"
+status = "disabled"
+classification = "external_service"
+relationship_to_koa = "integrated_subsystem"
+optional = true
+activation_allowed = false
+activation_block_reason = "authoritative source pin and official subsystem documentation are not available"
+subsystem_contract = "docs/contracts/subsystems/konnaxion.subsystem.json"
+source_lock = "integrations/konnaxion/source.lock.json"
+compatibility_manifest = "integrations/konnaxion/compatibility.json"
+adapter_entrypoint = "koa_konnaxion_adapter.bootstrap:create_adapter"
+
+[ownership]
+koa_owns = [
+  "deployment_profile_membership",
+  "process_lifecycle_and_activation",
+  "resource_envelope",
+  "identity_and_trust_boundary",
+  "network_and_storage_exposure",
+  "artifact_admission",
+  "cross_subsystem_interactions",
+  "health_integration",
+  "backup_coordination",
+  "safe_degradation",
+]
+konnaxion_owns = [
+  "internal_domain_model",
+  "internal_workflow",
+  "internal_state_machine",
+  "complete_subsystem_api",
+  "internal_user_interface",
+  "subsystem_specific_validation_logic",
+]
+direct_cross_subsystem_writes = false
+internal_behavior_duplication = false
+
+[interface]
+module_manifest = "integrations/konnaxion/interface/module-interface.json"
+sidebar_manifest = "integrations/konnaxion/interface/sidebar.json"
+widgets_manifest = "integrations/konnaxion/interface/widgets.json"
+presentation_only = true
+menu_visibility_is_authorization = false
+may_grant_capabilities = false
+
+[[capabilities]]
+capability_id = "konnaxion.integration_status"
+direction = "read_from_adapter"
+purpose = "Expose only the local integration availability and readiness state."
+user_visible = true
+profiles = ["developer_linux_workstation", "developer_windows_wsl", "sovereign_linux_node", "sovereign_hub"]
+authority_effect = "none"
+
+[activation]
+trigger = "authorized_operator_action"
+implicit_activation = false
+require_source_pin = true
+require_compatibility_validation = true
+require_official_documentation = true
+require_common_interfaces = true
+failure_result = "disabled"
+
+[security]
+network_default = "deny"
+managed_secret_references_only = true
+credentials_in_repository = false
+arbitrary_remote_administration = false
+direct_authoritative_state_write = false
+silent_provider_substitution = false
+
+[receipts]
+activation = true
+deactivation = true
+failure = true
+raw_payloads = false

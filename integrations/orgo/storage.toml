@@ -1,0 +1,32 @@
+format_version = "1.0.0"
+integration_id = "orgo"
+logical_owner = "orgo"
+persistent_root = "/var/lib/koa/orgo/"
+configuration_path = "/etc/koa/integrations/orgo/config.toml"
+runtime_root = "/run/koa/orgo/"
+
+[authority]
+shared_authoritative_store = false
+direct_foreign_reads = false
+direct_foreign_writes = false
+adapter_authoritative_write = false
+
+[database]
+mode = "subsystem_owned"
+separate_database_or_schema = true
+separate_credentials = true
+migration_owner = "orgo"
+shared_database_process_permitted_by_profile = true
+shared_credentials = false
+cross_schema_writes = false
+
+[derived_state]
+external_index_must_be_rebuildable = true
+source_version_required = true
+read_only_when_source_unavailable = true
+accept_mutations_when_source_unavailable = false
+
+[secrets]
+stored_in_manifest = false
+stored_in_source_tree = false
+provider = "profile_resolved_secret_backend"

@@ -1,0 +1,13 @@
+[Unit]
+Description=Schedule policy-bounded kOA maintenance
+
+[Timer]
+OnBootSec=2h
+OnUnitActiveSec=7d
+AccuracySec=15min
+RandomizedDelaySec=2h
+Persistent=yes
+Unit=koa-maintenance.service
+
+[Install]
+WantedBy=timers.target

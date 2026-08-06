@@ -1,0 +1,85 @@
+schema_version = "1.0"
+health_id = "suno-external-media-health"
+integration_id = "suno"
+status = "active"
+service_optional = true
+health_affects_core_readiness = false
+health_affects_mediatheque_readiness = false
+health_affects_only_capability = "external_media_generation"
+
+[states]
+allowed = ["disabled", "ready", "degraded", "unavailable", "offline", "blocked"]
+default = "disabled"
+unknown_is_ready = false
+
+[readiness]
+registered_integration_required = true
+profile_permission_required = true
+explicit_operation_required = true
+policy_authority_required = true
+credential_reference_required = true
+network_reachability_required = true
+provider_compatibility_required = true
+circuit_open_is_ready = false
+
+[reporting]
+provider_identity_visible = true
+capability_identity_visible = true
+operation_identity_visible_when_active = true
+failure_class_visible = true
+secret_values_visible = false
+credential_values_visible = false
+request_payload_visible = false
+candidate_payload_visible = false
+
+[degradation]
+provider_unavailable_state = "unavailable"
+network_unavailable_state = "offline"
+quota_exhausted_state = "degraded"
+provider_refusal_state = "degraded"
+policy_denied_state = "blocked"
+invalid_response_state = "degraded"
+core_system_state = "preserved"
+mediatheque_local_state = "preserved"
+automatic_fallback = false
+hidden_retry = false
+authoritative_mutation = false
+
+[[check]]
+id = "registration"
+kind = "configuration"
+required = true
+network = false
+
+[[check]]
+id = "profile_permission"
+kind = "policy"
+required = true
+network = false
+
+[[check]]
+id = "policy_authority"
+kind = "policy"
+required = true
+network = false
+
+[[check]]
+id = "credential_reference"
+kind = "configuration"
+required = true
+network = false
+secret_value_loaded_into_report = false
+
+[[check]]
+id = "provider_connectivity"
+kind = "external"
+required = true
+network = true
+bounded_timeout_required = true
+
+[[check]]
+id = "provider_compatibility"
+kind = "external"
+required = true
+network = true
+bounded_timeout_required = true

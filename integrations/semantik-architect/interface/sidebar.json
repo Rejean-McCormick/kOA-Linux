@@ -1,0 +1,20 @@
+{
+  "$schema": "../../../docs/contracts/artifact-contracts/sidebar-navigation.schema.json",
+  "module_id": "semantik-architect",
+  "visible_depth": 2,
+  "items": [
+    {
+      "item_id": "semantik-architect.status",
+      "label": "SemantiK Architect",
+      "label_key": "semantik-architect.navigation.status",
+      "icon_ref": null,
+      "order": 700,
+      "required_capabilities": [
+        "semantik_architect.status.read"
+      ],
+      "availability": "conditional",
+      "badge_provider_ref": "koa_semantik_architect_adapter.health:status_badge",
+      "route_id": "semantik-architect.status"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling>=1.25,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "koa-orgo-adapter"
+version = "0.1.0"
+description = "kOA-owned boundary adapter for the independently owned Orgo subsystem"
+readme = "../README.md"
+requires-python = ">=3.12"
+license = { text = "LicenseRef-kOA-Repository" }
+authors = [{ name = "kOA-Linux contributors" }]
+dependencies = ["koa-interfaces>=0.1.0,<0.2.0"]
+
+[project.entry-points."koa.integrations"]
+orgo = "koa_orgo_adapter.bootstrap:bootstrap"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/koa_orgo_adapter"]
+
+[tool.pytest.ini_options]
+addopts = "--strict-markers --strict-config"
+testpaths = ["../tests"]

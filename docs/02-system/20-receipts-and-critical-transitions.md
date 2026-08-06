@@ -28,14 +28,26 @@
     "contracts/integrations/uckk-import.integration.json",
     "contracts/artifact-contracts/uckk-learning-package.schema.json",
     "contracts/artifact-contracts/uckk-import-receipt.schema.json",
-    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json"
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
+    "contracts/architecture-patterns.contract.json",
+    "contracts/artifact-contracts/integration-resilience-policy.schema.json",
+    "contracts/artifact-contracts/dead-letter-record.schema.json",
+    "contracts/artifact-contracts/distributed-workflow.schema.json",
+    "contracts/artifact-contracts/cqrs-projection.schema.json",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md"
   ],
   "decision_ids": [
     "DEC-AI-001",
     "DEC-DATA-001",
     "DEC-GOV-001",
     "DEC-GATE-001",
-    "DEC-REL-001"
+    "DEC-REL-001",
+    "DEC-RES-001",
+    "DEC-MSG-001",
+    "DEC-WF-001",
+    "DEC-CQRS-001"
   ],
   "requirement_ids": [
     "REQ-SYS-RCT-001",
@@ -61,7 +73,13 @@
     "REQ-SYS-RCT-021",
     "REQ-SYS-RCT-022",
     "REQ-SYS-RCT-023",
-    "REQ-SYS-RCT-024"
+    "REQ-SYS-RCT-024",
+    "REQ-PATTERN-011",
+    "REQ-PATTERN-016",
+    "REQ-PATTERN-017",
+    "REQ-PATTERN-018",
+    "REQ-PATTERN-024",
+    "REQ-PATTERN-039"
   ],
   "lock_ids": [
     "LOCK-AI-002",
@@ -74,7 +92,12 @@
     "LOCK-LIFE-004",
     "LOCK-DOC-011",
     "LOCK-DOC-013",
-    "LOCK-DOC-019"
+    "LOCK-DOC-019",
+    "LOCK-RES-001",
+    "LOCK-MSG-001",
+    "LOCK-WF-001",
+    "LOCK-CQRS-001",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -107,7 +130,10 @@
     "publication",
     "privilege",
     "recovery",
-    "traceability"
+    "traceability",
+    "architecture-patterns",
+    "koa-spaces",
+    "experience-layer"
   ]
 }
 KOA:DOC-META:END -->
@@ -753,3 +779,11 @@ A user explicitly exports selected content to Gamma. The transfer receipt identi
 ### 11.5 Restricted evidence access
 
 An investigator opens protected evidence referenced by a break-glass receipt. The ordinary receipt remains unchanged, while a separate evidence-access receipt records the requester, purpose, authority, and outcome.
+
+## Pattern transition receipts
+
+Receipts are required for manual circuit override, distributed-workflow terminal state, dead-letter redrive or discard, and projection rebuild completion. A receipt records the transition and evidence; it does not rewrite the failed message, completed workflow step, owner datum, or projection source.
+
+## Space Activation Receipts
+
+Atomic activation, rollback, rejection, and replacement of a Space produce a `space_activation_receipt`. The receipt binds the Space definition, referenced manifests, validation result, previous and resulting active identity, and observed health state. It proves a presentation transition only and never substitutes for receipts produced by business, policy, publication, release, privilege, backup, or restore owners.

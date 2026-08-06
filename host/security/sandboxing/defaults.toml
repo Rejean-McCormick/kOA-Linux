@@ -1,0 +1,125 @@
+schema_version = 1
+policy_id = "koa-sandbox-defaults"
+version = "1.0.0"
+status = "active"
+profile = "sovereign_linux_node"
+default_action = "deny"
+controls = ["SEC-INV-002", "SEC-INV-003", "SEC-PRIV-001", "SEC-ISO-002"]
+
+[authority]
+owner = "host_platform"
+identity_owner = "identity_and_trust"
+privilege_executor = "koa_node_agent"
+resource_owner = "resource_governor"
+capability_policy = "host/security/capabilities/"
+seccomp_policy = "host/security/seccomp/"
+lsm_policy = "host/security/lsm/policy.yaml"
+implicit_override_allowed = false
+ui_visibility_grants_authority = false
+
+[systemd.defaults]
+NoNewPrivileges = true
+PrivateTmp = true
+PrivateDevices = true
+ProtectSystem = "strict"
+ProtectHome = true
+ProtectKernelTunables = true
+ProtectKernelModules = true
+ProtectKernelLogs = true
+ProtectControlGroups = true
+ProtectClock = true
+ProtectHostname = true
+ProtectProc = "invisible"
+ProcSubset = "pid"
+RestrictSUIDSGID = true
+LockPersonality = true
+MemoryDenyWriteExecute = true
+RemoveIPC = true
+RestrictRealtime = true
+RestrictNamespaces = true
+SystemCallArchitectures = "native"
+UMask = "0077"
+IPAddressDeny = "any"
+RestrictAddressFamilies = ["AF_UNIX"]
+CapabilityBoundingSet = []
+AmbientCapabilities = []
+DevicePolicy = "closed"
+KeyringMode = "private"
+
+[systemd.resources]
+TasksMax = 256
+MemoryMax = "1G"
+MemorySwapMax = 0
+CPUQuota = "200%"
+IOWeight = 100
+LimitNOFILE = 4096
+
+[container.defaults]
+rootless = true
+read_only_rootfs = true
+no_new_privileges = true
+privileged = false
+host_network = false
+host_pid = false
+host_ipc = false
+host_user_namespace = false
+container_daemon_socket = false
+allow_device_passthrough = false
+capabilities = []
+seccomp = "component-default"
+network = "none"
+
+[paths]
+read_only = ["/usr", "/etc/koa/active"]
+read_write = []
+inaccessible = ["/root", "/home", "/boot", "/dev/mem", "/dev/kmem"]
+private_tmp = true
+
+[override_policy]
+required_fields = ["service_id", "profile_id", "directive", "bounded_value", "owner", "reason", "operation_ids", "tests", "evidence_refs"]
+forbid_wildcard_service = true
+forbid_empty_operation_ids = true
+forbid_privileged_container = true
+forbid_host_daemon_socket = true
+forbid_unrestricted_host_paths = true
+forbid_public_listener_by_default = true
+unknown_directive_result = "reject"
+missing_evidence_result = "refuse_service_activation"
+
+[service_overrides.identity_and_trust]
+service_identity = "koa-identity"
+lsm_domain = "identity_and_trust"
+read_write_paths = ["/var/lib/koa/identity-and-trust", "/run/koa/identity-and-trust", "/run/koa/sockets/identity-and-trust.sock"]
+address_families = ["AF_UNIX"]
+capability_mode = "empty"
+private_devices = true
+network = "local_socket_only"
+
+[service_overrides.koa_node_agent]
+service_identity = "koa-node-agent"
+lsm_domain = "koa_node_agent"
+read_write_paths = ["/var/lib/koa/node", "/var/lib/koa/receipts", "/run/koa/node", "/run/koa/activation", "/run/koa/sockets/koa-node-agent.sock"]
+address_families = ["AF_UNIX"]
+capability_mode = "empty"
+private_devices = true
+network = "local_socket_only"
+
+[service_overrides.koa_privileged_broker]
+service_identity = "koa-privileged-broker"
+lsm_domain = "koa_privileged_broker"
+read_write_paths = ["/etc/koa/active", "/var/lib/koa/node", "/var/lib/koa/artifacts", "/var/lib/koa/releases", "/var/lib/koa/receipts", "/var/lib/koa/quarantine", "/var/lib/koa/offline-import", "/var/lib/koa/recovery", "/var/lib/koa-recovery", "/run/koa/locks", "/run/koa/activation", "/run/koa/recovery", "/run/koa/sockets/koa-privileged-broker.sock"]
+address_families = ["AF_UNIX"]
+capability_mode = "external_bounding_set_required"
+private_devices = true
+network = "local_socket_only"
+requires_operation_catalog = true
+requires_policy_decision = true
+requires_durable_receipt = true
+
+[degradation]
+missing_lsm_policy = "refuse_service_activation"
+missing_seccomp_policy = "refuse_service_activation"
+missing_capability_profile = "refuse_privileged_broker_activation"
+missing_resource_envelope = "refuse_service_activation"
+unknown_override = "reject"
+unsupported_kernel_control = "block_assurance_claim_and_record_evidence"

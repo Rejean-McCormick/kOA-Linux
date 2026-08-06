@@ -20,7 +20,10 @@
     "generated/exception-index.json",
     "contracts/integrations/uckk-publication.integration.json",
     "contracts/integrations/uckk-import.integration.json",
-    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json"
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md"
   ],
   "decision_ids": [
     "DEC-SYS-003",
@@ -75,7 +78,8 @@
     "LOCK-DEV-005",
     "LOCK-LIFE-001",
     "LOCK-LIFE-002",
-    "LOCK-UCKK-EXT-002"
+    "LOCK-UCKK-EXT-002",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -102,7 +106,9 @@
     "recovery",
     "offline",
     "degradation",
-    "resource-governance"
+    "resource-governance",
+    "koa-spaces",
+    "experience-layer"
   ]
 }
 KOA:DOC-META:END -->
@@ -666,3 +672,7 @@ A user explicitly starts the SenTient workbench on a capable profile. SenTient r
 ### 11.5 Failed maintenance activation
 
 A service upgrade enters maintenance mode but fails its completion checks. The new artifact does not become active. The lifecycle service restores the prior valid version or enters recovery mode under the declared repair plan.
+
+## Operating-Mode Applicability
+
+kOA Spaces is relevant to interactive user and profile-selected service-node or hub sessions. Development modes can run it as an isolated preview workbench. Build, control-plane, and recovery authority do not depend on it. Recovery and administrative fallback paths remain available when the experience subsystem is stopped.

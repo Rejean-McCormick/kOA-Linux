@@ -24,14 +24,26 @@
     "generated/traceability.json",
     "generated/exception-index.json",
     "generated/test-catalog.json",
-    "generated/evidence-catalog.json"
+    "generated/evidence-catalog.json",
+    "contracts/architecture-patterns.contract.json",
+    "02-system/34-architecture-patterns.md",
+    "06-lifecycle/20-resilience-and-projection-artifacts.md",
+    "08-operations/20-architecture-pattern-operations.md",
+    "09-conformance/22-architecture-pattern-conformance.md"
   ],
   "decision_ids": [
     "DEC-OPS-OBS-001",
     "DEC-DATA-001",
     "DEC-GOV-001",
     "DEC-AUD-001",
-    "DEC-PROFILE-001"
+    "DEC-PROFILE-001",
+    "DEC-RES-001",
+    "DEC-MSG-001",
+    "DEC-WF-001",
+    "DEC-PAYLOAD-001",
+    "DEC-BFF-001",
+    "DEC-CQRS-001",
+    "DEC-CACHE-001"
   ],
   "requirement_ids": [
     "REQ-OPS-OBS-001",
@@ -72,7 +84,14 @@
     "LOCK-DATA-001",
     "LOCK-GOV-001",
     "LOCK-PROFILE-001",
-    "LOCK-DOC-002"
+    "LOCK-DOC-002",
+    "LOCK-RES-001",
+    "LOCK-MSG-001",
+    "LOCK-WF-001",
+    "LOCK-PAYLOAD-001",
+    "LOCK-BFF-001",
+    "LOCK-CQRS-001",
+    "LOCK-CACHE-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -116,7 +135,8 @@
     "traces",
     "receipts",
     "bounded-telemetry",
-    "safe-degradation"
+    "safe-degradation",
+    "architecture-patterns"
   ]
 }
 KOA:DOC-META:END -->
@@ -650,3 +670,7 @@ A sovereign-offline node can continue local operation while central metrics coll
 > **Non-normative example:** This example illustrates authorized remediation.
 
 A disk-capacity alert can trigger a governed cleanup workflow. The workflow independently verifies authorization and executes through the owning component rather than allowing the alert rule to delete data directly.
+
+## Architecture-pattern telemetry
+
+The observability baseline includes breaker state, dead-letter backlog, workflow progress, large-payload verification, experience-adapter fan-out, projection lag, and cache correctness signals. Correlation identity crosses these mechanisms without merging their authority domains.

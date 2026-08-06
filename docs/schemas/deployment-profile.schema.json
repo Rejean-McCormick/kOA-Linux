@@ -144,6 +144,9 @@
     },
     "validation": {
       "$ref": "#/$defs/validation"
+    },
+    "koa_spaces": {
+      "$ref": "#/$defs/koaSpacesProfileBinding"
     }
   },
   "allOf": [
@@ -1411,6 +1414,85 @@
             "fail",
             "blocked"
           ]
+        }
+      }
+    },
+    "koaSpacesProfileBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subsystem_id",
+        "contract_ref",
+        "deployment_document_ref",
+        "membership",
+        "default_activation",
+        "deployment_mode",
+        "required_for_profile_conformance",
+        "required_for_core_operation",
+        "authority",
+        "presentation_grants_authority",
+        "menu_visibility_is_authorization",
+        "offline_behavior",
+        "failure_behavior",
+        "constraints"
+      ],
+      "properties": {
+        "subsystem_id": {
+          "const": "koa_spaces"
+        },
+        "contract_ref": {
+          "const": "contracts/subsystems/koa-spaces.subsystem.json"
+        },
+        "deployment_document_ref": {
+          "const": "03-profiles/14-koa-spaces-deployment.md"
+        },
+        "membership": {
+          "enum": [
+            "optional",
+            "optional_development_workbench",
+            "inherited_optional_with_offline_restrictions",
+            "inherited_optional_with_assurance_controls",
+            "optional_primary_presentation_surface"
+          ]
+        },
+        "default_activation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "deployment_mode": {
+          "type": "string",
+          "minLength": 1
+        },
+        "required_for_profile_conformance": {
+          "const": false
+        },
+        "required_for_core_operation": {
+          "const": false
+        },
+        "authority": {
+          "const": "non_authoritative_presentation"
+        },
+        "presentation_grants_authority": {
+          "const": false
+        },
+        "menu_visibility_is_authorization": {
+          "const": false
+        },
+        "offline_behavior": {
+          "type": "string",
+          "minLength": 1
+        },
+        "failure_behavior": {
+          "const": "presentation_unavailable_authoritative_services_and_fallback_paths_preserved"
+        },
+        "constraints": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
         }
       }
     }

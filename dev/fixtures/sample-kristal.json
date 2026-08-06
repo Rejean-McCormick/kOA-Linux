@@ -1,0 +1,53 @@
+{
+  "artifact_id": "kristal-artifact.development-fixture",
+  "artifact_version": "1.0.0",
+  "artifact_class": "kristal_artifact",
+  "content_identity": {
+    "algorithm": "sha256",
+    "digest": "65f24cfd03377f4ade1f4690623842861d0e65c513e08541db872cc3db957b20"
+  },
+  "manifest": {
+    "entries": [
+      {
+        "path": "content/fixture.json",
+        "sha256": "65f24cfd03377f4ade1f4690623842861d0e65c513e08541db872cc3db957b20",
+        "media_type": "application/json",
+        "purpose": "synthetic contract-test payload"
+      }
+    ],
+    "query_contract_refs": []
+  },
+  "provenance": {
+    "source_refs": [
+      "dev/fixtures/sample-kristal.json"
+    ],
+    "producer": "development-fixture-generator",
+    "build_receipt_ref": "fixture://receipts/kristal-development-fixture"
+  },
+  "rights": {
+    "license": "NOASSERTION",
+    "audiences": [
+      "development-contract-tests"
+    ],
+    "restrictions": [
+      "non-authoritative",
+      "not-for-publication"
+    ]
+  },
+  "compatibility": {
+    "kristal_runtime": ">=1.0.0 <2.0.0",
+    "schema_versions": [
+      "1.0.0"
+    ],
+    "profile_constraints": [
+      "development-only"
+    ]
+  },
+  "signatures": [],
+  "metadata": {
+    "title": "Synthetic Kristal Fixture",
+    "description": "Deterministic fixture with no executable extension or governed data.",
+    "example": true,
+    "authority": "non_authoritative_example"
+  }
+}

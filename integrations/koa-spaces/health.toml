@@ -1,0 +1,37 @@
+schema_version = 1
+
+[transport]
+mode = "http_over_unix"
+socket_path = "/run/koa/sockets/koa-spaces.sock"
+health_path = "/health"
+readiness_path = "/ready"
+timeout_ms = 2000
+
+[health]
+process_liveness = true
+local_state_store_access = true
+active_space_identity_reported = true
+
+[readiness]
+active_space_schema_valid = true
+default_module_resolved = true
+required_manifests_resolved = true
+route_composition_valid = true
+route_collisions_absent = true
+required_contributions_available = true
+offline_states_declared = true
+presentation_surface_ready = true
+activation_receipt_available = true
+
+[separation]
+core_node_readiness_masked = false
+contributing_service_readiness_masked = false
+menu_rendering_implies_authoritative_service_health = false
+
+[degraded_states]
+optional_manifest_invalid = "ready_with_capability_degraded"
+optional_module_unavailable = "ready_with_capability_degraded"
+network_unavailable = "ready_offline_when_required_local_routes_resolve"
+required_manifest_invalid = "not_ready"
+default_module_unresolved = "not_ready"
+route_collision = "not_ready"

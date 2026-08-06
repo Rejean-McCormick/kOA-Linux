@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:koa:docs:schema:architecture-patterns.contract.schema:1",
+  "title": "kOA Architecture Patterns Contract Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "contract_id",
+    "contract_type",
+    "version",
+    "status",
+    "language",
+    "effective_at",
+    "decision_ids",
+    "lock_ids",
+    "principles",
+    "default_envelopes",
+    "patterns",
+    "validation"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "contract_id": {
+      "const": "architecture-patterns"
+    },
+    "contract_type": {
+      "const": "architecture_pattern_policy"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "status": {
+      "const": "active"
+    },
+    "language": {
+      "const": "en"
+    },
+    "effective_at": {
+      "type": "string"
+    },
+    "decision_ids": {
+      "type": "array",
+      "minItems": 7,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "lock_ids": {
+      "type": "array",
+      "minItems": 7,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "principles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "default_envelopes": {
+      "type": "object"
+    },
+    "patterns": {
+      "type": "object",
+      "required": [
+        "circuit_breaker",
+        "dead_letter_queue",
+        "distributed_workflow",
+        "large_payload_reference",
+        "experience_view_adapter",
+        "command_query_separation",
+        "cache_aside"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "circuit_breaker": {
+          "type": "object",
+          "minProperties": 1
+        },
+        "dead_letter_queue": {
+          "type": "object",
+          "minProperties": 1
+        },
+        "distributed_workflow": {
+          "type": "object",
+          "minProperties": 1
+        },
+        "large_payload_reference": {
+          "type": "object",
+          "minProperties": 1
+        },
+        "experience_view_adapter": {
+          "type": "object",
+          "minProperties": 1
+        },
+        "command_query_separation": {
+          "type": "object",
+          "minProperties": 1
+        },
+        "cache_aside": {
+          "type": "object",
+          "minProperties": 1
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "required": [
+        "validator",
+        "required_documents",
+        "required_artifact_classes"
+      ]
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "canonical_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "cross_pattern_composition": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

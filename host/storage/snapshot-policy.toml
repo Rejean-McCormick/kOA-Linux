@@ -1,0 +1,70 @@
+schema_version = 1
+profile_id = "sovereign_linux_node"
+snapshots_are_authoritative = false
+automatic_promotion_permitted = false
+automatic_restore_over_current_state_permitted = false
+schedule_source = "operations_and_owner_contracts"
+retention_source = "owner_and_governance_contracts"
+encryption_and_integrity_preserved = true
+owner_scope_preserved = true
+clean_boundary_restore_required = true
+restore_state_before_validation = "restoring"
+restore_activation_requires_owner_approval = true
+restore_activation_requires_write_exclusivity = true
+snapshot_success_is_restore_evidence = false
+
+[[class_policy]]
+id = "authoritative"
+snapshot_permitted = true
+owner_checkpoint_required = true
+include_by_default = false
+restore_validation_required = true
+
+[[class_policy]]
+id = "artifacts"
+snapshot_permitted = true
+owner_checkpoint_required = false
+include_by_default = false
+restore_validation_required = true
+
+[[class_policy]]
+id = "evidence"
+snapshot_permitted = true
+owner_checkpoint_required = true
+include_by_default = false
+restore_validation_required = true
+
+[[class_policy]]
+id = "replicas"
+snapshot_permitted = false
+owner_checkpoint_required = false
+include_by_default = false
+restore_validation_required = true
+
+[[class_policy]]
+id = "projections"
+snapshot_permitted = false
+owner_checkpoint_required = false
+include_by_default = false
+restore_validation_required = true
+
+[[class_policy]]
+id = "cache"
+snapshot_permitted = false
+owner_checkpoint_required = false
+include_by_default = false
+restore_validation_required = false
+
+[[class_policy]]
+id = "staging"
+snapshot_permitted = false
+owner_checkpoint_required = false
+include_by_default = false
+restore_validation_required = false
+
+[[class_policy]]
+id = "temporary"
+snapshot_permitted = false
+owner_checkpoint_required = false
+include_by_default = false
+restore_validation_required = false

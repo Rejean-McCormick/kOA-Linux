@@ -1,0 +1,34 @@
+schema_version = "1.0.0"
+
+[ownership]
+owner = "semantik-architect-integration-adapter"
+subsystem_authoritative_state_owned_by_koa = false
+direct_access_to_other_component_stores = false
+shared_database_allowed = false
+
+[paths]
+state_root = "/var/lib/koa/integrations/semantik-architect"
+job_metadata = "/var/lib/koa/integrations/semantik-architect/jobs"
+terminal_receipts = "/var/lib/koa/integrations/semantik-architect/receipts"
+quarantine = "/var/lib/koa/integrations/semantik-architect/quarantine"
+cache_root = "/var/cache/koa/integrations/semantik-architect"
+runtime_root = "/run/koa/semantik-architect"
+
+[classification]
+job_metadata = "integration_operational_state"
+terminal_receipts = "audit_evidence_reference"
+quarantine = "unadmitted_candidate_artifacts"
+cache_root = "derived_rebuildable"
+runtime_root = "ephemeral"
+
+[artifact_hand_off]
+verified_output_transfer = "exported_artifact_through_declared_bridge"
+direct_write_to_kristal_runtime = false
+direct_write_to_release_store = false
+direct_activation = false
+
+[safety]
+path_traversal_result = "blocked"
+symlink_escape_allowed = false
+atomic_write_required = true
+permissions_source = "active_profile"

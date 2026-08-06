@@ -1,0 +1,26 @@
+[build-system]
+requires = ["hatchling>=1.25,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "koa-sentient-adapter"
+version = "1.0.0"
+description = "kOA boundary adapter for the independently owned SenTient subsystem"
+readme = "../README.md"
+requires-python = ">=3.12"
+license = { text = "LicenseRef-Unresolved-SenTient" }
+authors = [{ name = "kOA" }]
+dependencies = ["koa-interfaces>=1.0,<2.0"]
+
+[project.scripts]
+koa-sentient-adapter = "koa_sentient_adapter.bootstrap:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/koa_sentient_adapter"]
+
+[tool.koa]
+integration_id = "sentient"
+subsystem_contract = "docs/contracts/subsystems/sentient.subsystem.json"
+source_lock = "integrations/sentient/source.lock.json"
+activation_requires_resolved_source_pin = true
+internal_subsystem_source_vendored = false

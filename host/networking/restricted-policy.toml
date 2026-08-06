@@ -1,0 +1,46 @@
+schema_version = 1
+policy_id = "restricted"
+profile_id = "sovereign_linux_node"
+input_default = "drop"
+output_default = "drop"
+forward_default = "drop"
+allow_loopback = true
+allow_established_related = true
+allow_icmp = true
+allow_forwarding = false
+require_explicit_route = true
+require_bound_interface = true
+log_denied_packets = true
+log_rate = "10/minute"
+max_ports_per_route = 8
+require_non_global_addresses = false
+allow_wildcard_sources_for = ["public_web"]
+permitted_zones = [
+  "public",
+  "private",
+  "governance",
+  "administration",
+  "federation",
+  "backup",
+  "external_integration",
+  "quarantine",
+]
+permitted_services = [
+  "public_web",
+  "private_workflow",
+  "administration",
+  "federation_ingress",
+  "federation_egress",
+  "backup_ingress",
+  "backup_egress",
+  "local_dns_udp",
+  "local_dns_tcp",
+  "trusted_time",
+  "update_mirror",
+  "external_integration_https",
+  "governance_api",
+  "privileged_broker",
+  "component_database",
+  "local_metrics",
+]
+forbidden_services = []

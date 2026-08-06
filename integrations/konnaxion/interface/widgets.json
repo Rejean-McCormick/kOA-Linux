@@ -1,0 +1,23 @@
+[
+  {
+    "$schema": "../../../docs/contracts/artifact-contracts/topbar-widget.schema.json",
+    "widget_id": "konnaxion.availability",
+    "module_id": "konnaxion",
+    "scope": "module",
+    "slot": "status",
+    "kind": "status",
+    "label": "Konnaxion status",
+    "label_key": "konnaxion.status.availability",
+    "icon_ref": null,
+    "priority": 100,
+    "required_capabilities": ["konnaxion.integration_status"],
+    "offline_behavior": "unavailable",
+    "compact_only": true,
+    "activation": {
+      "kind": "status_provider",
+      "route_id": null,
+      "command_ref": null,
+      "status_provider_ref": "adapter://konnaxion/health"
+    }
+  }
+]

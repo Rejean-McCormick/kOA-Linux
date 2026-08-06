@@ -14,7 +14,11 @@
     "contracts/system.contract.json",
     "contracts/integrations/uckk-import.integration.json",
     "contracts/artifact-contracts/uckk-learning-package.schema.json",
-    "contracts/artifact-contracts/uckk-import-receipt.schema.json"
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md",
+    "03-profiles/14-koa-spaces-deployment.md"
   ],
   "decision_ids": [
     "DEC-PROFILE-001",
@@ -79,12 +83,16 @@
     "LOCK-LIFE-001",
     "LOCK-LIFE-002",
     "LOCK-LIFE-003",
-    "LOCK-LIFE-004"
+    "LOCK-LIFE-004",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
     "DOC-GOV-000",
-    "DOC-SYS-000"
+    "DOC-SYS-000",
+    "DOC-SYS-021",
+    "DOC-SYS-022",
+    "DOC-PROFILE-014"
   ],
   "tags": [
     "profile",
@@ -92,7 +100,9 @@
     "lightweight",
     "offline",
     "local-first",
-    "resource-bounded"
+    "resource-bounded",
+    "koa-spaces",
+    "experience-layer"
   ]
 }
 KOA:DOC-META:END -->
@@ -696,3 +706,7 @@ Available storage falls below the declared reserve. New large media ingestion st
 ### 11.10 Profile removal
 
 The user exports authoritative data and provenance, verifies the export, removes local credentials and component data, and records that one external provider may retain prior submitted material under its separate policy.
+
+## kOA Spaces in User Lightweight
+
+The profile can enable kOA Spaces as an optional local experience surface. A deployment normally selects one validated active Space and bounded interface cache, while native module and administration paths remain available for fallback. The profile remains conformant when kOA Spaces is omitted.

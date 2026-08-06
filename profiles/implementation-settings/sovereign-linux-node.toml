@@ -1,0 +1,72 @@
+settings_version = "1.0.0"
+profile_id = "sovereign_linux_node"
+profile_contract = "docs/contracts/profiles/sovereign-linux-node.profile.json"
+profile_contract_version = "1.0.0"
+profile_role = "primary"
+available_for_selection = true
+
+[validation]
+mode = "strict"
+unknown_parameter = "error"
+missing_contract = "error"
+contract_version_mismatch = "error"
+unsupported_parameter = "error"
+composition_conflict = "error"
+
+[authority]
+profile_membership = "profile_contract"
+component_membership = "profile_contract"
+capabilities = "profile_contract"
+resource_policy = "profile_contract"
+security_policy = "profile_contract"
+lifecycle_policy = "profile_contract"
+offline_policy = "profile_contract"
+external_integrations = "profile_contract"
+
+[source_layout]
+strategy = "shared_repository_tree"
+profile_specific_source_tree = false
+generated_output_root = "generated/profiles/sovereign_linux_node"
+
+[composition]
+kind = "primary"
+requires_base_profile = false
+overlays = "explicit_only"
+implicit_overlay_activation = false
+compatibility_source = "profile_contract"
+conflict_result = "error"
+
+[implementation.host]
+os_family = "linux"
+kernel_policy = "standard_maintained_kernel"
+vendor_supported_release = true
+runtime_package_drift = false
+runtime_package_installation_on_active_slot = false
+emergency_recovery_environment = true
+
+[implementation.system_image]
+immutable = true
+signed = true
+activation = "atomic"
+partial_activation = false
+active_and_recovery_slots = true
+health_gate = true
+last_known_good = true
+
+[implementation.services]
+supervision = "profile_manifested_single_node"
+containers_required = false
+container_mode_when_used = "rootless"
+preferred_container_runtime = "Podman"
+kubernetes = false
+privileged_containers = false
+host_network_by_default = false
+
+[implementation.resources]
+authority_services_memory_percent = 20
+recovery_storage_percent = 10
+critical_receipt_buffer = true
+
+[implementation.overlays]
+selection = "explicit_only"
+effective_profile_recorded = true

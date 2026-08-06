@@ -15,7 +15,15 @@
     "generated/requirements-index.json",
     "generated/assertion-index.json",
     "generated/traceability.json",
-    "contracts/integration-types.contract.json"
+    "contracts/integration-types.contract.json",
+    "contracts/architecture-patterns.contract.json",
+    "contracts/artifact-contracts/distributed-workflow.schema.json",
+    "contracts/artifact-contracts/experience-view-adapter.schema.json",
+    "contracts/artifact-contracts/cqrs-projection.schema.json",
+    "contracts/artifact-contracts/cache-policy.schema.json",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md"
   ],
   "decision_ids": [
     "DEC-CONST-COMP-001",
@@ -23,7 +31,11 @@
     "DEC-SYS-GOV-001",
     "DEC-SYS-GATE-001",
     "DEC-SYS-SENT-001",
-    "DEC-SYS-KRISTAL-001"
+    "DEC-SYS-KRISTAL-001",
+    "DEC-WF-001",
+    "DEC-BFF-001",
+    "DEC-CQRS-001",
+    "DEC-CACHE-001"
   ],
   "requirement_ids": [
     "REQ-CONST-COMP-001",
@@ -41,7 +53,30 @@
     "REQ-CONST-COMP-013",
     "REQ-CONST-COMP-014",
     "REQ-CONST-COMP-015",
-    "REQ-CONST-COMP-016"
+    "REQ-CONST-COMP-016",
+    "REQ-PATTERN-001",
+    "REQ-PATTERN-002",
+    "REQ-PATTERN-003",
+    "REQ-PATTERN-004",
+    "REQ-PATTERN-005",
+    "REQ-PATTERN-019",
+    "REQ-PATTERN-020",
+    "REQ-PATTERN-021",
+    "REQ-PATTERN-022",
+    "REQ-PATTERN-023",
+    "REQ-PATTERN-024",
+    "REQ-PATTERN-031",
+    "REQ-PATTERN-032",
+    "REQ-PATTERN-033",
+    "REQ-PATTERN-034",
+    "REQ-PATTERN-035",
+    "REQ-PATTERN-036",
+    "REQ-PATTERN-037",
+    "REQ-PATTERN-038",
+    "REQ-PATTERN-039",
+    "REQ-PATTERN-040",
+    "REQ-PATTERN-041",
+    "REQ-PATTERN-042"
   ],
   "lock_ids": [
     "LOCK-COMP-001",
@@ -49,7 +84,12 @@
     "LOCK-DATA-001",
     "LOCK-GOV-001",
     "LOCK-GATE-001",
-    "LOCK-SENT-001"
+    "LOCK-SENT-001",
+    "LOCK-WF-001",
+    "LOCK-BFF-001",
+    "LOCK-CQRS-001",
+    "LOCK-CACHE-001",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -70,7 +110,10 @@
     "canonical-ownership",
     "data-authority",
     "cross-component-contracts",
-    "safe-degradation"
+    "safe-degradation",
+    "architecture-patterns",
+    "koa-spaces",
+    "experience-layer"
   ]
 }
 KOA:DOC-META:END -->
@@ -383,3 +426,11 @@ The UCKK Import Bridge can retrieve a selected UCKK learning package and create 
 > **Non-normative example:** This example illustrates one valid implementation or scenario. It does not redefine the canonical contract.
 
 SenTient can analyze an authorized export in an isolated workspace. Its index and annotations remain derived workbench data until an explicit owning-component import contract accepts a result.
+
+## Pattern boundary preservation
+
+Experience view adapters, workflow coordinators, projection builders, queue runtimes, and caches are integration mechanisms rather than new business owners. Commands remain with the authoritative component. Read projections and caches remain disposable. Coordinators never obtain direct cross-owner database access.
+
+## kOA Spaces Separation Boundary
+
+kOA Spaces remains separated from every contributing system. It can render a module entry, route, sidebar, widget, alias, or page surface only from declared presentation artifacts. The owning system retains its data, commands, authorization, workflows, migrations, backup, restore, and evidence. Replacing the experience subsystem does not transfer or delete authoritative state.

@@ -1,0 +1,45 @@
+schema_version = "1.0.0"
+integration_id = "ariane"
+backup_owner = "koa_operations"
+coordination_mode = "owner_separated"
+
+[koa_boundary]
+included = [
+  "source_lock",
+  "compatibility_declaration",
+  "integration_configuration",
+  "deployment_configuration",
+  "resource_envelope",
+  "health_configuration",
+  "storage_boundary",
+  "degradation_configuration",
+  "adapter_non_authoritative_state",
+  "receipt_references",
+]
+excluded = [
+  "secrets",
+  "credentials",
+  "raw_voice_recordings",
+  "ariane_internal_database",
+  "ariane_internal_artifacts",
+  "other_subsystem_authoritative_state",
+]
+
+[ariane_owned_state]
+backup_owner = "ariane"
+koa_direct_backup_access = false
+coordination_interface_required = true
+restore_validation_owner = "ariane"
+
+[restore]
+source_pin_reverification_required = true
+compatibility_reverification_required = true
+profile_membership_reverification_required = true
+receipt_path_reverification_required = true
+partial_restore_activation_allowed = false
+failed_validation_result = "integration_disabled"
+
+[evidence]
+backup_receipt_required = true
+restore_receipt_required = true
+secret_material_in_receipts_allowed = false

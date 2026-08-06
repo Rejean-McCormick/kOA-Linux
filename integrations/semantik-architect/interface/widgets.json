@@ -1,0 +1,25 @@
+[
+  {
+    "$schema": "../../../docs/contracts/artifact-contracts/topbar-widget.schema.json",
+    "widget_id": "semantik-architect.status",
+    "module_id": "semantik-architect",
+    "scope": "module",
+    "slot": "status",
+    "kind": "status",
+    "label": "Language build status",
+    "label_key": "semantik-architect.widget.status",
+    "icon_ref": null,
+    "priority": 700,
+    "required_capabilities": [
+      "semantik_architect.status.read"
+    ],
+    "offline_behavior": "degraded",
+    "compact_only": true,
+    "activation": {
+      "kind": "status_provider",
+      "route_id": null,
+      "command_ref": null,
+      "status_provider_ref": "koa_semantik_architect_adapter.health:health_status"
+    }
+  }
+]

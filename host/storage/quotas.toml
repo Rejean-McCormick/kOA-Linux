@@ -1,0 +1,77 @@
+schema_version = 1
+profile_id = "sovereign_linux_node"
+numeric_limits_source = "active_resource_envelope"
+missing_numeric_limit_behavior = "blocked"
+shared_owner_quota_permitted = false
+quota_enforcement_transfers_authority = false
+storage_exhaustion_may_truncate_authoritative_data = false
+
+[[quota_class]]
+id = "authoritative"
+scope = "component_owner"
+limit_required = true
+exhaustion_behavior = "block_new_writes_before_partial_commit"
+eviction_permitted = false
+
+[[quota_class]]
+id = "replicas"
+scope = "component_owner"
+limit_required = true
+exhaustion_behavior = "throttle_or_rebuild_without_promotion"
+eviction_permitted = true
+
+[[quota_class]]
+id = "projections"
+scope = "component_owner"
+limit_required = true
+exhaustion_behavior = "evict_or_rebuild_before_authoritative_loss"
+eviction_permitted = true
+
+[[quota_class]]
+id = "queues"
+scope = "component_and_queue"
+limit_required = true
+exhaustion_behavior = "reject_defer_or_block_according_to_contract"
+eviction_permitted = false
+
+[[quota_class]]
+id = "artifacts"
+scope = "artifact_channel"
+limit_required = true
+exhaustion_behavior = "block_staging_and_activation"
+eviction_permitted = false
+
+[[quota_class]]
+id = "evidence"
+scope = "evidence_authority"
+limit_required = true
+exhaustion_behavior = "block_receipt_before_commit_transition"
+eviction_permitted = false
+
+[[quota_class]]
+id = "cache"
+scope = "component_owner"
+limit_required = true
+exhaustion_behavior = "evict_safely"
+eviction_permitted = true
+
+[[quota_class]]
+id = "staging"
+scope = "component_owner"
+limit_required = true
+exhaustion_behavior = "clean_failed_candidates_without_promotion"
+eviction_permitted = true
+
+[[quota_class]]
+id = "recovery"
+scope = "recovery_authority"
+limit_required = true
+exhaustion_behavior = "block_recovery_material_update"
+eviction_permitted = false
+
+[[quota_class]]
+id = "backup"
+scope = "backup_authority"
+limit_required = true
+exhaustion_behavior = "fail_backup_without_success_claim"
+eviction_permitted = false

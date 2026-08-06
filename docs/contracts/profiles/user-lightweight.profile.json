@@ -87,7 +87,8 @@
     "LOCK-LIFE-003",
     "LOCK-LIFE-004",
     "LOCK-IMPL-001",
-    "LOCK-IMPL-002"
+    "LOCK-IMPL-002",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "scope": {
@@ -917,5 +918,25 @@
       "accepted_content_available_offline": true,
       "automatic_sync": false
     }
+  },
+  "koa_spaces": {
+    "subsystem_id": "koa_spaces",
+    "contract_ref": "contracts/subsystems/koa-spaces.subsystem.json",
+    "deployment_document_ref": "03-profiles/14-koa-spaces-deployment.md",
+    "membership": "optional",
+    "default_activation": "enabled_when_selected_by_deployment",
+    "deployment_mode": "local_experience_surface",
+    "required_for_profile_conformance": false,
+    "required_for_core_operation": false,
+    "authority": "non_authoritative_presentation",
+    "presentation_grants_authority": false,
+    "menu_visibility_is_authorization": false,
+    "offline_behavior": "local_frame_and_admitted_assets_available",
+    "failure_behavior": "presentation_unavailable_authoritative_services_and_fallback_paths_preserved",
+    "constraints": [
+      "bounded_cache_and_preferences",
+      "native_or_administrative_fallback",
+      "one_last_known_good_space"
+    ]
   }
 }

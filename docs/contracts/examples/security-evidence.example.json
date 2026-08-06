@@ -1,0 +1,52 @@
+{
+  "$schema": "../artifact-contracts/security-evidence.schema.json",
+  "artifact_type": "security_evidence",
+  "schema_version": "1.0.0",
+  "evidence_id": "SEC-EVID-PLATFORM-ATOMIC-20260806-001",
+  "status": "active",
+  "language": "en",
+  "control_id": "SEC-PLATFORM-003",
+  "profile_id": "sovereign_linux_node",
+  "subject_ref": "release-set://example/2026.08.06-rc1",
+  "implementation_ref": "assembly/release-set-builder/",
+  "implementation_version": "1.0.0",
+  "evaluation": {
+    "method": "combined",
+    "validator_ref": "tests/security/atomic-activation/",
+    "test_refs": [
+      "TEST-SEC-ATOMIC-001",
+      "TEST-SEC-ROLLBACK-001"
+    ],
+    "started_at": "2026-08-06T09:00:00Z",
+    "completed_at": "2026-08-06T09:14:32Z",
+    "environment_ref": "profile://sovereign_linux_node/example-node",
+    "toolchain_ref": "contracts/toolchains/python-uv.toolchain.json"
+  },
+  "result": "pass",
+  "observations": [
+    "Candidate activation completed without exposing partial state.",
+    "The simulated health failure restored the previous last-known-good release set."
+  ],
+  "exception_refs": [],
+  "recorded_at": "2026-08-06T09:15:00Z",
+  "expires_at": "2026-11-06T09:15:00Z",
+  "subject_digest": {
+    "algorithm": "sha256",
+    "value": "4f8f3f53e7da40c38f2a4a20a6ba8bf5bd588f57d1ff6b178c1e36d4a2415199"
+  },
+  "evidence_digest": {
+    "algorithm": "sha256",
+    "value": "2749e57cf4dd3268fd21cb1a0970c7b0a99f1f4bb85926d1137a4c6fd72d77f2"
+  },
+  "signatures": [
+    {
+      "signer_ref": "identity://example/security-evidence-signer",
+      "algorithm": "ed25519",
+      "signature_ref": "signature://example/SEC-EVID-PLATFORM-ATOMIC-20260806-001"
+    }
+  ],
+  "disclosure_class": "internal",
+  "retention_class": "release_lifetime",
+  "example": true,
+  "authority": "non_authoritative_example"
+}

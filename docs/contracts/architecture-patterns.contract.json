@@ -1,0 +1,345 @@
+{
+  "$schema": "../schemas/architecture-patterns.contract.schema.json",
+  "contract_id": "architecture-patterns",
+  "contract_type": "architecture_pattern_policy",
+  "version": "1.0.0",
+  "status": "active",
+  "language": "en",
+  "effective_at": "2026-08-05T19:14:00-04:00",
+  "purpose": "Define the final kOA applicability, authority boundaries, lifecycle, operational behavior, and conformance obligations for seven architecture patterns that protect remote calls, asynchronous work, distributed transitions, large payloads, experience aggregation, read projections, and caches.",
+  "canonical_refs": [
+    "contracts/system.contract.json",
+    "contracts/artifact-classes.contract.json",
+    "contracts/terminology.contract.json",
+    "contracts/artifact-contracts/integration-resilience-policy.schema.json",
+    "contracts/artifact-contracts/dead-letter-record.schema.json",
+    "contracts/artifact-contracts/distributed-workflow.schema.json",
+    "contracts/artifact-contracts/large-payload-reference.schema.json",
+    "contracts/artifact-contracts/experience-view-adapter.schema.json",
+    "contracts/artifact-contracts/cqrs-projection.schema.json",
+    "contracts/artifact-contracts/cache-policy.schema.json"
+  ],
+  "decision_ids": [
+    "DEC-RES-001",
+    "DEC-MSG-001",
+    "DEC-WF-001",
+    "DEC-PAYLOAD-001",
+    "DEC-BFF-001",
+    "DEC-CQRS-001",
+    "DEC-CACHE-001"
+  ],
+  "lock_ids": [
+    "LOCK-RES-001",
+    "LOCK-MSG-001",
+    "LOCK-WF-001",
+    "LOCK-PAYLOAD-001",
+    "LOCK-BFF-001",
+    "LOCK-CQRS-001",
+    "LOCK-CACHE-001"
+  ],
+  "principles": [
+    "Patterns are activated by declared applicability conditions rather than copied indiscriminately into every component.",
+    "A pattern may optimize delivery or resilience but never changes the canonical owner of business data or authorization.",
+    "Every non-authoritative copy, projection, adapter, queue record, or cache is disposable or rebuildable from an explicit owner path.",
+    "Every asynchronous or distributed failure ends in a visible terminal, quarantined, compensated, or forward-repair state; silent loss is prohibited.",
+    "Offline continuity remains valid when remote patterns are open, unavailable, delayed, or removed."
+  ],
+  "default_envelopes": {
+    "interactive_remote_call": {
+      "attempt_timeout_ms": 5000,
+      "total_timeout_ms": 8000,
+      "maximum_attempts": 2,
+      "backoff_base_ms": 250,
+      "backoff_multiplier": 2.0,
+      "backoff_max_ms": 2000,
+      "full_jitter": true
+    },
+    "background_remote_call": {
+      "attempt_timeout_ms": 30000,
+      "total_timeout_ms": 120000,
+      "maximum_attempts": 5,
+      "backoff_base_ms": 1000,
+      "backoff_multiplier": 2.0,
+      "backoff_max_ms": 300000,
+      "full_jitter": true
+    },
+    "circuit_breaker": {
+      "failure_threshold": 5,
+      "failure_window_seconds": 30,
+      "open_duration_seconds": 60,
+      "half_open_max_probes": 1,
+      "half_open_max_concurrency": 1
+    },
+    "dead_letter": {
+      "default_maximum_attempts": 5,
+      "permanent_failure_immediate_quarantine": true,
+      "alert_when_visible_count_greater_than": 0
+    },
+    "large_payload": {
+      "inline_payload_max_bytes": 262144,
+      "digest_algorithm": "sha256",
+      "reference_scheme": "koa-object"
+    },
+    "read_projection": {
+      "default_maximum_staleness_seconds": 60,
+      "authority_decision_maximum_staleness_seconds": 0
+    },
+    "cache": {
+      "ordinary_maximum_ttl_seconds": 300,
+      "negative_cache_maximum_ttl_seconds": 30,
+      "authorization_cache_default": "prohibited",
+      "empty_cache_must_be_safe": true
+    }
+  },
+  "patterns": {
+    "circuit_breaker": {
+      "pattern_id": "circuit_breaker",
+      "decision_id": "DEC-RES-001",
+      "lock_id": "LOCK-RES-001",
+      "artifact_schema_ref": "contracts/artifact-contracts/integration-resilience-policy.schema.json",
+      "applicability": "required_for_network_or_process_boundary_calls_whose_repeated_failure_can_exhaust_resources_or_cascade",
+      "not_applicable_to": [
+        "ordinary_in_process_function_calls",
+        "operations_that_require_a_single_atomic_owner_transaction"
+      ],
+      "states": [
+        "closed",
+        "open",
+        "half_open"
+      ],
+      "requirements": [
+        "fail_fast_while_open",
+        "bounded_half_open_probe",
+        "timeout_budget_precedes_retry",
+        "failure_classification",
+        "capability_specific_degraded_response",
+        "state_transition_metrics",
+        "manual_override_is_governed_and_receipted"
+      ],
+      "authority_rules": [
+        "an_open_circuit_never_fabricates_authoritative_success",
+        "cached_or_stale_data_is_labeled_and_policy_bounded",
+        "local_independent_capabilities_remain_available"
+      ]
+    },
+    "dead_letter_queue": {
+      "pattern_id": "dead_letter_queue",
+      "decision_id": "DEC-MSG-001",
+      "lock_id": "LOCK-MSG-001",
+      "artifact_schema_ref": "contracts/artifact-contracts/dead-letter-record.schema.json",
+      "applicability": "required_for_asynchronous_work_where_a_message_or_job_cannot_be_silently_discarded_after_bounded_retry",
+      "requirements": [
+        "transient_and_permanent_failure_classification",
+        "bounded_retry_before_quarantine",
+        "immediate_quarantine_for_known_permanent_failure",
+        "immutable_failure_record",
+        "tenant_and_authority_isolation",
+        "alerting",
+        "human_or_governed_review",
+        "authorized_redrive",
+        "authorized_discard",
+        "retention_and_closure_evidence"
+      ],
+      "prohibitions": [
+        "infinite_retry",
+        "silent_delete",
+        "automatic_redrive_without_compatibility_check",
+        "quarantine_as_an_unmonitored_black_hole"
+      ]
+    },
+    "distributed_workflow": {
+      "pattern_id": "distributed_workflow",
+      "decision_id": "DEC-WF-001",
+      "lock_id": "LOCK-WF-001",
+      "artifact_schema_ref": "contracts/artifact-contracts/distributed-workflow.schema.json",
+      "applicability": "required_when_one_business_transition_spans_multiple_authoritative_components_or_external_authority_domains",
+      "coordination_default": "explicit_orchestration_state_machine",
+      "choreography_allowed_when": "causal_trace_is_complete_cycles_are_prevented_and_each_owner_remains_explicit",
+      "requirements": [
+        "local_transaction_per_step",
+        "stable_idempotency_key",
+        "pending_state_visibility",
+        "timeout_per_step",
+        "compensation_or_forward_repair_per_completed_step",
+        "irreversible_action_marking",
+        "reverse_order_compensation_when_safe",
+        "human_intervention_state",
+        "terminal_receipt"
+      ],
+      "prohibitions": [
+        "global_database_lock_across_owners",
+        "hidden_partial_success",
+        "declaring_success_before_all_authoritative_acceptance_steps_complete",
+        "pretending_an_irreversible_action_was_undone"
+      ]
+    },
+    "large_payload_reference": {
+      "pattern_id": "large_payload_reference",
+      "decision_id": "DEC-PAYLOAD-001",
+      "lock_id": "LOCK-PAYLOAD-001",
+      "artifact_schema_ref": "contracts/artifact-contracts/large-payload-reference.schema.json",
+      "applicability": "required_when_a_message_or_event_payload_exceeds_the_active_profile_inline_limit_or_is_a_media_object",
+      "requirements": [
+        "payload_remains_in_owner_controlled_object_storage",
+        "control_message_carries_reference_digest_size_media_type_and_authorization_context",
+        "consumer_verifies_digest_before_use",
+        "reference_scope_is_minimal",
+        "expiry_and_retention_are_declared",
+        "orphan_detection_and_cleanup",
+        "routing_metadata_remains_inline"
+      ],
+      "prohibitions": [
+        "embedding_large_binary_data_in_general_event_streams",
+        "unbounded_public_locator",
+        "bearer_secret_inside_reference",
+        "deleting_payload_before_workflow_terminal_state"
+      ]
+    },
+    "experience_view_adapter": {
+      "pattern_id": "experience_view_adapter",
+      "decision_id": "DEC-BFF-001",
+      "lock_id": "LOCK-BFF-001",
+      "artifact_schema_ref": "contracts/artifact-contracts/experience-view-adapter.schema.json",
+      "kOA_name": "experience view adapter",
+      "codex_pattern": "backend_for_frontend",
+      "applicability": "required_when_a_declared_experience_needs_a_data_shape_or_multi_owner_aggregation_materially_different_from_owner_interfaces",
+      "placement": "owned_by_the_experience_module_or_space_integration_package_not_by_privileged_core",
+      "requirements": [
+        "presentation_shaping_only",
+        "query_aggregation_only",
+        "commands_delegated_to_owner_interfaces",
+        "authorization_rechecked_by_each_owner",
+        "bounded_parallel_fanout",
+        "per_dependency_timeout_and_circuit_policy",
+        "no_authoritative_storage",
+        "no_cross_owner_transaction_logic"
+      ],
+      "prohibitions": [
+        "business_rule_ownership",
+        "direct_database_write",
+        "implicit_privilege_elevation",
+        "single_universal_adapter_that_erases_module_boundaries"
+      ]
+    },
+    "command_query_separation": {
+      "pattern_id": "command_query_separation",
+      "decision_id": "DEC-CQRS-001",
+      "lock_id": "LOCK-CQRS-001",
+      "artifact_schema_ref": "contracts/artifact-contracts/cqrs-projection.schema.json",
+      "applicability": "required_when_a_component_declares_a_denormalized_read_projection_or_read_optimized_store_separate_from_its_authoritative_write_model",
+      "requirements": [
+        "single_authoritative_command_owner",
+        "projection_is_non_authoritative",
+        "source_event_or_change_feed_is_declared",
+        "checkpoint_and_rebuild_strategy",
+        "maximum_staleness",
+        "read_your_write_strategy_when_required",
+        "projection_lag_metrics",
+        "privacy_and_deletion_propagation"
+      ],
+      "prohibitions": [
+        "commands_against_projection_store",
+        "projection_used_for_fresh_authorization_or_irreversible_decision",
+        "unrebuildable_hidden_read_state",
+        "cross_component_projection_that_changes_source_ownership"
+      ]
+    },
+    "cache_aside": {
+      "pattern_id": "cache_aside",
+      "decision_id": "DEC-CACHE-001",
+      "lock_id": "LOCK-CACHE-001",
+      "artifact_schema_ref": "contracts/artifact-contracts/cache-policy.schema.json",
+      "applicability": "required_contract_when_a_component_uses_lazy_loaded_cache_aside_behavior",
+      "requirements": [
+        "source_of_truth_is_explicit",
+        "cache_miss_reads_owner_then_populates",
+        "owner_write_commits_before_invalidation",
+        "ttl",
+        "key_scope_includes_tenant_and_authority_domain",
+        "negative_cache_policy",
+        "stampede_protection",
+        "stale_data_labeling",
+        "empty_cache_safe_operation",
+        "cache_failure_degrades_to_owner_read_or_declared_unavailability"
+      ],
+      "prohibitions": [
+        "cache_as_authority",
+        "write_only_to_cache",
+        "unbounded_ttl",
+        "sharing_security_sensitive_entries_across_tenants",
+        "using_stale_cache_for_fresh_authorization_without_explicit_policy"
+      ]
+    }
+  },
+  "cross_pattern_composition": {
+    "remote_async_call": [
+      "timeout_budget",
+      "exponential_backoff_with_jitter",
+      "circuit_breaker",
+      "dead_letter_queue"
+    ],
+    "large_async_payload": [
+      "large_payload_reference",
+      "dead_letter_queue",
+      "idempotency"
+    ],
+    "multi_owner_transition": [
+      "distributed_workflow",
+      "idempotency",
+      "transactional_outbox",
+      "dead_letter_queue",
+      "receipts"
+    ],
+    "experience_read_surface": [
+      "experience_view_adapter",
+      "command_query_separation",
+      "cache_aside",
+      "circuit_breaker"
+    ],
+    "uckk_publication": [
+      "distributed_workflow",
+      "large_payload_reference",
+      "circuit_breaker",
+      "dead_letter_queue"
+    ],
+    "uckk_import": [
+      "distributed_workflow",
+      "large_payload_reference",
+      "circuit_breaker",
+      "dead_letter_queue"
+    ],
+    "koa_spaces": [
+      "experience_view_adapter",
+      "command_query_separation",
+      "cache_aside",
+      "circuit_breaker"
+    ]
+  },
+  "validation": {
+    "validator": "tools/check_architecture_patterns.py",
+    "required_documents": [
+      "02-system/34-architecture-patterns.md",
+      "06-lifecycle/20-resilience-and-projection-artifacts.md",
+      "08-operations/20-architecture-pattern-operations.md",
+      "09-conformance/22-architecture-pattern-conformance.md"
+    ],
+    "required_artifact_classes": [
+      "integration_resilience_policy",
+      "dead_letter_record",
+      "distributed_workflow",
+      "large_payload_reference",
+      "experience_view_adapter",
+      "cqrs_projection",
+      "cache_policy"
+    ],
+    "required_examples": [
+      "contracts/examples/integration-resilience-policy.example.json",
+      "contracts/examples/dead-letter-record.example.json",
+      "contracts/examples/distributed-workflow.example.json",
+      "contracts/examples/large-payload-reference.example.json",
+      "contracts/examples/experience-view-adapter.example.json",
+      "contracts/examples/cqrs-projection.example.json",
+      "contracts/examples/cache-policy.example.json"
+    ]
+  }
+}

@@ -10,6 +10,8 @@
 | DEC-AUD-001 |  |  |  |
 | DEC-AUDIT-001 |  |  |  |
 | DEC-AUTH-001 |  |  |  |
+| DEC-BFF-001 |  |  |  |
+| DEC-CACHE-001 |  |  |  |
 | DEC-COMP-001 |  |  |  |
 | DEC-COMP-CONTRACT-001 |  |  |  |
 | DEC-COMP-NODE-001 |  |  |  |
@@ -20,6 +22,7 @@
 | DEC-CONST-002 |  |  |  |
 | DEC-CONST-COMP-001 |  |  |  |
 | DEC-CONTAINER-001 |  |  |  |
+| DEC-CQRS-001 |  |  |  |
 | DEC-CULT-001 |  |  |  |
 | DEC-CULT-002 |  |  |  |
 | DEC-CULT-003 |  |  |  |
@@ -56,12 +59,14 @@
 | DEC-LIFE-CHANNEL-001 |  |  |  |
 | DEC-LINUX-001 |  |  |  |
 | DEC-MEDIATHEQUE-001 |  |  |  |
+| DEC-MSG-001 |  |  |  |
 | DEC-OFFLINE-001 |  |  |  |
 | DEC-OPS-DR-001 |  |  |  |
 | DEC-OPS-INC-001 |  |  |  |
 | DEC-OPS-OBS-001 |  |  |  |
 | DEC-OPS-SLO-001 |  |  |  |
 | DEC-OS-001 |  |  |  |
+| DEC-PAYLOAD-001 |  |  |  |
 | DEC-PORT-001 |  |  |  |
 | DEC-PRIV-001 |  |  |  |
 | DEC-PROFILE-001 |  |  |  |
@@ -74,6 +79,7 @@
 | DEC-PROFILE-USER-LIGHT-001 |  |  |  |
 | DEC-RECEIPT-001 |  |  |  |
 | DEC-REL-001 |  |  |  |
+| DEC-RES-001 |  |  |  |
 | DEC-SEC-001 |  |  |  |
 | DEC-SEC-BROKER-001 |  |  |  |
 | DEC-SEC-EVIDENCE-001 |  |  |  |
@@ -104,3 +110,4 @@
 | DEC-SYS-SENT-001 |  |  |  |
 | DEC-UCKK-EXT-001 |  |  |  |
 | DEC-USER-001 |  |  |  |
+| DEC-WF-001 |  |  |  |

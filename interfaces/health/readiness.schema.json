@@ -1,0 +1,565 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.koa.local/interfaces/health/readiness.schema.json",
+  "title": "kOA Capability Readiness",
+  "description": "Capability- and operation-class-specific readiness result. It states whether one declared class of work can be accepted safely and preserves authority, dependency, contract, data, resource, freshness, and degradation detail independently from process liveness.",
+  "$comment": "A consumer must select the readiness_class matching its action. A true ready value is not authorization and does not replace identity, policy, consent, trust, compatibility, or owner-side validation.",
+  "x-koa-interface": {
+    "interface_id": "capability_readiness",
+    "interface_version": "1.0.0",
+    "status": "active",
+    "owner": "operations-architecture",
+    "canonical_refs": [
+      "docs/08-operations/02-health-and-readiness.md",
+      "docs/02-system/06-capability-model.md",
+      "docs/02-system/07-cross-component-communication.md"
+    ],
+    "requirement_ids": [
+      "REQ-OPS-HEALTH-002",
+      "REQ-OPS-HEALTH-004",
+      "REQ-OPS-HEALTH-008",
+      "REQ-OPS-HEALTH-010",
+      "REQ-OPS-HEALTH-013",
+      "REQ-OPS-HEALTH-018",
+      "REQ-OPS-HEALTH-028"
+    ],
+    "semantic_rules": [
+      "readiness is evaluated per declared capability and work class",
+      "read readiness never implies write readiness",
+      "degradation narrows capability and never broadens authority",
+      "stale state cannot be presented as current"
+    ]
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "readiness_id",
+    "component_id",
+    "component_contract_ref",
+    "capability_id",
+    "readiness_class",
+    "ready",
+    "operational_state",
+    "usable_operation_classes",
+    "denied_operation_classes",
+    "conditions",
+    "freshness",
+    "observed_at",
+    "reason_codes"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "readiness_id": {
+      "type": "string",
+      "minLength": 11,
+      "maxLength": 256,
+      "pattern": "^readiness:[A-Za-z0-9][A-Za-z0-9._:/+-]*$"
+    },
+    "component_id": {
+      "$ref": "#/$defs/snakeId"
+    },
+    "component_instance_id": {
+      "$ref": "#/$defs/stableId"
+    },
+    "component_contract_ref": {
+      "$ref": "#/$defs/repositoryReference"
+    },
+    "capability_id": {
+      "$ref": "#/$defs/snakeId"
+    },
+    "capability_contract_ref": {
+      "$ref": "#/$defs/repositoryReference"
+    },
+    "readiness_class": {
+      "type": "string",
+      "minLength": 16,
+      "maxLength": 128,
+      "pattern": "^readiness\\.[a-z][a-z0-9_]*$",
+      "examples": [
+        "readiness.local_read",
+        "readiness.authoritative_write",
+        "readiness.background_work",
+        "readiness.publication",
+        "readiness.activation",
+        "readiness.recovery"
+      ]
+    },
+    "ready": {
+      "type": "boolean",
+      "description": "Whether this exact readiness class can accept work safely at observed_at. This is not a policy or authorization decision."
+    },
+    "operational_state": {
+      "$ref": "#/$defs/operationalState"
+    },
+    "usable_operation_classes": {
+      "type": "array",
+      "maxItems": 256,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/snakeId"
+      }
+    },
+    "denied_operation_classes": {
+      "type": "array",
+      "maxItems": 256,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/snakeId"
+      }
+    },
+    "conditions": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 256,
+      "items": {
+        "$ref": "#/$defs/readinessCondition"
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "maxItems": 256,
+      "items": {
+        "$ref": "#/$defs/dependencyState"
+      }
+    },
+    "active_contract": {
+      "$ref": "#/$defs/versionedReference"
+    },
+    "active_schema_versions": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "$ref": "#/$defs/versionedReference"
+      }
+    },
+    "active_artifact_refs": {
+      "type": "array",
+      "maxItems": 1024,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/stableId"
+      }
+    },
+    "profile_refs": {
+      "type": "array",
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/repositoryReference"
+      }
+    },
+    "freshness": {
+      "$ref": "#/$defs/freshness"
+    },
+    "observed_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "reason_codes": {
+      "type": "array",
+      "maxItems": 128,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/reasonCode"
+      }
+    },
+    "recovery_conditions": {
+      "type": "array",
+      "maxItems": 128,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/snakeId"
+      }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "maxItems": 1024,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/repositoryReference"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "ready": {
+            "const": true
+          }
+        },
+        "required": [
+          "ready"
+        ]
+      },
+      "then": {
+        "properties": {
+          "usable_operation_classes": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "ready": {
+            "const": false
+          }
+        },
+        "required": [
+          "ready"
+        ]
+      },
+      "then": {
+        "properties": {
+          "denied_operation_classes": {
+            "minItems": 1
+          },
+          "reason_codes": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "operational_state": {
+            "const": "healthy"
+          }
+        },
+        "required": [
+          "operational_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "ready": {
+            "const": true
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "freshness": {
+            "properties": {
+              "staleness_state": {
+                "const": "stale"
+              }
+            },
+            "required": [
+              "staleness_state"
+            ]
+          }
+        },
+        "required": [
+          "freshness"
+        ]
+      },
+      "then": {
+        "properties": {
+          "operational_state": {
+            "not": {
+              "const": "healthy"
+            }
+          },
+          "reason_codes": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "stableId": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/@+-]*$"
+    },
+    "snakeId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
+    },
+    "reasonCode": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 128,
+      "pattern": "^[A-Z][A-Z0-9_:-]*$"
+    },
+    "repositoryReference": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 1024,
+      "pattern": "^(?!(?:/|.*(?:^|/)\\.\\.(?:/|$)))(?:[^#\\s]+(?:#(?:/.*)?)?|(?:DOC|DEC|REQ|LOCK|ADR|TEST|EVID|EXC)-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3})$"
+    },
+    "semanticVersion": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "operationalState": {
+      "type": "string",
+      "enum": [
+        "starting",
+        "healthy",
+        "constrained",
+        "read_only",
+        "advisory_only",
+        "degraded",
+        "unavailable",
+        "recovering",
+        "maintenance",
+        "stopping",
+        "failed"
+      ]
+    },
+    "versionedReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ref",
+        "version"
+      ],
+      "properties": {
+        "ref": {
+          "$ref": "#/$defs/repositoryReference"
+        },
+        "version": {
+          "$ref": "#/$defs/semanticVersion"
+        }
+      }
+    },
+    "readinessCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "condition_id",
+        "category",
+        "required",
+        "status"
+      ],
+      "properties": {
+        "condition_id": {
+          "$ref": "#/$defs/snakeId"
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "process_liveness",
+            "startup_completion",
+            "contract_readiness",
+            "dependency_readiness",
+            "data_readiness",
+            "identity_and_trust_readiness",
+            "policy_readiness",
+            "local_read_readiness",
+            "write_readiness",
+            "execution_readiness",
+            "background_work_readiness",
+            "recovery_readiness"
+          ]
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "satisfied",
+            "unsatisfied",
+            "degraded",
+            "stale",
+            "unknown",
+            "not_applicable"
+          ]
+        },
+        "observed_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "reason_codes": {
+          "type": "array",
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/reasonCode"
+          }
+        },
+        "evidence_refs": {
+          "type": "array",
+          "maxItems": 128,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/repositoryReference"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "unsatisfied",
+                  "degraded",
+                  "stale",
+                  "unknown"
+                ]
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "required": [
+              "reason_codes"
+            ],
+            "properties": {
+              "reason_codes": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "dependencyState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dependency_id",
+        "classification",
+        "state",
+        "required_for_this_class"
+      ],
+      "properties": {
+        "dependency_id": {
+          "$ref": "#/$defs/stableId"
+        },
+        "classification": {
+          "type": "string",
+          "enum": [
+            "required_component",
+            "required_capability",
+            "conditional",
+            "optional",
+            "external_integration"
+          ]
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "available",
+            "degraded",
+            "stale",
+            "unavailable",
+            "unknown",
+            "not_applicable"
+          ]
+        },
+        "required_for_this_class": {
+          "type": "boolean"
+        },
+        "observed_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "reason_codes": {
+          "type": "array",
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/reasonCode"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "enum": [
+                  "degraded",
+                  "stale",
+                  "unavailable",
+                  "unknown"
+                ]
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "required": [
+              "reason_codes"
+            ],
+            "properties": {
+              "reason_codes": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "freshness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "confidence",
+        "staleness_state",
+        "observed_at"
+      ],
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/stableId"
+        },
+        "confidence": {
+          "type": "string",
+          "enum": [
+            "direct",
+            "derived",
+            "reported",
+            "unknown"
+          ]
+        },
+        "staleness_state": {
+          "type": "string",
+          "enum": [
+            "current",
+            "stale",
+            "unknown"
+          ]
+        },
+        "observed_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "valid_until": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "expected_refresh_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "age_seconds": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "effect_on_capability": {
+          "$ref": "#/$defs/operationalState"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+# Service membership is rendered from the active profile; do not list services here.
+[Unit]
+Description=kOA optional profile-enabled services
+Documentation=file:/usr/share/doc/koa/recipes/sovereign-linux/systemd-layout.md
+After=koa-core.target
+Before=koa-node.target
+Conflicts=koa-recovery.target

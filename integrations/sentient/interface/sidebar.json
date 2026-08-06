@@ -1,0 +1,60 @@
+{
+  "$schema": "../../../docs/contracts/artifact-contracts/sidebar-navigation.schema.json",
+  "items": [
+    {
+      "availability": "conditional",
+      "badge_provider_ref": null,
+      "icon_ref": null,
+      "item_id": "sentient.workbench",
+      "label": "SenTient workbench",
+      "label_key": "sentient.workbench",
+      "order": 0,
+      "required_capabilities": [
+        "sentient_isolated_analysis"
+      ],
+      "route_id": "sentient.workbench"
+    },
+    {
+      "availability": "conditional",
+      "badge_provider_ref": null,
+      "children": [
+        {
+          "availability": "conditional",
+          "badge_provider_ref": "koa://integrations/sentient/job-status",
+          "icon_ref": null,
+          "item_id": "sentient.jobs",
+          "label": "Jobs",
+          "label_key": "sentient.jobs",
+          "order": 0,
+          "required_capabilities": [
+            "sentient_workbench_jobs"
+          ],
+          "route_id": "sentient.jobs"
+        },
+        {
+          "availability": "conditional",
+          "badge_provider_ref": "koa://integrations/sentient/candidate-count",
+          "icon_ref": null,
+          "item_id": "sentient.candidates",
+          "label": "Candidate artifacts",
+          "label_key": "sentient.candidates",
+          "order": 10,
+          "required_capabilities": [
+            "sentient_candidate_artifacts"
+          ],
+          "route_id": "sentient.candidates"
+        }
+      ],
+      "icon_ref": null,
+      "item_id": "sentient.activity",
+      "label": "Workbench activity",
+      "label_key": "sentient.activity",
+      "order": 10,
+      "required_capabilities": [
+        "sentient_workbench_jobs"
+      ]
+    }
+  ],
+  "module_id": "sentient",
+  "visible_depth": 2
+}

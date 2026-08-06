@@ -1,0 +1,55 @@
+schema_version = "1.0.0"
+policy_id = "koa_appliance_device_policy"
+profile_overlay = "appliance_shell"
+default_action = "deny"
+unknown_device_class = "deny_and_report"
+physical_attachment_grants_authority = false
+direct_application_device_access = false
+direct_shell_device_access = false
+privileged_device_effects = "registered_request_only"
+policy_owner = "host_platform"
+authorization_owner = "governance_policy_runtime_or_registered_authority"
+executor = "koa_node_agent_registered_device_operation"
+resource_admission_owner = "resource_governor"
+receipt_owner = "audit_broker_or_operation_owner"
+
+[session_boundary]
+ordinary_session_context = "ordinary"
+maintenance_context = "separately_authorized"
+recovery_context = "separately_authorized"
+direct_privileged_broker_access = false
+unrestricted_local_socket_access = false
+unrestricted_device_access = false
+host_mutation = false
+
+[input]
+classes = ["keyboard", "pointer", "touch", "accessibility_control"]
+access_path = "seat_and_compositor_managed"
+raw_device_nodes_exposed_to_shell = false
+raw_device_nodes_exposed_to_applications = false
+unknown_input = "deny"
+
+[display]
+access_path = "profile_selected_wayland_session"
+direct_drm_access_by_applications = false
+direct_framebuffer_access_by_applications = false
+unknown_display_device = "deny"
+
+[removable_media]
+policy = "host/devices/removable-media-policy.toml"
+automount = false
+autorun = false
+direct_block_device_access = false
+possession_grants_import_authority = false
+possession_grants_export_authority = false
+
+[prohibited]
+arbitrary_device_path = true
+device_passthrough_to_ordinary_session = true
+broad_uaccess_tagging = true
+world_writable_device = true
+shell_or_run_program_from_udev = true
+unregistered_usb_class = true
+unregistered_serial_device = true
+unregistered_camera_or_capture_device = true
+unregistered_hardware_token = true

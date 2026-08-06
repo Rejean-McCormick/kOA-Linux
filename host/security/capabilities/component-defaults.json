@@ -1,0 +1,130 @@
+{
+  "format": "koa-linux-component-capability-defaults/v1",
+  "version": "1.0.0",
+  "catalog_ref": "catalog.json",
+  "default_profile": "ordinary_component",
+  "selection_rules": {
+    "unknown_service_profile": "ordinary_component",
+    "unknown_capability": "deny_and_block_activation",
+    "profile_escalation": "explicit_override_only",
+    "ambient_capability_override": "prohibited",
+    "runtime_capability_set_must_be_subset_of_bounding": true
+  },
+  "profiles": {
+    "ordinary_component": {
+      "description": "Default for application components, adapters, workers, and non-privileged services.",
+      "bounding": [],
+      "permitted": [],
+      "effective": [],
+      "inheritable": [],
+      "ambient": [],
+      "no_new_privileges": true,
+      "privileged_exec_transition": "prohibited"
+    },
+    "koa_node_agent": {
+      "description": "Unprivileged validation and orchestration side of the Node Agent boundary.",
+      "bounding": [],
+      "permitted": [],
+      "effective": [],
+      "inheritable": [],
+      "ambient": [],
+      "no_new_privileges": true,
+      "privileged_exec_transition": "broker_socket_only"
+    },
+    "koa_privileged_broker": {
+      "description": "Single narrow executor for registered host mutations; capabilities remain bounded by the closed operation catalog.",
+      "bounding": [
+        "CAP_CHOWN",
+        "CAP_DAC_OVERRIDE",
+        "CAP_FOWNER",
+        "CAP_SETGID",
+        "CAP_SETUID",
+        "CAP_SYS_ADMIN",
+        "CAP_SYS_BOOT",
+        "CAP_SYS_CHROOT"
+      ],
+      "permitted": [
+        "CAP_CHOWN",
+        "CAP_DAC_OVERRIDE",
+        "CAP_FOWNER",
+        "CAP_SETGID",
+        "CAP_SETUID",
+        "CAP_SYS_ADMIN",
+        "CAP_SYS_BOOT",
+        "CAP_SYS_CHROOT"
+      ],
+      "effective": [],
+      "inheritable": [],
+      "ambient": [],
+      "no_new_privileges": true,
+      "privileged_exec_transition": "fixed_broker_binary_only",
+      "operation_binding_required": true,
+      "activation_preconditions": [
+        "koa_node_agent_contract_active",
+        "closed_operation_catalog_verified",
+        "profile_authorization_verified",
+        "seccomp_profile_loaded",
+        "lsm_policy_loaded",
+        "negative_path_security_tests_passed"
+      ],
+      "dependency_evidence": {
+        "bundle_id": "B-0043",
+        "status_when_missing": "block_privileged_activation"
+      },
+      "idle_effective_set_must_be_empty": true,
+      "operation_effective_set": "verified_subset_of_permitted_for_one_closed_operation",
+      "drop_effective_set_after_operation": true
+    },
+    "appliance_browser": {
+      "description": "Presentation-only appliance browser with no host capability authority.",
+      "bounding": [],
+      "permitted": [],
+      "effective": [],
+      "inheritable": [],
+      "ambient": [],
+      "no_new_privileges": true,
+      "privileged_exec_transition": "prohibited"
+    }
+  },
+  "assignments": [
+    {
+      "selector": {
+        "service_class": "ordinary_component"
+      },
+      "profile": "ordinary_component"
+    },
+    {
+      "selector": {
+        "service_id": "koa_node_agent"
+      },
+      "profile": "koa_node_agent"
+    },
+    {
+      "selector": {
+        "service_id": "koa_privileged_broker"
+      },
+      "profile": "koa_privileged_broker"
+    },
+    {
+      "selector": {
+        "service_id": "appliance_browser"
+      },
+      "profile": "appliance_browser"
+    }
+  ],
+  "evidence": {
+    "required_fields": [
+      "service_identity",
+      "profile_id",
+      "bounding",
+      "permitted",
+      "effective",
+      "inheritable",
+      "ambient",
+      "no_new_privileges",
+      "seccomp_profile",
+      "contract_version"
+    ],
+    "secret_values_permitted": false
+  }
+}

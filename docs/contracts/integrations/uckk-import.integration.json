@@ -2,7 +2,7 @@
   "$schema": "../../schemas/integration.schema.json",
   "integration_id": "uckk-import",
   "title": "UCKK Import",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "status": "active",
   "integration_type": "external_moodle_import",
   "role": "Optional governed import of selected online UCKK courses, learning paths, instructions, manuals, and resources into the local kOA Mediatheque for private and offline use.",
@@ -37,7 +37,11 @@
     "DEC-DATA-001",
     "DEC-GOV-001",
     "DEC-OFFLINE-001",
-    "DEC-AUDIT-001"
+    "DEC-AUDIT-001",
+    "DEC-RES-001",
+    "DEC-MSG-001",
+    "DEC-WF-001",
+    "DEC-PAYLOAD-001"
   ],
   "requirement_ids": [
     "REQ-UCKK-IMPORT-001",
@@ -59,7 +63,11 @@
     "LOCK-MEDIATHEQUE-001",
     "LOCK-DATA-001",
     "LOCK-GOV-001",
-    "LOCK-OFFLINE-001"
+    "LOCK-OFFLINE-001",
+    "LOCK-RES-001",
+    "LOCK-MSG-001",
+    "LOCK-WF-001",
+    "LOCK-PAYLOAD-001"
   ],
   "boundary": {
     "source_system": "uckk",
@@ -181,5 +189,18 @@
       "no automatic upload",
       "no bidirectional synchronization"
     ]
+  },
+  "architecture_pattern_contract_ref": "contracts/architecture-patterns.contract.json",
+  "required_patterns": [
+    "distributed_workflow",
+    "large_payload_reference",
+    "circuit_breaker",
+    "dead_letter_queue"
+  ],
+  "pattern_artifact_refs": {
+    "integration_resilience_policy": "contracts/artifact-contracts/integration-resilience-policy.schema.json",
+    "dead_letter_record": "contracts/artifact-contracts/dead-letter-record.schema.json",
+    "distributed_workflow": "contracts/artifact-contracts/distributed-workflow.schema.json",
+    "large_payload_reference": "contracts/artifact-contracts/large-payload-reference.schema.json"
   }
 }

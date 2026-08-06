@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "layout_id": "koa.host.partition-layout.ab-recovery",
+  "mechanism": "inactive_slot",
+  "sector_alignment_mib": 4,
+  "partitions": [
+    {"id": "esp", "role": "boot", "filesystem": "vfat", "minimum_size_mib": 512, "mutable": true},
+    {"id": "root_a", "role": "normal_slot", "slot": "a", "filesystem": "squashfs-or-verity", "minimum_size_mib": 8192, "mutable": false},
+    {"id": "root_b", "role": "normal_slot", "slot": "b", "filesystem": "squashfs-or-verity", "minimum_size_mib": 8192, "mutable": false},
+    {"id": "root_c", "role": "normal_slot", "slot": "c", "filesystem": "squashfs-or-verity", "minimum_size_mib": 8192, "mutable": false},
+    {"id": "recovery", "role": "recovery", "slot": "recovery", "filesystem": "squashfs-or-verity", "minimum_size_mib": 4096, "mutable": false},
+    {"id": "state", "role": "host_state", "filesystem": "encrypted-native", "minimum_size_mib": 8192, "mutable": true}
+  ],
+  "invariants": {
+    "active_and_candidate_are_distinct": true,
+    "recovery_is_independently_invokable": true,
+    "staging_must_not_overwrite_active": true,
+    "staging_must_not_overwrite_previous_good": true,
+    "staging_must_not_overwrite_recovery": true
+  }
+}

@@ -1,0 +1,181 @@
+[verification]
+policy_id = "koa.offline_bundle.verification"
+policy_version = "1.0.0"
+status = "active"
+contract_ref = "docs/contracts/artifact-contracts/offline-bundle.schema.json"
+default_outcome = "blocked"
+network_dependency = "none"
+fail_closed = true
+false_success_reporting = false
+automatic_substitution_allowed = false
+
+[verification.outcomes]
+allowed = ["verified", "failed", "blocked", "quarantined", "revoked"]
+verified_requires_all_mandatory_checks = true
+failed_means_requirement_contradicted = true
+blocked_means_required_authority_or_check_unresolved = true
+quarantined_means_isolated_from_ordinary_use = true
+revoked_blocks_new_use = true
+
+[verification.order]
+steps = [
+  "copy_to_quarantine",
+  "identify_candidate_before_optional_metadata",
+  "bounded_manifest_parse",
+  "archive_and_path_safety",
+  "envelope_identity_and_integrity",
+  "envelope_signature_and_scope",
+  "trust_revocation_time_and_replay",
+  "release_set_and_channel_scope",
+  "independent_payload_verification",
+  "compatibility_and_policy",
+  "class_specific_staging_eligibility",
+  "emit_durable_receipts",
+]
+reordering_allowed = false
+activation_step_included = false
+
+[verification.layers]
+required = [
+  "envelope",
+  "identity",
+  "artifact_class",
+  "release_channel",
+  "integrity",
+  "provenance",
+  "trust",
+  "compatibility",
+  "authorization",
+  "class_specific",
+  "evidence",
+]
+one_layer_implies_another = false
+
+[verification.quarantine]
+required_before_parse = true
+non_authoritative = true
+non_executable = true
+component_credentials_allowed = false
+unrestricted_network_allowed = false
+bounded_storage_required = true
+bounded_time_required = true
+interrupted_copy_state = "incomplete_and_ineligible"
+cleanup_or_retention_receipt_required = true
+
+[verification.parser]
+limits_source = "active_profile_and_resource_envelope"
+manifest_bytes_bounded = true
+object_depth_bounded = true
+string_length_bounded = true
+collection_length_bounded = true
+payload_count_bounded = true
+stored_and_expanded_size_bounded = true
+path_length_and_depth_bounded = true
+archive_nesting_bounded = true
+compression_ratio_bounded = true
+processing_time_bounded = true
+memory_cpu_and_temporary_storage_bounded = true
+diagnostic_output_bounded_and_redacted = true
+unknown_critical_fields = "reject_or_quarantine"
+duplicate_keys = "reject"
+ambiguous_encoding = "reject"
+unsupported_algorithm = "reject"
+
+[verification.archive]
+extract_into_new_quarantine_directory = true
+absolute_paths = "reject"
+parent_traversal = "reject"
+normalized_path_collision = "reject"
+case_or_unicode_collision = "reject_when_relevant"
+symlink_escape = "reject"
+hard_link_escape = "reject"
+device_fifo_socket_or_mount_instruction = "reject"
+undeclared_archive_entry = "reject"
+overwrite_existing_member_or_authoritative_state = "reject"
+executable_before_class_staging = false
+
+[verification.trust]
+signer_identity_required = true
+signer_scope_required = true
+artifact_class_scope_required = true
+channel_scope_required = true
+environment_profile_tenant_and_audience_scope_required = true
+recipient_scope_required = true
+algorithm_policy_required = true
+validity_interval_required = true
+revocation_state_required = true
+trust_epoch_required = true
+sequence_and_replay_required = true
+stale_or_missing_trust_state = "blocked_or_quarantined"
+wrong_scope_signature = "failed"
+media_or_courier_trust_substitutes_signature = false
+
+[verification.replay]
+durable_ledger_required = true
+record_before_non_idempotent_transition = true
+identical_replay_returns_prior_result = true
+repeat_non_idempotent_effects = false
+lower_sequence_or_invalid_epoch = "blocked"
+
+[verification.payloads]
+verify_each_independently = true
+envelope_success_promotes_payload = false
+valid_payload_promotes_invalid_peer = false
+required_checks = [
+  "inventory_match",
+  "integrity",
+  "payload_signature",
+  "artifact_class",
+  "release_channel",
+  "source_provenance",
+  "sbom_when_required",
+  "profile_and_component_scope",
+  "schema",
+  "dependencies",
+  "release_set_compatibility",
+  "revocation_and_downgrade",
+  "migration_requirements",
+  "governance_policy",
+  "required_evidence",
+]
+
+[verification.activation_separation]
+import_authorizes_activation = false
+staging_authorizes_activation = false
+repository_presence_authorizes_activation = false
+valid_signature_authorizes_activation = false
+release_set_authorizes_activation = false
+class_specific_activation_required = true
+partial_activation_allowed = false
+previous_valid_state_preserved = true
+
+[verification.receipts]
+required_transition_types = [
+  "bundle_creation",
+  "media_detection",
+  "quarantine_copy",
+  "envelope_verification",
+  "payload_verification",
+  "policy_decision",
+  "staging",
+  "migration",
+  "activation",
+  "rollback_or_forward_repair",
+  "recovery",
+  "rejection",
+  "cleanup",
+  "result_export",
+]
+durable_before_authoritative_commit = true
+correlation_to_bundle_and_payload_identities = true
+immutable_history = true
+redaction_required = true
+
+[verification.failure]
+missing_required_artifact = "blocked"
+missing_required_evidence = "blocked"
+network_unavailable = "continue_local_checks_without_remote_fetch"
+remote_repository_unavailable = "defer_remote_publication_only"
+unverifiable_alternate_source = "reject"
+interrupted_import = "resume_idempotent_step_or_discard_quarantine"
+verification_failure = "quarantine_or_reject_without_authority_change"

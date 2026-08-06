@@ -1,0 +1,353 @@
+{
+  "format": "koa-linux-capability-catalog/v1",
+  "catalog_id": "koa-linux-capabilities",
+  "version": "1.0.0",
+  "authority": {
+    "profile_id": "sovereign_linux_node",
+    "requirements": [
+      "REQ-SEC-PRIV-002",
+      "REQ-SEC-PRIV-006",
+      "REQ-SEC-PRIV-007",
+      "REQ-SEC-PRIV-013",
+      "REQ-SEC-PRIV-014",
+      "REQ-SEC-PRIV-015",
+      "REQ-SEC-BROKER-034"
+    ],
+    "source_paths": [
+      "docs/contracts/components/koa-node-agent.component.json",
+      "docs/03-profiles/07-sovereign-linux-node.md",
+      "docs/07-security/01-security-baseline.md",
+      "docs/07-security/05-privilege-boundaries.md",
+      "docs/07-security/06-privileged-broker.md",
+      "docs/07-security/21-security-control-architecture.md",
+      "docs/10-adrs/ADR-012-single-narrow-privileged-broker.md"
+    ]
+  },
+  "kernel_model": {
+    "capabilities_are_per_thread": true,
+    "runtime_probe_path": "/proc/sys/kernel/cap_last_cap",
+    "highest_known_capability": {
+      "name": "CAP_CHECKPOINT_RESTORE",
+      "number": 40
+    },
+    "unknown_capability_behavior": "deny_and_block_activation"
+  },
+  "global_rules": {
+    "default_state": "denied",
+    "ambient_capabilities": [],
+    "inheritable_capabilities": [],
+    "file_capabilities": "prohibited_as_ordinary_integration_path",
+    "setuid_setgid_executables": "prohibited_as_ordinary_integration_path",
+    "grant_scope": "service_identity_and_closed_operation",
+    "grant_requires": [
+      "active_profile_authorization",
+      "closed_operation_contract",
+      "negative_path_tests",
+      "runtime_evidence"
+    ]
+  },
+  "admitted_profiles": {
+    "ordinary_component": [],
+    "koa_node_agent": [],
+    "appliance_browser": [],
+    "koa_privileged_broker": [
+      "CAP_CHOWN",
+      "CAP_DAC_OVERRIDE",
+      "CAP_FOWNER",
+      "CAP_SETGID",
+      "CAP_SETUID",
+      "CAP_SYS_ADMIN",
+      "CAP_SYS_BOOT",
+      "CAP_SYS_CHROOT"
+    ]
+  },
+  "capabilities": [
+    {
+      "number": 0,
+      "name": "CAP_CHOWN",
+      "risk_domain": "filesystem_ownership",
+      "default_state": "denied",
+      "broker_admission": "operation_scoped"
+    },
+    {
+      "number": 1,
+      "name": "CAP_DAC_OVERRIDE",
+      "risk_domain": "filesystem_access",
+      "default_state": "denied",
+      "broker_admission": "operation_scoped"
+    },
+    {
+      "number": 2,
+      "name": "CAP_DAC_READ_SEARCH",
+      "risk_domain": "filesystem_access",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 3,
+      "name": "CAP_FOWNER",
+      "risk_domain": "filesystem_ownership",
+      "default_state": "denied",
+      "broker_admission": "operation_scoped"
+    },
+    {
+      "number": 4,
+      "name": "CAP_FSETID",
+      "risk_domain": "filesystem_ownership",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 5,
+      "name": "CAP_KILL",
+      "risk_domain": "process_control",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 6,
+      "name": "CAP_SETGID",
+      "risk_domain": "identity_transition",
+      "default_state": "denied",
+      "broker_admission": "operation_scoped"
+    },
+    {
+      "number": 7,
+      "name": "CAP_SETUID",
+      "risk_domain": "identity_transition",
+      "default_state": "denied",
+      "broker_admission": "operation_scoped"
+    },
+    {
+      "number": 8,
+      "name": "CAP_SETPCAP",
+      "risk_domain": "capability_control",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 9,
+      "name": "CAP_LINUX_IMMUTABLE",
+      "risk_domain": "filesystem_integrity",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 10,
+      "name": "CAP_NET_BIND_SERVICE",
+      "risk_domain": "network",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 11,
+      "name": "CAP_NET_BROADCAST",
+      "risk_domain": "network",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 12,
+      "name": "CAP_NET_ADMIN",
+      "risk_domain": "network_administration",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 13,
+      "name": "CAP_NET_RAW",
+      "risk_domain": "network_raw_access",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 14,
+      "name": "CAP_IPC_LOCK",
+      "risk_domain": "memory_and_ipc",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 15,
+      "name": "CAP_IPC_OWNER",
+      "risk_domain": "memory_and_ipc",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 16,
+      "name": "CAP_SYS_MODULE",
+      "risk_domain": "kernel_administration",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 17,
+      "name": "CAP_SYS_RAWIO",
+      "risk_domain": "hardware_raw_access",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 18,
+      "name": "CAP_SYS_CHROOT",
+      "risk_domain": "filesystem_namespace",
+      "default_state": "denied",
+      "broker_admission": "operation_scoped"
+    },
+    {
+      "number": 19,
+      "name": "CAP_SYS_PTRACE",
+      "risk_domain": "process_inspection",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 20,
+      "name": "CAP_SYS_PACCT",
+      "risk_domain": "process_accounting",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 21,
+      "name": "CAP_SYS_ADMIN",
+      "risk_domain": "kernel_administration",
+      "default_state": "denied",
+      "broker_admission": "operation_scoped"
+    },
+    {
+      "number": 22,
+      "name": "CAP_SYS_BOOT",
+      "risk_domain": "boot_control",
+      "default_state": "denied",
+      "broker_admission": "operation_scoped"
+    },
+    {
+      "number": 23,
+      "name": "CAP_SYS_NICE",
+      "risk_domain": "scheduler_control",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 24,
+      "name": "CAP_SYS_RESOURCE",
+      "risk_domain": "resource_limit_control",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 25,
+      "name": "CAP_SYS_TIME",
+      "risk_domain": "time_control",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 26,
+      "name": "CAP_SYS_TTY_CONFIG",
+      "risk_domain": "terminal_control",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 27,
+      "name": "CAP_MKNOD",
+      "risk_domain": "device_node_control",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 28,
+      "name": "CAP_LEASE",
+      "risk_domain": "filesystem_lease",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 29,
+      "name": "CAP_AUDIT_WRITE",
+      "risk_domain": "kernel_audit",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 30,
+      "name": "CAP_AUDIT_CONTROL",
+      "risk_domain": "kernel_audit",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 31,
+      "name": "CAP_SETFCAP",
+      "risk_domain": "capability_control",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 32,
+      "name": "CAP_MAC_OVERRIDE",
+      "risk_domain": "mandatory_access_control",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 33,
+      "name": "CAP_MAC_ADMIN",
+      "risk_domain": "mandatory_access_control",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 34,
+      "name": "CAP_SYSLOG",
+      "risk_domain": "kernel_log_access",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 35,
+      "name": "CAP_WAKE_ALARM",
+      "risk_domain": "power_control",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 36,
+      "name": "CAP_BLOCK_SUSPEND",
+      "risk_domain": "power_control",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 37,
+      "name": "CAP_AUDIT_READ",
+      "risk_domain": "kernel_audit",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 38,
+      "name": "CAP_PERFMON",
+      "risk_domain": "performance_monitoring",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 39,
+      "name": "CAP_BPF",
+      "risk_domain": "kernel_programming",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    },
+    {
+      "number": 40,
+      "name": "CAP_CHECKPOINT_RESTORE",
+      "risk_domain": "process_checkpoint_restore",
+      "default_state": "denied",
+      "broker_admission": "prohibited"
+    }
+  ]
+}

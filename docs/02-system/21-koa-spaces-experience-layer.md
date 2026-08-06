@@ -9,23 +9,59 @@
     "global"
   ],
   "canonical_refs": [
-    "contracts/proposals/koa-spaces.subsystem.json",
+    "contracts/subsystems/koa-spaces.subsystem.json",
     "contracts/artifact-contracts/space-definition.schema.json",
     "contracts/artifact-contracts/module-interface-manifest.schema.json",
     "contracts/artifact-contracts/space-activation-receipt.schema.json",
     "02-system/06-capability-model.md",
     "02-system/08-offline-behavior.md",
-    "04-components/04-subsystem-documentation-boundaries.md"
+    "04-components/04-subsystem-documentation-boundaries.md",
+    "contracts/architecture-patterns.contract.json",
+    "contracts/artifact-contracts/integration-resilience-policy.schema.json",
+    "contracts/artifact-contracts/experience-view-adapter.schema.json",
+    "contracts/artifact-contracts/cqrs-projection.schema.json",
+    "contracts/artifact-contracts/cache-policy.schema.json"
   ],
-  "decision_ids": [],
-  "requirement_ids": [],
-  "lock_ids": [],
+  "decision_ids": [
+    "DEC-RES-001",
+    "DEC-BFF-001",
+    "DEC-CQRS-001",
+    "DEC-CACHE-001"
+  ],
+  "requirement_ids": [
+    "REQ-PATTERN-006",
+    "REQ-PATTERN-007",
+    "REQ-PATTERN-008",
+    "REQ-PATTERN-009",
+    "REQ-PATTERN-010",
+    "REQ-PATTERN-011",
+    "REQ-PATTERN-031",
+    "REQ-PATTERN-032",
+    "REQ-PATTERN-033",
+    "REQ-PATTERN-034",
+    "REQ-PATTERN-035",
+    "REQ-PATTERN-036",
+    "REQ-PATTERN-037",
+    "REQ-PATTERN-038",
+    "REQ-PATTERN-039",
+    "REQ-PATTERN-040",
+    "REQ-PATTERN-041",
+    "REQ-PATTERN-042"
+  ],
+  "lock_ids": [
+    "LOCK-SPACES-001",
+    "LOCK-RES-001",
+    "LOCK-BFF-001",
+    "LOCK-CQRS-001",
+    "LOCK-CACHE-001"
+  ],
   "exception_ids": [],
   "depends_on": [
     "DOC-SYS-000",
     "DOC-SYS-006",
     "DOC-SYS-008",
-    "DOC-COMP-SUBSYSTEM-BOUNDARIES"
+    "DOC-COMP-SUBSYSTEM-BOUNDARIES",
+    "DOC-SYS-034"
   ],
   "tags": [
     "koa-spaces",
@@ -33,7 +69,8 @@
     "contextual-interface",
     "optional-subsystem",
     "offline",
-    "presentation"
+    "presentation",
+    "architecture-patterns"
   ]
 }
 KOA:DOC-META:END -->
@@ -166,3 +203,7 @@ A conforming kOA Spaces installation demonstrates that:
 - activation is atomic and produces a receipt;
 - rollback restores the previous validated Space definition;
 - disabling kOA Spaces leaves the core and subsystem authorities intact.
+
+## Experience view adapters
+
+kOA Spaces may consume validated experience view adapters when a Space needs bounded aggregation or a data shape distinct from owner interfaces. The adapter belongs to the experience integration package, remains presentation-only, delegates commands to owners, and cannot become a universal business API.

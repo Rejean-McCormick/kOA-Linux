@@ -1,0 +1,726 @@
+{
+  "format": "koa.runtime-paths",
+  "format_version": "1.0.0",
+  "status": "active",
+  "authority": [
+    "docs/AI_CONTEXT.md",
+    "docs/contracts/ai-navigation.contract.json",
+    "docs/contracts/system.contract.json",
+    "docs/contracts/terminology.contract.json",
+    "docs/02-system/23-code-and-filesystem-architecture.md",
+    "docs/02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md",
+    "docs/02-system/code-and-filesystem-architecture/33-path-ownership-and-change-rules.md",
+    "docs/00-governance/07-ai-read-write-protocol.md",
+    "docs/00-governance/09-canonical-ownership.md",
+    "docs/00-governance/13-validation-pipeline.md",
+    "docs/02-system/code-and-filesystem-architecture/32-installed-runtime-filesystem.md"
+  ],
+  "path_style": "absolute_posix",
+  "default_policy": {
+    "unknown_installed_root": "deny",
+    "repository_runtime_state": "deny",
+    "symlink_escape": "deny",
+    "shared_physical_storage_transfers_ownership": false,
+    "dynamic_instances_must_be_owner_scoped": true
+  },
+  "path_classes": [
+    {
+      "id": "immutable_payload",
+      "roots": [
+        "/usr/bin",
+        "/usr/libexec",
+        "/usr/lib",
+        "/usr/share"
+      ],
+      "mutation": "package_or_system_image_activation_only",
+      "paths": [
+        "/usr/bin/koa",
+        "/usr/bin/koa-node-agentctl",
+        "/usr/libexec/koa/koa-node-agent",
+        "/usr/libexec/koa/koa-privileged-broker",
+        "/usr/libexec/koa/koa-activation",
+        "/usr/libexec/koa/koa-health-aggregate",
+        "/usr/libexec/koa/koa-offline-import",
+        "/usr/libexec/koa/koa-backup",
+        "/usr/libexec/koa/koa-maintenance",
+        "/usr/lib/koa/contracts/system.contract.json",
+        "/usr/lib/koa/contracts/terminology.contract.json",
+        "/usr/lib/koa/contracts/release-channels.contract.json",
+        "/usr/lib/koa/contracts/artifact-classes.contract.json",
+        "/usr/lib/koa/contracts/components/",
+        "/usr/lib/koa/contracts/profiles/",
+        "/usr/lib/koa/contracts/subsystems/",
+        "/usr/lib/koa/contracts/integrations/",
+        "/usr/lib/koa/contracts/artifact-contracts/",
+        "/usr/lib/koa/profiles/",
+        "/usr/lib/koa/release-sets/",
+        "/usr/lib/koa/interface-bindings/python/",
+        "/usr/lib/koa/interface-bindings/rust/",
+        "/usr/share/koa/defaults/",
+        "/usr/share/koa/locales/",
+        "/usr/share/koa/appliance-shell/",
+        "/usr/share/koa/recovery/",
+        "/usr/lib/systemd/system/koa-node.target",
+        "/usr/lib/systemd/system/koa-core.target",
+        "/usr/lib/systemd/system/koa-critical.target",
+        "/usr/lib/systemd/system/koa-background.target",
+        "/usr/lib/systemd/system/koa-optional.target",
+        "/usr/lib/systemd/system/koa-activation.target",
+        "/usr/lib/systemd/system/koa-recovery.target",
+        "/usr/lib/systemd/system/koa-node-agent.service",
+        "/usr/lib/systemd/system/koa-node-agent.socket",
+        "/usr/lib/systemd/system/koa-privileged-broker.service",
+        "/usr/lib/systemd/system/koa-privileged-broker.socket",
+        "/usr/lib/systemd/system/koa-release-set-verify.service",
+        "/usr/lib/systemd/system/koa-activation.service",
+        "/usr/lib/systemd/system/koa-health-aggregate.service",
+        "/usr/lib/systemd/system/koa-offline-import.path",
+        "/usr/lib/systemd/system/koa-offline-import.service",
+        "/usr/lib/systemd/system/koa-backup.service",
+        "/usr/lib/systemd/system/koa-backup.timer",
+        "/usr/lib/systemd/system/koa-maintenance.service",
+        "/usr/lib/systemd/system/koa-maintenance.timer",
+        "/usr/lib/sysusers.d/koa-components.conf",
+        "/usr/lib/sysusers.d/koa-privileged-broker.conf",
+        "/usr/lib/tmpfiles.d/koa-components.conf",
+        "/usr/lib/tmpfiles.d/koa-runtime.conf"
+      ]
+    },
+    {
+      "id": "operator_configuration",
+      "roots": [
+        "/etc/koa"
+      ],
+      "mutation": "operator_or_atomic_activation",
+      "secret_material": "protected_delivery_only",
+      "paths": [
+        "/etc/koa/active/profile.json",
+        "/etc/koa/active/release-set.json",
+        "/etc/koa/active/capabilities.json",
+        "/etc/koa/node/config.toml",
+        "/etc/koa/node/privileged-operation-catalog.json",
+        "/etc/koa/trust/policy.toml",
+        "/etc/koa/network/zones.toml",
+        "/etc/koa/network/service-exposure.toml",
+        "/etc/koa/storage/layout.toml",
+        "/etc/koa/storage/quotas.toml",
+        "/etc/koa/backup/policy.toml",
+        "/etc/koa/recovery/policy.toml",
+        "/etc/koa/components/audit-broker/config.toml",
+        "/etc/koa/components/governance-policy-runtime/config.toml",
+        "/etc/koa/components/identity-and-trust/config.toml",
+        "/etc/koa/components/koa-mediatheque/config.toml",
+        "/etc/koa/components/koa-node-agent/config.toml",
+        "/etc/koa/components/kristal-runtime/config.toml",
+        "/etc/koa/components/publication-gateway/config.toml",
+        "/etc/koa/components/resource-governor/config.toml",
+        "/etc/koa/integrations/ariane/config.toml",
+        "/etc/koa/integrations/koa-spaces/config.toml",
+        "/etc/koa/integrations/konnaxion/config.toml",
+        "/etc/koa/integrations/orgo/config.toml",
+        "/etc/koa/integrations/semantik-architect/config.toml",
+        "/etc/koa/integrations/sentient/config.toml",
+        "/etc/koa/integrations/uckk/config.toml",
+        "/etc/koa/secrets.d/"
+      ]
+    },
+    {
+      "id": "ephemeral_runtime",
+      "roots": [
+        "/run/koa"
+      ],
+      "mutation": "runtime_only_recreated_at_boot",
+      "paths": [
+        "/run/koa/activation/",
+        "/run/koa/recovery/",
+        "/run/koa/locks/",
+        "/run/koa/health/",
+        "/run/koa/sockets/koa-node-agent.sock",
+        "/run/koa/sockets/koa-privileged-broker.sock",
+        "/run/koa/sockets/audit-broker.sock",
+        "/run/koa/sockets/governance-policy-runtime.sock",
+        "/run/koa/sockets/identity-and-trust.sock",
+        "/run/koa/sockets/koa-mediatheque.sock",
+        "/run/koa/sockets/kristal-runtime.sock",
+        "/run/koa/sockets/publication-gateway.sock",
+        "/run/koa/sockets/resource-governor.sock"
+      ]
+    },
+    {
+      "id": "persistent_state",
+      "roots": [
+        "/var/lib/koa",
+        "/var/lib/koa-recovery"
+      ],
+      "mutation": "owning_component_or_lifecycle_controller_only",
+      "shared_writable_database_root": "prohibited",
+      "paths": [
+        "/var/lib/koa/node/",
+        "/var/lib/koa/node/effective-profile.json",
+        "/var/lib/koa/node/activation-receipts/",
+        "/var/lib/koa/identity-and-trust/",
+        "/var/lib/koa/resource-governor/",
+        "/var/lib/koa/policies/",
+        "/var/lib/koa/audit/",
+        "/var/lib/koa/publication-gateway/",
+        "/var/lib/koa/kristal/",
+        "/var/lib/koa/mediatheque/",
+        "/var/lib/koa/ariane/",
+        "/var/lib/koa/integrations/koa-spaces/",
+        "/var/lib/koa/konnaxion/",
+        "/var/lib/koa/orgo/",
+        "/var/lib/koa/integrations/semantik-architect/",
+        "/var/lib/koa/integrations/sentient/",
+        "/var/lib/koa/integrations/uckk/",
+        "/var/lib/koa/artifacts/",
+        "/var/lib/koa/releases/",
+        "/var/lib/koa/receipts/",
+        "/var/lib/koa/quarantine/",
+        "/var/lib/koa/backups/",
+        "/var/lib/koa/offline-import/",
+        "/var/lib/koa/recovery/",
+        "/var/lib/koa/support-bundles/",
+        "/var/lib/koa-recovery/"
+      ]
+    },
+    {
+      "id": "cache",
+      "roots": [
+        "/var/cache/koa",
+        "/var/cache/koa-build"
+      ],
+      "mutation": "rebuildable_non_authoritative",
+      "deletion_may_change_authority": false,
+      "paths": [
+        "/var/cache/koa/contracts/",
+        "/var/cache/koa/artifacts/",
+        "/var/cache/koa/containers/",
+        "/var/cache/koa/mediatheque/",
+        "/var/cache/koa/integrations/",
+        "/var/cache/koa/downloads/",
+        "/var/cache/koa-build/bootstrap/",
+        "/var/cache/koa-build/leases/",
+        "/var/cache/koa-build/manifests/",
+        "/var/cache/koa-build/quarantine/",
+        "/var/cache/koa-build/receipts/",
+        "/var/cache/koa-build/shared/",
+        "/var/cache/koa-build/workers/"
+      ]
+    }
+  ],
+  "repository_payload_mappings": [
+    {
+      "source": "generated/profile-plans/active-capabilities.json",
+      "destination": "/etc/koa/active/capabilities.json",
+      "install_mode": "atomic_active_pointer",
+      "owner": "koa-node-agent"
+    },
+    {
+      "source": "generated/profile-plans/active-profile.json",
+      "destination": "/etc/koa/active/profile.json",
+      "install_mode": "atomic_active_pointer",
+      "owner": "koa-node-agent"
+    },
+    {
+      "source": "generated/release-locks/active-release-set.json",
+      "destination": "/etc/koa/active/release-set.json",
+      "install_mode": "atomic_active_pointer",
+      "owner": "koa-node-agent"
+    },
+    {
+      "source": "operations/pyproject.toml#tool.koa.backup_defaults",
+      "destination": "/etc/koa/backup/policy.toml",
+      "install_mode": "seed_if_absent",
+      "owner": "host"
+    },
+    {
+      "source": "packaging/components/audit-broker.toml#configuration",
+      "destination": "/etc/koa/components/audit-broker/config.toml",
+      "install_mode": "seed_if_absent",
+      "owner": "audit-broker"
+    },
+    {
+      "source": "packaging/components/governance-policy-runtime.toml#configuration",
+      "destination": "/etc/koa/components/governance-policy-runtime/config.toml",
+      "install_mode": "seed_if_absent",
+      "owner": "governance-policy-runtime"
+    },
+    {
+      "source": "packaging/components/identity-and-trust.toml#configuration",
+      "destination": "/etc/koa/components/identity-and-trust/config.toml",
+      "install_mode": "seed_if_absent",
+      "owner": "identity-and-trust"
+    },
+    {
+      "source": "packaging/components/koa-mediatheque.toml#configuration",
+      "destination": "/etc/koa/components/koa-mediatheque/config.toml",
+      "install_mode": "seed_if_absent",
+      "owner": "koa-mediatheque"
+    },
+    {
+      "source": "packaging/components/koa-node-agent.toml#configuration",
+      "destination": "/etc/koa/components/koa-node-agent/config.toml",
+      "install_mode": "seed_if_absent",
+      "owner": "koa-node-agent"
+    },
+    {
+      "source": "packaging/components/kristal-runtime.toml#configuration",
+      "destination": "/etc/koa/components/kristal-runtime/config.toml",
+      "install_mode": "seed_if_absent",
+      "owner": "kristal-runtime"
+    },
+    {
+      "source": "packaging/components/publication-gateway.toml#configuration",
+      "destination": "/etc/koa/components/publication-gateway/config.toml",
+      "install_mode": "seed_if_absent",
+      "owner": "publication-gateway"
+    },
+    {
+      "source": "packaging/components/resource-governor.toml#configuration",
+      "destination": "/etc/koa/components/resource-governor/config.toml",
+      "install_mode": "seed_if_absent",
+      "owner": "resource-governor"
+    },
+    {
+      "source": "packaging/subsystems/ariane.toml#configuration",
+      "destination": "/etc/koa/integrations/ariane/config.toml",
+      "install_mode": "seed_if_absent",
+      "owner": "ariane"
+    },
+    {
+      "source": "packaging/subsystems/koa-spaces.toml#configuration",
+      "destination": "/etc/koa/integrations/koa-spaces/config.toml",
+      "install_mode": "seed_if_absent",
+      "owner": "koa-spaces"
+    },
+    {
+      "source": "packaging/subsystems/konnaxion.toml#configuration",
+      "destination": "/etc/koa/integrations/konnaxion/config.toml",
+      "install_mode": "seed_if_absent",
+      "owner": "konnaxion"
+    },
+    {
+      "source": "packaging/subsystems/orgo.toml#configuration",
+      "destination": "/etc/koa/integrations/orgo/config.toml",
+      "install_mode": "seed_if_absent",
+      "owner": "orgo"
+    },
+    {
+      "source": "packaging/subsystems/semantik-architect.toml#configuration",
+      "destination": "/etc/koa/integrations/semantik-architect/config.toml",
+      "install_mode": "seed_if_absent",
+      "owner": "semantik-architect"
+    },
+    {
+      "source": "packaging/subsystems/sentient.toml#configuration",
+      "destination": "/etc/koa/integrations/sentient/config.toml",
+      "install_mode": "seed_if_absent",
+      "owner": "sentient"
+    },
+    {
+      "source": "packaging/subsystems/uckk.toml#configuration",
+      "destination": "/etc/koa/integrations/uckk/config.toml",
+      "install_mode": "seed_if_absent",
+      "owner": "uckk"
+    },
+    {
+      "source": "host/networking/service-exposure.toml",
+      "destination": "/etc/koa/network/service-exposure.toml",
+      "install_mode": "seed_if_absent",
+      "owner": "host"
+    },
+    {
+      "source": "host/networking/zones.toml",
+      "destination": "/etc/koa/network/zones.toml",
+      "install_mode": "seed_if_absent",
+      "owner": "host"
+    },
+    {
+      "source": "components/koa-node-agent/packaging/payload.toml#node_configuration",
+      "destination": "/etc/koa/node/config.toml",
+      "install_mode": "seed_if_absent",
+      "owner": "host"
+    },
+    {
+      "source": "components/koa-node-agent/packaging/payload.toml#privileged_operation_catalog",
+      "destination": "/etc/koa/node/privileged-operation-catalog.json",
+      "install_mode": "seed_if_absent",
+      "owner": "host"
+    },
+    {
+      "source": "host/recovery/recovery-policy.toml",
+      "destination": "/etc/koa/recovery/policy.toml",
+      "install_mode": "seed_if_absent",
+      "owner": "host"
+    },
+    {
+      "source": "host/storage/layout.toml",
+      "destination": "/etc/koa/storage/layout.toml",
+      "install_mode": "seed_if_absent",
+      "owner": "host"
+    },
+    {
+      "source": "host/storage/quotas.toml",
+      "destination": "/etc/koa/storage/quotas.toml",
+      "install_mode": "seed_if_absent",
+      "owner": "host"
+    },
+    {
+      "source": "host/security/trust-bootstrap/bootstrap-policy.toml",
+      "destination": "/etc/koa/trust/policy.toml",
+      "install_mode": "seed_if_absent",
+      "owner": "host"
+    },
+    {
+      "source": "tools/src/koa_tools/cli.py + pyproject.toml#project.scripts.koa",
+      "destination": "/usr/bin/koa",
+      "install_mode": "python_entrypoint",
+      "owner": "repository_tools"
+    },
+    {
+      "source": "components/koa-node-agent/src/bin/koa-node-agentctl.rs",
+      "destination": "/usr/bin/koa-node-agentctl",
+      "install_mode": "compiled_binary",
+      "owner": "koa-node-agent"
+    },
+    {
+      "source": "docs/contracts/artifact-classes.contract.json",
+      "destination": "/usr/lib/koa/contracts/artifact-classes.contract.json",
+      "install_mode": "copy",
+      "owner": "documentation_governance"
+    },
+    {
+      "source": "docs/contracts/artifact-contracts/",
+      "destination": "/usr/lib/koa/contracts/artifact-contracts/",
+      "install_mode": "recursive_copy",
+      "owner": "documentation_governance"
+    },
+    {
+      "source": "docs/contracts/components/",
+      "destination": "/usr/lib/koa/contracts/components/",
+      "install_mode": "recursive_copy",
+      "owner": "documentation_governance"
+    },
+    {
+      "source": "docs/contracts/integrations/",
+      "destination": "/usr/lib/koa/contracts/integrations/",
+      "install_mode": "recursive_copy",
+      "owner": "documentation_governance"
+    },
+    {
+      "source": "docs/contracts/profiles/",
+      "destination": "/usr/lib/koa/contracts/profiles/",
+      "install_mode": "recursive_copy",
+      "owner": "documentation_governance"
+    },
+    {
+      "source": "docs/contracts/release-channels.contract.json",
+      "destination": "/usr/lib/koa/contracts/release-channels.contract.json",
+      "install_mode": "copy",
+      "owner": "documentation_governance"
+    },
+    {
+      "source": "docs/contracts/subsystems/",
+      "destination": "/usr/lib/koa/contracts/subsystems/",
+      "install_mode": "recursive_copy",
+      "owner": "documentation_governance"
+    },
+    {
+      "source": "docs/contracts/system.contract.json",
+      "destination": "/usr/lib/koa/contracts/system.contract.json",
+      "install_mode": "copy",
+      "owner": "documentation_governance"
+    },
+    {
+      "source": "docs/contracts/terminology.contract.json",
+      "destination": "/usr/lib/koa/contracts/terminology.contract.json",
+      "install_mode": "copy",
+      "owner": "documentation_governance"
+    },
+    {
+      "source": "interfaces/python/src/koa_interfaces/",
+      "destination": "/usr/lib/koa/interface-bindings/python/",
+      "install_mode": "recursive_copy",
+      "owner": "interfaces"
+    },
+    {
+      "source": "interfaces/rust/src/",
+      "destination": "/usr/lib/koa/interface-bindings/rust/",
+      "install_mode": "recursive_copy",
+      "owner": "interfaces"
+    },
+    {
+      "source": "profiles/implementation-settings/",
+      "destination": "/usr/lib/koa/profiles/",
+      "install_mode": "recursive_copy",
+      "owner": "profiles"
+    },
+    {
+      "source": "generated/release-locks/",
+      "destination": "/usr/lib/koa/release-sets/",
+      "install_mode": "recursive_copy",
+      "owner": "release"
+    },
+    {
+      "source": "host/systemd/units/koa-activation.service",
+      "destination": "/usr/lib/systemd/system/koa-activation.service",
+      "install_mode": "copy",
+      "owner": "host"
+    },
+    {
+      "source": "host/systemd/targets/koa-activation.target",
+      "destination": "/usr/lib/systemd/system/koa-activation.target",
+      "install_mode": "copy",
+      "owner": "host"
+    },
+    {
+      "source": "host/systemd/targets/koa-background.target",
+      "destination": "/usr/lib/systemd/system/koa-background.target",
+      "install_mode": "copy",
+      "owner": "host"
+    },
+    {
+      "source": "host/systemd/units/koa-backup.service",
+      "destination": "/usr/lib/systemd/system/koa-backup.service",
+      "install_mode": "copy",
+      "owner": "host"
+    },
+    {
+      "source": "host/systemd/units/koa-backup.timer",
+      "destination": "/usr/lib/systemd/system/koa-backup.timer",
+      "install_mode": "copy",
+      "owner": "host"
+    },
+    {
+      "source": "host/systemd/targets/koa-core.target",
+      "destination": "/usr/lib/systemd/system/koa-core.target",
+      "install_mode": "copy",
+      "owner": "host"
+    },
+    {
+      "source": "host/systemd/targets/koa-critical.target",
+      "destination": "/usr/lib/systemd/system/koa-critical.target",
+      "install_mode": "copy",
+      "owner": "host"
+    },
+    {
+      "source": "host/systemd/units/koa-health-aggregate.service",
+      "destination": "/usr/lib/systemd/system/koa-health-aggregate.service",
+      "install_mode": "copy",
+      "owner": "host"
+    },
+    {
+      "source": "host/systemd/units/koa-maintenance.service",
+      "destination": "/usr/lib/systemd/system/koa-maintenance.service",
+      "install_mode": "copy",
+      "owner": "host"
+    },
+    {
+      "source": "host/systemd/units/koa-maintenance.timer",
+      "destination": "/usr/lib/systemd/system/koa-maintenance.timer",
+      "install_mode": "copy",
+      "owner": "host"
+    },
+    {
+      "source": "host/systemd/units/koa-node-agent.service",
+      "destination": "/usr/lib/systemd/system/koa-node-agent.service",
+      "install_mode": "copy",
+      "owner": "host"
+    },
+    {
+      "source": "host/systemd/units/koa-node-agent.socket",
+      "destination": "/usr/lib/systemd/system/koa-node-agent.socket",
+      "install_mode": "copy",
+      "owner": "host"
+    },
+    {
+      "source": "host/systemd/targets/koa-node.target",
+      "destination": "/usr/lib/systemd/system/koa-node.target",
+      "install_mode": "copy",
+      "owner": "host"
+    },
+    {
+      "source": "host/systemd/units/koa-offline-import.path",
+      "destination": "/usr/lib/systemd/system/koa-offline-import.path",
+      "install_mode": "copy",
+      "owner": "host"
+    },
+    {
+      "source": "host/systemd/units/koa-offline-import.service",
+      "destination": "/usr/lib/systemd/system/koa-offline-import.service",
+      "install_mode": "copy",
+      "owner": "host"
+    },
+    {
+      "source": "host/systemd/targets/koa-optional.target",
+      "destination": "/usr/lib/systemd/system/koa-optional.target",
+      "install_mode": "copy",
+      "owner": "host"
+    },
+    {
+      "source": "host/systemd/units/koa-privileged-broker.service",
+      "destination": "/usr/lib/systemd/system/koa-privileged-broker.service",
+      "install_mode": "copy",
+      "owner": "host"
+    },
+    {
+      "source": "host/systemd/units/koa-privileged-broker.socket",
+      "destination": "/usr/lib/systemd/system/koa-privileged-broker.socket",
+      "install_mode": "copy",
+      "owner": "host"
+    },
+    {
+      "source": "host/systemd/targets/koa-recovery.target",
+      "destination": "/usr/lib/systemd/system/koa-recovery.target",
+      "install_mode": "copy",
+      "owner": "host"
+    },
+    {
+      "source": "host/systemd/units/koa-release-set-verify.service",
+      "destination": "/usr/lib/systemd/system/koa-release-set-verify.service",
+      "install_mode": "copy",
+      "owner": "host"
+    },
+    {
+      "source": "host/systemd/sysusers/koa-components.conf",
+      "destination": "/usr/lib/sysusers.d/koa-components.conf",
+      "install_mode": "copy",
+      "owner": "host"
+    },
+    {
+      "source": "host/systemd/sysusers/koa-privileged-broker.conf",
+      "destination": "/usr/lib/sysusers.d/koa-privileged-broker.conf",
+      "install_mode": "copy",
+      "owner": "host"
+    },
+    {
+      "source": "host/systemd/tmpfiles/koa-components.conf",
+      "destination": "/usr/lib/tmpfiles.d/koa-components.conf",
+      "install_mode": "copy",
+      "owner": "host"
+    },
+    {
+      "source": "host/systemd/tmpfiles/koa-runtime.conf",
+      "destination": "/usr/lib/tmpfiles.d/koa-runtime.conf",
+      "install_mode": "copy",
+      "owner": "host"
+    },
+    {
+      "source": "packaging/system/image.toml#executables.koa-activation",
+      "destination": "/usr/libexec/koa/koa-activation",
+      "install_mode": "packaged_entrypoint",
+      "owner": "packaging"
+    },
+    {
+      "source": "operations/pyproject.toml#project.scripts.koa-backup",
+      "destination": "/usr/libexec/koa/koa-backup",
+      "install_mode": "packaged_entrypoint",
+      "owner": "packaging"
+    },
+    {
+      "source": "packaging/system/image.toml#executables.koa-health-aggregate",
+      "destination": "/usr/libexec/koa/koa-health-aggregate",
+      "install_mode": "packaged_entrypoint",
+      "owner": "packaging"
+    },
+    {
+      "source": "operations/pyproject.toml#project.scripts.koa-maintenance",
+      "destination": "/usr/libexec/koa/koa-maintenance",
+      "install_mode": "packaged_entrypoint",
+      "owner": "packaging"
+    },
+    {
+      "source": "components/koa-node-agent/src/bin/koa-node-agent.rs",
+      "destination": "/usr/libexec/koa/koa-node-agent",
+      "install_mode": "compiled_binary",
+      "owner": "koa-node-agent"
+    },
+    {
+      "source": "packaging/system/image.toml#executables.koa-offline-import",
+      "destination": "/usr/libexec/koa/koa-offline-import",
+      "install_mode": "packaged_entrypoint",
+      "owner": "packaging"
+    },
+    {
+      "source": "components/koa-node-agent/src/bin/koa-privileged-broker.rs",
+      "destination": "/usr/libexec/koa/koa-privileged-broker",
+      "install_mode": "compiled_binary",
+      "owner": "koa-node-agent"
+    },
+    {
+      "source": "packaging/system/image.toml#share.appliance-shell",
+      "destination": "/usr/share/koa/appliance-shell/",
+      "install_mode": "manifest_selection",
+      "owner": "packaging"
+    },
+    {
+      "source": "packaging/system/image.toml#share.defaults",
+      "destination": "/usr/share/koa/defaults/",
+      "install_mode": "manifest_selection",
+      "owner": "packaging"
+    },
+    {
+      "source": "packaging/system/image.toml#share.locales",
+      "destination": "/usr/share/koa/locales/",
+      "install_mode": "manifest_selection",
+      "owner": "packaging"
+    },
+    {
+      "source": "host/recovery/",
+      "destination": "/usr/share/koa/recovery/",
+      "install_mode": "manifest_selected_recursive_copy",
+      "owner": "host"
+    }
+  ],
+  "runtime_creation": [
+    {
+      "paths": [
+        "/run/koa/activation/",
+        "/run/koa/recovery/",
+        "/run/koa/locks/",
+        "/run/koa/health/",
+        "/run/koa/sockets/**"
+      ],
+      "created_by": [
+        "host/systemd/tmpfiles/koa-runtime.conf",
+        "owning services"
+      ],
+      "persistence": "ephemeral"
+    },
+    {
+      "paths": [
+        "/var/lib/koa/**"
+      ],
+      "created_by": [
+        "host/systemd/tmpfiles/koa-components.conf",
+        "owning component or lifecycle controller"
+      ],
+      "persistence": "persistent",
+      "owner_required": true
+    },
+    {
+      "paths": [
+        "/var/cache/koa/**",
+        "/var/cache/koa-build/**"
+      ],
+      "created_by": [
+        "packaging/system/image.toml",
+        "owning cache manager"
+      ],
+      "persistence": "rebuildable"
+    }
+  ],
+  "secrets": {
+    "declared_root": "/etc/koa/secrets.d/",
+    "repository_source": "none",
+    "package_payload": "prohibited",
+    "private_material_in_repository": "prohibited"
+  },
+  "validation": {
+    "all_destinations_must_be_under_declared_roots": true,
+    "all_copy_sources_must_be_repository_relative_or_manifest_pointer": true,
+    "duplicate_destination": "deny",
+    "runtime_and_generated_repository_roots_must_be_disjoint": true,
+    "dynamic_files_not_enumerated": true
+  }
+}

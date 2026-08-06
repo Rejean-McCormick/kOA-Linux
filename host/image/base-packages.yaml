@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "package_set_id": "koa.host.base-packages",
+  "profile_id": "sovereign_linux_node",
+  "package_manager_specific": false,
+  "required_capabilities": [
+    {"id": "kernel", "purpose": "bootable Linux kernel and modules"},
+    {"id": "init-system", "purpose": "system and service supervision"},
+    {"id": "boot-verification", "purpose": "verified boot artifact loading"},
+    {"id": "filesystem-tools", "purpose": "declared filesystem creation and inspection"},
+    {"id": "encryption-tools", "purpose": "profile-declared encrypted storage"},
+    {"id": "network-policy", "purpose": "host firewall and network boundary enforcement"},
+    {"id": "trust-store", "purpose": "system trust anchors and revocation inputs"},
+    {"id": "python-runtime", "purpose": "host lifecycle utilities"}
+  ],
+  "prohibited_contents": [
+    "private_signing_keys",
+    "deployment_secrets",
+    "component_databases",
+    "user_content",
+    "mutable_runtime_state"
+  ],
+  "resolution_rule": "A profile or distribution adapter must resolve every capability to content-addressed package inputs before build-rootfs.py is invoked."
+}

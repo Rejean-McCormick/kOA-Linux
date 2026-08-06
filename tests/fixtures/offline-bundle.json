@@ -1,0 +1,258 @@
+{
+  "$schema": "urn:koa:artifact-contract:offline_bundle:1.0.0",
+  "contract_type": "offline_bundle",
+  "contract_version": "1.0.0",
+  "bundle_id": "OFFLINE-BUNDLE-TEST-0001",
+  "bundle_version": "1.0.0",
+  "status": "signed",
+  "producer": {
+    "producer_identity_ref": "urn:koa:test:producer-identity-ref:001",
+    "producer_component_ref": "urn:koa:test:producer-component-ref:001",
+    "produced_at": "2026-08-06T16:00:00Z",
+    "environment_ref": "urn:koa:test:environment-ref:001"
+  },
+  "release_set_ref": {
+    "release_set_id": "RELEASE-SET-TEST-0001",
+    "release_set_version": "1.0.0",
+    "manifest_digest": {
+      "algorithm": "sha256",
+      "value": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "channel_vector": {
+      "system": {
+        "selection_id": "selection-id:test:001",
+        "selection_version": "1.0.0",
+        "manifest_digest": {
+          "algorithm": "sha256",
+          "value": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      },
+      "services": {
+        "selection_id": "selection-id:test:001",
+        "selection_version": "1.0.0",
+        "manifest_digest": {
+          "algorithm": "sha256",
+          "value": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      },
+      "governance": {
+        "selection_id": "selection-id:test:001",
+        "selection_version": "1.0.0",
+        "manifest_digest": {
+          "algorithm": "sha256",
+          "value": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      },
+      "knowledge": {
+        "selection_id": "selection-id:test:001",
+        "selection_version": "1.0.0",
+        "manifest_digest": {
+          "algorithm": "sha256",
+          "value": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      }
+    },
+    "signature_verification_ref": "urn:koa:test:signature-verification-ref:001"
+  },
+  "artifact_refs": [
+    {
+      "artifact_ref": "urn:koa:test:artifact-ref:001",
+      "artifact_id": "artifact-id:test:001",
+      "artifact_class": "runtime_pack",
+      "artifact_version": "1.0.0",
+      "release_channel": "system",
+      "manifest_path": "test/path-1.json",
+      "payload_paths": [
+        "test/path-1.json"
+      ],
+      "manifest_digest": {
+        "algorithm": "sha256",
+        "value": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "required_for_application": false,
+      "application_role": "target"
+    }
+  ],
+  "target_profiles": {
+    "primary_profiles": [
+      "user_lightweight"
+    ],
+    "overlays": [
+      "high_assurance"
+    ],
+    "architectures": [
+      "x86_64"
+    ],
+    "environment_classes": [
+      "development"
+    ]
+  },
+  "sequence": {
+    "series_id": "series-id:test:001",
+    "bundle_sequence": 1,
+    "rollback_protection": true,
+    "sequence_authority_ref": "urn:koa:test:sequence-authority-ref:001"
+  },
+  "validity": {
+    "issued_at": "2026-08-06T16:00:00Z",
+    "not_before": "2026-08-06T16:00:00Z",
+    "expires_at": "2026-08-06T16:00:00Z"
+  },
+  "integrity": {
+    "manifest_path": "test/path-1.json",
+    "manifest_digest": {
+      "algorithm": "sha256",
+      "value": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "archive_digest": {
+      "algorithm": "sha256",
+      "value": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "entries": [
+      {
+        "path": "test/path-1.json",
+        "entry_type": "manifest",
+        "size_bytes": 0,
+        "digest": {
+          "algorithm": "sha256",
+          "value": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      }
+    ]
+  },
+  "signatures": [
+    {
+      "signature_id": "signature-id:test:001",
+      "signer_identity_ref": "urn:koa:test:signer-identity-ref:001",
+      "trust_scope_ref": "urn:koa:test:trust-scope-ref:001",
+      "algorithm": "ed25519",
+      "signature_value": "AAAAAAAAAAAAAAAA",
+      "signed_digest": {
+        "algorithm": "sha256",
+        "value": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "intended_use": "offline_bundle_distribution_and_application",
+      "signed_at": "2026-08-06T16:00:00Z"
+    }
+  ],
+  "trust_material": {
+    "trust_context_ref": "urn:koa:test:trust-context-ref:001",
+    "updates": [
+      {
+        "update_ref": "urn:koa:test:update-ref:001",
+        "update_type": "trust_root_addition",
+        "path": "test/path-1.json",
+        "sequence": 1,
+        "scope_ref": "urn:koa:test:scope-ref:001",
+        "issuer_identity_ref": "urn:koa:test:issuer-identity-ref:001",
+        "digest": {
+          "algorithm": "sha256",
+          "value": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        "signature_ref": "urn:koa:test:signature-ref:001",
+        "validity": {
+          "not_before": "2026-08-06T16:00:00Z",
+          "expires_at": "2026-08-06T16:00:00Z"
+        }
+      }
+    ],
+    "revocation_freshness_policy_ref": "urn:koa:test:revocation-freshness-policy-ref:001",
+    "trust_expansion_permitted": false
+  },
+  "migration_plan": {
+    "migrations": [
+      {
+        "migration_ref": "urn:koa:test:migration-ref:001",
+        "migration_type": "configuration",
+        "path": "test/path-1.json",
+        "owner_component_ref": "urn:koa:test:owner-component-ref:001",
+        "from_version": "1.0.0",
+        "to_version": "1.0.0",
+        "digest": {
+          "algorithm": "sha256",
+          "value": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        "strategy": "reversible",
+        "verification_refs": [
+          "urn:koa:test:verification-refs:001"
+        ],
+        "rollback_ref": "urn:koa:test:rollback-ref:001"
+      }
+    ],
+    "atomic_with_activation": true,
+    "partial_migration_authoritative": false
+  },
+  "application_order": [
+    {
+      "step_id": "step-id:test:001",
+      "order": 1,
+      "step_type": "verify_bundle",
+      "failure_behavior": "stop_before_commit",
+      "receipt_required": false
+    }
+  ],
+  "rollback_material": {
+    "initial_bootstrap": false,
+    "strategy": "recovery_only",
+    "rollback_artifact_refs": [
+      "urn:koa:test:rollback-artifact-refs:001"
+    ],
+    "forward_repair_artifact_refs": [
+      "urn:koa:test:forward-repair-artifact-refs:001"
+    ],
+    "recovery_refs": [
+      "urn:koa:test:recovery-refs:001"
+    ],
+    "retention_until": "2026-08-06T16:00:00Z",
+    "previous_release_set_ref": "RELEASE-SET-TEST-0001",
+    "previous_release_set_digest": {
+      "algorithm": "sha256",
+      "value": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  },
+  "compatibility": {
+    "minimum_system_contract_version": "1.0.0",
+    "release_set_compatibility_ref": "urn:koa:test:release-set-compatibility-ref:001",
+    "profile_compatibility_refs": [
+      "urn:koa:test:profile-compatibility-refs:001"
+    ],
+    "required_component_contracts": [
+      {
+        "component_ref": "urn:koa:test:component-ref:001",
+        "minimum_contract_version": "1.0.0"
+      }
+    ],
+    "conflicts": [
+      "test-conflicts-1"
+    ],
+    "validation_evidence_refs": [
+      "urn:koa:test:validation-evidence-refs:001"
+    ]
+  },
+  "provenance": {
+    "provenance_receipt_ref": "urn:koa:test:provenance-receipt-ref:001",
+    "source_refs": [
+      "urn:koa:test:source-refs:001"
+    ],
+    "assembly_toolchain_ref": "urn:koa:test:assembly-toolchain-ref:001",
+    "assembly_environment_ref": "urn:koa:test:assembly-environment-ref:001",
+    "test_evidence_refs": [
+      "urn:koa:test:test-evidence-refs:001"
+    ]
+  },
+  "receipt_policy": {
+    "required_transition_types": [
+      "bundle_verification"
+    ],
+    "durability": "durable_before_commit",
+    "local_buffering": {
+      "permitted": false,
+      "bounded": true,
+      "reconciliation_required": true
+    },
+    "false_success_reporting": false,
+    "receipt_schema_refs": [
+      "interfaces/receipts/receipt-envelope.schema.json"
+    ]
+  }
+}

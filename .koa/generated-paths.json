@@ -1,0 +1,135 @@
+{
+  "format": "koa.generated-paths",
+  "format_version": "1.0.0",
+  "status": "active",
+  "authority": [
+    "docs/AI_CONTEXT.md",
+    "docs/contracts/ai-navigation.contract.json",
+    "docs/contracts/system.contract.json",
+    "docs/contracts/terminology.contract.json",
+    "docs/02-system/23-code-and-filesystem-architecture.md",
+    "docs/02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md",
+    "docs/02-system/code-and-filesystem-architecture/33-path-ownership-and-change-rules.md",
+    "docs/00-governance/07-ai-read-write-protocol.md",
+    "docs/00-governance/09-canonical-ownership.md",
+    "docs/00-governance/13-validation-pipeline.md",
+    "docs/00-governance/08-generated-content-policy.md",
+    "docs/09-conformance/12-generated-content-validation.md",
+    "docs/02-system/code-and-filesystem-architecture/30-assembly-profiles-packaging-and-release.md"
+  ],
+  "default_policy": {
+    "generated_outside_declared_roots_or_regions": "deny",
+    "manual_edit": "deny",
+    "clean_regeneration_must_be_byte_equivalent": true,
+    "stable_order_required": true,
+    "source_and_renderer_identity_required": true,
+    "unregistered_environment_inputs": "deny"
+  },
+  "roots": [
+    {
+      "path": "docs/generated/",
+      "class": "documentation_projection",
+      "owner": "documentation_governance",
+      "manual_edit": "prohibited",
+      "committed": "required",
+      "allowed_content": [
+        "registered indexes",
+        "catalogs",
+        "traceability",
+        "validation projections"
+      ],
+      "source_authority": [
+        "docs/contracts/**",
+        "docs/schemas/**",
+        "document metadata under docs/**/*.md"
+      ],
+      "exceptions": []
+    },
+    {
+      "path": "generated/",
+      "class": "code_and_deployment_build_output",
+      "owner": "generators",
+      "manual_edit": "prohibited",
+      "committed": "only_declared_outputs",
+      "allowed_content": [
+        "contract bindings",
+        "profile plans",
+        "service units",
+        "deployment manifests",
+        "image manifests",
+        "release locks",
+        "catalogs",
+        "test fixtures"
+      ],
+      "source_authority": [
+        "docs/contracts/**",
+        "docs/schemas/**",
+        "profiles/**",
+        "assembly/**",
+        "packaging/**",
+        "release/**"
+      ],
+      "exceptions": [
+        {
+          "path": "generated/.gitignore",
+          "manual_edit": "allowed",
+          "purpose": "keep dynamic output root clean"
+        },
+        {
+          "path": "generated/README.md",
+          "manual_edit": "allowed",
+          "purpose": "explain generated root and rebuild entrypoint"
+        }
+      ]
+    }
+  ],
+  "marked_regions": [
+    {
+      "scope": "docs/**/*.md",
+      "class": "embedded_projection",
+      "begin_markers": [
+        "<!-- KOA:DOC-META:BEGIN GENERATED",
+        "<!-- GENERATED:BEGIN",
+        "<!-- GENERATED:REQUIREMENTS:BEGIN"
+      ],
+      "end_markers": [
+        "KOA:DOC-META:END -->",
+        "<!-- GENERATED:END -->",
+        "<!-- GENERATED:REQUIREMENTS:END -->"
+      ],
+      "manual_edit": "prohibited_inside_region",
+      "nesting": "prohibited",
+      "source_reference": "required",
+      "renderer_identity": "required_except_specialized_metadata_renderer"
+    }
+  ],
+  "required_metadata": {
+    "machine_readable_outputs": [
+      "generator_id",
+      "generator_version",
+      "source_references",
+      "source_digest",
+      "output_class"
+    ],
+    "build_manifest_attribution_may_replace_inline_metadata": true,
+    "timestamps_may_affect_output": false,
+    "filesystem_iteration_order_may_affect_output": false
+  },
+  "prohibited_locations": [
+    "components/**/generated/**",
+    "integrations/**/generated/**",
+    "host/generated/**",
+    "profiles/**/generated/**",
+    "packaging/generated/**",
+    "release/generated/**",
+    "docs/**/generated/** except docs/generated/"
+  ],
+  "validation": {
+    "regenerate_each_active_output": true,
+    "compare_mode": "byte_exact_after_declared_newline_normalization",
+    "drift_result": "fail",
+    "unknown_generator_result": "fail",
+    "broken_source_result": "fail",
+    "manual_patch_result": "fail"
+  }
+}

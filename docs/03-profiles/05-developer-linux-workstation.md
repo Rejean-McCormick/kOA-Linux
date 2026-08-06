@@ -29,7 +29,11 @@
     "generated/evidence-catalog.json",
     "contracts/integrations/uckk-import.integration.json",
     "contracts/artifact-contracts/uckk-learning-package.schema.json",
-    "contracts/artifact-contracts/uckk-import-receipt.schema.json"
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md",
+    "03-profiles/14-koa-spaces-deployment.md"
   ],
   "decision_ids": [
     "DEC-AI-001",
@@ -99,7 +103,8 @@
     "LOCK-LIFE-002",
     "LOCK-PROFILE-001",
     "LOCK-PROFILE-002",
-    "LOCK-SENT-001"
+    "LOCK-SENT-001",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -116,7 +121,10 @@
     "DOC-SYS-019",
     "DOC-PROFILE-001",
     "DOC-PROFILE-002",
-    "DOC-PROFILE-003"
+    "DOC-PROFILE-003",
+    "DOC-SYS-021",
+    "DOC-SYS-022",
+    "DOC-PROFILE-014"
   ],
   "tags": [
     "deployment-profile",
@@ -128,7 +136,10 @@
     "rootless-containers",
     "parallel-development",
     "resource-governance",
-    "offline-development"
+    "offline-development",
+    "koa-spaces",
+    "experience-layer",
+    "profile"
   ]
 }
 KOA:DOC-META:END -->
@@ -746,3 +757,7 @@ SenTient runs under an isolated resource envelope and returns candidate output. 
 A local package passes workstation tests.
 
 It remains a candidate. Production signing, Release Set compatibility, artifact admission, and activation are performed by their respective authorities.
+
+## kOA Spaces Development Workbench
+
+The profile can run kOA Spaces as an isolated workbench for Space definitions, manifests, route collision checks, accessibility tests, offline simulation, and adapter development. Preview state is development data and does not become release evidence until the normal artifact and activation gates complete.

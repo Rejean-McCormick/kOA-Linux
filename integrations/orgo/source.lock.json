@@ -1,0 +1,55 @@
+{
+  "lock_format_version": "1.0.0",
+  "source_id": "orgo",
+  "source_kind": "independent_subsystem",
+  "pin_state": "blocked",
+  "boundary_pin": {
+    "subsystem_contract": {
+      "path": "docs/contracts/subsystems/orgo.subsystem.json",
+      "version": "1.0.0",
+      "sha256": "6063f59bcf4a6b8ac635d3ce41614984ac40b55ce1a91bc02a081c977acc1b7a"
+    },
+    "boundary_document": {
+      "path": "docs/04-components/subsystems/orgo.md",
+      "sha256": "2bdbe778bb355f4d8bbe2d0a657481e2e6fe2c7a241f4dcc3474f4d30c584c1b"
+    }
+  },
+  "implementation_source": {
+    "repository_url": null,
+    "release": null,
+    "commit": null,
+    "source_digest": {
+      "algorithm": "sha256",
+      "value": null
+    }
+  },
+  "license": {
+    "spdx_expression": null,
+    "notice_digest": null,
+    "verification_state": "not_available_from_mounted_authority"
+  },
+  "official_documentation": {
+    "mount_path": "subsystems/orgo",
+    "required_for_final_alignment": true,
+    "mount_state": "absent",
+    "expected_release": null,
+    "release_digest": null
+  },
+  "activation": {
+    "allowed": false,
+    "blockers": [
+      "official_documentation_absent",
+      "repository_not_pinned",
+      "revision_not_pinned",
+      "source_digest_not_pinned",
+      "license_not_verified",
+      "expected_documentation_release_not_pinned"
+    ]
+  },
+  "rules": {
+    "allow_floating_ref": false,
+    "allow_network_resolution_at_activation": false,
+    "allow_unverified_source": false,
+    "allow_vendored_internal_code": false
+  }
+}

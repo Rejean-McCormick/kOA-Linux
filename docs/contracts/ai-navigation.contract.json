@@ -1,7 +1,7 @@
 {
   "$schema": "../schemas/ai-navigation.contract.schema.json",
   "contract_id": "ai-navigation",
-  "version": "2.0.0",
+  "version": "2.2.0",
   "status": "active",
   "entrypoint": "AI_CONTEXT.md",
   "discovery": {
@@ -18,7 +18,8 @@
       "subsystems/konnaxion",
       "subsystems/orgo",
       "subsystems/sentient",
-      "subsystems/semantik-architect"
+      "subsystems/semantik-architect",
+      "subsystems/koa-spaces"
     ],
     "generated_indexes": [
       "generated/document-index.json",
@@ -28,6 +29,30 @@
       "generated/requirements-index.json",
       "generated/assertion-index.json",
       "generated/traceability.json"
+    ],
+    "koa_spaces_sources": [
+      "contracts/subsystems/koa-spaces.subsystem.json",
+      "02-system/21-koa-spaces-experience-layer.md",
+      "02-system/22-koa-spaces-interface-composition.md",
+      "03-profiles/14-koa-spaces-deployment.md",
+      "04-components/subsystems/koa-spaces.md",
+      "contracts/artifact-contracts/space-definition.schema.json",
+      "contracts/artifact-contracts/module-interface-manifest.schema.json",
+      "contracts/artifact-contracts/space-activation-receipt.schema.json"
+    ],
+    "architecture_pattern_sources": [
+      "contracts/architecture-patterns.contract.json",
+      "02-system/34-architecture-patterns.md",
+      "06-lifecycle/20-resilience-and-projection-artifacts.md",
+      "08-operations/20-architecture-pattern-operations.md",
+      "09-conformance/22-architecture-pattern-conformance.md",
+      "contracts/artifact-contracts/integration-resilience-policy.schema.json",
+      "contracts/artifact-contracts/dead-letter-record.schema.json",
+      "contracts/artifact-contracts/distributed-workflow.schema.json",
+      "contracts/artifact-contracts/large-payload-reference.schema.json",
+      "contracts/artifact-contracts/experience-view-adapter.schema.json",
+      "contracts/artifact-contracts/cqrs-projection.schema.json",
+      "contracts/artifact-contracts/cache-policy.schema.json"
     ]
   },
   "authority_rules": {
@@ -43,6 +68,20 @@
     "external_platform_import_requires_integration_contract": true,
     "uckk_directional_interchange_only": true,
     "uckk_background_bidirectional_sync_prohibited": true,
-    "shared_mediatheque_frame_merges_authority": false
+    "shared_mediatheque_frame_merges_authority": false,
+    "koa_spaces_is_optional_experience_subsystem": true,
+    "koa_spaces_is_privileged_core": false,
+    "koa_spaces_presentation_grants_authority": false,
+    "menu_visibility_is_authorization": false,
+    "space_public_alias_changes_module_identity": false,
+    "space_activation_is_atomic_and_receipted": true,
+    "missing_koa_spaces_breaks_core_operation": false,
+    "architecture_patterns_are_condition_triggered": true,
+    "architecture_pattern_may_change_business_authority": false,
+    "non_authoritative_projection_or_cache_is_source_of_truth": false,
+    "dead_letter_silent_discard_allowed": false,
+    "distributed_workflow_hidden_partial_success_allowed": false,
+    "large_payload_may_be_embedded_above_profile_limit": false,
+    "experience_view_adapter_may_own_business_logic": false
   }
 }

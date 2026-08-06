@@ -1,0 +1,93 @@
+{
+  "compatibility_format_version": "1.0.0",
+  "integration_id": "orgo",
+  "status": "blocked",
+  "koa_contracts": [
+    {
+      "path": "interfaces/transport/event-envelope.schema.json",
+      "required": true,
+      "availability": "missing_in_bundle_context",
+      "supported": "schema_id_and_semantic_version_must_match_after_B-0014"
+    },
+    {
+      "path": "interfaces/transport/error-envelope.schema.json",
+      "required": true,
+      "availability": "missing_in_bundle_context",
+      "supported": "schema_id_and_semantic_version_must_match_after_B-0014"
+    },
+    {
+      "path": "interfaces/transport/version-negotiation.schema.json",
+      "required": true,
+      "availability": "missing_in_bundle_context",
+      "supported": "schema_id_and_semantic_version_must_match_after_B-0014"
+    },
+    {
+      "path": "interfaces/health/health-status.schema.json",
+      "required": true,
+      "availability": "present",
+      "schema_id": "https://schemas.koa.local/interfaces/health/health-status.schema.json"
+    },
+    {
+      "path": "interfaces/health/readiness.schema.json",
+      "required": true,
+      "availability": "present",
+      "schema_id": "https://schemas.koa.local/interfaces/health/readiness.schema.json"
+    },
+    {
+      "path": "interfaces/receipts/receipt-envelope.schema.json",
+      "required": true,
+      "availability": "present",
+      "schema_id": "https://schemas.koa.local/interfaces/receipts/receipt-envelope.schema.json"
+    },
+    {
+      "path": "interfaces/receipts/correlation.schema.json",
+      "required": true,
+      "availability": "present",
+      "schema_id": "https://schemas.koa.local/interfaces/receipts/correlation.schema.json"
+    },
+    {
+      "path": "interfaces/jobs/job-request.schema.json",
+      "required": true,
+      "availability": "missing_in_bundle_context",
+      "supported": "schema_id_and_semantic_version_must_match_after_B-0016"
+    },
+    {
+      "path": "interfaces/jobs/job-status.schema.json",
+      "required": true,
+      "availability": "missing_in_bundle_context",
+      "supported": "schema_id_and_semantic_version_must_match_after_B-0016"
+    },
+    {
+      "path": "interfaces/identity/identity-context.schema.json",
+      "required": true,
+      "availability": "missing_in_bundle_context",
+      "supported": "schema_id_and_semantic_version_must_match_after_B-0016"
+    },
+    {
+      "path": "interfaces/capabilities/capability-snapshot.schema.json",
+      "required": true,
+      "availability": "missing_in_bundle_context",
+      "supported": "schema_id_and_semantic_version_must_match_after_B-0016"
+    }
+  ],
+  "orgo_contract": {
+    "official_documentation_mount": "subsystems/orgo",
+    "verification_state": "blocked_until_mounted"
+  },
+  "rejected_conditions": [
+    "floating_or_unverified_source",
+    "missing_required_common_contract",
+    "unknown_schema_id",
+    "unsupported_major_version",
+    "mixed_contract_set",
+    "direct_cross_subsystem_write",
+    "undeclared_capability",
+    "unverified_orgo_internal_api"
+  ],
+  "activation": {
+    "allowed": false,
+    "requires_all_required_contracts": true,
+    "requires_source_lock_state": "pinned",
+    "requires_official_documentation_alignment": true
+  }
+}

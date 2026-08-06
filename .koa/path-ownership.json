@@ -1,0 +1,743 @@
+{
+  "$schema": "./workspace.schema.json",
+  "authority_ref": "docs/02-system/code-and-filesystem-architecture/33-path-ownership-and-change-rules.md",
+  "coverage": {
+    "ambiguous_paths": [],
+    "frozen_inventory_count": 1040,
+    "inventory_sha256": "0eccc4fb8178a43ba0ae69d538e22f764fd0f1942211a4548487623ddd22717a",
+    "owner_counts": {
+      "ariane": 28,
+      "ariane-voice": 6,
+      "audit_broker": 43,
+      "chatgpt": 6,
+      "ci_orchestration": 16,
+      "cross_system_conformance": 72,
+      "documentation_governance": 15,
+      "gamma": 6,
+      "generators": 2,
+      "governance_policy_runtime": 42,
+      "host_platform_integration": 85,
+      "identity_and_trust": 44,
+      "koa_mediatheque": 50,
+      "koa_node_agent": 44,
+      "koa_spaces": 30,
+      "konnaxion": 28,
+      "kristal_runtime": 44,
+      "local_development": 17,
+      "operations_implementation": 39,
+      "orgo": 28,
+      "packaging": 38,
+      "profile_implementation_settings": 18,
+      "publication_gateway": 44,
+      "release_engineering": 20,
+      "repository_architecture_governance": 8,
+      "repository_governance": 20,
+      "repository_legal": 4,
+      "repository_tooling": 39,
+      "resource_governor": 44,
+      "semantik_architect": 28,
+      "sentient": 28,
+      "suno": 6,
+      "system_assembly": 40,
+      "transport_and_binding_maintainers": 28,
+      "uckk_integration_boundary": 30
+    },
+    "resolved_path_count": 1040,
+    "unresolved_paths": []
+  },
+  "kind": "path_ownership",
+  "owners": [
+    {
+      "authority_refs": [
+        "docs/contracts/subsystems/ariane.subsystem.json"
+      ],
+      "label": "ariane kOA integration boundary",
+      "owner_id": "ariane",
+      "owner_kind": "subsystem_integration_boundary",
+      "prohibited_content": [
+        "vendored subsystem implementation",
+        "direct database mutation"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/contracts/integrations/ariane-voice.integration.json"
+      ],
+      "label": "ariane-voice external-service boundary",
+      "owner_id": "ariane-voice",
+      "owner_kind": "external_service_integration_boundary",
+      "prohibited_content": [
+        "service implementation",
+        "private credentials",
+        "undeclared authority"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/contracts/components/audit-broker.component.json"
+      ],
+      "label": "audit-broker",
+      "owner_id": "audit_broker",
+      "owner_kind": "internal_component",
+      "prohibited_content": [
+        "another component's domain logic",
+        "another component's migrations"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/contracts/integrations/chatgpt.integration.json"
+      ],
+      "label": "chatgpt external-service boundary",
+      "owner_id": "chatgpt",
+      "owner_kind": "external_service_integration_boundary",
+      "prohibited_content": [
+        "service implementation",
+        "private credentials",
+        "undeclared authority"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/05-development/14-build-test-and-validation.md"
+      ],
+      "label": "Reusable CI orchestration",
+      "owner_id": "ci_orchestration",
+      "owner_kind": "ci",
+      "prohibited_content": [
+        "logic that cannot run locally"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/09-conformance/00-conformance-model.md"
+      ],
+      "label": "Cross-system conformance",
+      "owner_id": "cross_system_conformance",
+      "owner_kind": "test",
+      "prohibited_content": [
+        "production implementation used only to make tests pass"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/00-governance/00-documentation-architecture.md"
+      ],
+      "label": "Documentation governance",
+      "owner_id": "documentation_governance",
+      "owner_kind": "documentation",
+      "prohibited_content": [
+        "product source",
+        "secrets",
+        "mutable state",
+        "package payloads"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/contracts/integrations/gamma.integration.json"
+      ],
+      "label": "gamma external-service boundary",
+      "owner_id": "gamma",
+      "owner_kind": "external_service_integration_boundary",
+      "prohibited_content": [
+        "service implementation",
+        "private credentials",
+        "undeclared authority"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/00-governance/08-generated-content-policy.md"
+      ],
+      "label": "Generators",
+      "owner_id": "generators",
+      "owner_kind": "generated_output",
+      "prohibited_content": [
+        "manually maintained source authority"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/contracts/components/governance-policy-runtime.component.json"
+      ],
+      "label": "governance-policy-runtime",
+      "owner_id": "governance_policy_runtime",
+      "owner_kind": "internal_component",
+      "prohibited_content": [
+        "another component's domain logic",
+        "another component's migrations"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/02-system/code-and-filesystem-architecture/29-host-platform-files.md"
+      ],
+      "label": "Host platform integration",
+      "owner_id": "host_platform_integration",
+      "owner_kind": "host_platform",
+      "prohibited_content": [
+        "business workflow",
+        "application state",
+        "subsystem internals"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/contracts/components/identity-and-trust.component.json"
+      ],
+      "label": "identity-and-trust",
+      "owner_id": "identity_and_trust",
+      "owner_kind": "internal_component",
+      "prohibited_content": [
+        "another component's domain logic",
+        "another component's migrations"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/contracts/components/koa-mediatheque.component.json"
+      ],
+      "label": "koa-mediatheque",
+      "owner_id": "koa_mediatheque",
+      "owner_kind": "internal_component",
+      "prohibited_content": [
+        "another component's domain logic",
+        "another component's migrations"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/contracts/components/koa-node-agent.component.json"
+      ],
+      "label": "koa-node-agent",
+      "owner_id": "koa_node_agent",
+      "owner_kind": "internal_component",
+      "prohibited_content": [
+        "another component's domain logic",
+        "another component's migrations"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/contracts/subsystems/koa-spaces.subsystem.json"
+      ],
+      "label": "koa-spaces kOA integration boundary",
+      "owner_id": "koa_spaces",
+      "owner_kind": "subsystem_integration_boundary",
+      "prohibited_content": [
+        "vendored subsystem implementation",
+        "direct database mutation"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/contracts/subsystems/konnaxion.subsystem.json"
+      ],
+      "label": "konnaxion kOA integration boundary",
+      "owner_id": "konnaxion",
+      "owner_kind": "subsystem_integration_boundary",
+      "prohibited_content": [
+        "vendored subsystem implementation",
+        "direct database mutation"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/contracts/components/kristal-runtime.component.json"
+      ],
+      "label": "kristal-runtime",
+      "owner_id": "kristal_runtime",
+      "owner_kind": "internal_component",
+      "prohibited_content": [
+        "another component's domain logic",
+        "another component's migrations"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/05-development/00-development-model.md"
+      ],
+      "label": "Local development",
+      "owner_id": "local_development",
+      "owner_kind": "development",
+      "prohibited_content": [
+        "production secrets",
+        "authoritative deployment manifests"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/08-operations/00-operating-model.md"
+      ],
+      "label": "Operations implementation",
+      "owner_id": "operations_implementation",
+      "owner_kind": "operations",
+      "prohibited_content": [
+        "canonical architecture",
+        "hidden business policy"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/contracts/subsystems/orgo.subsystem.json"
+      ],
+      "label": "orgo kOA integration boundary",
+      "owner_id": "orgo",
+      "owner_kind": "subsystem_integration_boundary",
+      "prohibited_content": [
+        "vendored subsystem implementation",
+        "direct database mutation"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/06-lifecycle/00-artifact-model.md"
+      ],
+      "label": "Packaging",
+      "owner_id": "packaging",
+      "owner_kind": "packaging",
+      "prohibited_content": [
+        "release-channel authority",
+        "signing secrets",
+        "business logic"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/03-profiles/00-profile-model.md"
+      ],
+      "label": "Profile implementation settings",
+      "owner_id": "profile_implementation_settings",
+      "owner_kind": "profile_implementation",
+      "prohibited_content": [
+        "canonical profile definitions",
+        "copied source trees"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/contracts/components/publication-gateway.component.json"
+      ],
+      "label": "publication-gateway",
+      "owner_id": "publication_gateway",
+      "owner_kind": "internal_component",
+      "prohibited_content": [
+        "another component's domain logic",
+        "another component's migrations"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/06-lifecycle/02-release-model.md"
+      ],
+      "label": "Release engineering",
+      "owner_id": "release_engineering",
+      "owner_kind": "release",
+      "prohibited_content": [
+        "mutable component state",
+        "private signing keys"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/02-system/23-code-and-filesystem-architecture.md",
+        "docs/02-system/code-and-filesystem-architecture/33-path-ownership-and-change-rules.md"
+      ],
+      "label": "Repository architecture governance",
+      "owner_id": "repository_architecture_governance",
+      "owner_kind": "repository_control",
+      "prohibited_content": [
+        "runtime state",
+        "private keys",
+        "unregistered top-level roots"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/00-governance/04-change-protocol.md"
+      ],
+      "label": "Repository governance",
+      "owner_id": "repository_governance",
+      "owner_kind": "repository_control",
+      "prohibited_content": [
+        "product runtime authority",
+        "production secrets"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md"
+      ],
+      "label": "Repository legal and licensing",
+      "owner_id": "repository_legal",
+      "owner_kind": "repository_control",
+      "prohibited_content": [
+        "runtime state",
+        "product domain logic"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
+      ],
+      "label": "Repository tooling",
+      "owner_id": "repository_tooling",
+      "owner_kind": "repository_tooling",
+      "prohibited_content": [
+        "product runtime authority"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/contracts/components/resource-governor.component.json"
+      ],
+      "label": "resource-governor",
+      "owner_id": "resource_governor",
+      "owner_kind": "internal_component",
+      "prohibited_content": [
+        "another component's domain logic",
+        "another component's migrations"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/contracts/subsystems/semantik-architect.subsystem.json"
+      ],
+      "label": "semantik-architect kOA integration boundary",
+      "owner_id": "semantik_architect",
+      "owner_kind": "subsystem_integration_boundary",
+      "prohibited_content": [
+        "vendored subsystem implementation",
+        "direct database mutation"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/contracts/subsystems/sentient.subsystem.json"
+      ],
+      "label": "sentient kOA integration boundary",
+      "owner_id": "sentient",
+      "owner_kind": "subsystem_integration_boundary",
+      "prohibited_content": [
+        "vendored subsystem implementation",
+        "direct database mutation"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/contracts/integrations/suno.integration.json"
+      ],
+      "label": "suno external-service boundary",
+      "owner_id": "suno",
+      "owner_kind": "external_service_integration_boundary",
+      "prohibited_content": [
+        "service implementation",
+        "private credentials",
+        "undeclared authority"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/02-system/code-and-filesystem-architecture/30-assembly-profiles-packaging-and-release.md"
+      ],
+      "label": "System assembly",
+      "owner_id": "system_assembly",
+      "owner_kind": "assembly",
+      "prohibited_content": [
+        "component business rules",
+        "hand-maintained profile forks"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/02-system/07-cross-component-communication.md"
+      ],
+      "label": "Transport and binding maintainers",
+      "owner_id": "transport_and_binding_maintainers",
+      "owner_kind": "interface",
+      "prohibited_content": [
+        "domain-authority redefinitions"
+      ]
+    },
+    {
+      "authority_refs": [
+        "docs/contracts/integrations/uckk-import.integration.json",
+        "docs/contracts/integrations/uckk-publication.integration.json"
+      ],
+      "label": "UCKK directional integration boundary",
+      "owner_id": "uckk_integration_boundary",
+      "owner_kind": "external_platform_integration_boundary",
+      "prohibited_content": [
+        "vendored UCKK implementation",
+        "background bidirectional synchronization"
+      ]
+    }
+  ],
+  "registry_sha256": "6712abe85510eb1487035293001ddf2735ca72d0ff95f898011ac774a4b92e11",
+  "repository_id": "koa_linux_operating_system",
+  "resolution_strategy": "exact_then_longest_prefix",
+  "rules": [
+    {
+      "match": "exact",
+      "owner_id": "repository_governance",
+      "path": ".editorconfig"
+    },
+    {
+      "match": "exact",
+      "owner_id": "repository_governance",
+      "path": ".gitattributes"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "repository_governance",
+      "path": ".github/"
+    },
+    {
+      "match": "exact",
+      "owner_id": "repository_governance",
+      "path": ".gitignore"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "repository_architecture_governance",
+      "path": ".koa/"
+    },
+    {
+      "match": "exact",
+      "owner_id": "repository_tooling",
+      "path": ".pre-commit-config.yaml"
+    },
+    {
+      "match": "exact",
+      "owner_id": "repository_tooling",
+      "path": ".python-version"
+    },
+    {
+      "match": "exact",
+      "owner_id": "repository_tooling",
+      "path": ".rustfmt.toml"
+    },
+    {
+      "match": "exact",
+      "owner_id": "repository_governance",
+      "path": "CHANGELOG.md"
+    },
+    {
+      "match": "exact",
+      "owner_id": "repository_governance",
+      "path": "CONTRIBUTING.md"
+    },
+    {
+      "match": "exact",
+      "owner_id": "repository_tooling",
+      "path": "Cargo.lock"
+    },
+    {
+      "match": "exact",
+      "owner_id": "repository_tooling",
+      "path": "Cargo.toml"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "repository_legal",
+      "path": "LICENSES/"
+    },
+    {
+      "match": "exact",
+      "owner_id": "repository_legal",
+      "path": "NOTICE.md"
+    },
+    {
+      "match": "exact",
+      "owner_id": "repository_governance",
+      "path": "README.md"
+    },
+    {
+      "match": "exact",
+      "owner_id": "repository_legal",
+      "path": "REUSE.toml"
+    },
+    {
+      "match": "exact",
+      "owner_id": "repository_governance",
+      "path": "SECURITY.md"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "system_assembly",
+      "path": "assembly/"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "ci_orchestration",
+      "path": "ci/"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "audit_broker",
+      "path": "components/audit-broker/"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "governance_policy_runtime",
+      "path": "components/governance-policy-runtime/"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "identity_and_trust",
+      "path": "components/identity-and-trust/"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "koa_mediatheque",
+      "path": "components/koa-mediatheque/"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "koa_node_agent",
+      "path": "components/koa-node-agent/"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "kristal_runtime",
+      "path": "components/kristal-runtime/"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "publication_gateway",
+      "path": "components/publication-gateway/"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "resource_governor",
+      "path": "components/resource-governor/"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "local_development",
+      "path": "dev/"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "documentation_governance",
+      "path": "docs/"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "generators",
+      "path": "generated/"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "host_platform_integration",
+      "path": "host/"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "ariane",
+      "path": "integrations/ariane/"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "ariane-voice",
+      "path": "integrations/external-services/ariane-voice/"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "chatgpt",
+      "path": "integrations/external-services/chatgpt/"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "gamma",
+      "path": "integrations/external-services/gamma/"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "suno",
+      "path": "integrations/external-services/suno/"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "koa_spaces",
+      "path": "integrations/koa-spaces/"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "konnaxion",
+      "path": "integrations/konnaxion/"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "orgo",
+      "path": "integrations/orgo/"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "semantik_architect",
+      "path": "integrations/semantik-architect/"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "sentient",
+      "path": "integrations/sentient/"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "uckk_integration_boundary",
+      "path": "integrations/uckk/"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "transport_and_binding_maintainers",
+      "path": "interfaces/"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "operations_implementation",
+      "path": "operations/"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "packaging",
+      "path": "packaging/"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "profile_implementation_settings",
+      "path": "profiles/"
+    },
+    {
+      "match": "exact",
+      "owner_id": "repository_tooling",
+      "path": "pyproject.toml"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "release_engineering",
+      "path": "release/"
+    },
+    {
+      "match": "exact",
+      "owner_id": "repository_tooling",
+      "path": "rust-toolchain.toml"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "cross_system_conformance",
+      "path": "tests/"
+    },
+    {
+      "match": "prefix",
+      "owner_id": "repository_tooling",
+      "path": "tools/"
+    },
+    {
+      "match": "exact",
+      "owner_id": "repository_tooling",
+      "path": "uv.lock"
+    }
+  ],
+  "schema_version": "1.0.0"
+}

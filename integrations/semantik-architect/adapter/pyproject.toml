@@ -1,0 +1,40 @@
+[build-system]
+requires = ["hatchling>=1.25,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "koa-semantik-architect-adapter"
+version = "0.1.0"
+description = "kOA boundary adapter for the separately owned SemantiK Architect subsystem"
+requires-python = ">=3.11"
+dependencies = [
+  "koa-interfaces==0.1.0",
+]
+
+[project.scripts]
+koa-semantik-architect-adapter = "koa_semantik_architect_adapter.bootstrap:main"
+
+[dependency-groups]
+dev = [
+  "pytest>=8.2,<9",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/koa_semantik_architect_adapter"]
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-markers --strict-config"
+pythonpath = ["src", "../../../interfaces/python/src"]
+testpaths = ["../tests"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_unused_configs = true

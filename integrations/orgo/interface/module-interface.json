@@ -1,0 +1,88 @@
+{
+  "$schema": "../../../docs/contracts/artifact-contracts/module-interface-manifest.schema.json",
+  "manifest_id": "orgo-schoolwork.interface",
+  "manifest_version": "1.0.0",
+  "module_id": "orgo_schoolwork",
+  "public_name": "Assignments",
+  "description": "Presentation-only kOA Spaces entrypoint for the independently owned Orgo subsystem.",
+  "icon_ref": null,
+  "home_route_id": "orgo_schoolwork.home",
+  "required_capabilities": [],
+  "routes": [
+    {
+      "$schema": "../../../docs/contracts/artifact-contracts/route-contribution.schema.json",
+      "route_id": "orgo_schoolwork.home",
+      "module_id": "orgo_schoolwork",
+      "path": "/orgo",
+      "page_ref": "koa://orgo/surface/home",
+      "default_label": "Assignments",
+      "label_key": "orgo_schoolwork.assignments",
+      "availability": "online_only",
+      "offline_behavior": "unavailable",
+      "deep_link_allowed": true,
+      "safe_fallback_route_id": null,
+      "aliases": [],
+      "capability_policy": {
+        "required_capabilities": [],
+        "denied_behavior": "access_denied"
+      }
+    }
+  ],
+  "sidebar": {
+    "$schema": "../../../docs/contracts/artifact-contracts/sidebar-navigation.schema.json",
+    "module_id": "orgo_schoolwork",
+    "visible_depth": 2,
+    "items": [
+      {
+        "item_id": "orgo_schoolwork.assignments",
+        "label": "Assignments",
+        "label_key": "orgo_schoolwork.assignments",
+        "icon_ref": null,
+        "order": 0,
+        "required_capabilities": [],
+        "availability": "online_only",
+        "badge_provider_ref": null,
+        "route_id": "orgo_schoolwork.home"
+      }
+    ]
+  },
+  "topbar_widgets": [
+    {
+      "$schema": "../../../docs/contracts/artifact-contracts/topbar-widget.schema.json",
+      "widget_id": "orgo_schoolwork.status",
+      "module_id": "orgo_schoolwork",
+      "scope": "module",
+      "slot": "status",
+      "kind": "status",
+      "label": "Orgo status",
+      "label_key": "orgo_schoolwork.status",
+      "icon_ref": null,
+      "priority": 200,
+      "required_capabilities": [],
+      "offline_behavior": "unavailable",
+      "compact_only": true,
+      "activation": {
+        "kind": "status_provider",
+        "route_id": null,
+        "command_ref": null,
+        "status_provider_ref": "koa://orgo/health"
+      }
+    }
+  ],
+  "localization_refs": [],
+  "accessibility": {
+    "keyboard_navigation": true,
+    "screen_reader_labels": true,
+    "reduced_motion": "supported"
+  },
+  "offline_behavior": {
+    "module_state": "unavailable",
+    "fallback_route_id": null
+  },
+  "authority_boundary": {
+    "presentation_only": true,
+    "may_grant_capabilities": false,
+    "direct_domain_writes": false,
+    "menu_visibility_is_authorization": false
+  }
+}

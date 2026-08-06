@@ -1,9 +1,9 @@
 {
   "$schema": "../schemas/system.contract.schema.json",
-  "version": "2.0.0",
+  "version": "2.2.0",
   "status": "active",
   "language": "en",
-  "effective_at": "2026-08-04T20:59:00-04:00",
+  "effective_at": "2026-08-05T19:14:00-04:00",
   "scope": {
     "kind": "global",
     "applies_to": "all kOA deployments, profiles, overlays, components, contracts, and releases"
@@ -23,7 +23,14 @@
     "DEC-CONTAINER-001",
     "DEC-K8S-001",
     "DEC-HW-001",
-    "DEC-REL-001"
+    "DEC-REL-001",
+    "DEC-RES-001",
+    "DEC-MSG-001",
+    "DEC-WF-001",
+    "DEC-PAYLOAD-001",
+    "DEC-BFF-001",
+    "DEC-CQRS-001",
+    "DEC-CACHE-001"
   ],
   "lock_ids": [
     "LOCK-SYS-001",
@@ -50,7 +57,15 @@
     "LOCK-PROFILE-001",
     "LOCK-IMPL-001",
     "LOCK-IMPL-002",
-    "LOCK-MEDIATHEQUE-002"
+    "LOCK-MEDIATHEQUE-002",
+    "LOCK-SPACES-001",
+    "LOCK-RES-001",
+    "LOCK-MSG-001",
+    "LOCK-WF-001",
+    "LOCK-PAYLOAD-001",
+    "LOCK-BFF-001",
+    "LOCK-CQRS-001",
+    "LOCK-CACHE-001"
   ],
   "system": {
     "system_id": "koa_linux_operating_system",
@@ -81,7 +96,11 @@
       "making recipes authoritative through implementation prevalence",
       "embedding UCKK as a native kOA-Linux subsystem",
       "merging kOA Mediatheque authority with UCKK Mediatheque authority",
-      "requiring UCKK for local media management or offline operation"
+      "requiring UCKK for local media management or offline operation",
+      "making kOA Spaces part of the privileged core",
+      "treating menu visibility, route presence, or a top-bar widget as authorization",
+      "requiring one user interface or one Space definition for every deployment",
+      "allowing a Space definition to own or mutate business authority"
     ]
   },
   "architectural_layers": [
@@ -118,7 +137,9 @@
         "resource_governance",
         "offline_behavior",
         "safe_degradation",
-        "release_and_artifact_identity"
+        "release_and_artifact_identity",
+        "optional_experience_subsystems",
+        "contextual_interface_composition"
       ]
     },
     {
@@ -354,6 +375,11 @@
       "capability_id": "governed_uckk_mediatheque_interchange",
       "availability": "optional",
       "description": "Selected local content can be published to the online UCKK Mediatheque, and selected UCKK learning packages can be imported for private offline use, through separate governed directional integrations."
+    },
+    {
+      "capability_id": "contextual_experience_composition",
+      "availability": "optional_profile_activated",
+      "description": "kOA Spaces can compose a module selector, active-module sidebar, top-bar contributions, and one main page surface from validated Space definitions and module interface manifests without acquiring business authority."
     }
   ],
   "global_boundaries": {
@@ -404,6 +430,14 @@
       "gnome_global_prohibition": false,
       "kubernetes_endpoint_requirement": false,
       "profile_may_adopt_specific_implementation": true
+    },
+    "presentation": {
+      "presentation_layer_ref": "contracts/subsystems/koa-spaces.subsystem.json",
+      "presentation_grants_authority": false,
+      "menu_visibility_is_authorization": false,
+      "public_alias_changes_technical_identity": false,
+      "route_contribution_bypasses_module_authorization": false,
+      "business_data_owner_remains_originating_system": true
     }
   },
   "ai_boundary": {
@@ -695,7 +729,13 @@
       "data_transfer_declaration",
       "authority_boundary",
       "failure_behavior",
-      "removal_behavior"
+      "removal_behavior",
+      "timeout_budget",
+      "retry_policy",
+      "circuit_breaker_policy",
+      "dead_letter_policy_when_asynchronous",
+      "large_payload_policy_when_applicable",
+      "distributed_workflow_when_multi_owner"
     ],
     "optional_integration_removal_breaks_core": false,
     "direct_external_mutation_of_authoritative_state": false,
@@ -734,7 +774,9 @@
       "local_language_runtime",
       "local_resource_governance",
       "backup_and_restore",
-      "verified_offline_import"
+      "verified_offline_import",
+      "local_contextual_interface",
+      "validated_space_activation"
     ],
     "external_capability_behavior_offline": "unavailable_without_disabling_unrelated_local_capabilities",
     "queued_remote_work": {
@@ -745,6 +787,12 @@
         "explicitly_visible",
         "safe_to_retry"
       ]
+    },
+    "koa_spaces": {
+      "space_and_manifest_cache": "local_verified_copy",
+      "offline_routes": "only_routes_declared_offline_capable",
+      "remote_widgets": "unavailable_or_explicitly_stale",
+      "business_state_authority": "unchanged"
     }
   },
   "degradation_baseline": {
@@ -772,6 +820,12 @@
       "affected_transition": "blocked",
       "existing_valid_state": "preserved",
       "automatic_schema_guessing": false
+    },
+    "experience_subsystem_failure": {
+      "failure_scope": "presentation_capability_only",
+      "business_and_core_authority": "preserved",
+      "previous_valid_space": "preserved_when_safe",
+      "silent_authority_substitution": false
     }
   },
   "hardware_envelope_classes": [
@@ -868,7 +922,12 @@
       "release_activation",
       "cross_domain_publication",
       "external_platform_publication",
-      "privileged_host_mutation"
+      "privileged_host_mutation",
+      "space_activation",
+      "distributed_workflow_terminal_state",
+      "dead_letter_redrive_or_discard",
+      "circuit_breaker_manual_override",
+      "projection_rebuild_completion"
     ],
     "additional_receipts_may_be_required_by": [
       "profile_contract",
@@ -894,5 +953,133 @@
     }
   },
   "contract_id": "system.registry",
-  "contract_type": "system_registry"
+  "contract_type": "system_registry",
+  "koa_spaces": {
+    "classification": "optional_replaceable_experience_subsystem",
+    "subsystem_ref": "contracts/subsystems/koa-spaces.subsystem.json",
+    "part_of_privileged_core": false,
+    "required_for_core_operation": false,
+    "required_for_business_authority": false,
+    "offline_capable": true,
+    "authority": "non_authoritative_presentation",
+    "owns": [
+      "outer_application_frame",
+      "module_selector_rendering",
+      "active_module_sidebar_rendering",
+      "topbar_slot_composition",
+      "main_surface_routing",
+      "validated_space_activation_state"
+    ],
+    "does_not_own": [
+      "identity_authority",
+      "authorization_decisions",
+      "business_data",
+      "business_workflows",
+      "module_internal_routes",
+      "module_page_implementation",
+      "cross_subsystem_writes",
+      "view_adapter_business_logic",
+      "projection_authority",
+      "cache_authority"
+    ],
+    "inputs": [
+      "space_definition",
+      "module_interface_manifest",
+      "capability_assertions",
+      "profile_membership",
+      "connectivity_state",
+      "experience_view_adapter",
+      "cqrs_projection",
+      "cache_policy",
+      "integration_resilience_policy"
+    ],
+    "activation": {
+      "model": "validate_stage_activate_atomically",
+      "receipt_class": "space_activation_receipt",
+      "partial_activation_allowed": false,
+      "rollback": "restore_previous_valid_space"
+    },
+    "degradation": {
+      "missing_or_failed_subsystem": "native_interfaces_or_administrative_fallback_remain_available",
+      "invalid_space_definition": "reject_and_preserve_previous_valid_space",
+      "missing_module": "hide_or_mark_unavailable_without_reassigning_authority"
+    },
+    "lock_refs": [
+      "LOCK-SPACES-001",
+      "LOCK-BFF-001",
+      "LOCK-CQRS-001",
+      "LOCK-CACHE-001",
+      "LOCK-RES-001"
+    ]
+  },
+  "architecture_patterns": {
+    "contract_ref": "contracts/architecture-patterns.contract.json",
+    "status": "active_final_policy",
+    "patterns": [
+      "circuit_breaker",
+      "dead_letter_queue",
+      "distributed_workflow",
+      "large_payload_reference",
+      "experience_view_adapter",
+      "command_query_separation",
+      "cache_aside"
+    ],
+    "applicability_model": "condition_triggered_and_fully_specified",
+    "patterns_are_global_authority": false,
+    "pattern_contracts_may_change_business_owner": false,
+    "pattern_activation_requires_validated_artifact": true,
+    "required_compositions": {
+      "remote_async_call": [
+        "timeout_budget",
+        "exponential_backoff_with_jitter",
+        "circuit_breaker",
+        "dead_letter_queue"
+      ],
+      "large_async_payload": [
+        "large_payload_reference",
+        "dead_letter_queue",
+        "idempotency"
+      ],
+      "multi_owner_transition": [
+        "distributed_workflow",
+        "idempotency",
+        "transactional_outbox",
+        "dead_letter_queue",
+        "receipts"
+      ],
+      "experience_read_surface": [
+        "experience_view_adapter",
+        "command_query_separation",
+        "cache_aside",
+        "circuit_breaker"
+      ],
+      "uckk_publication": [
+        "distributed_workflow",
+        "large_payload_reference",
+        "circuit_breaker",
+        "dead_letter_queue"
+      ],
+      "uckk_import": [
+        "distributed_workflow",
+        "large_payload_reference",
+        "circuit_breaker",
+        "dead_letter_queue"
+      ],
+      "koa_spaces": [
+        "experience_view_adapter",
+        "command_query_separation",
+        "cache_aside",
+        "circuit_breaker"
+      ]
+    },
+    "lock_refs": [
+      "LOCK-RES-001",
+      "LOCK-MSG-001",
+      "LOCK-WF-001",
+      "LOCK-PAYLOAD-001",
+      "LOCK-BFF-001",
+      "LOCK-CQRS-001",
+      "LOCK-CACHE-001"
+    ]
+  }
 }

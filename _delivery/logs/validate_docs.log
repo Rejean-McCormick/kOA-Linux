@@ -1,0 +1,49 @@
+[check_ai_boundary.py] pass
+check_ai_boundary: pass
+[check_architecture_patterns.py] pass
+check_architecture_patterns: pass
+[check_artifact_contracts.py] pass
+check_artifact_contracts: pass; schemas=37
+[check_canonical_ownership.py] pass
+check_canonical_ownership: pass
+[check_component_boundaries.py] pass
+check_component_boundaries: pass
+[check_decision_closure.py] pass
+check_decision_closure: pass
+[check_document_graph.py] pass
+check_document_graph: pass; nodes=283
+[check_generated_blocks.py] pass
+check_generated_blocks: pass
+[check_generated_content.py] pass
+build_indexes: check pass
+build_ai_context: check pass
+check_generated_content: pass
+[check_greenfield_architecture.py] pass
+check_greenfield_architecture: pass
+[check_interfile_locks.py] pass
+check_interfile_locks: pass; referenced=165
+[check_language.py] pass
+check_language: pass
+[check_no_unresolved_state.py] pass
+check_no_unresolved_state: pass
+[check_normative_language.py] pass
+check_normative_language: pass; documents_with_normative_terms=181
+[check_profile_inheritance.py] pass
+check_profile_inheritance: pass
+[check_release_sets.py] pass
+check_release_sets: pass
+[check_security_architecture.py] pass
+check_security_architecture: pass; controls=48; profiles=10; invariants=8
+[check_subsystem_alignment.py] pass
+WARN: /mnt/data/B-0032-work/docs/subsystems/ariane: reserved path is not mounted
+WARN: /mnt/data/B-0032-work/docs/subsystems/konnaxion: reserved path is not mounted
+WARN: /mnt/data/B-0032-work/docs/subsystems/orgo: reserved path is not mounted
+WARN: /mnt/data/B-0032-work/docs/subsystems/sentient: reserved path is not mounted
+WARN: /mnt/data/B-0032-work/docs/subsystems/semantik-architect: reserved path is not mounted
+WARN: /mnt/data/B-0032-work/docs/subsystems/koa-spaces: reserved path is not mounted
+check_subsystem_alignment: pass
+[check_traceability.py] pass
+check_traceability: pass
+[check_uckk_external_boundary.py] pass
+check_uckk_external_boundary: pass; findings=0
+validate_docs: pass

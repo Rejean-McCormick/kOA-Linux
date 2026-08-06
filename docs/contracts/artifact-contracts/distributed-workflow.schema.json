@@ -1,0 +1,209 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.koa.local/artifact-contracts/distributed-workflow.schema.json",
+  "title": "kOA Distributed Workflow",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "artifact_class",
+    "workflow_id",
+    "instance_id",
+    "version",
+    "workflow_type",
+    "authority_domains",
+    "state",
+    "idempotency_key",
+    "steps",
+    "repair_policy",
+    "visibility",
+    "evidence"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "artifact_class": {
+      "const": "distributed_workflow"
+    },
+    "example": {
+      "type": "boolean"
+    },
+    "authority": {
+      "type": "string"
+    },
+    "workflow_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "instance_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "workflow_type": {
+      "enum": [
+        "orchestrated",
+        "choreographed_with_causal_trace"
+      ]
+    },
+    "authority_domains": {
+      "type": "array",
+      "minItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "state": {
+      "enum": [
+        "pending",
+        "running",
+        "waiting_remote",
+        "compensating",
+        "forward_repair_required",
+        "human_intervention_required",
+        "completed",
+        "failed_closed",
+        "cancelled"
+      ]
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 1
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "step_id",
+          "owner_id",
+          "action",
+          "state",
+          "timeout_seconds",
+          "irreversible",
+          "compensation_mode"
+        ],
+        "properties": {
+          "step_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "owner_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "action": {
+            "type": "string",
+            "minLength": 1
+          },
+          "state": {
+            "enum": [
+              "not_started",
+              "pending",
+              "completed",
+              "failed",
+              "compensated",
+              "repair_pending",
+              "skipped"
+            ]
+          },
+          "timeout_seconds": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "irreversible": {
+            "type": "boolean"
+          },
+          "compensation_mode": {
+            "enum": [
+              "exact_compensation",
+              "semantic_compensation",
+              "forward_repair",
+              "not_applicable_before_execution"
+            ]
+          },
+          "compensation_action": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "receipt_ref": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "repair_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reverse_order_when_safe",
+        "hidden_partial_success_prohibited",
+        "human_intervention_state_required"
+      ],
+      "properties": {
+        "reverse_order_when_safe": {
+          "const": true
+        },
+        "hidden_partial_success_prohibited": {
+          "const": true
+        },
+        "human_intervention_state_required": {
+          "const": true
+        }
+      }
+    },
+    "visibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "intermediate_state_label",
+        "terminal_state_required"
+      ],
+      "properties": {
+        "intermediate_state_label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "terminal_state_required": {
+          "const": true
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "correlation_id",
+        "terminal_receipt_required"
+      ],
+      "properties": {
+        "correlation_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "terminal_receipt_required": {
+          "const": true
+        },
+        "terminal_receipt_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

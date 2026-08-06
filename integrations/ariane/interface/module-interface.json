@@ -1,0 +1,199 @@
+{
+  "$schema": "../../../docs/contracts/artifact-contracts/module-interface-manifest.schema.json",
+  "accessibility": {
+    "keyboard_navigation": true,
+    "reduced_motion": "supported",
+    "screen_reader_labels": true
+  },
+  "authority_boundary": {
+    "direct_domain_writes": false,
+    "may_grant_capabilities": false,
+    "menu_visibility_is_authorization": false,
+    "presentation_only": true
+  },
+  "description": "Presentation-only entry points for deterministic local Ariane navigation. Internal Ariane UI and workflow remain subsystem-owned.",
+  "home_route_id": "ariane.home",
+  "icon_ref": null,
+  "localization_refs": [],
+  "manifest_id": "ariane.module-interface",
+  "manifest_version": "1.0.0",
+  "module_id": "ariane",
+  "offline_behavior": {
+    "fallback_route_id": "ariane.home",
+    "module_state": "available"
+  },
+  "public_name": "Ariane",
+  "required_capabilities": [
+    "ariane_local_navigation"
+  ],
+  "routes": [
+    {
+      "$schema": "../../../docs/contracts/artifact-contracts/route-contribution.schema.json",
+      "aliases": [],
+      "availability": "always",
+      "capability_policy": {
+        "denied_behavior": "disabled",
+        "required_capabilities": [
+          "ariane_local_navigation"
+        ]
+      },
+      "deep_link_allowed": true,
+      "default_label": "Ariane",
+      "label_key": "ariane.home",
+      "module_id": "ariane",
+      "offline_behavior": "available",
+      "page_ref": "subsystem://ariane/interface/home",
+      "path": "/ariane",
+      "route_id": "ariane.home",
+      "safe_fallback_route_id": "ariane.home"
+    },
+    {
+      "$schema": "../../../docs/contracts/artifact-contracts/route-contribution.schema.json",
+      "aliases": [],
+      "availability": "always",
+      "capability_policy": {
+        "denied_behavior": "disabled",
+        "required_capabilities": [
+          "ariane_guidance"
+        ]
+      },
+      "deep_link_allowed": true,
+      "default_label": "Guidance",
+      "label_key": "ariane.guidance",
+      "module_id": "ariane",
+      "offline_behavior": "available",
+      "page_ref": "subsystem://ariane/interface/guidance",
+      "path": "/ariane/guidance",
+      "route_id": "ariane.guidance",
+      "safe_fallback_route_id": "ariane.home"
+    },
+    {
+      "$schema": "../../../docs/contracts/artifact-contracts/route-contribution.schema.json",
+      "aliases": [],
+      "availability": "conditional",
+      "capability_policy": {
+        "denied_behavior": "disabled",
+        "required_capabilities": [
+          "ariane_local_navigation"
+        ]
+      },
+      "deep_link_allowed": true,
+      "default_label": "Current route",
+      "label_key": "ariane.session",
+      "module_id": "ariane",
+      "offline_behavior": "available",
+      "page_ref": "subsystem://ariane/interface/session",
+      "path": "/ariane/session",
+      "route_id": "ariane.session",
+      "safe_fallback_route_id": "ariane.home"
+    }
+  ],
+  "sidebar": {
+    "$schema": "../../../docs/contracts/artifact-contracts/sidebar-navigation.schema.json",
+    "items": [
+      {
+        "availability": "always",
+        "badge_provider_ref": null,
+        "icon_ref": null,
+        "item_id": "ariane.home",
+        "label": "Ariane",
+        "label_key": "ariane.home",
+        "order": 0,
+        "required_capabilities": [
+          "ariane_local_navigation"
+        ],
+        "route_id": "ariane.home"
+      },
+      {
+        "availability": "always",
+        "badge_provider_ref": null,
+        "children": [
+          {
+            "availability": "always",
+            "badge_provider_ref": null,
+            "icon_ref": null,
+            "item_id": "ariane.guidance",
+            "label": "Guidance",
+            "label_key": "ariane.guidance",
+            "order": 0,
+            "required_capabilities": [
+              "ariane_guidance"
+            ],
+            "route_id": "ariane.guidance"
+          },
+          {
+            "availability": "always",
+            "badge_provider_ref": "koa://integrations/ariane/session-status",
+            "icon_ref": null,
+            "item_id": "ariane.session",
+            "label": "Current route",
+            "label_key": "ariane.session",
+            "order": 10,
+            "required_capabilities": [
+              "ariane_local_navigation"
+            ],
+            "route_id": "ariane.session"
+          }
+        ],
+        "icon_ref": null,
+        "item_id": "ariane.navigation",
+        "label": "Navigation",
+        "label_key": "ariane.navigation",
+        "order": 10,
+        "required_capabilities": [
+          "ariane_local_navigation"
+        ]
+      }
+    ],
+    "module_id": "ariane",
+    "visible_depth": 2
+  },
+  "topbar_widgets": [
+    {
+      "$schema": "../../../docs/contracts/artifact-contracts/topbar-widget.schema.json",
+      "activation": {
+        "command_ref": null,
+        "kind": "route",
+        "route_id": "ariane.home",
+        "status_provider_ref": null
+      },
+      "compact_only": true,
+      "icon_ref": null,
+      "kind": "action",
+      "label": "Open Ariane",
+      "label_key": "ariane.open",
+      "module_id": "ariane",
+      "offline_behavior": "available",
+      "priority": 10,
+      "required_capabilities": [
+        "ariane_local_navigation"
+      ],
+      "scope": "module",
+      "slot": "primary",
+      "widget_id": "ariane.open"
+    },
+    {
+      "$schema": "../../../docs/contracts/artifact-contracts/topbar-widget.schema.json",
+      "activation": {
+        "command_ref": null,
+        "kind": "status_provider",
+        "route_id": null,
+        "status_provider_ref": "koa://integrations/ariane/route-status"
+      },
+      "compact_only": true,
+      "icon_ref": null,
+      "kind": "status",
+      "label": "Route status",
+      "label_key": "ariane.route_status",
+      "module_id": "ariane",
+      "offline_behavior": "available",
+      "priority": 20,
+      "required_capabilities": [
+        "ariane_local_navigation"
+      ],
+      "scope": "module",
+      "slot": "status",
+      "widget_id": "ariane.route_status"
+    }
+  ]
+}

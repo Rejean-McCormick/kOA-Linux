@@ -1,0 +1,115 @@
+schema_version = 1
+policy_id = "koa-trust-bootstrap"
+version = "1.0.0"
+status = "active"
+default_action = "deny"
+controls = ["SEC-PLATFORM-005", "SEC-KEY-002", "SEC-PRIV-001", "SEC-PRIV-002"]
+
+[authority]
+trust_owner = "identity_and_trust"
+privileged_executor = "koa_node_agent"
+authorization_owner = "governance_policy_runtime"
+evidence_owner = "audit_broker"
+profile_owner = "contracts/profiles/*.profile.json"
+root_identity_source = "identity_and_trust.trust_root_registrations"
+operating_system_trust_store_is_authority = false
+browser_trust_store_is_authority = false
+public_web_trust_is_authority = false
+workspace_trust_is_production_authority = false
+
+[scope]
+required_dimensions = ["purpose", "environment", "profile", "authority_domain", "subject", "operation", "target", "validity"]
+conditional_dimensions = ["tenant", "release_channel", "artifact_class", "component", "integration", "audience"]
+nondimensional_root_allowed = false
+implicit_scope_expansion = false
+cross_environment_reuse = false
+cross_channel_reuse = false
+cross_artifact_class_reuse = false
+cross_authority_domain_reuse = false
+
+[admission]
+accepted_sources = ["factory_manifest", "signed_offline_bundle", "recovery_manifest", "governed_rotation"]
+quarantine_required = true
+network_fetch_allowed = false
+embedded_private_material_allowed = false
+root_private_key_import_allowed = false
+unknown_algorithm_result = "reject"
+unknown_root_result = "reject"
+missing_revocation_context_result = "blocked"
+scope_collision_result = "reject"
+contradictory_overlap_result = "reject"
+unsafe_fallback_result = "reject"
+
+[admission.required_record]
+fields = ["trust_root_id", "owner_ref", "purpose", "public_material_ref", "public_material_sha256", "scope", "not_before", "expires_at", "lifecycle_status", "revocation_reference", "canonical_contract_ref", "evidence_refs"]
+root_identifier_stable = true
+public_material_digest_required = true
+validity_interval_required = true
+revocation_behavior_required = true
+canonical_contract_reference_required = true
+
+[verification]
+checks = ["manifest_structure", "source_identity", "source_signature", "public_material_digest", "root_identifier_uniqueness", "scope_completeness", "scope_non_overlap", "profile_applicability", "validity_interval", "revocation_source", "delegation_constraints", "algorithm_policy", "authorization", "recovery_readiness"]
+revalidate_before_commit = ["source_signature", "scope", "profile_applicability", "validity_interval", "revocation_source", "authorization"]
+cryptographic_validity_grants_authority = false
+missing_required_check_result = "blocked"
+
+[activation]
+identity_operation_ids = ["register_trust_root", "apply_offline_trust_update", "revoke_trust_object"]
+privileged_operation_id = "rotate_node_scoped_key"
+privileged_execution_required_when = ["node_scoped_key_transition", "hardware_backed_custody", "protected_host_trust_store_update"]
+strategy = "atomic_trust_set_switch"
+complete_set_activation = true
+partial_set_activation = false
+preserve_last_valid_set = true
+staging_root = "/var/lib/koa/identity-and-trust/trust-sets/staged"
+active_pointer = "/var/lib/koa/identity-and-trust/trust-sets/active.json"
+last_valid_pointer = "/var/lib/koa/identity-and-trust/trust-sets/last-valid.json"
+local_receipt_root = "/var/lib/koa/node/activation-receipts"
+lock_path = "/run/koa/locks/trust-bootstrap.lock"
+required_preconditions = ["identity_and_trust_ready", "policy_decision_valid", "profile_resolved", "recovery_snapshot_verified", "audit_receipt_path_ready", "privileged_operation_catalog_valid"]
+commit_receipt_required = true
+post_commit_verification_required = true
+failure_result = "preserve_last_valid_and_block_new_trust_decisions"
+unknown_outcome_result = "recovery_required"
+blind_retry_allowed = false
+
+[rotation]
+predecessor_required = true
+successor_required = true
+overlap_explicit = true
+rollout_order_explicit = true
+cached_result_invalidation_required = true
+rollback_or_forward_repair_required = true
+completion_evidence_required = true
+
+[revocation]
+blocks_new_decisions = true
+scope_bounded = true
+cached_verification_invalidation = true
+dependent_state_review = true
+replacement_or_containment_required = true
+receipt_required = true
+
+[hardware_assurance]
+sovereign_linux_node = "recommended"
+high_assurance = "required"
+sovereign_offline = "recommended"
+missing_required_attestation = "deny_high_assurance_claim"
+hardware_root_implies_application_authority = false
+
+[evidence]
+receipt_class = "trust_root_evidence"
+required_fields = ["transition_id", "request_id", "correlation_id", "actor_identity_ref", "policy_decision_ref", "profile_id", "before_trust_set_digest", "after_trust_set_digest", "root_ids", "scope_digest", "verification_results", "commit_time", "result", "recovery_reference"]
+private_material_allowed = false
+secret_values_allowed = false
+raw_identity_payload_allowed = false
+
+[degradation]
+identity_and_trust_unavailable = "block_bootstrap"
+policy_runtime_unavailable = "block_bootstrap"
+audit_broker_unavailable = "preserve_local_receipt_and_block_completion"
+revocation_state_unavailable = "block_affected_scope"
+profile_unresolved = "block_bootstrap"
+recovery_material_unavailable = "block_bootstrap"
+last_valid_set_invalid = "enter_recovery"

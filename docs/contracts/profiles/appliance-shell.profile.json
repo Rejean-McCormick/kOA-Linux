@@ -26,7 +26,11 @@
     "generated/requirements-index.json",
     "generated/assertion-index.json",
     "generated/traceability.json",
-    "generated/exception-index.json"
+    "generated/exception-index.json",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md",
+    "03-profiles/14-koa-spaces-deployment.md"
   ],
   "decision_ids": [
     "DEC-PROFILE-001",
@@ -74,7 +78,8 @@
     "LOCK-LIFE-002",
     "LOCK-MEDIATHEQUE-001",
     "LOCK-UCKK-EXT-001",
-    "LOCK-UCKK-EXT-002"
+    "LOCK-UCKK-EXT-002",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "composition": {
@@ -480,5 +485,25 @@
       "accepted_content_available_offline": true,
       "automatic_sync": false
     }
+  },
+  "koa_spaces": {
+    "subsystem_id": "koa_spaces",
+    "contract_ref": "contracts/subsystems/koa-spaces.subsystem.json",
+    "deployment_document_ref": "03-profiles/14-koa-spaces-deployment.md",
+    "membership": "optional_primary_presentation_surface",
+    "default_activation": "selected_by_composed_deployment",
+    "deployment_mode": "full_screen_appliance_experience",
+    "required_for_profile_conformance": false,
+    "required_for_core_operation": false,
+    "authority": "non_authoritative_presentation",
+    "presentation_grants_authority": false,
+    "menu_visibility_is_authorization": false,
+    "offline_behavior": "local_frame_and_admitted_assets_available",
+    "failure_behavior": "presentation_unavailable_authoritative_services_and_fallback_paths_preserved",
+    "constraints": [
+      "shell_restrictions_remain_owned_by_overlay",
+      "maintenance_and_recovery_paths_independent",
+      "experience_layer_remains_replaceable"
+    ]
   }
 }

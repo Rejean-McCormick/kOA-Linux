@@ -26,7 +26,11 @@
     "generated/exception-index.json",
     "contracts/integrations/uckk-import.integration.json",
     "contracts/artifact-contracts/uckk-learning-package.schema.json",
-    "contracts/artifact-contracts/uckk-import-receipt.schema.json"
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md",
+    "03-profiles/14-koa-spaces-deployment.md"
   ],
   "decision_ids": [
     "DEC-PROFILE-001",
@@ -75,7 +79,8 @@
     "LOCK-LIFE-001",
     "LOCK-LIFE-002",
     "LOCK-LIFE-003",
-    "LOCK-LIFE-004"
+    "LOCK-LIFE-004",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -107,7 +112,10 @@
     "DOC-SYS-020",
     "DOC-PROFILE-001",
     "DOC-PROFILE-002",
-    "DOC-PROFILE-003"
+    "DOC-PROFILE-003",
+    "DOC-SYS-021",
+    "DOC-SYS-022",
+    "DOC-PROFILE-014"
   ],
   "tags": [
     "profile",
@@ -120,7 +128,9 @@
     "recovery",
     "selective-audit",
     "resource-governance",
-    "data-isolation"
+    "data-isolation",
+    "koa-spaces",
+    "experience-layer"
   ]
 }
 KOA:DOC-META:END -->
@@ -762,3 +772,7 @@ A governance policy bundle passes signature verification but fails compatibility
 ### 11.5 Build-farm interaction
 
 A build farm produces a signed service artifact with provenance. The hub verifies and stages it, then distributes it to authorized nodes after Release Set compatibility passes. The hub does not claim that it built the artifact.
+
+## kOA Spaces on a Sovereign Hub
+
+The profile can host multiple assigned Spaces for organizations, cohorts, devices, or roles. Assignment selects presentation only; tenant capabilities and data access remain enforced by their owners. Preference, cache, and activation state are isolated from business and tenant authority.

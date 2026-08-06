@@ -1,0 +1,85 @@
+schema_version = "1.0.0"
+integration_id = "sentient"
+state_model_ref = "docs/contracts/system.contract.json#/capability_degradation"
+authoritative_local_state_preserved = true
+undeclared_substitution = "prohibited"
+
+[preserved_baseline]
+capabilities = [
+  "koa_core_startup_and_operation",
+  "identity_governance_audit_and_security",
+  "publication_and_release_authority",
+  "recovery_and_offline_continuity",
+  "component_authoritative_state",
+  "other_subsystem_operation",
+]
+
+[[conditions]]
+condition_id = "source_unpinned"
+result_state = "blocked"
+affected_capabilities = ["sentient_isolated_analysis", "sentient_workbench_jobs", "sentient_candidate_artifacts", "sentient_candidate_export"]
+action = "keep_integration_disabled"
+recovery_preconditions = ["verified_immutable_source_pin", "verified_license", "official_documentation_mounted", "compatibility_pass"]
+
+[[conditions]]
+condition_id = "sentient_unavailable_or_incompatible"
+result_state = "unavailable"
+affected_capabilities = ["sentient_isolated_analysis", "sentient_workbench_jobs", "sentient_candidate_artifacts", "sentient_candidate_export"]
+action = "show_explicit_workbench_unavailable_state"
+preserved_capabilities = ["all_required_koa_core_capabilities", "last_validated_authoritative_state"]
+silent_substitute_allowed = false
+
+[[conditions]]
+condition_id = "resource_admission_denied_or_pressure"
+result_state = "unavailable"
+affected_capabilities = ["new_sentient_jobs", "running_optional_sentient_jobs"]
+action = "reject_or_cancel_workbench_work_before_protected_services"
+preserved_capabilities = ["protected_platform_services", "required_build_and_validation_capabilities"]
+authoritative_success_prohibited = true
+
+[[conditions]]
+condition_id = "network_unavailable_or_destination_not_registered"
+result_state = "degraded"
+affected_capabilities = ["network_dependent_sentient_task"]
+action = "disable_only_network_dependent_task_without_provider_substitution"
+preserved_capabilities = ["eligible_local_offline_candidate_work"]
+silent_substitute_allowed = false
+
+[[conditions]]
+condition_id = "provenance_or_receipt_path_unavailable"
+result_state = "blocked"
+affected_capabilities = ["candidate_export", "candidate_handoff", "critical_workbench_transition"]
+action = "reject_handoff_and_preserve_candidate_as_non_authoritative"
+authoritative_success_prohibited = true
+
+[[conditions]]
+condition_id = "destination_rejects_candidate"
+result_state = "degraded"
+affected_capabilities = ["candidate_acceptance"]
+action = "preserve_candidate_and_rejection_evidence_without_mutating_destination"
+preserved_capabilities = ["candidate_review", "candidate_cleanup"]
+authoritative_success_prohibited = true
+
+[[conditions]]
+condition_id = "isolation_drift_or_secret_boundary_failure"
+result_state = "blocked"
+affected_capabilities = ["all_sentient_workbench_operations"]
+action = "stop_workload_revoke_workbench_credentials_and_require_operator_review"
+authoritative_success_prohibited = true
+
+[[conditions]]
+condition_id = "deactivation_or_removal"
+result_state = "unavailable"
+affected_capabilities = ["all_sentient_workbench_operations"]
+action = "stop_jobs_revoke_credentials_remove_integrations_and_clean_isolated_mutable_state"
+preserved_capabilities = ["required_candidate_provenance", "protected_audit_records", "release_evidence", "canonical_documentation", "other_component_data"]
+
+[recovery]
+automatic_authority_expansion_allowed = false
+fresh_source_verification_required = true
+fresh_compatibility_check_required = true
+fresh_profile_and_task_authorization_required = true
+fresh_isolation_verification_required = true
+fresh_resource_admission_required = true
+fresh_health_required = true
+terminal_evidence_required = true

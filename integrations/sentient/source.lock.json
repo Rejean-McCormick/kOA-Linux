@@ -1,0 +1,41 @@
+{
+  "$schema": "koa://schemas/independent-subsystem-source-lock/1.0.0",
+  "activation": {
+    "allowed": false,
+    "blocked_reasons": [
+      "upstream_repository_or_release_not_provided",
+      "immutable_source_revision_not_provided",
+      "source_digest_not_provided",
+      "license_metadata_not_resolved",
+      "official_documentation_not_mounted"
+    ]
+  },
+  "boundary_contract": {
+    "ref": "docs/contracts/subsystems/sentient.subsystem.json",
+    "sha256": "7cb105bc9fac01b6a10c13cea07faf84097f5134491dd68c5a9a7e0a817b7c32",
+    "version": "1.0.0"
+  },
+  "documentation": {
+    "expected_release": null,
+    "mount_path": "subsystems/sentient",
+    "mounted": false,
+    "required_for_final_alignment": true
+  },
+  "generated_placeholders_prohibited": true,
+  "license": {
+    "license_files_sha256": [],
+    "resolved": false,
+    "spdx_expression": null
+  },
+  "lock_version": "1.0.0",
+  "pin_state": "unresolved",
+  "relationship": "integrated_subsystem",
+  "source": {
+    "acquisition_allowed": false,
+    "commit": null,
+    "release": null,
+    "repository": null,
+    "source_sha256": null
+  },
+  "subsystem_id": "sentient"
+}

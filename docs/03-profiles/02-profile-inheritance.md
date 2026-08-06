@@ -30,7 +30,11 @@
     "generated/traceability.json",
     "generated/test-catalog.json",
     "generated/evidence-catalog.json",
-    "generated/exception-index.json"
+    "generated/exception-index.json",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md",
+    "03-profiles/14-koa-spaces-deployment.md"
   ],
   "decision_ids": [
     "DEC-PROFILE-001",
@@ -92,7 +96,8 @@
     "LOCK-LIFE-001",
     "LOCK-LIFE-002",
     "LOCK-LIFE-003",
-    "LOCK-LIFE-004"
+    "LOCK-LIFE-004",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -117,7 +122,10 @@
     "DOC-SYS-017",
     "DOC-SYS-018",
     "DOC-SYS-019",
-    "DOC-PROFILE-001"
+    "DOC-PROFILE-001",
+    "DOC-SYS-021",
+    "DOC-SYS-022",
+    "DOC-PROFILE-014"
   ],
   "tags": [
     "profiles",
@@ -128,7 +136,9 @@
     "scope-containment",
     "capability-closure",
     "compatibility",
-    "conformance"
+    "conformance",
+    "koa-spaces",
+    "profile-membership"
   ]
 }
 KOA:DOC-META:END -->
@@ -787,3 +797,7 @@ A primary profile permits two background media jobs. A compatible overlay sets a
 ### 11.8 Expired waiver
 
 An effective profile temporarily uses a waiver for one test environment. At expiration, the waiver disappears from the calculation. The source profiles remain unchanged, and the affected conformance claim becomes blocked until the requirement passes or a valid new authority exists.
+
+## Inheritance Rule for kOA Spaces
+
+kOA Spaces membership is inherited only when the profile contract or overlay explicitly says so. A stronger overlay can require signatures, local retention, stricter allowlists, or stronger activation evidence for an inherited experience layer. It cannot silently add kOA Spaces to an incompatible primary profile or make it mandatory for core conformance.

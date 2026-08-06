@@ -1,0 +1,43 @@
+schema_version = "1.0.0"
+integration_id = "ariane"
+deployment_owner = "koa"
+activation_mode = "profile_defined"
+process_model = "independently_owned_subsystem_with_koa_adapter"
+source_materialization = "external_pinned_source_only"
+vendored_source_allowed = false
+partial_activation_allowed = false
+
+[profile_resolution]
+owner = "docs/contracts/profiles/*.profile.json"
+implicit_membership_allowed = false
+unsupported_profile_result = "integration_unavailable"
+overlay_may_only_narrow = true
+
+[process_boundary]
+adapter_process_separate = true
+subsystem_process_identity = "profile_defined"
+adapter_process_identity = "profile_defined"
+direct_host_privilege = false
+privileged_broker_required_for_host_operations = true
+shell_execution_interface_exposed = false
+
+[network]
+default_policy = "deny"
+local_unix_socket_preferred = true
+undeclared_listener_allowed = false
+undeclared_egress_allowed = false
+external_voice_egress_configured_here = false
+
+[lifecycle]
+states = ["declared", "validated", "staged", "active", "degraded", "disabled", "superseded"]
+activation_preconditions = [
+  "source_pin_verified",
+  "compatibility_verified",
+  "profile_membership_resolved",
+  "resource_envelope_admitted",
+  "health_contract_loaded",
+  "receipt_path_available",
+]
+failed_start_result = "capability_unavailable"
+previous_verified_configuration_retained = true
+rollback_or_disable_required = true

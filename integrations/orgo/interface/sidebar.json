@@ -1,0 +1,18 @@
+{
+  "$schema": "../../../docs/contracts/artifact-contracts/sidebar-navigation.schema.json",
+  "module_id": "orgo_schoolwork",
+  "visible_depth": 2,
+  "items": [
+    {
+      "item_id": "orgo_schoolwork.assignments",
+      "label": "Assignments",
+      "label_key": "orgo_schoolwork.assignments",
+      "icon_ref": null,
+      "order": 0,
+      "required_capabilities": [],
+      "availability": "online_only",
+      "badge_provider_ref": null,
+      "route_id": "orgo_schoolwork.home"
+    }
+  ]
+}

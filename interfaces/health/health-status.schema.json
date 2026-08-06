@@ -1,0 +1,487 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.koa.local/interfaces/health/health-status.schema.json",
+  "title": "kOA Health Status",
+  "description": "Capability-aware component health vector separating bounded process liveness, startup evaluation, aggregate operational state, and per-class readiness. The aggregate preserves all capability results and cannot substitute for authorization or authoritative acceptance.",
+  "$comment": "Semantic validation must enforce profile-specific aggregation, ensure the aggregate is never healthier than a failed critical capability, and ensure optional dependency failures affect only declared dependent capabilities.",
+  "x-koa-interface": {
+    "interface_id": "health_status",
+    "interface_version": "1.0.0",
+    "status": "active",
+    "owner": "operations-architecture",
+    "canonical_refs": [
+      "docs/08-operations/02-health-and-readiness.md",
+      "docs/02-system/06-capability-model.md",
+      "docs/contracts/system.contract.json#/degradation_baseline"
+    ],
+    "requirement_ids": [
+      "REQ-OPS-HEALTH-001",
+      "REQ-OPS-HEALTH-002",
+      "REQ-OPS-HEALTH-003",
+      "REQ-OPS-HEALTH-005",
+      "REQ-OPS-HEALTH-006",
+      "REQ-OPS-HEALTH-007",
+      "REQ-OPS-HEALTH-009",
+      "REQ-OPS-HEALTH-010",
+      "REQ-OPS-HEALTH-016",
+      "REQ-OPS-HEALTH-017",
+      "REQ-OPS-HEALTH-024"
+    ],
+    "semantic_rules": [
+      "liveness is local and bounded",
+      "startup remains separate from liveness",
+      "aggregate state preserves every readiness result",
+      "health output is a projection and grants no authority",
+      "sensitive payloads and secrets are prohibited"
+    ]
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "health_report_id",
+    "component_id",
+    "component_contract_ref",
+    "process_liveness",
+    "startup",
+    "overall_state",
+    "readiness",
+    "freshness",
+    "observed_at",
+    "reason_codes",
+    "disclosure_class"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "health_report_id": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 256,
+      "pattern": "^health:[A-Za-z0-9][A-Za-z0-9._:/+-]*$"
+    },
+    "component_id": {
+      "$ref": "#/$defs/snakeId"
+    },
+    "component_instance_id": {
+      "$ref": "#/$defs/stableId"
+    },
+    "component_contract_ref": {
+      "$ref": "#/$defs/repositoryReference"
+    },
+    "profile_refs": {
+      "type": "array",
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/repositoryReference"
+      }
+    },
+    "process_liveness": {
+      "$ref": "#/$defs/liveness"
+    },
+    "startup": {
+      "$ref": "#/$defs/startup"
+    },
+    "overall_state": {
+      "$ref": "#/$defs/operationalState"
+    },
+    "readiness": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 512,
+      "items": {
+        "$ref": "readiness.schema.json"
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "maxItems": 256,
+      "items": {
+        "$ref": "#/$defs/limitation"
+      }
+    },
+    "freshness": {
+      "$ref": "#/$defs/freshness"
+    },
+    "observed_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "reason_codes": {
+      "type": "array",
+      "maxItems": 128,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/reasonCode"
+      }
+    },
+    "recovery_conditions": {
+      "type": "array",
+      "maxItems": 128,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/snakeId"
+      }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "maxItems": 1024,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/repositoryReference"
+      }
+    },
+    "disclosure_class": {
+      "type": "string",
+      "enum": [
+        "minimal_public",
+        "authenticated_operational",
+        "restricted_diagnostic",
+        "machine_readable_local"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "process_liveness": {
+            "properties": {
+              "state": {
+                "const": "failed"
+              }
+            },
+            "required": [
+              "state"
+            ]
+          }
+        },
+        "required": [
+          "process_liveness"
+        ]
+      },
+      "then": {
+        "properties": {
+          "overall_state": {
+            "const": "failed"
+          },
+          "reason_codes": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "process_liveness": {
+            "properties": {
+              "state": {
+                "const": "stopping"
+              }
+            },
+            "required": [
+              "state"
+            ]
+          }
+        },
+        "required": [
+          "process_liveness"
+        ]
+      },
+      "then": {
+        "properties": {
+          "overall_state": {
+            "const": "stopping"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "overall_state": {
+            "not": {
+              "const": "healthy"
+            }
+          }
+        },
+        "required": [
+          "overall_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "reason_codes": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "freshness": {
+            "properties": {
+              "staleness_state": {
+                "const": "stale"
+              }
+            },
+            "required": [
+              "staleness_state"
+            ]
+          }
+        },
+        "required": [
+          "freshness"
+        ]
+      },
+      "then": {
+        "properties": {
+          "overall_state": {
+            "not": {
+              "const": "healthy"
+            }
+          },
+          "reason_codes": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "stableId": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/@+-]*$"
+    },
+    "snakeId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
+    },
+    "reasonCode": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 128,
+      "pattern": "^[A-Z][A-Z0-9_:-]*$"
+    },
+    "repositoryReference": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 1024,
+      "pattern": "^(?!(?:/|.*(?:^|/)\\.\\.(?:/|$)))(?:[^#\\s]+(?:#(?:/.*)?)?|(?:DOC|DEC|REQ|LOCK|ADR|TEST|EVID|EXC)-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3})$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "operationalState": {
+      "type": "string",
+      "enum": [
+        "starting",
+        "healthy",
+        "constrained",
+        "read_only",
+        "advisory_only",
+        "degraded",
+        "unavailable",
+        "recovering",
+        "maintenance",
+        "stopping",
+        "failed"
+      ]
+    },
+    "liveness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "observed_at",
+        "reason_codes"
+      ],
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": [
+            "alive",
+            "stopping",
+            "failed"
+          ]
+        },
+        "observed_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "reason_codes": {
+          "type": "array",
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/reasonCode"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "enum": [
+                  "stopping",
+                  "failed"
+                ]
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "reason_codes": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "startup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "observed_at",
+        "reason_codes"
+      ],
+      "properties": {
+        "state": {
+          "$ref": "#/$defs/operationalState"
+        },
+        "stage": {
+          "$ref": "#/$defs/snakeId"
+        },
+        "started_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "observed_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "reason_codes": {
+          "type": "array",
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/reasonCode"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "not": {
+                  "const": "healthy"
+                }
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "reason_codes": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "limitation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "capability_id",
+        "state",
+        "reason_codes"
+      ],
+      "properties": {
+        "capability_id": {
+          "$ref": "#/$defs/snakeId"
+        },
+        "state": {
+          "$ref": "#/$defs/operationalState"
+        },
+        "reason_codes": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/reasonCode"
+          }
+        },
+        "denied_operation_classes": {
+          "type": "array",
+          "maxItems": 256,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/snakeId"
+          }
+        }
+      }
+    },
+    "freshness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "confidence",
+        "staleness_state",
+        "observed_at"
+      ],
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/stableId"
+        },
+        "confidence": {
+          "type": "string",
+          "enum": [
+            "direct",
+            "derived",
+            "reported",
+            "unknown"
+          ]
+        },
+        "staleness_state": {
+          "type": "string",
+          "enum": [
+            "current",
+            "stale",
+            "unknown"
+          ]
+        },
+        "observed_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "valid_until": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "expected_refresh_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "age_seconds": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

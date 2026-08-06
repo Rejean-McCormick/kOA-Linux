@@ -1,0 +1,57 @@
+{
+  "$schema": "../artifact-contracts/cache-policy.schema.json",
+  "example": true,
+  "authority": "non_authoritative_example",
+  "artifact_class": "cache_policy",
+  "policy_id": "school-home-view-cache",
+  "version": "1.0.0",
+  "owner_component_id": "koa_spaces",
+  "source_of_truth_ref": "experience-view-adapter:school-space-dashboard",
+  "mode": "cache_aside",
+  "key_scope": {
+    "includes_tenant": true,
+    "includes_authority_domain": true,
+    "includes_object_version": true
+  },
+  "ttl": {
+    "maximum_seconds": 120,
+    "jitter_percent": 10,
+    "unbounded_prohibited": true
+  },
+  "invalidation": {
+    "owner_write_before_invalidation": true,
+    "events": [
+      "orgo.work.changed",
+      "koa_mediatheque.record.accepted"
+    ],
+    "failure_action": "serve_labeled_stale_within_bound"
+  },
+  "staleness": {
+    "maximum_seconds": 120,
+    "label_required": true
+  },
+  "negative_cache": {
+    "enabled": true,
+    "maximum_ttl_seconds": 15
+  },
+  "stampede_protection": {
+    "mode": "single_flight",
+    "lock_timeout_ms": 5000
+  },
+  "security": {
+    "authorization_results_cached": false,
+    "cross_tenant_sharing": false,
+    "sensitive_value_encryption": true
+  },
+  "failure_behavior": {
+    "empty_cache_safe": true,
+    "cache_unavailable_action": "read_owner"
+  },
+  "observability": {
+    "hit_ratio": true,
+    "miss_ratio": true,
+    "evictions": true,
+    "stale_serves": true,
+    "invalidation_failures": true
+  }
+}

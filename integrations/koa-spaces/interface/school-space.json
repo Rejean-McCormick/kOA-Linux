@@ -1,0 +1,81 @@
+{
+  "$schema": "../../../docs/contracts/artifact-contracts/space-definition.schema.json",
+  "space_id": "school_space",
+  "title": "School Space",
+  "version": "1.0.0",
+  "description": "Presentation composition for local learning, media, assignments, and guidance.",
+  "default_module_id": "space_home",
+  "module_instances": [
+    {
+      "module_id": "space_home",
+      "manifest_ref": "global-widgets.json",
+      "enabled": true,
+      "required": true,
+      "order": 0,
+      "public_label": "Home",
+      "public_icon_ref": "icons/home.svg",
+      "home_route_override": null
+    },
+    {
+      "module_id": "uckk_learning",
+      "manifest_ref": "manifests/uckk-learning.module-interface.json",
+      "enabled": true,
+      "required": false,
+      "order": 10,
+      "public_label": "Learn",
+      "public_icon_ref": "icons/learn.svg",
+      "home_route_override": null
+    },
+    {
+      "module_id": "koa_mediatheque",
+      "manifest_ref": "manifests/koa-mediatheque.module-interface.json",
+      "enabled": true,
+      "required": false,
+      "order": 20,
+      "public_label": "Library",
+      "public_icon_ref": "icons/library.svg",
+      "home_route_override": null
+    },
+    {
+      "module_id": "orgo_schoolwork",
+      "manifest_ref": "manifests/orgo-schoolwork.module-interface.json",
+      "enabled": true,
+      "required": false,
+      "order": 30,
+      "public_label": "Assignments",
+      "public_icon_ref": "icons/assignments.svg",
+      "home_route_override": null
+    },
+    {
+      "module_id": "ariane",
+      "manifest_ref": "manifests/ariane.module-interface.json",
+      "enabled": true,
+      "required": false,
+      "order": 40,
+      "public_label": "Guidance",
+      "public_icon_ref": "icons/guidance.svg",
+      "home_route_override": null
+    }
+  ],
+  "global_topbar": [],
+  "appearance": {
+    "theme_ref": "themes/school.json",
+    "density": "touch",
+    "logo_ref": null,
+    "accent_token": null,
+    "allow_module_accent": true
+  },
+  "offline_policy": {
+    "shell_available": true,
+    "retain_last_validated_definition": true,
+    "unavailable_module_behavior": "show_declared_fallback",
+    "network_state_indicator": true
+  },
+  "assignment_scope": "organization",
+  "authority_boundary": {
+    "presentation_only": true,
+    "may_grant_capabilities": false,
+    "contains_business_state": false,
+    "contains_executable_extension": false
+  }
+}

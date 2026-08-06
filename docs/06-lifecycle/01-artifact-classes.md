@@ -22,7 +22,16 @@
     "generated/assertion-index.json",
     "generated/traceability.json",
     "generated/exception-index.json",
-    "generated/artifact-catalog.json"
+    "generated/artifact-catalog.json",
+    "contracts/architecture-patterns.contract.json",
+    "02-system/34-architecture-patterns.md",
+    "06-lifecycle/20-resilience-and-projection-artifacts.md",
+    "08-operations/20-architecture-pattern-operations.md",
+    "09-conformance/22-architecture-pattern-conformance.md",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md",
+    "03-profiles/14-koa-spaces-deployment.md"
   ],
   "decision_ids": [
     "DEC-REL-001",
@@ -31,7 +40,14 @@
     "DEC-AI-001",
     "DEC-ARI-001",
     "DEC-MEDIATHEQUE-001",
-    "DEC-UCKK-EXT-001"
+    "DEC-UCKK-EXT-001",
+    "DEC-RES-001",
+    "DEC-MSG-001",
+    "DEC-WF-001",
+    "DEC-PAYLOAD-001",
+    "DEC-BFF-001",
+    "DEC-CQRS-001",
+    "DEC-CACHE-001"
   ],
   "requirement_ids": [
     "REQ-LIFE-CLASS-001",
@@ -78,7 +94,15 @@
     "LOCK-MEDIATHEQUE-001",
     "LOCK-MEDIATHEQUE-002",
     "LOCK-UCKK-EXT-001",
-    "LOCK-UCKK-EXT-002"
+    "LOCK-UCKK-EXT-002",
+    "LOCK-RES-001",
+    "LOCK-MSG-001",
+    "LOCK-WF-001",
+    "LOCK-PAYLOAD-001",
+    "LOCK-BFF-001",
+    "LOCK-CQRS-001",
+    "LOCK-CACHE-001",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -94,7 +118,10 @@
     "DOC-SYS-017",
     "DOC-SYS-018",
     "DOC-PRO-000",
-    "DOC-PRO-009"
+    "DOC-PRO-009",
+    "DOC-SYS-021",
+    "DOC-SYS-022",
+    "DOC-PROFILE-014"
   ],
   "tags": [
     "artifacts",
@@ -106,7 +133,10 @@
     "activation",
     "rollback",
     "provenance",
-    "retention"
+    "retention",
+    "architecture-patterns",
+    "koa-spaces",
+    "experience-layer"
   ]
 }
 KOA:DOC-META:END -->
@@ -1071,3 +1101,21 @@ The artifact declares the change as irreversible, requires a verified backup, us
 An activation receipt records candidate identity, prior identity, policy result, compatibility result, actor, time, outcome, and evidence references.
 
 Editing the receipt cannot alter active state. A correction is a new linked evidence record.
+
+## Architecture-pattern artifact classes
+
+The artifact registry includes seven architecture-pattern classes:
+
+- `integration_resilience_policy`;
+- `dead_letter_record`;
+- `distributed_workflow`;
+- `large_payload_reference`;
+- `experience_view_adapter`;
+- `cqrs_projection`;
+- `cache_policy`.
+
+Their lifecycle profiles distinguish versioned policy, quarantined operational evidence, long-running workflow state, ephemeral authorized references, and rebuildable projections.
+
+## kOA Spaces Artifact Classes
+
+The lifecycle includes Space definitions, module interface manifests, route contributions, sidebar navigation, top-bar widgets, interface assets, experience view adapters, projections, cache policies, and Space activation receipts. Declarative presentation artifacts are admitted and versioned separately from executable subsystem releases. They cannot carry undeclared executable code or business authority.

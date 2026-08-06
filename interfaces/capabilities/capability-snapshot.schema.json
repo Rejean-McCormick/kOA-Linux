@@ -1,0 +1,465 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.koa.local/interfaces/capabilities/capability-snapshot.schema.json",
+  "title": "kOA Capability Snapshot",
+  "description": "Represents a point-in-time, profile-scoped observation of capability availability, execution, authoritative outcome, dependencies, and declared degradation. It is an observable projection and does not redefine canonical capability ownership or create authority.",
+  "$comment": "Canonical sources: docs/contracts/system.contract.json#/global_capabilities; docs/02-system/06-capability-model.md; docs/02-system/17-capability-degradation.md. The context remains separate from authorization and transport correlation envelopes.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "snapshot_id",
+    "producer_component_ref",
+    "observed_at",
+    "profile_ref",
+    "scope",
+    "capabilities",
+    "substitution_applied",
+    "correlation"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "snapshot_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$"
+    },
+    "producer_component_ref": {
+      "type": "string",
+      "pattern": "^\\S{1,512}$"
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "valid_until": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "profile_ref": {
+      "type": "string",
+      "pattern": "^\\S{1,512}$"
+    },
+    "overlay_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "scope": {
+      "$ref": "#/$defs/snapshot_scope"
+    },
+    "capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/capability_observation"
+      }
+    },
+    "substitution_applied": {
+      "const": false,
+      "description": "An absent or failed capability never triggers an undeclared substitute."
+    },
+    "evidence_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "receipt_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "correlation": {
+      "$ref": "../receipts/correlation.schema.json"
+    }
+  },
+  "$defs": {
+    "snapshot_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "environment"
+      ],
+      "properties": {
+        "environment": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "tenant_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "organization_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "node_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "workspace_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "component_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "target_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        }
+      }
+    },
+    "dependency_observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dependency_ref",
+        "dependency_type",
+        "requirement",
+        "state",
+        "observed_at"
+      ],
+      "properties": {
+        "dependency_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "dependency_type": {
+          "type": "string",
+          "enum": [
+            "capability",
+            "component",
+            "authority",
+            "data",
+            "artifact",
+            "resource",
+            "profile",
+            "integration",
+            "environment"
+          ]
+        },
+        "requirement": {
+          "type": "string",
+          "enum": [
+            "hard",
+            "conditional",
+            "optional"
+          ]
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "satisfied",
+            "degraded",
+            "deferred",
+            "blocked",
+            "unavailable"
+          ]
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "reason_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{2,127}$"
+          }
+        },
+        "evidence_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "degradation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "cause_class",
+        "preserved_behaviors",
+        "prohibited_actions",
+        "recovery_preconditions",
+        "user_visible_state"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "cause_class": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "preserved_behaviors": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "prohibited_actions": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "recovery_preconditions": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "queue_behavior": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "retry_behavior": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "user_visible_state": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "receipt_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        }
+      }
+    },
+    "capability_observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "capability_id",
+        "capability_ref",
+        "owner_component_ref",
+        "capability_class",
+        "authority_effect",
+        "availability_state",
+        "execution_state",
+        "authoritative_outcome",
+        "offline_behavior",
+        "observed_at",
+        "dependency_observations",
+        "reason_codes"
+      ],
+      "properties": {
+        "capability_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$"
+        },
+        "capability_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$",
+          "description": "Pointer to the canonical capability record."
+        },
+        "owner_component_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "capability_class": {
+          "type": "string",
+          "enum": [
+            "authoritative_state",
+            "deterministic_processing",
+            "identity_and_trust",
+            "governance_and_policy",
+            "resource_governance",
+            "navigation_and_interaction",
+            "ingestion_and_transfer",
+            "publication_and_disclosure",
+            "audit_and_recourse",
+            "artifact_lifecycle",
+            "developer_workbench",
+            "external_adapter"
+          ]
+        },
+        "authority_effect": {
+          "type": "string",
+          "enum": [
+            "none",
+            "read_authoritative",
+            "candidate_output",
+            "request_authoritative_change",
+            "authoritative_change",
+            "transport_only",
+            "policy_decision",
+            "evidence_record"
+          ]
+        },
+        "availability_state": {
+          "type": "string",
+          "enum": [
+            "available",
+            "degraded",
+            "deferred_only",
+            "blocked",
+            "unavailable"
+          ]
+        },
+        "execution_state": {
+          "type": "string",
+          "enum": [
+            "not_started",
+            "accepted",
+            "queued",
+            "running",
+            "awaiting_dependency",
+            "awaiting_authority",
+            "completed",
+            "cancelled",
+            "failed",
+            "conflicted",
+            "expired"
+          ]
+        },
+        "authoritative_outcome": {
+          "type": "string",
+          "enum": [
+            "no_effect",
+            "candidate_created",
+            "request_recorded",
+            "change_committed",
+            "policy_decision_recorded",
+            "evidence_recorded",
+            "external_effect_confirmed",
+            "rolled_back"
+          ]
+        },
+        "offline_behavior": {
+          "type": "string",
+          "enum": [
+            "continuous",
+            "degraded",
+            "deferred",
+            "unavailable",
+            "offline_transfer"
+          ]
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "state_entered_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "dependency_observations": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/dependency_observation"
+          }
+        },
+        "degradation": {
+          "$ref": "#/$defs/degradation"
+        },
+        "reason_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{2,127}$"
+          }
+        },
+        "result_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "receipt_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "availability_state": {
+                "const": "degraded"
+              }
+            },
+            "required": [
+              "availability_state"
+            ]
+          },
+          "then": {
+            "required": [
+              "degradation"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "availability_state": {
+                "enum": [
+                  "blocked",
+                  "unavailable"
+                ]
+              }
+            },
+            "required": [
+              "availability_state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "reason_codes": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

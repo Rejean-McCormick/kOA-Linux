@@ -1,0 +1,21 @@
+[Unit]
+Description=kOA Node Agent authenticated local request socket
+Before=koa-node-agent.service
+PartOf=koa-node-agent.service
+
+[Socket]
+ListenStream=/run/koa/sockets/koa-node-agent.sock
+Service=koa-node-agent.service
+Accept=no
+SocketUser=koa-node-agent
+SocketGroup=koa-node-agent
+SocketMode=0660
+DirectoryMode=0750
+RemoveOnStop=yes
+PassCredentials=yes
+PassSecurity=yes
+FileDescriptorName=requests
+Backlog=128
+
+[Install]
+WantedBy=sockets.target koa-critical.target

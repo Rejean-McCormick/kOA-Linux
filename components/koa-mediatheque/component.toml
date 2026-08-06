@@ -1,0 +1,78 @@
+schema_version = "1"
+component_id = "koa_mediatheque"
+name = "kOA Mediatheque"
+version = "1.0.0"
+contract = "docs/contracts/components/koa-mediatheque.component.json"
+component_type = "runtime_component"
+owner = "local-media-authority"
+language = "python"
+
+[entrypoints]
+module = "koa_mediatheque"
+console = "koa-mediatheque"
+bootstrap = "koa_mediatheque.bootstrap:bootstrap"
+
+[public_interfaces]
+interface_ids = [
+  "media_record_command",
+  "media_import",
+  "publication_result",
+  "uckk_learning_package_acceptance",
+  "media_record_query",
+  "publication_candidate",
+  "backup_export",
+]
+
+[health]
+transport = "http_over_unix"
+liveness_path = "/health/liveness"
+readiness_path = "/health/readiness"
+status_query = "get_component_status"
+dimensions = [
+  "database",
+  "managed_content_root",
+  "integrity_queue",
+  "rendition_queue",
+  "publication_queue",
+  "backup_checkpoint",
+  "storage_pressure",
+]
+
+[state]
+owner = "koa_mediatheque"
+root = "/var/lib/koa/mediatheque"
+runtime_root = "/run/koa/koa-mediatheque"
+socket = "/run/koa/sockets/koa-mediatheque.sock"
+direct_cross_component_writes = false
+remote_uckk_state_is_authoritative = false
+
+[package]
+python_distribution = "koa-mediatheque"
+import_package = "koa_mediatheque"
+payload = "components/koa-mediatheque/packaging/payload.toml"
+
+[dependencies]
+public_python_interfaces = "koa_interfaces"
+required_local = [
+  "active_profile",
+  "component_owned_database",
+  "component_owned_content_root",
+  "receipt_delivery_path",
+]
+optional_local = [
+  "resource_governor",
+  "publication_gateway",
+  "audit_broker",
+  "uckk_publication_integration",
+  "uckk_import_integration",
+]
+private_component_imports = false
+
+[authority]
+local_records_remain_authoritative = true
+shared_frame_merges_authority = false
+background_bidirectional_sync = false
+publication_requires_publication_gateway = true
+import_requires_quarantine_and_local_acceptance = true
+content_integrity_before_acceptance = true
+critical_transition_requires_receipt = true

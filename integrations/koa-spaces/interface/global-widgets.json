@@ -1,0 +1,135 @@
+{
+  "$schema": "../../../docs/contracts/artifact-contracts/module-interface-manifest.schema.json",
+  "manifest_id": "koa-spaces.global-widgets",
+  "manifest_version": "1.0.0",
+  "module_id": "space_home",
+  "public_name": "Home",
+  "description": "Local non-authoritative home, search, and platform-status contribution for kOA Spaces.",
+  "icon_ref": "icons/home.svg",
+  "home_route_id": "space_home.home",
+  "required_capabilities": [],
+  "routes": [
+    {
+      "route_id": "space_home.home",
+      "module_id": "space_home",
+      "path": "/",
+      "page_ref": "koa-spaces://page/home",
+      "default_label": "Home",
+      "label_key": "space_home.home",
+      "availability": "always",
+      "offline_behavior": "available",
+      "deep_link_allowed": true,
+      "safe_fallback_route_id": null,
+      "aliases": [],
+      "capability_policy": {
+        "required_capabilities": [],
+        "denied_behavior": "access_denied"
+      }
+    },
+    {
+      "route_id": "space_home.search",
+      "module_id": "space_home",
+      "path": "/search",
+      "page_ref": "koa-spaces://page/search",
+      "default_label": "Search",
+      "label_key": "space_home.search",
+      "availability": "always",
+      "offline_behavior": "cached_read_only",
+      "deep_link_allowed": true,
+      "safe_fallback_route_id": "space_home.home",
+      "aliases": [],
+      "capability_policy": {
+        "required_capabilities": [],
+        "denied_behavior": "access_denied"
+      }
+    }
+  ],
+  "sidebar": {
+    "module_id": "space_home",
+    "visible_depth": 2,
+    "items": [
+      {
+        "item_id": "space_home.home",
+        "label": "Home",
+        "label_key": "space_home.home",
+        "icon_ref": "icons/home.svg",
+        "order": 0,
+        "required_capabilities": [],
+        "availability": "always",
+        "badge_provider_ref": null,
+        "route_id": "space_home.home"
+      },
+      {
+        "item_id": "space_home.search",
+        "label": "Search",
+        "label_key": "space_home.search",
+        "icon_ref": "icons/search.svg",
+        "order": 10,
+        "required_capabilities": [],
+        "availability": "always",
+        "badge_provider_ref": null,
+        "route_id": "space_home.search"
+      }
+    ]
+  },
+  "topbar_widgets": [
+    {
+      "widget_id": "global.search",
+      "module_id": null,
+      "scope": "global",
+      "slot": "primary",
+      "kind": "search",
+      "label": "Search",
+      "label_key": "global.search",
+      "icon_ref": "icons/search.svg",
+      "priority": 10,
+      "required_capabilities": [],
+      "offline_behavior": "cached_read_only",
+      "compact_only": true,
+      "activation": {
+        "kind": "route",
+        "route_id": "space_home.search",
+        "command_ref": null,
+        "status_provider_ref": null
+      }
+    },
+    {
+      "widget_id": "global.network_state",
+      "module_id": null,
+      "scope": "global",
+      "slot": "status",
+      "kind": "status",
+      "label": "Network state",
+      "label_key": "global.network_state",
+      "icon_ref": "icons/network.svg",
+      "priority": 20,
+      "required_capabilities": [],
+      "offline_behavior": "available",
+      "compact_only": true,
+      "activation": {
+        "kind": "status_provider",
+        "route_id": null,
+        "command_ref": null,
+        "status_provider_ref": "koa://network/state"
+      }
+    }
+  ],
+  "localization_refs": [
+    "localization/koa-spaces.en.json"
+  ],
+  "accessibility": {
+    "keyboard_navigation": true,
+    "screen_reader_labels": true,
+    "reduced_motion": "supported"
+  },
+  "offline_behavior": {
+    "module_state": "available",
+    "fallback_route_id": "space_home.home"
+  },
+  "authority_boundary": {
+    "presentation_only": true,
+    "may_grant_capabilities": false,
+    "direct_domain_writes": false,
+    "menu_visibility_is_authorization": false
+  }
+}

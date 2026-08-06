@@ -1,0 +1,48 @@
+[
+  {
+    "$schema": "../../../docs/contracts/artifact-contracts/topbar-widget.schema.json",
+    "activation": {
+      "command_ref": null,
+      "kind": "route",
+      "route_id": "sentient.workbench",
+      "status_provider_ref": null
+    },
+    "compact_only": true,
+    "icon_ref": null,
+    "kind": "action",
+    "label": "Open SenTient",
+    "label_key": "sentient.open",
+    "module_id": "sentient",
+    "offline_behavior": "degraded",
+    "priority": 30,
+    "required_capabilities": [
+      "sentient_isolated_analysis"
+    ],
+    "scope": "module",
+    "slot": "primary",
+    "widget_id": "sentient.open"
+  },
+  {
+    "$schema": "../../../docs/contracts/artifact-contracts/topbar-widget.schema.json",
+    "activation": {
+      "command_ref": null,
+      "kind": "status_provider",
+      "route_id": null,
+      "status_provider_ref": "koa://integrations/sentient/job-status"
+    },
+    "compact_only": true,
+    "icon_ref": null,
+    "kind": "status",
+    "label": "Workbench status",
+    "label_key": "sentient.job_status",
+    "module_id": "sentient",
+    "offline_behavior": "degraded",
+    "priority": 40,
+    "required_capabilities": [
+      "sentient_workbench_jobs"
+    ],
+    "scope": "module",
+    "slot": "status",
+    "widget_id": "sentient.job-status"
+  }
+]

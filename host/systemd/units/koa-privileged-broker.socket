@@ -1,0 +1,21 @@
+[Unit]
+Description=kOA closed privileged broker socket
+Before=koa-privileged-broker.service koa-node-agent.service
+PartOf=koa-privileged-broker.service
+
+[Socket]
+ListenStream=/run/koa/sockets/koa-privileged-broker.sock
+Service=koa-privileged-broker.service
+Accept=no
+SocketUser=root
+SocketGroup=koa-node-agent
+SocketMode=0660
+DirectoryMode=0750
+RemoveOnStop=yes
+PassCredentials=yes
+PassSecurity=yes
+FileDescriptorName=privileged-requests
+Backlog=64
+
+[Install]
+WantedBy=sockets.target koa-critical.target

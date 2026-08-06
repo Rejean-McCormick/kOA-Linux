@@ -1,0 +1,139 @@
+schema_version = 1
+policy_id = "chatgpt.external-ai-boundary"
+integration_id = "chatgpt"
+version = "1.0.0"
+status = "active"
+contract_ref = "docs/contracts/integrations/chatgpt.integration.json"
+
+[activation]
+registered_integration_required = true
+profile_permission_required = true
+explicit_user_action_required = true
+exact_capability_required = true
+exact_purpose_required = true
+provider_disclosure_required = true
+transfer_preview_required = true
+material_risk_disclosure_required = true
+operation_scoped_confirmation_required = true
+background_activation_prohibited = true
+scheduled_activation_prohibited = true
+autonomous_activation_prohibited = true
+
+[transfer]
+only_explicitly_admitted_data = true
+minimum_necessary_representation = true
+source_object_references_required = true
+selected_fields_required = true
+selected_attachments_required_when_present = true
+transformations_disclosed = true
+classification_disclosed = true
+provider_and_destination_disclosed = true
+retention_context_disclosed = true
+irreversible_disclosure_risk_disclosed = true
+no_ai_enforced = true
+secret_transfer_prohibited = true
+hidden_authority_context_prohibited = true
+unrelated_tenant_data_prohibited = true
+
+[authority]
+output_authority = "candidate_input_only"
+direct_authoritative_mutation = false
+policy_authority = false
+privilege_authority = false
+release_authority = false
+publication_authority = false
+rights_authority = false
+identity_authority = false
+workflow_authority = false
+recovery_authority = false
+
+[tools]
+tools_enabled_by_default = false
+unrestricted_tools_prohibited = true
+arbitrary_shell_prohibited = true
+direct_database_access_prohibited = true
+protected_signing_access_prohibited = true
+node_agent_operations_prohibited = true
+general_network_access_prohibited = true
+allowlisted_schema_required_for_any_future_tool = true
+independent_authorization_required_for_any_future_tool = true
+deterministic_validation_required_for_any_future_tool = true
+classified_receipt_required_for_any_future_tool = true
+
+[output]
+separate_candidate_identity_required = true
+integration_identity_required = true
+operation_identity_required = true
+actor_or_session_identity_required = true
+input_references_required = true
+warnings_preserved = true
+provider_service_identity_when_known = true
+schema_validation_required = true
+policy_validation_required = true
+owning_component_review_required = true
+explicit_acceptance_or_rejection_required = true
+accepted_output_provenance_required = true
+
+[evidence]
+correlation_id_required = true
+operation_id_required = true
+terminal_failure_receipt_required = true
+accepted_output_provenance_required = true
+minimum_metadata_only = true
+prompt_content_recorded_by_default = false
+response_content_recorded_by_default = false
+source_document_content_recorded_by_default = false
+credential_material_recorded = false
+
+[evidence.failure_metadata]
+required = ["integration_id", "operation_id", "correlation_id", "capability_id", "failure_class", "terminal_state", "occurred_at"]
+optional = ["provider_request_id", "retry_count", "timeout_ms", "policy_decision_id"]
+
+[degradation]
+mode = "capability_unavailable"
+unrelated_local_capabilities_continue = true
+authoritative_local_state_preserved = true
+authoritative_success_prohibited = true
+provider_substitution_prohibited = true
+local_model_substitution_prohibited = true
+native_ai_substitution_prohibited = true
+queued_background_retry_prohibited = true
+
+[publication]
+generation_is_separate_from_publication = true
+publication_gateway_required = true
+publication_request_required = true
+publication_policy_decision_required = true
+publication_receipt_required = true
+generation_implies_publication_consent = false
+
+[removal]
+disable_new_operations_first = true
+stop_active_operations_safely = true
+clear_temporary_provider_session_data = true
+preserve_authoritative_local_data = true
+preserve_previously_accepted_provenance = true
+remove_credentials = true
+remove_endpoint_configuration = true
+validate_no_hidden_dependency = true
+validate_no_fallback = true
+
+[failure_registry]
+classes = [
+  "integration_not_registered",
+  "profile_not_permitted",
+  "user_action_missing",
+  "transfer_preview_unavailable",
+  "data_not_admitted",
+  "provider_terms_unresolved",
+  "provider_unavailable",
+  "quota_exhausted",
+  "provider_refusal",
+  "network_failure",
+  "timeout",
+  "model_or_service_drift",
+  "invalid_response",
+  "local_validation_failure",
+  "acceptance_rejected",
+  "cancelled"
+]

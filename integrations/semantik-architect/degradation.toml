@@ -1,0 +1,52 @@
+schema_version = "1.0.0"
+
+[baseline]
+failure_scope = "semantik_architect_build_capability_only"
+unrelated_core_capabilities = "remain_operational"
+silent_substitution = false
+existing_verified_runtime_artifacts = "preserved"
+
+[source_missing]
+state = "blocked"
+new_jobs = "rejected"
+automatic_source_discovery = false
+fallback_implementation = "none"
+
+[documentation_missing]
+state = "preparation_only"
+final_alignment = "blocked"
+release_admission = "blocked"
+
+[contract_incompatible]
+state = "blocked"
+existing_valid_state = "preserved"
+automatic_schema_guessing = false
+
+[subsystem_unavailable]
+state = "degraded"
+new_jobs = "rejected"
+queued_jobs = "terminal_failure_receipt"
+automatic_retry = false
+
+[offline]
+state = "available_only_with_local_pinned_source_and_local_dependencies"
+network_source_fetch = false
+missing_local_source_result = "unavailable"
+core_operation_continues = true
+
+[resource_pressure]
+state = "degraded"
+actions = [
+  "stop_accepting_new_jobs",
+  "reduce_concurrency",
+  "defer_queued_jobs"
+]
+verified_outputs = "preserved"
+partial_outputs = "quarantined"
+
+[partial_or_uncertain_result]
+authoritative_success = false
+terminal_receipt_required = true
+automatic_promotion = false
+automatic_retry = false
+reconciliation_required = true

@@ -1,0 +1,44 @@
+schema_version = 1
+policy_id = "koa.host.boot-policy"
+profile_id = "sovereign_linux_node"
+release_channel = "system"
+state_file = "/var/lib/koa/boot/slot-state.json"
+receipt_directory = "/var/lib/koa/boot/receipts"
+max_boot_attempts = 3
+automatic_fallback = false
+activation_and_acceptance_are_separate = true
+require_atomic_state_updates = true
+require_verified_release_set = true
+require_verified_image = true
+require_health_verdict_for_acceptance = true
+failure_mode = "retain_active_and_require_explicit_lkg_or_recovery"
+
+[slots]
+normal = ["a", "b", "c"]
+recovery = "recovery"
+required_distinct_roles = ["active", "candidate", "previous_good", "recovery"]
+
+[release_set]
+required_channels = ["system", "services", "governance", "knowledge"]
+required_compatibility_status = "tested_compatible"
+required_activation_eligibility = "eligible"
+required_signature_status = "verified"
+partial_activation_allowed = false
+
+[health]
+required_outcome = "pass"
+required_checks = [
+  "boot",
+  "storage",
+  "identity",
+  "services",
+  "governance",
+  "data_mounts",
+  "recovery",
+]
+
+[retention]
+retain_active = true
+retain_previous_good = true
+retain_recovery = true
+retain_failed_candidate_evidence = true

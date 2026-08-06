@@ -29,7 +29,15 @@
     "generated/requirements-index.json",
     "generated/assertion-index.json",
     "generated/traceability.json",
-    "generated/exception-index.json"
+    "generated/exception-index.json",
+    "contracts/architecture-patterns.contract.json",
+    "02-system/34-architecture-patterns.md",
+    "06-lifecycle/20-resilience-and-projection-artifacts.md",
+    "08-operations/20-architecture-pattern-operations.md",
+    "09-conformance/22-architecture-pattern-conformance.md",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md"
   ],
   "decision_ids": [
     "DEC-AI-001",
@@ -40,7 +48,14 @@
     "DEC-PROFILE-001",
     "DEC-DATA-001",
     "DEC-GOV-001",
-    "DEC-GATE-001"
+    "DEC-GATE-001",
+    "DEC-RES-001",
+    "DEC-MSG-001",
+    "DEC-WF-001",
+    "DEC-PAYLOAD-001",
+    "DEC-BFF-001",
+    "DEC-CQRS-001",
+    "DEC-CACHE-001"
   ],
   "requirement_ids": [
     "REQ-SYS-ARCH-001",
@@ -78,7 +93,12 @@
     "REQ-SYS-ARCH-033",
     "REQ-SYS-ARCH-034",
     "REQ-SYS-ARCH-035",
-    "REQ-SYS-ARCH-036"
+    "REQ-SYS-ARCH-036",
+    "REQ-PATTERN-001",
+    "REQ-PATTERN-002",
+    "REQ-PATTERN-003",
+    "REQ-PATTERN-004",
+    "REQ-PATTERN-005"
   ],
   "lock_ids": [
     "LOCK-AI-001",
@@ -98,7 +118,15 @@
     "LOCK-IMPL-002",
     "LOCK-LIFE-001",
     "LOCK-LIFE-003",
-    "LOCK-UCKK-EXT-002"
+    "LOCK-UCKK-EXT-002",
+    "LOCK-RES-001",
+    "LOCK-MSG-001",
+    "LOCK-WF-001",
+    "LOCK-PAYLOAD-001",
+    "LOCK-BFF-001",
+    "LOCK-CQRS-001",
+    "LOCK-CACHE-001",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -120,7 +148,10 @@
     "external-ai-boundary",
     "data-authority",
     "safe-degradation",
-    "profiles"
+    "profiles",
+    "architecture-patterns",
+    "koa-spaces",
+    "experience-layer"
   ]
 }
 KOA:DOC-META:END -->
@@ -1231,3 +1262,11 @@ A recipe proposes that Orgo update a Konnaxion table directly because both compo
 The arrangement is invalid.
 
 Shared infrastructure does not merge authority, and a recipe cannot override the component and data boundaries.
+
+## Pattern services and artifacts
+
+Circuit runtimes, queue quarantine, workflow coordination, projection builders, caches, and experience adapters are logical support roles attached to owning components or integrations. They are not a new authority plane. Their behavior is defined by validated artifacts and the canonical architecture-pattern contract.
+
+## Experience Layer in the Logical Architecture
+
+The logical architecture includes an optional presentation plane implemented by kOA Spaces. This plane can aggregate non-authoritative views and navigation contributions, but it does not become a shared domain layer. View adapters, projections, and caches retain source identity and cannot replace authoritative query, command, policy, or storage boundaries.

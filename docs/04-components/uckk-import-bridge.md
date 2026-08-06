@@ -16,14 +16,23 @@
     "contracts/artifact-contracts/uckk-learning-package.schema.json",
     "contracts/artifact-contracts/uckk-import-receipt.schema.json",
     "contracts/artifact-contracts/offline-bundle.schema.json",
-    "02-system/12-koa-mediatheque-system-boundary.md"
+    "02-system/12-koa-mediatheque-system-boundary.md",
+    "contracts/architecture-patterns.contract.json",
+    "contracts/artifact-contracts/integration-resilience-policy.schema.json",
+    "contracts/artifact-contracts/dead-letter-record.schema.json",
+    "contracts/artifact-contracts/distributed-workflow.schema.json",
+    "contracts/artifact-contracts/large-payload-reference.schema.json"
   ],
   "decision_ids": [
     "DEC-UCKK-EXT-001",
     "DEC-MEDIATHEQUE-001",
     "DEC-DATA-001",
     "DEC-GOV-001",
-    "DEC-OFFLINE-001"
+    "DEC-OFFLINE-001",
+    "DEC-RES-001",
+    "DEC-MSG-001",
+    "DEC-WF-001",
+    "DEC-PAYLOAD-001"
   ],
   "requirement_ids": [
     "REQ-UCKK-IMPORT-001",
@@ -37,7 +46,32 @@
     "REQ-UCKK-IMPORT-009",
     "REQ-UCKK-IMPORT-010",
     "REQ-UCKK-IMPORT-011",
-    "REQ-UCKK-IMPORT-012"
+    "REQ-UCKK-IMPORT-012",
+    "REQ-PATTERN-006",
+    "REQ-PATTERN-007",
+    "REQ-PATTERN-008",
+    "REQ-PATTERN-009",
+    "REQ-PATTERN-010",
+    "REQ-PATTERN-011",
+    "REQ-PATTERN-012",
+    "REQ-PATTERN-013",
+    "REQ-PATTERN-014",
+    "REQ-PATTERN-015",
+    "REQ-PATTERN-016",
+    "REQ-PATTERN-017",
+    "REQ-PATTERN-018",
+    "REQ-PATTERN-019",
+    "REQ-PATTERN-020",
+    "REQ-PATTERN-021",
+    "REQ-PATTERN-022",
+    "REQ-PATTERN-023",
+    "REQ-PATTERN-024",
+    "REQ-PATTERN-025",
+    "REQ-PATTERN-026",
+    "REQ-PATTERN-027",
+    "REQ-PATTERN-028",
+    "REQ-PATTERN-029",
+    "REQ-PATTERN-030"
   ],
   "lock_ids": [
     "LOCK-UCKK-EXT-001",
@@ -45,12 +79,17 @@
     "LOCK-MEDIATHEQUE-001",
     "LOCK-DATA-001",
     "LOCK-GOV-001",
-    "LOCK-OFFLINE-001"
+    "LOCK-OFFLINE-001",
+    "LOCK-RES-001",
+    "LOCK-MSG-001",
+    "LOCK-WF-001",
+    "LOCK-PAYLOAD-001"
   ],
   "exception_ids": [],
   "depends_on": [
     "DOC-SYS-012",
-    "DOC-COMP-MEDIATHEQUE-001"
+    "DOC-COMP-MEDIATHEQUE-001",
+    "DOC-SYS-034"
   ],
   "tags": [
     "uckk",
@@ -59,7 +98,8 @@
     "offline-learning",
     "quarantine",
     "mediatheque",
-    "directional-interchange"
+    "directional-interchange",
+    "architecture-patterns"
   ]
 }
 KOA:DOC-META:END -->
@@ -147,3 +187,7 @@ When UCKK is unavailable, accepted local content remains usable. New discovery, 
 ## 9. Validation Criteria
 
 Conformance requires evidence for explicit selection, allowlisted source resolution, quarantine-before-acceptance, complete manifest validation, source and signature verification, license enforcement, rights and provenance preservation, frame-version mapping, separate local identity creation, offline bundle intake, update-candidate handling, and absence of implicit synchronization.
+
+## Distributed import resilience
+
+`import_from_uckk` is implemented as a distributed workflow. Retrieval, quarantine, verification, rights evaluation, local acceptance, and terminal receipt are distinct steps. Remote calls use the declared circuit policy. Large package members use verified references where supported. Failed work enters monitored quarantine, and local authority changes only at the explicit acceptance step.

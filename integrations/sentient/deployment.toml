@@ -1,0 +1,77 @@
+schema_version = "1.0.0"
+integration_id = "sentient"
+deployment_owner = "koa"
+activation_mode = "explicit_task_only"
+process_model = "independently_owned_isolated_workbench_with_koa_adapter"
+source_materialization = "external_pinned_source_only"
+vendored_source_allowed = false
+installed_by_default = false
+started_by_default = false
+always_on_allowed = false
+partial_activation_allowed = false
+
+[profile_resolution]
+owner = "docs/contracts/profiles/*.profile.json"
+allowed_profile_ids = [
+  "developer_linux_workstation",
+  "developer_windows_wsl",
+  "build_farm",
+  "sovereign_hub",
+]
+implicit_membership_allowed = false
+unsupported_profile_result = "integration_unavailable"
+overlay_may_only_narrow = true
+
+[isolation]
+dedicated_service_or_workspace_identity = true
+dedicated_dependency_environment = true
+dedicated_process_namespace = true
+dedicated_storage_namespace = true
+dedicated_queue_namespace = true
+dedicated_cache_namespace = true
+dedicated_index_namespace = true
+dedicated_model_namespace = true
+dedicated_artifact_namespace = true
+dedicated_temporary_data = true
+resource_governor_admission_required = true
+shared_mutable_authoritative_state = false
+
+[process_boundary]
+adapter_process_separate = true
+subsystem_process_identity = "profile_and_workspace_defined"
+adapter_process_identity = "profile_and_workspace_defined"
+direct_host_privilege = false
+direct_privileged_broker_interface = false
+public_listener_allowed = false
+shell_execution_interface_exposed = false
+signing_authority = false
+publication_authority = false
+release_authority = false
+
+[network]
+default_policy = "deny"
+local_unix_socket_preferred = true
+undeclared_listener_allowed = false
+undeclared_egress_allowed = false
+registered_destination_scoped_egress_only = true
+provider_controlled_command_channel_allowed = false
+
+[lifecycle]
+states = ["declared", "validated", "staged", "active", "degraded", "stopping", "disabled", "superseded"]
+activation_preconditions = [
+  "source_pin_verified",
+  "compatibility_verified",
+  "profile_membership_resolved",
+  "explicit_task_authorized",
+  "workspace_identity_resolved",
+  "isolation_verified",
+  "resource_envelope_admitted",
+  "health_contract_loaded",
+  "receipt_path_available",
+]
+idle_shutdown_required = true
+failed_start_result = "capability_unavailable"
+previous_verified_authoritative_state_unchanged = true
+stop_under_resource_pressure_before_core_services = true
+rollback_or_disable_required = true
+removal_must_preserve_required_provenance = true

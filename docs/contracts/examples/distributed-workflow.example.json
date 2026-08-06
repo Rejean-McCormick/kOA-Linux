@@ -1,0 +1,65 @@
+{
+  "$schema": "../artifact-contracts/distributed-workflow.schema.json",
+  "example": true,
+  "authority": "non_authoritative_example",
+  "artifact_class": "distributed_workflow",
+  "workflow_id": "publish-to-uckk",
+  "instance_id": "wf-01J00000000000000000000000",
+  "version": "1.0.0",
+  "workflow_type": "orchestrated",
+  "authority_domains": [
+    "koa-local",
+    "uckk-remote"
+  ],
+  "state": "waiting_remote",
+  "idempotency_key": "publish-school-001-course-42-v7",
+  "steps": [
+    {
+      "step_id": "authorize",
+      "owner_id": "publication-gateway",
+      "action": "authorize selected publication",
+      "state": "completed",
+      "timeout_seconds": 30,
+      "irreversible": false,
+      "compensation_mode": "semantic_compensation",
+      "compensation_action": "revoke unused authorization",
+      "receipt_ref": "receipt://publication/authorize-42"
+    },
+    {
+      "step_id": "package",
+      "owner_id": "uckk-publication-bridge",
+      "action": "build verified package",
+      "state": "completed",
+      "timeout_seconds": 120,
+      "irreversible": false,
+      "compensation_mode": "semantic_compensation",
+      "compensation_action": "discard staged package",
+      "receipt_ref": "receipt://publication/package-42"
+    },
+    {
+      "step_id": "accept-remote",
+      "owner_id": "uckk",
+      "action": "accept package into remote authority",
+      "state": "pending",
+      "timeout_seconds": 300,
+      "irreversible": true,
+      "compensation_mode": "forward_repair",
+      "compensation_action": "issue corrective remote revision or withdrawal request",
+      "receipt_ref": null
+    }
+  ],
+  "repair_policy": {
+    "reverse_order_when_safe": true,
+    "hidden_partial_success_prohibited": true,
+    "human_intervention_state_required": true
+  },
+  "visibility": {
+    "intermediate_state_label": "Publication pending remote acceptance",
+    "terminal_state_required": true
+  },
+  "evidence": {
+    "correlation_id": "corr-pub-42",
+    "terminal_receipt_required": true,
+    "terminal_receipt_ref": null
+  }
+}

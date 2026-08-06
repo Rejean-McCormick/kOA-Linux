@@ -1,0 +1,104 @@
+{
+  "bundle_id": "B-0044",
+  "title": "Kristal Runtime — Métadonnées, démarrage et santé",
+  "status": "implementation_validated_isolated_integration_blocked",
+  "branch": "bundle/b-0044-kristal-runtime-metadonnees-demarrage-et-sante",
+  "commit": "1a0bce9fb7dc5cfd2047229ea0c49251b4f80fdf",
+  "contract_id": "component.kristal_runtime",
+  "contract_version": "1.0.0",
+  "package_version": "0.1.0",
+  "prerequisites": [
+    {
+      "bundle_id": "B-0017",
+      "title": "Bindings Python des interfaces communes",
+      "available": false,
+      "integration_verified": false
+    }
+  ],
+  "coverage": {
+    "files": 9,
+    "interfaces": 5,
+    "dependencies": 5,
+    "runtime_states": 8,
+    "critical_receipts": 4,
+    "tests_passed": 12
+  },
+  "files": [
+    {
+      "path": "components/kristal-runtime/README.md",
+      "sha256": "88d43163805f6f037add62a7701662fff4f99614ced3b84556cb7dee438a40bc",
+      "bytes": 2509
+    },
+    {
+      "path": "components/kristal-runtime/component.toml",
+      "sha256": "4563e2e0154b6c0fe04fd08e31bfd1cb659aa67affbc4729f3a1e52f231840cb",
+      "bytes": 4919
+    },
+    {
+      "path": "components/kristal-runtime/pyproject.toml",
+      "sha256": "99bdd8d82cad3eff18b0d2db6b3de0a48a45d26f2702429d0e52b3601446bd3f",
+      "bytes": 911
+    },
+    {
+      "path": "components/kristal-runtime/src/koa_kristal_runtime/__init__.py",
+      "sha256": "42de34569a0ad341f898eb256381431ad93f319ad0f385f2fb2dcb00c562c1f0",
+      "bytes": 818
+    },
+    {
+      "path": "components/kristal-runtime/src/koa_kristal_runtime/__main__.py",
+      "sha256": "f03b5331c7f858f785b9468959ed925ae8ad226152de1180d9a4c33d67cc98d4",
+      "bytes": 1820
+    },
+    {
+      "path": "components/kristal-runtime/src/koa_kristal_runtime/bootstrap.py",
+      "sha256": "658af18eeb7f6b702a5bd3eb2338c707709728255a2227607af65d9dc501cea7",
+      "bytes": 8812
+    },
+    {
+      "path": "components/kristal-runtime/src/koa_kristal_runtime/config.py",
+      "sha256": "7d4be3edfd045b8dee1582c7bf1fea6801b01fabc8c8fbe374d1983705acacc0",
+      "bytes": 9109
+    },
+    {
+      "path": "components/kristal-runtime/src/koa_kristal_runtime/health.py",
+      "sha256": "85f1fc42b855cd7d3244fd8865379d3c7e4700bc9072b6add336b5c0aa0874be",
+      "bytes": 10311
+    },
+    {
+      "path": "components/kristal-runtime/src/koa_kristal_runtime/receipts.py",
+      "sha256": "69bcfb4331bc4a36b1a95019e11925e26b2ae353e5cf01b9775aefeb99f52dab",
+      "bytes": 13729
+    }
+  ],
+  "artifacts": {
+    "patch": {
+      "path": "B-0044.patch",
+      "sha256": "657c9f461190b551fe588860851cf554fc72d72aab0622301b9e120ee802c250"
+    },
+    "wheel": {
+      "path": "koa_kristal_runtime-0.1.0-py3-none-any.whl",
+      "sha256": "177d9b8dc806349c2f4fe21977d0b0b879d2ec6857f88df31687e90db3ba2f5b",
+      "bytes": 14889
+    },
+    "validation_log": {
+      "path": "B-0044-validation.log",
+      "sha256": "3aff0d50a12aef1419c384149fb7d3ef86f51731f473ba56357299d1c017993f"
+    }
+  },
+  "validation": {
+    "custom_bundle_validator": "pass",
+    "compileall": "pass",
+    "pytest": "12 passed",
+    "toml_parse": "pass",
+    "wheel_build": "pass",
+    "wheel_reproducibility": "bit-for-bit identical",
+    "wheel_install": "pass",
+    "cli_check_config": "pass",
+    "cli_default_health": "expected blocked exit 2",
+    "cli_ready_probe": "pass",
+    "documentation_validation": "pass",
+    "git_diff_check": "pass",
+    "patch_apply_check": "pass",
+    "ruff": "not run: module not installed"
+  }
+}

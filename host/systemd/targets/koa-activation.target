@@ -1,0 +1,8 @@
+# Activation helpers are populated by assembly; this target grants no update authority.
+[Unit]
+Description=kOA Release Set activation helpers
+Documentation=file:/usr/share/doc/koa/recipes/sovereign-linux/systemd-layout.md
+Requires=koa-release-set-verify.service
+After=koa-release-set-verify.service
+Conflicts=koa-recovery.target
+StopWhenUnneeded=yes

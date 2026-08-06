@@ -1,0 +1,105 @@
+schema_version = "1.0.0"
+integration_id = "sentient"
+title = "SenTient"
+version = "1.0.0"
+status = "prepared_blocked"
+relationship_to_koa = "integrated_subsystem"
+subsystem_contract_ref = "docs/contracts/subsystems/sentient.subsystem.json"
+official_documentation_mount = "subsystems/sentient"
+adapter_entrypoint = "koa_sentient_adapter.bootstrap:main"
+source_lock_ref = "integrations/sentient/source.lock.json"
+compatibility_ref = "integrations/sentient/compatibility.json"
+activation_allowed = false
+
+required_capabilities = [
+  "identity_context",
+  "capability_snapshot",
+  "health_reporting",
+  "readiness_reporting",
+  "job_request_validation",
+  "job_status_reporting",
+  "receipt_emission",
+  "resource_admission",
+  "candidate_artifact_handoff",
+]
+
+provided_capabilities = [
+  "sentient_isolated_analysis",
+  "sentient_workbench_jobs",
+  "sentient_candidate_artifacts",
+  "sentient_candidate_export",
+]
+
+[ownership]
+koa_owns = [
+  "deployment_profile_membership",
+  "process_lifecycle_and_activation",
+  "resource_envelope",
+  "identity_and_trust_boundary",
+  "network_and_storage_exposure",
+  "artifact_admission",
+  "cross_subsystem_interactions",
+  "health_integration",
+  "backup_coordination",
+  "safe_degradation",
+]
+sentient_owns = [
+  "internal_domain_model",
+  "internal_workflow",
+  "internal_state_machine",
+  "complete_subsystem_api",
+  "internal_user_interface",
+  "subsystem_specific_validation_logic",
+]
+direct_cross_subsystem_writes = "prohibited"
+internal_behavior_duplication = "prohibited"
+undeclared_substitution = "prohibited"
+output_authority = "candidate_only_until_external_owner_acceptance"
+
+[interfaces]
+transport = "http_over_unix_socket"
+transport_contract_ref = "interfaces/transport/http-over-unix.toml"
+event_contract_ref = "interfaces/transport/event-envelope.schema.json"
+health_contract_ref = "interfaces/health/health-status.schema.json"
+readiness_contract_ref = "interfaces/health/readiness.schema.json"
+receipt_contract_ref = "interfaces/receipts/receipt-envelope.schema.json"
+identity_context_ref = "interfaces/identity/identity-context.schema.json"
+capability_snapshot_ref = "interfaces/capabilities/capability-snapshot.schema.json"
+job_request_ref = "interfaces/jobs/job-request.schema.json"
+job_status_ref = "interfaces/jobs/job-status.schema.json"
+module_interface_ref = "integrations/sentient/interface/module-interface.json"
+sidebar_ref = "integrations/sentient/interface/sidebar.json"
+widgets_ref = "integrations/sentient/interface/widgets.json"
+visibility_grants_authority = false
+
+[activation]
+mode = "explicit_task_atomic"
+source_pin_required = true
+official_documentation_required_for_final_alignment = true
+compatible_profile_required = true
+explicit_task_required = true
+compatibility_pass_required = true
+isolation_verification_required = true
+health_pass_required = true
+resource_admission_required = true
+identity_context_required = true
+receipt_path_required = true
+partial_activation_allowed = false
+failed_activation_result = "integration_disabled"
+
+[output_admission]
+classification = "candidate_only"
+required_evidence = [
+  "source_references",
+  "input_selection",
+  "tool_and_model_versions",
+  "configuration",
+  "execution_environment",
+  "transformations",
+  "evaluations",
+  "producing_identity",
+  "correlation_id",
+]
+acceptance_owner = "destination_component_or_workflow"
+direct_authoritative_acceptance = false
+normal_validation_and_release_gates_required = true

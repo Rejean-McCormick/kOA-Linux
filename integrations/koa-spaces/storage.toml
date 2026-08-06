@@ -1,0 +1,49 @@
+schema_version = 1
+
+[paths]
+configuration = "/etc/koa/integrations/koa-spaces/config.toml"
+state_root = "/var/lib/koa/integrations/koa-spaces"
+runtime_root = "/run/koa/koa-spaces"
+socket = "/run/koa/sockets/koa-spaces.sock"
+
+[ownership]
+user = "koa-spaces"
+group = "koa-spaces"
+mode = "0750"
+single_writer = "koa_spaces"
+direct_cross_owner_writes = false
+
+[state]
+authoritative_for = [
+  "active_space_identity",
+  "presentation_preferences",
+  "last_permitted_routes",
+  "space_activation_history",
+]
+validated_artifacts = [
+  "space_definitions",
+  "module_interface_manifests",
+  "navigation_labels",
+  "accessibility_assets",
+  "permitted_page_assets",
+]
+reproducible = ["presentation_cache", "derived_asset_index"]
+
+[retention]
+previous_validated_space_count = 1
+activation_receipts = "retain_according_to_evidence_policy"
+preference_history = "bounded"
+cache_eviction = "allowed"
+
+[prohibited]
+classes = [
+  "authorization_decisions",
+  "identity_credentials",
+  "policy_bundles_as_authority",
+  "orgo_tasks",
+  "konnaxion_records",
+  "uckk_course_authority",
+  "mediatheque_media_authority",
+  "release_activation_state",
+  "privileged_operation_requests",
+]

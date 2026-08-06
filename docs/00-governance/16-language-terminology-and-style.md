@@ -16,7 +16,10 @@
     "generated/decision-index.json",
     "generated/component-catalog.json",
     "contracts/system.contract.json",
-    "generated/profile-catalog.json"
+    "generated/profile-catalog.json",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "contracts/artifact-contracts/space-definition.schema.json",
+    "contracts/artifact-contracts/module-interface-manifest.schema.json"
   ],
   "decision_ids": [
     "DEC-DOC-001",
@@ -60,7 +63,8 @@
     "LOCK-IMPL-001",
     "LOCK-GOV-001",
     "LOCK-GATE-001",
-    "LOCK-DATA-001"
+    "LOCK-DATA-001",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -78,7 +82,8 @@
     "naming",
     "identifiers",
     "ai-authoring",
-    "canonical-vocabulary"
+    "canonical-vocabulary",
+    "koa-spaces"
   ]
 }
 KOA:DOC-META:END -->
@@ -274,6 +279,22 @@ The following terms represent distinct concepts:
 | decision | ADR | Owner authorization versus architecture decision record and rationale |
 
 A document does not use one member of a pair as shorthand for the other.
+
+### 4.5.1 kOA Spaces terminology
+
+Use the following terms exactly:
+
+| Canonical term | Meaning |
+| --- | --- |
+| kOA Spaces | Optional, replaceable experience subsystem |
+| Space | User-facing arrangement for one context |
+| Space definition | Versioned configuration artifact for a Space |
+| module interface manifest | Module-owned routes, sidebar, top-bar, labels, requirements, and offline presentation declaration |
+| module selector | Upper-left selector for available interface modules |
+| sidebar contribution | Active-module navigation tree rendered by kOA Spaces |
+| top-bar widget | Bounded shortcut or status contribution in an approved top-bar slot |
+
+Do not use `Context Shell`, `context pack`, `permission menu`, or `authorization widget` as current canonical names. A presentation object never substitutes for a profile, policy, component contract, subsystem contract, or authorization decision.
 
 ### 4.6 Deprecated terminology
 

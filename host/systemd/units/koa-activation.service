@@ -1,0 +1,61 @@
+[Unit]
+Description=Execute one authorized atomic kOA Release Set activation
+Requires=koa-release-set-verify.service koa-node-agent.socket koa-privileged-broker.socket
+After=koa-release-set-verify.service koa-node-agent.socket koa-privileged-broker.socket
+PartOf=koa-activation.target
+Conflicts=koa-recovery.target
+ConditionPathExists=/usr/libexec/koa/koa-activation
+ConditionPathExists=/etc/koa/active/profile.json
+ConditionPathExists=/etc/koa/active/release-set.json
+
+[Service]
+Type=oneshot
+User=koa-node-agent
+Group=koa-node-agent
+ExecStart=/usr/libexec/koa/koa-activation
+TimeoutStartSec=30min
+TimeoutStopSec=5min
+RuntimeDirectory=koa/activation koa/locks
+RuntimeDirectoryMode=0750
+StateDirectory=koa/node
+StateDirectoryMode=0750
+ReadWritePaths=/run/koa/activation
+ReadWritePaths=/run/koa/locks
+ReadWritePaths=/var/lib/koa/node/activation-receipts
+ReadWritePaths=/var/lib/koa/releases
+ReadOnlyPaths=/etc/koa
+ReadOnlyPaths=/usr/lib/koa
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+ProtectClock=yes
+ProtectHostname=yes
+ProtectProc=invisible
+ProcSubset=pid
+RestrictSUIDSGID=yes
+RestrictRealtime=yes
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+RemoveIPC=yes
+RestrictNamespaces=yes
+RestrictAddressFamilies=AF_UNIX
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+SystemCallFilter=~@obsolete @debug @cpu-emulation
+CapabilityBoundingSet=
+AmbientCapabilities=
+IPAddressDeny=any
+DevicePolicy=closed
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=koa-activation
+
+[Install]
+WantedBy=koa-activation.target

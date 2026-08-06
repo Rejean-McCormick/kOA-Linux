@@ -108,7 +108,8 @@
     "LOCK-REL-001",
     "LOCK-REL-002",
     "LOCK-OFFLINE-001",
-    "LOCK-PORT-001"
+    "LOCK-PORT-001",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "scope": {
@@ -1169,5 +1170,25 @@
       "accepted_content_available_offline": true,
       "automatic_sync": false
     }
+  },
+  "koa_spaces": {
+    "subsystem_id": "koa_spaces",
+    "contract_ref": "contracts/subsystems/koa-spaces.subsystem.json",
+    "deployment_document_ref": "03-profiles/14-koa-spaces-deployment.md",
+    "membership": "optional",
+    "default_activation": "disabled_unless_selected",
+    "deployment_mode": "local_experience_service",
+    "required_for_profile_conformance": false,
+    "required_for_core_operation": false,
+    "authority": "non_authoritative_presentation",
+    "presentation_grants_authority": false,
+    "menu_visibility_is_authorization": false,
+    "offline_behavior": "local_frame_and_admitted_assets_available",
+    "failure_behavior": "presentation_unavailable_authoritative_services_and_fallback_paths_preserved",
+    "constraints": [
+      "unprivileged_service",
+      "profile_scoped_resources",
+      "native_administration_and_recovery_fallback"
+    ]
   }
 }

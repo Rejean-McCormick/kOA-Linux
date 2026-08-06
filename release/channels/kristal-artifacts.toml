@@ -1,0 +1,54 @@
+# Implementation settings for the canonical knowledge release channel.
+# Channel identity and artifact membership remain owned by the canonical registry.
+
+schema_version = "1.0.0"
+implementation_id = "kristal_artifacts_channel"
+channel_id = "knowledge"
+release_namespace = "koa.knowledge"
+status = "active"
+
+[authority]
+channel_registry_ref = "docs/contracts/release-channels.contract.json"
+channel_selector = "channel_id=knowledge"
+artifact_classes_registry_ref = "docs/contracts/artifact-classes.contract.json"
+membership_resolution = "canonical_registry_only"
+implicit_membership_allowed = false
+multiple_membership_allowed = false
+unknown_artifact_result = "blocked"
+
+[versioning]
+strategy = "independent_semver"
+mutable_tags_allowed = false
+implicit_latest_allowed = false
+release_identity_required = true
+
+[construction]
+manifest_producer = "koa_assembly.releases.manifest"
+lock_producer = "koa_assembly.releases.locks"
+artifact_manifest_template = "release/manifests/artifact-manifest.template.json"
+release_set_template = "release/manifests/release-set.template.json"
+manifest_output_root = "generated/release/manifests/knowledge"
+lock_output_root = "generated/release/locks/knowledge"
+manual_output_edits_allowed = false
+deterministic_serialization_required = true
+source_digests_required = true
+
+[publication]
+publication_is_activation = false
+signature_required = true
+provenance_required = true
+validation_evidence_required = true
+recovery_declaration_required = true
+missing_requirement_result = "blocked"
+
+[activation]
+complete_release_set_required = true
+required_compatibility_status = "tested_compatible"
+partial_authoritative_activation_allowed = false
+owner_controlled_activation = true
+missing_release_set_result = "blocked"
+incompatible_release_set_result = "blocked"
+
+[recovery]
+rollback_or_forward_repair_required = true
+previous_active_release_preserved_on_failure = true

@@ -1,0 +1,72 @@
+schema_version = "1.0.0"
+policy_id = "koa_host_recovery"
+profile_id = "sovereign_linux_node"
+status = "active"
+
+[runtime]
+runtime_root = "/run/koa/recovery"
+lock_name = "host-recovery.lock"
+state_root = "/var/lib/koa-recovery"
+evidence_root = "/var/lib/koa-recovery/evidence"
+staging_root = "/var/lib/koa-recovery/staging"
+receipts_root = "/var/lib/koa-recovery/receipts"
+max_request_bytes = 262144
+max_plan_bytes = 524288
+max_artifact_bytes = 17179869184
+max_evidence_file_bytes = 1048576
+default_timeout_seconds = 60
+
+[authority]
+require_authorization_receipt = true
+require_break_glass_for_mutation = true
+require_receipt_before_commit = true
+max_session_seconds = 3600
+allowed_decisions = ["allow", "approved", "admitted"]
+allowed_receipt_types = ["privilege_decision", "rollback", "forward_repair", "component_transition"]
+
+[recovery]
+allowed_methods = [
+  "preserve_in_place",
+  "restore_from_backup",
+  "rebuild_from_artifacts",
+  "replace_node",
+  "rollback_release_set",
+  "forward_repair",
+]
+preferred_order = [
+  "preserve_in_place",
+  "rollback_release_set",
+  "restore_from_backup",
+  "rebuild_from_artifacts",
+  "forward_repair",
+  "replace_node",
+]
+safe_failure_state = "recovery_failed"
+initial_state = "recovery_locked"
+require_source_digest = true
+require_owner_validation = true
+require_last_known_good_identity = true
+activate_authority_last = true
+completion_states = [
+  "service_restored",
+  "service_restored_degraded",
+  "authority_restored_reconciliation_pending",
+  "forward_repair_required",
+  "recovery_blocked",
+  "recovery_failed",
+]
+
+[boot_boundary]
+dependency_bundle = "B-0081"
+source_enter_last_known_good = "host/boot/enter-last-known-good.py"
+source_verify_release_set = "host/boot/verify-release-set.py"
+source_mark_boot_success = "host/boot/mark-boot-success.py"
+installed_root = "/usr/share/koa/recovery"
+
+[containment]
+network_enabled_by_default = false
+allowed_systemd_units = []
+allowed_containers = []
+allowed_interfaces = []
+allowed_storage_sources = []
+allowed_storage_targets = []

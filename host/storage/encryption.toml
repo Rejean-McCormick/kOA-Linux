@@ -1,0 +1,37 @@
+schema_version = 1
+profile_id = "sovereign_linux_node"
+plaintext_fallback_permitted = false
+raw_key_material_in_configuration_permitted = false
+encryption_transfers_ownership = false
+successful_unlock_grants_application_authority = false
+proof_before_readiness_required = true
+
+[[boundary]]
+mount_id = "active"
+encryption_required = true
+authenticated_protection_or_approved_equivalent_required = true
+key_reference_required = true
+trust_reference_required = true
+verification_evidence_required = true
+key_scope = "smallest_practical_volume_component_or_trust_domain"
+failure_behavior = "keep_volume_unavailable_and_block_dependent_writes"
+
+[[boundary]]
+mount_id = "recovery"
+encryption_required = true
+authenticated_protection_or_approved_equivalent_required = true
+key_reference_required = true
+trust_reference_required = true
+verification_evidence_required = true
+key_scope = "recovery_authority_and_target"
+failure_behavior = "preserve_existing_verified_recovery_material"
+
+[[boundary]]
+mount_id = "backup"
+encryption_required = true
+authenticated_protection_or_approved_equivalent_required = true
+key_reference_required = true
+trust_reference_required = true
+verification_evidence_required = true
+key_scope = "backup_set_and_failure_domain"
+failure_behavior = "reject_backup_and_do_not_claim_success"

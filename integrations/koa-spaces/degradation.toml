@@ -1,0 +1,50 @@
+schema_version = 1
+
+[baseline]
+core_authority_preserved = true
+native_interfaces_preserved = true
+business_state_preserved = true
+undeclared_substitution = false
+hidden_synchronization = false
+
+[network_unavailable]
+frame = "available"
+active_space = "retain_last_validated_definition"
+local_routes = "follow_declared_offline_behavior"
+online_only_routes = "unavailable_with_reason"
+network_indicator = "required"
+automatic_provider_substitution = false
+
+[optional_manifest_invalid]
+action = "disable_contribution_and_report"
+space_activation = "continue_if_default_and_required_modules_resolve"
+
+[required_manifest_invalid]
+action = "block_activation"
+rollback = "previous_validated_space"
+
+[optional_module_unavailable]
+action = "omit_or_show_declared_unavailable_state"
+substitute_module = false
+
+[required_module_unavailable]
+action = "block_activation_or_rollback"
+substitute_module = false
+
+[widget_failure]
+action = "disable_widget_and_report"
+page_surface = "continue"
+
+[default_route_failure]
+action = "use_declared_safe_fallback_or_rollback"
+nearest_undeclared_route = false
+
+[subsystem_failure]
+action = "expose_declared_native_or_recovery_surface"
+unrestricted_host_shell = false
+core_conformance_lost = false
+
+[removal]
+presentation_unavailable = true
+component_and_subsystem_data_unchanged = true
+core_authority_unchanged = true

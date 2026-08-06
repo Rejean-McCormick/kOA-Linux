@@ -25,7 +25,11 @@
     "generated/traceability.json",
     "generated/test-catalog.json",
     "generated/evidence-catalog.json",
-    "generated/exception-index.json"
+    "generated/exception-index.json",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md",
+    "03-profiles/14-koa-spaces-deployment.md"
   ],
   "decision_ids": [
     "DEC-PROFILE-SOFF-001",
@@ -89,7 +93,8 @@
     "LOCK-ARI-002",
     "LOCK-MEDIATHEQUE-001",
     "LOCK-MEDIATHEQUE-002",
-    "LOCK-SENT-001"
+    "LOCK-SENT-001",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -118,7 +123,10 @@
     "DOC-SYS-018",
     "DOC-SYS-019",
     "DOC-PROFILE-001",
-    "DOC-PROFILE-002"
+    "DOC-PROFILE-002",
+    "DOC-SYS-021",
+    "DOC-SYS-022",
+    "DOC-PROFILE-014"
   ],
   "tags": [
     "sovereign-offline",
@@ -132,7 +140,10 @@
     "local-trust",
     "recovery",
     "release-sets",
-    "conformance"
+    "conformance",
+    "koa-spaces",
+    "experience-layer",
+    "profile"
   ]
 }
 KOA:DOC-META:END -->
@@ -819,3 +830,7 @@ Power fails during a staged update. After restart, the node restores the previou
 ### 11.10 Reconnection assessment
 
 A disconnected node is connected to a maintenance network. External routes remain disabled until peer identity, trust, policy, time, compatibility, and pending transfers are assessed. Cable insertion alone changes no authority.
+
+## Sovereign-Offline Constraints for kOA Spaces
+
+When the base profile enables kOA Spaces, every required Space definition, manifest, label, icon, accessibility resource, and permitted page asset is available through verified local or offline bundles. Online-only contributions remain explicitly unavailable. The overlay does not require kOA Spaces and does not permit remote presentation dependencies.

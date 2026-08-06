@@ -13,14 +13,51 @@
     "contracts/artifact-contracts/sidebar-navigation.schema.json",
     "contracts/artifact-contracts/topbar-widget.schema.json",
     "contracts/artifact-contracts/route-contribution.schema.json",
-    "02-system/21-koa-spaces-experience-layer.md"
+    "02-system/21-koa-spaces-experience-layer.md",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "contracts/architecture-patterns.contract.json",
+    "contracts/artifact-contracts/integration-resilience-policy.schema.json",
+    "contracts/artifact-contracts/experience-view-adapter.schema.json",
+    "contracts/artifact-contracts/cqrs-projection.schema.json",
+    "contracts/artifact-contracts/cache-policy.schema.json"
   ],
-  "decision_ids": [],
-  "requirement_ids": [],
-  "lock_ids": [],
+  "decision_ids": [
+    "DEC-RES-001",
+    "DEC-BFF-001",
+    "DEC-CQRS-001",
+    "DEC-CACHE-001"
+  ],
+  "requirement_ids": [
+    "REQ-PATTERN-006",
+    "REQ-PATTERN-007",
+    "REQ-PATTERN-008",
+    "REQ-PATTERN-009",
+    "REQ-PATTERN-010",
+    "REQ-PATTERN-011",
+    "REQ-PATTERN-031",
+    "REQ-PATTERN-032",
+    "REQ-PATTERN-033",
+    "REQ-PATTERN-034",
+    "REQ-PATTERN-035",
+    "REQ-PATTERN-036",
+    "REQ-PATTERN-037",
+    "REQ-PATTERN-038",
+    "REQ-PATTERN-039",
+    "REQ-PATTERN-040",
+    "REQ-PATTERN-041",
+    "REQ-PATTERN-042"
+  ],
+  "lock_ids": [
+    "LOCK-SPACES-001",
+    "LOCK-RES-001",
+    "LOCK-BFF-001",
+    "LOCK-CQRS-001",
+    "LOCK-CACHE-001"
+  ],
   "exception_ids": [],
   "depends_on": [
-    "DOC-SYS-021"
+    "DOC-SYS-021",
+    "DOC-SYS-034"
   ],
   "tags": [
     "koa-spaces",
@@ -29,7 +66,8 @@
     "sidebar",
     "topbar",
     "routing",
-    "responsive"
+    "responsive",
+    "architecture-patterns"
   ]
 }
 KOA:DOC-META:END -->
@@ -191,3 +229,7 @@ It does not restore a route when the capability, profile, module, or offline sta
 - A failed module home route falls back to the module's declared safe route.
 - A missing optional module is omitted without substitution.
 - A missing required module blocks activation of that Space definition.
+
+## Aggregated view composition
+
+A route may bind an experience view adapter, a CQRS projection, and a cache policy. The route must expose staleness or partial availability, bound fan-out, apply per-dependency circuit policy, and preserve owner authorization. Menu visibility and cached presentation never imply permission.

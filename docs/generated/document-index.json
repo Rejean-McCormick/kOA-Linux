@@ -268,12 +268,27 @@
         "LOCK-LIFE-001",
         "LOCK-LIFE-002",
         "LOCK-LIFE-003",
-        "LOCK-LIFE-004"
+        "LOCK-LIFE-004",
+        "LOCK-SPACES-001",
+        "LOCK-RES-001",
+        "LOCK-MSG-001",
+        "LOCK-WF-001",
+        "LOCK-PAYLOAD-001",
+        "LOCK-BFF-001",
+        "LOCK-CQRS-001",
+        "LOCK-CACHE-001"
       ],
       "decision_ids": [
         "DEC-DOC-002",
         "DEC-DOC-003",
-        "DEC-DOC-004"
+        "DEC-DOC-004",
+        "DEC-RES-001",
+        "DEC-MSG-001",
+        "DEC-WF-001",
+        "DEC-PAYLOAD-001",
+        "DEC-BFF-001",
+        "DEC-CQRS-001",
+        "DEC-CACHE-001"
       ]
     },
     {
@@ -359,8 +374,24 @@
       "document_class": "normative_markdown",
       "status": "active",
       "requirement_ids": [],
-      "assertion_ids": [],
-      "decision_ids": []
+      "assertion_ids": [
+        "LOCK-RES-001",
+        "LOCK-MSG-001",
+        "LOCK-WF-001",
+        "LOCK-PAYLOAD-001",
+        "LOCK-BFF-001",
+        "LOCK-CQRS-001",
+        "LOCK-CACHE-001"
+      ],
+      "decision_ids": [
+        "DEC-RES-001",
+        "DEC-MSG-001",
+        "DEC-WF-001",
+        "DEC-PAYLOAD-001",
+        "DEC-BFF-001",
+        "DEC-CQRS-001",
+        "DEC-CACHE-001"
+      ]
     },
     {
       "path": "00-governance/14-release-activation-policy.md",
@@ -466,7 +497,8 @@
         "LOCK-IMPL-001",
         "LOCK-GOV-001",
         "LOCK-GATE-001",
-        "LOCK-DATA-001"
+        "LOCK-DATA-001",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-DOC-001",
@@ -656,7 +688,8 @@
         "LOCK-SENT-001",
         "LOCK-MEDIATHEQUE-001",
         "LOCK-UCKK-EXT-001",
-        "LOCK-UCKK-EXT-002"
+        "LOCK-UCKK-EXT-002",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-AI-001",
@@ -923,7 +956,33 @@
         "REQ-CON-SAFE-012",
         "REQ-CON-SAFE-013",
         "REQ-CON-SAFE-014",
-        "REQ-CON-SAFE-015"
+        "REQ-CON-SAFE-015",
+        "REQ-PATTERN-004",
+        "REQ-PATTERN-005",
+        "REQ-PATTERN-006",
+        "REQ-PATTERN-007",
+        "REQ-PATTERN-008",
+        "REQ-PATTERN-009",
+        "REQ-PATTERN-010",
+        "REQ-PATTERN-011",
+        "REQ-PATTERN-012",
+        "REQ-PATTERN-013",
+        "REQ-PATTERN-014",
+        "REQ-PATTERN-015",
+        "REQ-PATTERN-016",
+        "REQ-PATTERN-017",
+        "REQ-PATTERN-018",
+        "REQ-PATTERN-019",
+        "REQ-PATTERN-020",
+        "REQ-PATTERN-021",
+        "REQ-PATTERN-022",
+        "REQ-PATTERN-023",
+        "REQ-PATTERN-024",
+        "REQ-PATTERN-038",
+        "REQ-PATTERN-039",
+        "REQ-PATTERN-040",
+        "REQ-PATTERN-041",
+        "REQ-PATTERN-042"
       ],
       "assertion_ids": [
         "LOCK-AI-001",
@@ -938,7 +997,12 @@
         "LOCK-MEDIATHEQUE-001",
         "LOCK-PROFILE-001",
         "LOCK-PROFILE-002",
-        "LOCK-SENT-001"
+        "LOCK-SENT-001",
+        "LOCK-RES-001",
+        "LOCK-MSG-001",
+        "LOCK-WF-001",
+        "LOCK-CQRS-001",
+        "LOCK-CACHE-001"
       ],
       "decision_ids": [
         "DEC-PROFILE-BASELINE-001",
@@ -947,7 +1011,12 @@
         "DEC-GOV-001",
         "DEC-UCKK-EXT-001",
         "DEC-MEDIATHEQUE-001",
-        "DEC-ARI-001"
+        "DEC-ARI-001",
+        "DEC-RES-001",
+        "DEC-MSG-001",
+        "DEC-WF-001",
+        "DEC-CQRS-001",
+        "DEC-CACHE-001"
       ]
     },
     {
@@ -971,7 +1040,30 @@
         "REQ-CONST-COMP-013",
         "REQ-CONST-COMP-014",
         "REQ-CONST-COMP-015",
-        "REQ-CONST-COMP-016"
+        "REQ-CONST-COMP-016",
+        "REQ-PATTERN-001",
+        "REQ-PATTERN-002",
+        "REQ-PATTERN-003",
+        "REQ-PATTERN-004",
+        "REQ-PATTERN-005",
+        "REQ-PATTERN-019",
+        "REQ-PATTERN-020",
+        "REQ-PATTERN-021",
+        "REQ-PATTERN-022",
+        "REQ-PATTERN-023",
+        "REQ-PATTERN-024",
+        "REQ-PATTERN-031",
+        "REQ-PATTERN-032",
+        "REQ-PATTERN-033",
+        "REQ-PATTERN-034",
+        "REQ-PATTERN-035",
+        "REQ-PATTERN-036",
+        "REQ-PATTERN-037",
+        "REQ-PATTERN-038",
+        "REQ-PATTERN-039",
+        "REQ-PATTERN-040",
+        "REQ-PATTERN-041",
+        "REQ-PATTERN-042"
       ],
       "assertion_ids": [
         "LOCK-COMP-001",
@@ -979,7 +1071,12 @@
         "LOCK-DATA-001",
         "LOCK-GOV-001",
         "LOCK-GATE-001",
-        "LOCK-SENT-001"
+        "LOCK-SENT-001",
+        "LOCK-WF-001",
+        "LOCK-BFF-001",
+        "LOCK-CQRS-001",
+        "LOCK-CACHE-001",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-CONST-COMP-001",
@@ -987,7 +1084,11 @@
         "DEC-SYS-GOV-001",
         "DEC-SYS-GATE-001",
         "DEC-SYS-SENT-001",
-        "DEC-SYS-KRISTAL-001"
+        "DEC-SYS-KRISTAL-001",
+        "DEC-WF-001",
+        "DEC-BFF-001",
+        "DEC-CQRS-001",
+        "DEC-CACHE-001"
       ]
     },
     {
@@ -1078,7 +1179,8 @@
         "LOCK-ARI-002",
         "LOCK-DATA-001",
         "LOCK-PROFILE-001",
-        "LOCK-UCKK-EXT-002"
+        "LOCK-UCKK-EXT-002",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-SYS-OFFLINE-001",
@@ -1265,7 +1367,8 @@
         "LOCK-IMPL-001",
         "LOCK-GOV-001",
         "LOCK-GATE-001",
-        "LOCK-DATA-001"
+        "LOCK-DATA-001",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-DOC-001",
@@ -1298,7 +1401,12 @@
         "REQ-SYS-OVR-017",
         "REQ-SYS-OVR-018",
         "REQ-SYS-OVR-019",
-        "REQ-SYS-OVR-020"
+        "REQ-SYS-OVR-020",
+        "REQ-PATTERN-001",
+        "REQ-PATTERN-002",
+        "REQ-PATTERN-003",
+        "REQ-PATTERN-004",
+        "REQ-PATTERN-005"
       ],
       "assertion_ids": [
         "LOCK-SYS-001",
@@ -1324,7 +1432,15 @@
         "LOCK-PROFILE-001",
         "LOCK-IMPL-001",
         "LOCK-IMPL-002",
-        "LOCK-UCKK-EXT-002"
+        "LOCK-UCKK-EXT-002",
+        "LOCK-RES-001",
+        "LOCK-MSG-001",
+        "LOCK-WF-001",
+        "LOCK-PAYLOAD-001",
+        "LOCK-BFF-001",
+        "LOCK-CQRS-001",
+        "LOCK-CACHE-001",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-SYS-001",
@@ -1341,7 +1457,14 @@
         "DEC-CONTAINER-001",
         "DEC-K8S-001",
         "DEC-HW-001",
-        "DEC-REL-001"
+        "DEC-REL-001",
+        "DEC-RES-001",
+        "DEC-MSG-001",
+        "DEC-WF-001",
+        "DEC-PAYLOAD-001",
+        "DEC-BFF-001",
+        "DEC-CQRS-001",
+        "DEC-CACHE-001"
       ]
     },
     {
@@ -1396,7 +1519,8 @@
         "LOCK-SENT-001",
         "LOCK-PROFILE-001",
         "LOCK-PROFILE-002",
-        "LOCK-UCKK-EXT-002"
+        "LOCK-UCKK-EXT-002",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-SYS-001",
@@ -1456,7 +1580,12 @@
         "REQ-SYS-ARCH-033",
         "REQ-SYS-ARCH-034",
         "REQ-SYS-ARCH-035",
-        "REQ-SYS-ARCH-036"
+        "REQ-SYS-ARCH-036",
+        "REQ-PATTERN-001",
+        "REQ-PATTERN-002",
+        "REQ-PATTERN-003",
+        "REQ-PATTERN-004",
+        "REQ-PATTERN-005"
       ],
       "assertion_ids": [
         "LOCK-AI-001",
@@ -1476,7 +1605,15 @@
         "LOCK-IMPL-002",
         "LOCK-LIFE-001",
         "LOCK-LIFE-003",
-        "LOCK-UCKK-EXT-002"
+        "LOCK-UCKK-EXT-002",
+        "LOCK-RES-001",
+        "LOCK-MSG-001",
+        "LOCK-WF-001",
+        "LOCK-PAYLOAD-001",
+        "LOCK-BFF-001",
+        "LOCK-CQRS-001",
+        "LOCK-CACHE-001",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-AI-001",
@@ -1487,7 +1624,14 @@
         "DEC-PROFILE-001",
         "DEC-DATA-001",
         "DEC-GOV-001",
-        "DEC-GATE-001"
+        "DEC-GATE-001",
+        "DEC-RES-001",
+        "DEC-MSG-001",
+        "DEC-WF-001",
+        "DEC-PAYLOAD-001",
+        "DEC-BFF-001",
+        "DEC-CQRS-001",
+        "DEC-CACHE-001"
       ]
     },
     {
@@ -1538,7 +1682,8 @@
         "LOCK-DEV-005",
         "LOCK-LIFE-001",
         "LOCK-LIFE-002",
-        "LOCK-UCKK-EXT-002"
+        "LOCK-UCKK-EXT-002",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-SYS-003",
@@ -1572,7 +1717,8 @@
         "LOCK-PROFILE-002",
         "LOCK-ARI-001",
         "LOCK-ARI-002",
-        "LOCK-UCKK-EXT-002"
+        "LOCK-UCKK-EXT-002",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-COMP-001",
@@ -1694,7 +1840,8 @@
         "LOCK-GATE-001",
         "LOCK-PROFILE-001",
         "LOCK-PROFILE-002",
-        "LOCK-UCKK-EXT-002"
+        "LOCK-UCKK-EXT-002",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-SYS-CAP-001",
@@ -1733,7 +1880,49 @@
         "REQ-SYS-COMM-017",
         "REQ-SYS-COMM-018",
         "REQ-SYS-COMM-019",
-        "REQ-SYS-COMM-020"
+        "REQ-SYS-COMM-020",
+        "REQ-PATTERN-001",
+        "REQ-PATTERN-002",
+        "REQ-PATTERN-003",
+        "REQ-PATTERN-004",
+        "REQ-PATTERN-005",
+        "REQ-PATTERN-006",
+        "REQ-PATTERN-007",
+        "REQ-PATTERN-008",
+        "REQ-PATTERN-009",
+        "REQ-PATTERN-010",
+        "REQ-PATTERN-011",
+        "REQ-PATTERN-012",
+        "REQ-PATTERN-013",
+        "REQ-PATTERN-014",
+        "REQ-PATTERN-015",
+        "REQ-PATTERN-016",
+        "REQ-PATTERN-017",
+        "REQ-PATTERN-018",
+        "REQ-PATTERN-019",
+        "REQ-PATTERN-020",
+        "REQ-PATTERN-021",
+        "REQ-PATTERN-022",
+        "REQ-PATTERN-023",
+        "REQ-PATTERN-024",
+        "REQ-PATTERN-025",
+        "REQ-PATTERN-026",
+        "REQ-PATTERN-027",
+        "REQ-PATTERN-028",
+        "REQ-PATTERN-029",
+        "REQ-PATTERN-030",
+        "REQ-PATTERN-031",
+        "REQ-PATTERN-032",
+        "REQ-PATTERN-033",
+        "REQ-PATTERN-034",
+        "REQ-PATTERN-035",
+        "REQ-PATTERN-036",
+        "REQ-PATTERN-037",
+        "REQ-PATTERN-038",
+        "REQ-PATTERN-039",
+        "REQ-PATTERN-040",
+        "REQ-PATTERN-041",
+        "REQ-PATTERN-042"
       ],
       "assertion_ids": [
         "LOCK-DATA-001",
@@ -1750,7 +1939,14 @@
         "LOCK-PROFILE-001",
         "LOCK-PROFILE-002",
         "LOCK-IMPL-001",
-        "LOCK-IMPL-002"
+        "LOCK-IMPL-002",
+        "LOCK-RES-001",
+        "LOCK-MSG-001",
+        "LOCK-WF-001",
+        "LOCK-PAYLOAD-001",
+        "LOCK-BFF-001",
+        "LOCK-CQRS-001",
+        "LOCK-CACHE-001"
       ],
       "decision_ids": [
         "DEC-COMP-001",
@@ -1763,7 +1959,14 @@
         "DEC-AI-001",
         "DEC-PRIV-001",
         "DEC-LIFE-001",
-        "DEC-OFFLINE-001"
+        "DEC-OFFLINE-001",
+        "DEC-RES-001",
+        "DEC-MSG-001",
+        "DEC-WF-001",
+        "DEC-PAYLOAD-001",
+        "DEC-BFF-001",
+        "DEC-CQRS-001",
+        "DEC-CACHE-001"
       ]
     },
     {
@@ -1813,7 +2016,8 @@
         "LOCK-SENT-001",
         "LOCK-MEDIATHEQUE-001",
         "LOCK-UCKK-EXT-001",
-        "LOCK-UCKK-EXT-002"
+        "LOCK-UCKK-EXT-002",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-AI-001",
@@ -2241,7 +2445,32 @@
         "REQ-UCKK-IMPORT-006",
         "REQ-SYS-INT-033",
         "REQ-SYS-INT-034",
-        "REQ-SYS-INT-035"
+        "REQ-SYS-INT-035",
+        "REQ-PATTERN-006",
+        "REQ-PATTERN-007",
+        "REQ-PATTERN-008",
+        "REQ-PATTERN-009",
+        "REQ-PATTERN-010",
+        "REQ-PATTERN-011",
+        "REQ-PATTERN-012",
+        "REQ-PATTERN-013",
+        "REQ-PATTERN-014",
+        "REQ-PATTERN-015",
+        "REQ-PATTERN-016",
+        "REQ-PATTERN-017",
+        "REQ-PATTERN-018",
+        "REQ-PATTERN-019",
+        "REQ-PATTERN-020",
+        "REQ-PATTERN-021",
+        "REQ-PATTERN-022",
+        "REQ-PATTERN-023",
+        "REQ-PATTERN-024",
+        "REQ-PATTERN-025",
+        "REQ-PATTERN-026",
+        "REQ-PATTERN-027",
+        "REQ-PATTERN-028",
+        "REQ-PATTERN-029",
+        "REQ-PATTERN-030"
       ],
       "assertion_ids": [
         "LOCK-AI-001",
@@ -2257,7 +2486,11 @@
         "LOCK-COMP-002",
         "LOCK-PROFILE-001",
         "LOCK-PROFILE-002",
-        "LOCK-UCKK-EXT-002"
+        "LOCK-UCKK-EXT-002",
+        "LOCK-RES-001",
+        "LOCK-MSG-001",
+        "LOCK-WF-001",
+        "LOCK-PAYLOAD-001"
       ],
       "decision_ids": [
         "DEC-INT-001",
@@ -2268,7 +2501,11 @@
         "DEC-ARI-001",
         "DEC-MEDIATHEQUE-001",
         "DEC-UCKK-EXT-001",
-        "DEC-SENT-001"
+        "DEC-SENT-001",
+        "DEC-RES-001",
+        "DEC-MSG-001",
+        "DEC-WF-001",
+        "DEC-PAYLOAD-001"
       ]
     },
     {
@@ -2333,7 +2570,8 @@
         "LOCK-SENT-001",
         "LOCK-MEDIATHEQUE-001",
         "LOCK-UCKK-EXT-001",
-        "LOCK-UCKK-EXT-002"
+        "LOCK-UCKK-EXT-002",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-AI-001",
@@ -2449,7 +2687,8 @@
         "LOCK-COMP-001",
         "LOCK-AI-002",
         "LOCK-PROFILE-001",
-        "LOCK-PROFILE-002"
+        "LOCK-PROFILE-002",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-LIFE-001",
@@ -2491,7 +2730,13 @@
         "REQ-SYS-RCT-021",
         "REQ-SYS-RCT-022",
         "REQ-SYS-RCT-023",
-        "REQ-SYS-RCT-024"
+        "REQ-SYS-RCT-024",
+        "REQ-PATTERN-011",
+        "REQ-PATTERN-016",
+        "REQ-PATTERN-017",
+        "REQ-PATTERN-018",
+        "REQ-PATTERN-024",
+        "REQ-PATTERN-039"
       ],
       "assertion_ids": [
         "LOCK-AI-002",
@@ -2504,14 +2749,23 @@
         "LOCK-LIFE-004",
         "LOCK-DOC-011",
         "LOCK-DOC-013",
-        "LOCK-DOC-019"
+        "LOCK-DOC-019",
+        "LOCK-RES-001",
+        "LOCK-MSG-001",
+        "LOCK-WF-001",
+        "LOCK-CQRS-001",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-AI-001",
         "DEC-DATA-001",
         "DEC-GOV-001",
         "DEC-GATE-001",
-        "DEC-REL-001"
+        "DEC-REL-001",
+        "DEC-RES-001",
+        "DEC-MSG-001",
+        "DEC-WF-001",
+        "DEC-CQRS-001"
       ]
     },
     {
@@ -2519,17 +2773,309 @@
       "doc_id": "DOC-SYS-021",
       "document_class": "normative_markdown",
       "status": "active",
-      "requirement_ids": [],
-      "assertion_ids": [],
-      "decision_ids": []
+      "requirement_ids": [
+        "REQ-PATTERN-006",
+        "REQ-PATTERN-007",
+        "REQ-PATTERN-008",
+        "REQ-PATTERN-009",
+        "REQ-PATTERN-010",
+        "REQ-PATTERN-011",
+        "REQ-PATTERN-031",
+        "REQ-PATTERN-032",
+        "REQ-PATTERN-033",
+        "REQ-PATTERN-034",
+        "REQ-PATTERN-035",
+        "REQ-PATTERN-036",
+        "REQ-PATTERN-037",
+        "REQ-PATTERN-038",
+        "REQ-PATTERN-039",
+        "REQ-PATTERN-040",
+        "REQ-PATTERN-041",
+        "REQ-PATTERN-042"
+      ],
+      "assertion_ids": [
+        "LOCK-SPACES-001",
+        "LOCK-RES-001",
+        "LOCK-BFF-001",
+        "LOCK-CQRS-001",
+        "LOCK-CACHE-001"
+      ],
+      "decision_ids": [
+        "DEC-RES-001",
+        "DEC-BFF-001",
+        "DEC-CQRS-001",
+        "DEC-CACHE-001"
+      ]
     },
     {
       "path": "02-system/22-koa-spaces-interface-composition.md",
       "doc_id": "DOC-SYS-022",
       "document_class": "normative_markdown",
       "status": "active",
+      "requirement_ids": [
+        "REQ-PATTERN-006",
+        "REQ-PATTERN-007",
+        "REQ-PATTERN-008",
+        "REQ-PATTERN-009",
+        "REQ-PATTERN-010",
+        "REQ-PATTERN-011",
+        "REQ-PATTERN-031",
+        "REQ-PATTERN-032",
+        "REQ-PATTERN-033",
+        "REQ-PATTERN-034",
+        "REQ-PATTERN-035",
+        "REQ-PATTERN-036",
+        "REQ-PATTERN-037",
+        "REQ-PATTERN-038",
+        "REQ-PATTERN-039",
+        "REQ-PATTERN-040",
+        "REQ-PATTERN-041",
+        "REQ-PATTERN-042"
+      ],
+      "assertion_ids": [
+        "LOCK-SPACES-001",
+        "LOCK-RES-001",
+        "LOCK-BFF-001",
+        "LOCK-CQRS-001",
+        "LOCK-CACHE-001"
+      ],
+      "decision_ids": [
+        "DEC-RES-001",
+        "DEC-BFF-001",
+        "DEC-CQRS-001",
+        "DEC-CACHE-001"
+      ]
+    },
+    {
+      "path": "02-system/23-code-and-filesystem-architecture.md",
+      "doc_id": "DOC-SYS-023",
+      "document_class": "normative_markdown",
+      "status": "active",
       "requirement_ids": [],
-      "assertion_ids": [],
+      "assertion_ids": [
+        "LOCK-CODE-FS-001",
+        "LOCK-CODE-FS-002",
+        "LOCK-CODE-FS-003",
+        "LOCK-CODE-FS-004",
+        "LOCK-CODE-FS-005",
+        "LOCK-CODE-FS-006",
+        "LOCK-CODE-FS-007",
+        "LOCK-CODE-FS-008",
+        "LOCK-CODE-FS-009",
+        "LOCK-CODE-FS-010"
+      ],
+      "decision_ids": []
+    },
+    {
+      "path": "02-system/34-architecture-patterns.md",
+      "doc_id": "DOC-SYS-034",
+      "document_class": "normative_markdown",
+      "status": "active",
+      "requirement_ids": [
+        "REQ-PATTERN-001",
+        "REQ-PATTERN-002",
+        "REQ-PATTERN-003",
+        "REQ-PATTERN-004",
+        "REQ-PATTERN-005",
+        "REQ-PATTERN-006",
+        "REQ-PATTERN-007",
+        "REQ-PATTERN-008",
+        "REQ-PATTERN-009",
+        "REQ-PATTERN-010",
+        "REQ-PATTERN-011",
+        "REQ-PATTERN-012",
+        "REQ-PATTERN-013",
+        "REQ-PATTERN-014",
+        "REQ-PATTERN-015",
+        "REQ-PATTERN-016",
+        "REQ-PATTERN-017",
+        "REQ-PATTERN-018",
+        "REQ-PATTERN-019",
+        "REQ-PATTERN-020",
+        "REQ-PATTERN-021",
+        "REQ-PATTERN-022",
+        "REQ-PATTERN-023",
+        "REQ-PATTERN-024",
+        "REQ-PATTERN-025",
+        "REQ-PATTERN-026",
+        "REQ-PATTERN-027",
+        "REQ-PATTERN-028",
+        "REQ-PATTERN-029",
+        "REQ-PATTERN-030",
+        "REQ-PATTERN-031",
+        "REQ-PATTERN-032",
+        "REQ-PATTERN-033",
+        "REQ-PATTERN-034",
+        "REQ-PATTERN-035",
+        "REQ-PATTERN-036",
+        "REQ-PATTERN-037",
+        "REQ-PATTERN-038",
+        "REQ-PATTERN-039",
+        "REQ-PATTERN-040",
+        "REQ-PATTERN-041",
+        "REQ-PATTERN-042"
+      ],
+      "assertion_ids": [
+        "LOCK-RES-001",
+        "LOCK-MSG-001",
+        "LOCK-WF-001",
+        "LOCK-PAYLOAD-001",
+        "LOCK-BFF-001",
+        "LOCK-CQRS-001",
+        "LOCK-CACHE-001"
+      ],
+      "decision_ids": [
+        "DEC-RES-001",
+        "DEC-MSG-001",
+        "DEC-WF-001",
+        "DEC-PAYLOAD-001",
+        "DEC-BFF-001",
+        "DEC-CQRS-001",
+        "DEC-CACHE-001"
+      ]
+    },
+    {
+      "path": "02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md",
+      "doc_id": "DOC-SYS-024",
+      "document_class": "normative_markdown",
+      "status": "active",
+      "requirement_ids": [],
+      "assertion_ids": [
+        "LOCK-CODE-FS-001",
+        "LOCK-CODE-FS-004",
+        "LOCK-CODE-FS-009",
+        "LOCK-CODE-FS-010"
+      ],
+      "decision_ids": []
+    },
+    {
+      "path": "02-system/code-and-filesystem-architecture/25-internal-components-node-trust-governance.md",
+      "doc_id": "DOC-SYS-025",
+      "document_class": "normative_markdown",
+      "status": "active",
+      "requirement_ids": [],
+      "assertion_ids": [
+        "LOCK-CODE-FS-002",
+        "LOCK-CODE-FS-004",
+        "LOCK-CODE-FS-008",
+        "LOCK-CODE-FS-009"
+      ],
+      "decision_ids": []
+    },
+    {
+      "path": "02-system/code-and-filesystem-architecture/26-internal-components-data-publication-and-knowledge.md",
+      "doc_id": "DOC-SYS-026",
+      "document_class": "normative_markdown",
+      "status": "active",
+      "requirement_ids": [],
+      "assertion_ids": [
+        "LOCK-CODE-FS-002",
+        "LOCK-CODE-FS-004",
+        "LOCK-CODE-FS-008",
+        "LOCK-CODE-FS-009"
+      ],
+      "decision_ids": []
+    },
+    {
+      "path": "02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md",
+      "doc_id": "DOC-SYS-027",
+      "document_class": "normative_markdown",
+      "status": "active",
+      "requirement_ids": [],
+      "assertion_ids": [
+        "LOCK-CODE-FS-002",
+        "LOCK-CODE-FS-003",
+        "LOCK-CODE-FS-006",
+        "LOCK-CODE-FS-008",
+        "LOCK-CODE-FS-009"
+      ],
+      "decision_ids": []
+    },
+    {
+      "path": "02-system/code-and-filesystem-architecture/28-uckk-external-services-and-transport-interfaces.md",
+      "doc_id": "DOC-SYS-028",
+      "document_class": "normative_markdown",
+      "status": "active",
+      "requirement_ids": [],
+      "assertion_ids": [
+        "LOCK-CODE-FS-003",
+        "LOCK-CODE-FS-004",
+        "LOCK-CODE-FS-008",
+        "LOCK-CODE-FS-009"
+      ],
+      "decision_ids": []
+    },
+    {
+      "path": "02-system/code-and-filesystem-architecture/29-host-platform-files.md",
+      "doc_id": "DOC-SYS-029",
+      "document_class": "normative_markdown",
+      "status": "active",
+      "requirement_ids": [],
+      "assertion_ids": [
+        "LOCK-CODE-FS-001",
+        "LOCK-CODE-FS-005",
+        "LOCK-CODE-FS-008",
+        "LOCK-CODE-FS-009"
+      ],
+      "decision_ids": []
+    },
+    {
+      "path": "02-system/code-and-filesystem-architecture/30-assembly-profiles-packaging-and-release.md",
+      "doc_id": "DOC-SYS-030",
+      "document_class": "normative_markdown",
+      "status": "active",
+      "requirement_ids": [],
+      "assertion_ids": [
+        "LOCK-CODE-FS-004",
+        "LOCK-CODE-FS-007",
+        "LOCK-CODE-FS-009"
+      ],
+      "decision_ids": []
+    },
+    {
+      "path": "02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md",
+      "doc_id": "DOC-SYS-031",
+      "document_class": "normative_markdown",
+      "status": "active",
+      "requirement_ids": [],
+      "assertion_ids": [
+        "LOCK-CODE-FS-004",
+        "LOCK-CODE-FS-008",
+        "LOCK-CODE-FS-009"
+      ],
+      "decision_ids": []
+    },
+    {
+      "path": "02-system/code-and-filesystem-architecture/32-installed-runtime-filesystem.md",
+      "doc_id": "DOC-SYS-032",
+      "document_class": "normative_markdown",
+      "status": "active",
+      "requirement_ids": [],
+      "assertion_ids": [
+        "LOCK-CODE-FS-005",
+        "LOCK-CODE-FS-006",
+        "LOCK-CODE-FS-009"
+      ],
+      "decision_ids": []
+    },
+    {
+      "path": "02-system/code-and-filesystem-architecture/33-path-ownership-and-change-rules.md",
+      "doc_id": "DOC-SYS-033",
+      "document_class": "normative_markdown",
+      "status": "active",
+      "requirement_ids": [],
+      "assertion_ids": [
+        "LOCK-CODE-FS-001",
+        "LOCK-CODE-FS-002",
+        "LOCK-CODE-FS-003",
+        "LOCK-CODE-FS-004",
+        "LOCK-CODE-FS-005",
+        "LOCK-CODE-FS-006",
+        "LOCK-CODE-FS-007",
+        "LOCK-CODE-FS-008",
+        "LOCK-CODE-FS-009",
+        "LOCK-CODE-FS-010"
+      ],
       "decision_ids": []
     },
     {
@@ -2573,7 +3119,8 @@
         "LOCK-AI-001",
         "LOCK-AI-002",
         "LOCK-SENT-001",
-        "LOCK-GOV-001"
+        "LOCK-GOV-001",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-PROFILE-001",
@@ -2625,7 +3172,8 @@
         "LOCK-DATA-001",
         "LOCK-GOV-001",
         "LOCK-AI-001",
-        "LOCK-LIFE-001"
+        "LOCK-LIFE-001",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-PROFILE-001",
@@ -2691,7 +3239,8 @@
         "LOCK-LIFE-001",
         "LOCK-LIFE-002",
         "LOCK-LIFE-003",
-        "LOCK-LIFE-004"
+        "LOCK-LIFE-004",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-PROFILE-001",
@@ -2822,7 +3371,8 @@
         "LOCK-LIFE-001",
         "LOCK-LIFE-002",
         "LOCK-LIFE-003",
-        "LOCK-LIFE-004"
+        "LOCK-LIFE-004",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-PROFILE-001",
@@ -2900,7 +3450,8 @@
         "LOCK-LIFE-002",
         "LOCK-PROFILE-001",
         "LOCK-PROFILE-002",
-        "LOCK-SENT-001"
+        "LOCK-SENT-001",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-AI-001",
@@ -2958,7 +3509,8 @@
         "LOCK-AI-001",
         "LOCK-AI-002",
         "LOCK-IMPL-001",
-        "LOCK-IMPL-002"
+        "LOCK-IMPL-002",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-PROFILE-001",
@@ -3025,7 +3577,8 @@
         "LOCK-LIFE-003",
         "LOCK-LIFE-004",
         "LOCK-IMPL-001",
-        "LOCK-IMPL-002"
+        "LOCK-IMPL-002",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-PROFILE-001",
@@ -3081,7 +3634,8 @@
         "LOCK-LIFE-001",
         "LOCK-LIFE-002",
         "LOCK-LIFE-003",
-        "LOCK-LIFE-004"
+        "LOCK-LIFE-004",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-PROFILE-001",
@@ -3281,7 +3835,8 @@
         "LOCK-COMP-001",
         "LOCK-MEDIATHEQUE-001",
         "LOCK-UCKK-EXT-001",
-        "LOCK-UCKK-EXT-002"
+        "LOCK-UCKK-EXT-002",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-PROFILE-001",
@@ -3355,7 +3910,8 @@
         "LOCK-ARI-002",
         "LOCK-MEDIATHEQUE-001",
         "LOCK-MEDIATHEQUE-002",
-        "LOCK-SENT-001"
+        "LOCK-SENT-001",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-PROFILE-SOFF-001",
@@ -3413,7 +3969,8 @@
         "LOCK-AI-002",
         "LOCK-LIFE-001",
         "LOCK-IMPL-001",
-        "LOCK-IMPL-002"
+        "LOCK-IMPL-002",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-PROFILE-001",
@@ -3438,7 +3995,9 @@
       "document_class": "explanatory_markdown",
       "status": "active",
       "requirement_ids": [],
-      "assertion_ids": [],
+      "assertion_ids": [
+        "LOCK-SPACES-001"
+      ],
       "decision_ids": []
     },
     {
@@ -3689,7 +4248,49 @@
         "REQ-COMP-INT-025",
         "REQ-COMP-INT-026",
         "REQ-COMP-INT-027",
-        "REQ-COMP-INT-028"
+        "REQ-COMP-INT-028",
+        "REQ-PATTERN-001",
+        "REQ-PATTERN-002",
+        "REQ-PATTERN-003",
+        "REQ-PATTERN-004",
+        "REQ-PATTERN-005",
+        "REQ-PATTERN-006",
+        "REQ-PATTERN-007",
+        "REQ-PATTERN-008",
+        "REQ-PATTERN-009",
+        "REQ-PATTERN-010",
+        "REQ-PATTERN-011",
+        "REQ-PATTERN-012",
+        "REQ-PATTERN-013",
+        "REQ-PATTERN-014",
+        "REQ-PATTERN-015",
+        "REQ-PATTERN-016",
+        "REQ-PATTERN-017",
+        "REQ-PATTERN-018",
+        "REQ-PATTERN-019",
+        "REQ-PATTERN-020",
+        "REQ-PATTERN-021",
+        "REQ-PATTERN-022",
+        "REQ-PATTERN-023",
+        "REQ-PATTERN-024",
+        "REQ-PATTERN-025",
+        "REQ-PATTERN-026",
+        "REQ-PATTERN-027",
+        "REQ-PATTERN-028",
+        "REQ-PATTERN-029",
+        "REQ-PATTERN-030",
+        "REQ-PATTERN-031",
+        "REQ-PATTERN-032",
+        "REQ-PATTERN-033",
+        "REQ-PATTERN-034",
+        "REQ-PATTERN-035",
+        "REQ-PATTERN-036",
+        "REQ-PATTERN-037",
+        "REQ-PATTERN-038",
+        "REQ-PATTERN-039",
+        "REQ-PATTERN-040",
+        "REQ-PATTERN-041",
+        "REQ-PATTERN-042"
       ],
       "assertion_ids": [
         "LOCK-COMP-001",
@@ -3712,7 +4313,14 @@
         "LOCK-INT-003",
         "LOCK-INT-004",
         "LOCK-INT-005",
-        "LOCK-UCKK-EXT-002"
+        "LOCK-UCKK-EXT-002",
+        "LOCK-RES-001",
+        "LOCK-MSG-001",
+        "LOCK-WF-001",
+        "LOCK-PAYLOAD-001",
+        "LOCK-BFF-001",
+        "LOCK-CQRS-001",
+        "LOCK-CACHE-001"
       ],
       "decision_ids": [
         "DEC-COMP-001",
@@ -3726,7 +4334,14 @@
         "DEC-UCKK-EXT-001",
         "DEC-OFFLINE-001",
         "DEC-REL-001",
-        "DEC-CONTAINER-001"
+        "DEC-CONTAINER-001",
+        "DEC-RES-001",
+        "DEC-MSG-001",
+        "DEC-WF-001",
+        "DEC-PAYLOAD-001",
+        "DEC-BFF-001",
+        "DEC-CQRS-001",
+        "DEC-CACHE-001"
       ]
     },
     {
@@ -3738,7 +4353,8 @@
       "assertion_ids": [
         "LOCK-MEDIATHEQUE-001",
         "LOCK-UCKK-EXT-001",
-        "LOCK-UCKK-EXT-002"
+        "LOCK-UCKK-EXT-002",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-MEDIATHEQUE-001",
@@ -3933,7 +4549,20 @@
         "REQ-UCKK-IMPORT-003",
         "REQ-UCKK-IMPORT-004",
         "REQ-UCKK-IMPORT-005",
-        "REQ-UCKK-IMPORT-006"
+        "REQ-UCKK-IMPORT-006",
+        "REQ-PATTERN-025",
+        "REQ-PATTERN-026",
+        "REQ-PATTERN-027",
+        "REQ-PATTERN-028",
+        "REQ-PATTERN-029",
+        "REQ-PATTERN-030",
+        "REQ-PATTERN-036",
+        "REQ-PATTERN-037",
+        "REQ-PATTERN-038",
+        "REQ-PATTERN-039",
+        "REQ-PATTERN-040",
+        "REQ-PATTERN-041",
+        "REQ-PATTERN-042"
       ],
       "assertion_ids": [
         "LOCK-MEDIATHEQUE-001",
@@ -3944,7 +4573,10 @@
         "LOCK-COMP-002",
         "LOCK-GOV-001",
         "LOCK-OFFLINE-001",
-        "LOCK-UCKK-EXT-002"
+        "LOCK-UCKK-EXT-002",
+        "LOCK-PAYLOAD-001",
+        "LOCK-CQRS-001",
+        "LOCK-CACHE-001"
       ],
       "decision_ids": [
         "DEC-MEDIATHEQUE-001",
@@ -3952,7 +4584,10 @@
         "DEC-DATA-001",
         "DEC-COMP-001",
         "DEC-GOV-001",
-        "DEC-OFFLINE-001"
+        "DEC-OFFLINE-001",
+        "DEC-PAYLOAD-001",
+        "DEC-CQRS-001",
+        "DEC-CACHE-001"
       ]
     },
     {
@@ -4140,7 +4775,15 @@
         "LOCK-ARI-002",
         "LOCK-PROFILE-001",
         "LOCK-PROFILE-002",
-        "LOCK-UCKK-EXT-002"
+        "LOCK-UCKK-EXT-002",
+        "LOCK-SPACES-001",
+        "LOCK-RES-001",
+        "LOCK-MSG-001",
+        "LOCK-WF-001",
+        "LOCK-PAYLOAD-001",
+        "LOCK-BFF-001",
+        "LOCK-CQRS-001",
+        "LOCK-CACHE-001"
       ],
       "decision_ids": [
         "DEC-COMP-001",
@@ -4151,7 +4794,14 @@
         "DEC-MEDIATHEQUE-001",
         "DEC-UCKK-EXT-001",
         "DEC-ARI-001",
-        "DEC-PROFILE-BASELINE-001"
+        "DEC-PROFILE-BASELINE-001",
+        "DEC-RES-001",
+        "DEC-MSG-001",
+        "DEC-WF-001",
+        "DEC-PAYLOAD-001",
+        "DEC-BFF-001",
+        "DEC-CQRS-001",
+        "DEC-CACHE-001"
       ]
     },
     {
@@ -4224,7 +4874,9 @@
       "document_class": "explanatory_markdown",
       "status": "active",
       "requirement_ids": [],
-      "assertion_ids": [],
+      "assertion_ids": [
+        "LOCK-SPACES-001"
+      ],
       "decision_ids": []
     },
     {
@@ -4251,7 +4903,9 @@
       "document_class": "explanatory_markdown",
       "status": "active",
       "requirement_ids": [],
-      "assertion_ids": [],
+      "assertion_ids": [
+        "LOCK-SPACES-001"
+      ],
       "decision_ids": []
     },
     {
@@ -4289,7 +4943,32 @@
         "REQ-UCKK-IMPORT-009",
         "REQ-UCKK-IMPORT-010",
         "REQ-UCKK-IMPORT-011",
-        "REQ-UCKK-IMPORT-012"
+        "REQ-UCKK-IMPORT-012",
+        "REQ-PATTERN-006",
+        "REQ-PATTERN-007",
+        "REQ-PATTERN-008",
+        "REQ-PATTERN-009",
+        "REQ-PATTERN-010",
+        "REQ-PATTERN-011",
+        "REQ-PATTERN-012",
+        "REQ-PATTERN-013",
+        "REQ-PATTERN-014",
+        "REQ-PATTERN-015",
+        "REQ-PATTERN-016",
+        "REQ-PATTERN-017",
+        "REQ-PATTERN-018",
+        "REQ-PATTERN-019",
+        "REQ-PATTERN-020",
+        "REQ-PATTERN-021",
+        "REQ-PATTERN-022",
+        "REQ-PATTERN-023",
+        "REQ-PATTERN-024",
+        "REQ-PATTERN-025",
+        "REQ-PATTERN-026",
+        "REQ-PATTERN-027",
+        "REQ-PATTERN-028",
+        "REQ-PATTERN-029",
+        "REQ-PATTERN-030"
       ],
       "assertion_ids": [
         "LOCK-UCKK-EXT-001",
@@ -4297,14 +4976,22 @@
         "LOCK-MEDIATHEQUE-001",
         "LOCK-DATA-001",
         "LOCK-GOV-001",
-        "LOCK-OFFLINE-001"
+        "LOCK-OFFLINE-001",
+        "LOCK-RES-001",
+        "LOCK-MSG-001",
+        "LOCK-WF-001",
+        "LOCK-PAYLOAD-001"
       ],
       "decision_ids": [
         "DEC-UCKK-EXT-001",
         "DEC-MEDIATHEQUE-001",
         "DEC-DATA-001",
         "DEC-GOV-001",
-        "DEC-OFFLINE-001"
+        "DEC-OFFLINE-001",
+        "DEC-RES-001",
+        "DEC-MSG-001",
+        "DEC-WF-001",
+        "DEC-PAYLOAD-001"
       ]
     },
     {
@@ -4330,7 +5017,32 @@
         "REQ-UCKK-IMPORT-003",
         "REQ-UCKK-IMPORT-004",
         "REQ-UCKK-IMPORT-005",
-        "REQ-UCKK-IMPORT-006"
+        "REQ-UCKK-IMPORT-006",
+        "REQ-PATTERN-006",
+        "REQ-PATTERN-007",
+        "REQ-PATTERN-008",
+        "REQ-PATTERN-009",
+        "REQ-PATTERN-010",
+        "REQ-PATTERN-011",
+        "REQ-PATTERN-012",
+        "REQ-PATTERN-013",
+        "REQ-PATTERN-014",
+        "REQ-PATTERN-015",
+        "REQ-PATTERN-016",
+        "REQ-PATTERN-017",
+        "REQ-PATTERN-018",
+        "REQ-PATTERN-019",
+        "REQ-PATTERN-020",
+        "REQ-PATTERN-021",
+        "REQ-PATTERN-022",
+        "REQ-PATTERN-023",
+        "REQ-PATTERN-024",
+        "REQ-PATTERN-025",
+        "REQ-PATTERN-026",
+        "REQ-PATTERN-027",
+        "REQ-PATTERN-028",
+        "REQ-PATTERN-029",
+        "REQ-PATTERN-030"
       ],
       "assertion_ids": [
         "LOCK-UCKK-EXT-001",
@@ -4339,7 +5051,11 @@
         "LOCK-DATA-001",
         "LOCK-GOV-001",
         "LOCK-OFFLINE-001",
-        "LOCK-UCKK-EXT-002"
+        "LOCK-UCKK-EXT-002",
+        "LOCK-RES-001",
+        "LOCK-MSG-001",
+        "LOCK-WF-001",
+        "LOCK-PAYLOAD-001"
       ],
       "decision_ids": [
         "DEC-MEDIATHEQUE-001",
@@ -4347,7 +5063,11 @@
         "DEC-DATA-001",
         "DEC-COMP-001",
         "DEC-GOV-001",
-        "DEC-OFFLINE-001"
+        "DEC-OFFLINE-001",
+        "DEC-RES-001",
+        "DEC-MSG-001",
+        "DEC-WF-001",
+        "DEC-PAYLOAD-001"
       ]
     },
     {
@@ -5561,7 +6281,15 @@
         "LOCK-MEDIATHEQUE-001",
         "LOCK-MEDIATHEQUE-002",
         "LOCK-UCKK-EXT-001",
-        "LOCK-UCKK-EXT-002"
+        "LOCK-UCKK-EXT-002",
+        "LOCK-RES-001",
+        "LOCK-MSG-001",
+        "LOCK-WF-001",
+        "LOCK-PAYLOAD-001",
+        "LOCK-BFF-001",
+        "LOCK-CQRS-001",
+        "LOCK-CACHE-001",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-REL-001",
@@ -5570,7 +6298,14 @@
         "DEC-AI-001",
         "DEC-ARI-001",
         "DEC-MEDIATHEQUE-001",
-        "DEC-UCKK-EXT-001"
+        "DEC-UCKK-EXT-001",
+        "DEC-RES-001",
+        "DEC-MSG-001",
+        "DEC-WF-001",
+        "DEC-PAYLOAD-001",
+        "DEC-BFF-001",
+        "DEC-CQRS-001",
+        "DEC-CACHE-001"
       ]
     },
     {
@@ -6775,6 +7510,74 @@
         "DEC-DATA-001",
         "DEC-AI-001",
         "DEC-DOC-CHANGE-001"
+      ]
+    },
+    {
+      "path": "06-lifecycle/20-resilience-and-projection-artifacts.md",
+      "doc_id": "DOC-LIFE-020",
+      "document_class": "normative_markdown",
+      "status": "active",
+      "requirement_ids": [
+        "REQ-PATTERN-001",
+        "REQ-PATTERN-002",
+        "REQ-PATTERN-003",
+        "REQ-PATTERN-004",
+        "REQ-PATTERN-005",
+        "REQ-PATTERN-006",
+        "REQ-PATTERN-007",
+        "REQ-PATTERN-008",
+        "REQ-PATTERN-009",
+        "REQ-PATTERN-010",
+        "REQ-PATTERN-011",
+        "REQ-PATTERN-012",
+        "REQ-PATTERN-013",
+        "REQ-PATTERN-014",
+        "REQ-PATTERN-015",
+        "REQ-PATTERN-016",
+        "REQ-PATTERN-017",
+        "REQ-PATTERN-018",
+        "REQ-PATTERN-019",
+        "REQ-PATTERN-020",
+        "REQ-PATTERN-021",
+        "REQ-PATTERN-022",
+        "REQ-PATTERN-023",
+        "REQ-PATTERN-024",
+        "REQ-PATTERN-025",
+        "REQ-PATTERN-026",
+        "REQ-PATTERN-027",
+        "REQ-PATTERN-028",
+        "REQ-PATTERN-029",
+        "REQ-PATTERN-030",
+        "REQ-PATTERN-031",
+        "REQ-PATTERN-032",
+        "REQ-PATTERN-033",
+        "REQ-PATTERN-034",
+        "REQ-PATTERN-035",
+        "REQ-PATTERN-036",
+        "REQ-PATTERN-037",
+        "REQ-PATTERN-038",
+        "REQ-PATTERN-039",
+        "REQ-PATTERN-040",
+        "REQ-PATTERN-041",
+        "REQ-PATTERN-042"
+      ],
+      "assertion_ids": [
+        "LOCK-RES-001",
+        "LOCK-MSG-001",
+        "LOCK-WF-001",
+        "LOCK-PAYLOAD-001",
+        "LOCK-BFF-001",
+        "LOCK-CQRS-001",
+        "LOCK-CACHE-001"
+      ],
+      "decision_ids": [
+        "DEC-RES-001",
+        "DEC-MSG-001",
+        "DEC-WF-001",
+        "DEC-PAYLOAD-001",
+        "DEC-BFF-001",
+        "DEC-CQRS-001",
+        "DEC-CACHE-001"
       ]
     },
     {
@@ -8353,6 +9156,38 @@
       ]
     },
     {
+      "path": "07-security/21-security-control-architecture.md",
+      "doc_id": "DOC-SEC-021",
+      "document_class": "normative_markdown",
+      "status": "active",
+      "requirement_ids": [],
+      "assertion_ids": [
+        "LOCK-SEC-CTRL-001",
+        "LOCK-SEC-CTRL-002",
+        "LOCK-SEC-CTRL-003",
+        "LOCK-SEC-CTRL-004",
+        "LOCK-SEC-CTRL-005",
+        "LOCK-SEC-CTRL-006",
+        "LOCK-SEC-CTRL-007",
+        "LOCK-SEC-CTRL-008"
+      ],
+      "decision_ids": []
+    },
+    {
+      "path": "07-security/22-security-control-profile-matrix.md",
+      "doc_id": "DOC-SEC-022",
+      "document_class": "normative_markdown",
+      "status": "active",
+      "requirement_ids": [],
+      "assertion_ids": [
+        "LOCK-SEC-CTRL-002",
+        "LOCK-SEC-CTRL-003",
+        "LOCK-SEC-CTRL-006",
+        "LOCK-SEC-CTRL-008"
+      ],
+      "decision_ids": []
+    },
+    {
       "path": "08-operations/00-operating-model.md",
       "doc_id": "DOC-OPS-000",
       "document_class": "normative_markdown",
@@ -8487,14 +9322,28 @@
         "LOCK-DATA-001",
         "LOCK-GOV-001",
         "LOCK-PROFILE-001",
-        "LOCK-DOC-002"
+        "LOCK-DOC-002",
+        "LOCK-RES-001",
+        "LOCK-MSG-001",
+        "LOCK-WF-001",
+        "LOCK-PAYLOAD-001",
+        "LOCK-BFF-001",
+        "LOCK-CQRS-001",
+        "LOCK-CACHE-001"
       ],
       "decision_ids": [
         "DEC-OPS-OBS-001",
         "DEC-DATA-001",
         "DEC-GOV-001",
         "DEC-AUD-001",
-        "DEC-PROFILE-001"
+        "DEC-PROFILE-001",
+        "DEC-RES-001",
+        "DEC-MSG-001",
+        "DEC-WF-001",
+        "DEC-PAYLOAD-001",
+        "DEC-BFF-001",
+        "DEC-CQRS-001",
+        "DEC-CACHE-001"
       ]
     },
     {
@@ -8532,7 +9381,45 @@
         "REQ-OPS-HEALTH-027",
         "REQ-OPS-HEALTH-028",
         "REQ-OPS-HEALTH-029",
-        "REQ-OPS-HEALTH-030"
+        "REQ-OPS-HEALTH-030",
+        "REQ-PATTERN-005",
+        "REQ-PATTERN-006",
+        "REQ-PATTERN-007",
+        "REQ-PATTERN-008",
+        "REQ-PATTERN-009",
+        "REQ-PATTERN-010",
+        "REQ-PATTERN-011",
+        "REQ-PATTERN-012",
+        "REQ-PATTERN-013",
+        "REQ-PATTERN-014",
+        "REQ-PATTERN-015",
+        "REQ-PATTERN-016",
+        "REQ-PATTERN-017",
+        "REQ-PATTERN-018",
+        "REQ-PATTERN-019",
+        "REQ-PATTERN-020",
+        "REQ-PATTERN-021",
+        "REQ-PATTERN-022",
+        "REQ-PATTERN-023",
+        "REQ-PATTERN-024",
+        "REQ-PATTERN-025",
+        "REQ-PATTERN-026",
+        "REQ-PATTERN-027",
+        "REQ-PATTERN-028",
+        "REQ-PATTERN-029",
+        "REQ-PATTERN-030",
+        "REQ-PATTERN-031",
+        "REQ-PATTERN-032",
+        "REQ-PATTERN-033",
+        "REQ-PATTERN-034",
+        "REQ-PATTERN-035",
+        "REQ-PATTERN-036",
+        "REQ-PATTERN-037",
+        "REQ-PATTERN-038",
+        "REQ-PATTERN-039",
+        "REQ-PATTERN-040",
+        "REQ-PATTERN-041",
+        "REQ-PATTERN-042"
       ],
       "assertion_ids": [
         "LOCK-OPS-001",
@@ -8555,7 +9442,15 @@
         "LOCK-AI-002",
         "LOCK-SENT-001",
         "LOCK-ARI-001",
-        "LOCK-ARI-002"
+        "LOCK-ARI-002",
+        "LOCK-RES-001",
+        "LOCK-MSG-001",
+        "LOCK-WF-001",
+        "LOCK-PAYLOAD-001",
+        "LOCK-BFF-001",
+        "LOCK-CQRS-001",
+        "LOCK-CACHE-001",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-COMP-001",
@@ -8567,7 +9462,14 @@
         "DEC-DEV-002",
         "DEC-AI-001",
         "DEC-SENT-001",
-        "DEC-ARI-001"
+        "DEC-ARI-001",
+        "DEC-RES-001",
+        "DEC-MSG-001",
+        "DEC-WF-001",
+        "DEC-PAYLOAD-001",
+        "DEC-BFF-001",
+        "DEC-CQRS-001",
+        "DEC-CACHE-001"
       ]
     },
     {
@@ -8990,7 +9892,8 @@
         "LOCK-GOV-001",
         "LOCK-PRIV-001",
         "LOCK-PROFILE-001",
-        "LOCK-PROFILE-002"
+        "LOCK-PROFILE-002",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-LIFE-001",
@@ -9219,7 +10122,8 @@
         "LOCK-UCKK-EXT-001",
         "LOCK-DEV-001",
         "LOCK-DEV-004",
-        "LOCK-UCKK-EXT-002"
+        "LOCK-UCKK-EXT-002",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-PROFILE-001",
@@ -9660,7 +10564,8 @@
         "LOCK-ARI-002",
         "LOCK-IMPL-001",
         "LOCK-IMPL-002",
-        "LOCK-UCKK-EXT-002"
+        "LOCK-UCKK-EXT-002",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-SYS-001",
@@ -9847,13 +10752,97 @@
       ]
     },
     {
+      "path": "08-operations/20-architecture-pattern-operations.md",
+      "doc_id": "DOC-OPS-020",
+      "document_class": "normative_markdown",
+      "status": "active",
+      "requirement_ids": [
+        "REQ-PATTERN-001",
+        "REQ-PATTERN-002",
+        "REQ-PATTERN-003",
+        "REQ-PATTERN-004",
+        "REQ-PATTERN-005",
+        "REQ-PATTERN-006",
+        "REQ-PATTERN-007",
+        "REQ-PATTERN-008",
+        "REQ-PATTERN-009",
+        "REQ-PATTERN-010",
+        "REQ-PATTERN-011",
+        "REQ-PATTERN-012",
+        "REQ-PATTERN-013",
+        "REQ-PATTERN-014",
+        "REQ-PATTERN-015",
+        "REQ-PATTERN-016",
+        "REQ-PATTERN-017",
+        "REQ-PATTERN-018",
+        "REQ-PATTERN-019",
+        "REQ-PATTERN-020",
+        "REQ-PATTERN-021",
+        "REQ-PATTERN-022",
+        "REQ-PATTERN-023",
+        "REQ-PATTERN-024",
+        "REQ-PATTERN-025",
+        "REQ-PATTERN-026",
+        "REQ-PATTERN-027",
+        "REQ-PATTERN-028",
+        "REQ-PATTERN-029",
+        "REQ-PATTERN-030",
+        "REQ-PATTERN-031",
+        "REQ-PATTERN-032",
+        "REQ-PATTERN-033",
+        "REQ-PATTERN-034",
+        "REQ-PATTERN-035",
+        "REQ-PATTERN-036",
+        "REQ-PATTERN-037",
+        "REQ-PATTERN-038",
+        "REQ-PATTERN-039",
+        "REQ-PATTERN-040",
+        "REQ-PATTERN-041",
+        "REQ-PATTERN-042"
+      ],
+      "assertion_ids": [
+        "LOCK-RES-001",
+        "LOCK-MSG-001",
+        "LOCK-WF-001",
+        "LOCK-PAYLOAD-001",
+        "LOCK-BFF-001",
+        "LOCK-CQRS-001",
+        "LOCK-CACHE-001"
+      ],
+      "decision_ids": [
+        "DEC-RES-001",
+        "DEC-MSG-001",
+        "DEC-WF-001",
+        "DEC-PAYLOAD-001",
+        "DEC-BFF-001",
+        "DEC-CQRS-001",
+        "DEC-CACHE-001"
+      ]
+    },
+    {
       "path": "09-conformance/00-conformance-model.md",
       "doc_id": "DOC-CONF-000",
       "document_class": "normative_markdown",
       "status": "active",
       "requirement_ids": [],
-      "assertion_ids": [],
-      "decision_ids": []
+      "assertion_ids": [
+        "LOCK-RES-001",
+        "LOCK-MSG-001",
+        "LOCK-WF-001",
+        "LOCK-PAYLOAD-001",
+        "LOCK-BFF-001",
+        "LOCK-CQRS-001",
+        "LOCK-CACHE-001"
+      ],
+      "decision_ids": [
+        "DEC-RES-001",
+        "DEC-MSG-001",
+        "DEC-WF-001",
+        "DEC-PAYLOAD-001",
+        "DEC-BFF-001",
+        "DEC-CQRS-001",
+        "DEC-CACHE-001"
+      ]
     },
     {
       "path": "09-conformance/01-requirement-identification.md",
@@ -10119,7 +11108,8 @@
         "LOCK-LIFE-004",
         "LOCK-MEDIATHEQUE-001",
         "LOCK-UCKK-EXT-001",
-        "LOCK-UCKK-EXT-002"
+        "LOCK-UCKK-EXT-002",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-PROFILE-001",
@@ -10366,8 +11356,25 @@
       "document_class": "normative_markdown",
       "status": "active",
       "requirement_ids": [],
-      "assertion_ids": [],
-      "decision_ids": []
+      "assertion_ids": [
+        "LOCK-RES-001",
+        "LOCK-MSG-001",
+        "LOCK-WF-001",
+        "LOCK-PAYLOAD-001",
+        "LOCK-BFF-001",
+        "LOCK-CQRS-001",
+        "LOCK-CACHE-001",
+        "LOCK-SPACES-001"
+      ],
+      "decision_ids": [
+        "DEC-RES-001",
+        "DEC-MSG-001",
+        "DEC-WF-001",
+        "DEC-PAYLOAD-001",
+        "DEC-BFF-001",
+        "DEC-CQRS-001",
+        "DEC-CACHE-001"
+      ]
     },
     {
       "path": "09-conformance/09-interfile-lock-validation.md",
@@ -11095,7 +12102,8 @@
         "LOCK-DOC-002",
         "LOCK-MEDIATHEQUE-001",
         "LOCK-UCKK-EXT-001",
-        "LOCK-UCKK-EXT-002"
+        "LOCK-UCKK-EXT-002",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-PROFILE-001",
@@ -11186,7 +12194,14 @@
         "LOCK-OPS-001",
         "LOCK-OPS-002",
         "LOCK-OPS-003",
-        "LOCK-OPS-004"
+        "LOCK-OPS-004",
+        "LOCK-RES-001",
+        "LOCK-MSG-001",
+        "LOCK-WF-001",
+        "LOCK-PAYLOAD-001",
+        "LOCK-BFF-001",
+        "LOCK-CQRS-001",
+        "LOCK-CACHE-001"
       ],
       "decision_ids": [
         "DEC-CONF-GATE-001",
@@ -11197,7 +12212,14 @@
         "DEC-SYS-COMP-001",
         "DEC-SYS-AUDIT-001",
         "DEC-SYS-RESOURCE-001",
-        "DEC-SYS-OFFLINE-001"
+        "DEC-SYS-OFFLINE-001",
+        "DEC-RES-001",
+        "DEC-MSG-001",
+        "DEC-WF-001",
+        "DEC-PAYLOAD-001",
+        "DEC-BFF-001",
+        "DEC-CQRS-001",
+        "DEC-CACHE-001"
       ]
     },
     {
@@ -11206,7 +12228,9 @@
       "document_class": "normative_markdown",
       "status": "active",
       "requirement_ids": [],
-      "assertion_ids": [],
+      "assertion_ids": [
+        "LOCK-SPACES-001"
+      ],
       "decision_ids": []
     },
     {
@@ -11217,6 +12241,74 @@
       "requirement_ids": [],
       "assertion_ids": [],
       "decision_ids": []
+    },
+    {
+      "path": "09-conformance/22-architecture-pattern-conformance.md",
+      "doc_id": "DOC-CONF-022",
+      "document_class": "normative_markdown",
+      "status": "active",
+      "requirement_ids": [
+        "REQ-PATTERN-001",
+        "REQ-PATTERN-002",
+        "REQ-PATTERN-003",
+        "REQ-PATTERN-004",
+        "REQ-PATTERN-005",
+        "REQ-PATTERN-006",
+        "REQ-PATTERN-007",
+        "REQ-PATTERN-008",
+        "REQ-PATTERN-009",
+        "REQ-PATTERN-010",
+        "REQ-PATTERN-011",
+        "REQ-PATTERN-012",
+        "REQ-PATTERN-013",
+        "REQ-PATTERN-014",
+        "REQ-PATTERN-015",
+        "REQ-PATTERN-016",
+        "REQ-PATTERN-017",
+        "REQ-PATTERN-018",
+        "REQ-PATTERN-019",
+        "REQ-PATTERN-020",
+        "REQ-PATTERN-021",
+        "REQ-PATTERN-022",
+        "REQ-PATTERN-023",
+        "REQ-PATTERN-024",
+        "REQ-PATTERN-025",
+        "REQ-PATTERN-026",
+        "REQ-PATTERN-027",
+        "REQ-PATTERN-028",
+        "REQ-PATTERN-029",
+        "REQ-PATTERN-030",
+        "REQ-PATTERN-031",
+        "REQ-PATTERN-032",
+        "REQ-PATTERN-033",
+        "REQ-PATTERN-034",
+        "REQ-PATTERN-035",
+        "REQ-PATTERN-036",
+        "REQ-PATTERN-037",
+        "REQ-PATTERN-038",
+        "REQ-PATTERN-039",
+        "REQ-PATTERN-040",
+        "REQ-PATTERN-041",
+        "REQ-PATTERN-042"
+      ],
+      "assertion_ids": [
+        "LOCK-RES-001",
+        "LOCK-MSG-001",
+        "LOCK-WF-001",
+        "LOCK-PAYLOAD-001",
+        "LOCK-BFF-001",
+        "LOCK-CQRS-001",
+        "LOCK-CACHE-001"
+      ],
+      "decision_ids": [
+        "DEC-RES-001",
+        "DEC-MSG-001",
+        "DEC-WF-001",
+        "DEC-PAYLOAD-001",
+        "DEC-BFF-001",
+        "DEC-CQRS-001",
+        "DEC-CACHE-001"
+      ]
     },
     {
       "path": "10-adrs/ADR-001-standard-maintained-linux-kernel.md",
@@ -12451,12 +13543,28 @@
       ]
     },
     {
+      "path": "10-adrs/ADR-033-koa-spaces-as-optional-replaceable-experience-subsystem.md",
+      "doc_id": "ADR-033",
+      "document_class": "adr",
+      "status": "active",
+      "requirement_ids": [],
+      "assertion_ids": [
+        "LOCK-SPACES-001"
+      ],
+      "decision_ids": [
+        "DEC-SYS-001",
+        "DEC-PROFILE-001"
+      ]
+    },
+    {
       "path": "10-adrs/README.md",
       "doc_id": "DOC-ADR-000",
       "document_class": "explanatory_markdown",
       "status": "active",
       "requirement_ids": [],
-      "assertion_ids": [],
+      "assertion_ids": [
+        "LOCK-SPACES-001"
+      ],
       "decision_ids": []
     },
     {
@@ -13158,7 +14266,8 @@
         "LOCK-LIFE-001",
         "LOCK-LIFE-002",
         "LOCK-LIFE-003",
-        "LOCK-LIFE-004"
+        "LOCK-LIFE-004",
+        "LOCK-SPACES-001"
       ],
       "decision_ids": [
         "DEC-PROFILE-001",
@@ -14286,7 +15395,15 @@
       "requirement_ids": [],
       "assertion_ids": [
         "LOCK-UCKK-EXT-001",
-        "LOCK-UCKK-EXT-002"
+        "LOCK-UCKK-EXT-002",
+        "LOCK-SPACES-001",
+        "LOCK-RES-001",
+        "LOCK-MSG-001",
+        "LOCK-WF-001",
+        "LOCK-PAYLOAD-001",
+        "LOCK-BFF-001",
+        "LOCK-CQRS-001",
+        "LOCK-CACHE-001"
       ],
       "decision_ids": []
     },
@@ -14296,7 +15413,9 @@
       "document_class": "explanatory_markdown",
       "status": "active",
       "requirement_ids": [],
-      "assertion_ids": [],
+      "assertion_ids": [
+        "LOCK-SPACES-001"
+      ],
       "decision_ids": [
         "DEC-DOC-001"
       ]
@@ -14307,7 +15426,9 @@
       "document_class": "non_normative_readme",
       "status": "active",
       "requirement_ids": [],
-      "assertion_ids": [],
+      "assertion_ids": [
+        "LOCK-SPACES-001"
+      ],
       "decision_ids": [
         "DEC-ART-001"
       ]
@@ -14332,7 +15453,15 @@
       "assertion_ids": [
         "LOCK-MEDIATHEQUE-001",
         "LOCK-UCKK-EXT-001",
-        "LOCK-UCKK-EXT-002"
+        "LOCK-UCKK-EXT-002",
+        "LOCK-SPACES-001",
+        "LOCK-RES-001",
+        "LOCK-MSG-001",
+        "LOCK-WF-001",
+        "LOCK-PAYLOAD-001",
+        "LOCK-BFF-001",
+        "LOCK-CQRS-001",
+        "LOCK-CACHE-001"
       ],
       "decision_ids": []
     }

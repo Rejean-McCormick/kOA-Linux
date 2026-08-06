@@ -1,0 +1,22 @@
+schema_version = 1
+policy_id = "koa.release.sbom"
+policy_version = "1.0.0"
+format = "spdx-2.3-json"
+canonicalization = "utf8-json-sorted-keys-v1"
+hash_algorithm = "sha256"
+timestamp_source = "explicit"
+subject_digest_required = true
+file_digests_required = true
+reject_symbolic_links = true
+reject_special_files = true
+maximum_files = 100000
+
+[identity]
+namespace_prefix = "https://sbom.koa.local/spdx"
+generator_id = "koa.release.generate-sbom"
+generator_version = "1.0.0"
+
+[disclosure]
+include_file_contents = false
+include_environment_values = false
+include_secret_values = false

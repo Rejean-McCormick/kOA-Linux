@@ -1,0 +1,75 @@
+settings_version = "1.0.0"
+profile_id = "sovereign_offline"
+profile_contract = "docs/contracts/profiles/sovereign-offline.profile.json"
+profile_contract_version = "1.0.0"
+profile_role = "overlay"
+available_for_selection = true
+
+[validation]
+mode = "strict"
+unknown_parameter = "error"
+missing_contract = "error"
+contract_version_mismatch = "error"
+unsupported_parameter = "error"
+composition_conflict = "error"
+
+[authority]
+profile_membership = "profile_contract"
+component_membership = "profile_contract"
+capabilities = "profile_contract"
+resource_policy = "profile_contract"
+security_policy = "profile_contract"
+lifecycle_policy = "profile_contract"
+offline_policy = "profile_contract"
+external_integrations = "profile_contract"
+
+[source_layout]
+strategy = "shared_repository_tree"
+profile_specific_source_tree = false
+generated_output_root = "generated/profiles/sovereign_offline"
+
+[composition]
+kind = "overlay"
+requires_base_profile = true
+compatible_base_profiles = "profile_contract"
+application_order = "profile_contract"
+may_broaden_authority = false
+may_broaden_data_ownership = false
+may_broaden_external_integrations = false
+conflict_result = "error"
+
+[implementation.connectivity]
+operating_state = "offline"
+internet_access = "prohibited_during_conformant_operation"
+default_egress = "deny"
+default_external_ingress = "deny"
+external_dns_dependency = "none"
+external_time_dependency = "none"
+external_identity_dependency = "none"
+
+[implementation.transfer]
+permitted_boundaries = ["verified_removable_media", "approved_offline_transfer_station", "signed_offline_bundle", "signed_export_bundle"]
+quarantine_required = true
+unsigned_artifacts = false
+unknown_signers = false
+partial_bundle_import = false
+automatic_activation = false
+operator_authorization = true
+
+[implementation.activation]
+release_set_required = true
+atomic_authority_state = true
+previous_valid_release_retained = true
+rollback_when_safe = true
+forward_repair_when_rollback_unsafe = true
+
+[implementation.resources]
+local_enforcement = true
+remote_scheduler_required = false
+offline_job_queue = true
+external_resource_scaling = false
+
+[implementation.degradation]
+partial_authority = false
+silent_fallback = false
+external_substitution = false

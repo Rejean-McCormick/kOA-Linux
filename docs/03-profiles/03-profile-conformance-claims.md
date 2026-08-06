@@ -29,7 +29,12 @@
     "generated/test-catalog.json",
     "generated/evidence-catalog.json",
     "contracts/release-channels.contract.json",
-    "contracts/artifact-classes.contract.json"
+    "contracts/artifact-classes.contract.json",
+    "contracts/security-controls.contract.json",
+    "schemas/security-controls.contract.schema.json",
+    "contracts/artifact-contracts/security-evidence.schema.json",
+    "07-security/21-security-control-architecture.md",
+    "07-security/22-security-control-profile-matrix.md"
   ],
   "decision_ids": [
     "DEC-PROFILE-001",
@@ -111,7 +116,9 @@
     "DOC-CONST-005",
     "DOC-CONST-009",
     "DOC-CONST-010",
-    "DOC-CONST-011"
+    "DOC-CONST-011",
+    "DOC-SEC-021",
+    "DOC-SEC-022"
   ],
   "tags": [
     "profiles",
@@ -125,7 +132,9 @@
     "release-identity",
     "exceptions",
     "expiration",
-    "attestation"
+    "attestation",
+    "security-controls",
+    "security-evidence"
   ]
 }
 KOA:DOC-META:END -->
@@ -193,6 +202,11 @@ A claim is descriptive evidence about a target. It is not an owner decision, a p
 | `generated/decision-index.json` | Accepted profile, lifecycle, security, release, audit, evidence, and implementation decisions |
 | `generated/profile-catalog.json` | Active primary profiles, overlays, compatibility, and composition rules |
 | `contracts/profiles/*.profile.json` | Profile requirements, component membership, hardware envelope, failure behavior, and required tests |
+| `contracts/security-controls.contract.json` | Security-control identifiers, profile applicability, implementation and validation bindings, failure behavior, and evidence classes |
+| `schemas/security-controls.contract.schema.json` | Structural validation of the security-control contract |
+| `contracts/artifact-contracts/security-evidence.schema.json` | Control-specific security evidence |
+| `07-security/21-security-control-architecture.md` | Control lifecycle, ownership, exception, evidence, and conformance rules |
+| `07-security/22-security-control-profile-matrix.md` | Human-readable projection of canonical profile applicability |
 | `generated/requirements-index.json` | Applicable normative requirements |
 | `generated/assertion-index.json` | Cross-file profile, lifecycle, security, release, implementation, and evidence assertions |
 | `generated/traceability.json` | Profile-to-decision, requirement, test, evidence, exception, document, and artifact links |
@@ -254,7 +268,11 @@ Every claim scope contains:
 - the active authority release;
 - system, services, governance, and knowledge release identities;
 - applicable hardware, operating-system, component, artifact, integration, offline, security, lifecycle, operations, portability, and evidence constraints;
-- active exceptions;
+- effective security-control applicability;
+- required and prohibited security-control results;
+- control-specific security-evidence records;
+- machine-resolvable `not_applicable` justifications;
+- active security and general exceptions;
 - evaluated tests and evidence.
 
 An omitted overlay is not implicitly active.
@@ -394,6 +412,8 @@ The evaluator includes:
 
 No requirement is omitted because the implementation lacks support for testing it.
 
+The evaluator also resolves every active security control from `contracts/security-controls.contract.json` for the effective profile composition. `required` controls enter the mandatory test and evidence set; `prohibited` controls enter the negative-test or verified-absence set; `recommended` controls require implementation evidence or an accepted bounded rationale; `not_applicable` controls require a machine-resolvable predicate. An unresolved control state blocks the claim.
+
 ### 6.5 Resolve tests
 
 For each applicable requirement and lock, the evaluator resolves the linked tests.
@@ -414,6 +434,8 @@ Each test records:
 
 A manual test requires the declared reviewer role and signed or otherwise attributable review evidence.
 
+Tests selected for a security control retain the `control_id` binding and the effective applicability state. A test name or thematic similarity does not create control coverage without the declared validation binding.
+
 ### 6.6 Validate evidence
 
 Evidence validation checks:
@@ -431,6 +453,8 @@ Evidence validation checks:
 - evaluator access.
 
 Evidence from another target, another release set, another composition, or an expired validity window cannot be silently reused.
+
+Security-control evidence validates against `contracts/artifact-contracts/security-evidence.schema.json` and binds the `control_id`, profile, evaluated subject, implementation reference and version, test references, active exception references, result, digest, retention, and validity period.
 
 ### 6.7 Determine the result
 
@@ -499,6 +523,7 @@ A claim is re-evaluated or marked stale when any of the following changes:
 - release-channel compatibility;
 - test definition;
 - evidence rule;
+- security-control contract, applicability, implementation binding, validation binding, or evidence class;
 - exception;
 - operating-system or kernel version where applicable;
 - hardware identity or trust state;
@@ -757,6 +782,11 @@ This document is conformant when:
 19. no profile or overlay is claimed by implication;
 20. the active text contains the complete required section structure and no unresolved marker.
 
+21. every active security control resolves to one effective applicability state for the claimed profile composition;
+22. every required control has current passing security evidence and every prohibited control has negative-test or verified-absence evidence;
+23. every `not_applicable` security-control disposition has a machine-resolvable predicate;
+24. security-control contract changes invalidate or re-evaluate impacted claims.
+
 Applicable failure codes include:
 
 `text
@@ -778,6 +808,11 @@ exception_not_reflected
 claim_scope_ambiguous
 claim_wording_overstated
 claim_stale
+security_control_applicability_unresolved
+required_security_control_evidence_missing
+prohibited_security_control_present
+security_control_not_applicable_unjustified
+security_control_contract_stale
 claim_class_mismatch
 partial_claim_presented_as_complete
 `

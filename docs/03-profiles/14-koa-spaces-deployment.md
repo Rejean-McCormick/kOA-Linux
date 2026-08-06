@@ -11,12 +11,22 @@
   "canonical_refs": [
     "02-system/21-koa-spaces-experience-layer.md",
     "02-system/22-koa-spaces-interface-composition.md",
-    "contracts/proposals/koa-spaces.subsystem.json",
-    "contracts/artifact-contracts/space-definition.schema.json"
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "contracts/artifact-contracts/space-definition.schema.json",
+    "contracts/profiles/user-lightweight.profile.json",
+    "contracts/profiles/developer-linux-workstation.profile.json",
+    "contracts/profiles/developer-windows-wsl.profile.json",
+    "contracts/profiles/sovereign-linux-node.profile.json",
+    "contracts/profiles/sovereign-hub.profile.json",
+    "contracts/profiles/sovereign-offline.profile.json",
+    "contracts/profiles/high-assurance.profile.json",
+    "contracts/profiles/appliance-shell.profile.json"
   ],
   "decision_ids": [],
   "requirement_ids": [],
-  "lock_ids": [],
+  "lock_ids": [
+    "LOCK-SPACES-001"
+  ],
   "exception_ids": [],
   "depends_on": [
     "DOC-SYS-021",
@@ -28,7 +38,9 @@
     "optional-subsystem",
     "deployment",
     "offline",
-    "appliance"
+    "appliance",
+    "profile-membership",
+    "canonical-profile-mapping"
   ]
 }
 KOA:DOC-META:END -->
@@ -39,7 +51,7 @@ KOA:DOC-META:END -->
 
 This document explains how the optional kOA Spaces subsystem can be deployed across existing kOA-Linux profiles without changing the profile authority model.
 
-It does not add kOA Spaces to an existing profile contract. Profile membership remains a later canonical change. The rules below define the intended deployment behavior for that change.
+The applicable profile contracts now declare kOA Spaces membership explicitly. This document explains the shared interpretation of those canonical profile fields without redefining them.
 
 ## 2. General Rule
 
@@ -55,6 +67,21 @@ A profile that enables kOA Spaces declares:
 - activation and rollback evidence;
 - whether users can switch Spaces;
 - whether local administrators can install new module manifests.
+
+## 2.1 Canonical Membership Matrix
+
+| Profile or overlay | Membership | Default activation | Core conformance dependency |
+| --- | --- | --- | --- |
+| `user_lightweight` | Optional local experience surface | Enabled only when selected by deployment | No |
+| `developer_linux_workstation` | Optional development workbench | Stopped | No |
+| `developer_windows_wsl` | Optional development workbench | Stopped | No |
+| `sovereign_linux_node` | Optional local experience service | Disabled unless selected | No |
+| `sovereign_hub` | Optional multi-Space experience service | Disabled unless selected | No |
+| `sovereign_offline` | Inherited optional with offline restrictions | Inherited from base profile | No |
+| `high_assurance` | Inherited optional with assurance controls | Inherited from primary profile | No |
+| `appliance_shell` | Optional primary presentation surface | Selected by composed deployment | No |
+
+Build-farm and control-plane profiles do not acquire a user-experience dependency through this mapping. They can build, validate, distribute, or observe kOA Spaces artifacts only through their existing lifecycle and operational responsibilities.
 
 ## 3. User Lightweight
 

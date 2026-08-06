@@ -21,7 +21,10 @@
     "generated/profile-catalog.json",
     "generated/assertion-index.json#/locks",
     "contracts/integration-types.contract.json#/integrations",
-    "generated/traceability.json#/profile_component_links"
+    "generated/traceability.json#/profile_component_links",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md"
   ],
   "decision_ids": [
     "DEC-COMP-001",
@@ -52,7 +55,8 @@
     "LOCK-PROFILE-002",
     "LOCK-ARI-001",
     "LOCK-ARI-002",
-    "LOCK-UCKK-EXT-002"
+    "LOCK-UCKK-EXT-002",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -66,7 +70,9 @@
     "explanatory-markdown",
     "component-boundaries",
     "authority-separation",
-    "data-ownership"
+    "data-ownership",
+    "koa-spaces",
+    "experience-layer"
   ]
 }
 KOA:DOC-META:END -->
@@ -788,3 +794,7 @@ The approved external voice integration is unavailable. Ariane retains keyboard,
 ### 11.8 Component implementation replacement
 
 A new Resource Governor implementation passes the existing component contract, preserves allocation-state compatibility, and activates atomically. The technology changes; the component identity and authority boundary do not.
+
+## Presentation Subsystem Boundary
+
+kOA Spaces is a subsystem boundary rather than an internal authority component. It owns only the outer presentation frame and validated activation state. Contributing systems own their pages, actions, authorization, workflows, and business state. Menu visibility, route availability, aliases, and widgets never substitute for an authorization decision.

@@ -1,0 +1,39 @@
+schema_version = "1.0.0"
+integration_id = "ariane"
+storage_owner = "koa_integration_boundary"
+subsystem_authoritative_storage_owner = "ariane"
+direct_access_to_subsystem_database = false
+direct_access_to_other_component_storage = false
+shared_database_allowed = false
+
+[adapter_runtime]
+root_ref = "runtime://integrations/ariane"
+persistent = false
+allowed_content = ["socket_metadata", "health_probe_state", "bounded_temporary_files"]
+secret_material_allowed = false
+
+[adapter_state]
+root_ref = "state://integrations/ariane-adapter"
+persistent = true
+authoritative = false
+allowed_content = [
+  "source_pin_state",
+  "compatibility_state",
+  "last_verified_health_summary",
+  "idempotency_metadata",
+  "receipt_references",
+]
+rebuildable_from_authoritative_sources = true
+
+[prohibitions]
+ariane_internal_domain_state = true
+application_authoritative_state = true
+atlas_or_driver_source_copy = true
+credentials_in_plaintext = true
+raw_voice_recordings = true
+undeclared_user_content = true
+
+[deletion]
+adapter_state_deletion_changes_ariane_authority = false
+critical_receipts_preserved_by_receipt_owner = true
+removal_requires_storage_boundary_verification = true

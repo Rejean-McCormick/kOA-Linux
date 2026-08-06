@@ -23,7 +23,10 @@
     "generated/traceability.json",
     "generated/exception-index.json",
     "generated/test-catalog.json",
-    "generated/evidence-catalog.json"
+    "generated/evidence-catalog.json",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md"
   ],
   "decision_ids": [
     "DEC-AI-001",
@@ -95,7 +98,8 @@
     "LOCK-SENT-001",
     "LOCK-MEDIATHEQUE-001",
     "LOCK-UCKK-EXT-001",
-    "LOCK-UCKK-EXT-002"
+    "LOCK-UCKK-EXT-002",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -123,7 +127,9 @@
     "resource-governance",
     "component-separation",
     "artifact-activation",
-    "observability"
+    "observability",
+    "koa-spaces",
+    "experience-layer"
   ]
 }
 KOA:DOC-META:END -->
@@ -677,3 +683,7 @@ Voice interaction becomes unavailable. Ariane Runtime continues deterministic lo
 Publication Gateway returns after an outage.
 
 The capability enters `restoring`. Queued requests are checked for expiry, cancellation, current authorization, duplicate execution, and current destination policy. Only valid requests return to execution.
+
+## Experience-Layer Degradation
+
+A kOA Spaces failure is presentation-scoped. Invalid candidates are rejected while the previous validated Space remains active; missing optional contributions are hidden or marked unavailable; complete subsystem failure falls back to native interfaces or a declared administrative surface. Authority is never reassigned during degradation.

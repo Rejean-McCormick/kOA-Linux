@@ -1,0 +1,16 @@
+# kOA generated timer template.
+# Catch-up behavior is explicit through PERSISTENT and is never inferred.
+
+[Unit]
+Description={{DESCRIPTION}}
+
+[Timer]
+OnCalendar={{ON_CALENDAR}}
+AccuracySec={{ACCURACY_SEC}}
+RandomizedDelaySec={{RANDOMIZED_DELAY_SEC}}
+Persistent={{PERSISTENT}}
+Unit={{SERVICE_UNIT}}
+RemainAfterElapse=no
+
+[Install]
+WantedBy={{WANTED_BY}}

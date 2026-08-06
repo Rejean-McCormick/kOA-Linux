@@ -1,0 +1,168 @@
+{
+  "$schema": "release-set.schema.json",
+  "artifact_class": "release_set",
+  "release_set_id": "koa.release-set.development-fixture",
+  "version": "0.0.1",
+  "lifecycle_status": "candidate",
+  "language": "en",
+  "issued_at": "2026-08-06T12:00:00Z",
+  "issuer": {
+    "issuer_id": "koa.release-authority",
+    "issuer_type": "release_authority",
+    "authority_ref": "authority/release-authority/2026-08"
+  },
+  "authority": {
+    "release_authority_ref": "authority/release-authority/2026-08",
+    "approval_refs": [
+      "approvals/release-set/2026.08.03.1"
+    ],
+    "decision_refs": [
+      "decisions/DEC-REL-001"
+    ]
+  },
+  "target_scope": {
+    "profile_results": [
+      {
+        "profile_id": "sovereign_hub",
+        "profile_contract_ref": "contracts/profiles/sovereign-hub.profile.json",
+        "result": "pass",
+        "evidence_refs": [
+          "evidence/profile/sovereign-hub/2026.08.03.1"
+        ]
+      }
+    ]
+  },
+  "channels": {
+    "system": {
+      "channel_id": "system",
+      "release_namespace": "koa.system",
+      "release_id": "koa.system.2026.08.1",
+      "version": "2026.8.1",
+      "release_manifest_ref": "releases/system/2026.8.1/manifest",
+      "artifact_refs": [
+        "artifacts/system-image/2026.8.1"
+      ],
+      "provenance_ref": "provenance/system/2026.8.1",
+      "validation_evidence_refs": [
+        "evidence/system/2026.8.1"
+      ],
+      "recovery": {
+        "mode": "rollback_or_forward_repair",
+        "procedure_ref": "recovery/system/2026.8.1"
+      }
+    },
+    "services": {
+      "channel_id": "services",
+      "release_namespace": "koa.services",
+      "release_id": "koa.services.2026.08.4",
+      "version": "2026.8.4",
+      "release_manifest_ref": "releases/services/2026.8.4/manifest",
+      "artifact_refs": [
+        "artifacts/service-release/2026.8.4"
+      ],
+      "provenance_ref": "provenance/services/2026.8.4",
+      "validation_evidence_refs": [
+        "evidence/services/2026.8.4"
+      ],
+      "recovery": {
+        "mode": "rollback_or_forward_repair",
+        "procedure_ref": "recovery/services/2026.8.4"
+      }
+    },
+    "governance": {
+      "channel_id": "governance",
+      "release_namespace": "koa.governance",
+      "release_id": "koa.governance.2026.08.2",
+      "version": "2026.8.2",
+      "release_manifest_ref": "releases/governance/2026.8.2/manifest",
+      "artifact_refs": [
+        "artifacts/governance-policy/2026.8.2"
+      ],
+      "provenance_ref": "provenance/governance/2026.8.2",
+      "validation_evidence_refs": [
+        "evidence/governance/2026.8.2"
+      ],
+      "recovery": {
+        "mode": "rollback",
+        "procedure_ref": "recovery/governance/2026.8.2"
+      }
+    },
+    "knowledge": {
+      "channel_id": "knowledge",
+      "release_namespace": "koa.knowledge",
+      "release_id": "koa.knowledge.2026.08.7",
+      "version": "2026.8.7",
+      "release_manifest_ref": "releases/knowledge/2026.8.7/manifest",
+      "artifact_refs": [
+        "artifacts/knowledge/2026.8.7"
+      ],
+      "provenance_ref": "provenance/knowledge/2026.8.7",
+      "validation_evidence_refs": [
+        "evidence/knowledge/2026.8.7"
+      ],
+      "recovery": {
+        "mode": "rollback",
+        "procedure_ref": "recovery/knowledge/2026.8.7"
+      }
+    }
+  },
+  "compatibility": {
+    "status": "not_evaluated",
+    "evaluated_at": "2026-08-06T12:00:00Z",
+    "evaluator_ref": "validators/release-set/1.0.0",
+    "constraint_results": [
+      {
+        "constraint_id": "services-system-api",
+        "kind": "runtime_interface",
+        "subject_ref": "interfaces/koa-node-agent",
+        "operator": "compatible_with",
+        "expected": "v1",
+        "actual": "v1",
+        "result": "blocked",
+        "evidence_refs": [
+          "fixture://evidence/not-evaluated"
+        ]
+      }
+    ],
+    "test_evidence_refs": [
+      "evidence/release-set/2026.08.03.1"
+    ]
+  },
+  "activation": {
+    "eligibility": "not_evaluated",
+    "strategy": "atomic_set_switch",
+    "partial_activation_allowed": false,
+    "activation_evidence_refs": [
+      "fixture://evidence/not-eligible"
+    ],
+    "failure_result": "retain_current_active_set",
+    "previous_good_release_set_ref": "release-sets/2026.07.20.2"
+  },
+  "signature": {
+    "signature_artifact_ref": "signatures/release-set/2026.08.03.1",
+    "signer_identity_ref": "identities/release-signer-01",
+    "signing_authority_ref": "authority/release-authority/2026-08",
+    "signed_at": "2026-08-03T17:45:00-04:00",
+    "verification_status": "unverified",
+    "verification_evidence_refs": [
+      "fixture://evidence/unverified"
+    ]
+  },
+  "provenance": {
+    "provenance_receipt_ref": "provenance/release-set/2026.08.03.1",
+    "release_channels_registry_ref": "contracts/release-channels.contract.json",
+    "artifact_classes_registry_ref": "contracts/artifact-classes.contract.json",
+    "generator_id": "development-fixture-generator",
+    "generator_version": "1.0.0",
+    "source_release_refs": [
+      "releases/system/2026.8.1",
+      "releases/services/2026.8.4",
+      "releases/governance/2026.8.2",
+      "releases/knowledge/2026.8.7"
+    ]
+  },
+  "notes": [
+    "Synthetic development fixture.",
+    "Not evaluated, not verified, and not eligible for activation."
+  ]
+}

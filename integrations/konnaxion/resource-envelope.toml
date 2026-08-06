@@ -1,0 +1,46 @@
+schema_version = "1.0.0"
+integration_id = "konnaxion"
+envelope_id = "konnaxion-integration"
+status = "inactive"
+resource_authority = "resource-governor"
+implicit_defaults = false
+effective_profile_envelope_required = true
+activation_without_effective_envelope = "deny"
+
+[scope]
+target_type = "integration"
+target_id = "konnaxion"
+includes = ["koa-konnaxion-adapter", "konnaxion-subsystem"]
+
+[ownership]
+declaring_owner = "koa"
+enforcement_owner = "resource-governor"
+subsystem_internal_allocation_owner = "konnaxion"
+may_override_subsystem_internal_policy = false
+
+[requirements]
+cpu_limit = "profile_required"
+memory_limit = "profile_required"
+io_limit = "profile_required"
+storage_limit = "profile_required"
+network_limit = "profile_required"
+process_limit = "profile_required"
+queue_limit = "profile_required"
+timeout_budget = "profile_required"
+
+[admission]
+mode = "explicit"
+resource_governor_decision_required = true
+overcommit = false
+missing_capacity_result = "reject"
+
+[pressure]
+source = "resource-governor"
+allow_new_work_when_unknown = false
+allow_silent_degradation = false
+degradation_policy = "integrations/konnaxion/degradation.toml"
+
+[observability]
+report_declared_observed_effective = true
+include_correlation_id = true
+include_sensitive_payload = false

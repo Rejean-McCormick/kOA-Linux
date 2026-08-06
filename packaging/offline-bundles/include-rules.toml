@@ -1,0 +1,118 @@
+[include_policy]
+policy_id = "koa.offline_bundle.closed_inclusion"
+policy_version = "1.0.0"
+status = "active"
+default_action = "deny"
+selection_mode = "explicit_manifest_entries_only"
+recursive_directory_inclusion = false
+implicit_dependency_discovery = false
+network_resolution_allowed = false
+automatic_substitution_allowed = false
+partial_required_set_allowed = false
+
+[include_policy.sources]
+system_packaging_manifest_source = "packaging/system"
+subsystem_packaging_manifest_source = "packaging/subsystems"
+release_set_contract_ref = "docs/contracts/artifact-contracts/release-set.schema.json"
+artifact_class_contract_ref = "docs/contracts/artifact-classes.contract.json"
+release_channel_contract_ref = "docs/contracts/release-channels.contract.json"
+offline_bundle_contract_ref = "docs/contracts/artifact-contracts/offline-bundle.schema.json"
+source_manifest_required = true
+source_artifact_must_be_immutable = true
+source_artifact_must_be_verified = true
+source_publication_receipt_required = true
+
+[include_policy.channels]
+allowed = ["system", "services", "governance", "knowledge"]
+require_exactly_one_per_artifact = true
+preserve_independent_versions = true
+cross_channel_compatibility_requires_release_set = true
+unknown_channel_action = "block"
+
+[include_policy.selection]
+required_identity_fields = [
+  "artifact_id",
+  "artifact_class",
+  "artifact_version",
+  "release_channel",
+  "manifest_digest",
+]
+required_evidence_fields = [
+  "artifact_contract_ref",
+  "producer_identity_ref",
+  "provenance_ref",
+  "signature_verification_ref",
+]
+conditional_evidence_fields = ["sbom_ref"]
+required_scope_fields = [
+  "target_profiles",
+  "target_component_refs",
+  "compatibility_refs",
+  "intended_lifecycle_action",
+]
+required_path_fields = ["manifest_path", "payload_paths"]
+dependency_closure = "exact_identity_and_digest"
+missing_dependency_action = "block"
+conflicting_dependency_action = "block"
+duplicate_identity_with_different_digest = "security_failure"
+
+[include_policy.paths]
+relative_paths_only = true
+normalized_paths_unique = true
+absolute_paths_allowed = false
+parent_traversal_allowed = false
+symlink_escape_allowed = false
+hard_link_escape_allowed = false
+device_files_allowed = false
+special_files_allowed = false
+undeclared_entries_allowed = false
+overwrite_existing_authoritative_state = false
+case_or_unicode_collision_action = "reject"
+
+[include_policy.allowed_purposes]
+values = [
+  "release_delivery",
+  "trust_maintenance",
+  "recovery",
+  "component_owned_synchronization",
+  "sovereignty_and_exit",
+  "result_return",
+]
+mixed_purpose_requires_per_payload_action = true
+
+[include_policy.prohibited_content]
+values = [
+  "mutable_worktree_or_branch_state",
+  "unverified_artifact",
+  "artifact_without_canonical_manifest",
+  "artifact_without_release_channel",
+  "artifact_with_multiple_release_channels",
+  "runtime_secret_or_private_signing_key",
+  "active_component_database_copy_without_export_contract",
+  "cache_or_projection_presented_as_authoritative",
+  "undeclared_executable_instruction",
+  "external_ai_output_presented_as_authoritative",
+  "unbounded_archive_member",
+  "network_fetch_instruction",
+]
+prohibited_match_action = "reject_bundle_construction"
+
+[include_policy.trust_updates]
+dedicated_transition_required = true
+monotonic_sequence_required = true
+trust_expansion_in_envelope_verification = false
+retroactive_envelope_validation_allowed = false
+independent_evidence_required = true
+
+[include_policy.migrations]
+backup_or_checkpoint_required = true
+source_and_target_versions_required = true
+resource_limits_required = true
+rollback_or_forward_repair_required = true
+partial_migration_authoritative = false
+
+[include_policy.results]
+receipts_may_be_included = true
+receipt_history_immutable = true
+receipt_grants_activation_authority = false
+result_bundle_correlation_required = true

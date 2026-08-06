@@ -1,0 +1,41 @@
+{
+  "$schema": "../../../docs/contracts/artifact-contracts/space-definition.schema.json",
+  "space_id": "default_space",
+  "title": "Default Space",
+  "version": "1.0.0",
+  "description": "Minimal local Space containing only the admitted kOA Spaces home contribution.",
+  "default_module_id": "space_home",
+  "module_instances": [
+    {
+      "module_id": "space_home",
+      "manifest_ref": "global-widgets.json",
+      "enabled": true,
+      "required": true,
+      "order": 0,
+      "public_label": "Home",
+      "public_icon_ref": "icons/home.svg",
+      "home_route_override": null
+    }
+  ],
+  "global_topbar": [],
+  "appearance": {
+    "theme_ref": "themes/default.json",
+    "density": "comfortable",
+    "logo_ref": null,
+    "accent_token": null,
+    "allow_module_accent": true
+  },
+  "offline_policy": {
+    "shell_available": true,
+    "retain_last_validated_definition": true,
+    "unavailable_module_behavior": "show_declared_fallback",
+    "network_state_indicator": true
+  },
+  "assignment_scope": "installation",
+  "authority_boundary": {
+    "presentation_only": true,
+    "may_grant_capabilities": false,
+    "contains_business_state": false,
+    "contains_executable_extension": false
+  }
+}

@@ -1,0 +1,94 @@
+schema_version = "1.0"
+
+[component]
+id = "audit_broker"
+display_name = "Audit Broker"
+class = "accountability_and_evidence_service"
+version = "0.1.0"
+status = "active"
+contract_ref = "contracts/components/audit-broker.component.json"
+contract_version = "1.0.0"
+package = "koa_audit_broker"
+entrypoint = "koa_audit_broker.__main__:main"
+
+[ownership]
+owns = [
+  "audit_record_identity",
+  "accepted_audit_event_records",
+  "audit_event_validation_results",
+  "audit_record_retention_state",
+  "audit_query_execution_state",
+  "audit_disclosure_packages",
+  "audit_disclosure_receipts",
+  "audit_access_and_denial_receipts",
+  "audit_redaction_results",
+  "audit_chain_of_custody_records",
+]
+does_not_own = [
+  "source_component_authoritative_state",
+  "source_business_or_tenant_data",
+  "identity_authority",
+  "authorization_policy",
+  "consent_policy",
+  "privilege_authority",
+  "resource_allocation_policy",
+  "release_content_or_compatibility",
+  "publication_authority",
+  "test_definition_authority",
+  "evidence_validity_authority",
+  "external_provider_output",
+]
+
+[interfaces]
+version = "1.0.0"
+commands = [
+  "submit_audit_event",
+  "request_audit_disclosure",
+  "apply_retention_action",
+  "invalidate_audit_record",
+]
+queries = [
+  "get_audit_record_metadata",
+  "get_audit_request_status",
+  "get_audit_health",
+]
+direct_database_access = false
+unregistered_interface_result = "rejected"
+
+[startup]
+partial_authoritative_activation_allowed = false
+previous_valid_state_preserved_on_failure = true
+required_preconditions = [
+  "configuration_valid",
+  "schema_versions_supported",
+  "identity_available",
+  "storage_available",
+  "retention_policies_resolvable",
+  "resource_envelope_available",
+]
+readiness_requires = [
+  "submission_interface_ready",
+  "record_store_ready",
+  "identity_verification_ready",
+  "policy_decision_path_ready_or_explicitly_degraded",
+  "chain_of_custody_ready",
+  "receipt_generation_ready",
+]
+
+[security]
+default_network_posture = "deny_except_declared_flows"
+component_scoped_service_identity = true
+mutual_authentication_for_component_submissions = true
+requester_authentication_required = true
+replay_protection_required = true
+idempotency_required_for_mutations = true
+secrets_in_records_logs_or_evidence = false
+native_or_automatic_external_ai = false
+
+[degradation]
+missing_required_authority = "affected_operation_blocked"
+policy_runtime_unavailable = "disclosure_blocked_ingestion_only_when_independently_authorized"
+identity_or_trust_unavailable = "new_authenticated_operations_blocked"
+storage_pressure = "critical_receipts_prioritized_then_read_only_before_integrity_risk"
+integrity_failure = "affected_record_quarantined_and_claim_blocked"
+silent_data_loss_or_scope_expansion = false

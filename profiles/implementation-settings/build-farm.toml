@@ -1,0 +1,67 @@
+settings_version = "1.0.0"
+profile_id = "build_farm"
+profile_contract = "docs/contracts/profiles/build-farm.profile.json"
+profile_contract_version = "1.0.0"
+profile_role = "primary"
+available_for_selection = true
+
+[validation]
+mode = "strict"
+unknown_parameter = "error"
+missing_contract = "error"
+contract_version_mismatch = "error"
+unsupported_parameter = "error"
+composition_conflict = "error"
+
+[authority]
+profile_membership = "profile_contract"
+component_membership = "profile_contract"
+capabilities = "profile_contract"
+resource_policy = "profile_contract"
+security_policy = "profile_contract"
+lifecycle_policy = "profile_contract"
+offline_policy = "profile_contract"
+external_integrations = "profile_contract"
+
+[source_layout]
+strategy = "shared_repository_tree"
+profile_specific_source_tree = false
+generated_output_root = "generated/profiles/build_farm"
+
+[composition]
+kind = "primary"
+requires_base_profile = false
+overlays = "explicit_only"
+implicit_overlay_activation = false
+compatibility_source = "profile_contract"
+conflict_result = "error"
+
+[implementation.host]
+os_families = ["linux", "container_host"]
+architectures = ["x86_64", "aarch64"]
+deployment_forms = ["build_cluster", "containerized_service_set"]
+containerization = "required"
+user_interaction = "service_only"
+
+[implementation.workers]
+provisioning = "clean_ephemeral_or_reinitialized"
+parallelism = "resource_governor_admitted"
+mutable_state_reuse = false
+cleanup_verification = true
+
+[implementation.build]
+reproducibility = "required"
+source_admission = "verified"
+dependency_admission = "verified"
+artifact_staging = "non_authoritative_until_finalized"
+release_channels = ["system", "services", "governance", "knowledge"]
+
+[implementation.network]
+mode = "controlled_network"
+core_internet_dependency = false
+remote_fetch_offline = false
+
+[implementation.offline]
+import_required = true
+export_required = true
+recovery_without_internet = true

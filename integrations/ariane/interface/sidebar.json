@@ -1,0 +1,60 @@
+{
+  "$schema": "../../../docs/contracts/artifact-contracts/sidebar-navigation.schema.json",
+  "items": [
+    {
+      "availability": "always",
+      "badge_provider_ref": null,
+      "icon_ref": null,
+      "item_id": "ariane.home",
+      "label": "Ariane",
+      "label_key": "ariane.home",
+      "order": 0,
+      "required_capabilities": [
+        "ariane_local_navigation"
+      ],
+      "route_id": "ariane.home"
+    },
+    {
+      "availability": "always",
+      "badge_provider_ref": null,
+      "children": [
+        {
+          "availability": "always",
+          "badge_provider_ref": null,
+          "icon_ref": null,
+          "item_id": "ariane.guidance",
+          "label": "Guidance",
+          "label_key": "ariane.guidance",
+          "order": 0,
+          "required_capabilities": [
+            "ariane_guidance"
+          ],
+          "route_id": "ariane.guidance"
+        },
+        {
+          "availability": "always",
+          "badge_provider_ref": "koa://integrations/ariane/session-status",
+          "icon_ref": null,
+          "item_id": "ariane.session",
+          "label": "Current route",
+          "label_key": "ariane.session",
+          "order": 10,
+          "required_capabilities": [
+            "ariane_local_navigation"
+          ],
+          "route_id": "ariane.session"
+        }
+      ],
+      "icon_ref": null,
+      "item_id": "ariane.navigation",
+      "label": "Navigation",
+      "label_key": "ariane.navigation",
+      "order": 10,
+      "required_capabilities": [
+        "ariane_local_navigation"
+      ]
+    }
+  ],
+  "module_id": "ariane",
+  "visible_depth": 2
+}

@@ -1,0 +1,118 @@
+schema_version = "1.0.0"
+
+[policy]
+integration_id = "gamma"
+default_decision = "deny"
+capability_id = "presentation.generate_candidate"
+explicit_user_action_required = true
+transfer_preview_required = true
+policy_decision_required = true
+user_confirmation_required = true
+one_capability_per_request = true
+background_processing_allowed = false
+
+[transfer]
+source_selection = "explicit_objects_and_fields_only"
+data_minimization_required = true
+purpose_binding_required = true
+destination_disclosure_required = true
+provider_disclosure_required = true
+retention_context_disclosure_required = true
+irreversible_disclosure_warning_required = true
+allowed_operation_data_classes = [
+  "user_selected_text",
+  "user_selected_image",
+  "user_selected_presentation_asset",
+  "presentation_instructions",
+]
+prohibited_data_classes = [
+  "no_ai",
+  "secret",
+  "private_key",
+  "credential",
+  "privileged_token",
+  "recovery_material",
+  "unrelated_tenant_data",
+  "undeclared_personal_data",
+  "undeclared_restricted_content",
+]
+implicit_repository_access = false
+implicit_component_store_access = false
+implicit_tenant_access = false
+implicit_profile_access = false
+implicit_host_access = false
+
+[provider_terms]
+resolution = "required_before_enablement_and_transfer"
+service_terms = "runtime_authority_required"
+data_retention = "runtime_authority_required"
+training_or_secondary_reuse = "runtime_authority_required"
+data_location = "runtime_authority_required"
+subprocessors = "runtime_authority_required_when_applicable"
+account_configuration = "runtime_authority_required"
+unresolved_result = "blocked"
+documentation_memory_is_authority = false
+
+[credentials]
+secret_reference = "secret://integrations/gamma/credential"
+dedicated_owner_required = true
+environment_separation_required = true
+minimum_scope_required = true
+rotation_required = true
+revocation_required = true
+embedded_in_source_allowed = false
+embedded_in_manifest_allowed = false
+embedded_in_logs_allowed = false
+embedded_in_receipts_allowed = false
+user_credential_reuse_allowed = false
+
+[candidate]
+status = "non_authoritative"
+provider_identity_required = true
+operation_identity_required = true
+input_references_required = true
+output_identity_required = true
+warnings_preserved = true
+provenance_required = true
+controlled_import_required = true
+destination_validation_required = true
+explicit_acceptance_required = true
+quarantine_supported = true
+
+[candidate.prohibited_effects]
+grant_privilege = true
+change_policy = true
+approve_exception = true
+activate_release = true
+publish_content = true
+resolve_consent = true
+resolve_cultural_rights = true
+write_authoritative_store = true
+
+[publication]
+separate_workflow_required = true
+publication_gateway_required = true
+generation_implies_consent = false
+candidate_acceptance_implies_publication = false
+
+[observability]
+record_operation_id = true
+record_profile = true
+record_endpoint_reference = true
+record_result = true
+record_duration = true
+record_retry_state = true
+record_candidate_reference = true
+record_correlation_identity = true
+record_raw_request_payload = false
+record_raw_response_payload = false
+record_secrets = false
+
+[removal]
+revoke_credentials = true
+close_network_paths = true
+stop_adapter = true
+preserve_required_evidence = true
+reconcile_pending_candidates = true
+verify_native_capability_independence = true
+silent_provider_replacement = false

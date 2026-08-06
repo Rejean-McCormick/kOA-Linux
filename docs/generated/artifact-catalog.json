@@ -2,9 +2,30 @@
   "generated": true,
   "records": [
     {
+      "id": "https://schemas.koa.local/artifact-contracts/cache-policy.schema.json",
+      "path": "contracts/artifact-contracts/cache-policy.schema.json",
+      "title": "kOA Cache Policy",
+      "status": null,
+      "version": null
+    },
+    {
+      "id": "https://schemas.koa.local/artifact-contracts/cqrs-projection.schema.json",
+      "path": "contracts/artifact-contracts/cqrs-projection.schema.json",
+      "title": "kOA CQRS Projection",
+      "status": null,
+      "version": null
+    },
+    {
       "id": "https://schemas.koa.local/artifact-contracts/cultural-rights-policy.schema.json",
       "path": "contracts/artifact-contracts/cultural-rights-policy.schema.json",
       "title": "kOA Cultural Rights Policy Artifact",
+      "status": null,
+      "version": null
+    },
+    {
+      "id": "https://schemas.koa.local/artifact-contracts/dead-letter-record.schema.json",
+      "path": "contracts/artifact-contracts/dead-letter-record.schema.json",
+      "title": "kOA Dead Letter Record",
       "status": null,
       "version": null
     },
@@ -23,9 +44,30 @@
       "version": null
     },
     {
+      "id": "https://schemas.koa.local/artifact-contracts/distributed-workflow.schema.json",
+      "path": "contracts/artifact-contracts/distributed-workflow.schema.json",
+      "title": "kOA Distributed Workflow",
+      "status": null,
+      "version": null
+    },
+    {
+      "id": "https://schemas.koa.local/artifact-contracts/experience-view-adapter.schema.json",
+      "path": "contracts/artifact-contracts/experience-view-adapter.schema.json",
+      "title": "kOA Experience View Adapter",
+      "status": null,
+      "version": null
+    },
+    {
       "id": "https://schemas.koa.local/artifact-contracts/integration-manifest.schema.json",
       "path": "contracts/artifact-contracts/integration-manifest.schema.json",
       "title": "kOA Integration Manifest Schema",
+      "status": null,
+      "version": null
+    },
+    {
+      "id": "https://schemas.koa.local/artifact-contracts/integration-resilience-policy.schema.json",
+      "path": "contracts/artifact-contracts/integration-resilience-policy.schema.json",
+      "title": "kOA Integration Resilience Policy",
       "status": null,
       "version": null
     },
@@ -47,6 +89,13 @@
       "id": "https://schemas.koa.local/artifact-contracts/language-pack.schema.json",
       "path": "contracts/artifact-contracts/language-pack.schema.json",
       "title": "kOA Language Runtime Pack Artifact Contract",
+      "status": null,
+      "version": null
+    },
+    {
+      "id": "https://schemas.koa.local/artifact-contracts/large-payload-reference.schema.json",
+      "path": "contracts/artifact-contracts/large-payload-reference.schema.json",
+      "title": "kOA Large Payload Reference",
       "status": null,
       "version": null
     },
@@ -124,6 +173,13 @@
       "id": "https://schemas.koa.local/artifact-contracts/runtime-pack.schema.json",
       "path": "contracts/artifact-contracts/runtime-pack.schema.json",
       "title": "kOA Runtime Pack",
+      "status": null,
+      "version": null
+    },
+    {
+      "id": "https://schemas.koa.local/artifact-contracts/security-evidence.schema.json",
+      "path": "contracts/artifact-contracts/security-evidence.schema.json",
+      "title": "kOA Security Evidence",
       "status": null,
       "version": null
     },

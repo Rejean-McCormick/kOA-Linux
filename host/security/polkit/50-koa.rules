@@ -1,0 +1,80 @@
+/*
+ * kOA polkit guardrail.
+ *
+ * This rule is an additional operating-system gate. It never substitutes for
+ * Identity and Trust, Governance Policy Runtime, the closed kOA Node Agent
+ * operation catalog, expected-state checks, idempotency, or durable receipts.
+ */
+
+var KOA_ACTIONS = Object.freeze({
+    "org.koa.node-agent.execute-node-operation": "execute",
+    "org.koa.node-agent.cancel-node-operation": "cancel",
+    "org.koa.node-agent.acknowledge-recovery-result": "recovery_acknowledgement"
+});
+
+var KOA_REGISTERED_OPERATIONS = Object.freeze([
+    "inspect_node_state",
+    "stage_system_artifact",
+    "activate_system_artifact",
+    "activate_service_bundle",
+    "activate_governance_bundle",
+    "manage_knowledge_artifact",
+    "import_offline_bundle",
+    "manage_declared_encrypted_volume",
+    "restart_allowlisted_service_group",
+    "rotate_node_scoped_key",
+    "export_node_evidence",
+    "enter_recovery_target",
+    "execute_rollback_or_forward_repair"
+]);
+
+function hasText(value) {
+    return typeof value === "string" && value.length > 0 && value.length <= 512;
+}
+
+function isRegisteredOperation(value) {
+    return hasText(value) && KOA_REGISTERED_OPERATIONS.indexOf(value) !== -1;
+}
+
+polkit.addRule(function(action, subject) {
+    if (action.id.indexOf("org.koa.") !== 0) {
+        return polkit.Result.NOT_HANDLED;
+    }
+
+    if (!Object.prototype.hasOwnProperty.call(KOA_ACTIONS, action.id)) {
+        return polkit.Result.NO;
+    }
+
+    if (!subject.local || !subject.active || subject.isInGroup("koa-break-glass")) {
+        return polkit.Result.NO;
+    }
+
+    if (!subject.isInGroup("koa-operators")) {
+        return polkit.Result.NO;
+    }
+
+    var requestId = action.lookup("koa.request_id");
+    var correlationId = action.lookup("koa.correlation_id");
+    var profileId = action.lookup("koa.profile_id");
+    var policyDecisionRef = action.lookup("koa.policy_decision_ref");
+    var operationId = action.lookup("koa.operation_id");
+
+    if (!hasText(requestId) || !hasText(correlationId) || !hasText(profileId)) {
+        return polkit.Result.NO;
+    }
+
+    if (action.id === "org.koa.node-agent.execute-node-operation") {
+        if (!hasText(policyDecisionRef) || !isRegisteredOperation(operationId)) {
+            return polkit.Result.NO;
+        }
+    } else if (action.id === "org.koa.node-agent.acknowledge-recovery-result") {
+        if (!hasText(policyDecisionRef) || operationId !== "execute_rollback_or_forward_repair") {
+            return polkit.Result.NO;
+        }
+    } else if (operationId !== "cancel_node_operation") {
+        return polkit.Result.NO;
+    }
+
+    /* Human authentication is still not an authorization decision. */
+    return polkit.Result.AUTH_ADMIN;
+});

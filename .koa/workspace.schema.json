@@ -1,0 +1,585 @@
+{
+  "$defs": {
+    "controlHeader": {
+      "properties": {
+        "$schema": {
+          "const": "./workspace.schema.json"
+        },
+        "kind": {
+          "enum": [
+            "repository_manifest",
+            "path_ownership",
+            "file_architecture_lock"
+          ]
+        },
+        "repository_id": {
+          "const": "koa_linux_operating_system"
+        },
+        "schema_version": {
+          "const": "1.0.0"
+        }
+      },
+      "required": [
+        "$schema",
+        "kind",
+        "repository_id",
+        "schema_version"
+      ],
+      "type": "object"
+    },
+    "coverage": {
+      "additionalProperties": false,
+      "properties": {
+        "ambiguous_paths": {
+          "maxItems": 0,
+          "type": "array"
+        },
+        "frozen_inventory_count": {
+          "const": 1040
+        },
+        "inventory_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "owner_counts": {
+          "additionalProperties": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "minProperties": 1,
+          "type": "object"
+        },
+        "resolved_path_count": {
+          "const": 1040
+        },
+        "unresolved_paths": {
+          "maxItems": 0,
+          "type": "array"
+        }
+      },
+      "required": [
+        "ambiguous_paths",
+        "frozen_inventory_count",
+        "inventory_sha256",
+        "owner_counts",
+        "resolved_path_count",
+        "unresolved_paths"
+      ],
+      "type": "object"
+    },
+    "fileArchitectureLock": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/controlHeader"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "$schema": {},
+            "architecture_locks": {
+              "items": {
+                "pattern": "^LOCK-CODE-FS-\\d{3}$",
+                "type": "string"
+              },
+              "maxItems": 10,
+              "minItems": 10,
+              "type": "array",
+              "uniqueItems": true
+            },
+            "authoritative": {
+              "const": false
+            },
+            "authority_ref": {
+              "const": "docs/02-system/23-code-and-filesystem-architecture.md"
+            },
+            "generated": {
+              "const": true
+            },
+            "generated_by": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "inventory": {
+              "items": {
+                "$ref": "#/$defs/inventoryEntry"
+              },
+              "maxItems": 1040,
+              "minItems": 1040,
+              "type": "array"
+            },
+            "inventory_summary": {
+              "$ref": "#/$defs/inventorySummary"
+            },
+            "kind": {
+              "const": "file_architecture_lock"
+            },
+            "path_classes": {
+              "items": {
+                "$ref": "#/$defs/pathClass"
+              },
+              "maxItems": 3,
+              "minItems": 3,
+              "type": "array",
+              "uniqueItems": true
+            },
+            "projection_sha256": {
+              "$ref": "#/$defs/sha256"
+            },
+            "projection_version": {
+              "const": "1.0.0"
+            },
+            "repository_id": {},
+            "schema_version": {},
+            "source_documents": {
+              "items": {
+                "$ref": "#/$defs/sourceDocument"
+              },
+              "maxItems": 11,
+              "minItems": 11,
+              "type": "array",
+              "uniqueItems": true
+            },
+            "top_level_entries": {
+              "items": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "minItems": 1,
+              "type": "array",
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "$schema",
+            "architecture_locks",
+            "authority_ref",
+            "authoritative",
+            "generated",
+            "generated_by",
+            "inventory",
+            "inventory_summary",
+            "kind",
+            "path_classes",
+            "projection_sha256",
+            "projection_version",
+            "repository_id",
+            "schema_version",
+            "source_documents",
+            "top_level_entries"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "inventoryEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "owner_id": {
+          "pattern": "^[a-z0-9][a-z0-9_-]*$",
+          "type": "string"
+        },
+        "path": {
+          "$ref": "#/$defs/relativePath"
+        },
+        "path_class": {
+          "enum": [
+            "frozen_structural_file",
+            "registered_implementation_file"
+          ]
+        },
+        "path_identifier_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "source_document": {
+          "$ref": "#/$defs/relativePath"
+        }
+      },
+      "required": [
+        "owner_id",
+        "path",
+        "path_class",
+        "path_identifier_sha256",
+        "source_document"
+      ],
+      "type": "object"
+    },
+    "inventorySummary": {
+      "additionalProperties": false,
+      "properties": {
+        "class_counts": {
+          "additionalProperties": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "minProperties": 2,
+          "type": "object"
+        },
+        "file_count": {
+          "const": 1040
+        },
+        "inventory_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "owner_count": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "owner_registry_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "required": [
+        "class_counts",
+        "file_count",
+        "inventory_sha256",
+        "owner_count",
+        "owner_registry_sha256"
+      ],
+      "type": "object"
+    },
+    "owner": {
+      "additionalProperties": false,
+      "properties": {
+        "authority_refs": {
+          "items": {
+            "$ref": "#/$defs/relativePath"
+          },
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        },
+        "label": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "owner_id": {
+          "pattern": "^[a-z0-9][a-z0-9_-]*$",
+          "type": "string"
+        },
+        "owner_kind": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "prohibited_content": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "authority_refs",
+        "label",
+        "owner_id",
+        "owner_kind",
+        "prohibited_content"
+      ],
+      "type": "object"
+    },
+    "ownershipRule": {
+      "additionalProperties": false,
+      "properties": {
+        "match": {
+          "enum": [
+            "exact",
+            "prefix"
+          ]
+        },
+        "owner_id": {
+          "pattern": "^[a-z0-9][a-z0-9_-]*$",
+          "type": "string"
+        },
+        "path": {
+          "$ref": "#/$defs/relativePath"
+        }
+      },
+      "required": [
+        "match",
+        "owner_id",
+        "path"
+      ],
+      "type": "object"
+    },
+    "pathClass": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "enumerated_in_baseline": {
+          "type": "boolean"
+        },
+        "manually_authoritative": {
+          "type": "boolean"
+        },
+        "path_class": {
+          "enum": [
+            "dynamic_or_generated_file",
+            "frozen_structural_file",
+            "registered_implementation_file"
+          ]
+        }
+      },
+      "required": [
+        "description",
+        "enumerated_in_baseline",
+        "manually_authoritative",
+        "path_class"
+      ],
+      "type": "object"
+    },
+    "pathOwnership": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/controlHeader"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "$schema": {},
+            "authority_ref": {
+              "const": "docs/02-system/code-and-filesystem-architecture/33-path-ownership-and-change-rules.md"
+            },
+            "coverage": {
+              "$ref": "#/$defs/coverage"
+            },
+            "kind": {
+              "const": "path_ownership"
+            },
+            "owners": {
+              "items": {
+                "$ref": "#/$defs/owner"
+              },
+              "minItems": 1,
+              "type": "array",
+              "uniqueItems": true
+            },
+            "registry_sha256": {
+              "$ref": "#/$defs/sha256"
+            },
+            "repository_id": {},
+            "resolution_strategy": {
+              "const": "exact_then_longest_prefix"
+            },
+            "rules": {
+              "items": {
+                "$ref": "#/$defs/ownershipRule"
+              },
+              "minItems": 1,
+              "type": "array",
+              "uniqueItems": true
+            },
+            "schema_version": {}
+          },
+          "required": [
+            "$schema",
+            "authority_ref",
+            "coverage",
+            "kind",
+            "owners",
+            "registry_sha256",
+            "repository_id",
+            "resolution_strategy",
+            "rules",
+            "schema_version"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "relativePath": {
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$",
+      "type": "string"
+    },
+    "repositoryManifest": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/controlHeader"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "$schema": {},
+            "allowed_top_level_entries": {
+              "items": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "minItems": 1,
+              "type": "array",
+              "uniqueItems": true
+            },
+            "architecture_authority": {
+              "$ref": "#/$defs/relativePath"
+            },
+            "architecture_locks": {
+              "items": {
+                "pattern": "^LOCK-CODE-FS-\\d{3}$",
+                "type": "string"
+              },
+              "maxItems": 10,
+              "minItems": 10,
+              "type": "array",
+              "uniqueItems": true
+            },
+            "architecture_series": {
+              "items": {
+                "$ref": "#/$defs/relativePath"
+              },
+              "maxItems": 11,
+              "minItems": 11,
+              "type": "array",
+              "uniqueItems": true
+            },
+            "control_files": {
+              "additionalProperties": false,
+              "properties": {
+                "architecture_lock": {
+                  "const": ".koa/file-architecture.lock.json"
+                },
+                "path_ownership": {
+                  "const": ".koa/path-ownership.json"
+                },
+                "workspace_schema": {
+                  "const": ".koa/workspace.schema.json"
+                }
+              },
+              "required": [
+                "architecture_lock",
+                "path_ownership",
+                "workspace_schema"
+              ],
+              "type": "object"
+            },
+            "generated_indexes_authoritative": {
+              "const": false
+            },
+            "independent_subsystem_implementations_vendored": {
+              "const": false
+            },
+            "kind": {
+              "const": "repository_manifest"
+            },
+            "manifest_sha256": {
+              "$ref": "#/$defs/sha256"
+            },
+            "name": {
+              "const": "kOA-Linux Operating System"
+            },
+            "product_family": {
+              "const": "kOA"
+            },
+            "repository_id": {},
+            "repository_role": {
+              "const": "federated_system_integration_repository"
+            },
+            "repository_slug": {
+              "const": "koa-linux"
+            },
+            "schema_version": {},
+            "source_contract": {
+              "$ref": "#/$defs/sourceContract"
+            },
+            "status": {
+              "const": "active"
+            },
+            "system_class": {
+              "const": "sovereign_local_operating_system"
+            },
+            "top_level_tree_closed": {
+              "const": true
+            }
+          },
+          "required": [
+            "$schema",
+            "allowed_top_level_entries",
+            "architecture_authority",
+            "architecture_locks",
+            "architecture_series",
+            "control_files",
+            "generated_indexes_authoritative",
+            "independent_subsystem_implementations_vendored",
+            "kind",
+            "manifest_sha256",
+            "name",
+            "product_family",
+            "repository_id",
+            "repository_role",
+            "repository_slug",
+            "schema_version",
+            "source_contract",
+            "status",
+            "system_class",
+            "top_level_tree_closed"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "sourceContract": {
+      "additionalProperties": false,
+      "properties": {
+        "effective_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "path": {
+          "$ref": "#/$defs/relativePath"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "version": {
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "effective_at",
+        "path",
+        "sha256",
+        "version"
+      ],
+      "type": "object"
+    },
+    "sourceDocument": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/relativePath"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "https://schemas.koa.local/repository/workspace.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Self-contained validation schema for the repository identity, path-ownership registry and file-architecture lock.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/repositoryManifest"
+    },
+    {
+      "$ref": "#/$defs/pathOwnership"
+    },
+    {
+      "$ref": "#/$defs/fileArchitectureLock"
+    }
+  ],
+  "title": "kOA repository workspace control schema"
+}

@@ -1,0 +1,96 @@
+{
+  "$schema": "../../../docs/contracts/artifact-contracts/module-interface-manifest.schema.json",
+  "manifest_id": "semantik-architect.module-interface",
+  "manifest_version": "1.0.0",
+  "module_id": "semantik-architect",
+  "public_name": "SemantiK Architect",
+  "description": "Presentation-only kOA status surface for the separately owned language build subsystem.",
+  "icon_ref": null,
+  "home_route_id": "semantik-architect.status",
+  "required_capabilities": [
+    "semantik_architect.status.read"
+  ],
+  "routes": [
+    {
+      "$schema": "../../../docs/contracts/artifact-contracts/route-contribution.schema.json",
+      "route_id": "semantik-architect.status",
+      "module_id": "semantik-architect",
+      "path": "/semantik-architect",
+      "page_ref": "koa-spaces://integration-status/semantik-architect",
+      "default_label": "SemantiK Architect",
+      "label_key": "semantik-architect.route.status",
+      "availability": "conditional",
+      "offline_behavior": "degraded",
+      "deep_link_allowed": true,
+      "safe_fallback_route_id": null,
+      "aliases": [],
+      "capability_policy": {
+        "required_capabilities": [
+          "semantik_architect.status.read"
+        ],
+        "denied_behavior": "disabled"
+      }
+    }
+  ],
+  "sidebar": {
+    "$schema": "../../../docs/contracts/artifact-contracts/sidebar-navigation.schema.json",
+    "module_id": "semantik-architect",
+    "visible_depth": 2,
+    "items": [
+      {
+        "item_id": "semantik-architect.status",
+        "label": "SemantiK Architect",
+        "label_key": "semantik-architect.navigation.status",
+        "icon_ref": null,
+        "order": 700,
+        "required_capabilities": [
+          "semantik_architect.status.read"
+        ],
+        "availability": "conditional",
+        "badge_provider_ref": "koa_semantik_architect_adapter.health:status_badge",
+        "route_id": "semantik-architect.status"
+      }
+    ]
+  },
+  "topbar_widgets": [
+    {
+      "$schema": "../../../docs/contracts/artifact-contracts/topbar-widget.schema.json",
+      "widget_id": "semantik-architect.status",
+      "module_id": "semantik-architect",
+      "scope": "module",
+      "slot": "status",
+      "kind": "status",
+      "label": "Language build status",
+      "label_key": "semantik-architect.widget.status",
+      "icon_ref": null,
+      "priority": 700,
+      "required_capabilities": [
+        "semantik_architect.status.read"
+      ],
+      "offline_behavior": "degraded",
+      "compact_only": true,
+      "activation": {
+        "kind": "status_provider",
+        "route_id": null,
+        "command_ref": null,
+        "status_provider_ref": "koa_semantik_architect_adapter.health:health_status"
+      }
+    }
+  ],
+  "localization_refs": [],
+  "accessibility": {
+    "keyboard_navigation": true,
+    "screen_reader_labels": true,
+    "reduced_motion": "not_applicable"
+  },
+  "offline_behavior": {
+    "module_state": "degraded",
+    "fallback_route_id": null
+  },
+  "authority_boundary": {
+    "presentation_only": true,
+    "may_grant_capabilities": false,
+    "direct_domain_writes": false,
+    "menu_visibility_is_authorization": false
+  }
+}

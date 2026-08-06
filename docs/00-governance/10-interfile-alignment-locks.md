@@ -16,12 +16,21 @@
     "generated/assertion-index.json",
     "generated/traceability.json",
     "generated/exception-index.json",
-    "contracts/ai-navigation.contract.json"
+    "contracts/ai-navigation.contract.json",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "contracts/architecture-patterns.contract.json"
   ],
   "decision_ids": [
     "DEC-DOC-002",
     "DEC-DOC-003",
-    "DEC-DOC-004"
+    "DEC-DOC-004",
+    "DEC-RES-001",
+    "DEC-MSG-001",
+    "DEC-WF-001",
+    "DEC-PAYLOAD-001",
+    "DEC-BFF-001",
+    "DEC-CQRS-001",
+    "DEC-CACHE-001"
   ],
   "requirement_ids": [
     "REQ-LOCK-001",
@@ -90,7 +99,15 @@
     "LOCK-LIFE-001",
     "LOCK-LIFE-002",
     "LOCK-LIFE-003",
-    "LOCK-LIFE-004"
+    "LOCK-LIFE-004",
+    "LOCK-SPACES-001",
+    "LOCK-RES-001",
+    "LOCK-MSG-001",
+    "LOCK-WF-001",
+    "LOCK-PAYLOAD-001",
+    "LOCK-BFF-001",
+    "LOCK-CQRS-001",
+    "LOCK-CACHE-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -107,7 +124,9 @@
     "drift-prevention",
     "impact-analysis",
     "validation",
-    "ai-authoring"
+    "ai-authoring",
+    "koa-spaces",
+    "architecture-patterns"
   ]
 }
 KOA:DOC-META:END -->
@@ -926,7 +945,21 @@ Meaning:
 
 A missing disposition blocks completion of the impact report.
 
-### 4.20 Mandatory lock catalog
+### 4.20 kOA Spaces presentation and replacement lock
+
+`LOCK-SPACES-001` binds the kOA Spaces subsystem contract, system baseline, terminology, Space and interface-manifest artifact classes, profile membership, activation receipts, and conformance controls.
+
+The lock requires all of the following to remain true:
+
+- presentation artifacts never grant authority or bypass an owning-system authorization path;
+- public module aliases never change stable technical identities;
+- disabling or replacing kOA Spaces preserves core and business authority and data;
+- Space activation is validated, atomic, receipted, and reversible to the previous valid Space;
+- unavailable modules or widgets degrade visibly without silent substitution.
+
+A change to any protected fact requires impact review across the subsystem contract, system contract, terminology, artifact classes, profiles, operations, recipes, conformance controls, generated catalogs, and AI context.
+
+### 4.21 Mandatory lock catalog
 
 The following visible catalog is generated from `generated/assertion-index.json`.
 
@@ -990,6 +1023,7 @@ renderer=lock-catalog-v1
 - `LOCK-GATE-001` — Publication Gateway authorization remains separate from UCKK-specific publication transport and from inbound UCKK import acceptance.
 - `LOCK-COMP-001` — Kristal identity remains independent of tenant workflow and interface state.
 - `LOCK-COMP-002` — The user language runtime consumes compiled artifacts; build activity belongs to the designated language workbench.
+- `LOCK-SPACES-001` — kOA Spaces presentation never grants authority, and disabling or replacing it preserves core and business state.
 
 #### Development isolation
 
@@ -1595,3 +1629,13 @@ The lock verifies that:
 ### 11.6 Final lock rule
 
 > A canonical fact is changed once, at its owner. Impact analysis identifies everything that depends on it. Interfile Alignment Locks prove that every affected contract, document, test, projection, and AI context still agrees before the new authority becomes active.
+
+### 11.7 Architecture-pattern locks
+
+- `LOCK-RES-001` — Fallible boundary calls use bounded timeouts, bounded retry, and a three-state circuit breaker; open state never fabricates success.
+- `LOCK-MSG-001` — Preserved asynchronous work reaches monitored quarantine after bounded retry and leaves quarantine only through authorized redrive, authorized discard, or superseding repair.
+- `LOCK-WF-001` — Multi-owner transitions expose pending and partial states and end with compensation, forward repair, failure closure, cancellation, or completed terminal evidence.
+- `LOCK-PAYLOAD-001` — Large payloads remain in owner-controlled storage while control messages carry a bounded verified reference.
+- `LOCK-BFF-001` — Experience view adapters own presentation shaping only and cannot own business logic, authorization, authoritative storage, or cross-owner transactions.
+- `LOCK-CQRS-001` — CQRS projections are non-authoritative, command-free, staleness-bounded, deletion-aware, and rebuildable from a declared owner source.
+- `LOCK-CACHE-001` — Caches are non-authoritative, tenant-scoped, bounded by TTL and invalidation, and safe when empty or unavailable.

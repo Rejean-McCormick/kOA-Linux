@@ -1,0 +1,46 @@
+schema_version = 1
+# Values in this file are implementation defaults, not normative architecture limits.
+
+[envelope]
+envelope_id = "koa-spaces-baseline"
+version = "1.0.0"
+owner = "koa_spaces"
+class = "interactive_presentation"
+required_for_core_operation = false
+
+[cpu]
+shares = 100
+quota_cores = 1.0
+burst_cores = 2.0
+
+[memory]
+reservation_mib = 128
+soft_limit_mib = 384
+hard_limit_mib = 512
+swap_as_capacity = false
+
+[process]
+max_tasks = 128
+max_open_files = 1024
+max_concurrent_requests = 32
+idle_worker_count = 0
+
+[storage]
+preference_store_mib = 64
+validated_artifact_store_mib = 256
+presentation_cache_mib = 256
+cache_is_reproducible = true
+
+[pressure.memory]
+warning_action = "evict_reproducible_presentation_cache"
+constrained_action = "disable_optional_widgets_and_background_prefetch"
+critical_action = "retain_global_frame_and_required_local_routes"
+
+[pressure.storage]
+warning_action = "prune_expired_reproducible_assets"
+critical_action = "block_new_optional_asset_admission"
+protected = ["active_space", "required_manifests", "activation_receipts", "rollback_space"]
+
+[pressure.network]
+offline_action = "retain_local_frame_and_declared_offline_routes"
+provider_substitution = false

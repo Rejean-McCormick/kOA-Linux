@@ -19,7 +19,10 @@
     "generated/assertion-index.json",
     "generated/traceability.json",
     "generated/test-catalog.json",
-    "generated/evidence-catalog.json"
+    "generated/evidence-catalog.json",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md"
   ],
   "decision_ids": [
     "DEC-SYS-OFFLINE-001",
@@ -61,7 +64,8 @@
     "LOCK-ARI-002",
     "LOCK-DATA-001",
     "LOCK-PROFILE-001",
-    "LOCK-UCKK-EXT-002"
+    "LOCK-UCKK-EXT-002",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -80,7 +84,9 @@
     "koa_mediatheque",
     "uckk_publication",
     "sentient",
-    "resilience"
+    "resilience",
+    "koa-spaces",
+    "experience-layer"
   ]
 }
 KOA:DOC-META:END -->
@@ -448,3 +454,6 @@ SenTient is removed from a developer workspace. Core kOA services, Ariane local 
 
 An isolated school receives a verified UCKK course bundle by intermittent network or removable media. The system validates the source, license, manifest, signatures, hashes, compatibility, and required local resources. The kOA Mediatheque accepts a local copy with preserved UCKK provenance. Students consult the installed course offline. Later UCKK changes are presented as a new import candidate and never overwrite the local copy silently.
 
+## Offline Experience Continuity
+
+When a profile activates kOA Spaces, the admitted Space definition, module manifests, navigation labels, accessibility resources, and permitted interface assets remain locally available according to that profile. Core offline conformance does not depend on kOA Spaces: failure or omission of the presentation subsystem leaves native interfaces, local administration, recovery, and authoritative services available through declared fallback paths.

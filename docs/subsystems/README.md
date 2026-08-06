@@ -7,8 +7,9 @@ These stable locations are reserved for authoritative documentation of independe
 - `subsystems/orgo/` — Orgo
 - `subsystems/sentient/` — SenTient
 - `subsystems/semantik-architect/` — SemantiK Architect
+- `subsystems/koa-spaces/` — kOA Spaces
 
-Each location may remain absent until its documentation is available. Install a directory junction or symbolic link at the reserved path. Do not use Windows `.lnk` shortcut files.
+Each location may remain absent until its documentation is available. kOA Spaces remains optional even when its mount is present; the mount provides internal subsystem documentation, not runtime authority. Install a directory junction or symbolic link at the reserved path. Do not use Windows `.lnk` shortcut files.
 
 ## UCKK exclusion
 

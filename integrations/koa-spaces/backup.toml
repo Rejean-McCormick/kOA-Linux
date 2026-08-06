@@ -1,0 +1,47 @@
+schema_version = 1
+
+[backup]
+backup_id = "koa-spaces-presentation-state"
+owner = "koa_spaces"
+required_for_core_restore = false
+consistency = "application_quiesced_or_snapshot"
+encryption_required = true
+receipt_required = true
+
+[include]
+paths = [
+  "/var/lib/koa/integrations/koa-spaces/active-space",
+  "/var/lib/koa/integrations/koa-spaces/manifests",
+  "/var/lib/koa/integrations/koa-spaces/preferences",
+  "/var/lib/koa/integrations/koa-spaces/routes",
+  "/var/lib/koa/integrations/koa-spaces/receipts",
+  "/var/lib/koa/integrations/koa-spaces/rollback",
+]
+classes = [
+  "validated_space_definitions",
+  "validated_module_manifests",
+  "presentation_preferences",
+  "last_permitted_route_state",
+  "activation_receipts",
+  "previous_validated_space",
+]
+
+[exclude]
+paths = ["/var/lib/koa/integrations/koa-spaces/cache"]
+classes = [
+  "reproducible_presentation_cache",
+  "business_data",
+  "learning_progress",
+  "media_content",
+  "identity_credentials",
+  "authorization_state",
+]
+
+[restore]
+validate_artifact_hashes = true
+validate_schemas = true
+rebuild_reproducible_cache = true
+restore_does_not_activate = true
+activation_requires_new_receipt = true
+missing_optional_manifest = "disable_and_report"
+missing_required_manifest = "block_activation"

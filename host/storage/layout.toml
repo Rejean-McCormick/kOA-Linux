@@ -1,0 +1,235 @@
+schema_version = 1
+profile_id = "sovereign_linux_node"
+recipe_id = "RECIPE-SLN-004"
+recipe_version = "1.0.0"
+active_root = "/var/lib/koa"
+recovery_root = "/var/lib/koa-recovery"
+backup_root = "/mnt/koa-backup"
+layout_version_file = "layout-version"
+layout_version_value = "RECIPE-SLN-004/1.0.0"
+symlink_boundaries_permitted = false
+physical_colocation_transfers_authority = false
+shared_mutable_authority_permitted = false
+cross_owner_writes_permitted = false
+
+[[top_level]]
+root = "active"
+path = "components"
+owner_ref = "root"
+group_ref = "root"
+mode = "0750"
+authority_class = "owner_container"
+writer_ref = "deployment_authority"
+
+[[top_level]]
+root = "active"
+path = "artifacts"
+owner_ref = "root"
+group_ref = "root"
+mode = "0750"
+authority_class = "artifact_container"
+writer_ref = "artifact_store_authority"
+
+[[top_level]]
+root = "active"
+path = "evidence"
+owner_ref = "root"
+group_ref = "root"
+mode = "0750"
+authority_class = "evidence_container"
+writer_ref = "evidence_authority"
+
+[[top_level]]
+root = "active"
+path = "cache"
+owner_ref = "root"
+group_ref = "root"
+mode = "0750"
+authority_class = "non_authoritative_cache_container"
+writer_ref = "component_scoped_identity"
+
+[[top_level]]
+root = "active"
+path = "staging"
+owner_ref = "root"
+group_ref = "root"
+mode = "0750"
+authority_class = "non_authoritative_staging_container"
+writer_ref = "component_scoped_identity"
+
+[[top_level]]
+root = "active"
+path = "lost-and-found-review"
+owner_ref = "root"
+group_ref = "root"
+mode = "0700"
+authority_class = "quarantine"
+writer_ref = "authorized_recovery_operator"
+
+[[component_class]]
+id = "authoritative"
+mode = "0700"
+authority_class = "authoritative"
+owner_ref = "owning_component_service_identity"
+write_identity_scope = "one_component"
+rebuildable = false
+promotion_permitted = false
+
+[[component_class]]
+id = "replicas"
+mode = "0750"
+authority_class = "replica"
+owner_ref = "owning_component_service_identity"
+write_identity_scope = "one_component"
+rebuildable = true
+promotion_permitted = false
+
+[[component_class]]
+id = "projections"
+mode = "0750"
+authority_class = "projection"
+owner_ref = "owning_component_service_identity"
+write_identity_scope = "one_component"
+rebuildable = true
+promotion_permitted = false
+
+[[component_class]]
+id = "queues"
+mode = "0750"
+authority_class = "bounded_queue"
+owner_ref = "owning_component_service_identity"
+write_identity_scope = "one_component"
+rebuildable = false
+promotion_permitted = false
+
+[[component_class]]
+id = "checkpoints"
+mode = "0750"
+authority_class = "owner_checkpoint"
+owner_ref = "owning_component_service_identity"
+write_identity_scope = "one_component"
+rebuildable = false
+promotion_permitted = false
+
+[[component_class]]
+id = "logs"
+mode = "0750"
+authority_class = "non_authoritative_log"
+owner_ref = "owning_component_service_identity"
+write_identity_scope = "one_component"
+rebuildable = false
+promotion_permitted = false
+
+[[component_class]]
+id = "temporary"
+mode = "0750"
+authority_class = "temporary"
+owner_ref = "owning_component_service_identity"
+write_identity_scope = "one_component"
+rebuildable = true
+promotion_permitted = false
+
+[[artifact_class]]
+id = "system"
+mode = "0750"
+owner_ref = "artifact_store_identity"
+authority_class = "canonical_artifact_channel"
+activation_by_presence = false
+
+[[artifact_class]]
+id = "services"
+mode = "0750"
+owner_ref = "artifact_store_identity"
+authority_class = "canonical_artifact_channel"
+activation_by_presence = false
+
+[[artifact_class]]
+id = "governance"
+mode = "0750"
+owner_ref = "artifact_store_identity"
+authority_class = "canonical_artifact_channel"
+activation_by_presence = false
+
+[[artifact_class]]
+id = "knowledge"
+mode = "0750"
+owner_ref = "artifact_store_identity"
+authority_class = "canonical_artifact_channel"
+activation_by_presence = false
+
+[[artifact_class]]
+id = "manifests"
+mode = "0750"
+owner_ref = "artifact_store_identity"
+authority_class = "artifact_metadata"
+activation_by_presence = false
+
+[[artifact_class]]
+id = "quarantine"
+mode = "0750"
+owner_ref = "artifact_store_identity"
+authority_class = "candidate_quarantine"
+activation_by_presence = false
+
+[[evidence_class]]
+id = "audit"
+mode = "0750"
+owner_ref = "audit_broker_identity"
+authority_class = "append_only_evidence"
+operational_source_of_truth = false
+
+[[evidence_class]]
+id = "conformance"
+mode = "0750"
+owner_ref = "evidence_registry_identity"
+authority_class = "immutable_evidence"
+operational_source_of_truth = false
+
+[[evidence_class]]
+id = "decisions"
+mode = "0750"
+owner_ref = "governance_evidence_identity"
+authority_class = "decision_evidence"
+operational_source_of_truth = false
+
+[[evidence_class]]
+id = "provenance"
+mode = "0750"
+owner_ref = "provenance_evidence_identity"
+authority_class = "provenance_evidence"
+operational_source_of_truth = false
+
+[[evidence_class]]
+id = "receipts"
+mode = "0750"
+owner_ref = "critical_receipt_identity"
+authority_class = "critical_transition_evidence"
+operational_source_of_truth = false
+
+[[recovery_class]]
+id = "system"
+mode = "0750"
+owner_ref = "recovery_authority_identity"
+normal_component_write = false
+activation_by_presence = false
+
+[[recovery_class]]
+id = "manifests"
+mode = "0750"
+owner_ref = "recovery_authority_identity"
+normal_component_write = false
+activation_by_presence = false
+
+[[recovery_class]]
+id = "trust"
+mode = "0750"
+owner_ref = "recovery_authority_identity"
+normal_component_write = false
+activation_by_presence = false
+
+[[recovery_class]]
+id = "validation"
+mode = "0750"
+owner_ref = "recovery_authority_identity"
+normal_component_write = false
+activation_by_presence = false

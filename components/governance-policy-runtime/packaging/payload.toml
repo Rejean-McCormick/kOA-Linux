@@ -1,0 +1,86 @@
+schema_version = "1.0.0"
+payload_id = "governance-policy-runtime-component"
+component_id = "governance_policy_runtime"
+component_version = "1.0.0"
+component_contract = "docs/contracts/components/governance-policy-runtime.component.json"
+policy_bundle_schema = "docs/contracts/artifact-contracts/policy-bundle.schema.json"
+payload_class = "python-component"
+source_root = "components/governance-policy-runtime"
+public_api = "koa_governance_policy_runtime.api"
+service_entrypoint = "koa_governance_policy_runtime.__main__:main"
+generated = false
+
+[authority]
+policy_authority_owner = "governance_policy_runtime"
+identity_owner = "identity_and_trust"
+audit_evidence_owner = "audit_broker"
+resource_authority_owner = "resource_governor"
+privileged_execution_owner = "koa_node_agent"
+publication_execution_owner = "publication_gateway"
+caller_owns_resulting_state_transition = true
+direct_cross_component_database_access = false
+partial_policy_authority = false
+native_or_automatic_external_ai = false
+
+[installation]
+code_root = "/usr/lib/koa/active/services/governance-policy-runtime"
+configuration_root = "/etc/koa/components/governance-policy-runtime"
+state_root = "/var/lib/koa/policies"
+runtime_root = "/run/koa/governance-policy-runtime"
+receipt_root = "/var/lib/koa/receipts/governance-policy-runtime"
+quarantine_root = "/var/lib/koa/quarantine/governance-policy-runtime"
+socket_path = "/run/koa/sockets/governance-policy-runtime.sock"
+
+[[include]]
+source = "src/koa_governance_policy_runtime"
+destination = "python/koa_governance_policy_runtime"
+kind = "tree"
+mutable = false
+
+[[include]]
+source = "migrations"
+destination = "migrations"
+kind = "tree"
+mutable = false
+
+[[interface]]
+interface_id = "evaluate_decision"
+contract_interface_id = "IFACE-GOV-POL-001"
+version = "1.0.0"
+interaction = "request_response"
+
+[[interface]]
+interface_id = "get_policy_set_status"
+contract_interface_id = "IFACE-GOV-POL-002"
+version = "1.0.0"
+interaction = "query"
+
+[[interface]]
+interface_id = "stage_policy_bundle"
+contract_interface_id = "IFACE-GOV-POL-003"
+version = "1.0.0"
+interaction = "command"
+
+[[interface]]
+interface_id = "activate_policy_set"
+contract_interface_id = "IFACE-GOV-POL-004"
+version = "1.0.0"
+interaction = "command"
+
+[[interface]]
+interface_id = "rollback_policy_set"
+contract_interface_id = "IFACE-GOV-POL-005"
+version = "1.0.0"
+interaction = "command"
+
+[[interface]]
+interface_id = "get_decision_receipt"
+contract_interface_id = "IFACE-GOV-POL-006"
+version = "1.0.0"
+interaction = "query"
+
+[[interface]]
+interface_id = "health_and_readiness"
+contract_interface_id = "IFACE-GOV-POL-007"
+version = "1.0.0"
+interaction = "query"

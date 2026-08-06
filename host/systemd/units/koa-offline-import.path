@@ -1,0 +1,14 @@
+[Unit]
+Description=Watch the bounded kOA offline-import inbox
+Requires=koa-release-set-verify.service
+After=local-fs.target systemd-tmpfiles-setup.service koa-release-set-verify.service
+Conflicts=koa-recovery.target
+ConditionPathIsDirectory=/var/lib/koa/offline-import/quarantine
+
+[Path]
+DirectoryNotEmpty=/var/lib/koa/offline-import/quarantine
+Unit=koa-offline-import.service
+MakeDirectory=yes
+
+[Install]
+WantedBy=koa-background.target

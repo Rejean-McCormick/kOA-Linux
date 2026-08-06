@@ -1,0 +1,21 @@
+[package]
+name = "koa-node-agent"
+version = "1.0.0"
+edition = "2021"
+rust-version = "1.74"
+description = "Narrow node-local lifecycle and privileged-operation broker for kOA"
+publish = false
+build = "build.rs"
+
+[lib]
+name = "koa_node_agent"
+path = "src/lib.rs"
+
+[[bin]]
+name = "koa-node-agent"
+path = "src/main.rs"
+
+[dependencies]
+koa-interfaces = { path = "../../interfaces/rust", version = "1.0.0" }
+
+[dev-dependencies]

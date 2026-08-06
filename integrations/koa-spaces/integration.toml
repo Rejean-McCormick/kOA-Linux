@@ -1,0 +1,79 @@
+schema_version = 1
+
+[integration]
+integration_id = "koa_spaces"
+public_name = "kOA Spaces"
+version = "1.0.0"
+class = "integrated_optional_subsystem"
+optional = true
+replaceable = true
+offline_capable = true
+authority = "non_authoritative_presentation"
+activation_model = "profile_conditioned_atomic_activation"
+source_lock = "source.lock.json"
+compatibility_manifest = "compatibility.json"
+
+[source]
+implementation_location = "subsystems/koa-spaces"
+implementation_source_required_for_build = true
+implementation_source_required_for_activation = true
+unresolved_source_action = "block_build_and_activation"
+vendoring_allowed = false
+
+[interfaces]
+transport = "http_over_unix"
+socket_path = "/run/koa/sockets/koa-spaces.sock"
+transport_contract = "interfaces/transport/http-over-unix.toml"
+health_contract = "interfaces/health/health-status.schema.json"
+readiness_contract = "interfaces/health/readiness.schema.json"
+receipt_contract = "interfaces/receipts/receipt-envelope.schema.json"
+identity_context_contract = "interfaces/identity/identity-context.schema.json"
+capability_snapshot_contract = "interfaces/capabilities/capability-snapshot.schema.json"
+
+[artifact_admission]
+space_definition_schema = "docs/contracts/artifact-contracts/space-definition.schema.json"
+module_manifest_schema = "docs/contracts/artifact-contracts/module-interface-manifest.schema.json"
+activation_receipt_schema = "docs/contracts/artifact-contracts/space-activation-receipt.schema.json"
+remote_executable_extensions = false
+unknown_widget_kinds = "reject"
+unknown_route_actions = "reject"
+
+[authority_boundary]
+presentation_only = true
+may_grant_capabilities = false
+menu_visibility_is_authorization = false
+direct_cross_subsystem_writes = false
+business_state_owned = false
+authorization_decisions_owned = false
+host_privilege_owned = false
+resource_admission_owned = false
+release_activation_owned = false
+backup_authority_owned = false
+
+[data_boundary]
+accepted_inputs = [
+  "validated_space_definitions",
+  "validated_module_interface_manifests",
+  "identity_context_assertions",
+  "capability_snapshots",
+  "declared_health_and_readiness",
+]
+owned_state = [
+  "active_space_identity",
+  "validated_manifest_cache",
+  "navigation_preferences",
+  "last_permitted_route",
+  "presentation_asset_cache",
+  "activation_receipts",
+  "previous_validated_space",
+]
+prohibited_state = [
+  "authorization_results",
+  "identity_credentials",
+  "policy_authority",
+  "business_records",
+  "learning_progress",
+  "media_authority",
+  "release_state",
+  "privileged_operation_requests",
+]

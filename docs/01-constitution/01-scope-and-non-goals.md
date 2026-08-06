@@ -13,7 +13,10 @@
     "generated/requirements-index.json",
     "generated/assertion-index.json",
     "contracts/integrations/uckk-import.integration.json",
-    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json"
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md"
   ],
   "decision_ids": [
     "DEC-AI-001",
@@ -70,7 +73,8 @@
     "LOCK-SENT-001",
     "LOCK-MEDIATHEQUE-001",
     "LOCK-UCKK-EXT-001",
-    "LOCK-UCKK-EXT-002"
+    "LOCK-UCKK-EXT-002",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -86,7 +90,9 @@
     "global-baseline",
     "profile-boundaries",
     "offline",
-    "ai-boundary"
+    "ai-boundary",
+    "koa-spaces",
+    "experience-layer"
   ]
 }
 KOA:DOC-META:END -->
@@ -510,3 +516,7 @@ The external voice adapter is unavailable. Ariane exposes voice as unavailable w
 ### 11.6 Correct blocked result
 
 A proposed capability has no accepted decision and no explicit profile. The capability is not added to the baseline, not assigned an inferred default, and not included in an active conformance claim.
+
+## kOA Spaces Scope Classification
+
+kOA Spaces is classified as an optional, replaceable, independently documented experience subsystem. Its presence can change navigation and presentation composition, but it does not expand the global authority baseline, become part of the privileged core, or make a profile non-conformant when omitted. A Space definition is presentation configuration rather than business, identity, policy, release, or host authority.

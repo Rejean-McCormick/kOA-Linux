@@ -1,0 +1,47 @@
+format_version = "1.0.0"
+integration_id = "orgo"
+display_name = "Orgo"
+relationship = "integrated_subsystem"
+criticality = "profile_selected"
+status = "blocked"
+
+[authority]
+koa_role = "Independent task, organization, scheduling, and orchestration subsystem integration boundary"
+subsystem_owns = ["internal_domain_model", "internal_workflow", "internal_state_machine", "complete_api", "internal_user_interface", "subsystem_validation", "authoritative_data"]
+koa_owns = ["deployment_membership", "process_lifecycle", "resource_envelope", "identity_trust_boundary", "network_storage_exposure", "artifact_admission", "cross_subsystem_interactions", "health_integration", "backup_coordination", "safe_degradation", "presentation_admission"]
+direct_cross_subsystem_writes = false
+internal_behavior_duplication = false
+authority_transfer_by_visibility = false
+
+[adapter]
+package = "koa-orgo-adapter"
+module = "koa_orgo_adapter"
+entrypoint = "koa_orgo_adapter.bootstrap:bootstrap"
+transport = "http_over_unix"
+socket = "/run/koa/orgo/adapter.sock"
+
+[capabilities]
+declaration_source = "subsystems/orgo"
+activate_undeclared = false
+required_common = ["health_status", "readiness", "correlation", "receipts", "identity_context", "capability_snapshot", "jobs"]
+
+[interface]
+owner = "orgo"
+consumer = "koa_spaces"
+module_manifest = "integrations/orgo/interface/module-interface.json"
+sidebar = "integrations/orgo/interface/sidebar.json"
+widgets = "integrations/orgo/interface/widgets.json"
+presentation_only = true
+menu_visibility_is_authorization = false
+may_grant_capabilities = false
+direct_domain_writes = false
+
+[documentation]
+official_mount = "subsystems/orgo"
+required_for_final_alignment = true
+boundary_contract = "docs/contracts/subsystems/orgo.subsystem.json"
+boundary_document = "docs/04-components/subsystems/orgo.md"
+
+[activation]
+allowed = false
+reason = "source_and_official_documentation_not_pinned"

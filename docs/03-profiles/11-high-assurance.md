@@ -29,7 +29,11 @@
     "contracts/integrations/uckk-import.integration.json",
     "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
     "contracts/artifact-contracts/uckk-learning-package.schema.json",
-    "contracts/artifact-contracts/uckk-import-receipt.schema.json"
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md",
+    "03-profiles/14-koa-spaces-deployment.md"
   ],
   "decision_ids": [
     "DEC-PROFILE-001",
@@ -110,7 +114,8 @@
     "LOCK-COMP-001",
     "LOCK-MEDIATHEQUE-001",
     "LOCK-UCKK-EXT-001",
-    "LOCK-UCKK-EXT-002"
+    "LOCK-UCKK-EXT-002",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -143,7 +148,10 @@
     "DOC-SYS-017",
     "DOC-SYS-018",
     "DOC-SYS-019",
-    "DOC-SYS-020"
+    "DOC-SYS-020",
+    "DOC-SYS-021",
+    "DOC-SYS-022",
+    "DOC-PROFILE-014"
   ],
   "tags": [
     "profile-overlay",
@@ -156,7 +164,10 @@
     "audit",
     "recovery",
     "release-security",
-    "offline"
+    "offline",
+    "koa-spaces",
+    "experience-layer",
+    "profile"
   ]
 }
 KOA:DOC-META:END -->
@@ -1096,3 +1107,7 @@ Build success does not equal signing or activation authority.
 A required audit anchor becomes unavailable beyond the permitted evidence window.
 
 Local operation can continue according to the primary profile and degradation rules. The high-assurance claim becomes suspended or blocked until the anchor is restored, evidence is reconciled, and required tests pass.
+
+## High-Assurance Constraints for kOA Spaces
+
+When inherited from a compatible primary profile, kOA Spaces remains optional but receives stronger controls: admitted and pinned presentation artifacts, allowlisted actions and widget kinds, atomic reviewed activation, protected evidence, strict fallback paths, and no remote executable extension. Local preferences cannot hide security-required notices or broaden authority.

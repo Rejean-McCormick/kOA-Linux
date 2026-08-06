@@ -1,0 +1,21 @@
+# kOA generated local component socket template.
+# Socket access grants connection only and never grants operation authority.
+
+[Unit]
+Description={{DESCRIPTION}}
+PartOf={{SERVICE_UNIT}}
+
+[Socket]
+ListenStream={{SOCKET_PATH}}
+Service={{SERVICE_UNIT}}
+Accept=no
+SocketUser={{SOCKET_USER}}
+SocketGroup={{SOCKET_GROUP}}
+SocketMode=0660
+DirectoryMode=0755
+RemoveOnStop=yes
+FileDescriptorName={{FILE_DESCRIPTOR_NAME}}
+Backlog={{BACKLOG}}
+
+[Install]
+WantedBy=sockets.target

@@ -26,7 +26,16 @@
     "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
     "contracts/artifact-contracts/uckk-learning-package.schema.json",
     "contracts/artifact-contracts/uckk-import-receipt.schema.json",
-    "04-components/uckk-import-bridge.md"
+    "04-components/uckk-import-bridge.md",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "contracts/architecture-patterns.contract.json",
+    "02-system/34-architecture-patterns.md",
+    "06-lifecycle/20-resilience-and-projection-artifacts.md",
+    "08-operations/20-architecture-pattern-operations.md",
+    "09-conformance/22-architecture-pattern-conformance.md",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md",
+    "03-profiles/14-koa-spaces-deployment.md"
   ],
   "decision_ids": [
     "DEC-COMP-001",
@@ -37,7 +46,14 @@
     "DEC-MEDIATHEQUE-001",
     "DEC-UCKK-EXT-001",
     "DEC-ARI-001",
-    "DEC-PROFILE-BASELINE-001"
+    "DEC-PROFILE-BASELINE-001",
+    "DEC-RES-001",
+    "DEC-MSG-001",
+    "DEC-WF-001",
+    "DEC-PAYLOAD-001",
+    "DEC-BFF-001",
+    "DEC-CQRS-001",
+    "DEC-CACHE-001"
   ],
   "requirement_ids": [
     "REQ-UCKK-IMPORT-001",
@@ -60,7 +76,15 @@
     "LOCK-ARI-002",
     "LOCK-PROFILE-001",
     "LOCK-PROFILE-002",
-    "LOCK-UCKK-EXT-002"
+    "LOCK-UCKK-EXT-002",
+    "LOCK-SPACES-001",
+    "LOCK-RES-001",
+    "LOCK-MSG-001",
+    "LOCK-WF-001",
+    "LOCK-PAYLOAD-001",
+    "LOCK-BFF-001",
+    "LOCK-CQRS-001",
+    "LOCK-CACHE-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -68,7 +92,10 @@
     "DOC-SYS-005",
     "DOC-SYS-006",
     "DOC-PRO-000",
-    "DOC-COMP-UCKK-IMPORT-001"
+    "DOC-COMP-UCKK-IMPORT-001",
+    "DOC-SYS-021",
+    "DOC-SYS-022",
+    "DOC-PROFILE-014"
   ],
   "tags": [
     "components",
@@ -78,7 +105,10 @@
     "integration-boundaries",
     "read-order",
     "import-from-uckk",
-    "offline-learning"
+    "offline-learning",
+    "koa-spaces",
+    "architecture-patterns",
+    "experience-layer"
   ]
 }
 KOA:DOC-META:END -->
@@ -119,7 +149,8 @@ For architecture, implementation, review, testing, or AI-assisted work, read:
 8. `contracts/components/<component-slug>.component.json`;
 9. `04-components/<component-slug>.md`;
 10. the selected profile contract under `contracts/profiles/`;
-11. applicable integrations, requirements, locks, ADRs, tests, evidence, and exceptions.
+11. for an independently owned subsystem, its boundary contract and mounted official documentation;
+12. applicable integrations, requirements, locks, ADRs, tests, evidence, and exceptions.
 
 For focused implementation work, load the registry entry and component contract before the explanatory component page.
 
@@ -242,6 +273,16 @@ An authoritative component reviews and accepts selected values through its own c
 
 SenTient does not write another component's authoritative store.
 
+### 7.7 kOA Spaces and contributing systems
+
+kOA Spaces owns the outer presentation frame and validated Space activation state. A contributing system owns its routes, page implementation, actions, authorization, workflows, and business data.
+
+A module selector entry, sidebar contribution, public alias, route contribution, or top-bar widget does not grant authority. kOA Spaces evaluates presentation compatibility and capability visibility, while every action still passes through the owning system and core authorization boundaries.
+
+Disabling or replacing kOA Spaces removes only that presentation surface. Native module interfaces, core administration paths, and authoritative business state remain intact.
+
+Canonical kOA Spaces boundary sources are `02-system/21-koa-spaces-experience-layer.md`, `02-system/22-koa-spaces-interface-composition.md`, `03-profiles/14-koa-spaces-deployment.md`, `04-components/subsystems/koa-spaces.md`, and `contracts/subsystems/koa-spaces.subsystem.json`.
+
 ## 8. Profile Interaction
 
 A component contract defines global component semantics.
@@ -343,3 +384,7 @@ Use:
 - `generated/component-catalog.json` for component-contract paths.
 
 Generated projections are navigation aids. They do not replace canonical registries or component contracts.
+
+## Pattern-enabled components
+
+A component that activates circuit breaking, asynchronous quarantine, distributed workflow, large payload reference, experience adaptation, CQRS projection, or cache-aside declares the corresponding artifact contract while retaining its existing data and command ownership.

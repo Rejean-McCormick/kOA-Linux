@@ -11,7 +11,10 @@
   "canonical_refs": [
     "contracts/system.contract.json",
     "generated/component-catalog.json",
-    "generated/requirements-index.json"
+    "generated/requirements-index.json",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md"
   ],
   "decision_ids": [
     "DEC-AI-001",
@@ -66,7 +69,8 @@
     "LOCK-SENT-001",
     "LOCK-MEDIATHEQUE-001",
     "LOCK-UCKK-EXT-001",
-    "LOCK-UCKK-EXT-002"
+    "LOCK-UCKK-EXT-002",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -83,7 +87,9 @@
     "external-ai",
     "reconnection",
     "local-authority",
-    "deterministic-operation"
+    "deterministic-operation",
+    "koa-spaces",
+    "experience-layer"
   ]
 }
 KOA:DOC-META:END -->
@@ -848,3 +854,7 @@ Remote support is unavailable during a local incident. The operator still runs l
 ### 11.10 Resource pressure while offline
 
 kOA Mediatheque preview generation and a developer build create storage and CPU pressure. Resource Governor delays the preview job and lowers build resources while preserving local writes and Ariane responsiveness. It does not decide whether either operation is authorized.
+
+## Offline Presentation Behavior
+
+An active Space declares offline behavior for every route and widget. Locally admitted navigation and interface assets can remain available, while online-only contributions enter an explicit unavailable or degraded state. Network loss does not select a substitute module, broaden authorization, or make cached presentation data authoritative.

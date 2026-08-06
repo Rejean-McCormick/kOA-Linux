@@ -18,7 +18,13 @@
     "generated/traceability.json",
     "generated/evidence-catalog.json",
     "generated/exception-index.json",
-    "contracts/integration-types.contract.json"
+    "contracts/integration-types.contract.json",
+    "contracts/architecture-patterns.contract.json",
+    "contracts/artifact-contracts/integration-resilience-policy.schema.json",
+    "contracts/artifact-contracts/dead-letter-record.schema.json",
+    "contracts/artifact-contracts/distributed-workflow.schema.json",
+    "contracts/artifact-contracts/cqrs-projection.schema.json",
+    "contracts/artifact-contracts/cache-policy.schema.json"
   ],
   "decision_ids": [
     "DEC-PROFILE-BASELINE-001",
@@ -27,7 +33,12 @@
     "DEC-GOV-001",
     "DEC-UCKK-EXT-001",
     "DEC-MEDIATHEQUE-001",
-    "DEC-ARI-001"
+    "DEC-ARI-001",
+    "DEC-RES-001",
+    "DEC-MSG-001",
+    "DEC-WF-001",
+    "DEC-CQRS-001",
+    "DEC-CACHE-001"
   ],
   "requirement_ids": [
     "REQ-CON-SAFE-001",
@@ -44,7 +55,33 @@
     "REQ-CON-SAFE-012",
     "REQ-CON-SAFE-013",
     "REQ-CON-SAFE-014",
-    "REQ-CON-SAFE-015"
+    "REQ-CON-SAFE-015",
+    "REQ-PATTERN-004",
+    "REQ-PATTERN-005",
+    "REQ-PATTERN-006",
+    "REQ-PATTERN-007",
+    "REQ-PATTERN-008",
+    "REQ-PATTERN-009",
+    "REQ-PATTERN-010",
+    "REQ-PATTERN-011",
+    "REQ-PATTERN-012",
+    "REQ-PATTERN-013",
+    "REQ-PATTERN-014",
+    "REQ-PATTERN-015",
+    "REQ-PATTERN-016",
+    "REQ-PATTERN-017",
+    "REQ-PATTERN-018",
+    "REQ-PATTERN-019",
+    "REQ-PATTERN-020",
+    "REQ-PATTERN-021",
+    "REQ-PATTERN-022",
+    "REQ-PATTERN-023",
+    "REQ-PATTERN-024",
+    "REQ-PATTERN-038",
+    "REQ-PATTERN-039",
+    "REQ-PATTERN-040",
+    "REQ-PATTERN-041",
+    "REQ-PATTERN-042"
   ],
   "lock_ids": [
     "LOCK-AI-001",
@@ -59,7 +96,12 @@
     "LOCK-MEDIATHEQUE-001",
     "LOCK-PROFILE-001",
     "LOCK-PROFILE-002",
-    "LOCK-SENT-001"
+    "LOCK-SENT-001",
+    "LOCK-RES-001",
+    "LOCK-MSG-001",
+    "LOCK-WF-001",
+    "LOCK-CQRS-001",
+    "LOCK-CACHE-001"
   ],
   "exception_ids": [],
   "depends_on": [],
@@ -70,7 +112,8 @@
     "read-only",
     "advisory-only",
     "recovery",
-    "offline-continuity"
+    "offline-continuity",
+    "architecture-patterns"
   ]
 }
 KOA:DOC-META:END -->
@@ -573,3 +616,7 @@ A service artifact fails compatibility validation during activation. The candida
 ### 11.7 Evidence service unavailable
 
 A transition requiring a durable receipt is not executed. Existing state remains active. The interface reports that the requested action is blocked because evidence cannot be recorded.
+
+## Architecture-pattern degradation
+
+Remote and asynchronous failures are contained through the architecture-pattern policy. Open circuits fail fast without disabling independent local capabilities. Quarantined work remains visible. Distributed workflows expose pending or repair-required state. Stale projections and caches are bounded and labeled. No degraded mechanism may manufacture authoritative success.

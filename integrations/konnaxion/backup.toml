@@ -1,0 +1,39 @@
+schema_version = "1.0.0"
+integration_id = "konnaxion"
+status = "not_ready"
+coordination_owner = "koa-backup-coordinator"
+authoritative_data_owner = "konnaxion"
+direct_database_dump_by_adapter = false
+
+[preconditions]
+source_pin_required = true
+official_documentation_required = true
+subsystem_export_contract_required = true
+active_profile_backup_policy_required = true
+quiesce_or_consistent_snapshot_required = true
+
+[scope]
+include_adapter_configuration = true
+include_adapter_cache = false
+include_credentials = false
+include_subsystem_authoritative_data = "through_subsystem_owned_export_only"
+include_receipts = true
+
+[verification]
+integrity_required = true
+compatibility_required = true
+restore_test_required = true
+owner_identity_required = true
+proof_required = true
+
+[restore]
+mode = "subsystem_owned_import_or_restore_contract"
+direct_write_from_koa = false
+automatic_activation_after_restore = false
+health_and_readiness_required_before_activation = true
+
+[failure]
+missing_export_contract = "backup_not_ready"
+partial_backup = "failed"
+verification_failure = "failed"
+silent_success = false

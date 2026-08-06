@@ -33,7 +33,11 @@
     "contracts/artifact-contracts/sovereignty-bundle.schema.json",
     "contracts/artifact-contracts/decision-receipt.schema.json",
     "contracts/artifact-contracts/provenance-receipt.schema.json",
-    "contracts/artifact-contracts/resource-envelope.schema.json"
+    "contracts/artifact-contracts/resource-envelope.schema.json",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md",
+    "03-profiles/14-koa-spaces-deployment.md"
   ],
   "decision_ids": [
     "DEC-PROFILE-001",
@@ -94,7 +98,8 @@
     "LOCK-LIFE-003",
     "LOCK-LIFE-004",
     "LOCK-IMPL-001",
-    "LOCK-IMPL-002"
+    "LOCK-IMPL-002",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -112,7 +117,10 @@
     "DOC-SYS-017",
     "DOC-SYS-018",
     "DOC-SYS-019",
-    "DOC-SYS-020"
+    "DOC-SYS-020",
+    "DOC-SYS-021",
+    "DOC-SYS-022",
+    "DOC-PROFILE-014"
   ],
   "tags": [
     "deployment-profile",
@@ -124,7 +132,10 @@
     "privileged-broker",
     "local-governance",
     "recovery",
-    "release-set"
+    "release-set",
+    "koa-spaces",
+    "experience-layer",
+    "profile"
   ]
 }
 KOA:DOC-META:END -->
@@ -1295,3 +1306,7 @@ The node does not treat the failure as permission to bypass contracts or activat
 A deployment uses a mutable untracked `/usr`, runs product services as unrestricted root, lacks a recovery target, shares one database identity across components, and activates independently downloaded artifacts without a Release Set.
 
 The deployment is not conformant to `sovereign_linux_node`.
+
+## kOA Spaces on a Sovereign Node
+
+The profile can enable kOA Spaces as an optional local presentation service with profile-scoped identity, storage, network, resource, health, and lifecycle controls. It remains unprivileged and cannot call arbitrary host operations. Node recovery and authoritative services remain accessible without the experience subsystem.

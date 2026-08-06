@@ -1,0 +1,196 @@
+{
+  "format": "koa.source-pins",
+  "format_version": "1.0.0",
+  "status": "active",
+  "authority": [
+    "docs/AI_CONTEXT.md",
+    "docs/contracts/ai-navigation.contract.json",
+    "docs/contracts/system.contract.json",
+    "docs/contracts/terminology.contract.json",
+    "docs/02-system/23-code-and-filesystem-architecture.md",
+    "docs/02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md",
+    "docs/02-system/code-and-filesystem-architecture/33-path-ownership-and-change-rules.md",
+    "docs/00-governance/07-ai-read-write-protocol.md",
+    "docs/00-governance/09-canonical-ownership.md",
+    "docs/00-governance/13-validation-pipeline.md",
+    "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md",
+    "docs/02-system/code-and-filesystem-architecture/28-uckk-external-services-and-transport-interfaces.md",
+    "docs/07-security/19-software-supply-chain.md"
+  ],
+  "aggregation_policy": {
+    "individual_source_lock_is_authoritative_for_pin_values": true,
+    "registry_is_authoritative_for_required_source_membership": true,
+    "missing_lock": "block_source_admission_not_core_preparation",
+    "mutable_branch_or_tag_without_verified_immutable_revision": "reject",
+    "digest_required": true,
+    "license_metadata_required": true,
+    "documentation_release_expectation_required": true,
+    "network_lookup_during_validation": "prohibited",
+    "stable_order": "source_id"
+  },
+  "sources": [
+    {
+      "source_id": "ariane",
+      "source_class": "independent_subsystem",
+      "lock_path": "integrations/ariane/source.lock.json",
+      "required_fields": [
+        "source_id",
+        "repository_or_bundle",
+        "immutable_revision",
+        "source_digest",
+        "license_metadata",
+        "expected_documentation_release",
+        "verification"
+      ],
+      "branch_name_is_immutable_pin": false,
+      "registry_replaces_lock": false,
+      "activation_requires_resolved_verified_lock": true,
+      "current_resolution": "delegated_to_source_lock",
+      "boundary_contract": "docs/contracts/subsystems/ariane.subsystem.json"
+    },
+    {
+      "source_id": "koa-spaces",
+      "source_class": "independent_subsystem",
+      "lock_path": "integrations/koa-spaces/source.lock.json",
+      "required_fields": [
+        "source_id",
+        "repository_or_bundle",
+        "immutable_revision",
+        "source_digest",
+        "license_metadata",
+        "expected_documentation_release",
+        "verification"
+      ],
+      "branch_name_is_immutable_pin": false,
+      "registry_replaces_lock": false,
+      "activation_requires_resolved_verified_lock": true,
+      "current_resolution": "delegated_to_source_lock",
+      "boundary_contract": "docs/contracts/subsystems/koa-spaces.subsystem.json"
+    },
+    {
+      "source_id": "konnaxion",
+      "source_class": "independent_subsystem",
+      "lock_path": "integrations/konnaxion/source.lock.json",
+      "required_fields": [
+        "source_id",
+        "repository_or_bundle",
+        "immutable_revision",
+        "source_digest",
+        "license_metadata",
+        "expected_documentation_release",
+        "verification"
+      ],
+      "branch_name_is_immutable_pin": false,
+      "registry_replaces_lock": false,
+      "activation_requires_resolved_verified_lock": true,
+      "current_resolution": "delegated_to_source_lock",
+      "boundary_contract": "docs/contracts/subsystems/konnaxion.subsystem.json"
+    },
+    {
+      "source_id": "orgo",
+      "source_class": "independent_subsystem",
+      "lock_path": "integrations/orgo/source.lock.json",
+      "required_fields": [
+        "source_id",
+        "repository_or_bundle",
+        "immutable_revision",
+        "source_digest",
+        "license_metadata",
+        "expected_documentation_release",
+        "verification"
+      ],
+      "branch_name_is_immutable_pin": false,
+      "registry_replaces_lock": false,
+      "activation_requires_resolved_verified_lock": true,
+      "current_resolution": "delegated_to_source_lock",
+      "boundary_contract": "docs/contracts/subsystems/orgo.subsystem.json"
+    },
+    {
+      "source_id": "semantik-architect",
+      "source_class": "independent_subsystem",
+      "lock_path": "integrations/semantik-architect/source.lock.json",
+      "required_fields": [
+        "source_id",
+        "repository_or_bundle",
+        "immutable_revision",
+        "source_digest",
+        "license_metadata",
+        "expected_documentation_release",
+        "verification"
+      ],
+      "branch_name_is_immutable_pin": false,
+      "registry_replaces_lock": false,
+      "activation_requires_resolved_verified_lock": true,
+      "current_resolution": "delegated_to_source_lock",
+      "boundary_contract": "docs/contracts/subsystems/semantik-architect.subsystem.json"
+    },
+    {
+      "source_id": "sentient",
+      "source_class": "independent_subsystem",
+      "lock_path": "integrations/sentient/source.lock.json",
+      "required_fields": [
+        "source_id",
+        "repository_or_bundle",
+        "immutable_revision",
+        "source_digest",
+        "license_metadata",
+        "expected_documentation_release",
+        "verification"
+      ],
+      "branch_name_is_immutable_pin": false,
+      "registry_replaces_lock": false,
+      "activation_requires_resolved_verified_lock": true,
+      "current_resolution": "delegated_to_source_lock",
+      "boundary_contract": "docs/contracts/subsystems/sentient.subsystem.json"
+    },
+    {
+      "source_id": "uckk",
+      "source_class": "external_platform",
+      "lock_path": "integrations/uckk/source.lock.json",
+      "required_fields": [
+        "source_id",
+        "repository_or_bundle",
+        "immutable_revision",
+        "source_digest",
+        "license_metadata",
+        "expected_documentation_release",
+        "verification"
+      ],
+      "branch_name_is_immutable_pin": false,
+      "registry_replaces_lock": false,
+      "activation_requires_resolved_verified_lock": true,
+      "current_resolution": "delegated_to_source_lock",
+      "directional_contracts": [
+        "docs/contracts/integrations/uckk-publication.integration.json",
+        "docs/contracts/integrations/uckk-import.integration.json"
+      ]
+    }
+  ],
+  "external_services_not_source_pinned_here": [
+    {
+      "integration_id": "ariane-voice",
+      "contract": "docs/contracts/integrations/ariane-voice.integration.json"
+    },
+    {
+      "integration_id": "chatgpt",
+      "contract": "docs/contracts/integrations/chatgpt.integration.json"
+    },
+    {
+      "integration_id": "gamma",
+      "contract": "docs/contracts/integrations/gamma.integration.json"
+    },
+    {
+      "integration_id": "suno",
+      "contract": "docs/contracts/integrations/suno.integration.json"
+    }
+  ],
+  "validation": {
+    "source_ids_unique": true,
+    "lock_paths_unique": true,
+    "lock_path_must_match": "integrations/<source_id>/source.lock.json",
+    "resolved_lock_schema": "owned_by_integration_bundle",
+    "source_digest_and_revision_must_be_immutable": true,
+    "unverified_source_may_be_vendored": false,
+    "unverified_source_may_be_activated": false
+  }
+}

@@ -1,0 +1,10 @@
+version = 1
+
+# The active authority supplied with this repository does not declare a
+# repository-wide copyright holder or license grant. NOASSERTION records that
+# unresolved legal state without inventing ownership or permission.
+[[annotations]]
+path = "**"
+precedence = "override"
+SPDX-License-Identifier = "NOASSERTION"
+SPDX-FileComment = "No owner-approved repository-wide license conclusion is present in the supplied canonical authority."

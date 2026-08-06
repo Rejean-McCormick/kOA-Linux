@@ -917,7 +917,11 @@
     "contracts/artifact-contracts/release-set.schema.json",
     "contracts/artifact-contracts/policy-bundle.schema.json",
     "contracts/artifact-contracts/sovereignty-bundle.schema.json",
-    "contracts/artifact-contracts/provenance-receipt.schema.json"
+    "contracts/artifact-contracts/provenance-receipt.schema.json",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md",
+    "03-profiles/14-koa-spaces-deployment.md"
   ],
   "decision_ids": [
     "DEC-PROFILE-001",
@@ -958,7 +962,8 @@
     "LOCK-MEDIATHEQUE-001",
     "LOCK-MEDIATHEQUE-002",
     "LOCK-UCKK-EXT-001",
-    "LOCK-UCKK-EXT-002"
+    "LOCK-UCKK-EXT-002",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "documentation": {
@@ -975,5 +980,25 @@
     "complete_validation_required": true,
     "authority_registry_updated_last": true
   },
-  "supersedes": []
+  "supersedes": [],
+  "koa_spaces": {
+    "subsystem_id": "koa_spaces",
+    "contract_ref": "contracts/subsystems/koa-spaces.subsystem.json",
+    "deployment_document_ref": "03-profiles/14-koa-spaces-deployment.md",
+    "membership": "inherited_optional_with_offline_restrictions",
+    "default_activation": "inherit_from_base_profile",
+    "deployment_mode": "offline_constrained_experience_surface",
+    "required_for_profile_conformance": false,
+    "required_for_core_operation": false,
+    "authority": "non_authoritative_presentation",
+    "presentation_grants_authority": false,
+    "menu_visibility_is_authorization": false,
+    "offline_behavior": "all_required_presentation_artifacts_local_and_verified",
+    "failure_behavior": "presentation_unavailable_authoritative_services_and_fallback_paths_preserved",
+    "constraints": [
+      "no_remote_runtime_dependency",
+      "offline_bundle_admission",
+      "explicit_unavailable_states"
+    ]
+  }
 }

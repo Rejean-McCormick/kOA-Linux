@@ -23,7 +23,12 @@
     "generated/traceability.json",
     "generated/test-catalog.json",
     "generated/evidence-catalog.json",
-    "generated/exception-index.json"
+    "generated/exception-index.json",
+    "contracts/security-controls.contract.json",
+    "schemas/security-controls.contract.schema.json",
+    "contracts/artifact-contracts/security-evidence.schema.json",
+    "07-security/21-security-control-architecture.md",
+    "07-security/22-security-control-profile-matrix.md"
   ],
   "decision_ids": [
     "DEC-AI-001",
@@ -157,7 +162,10 @@
     "audit",
     "offline",
     "recovery",
-    "profile-conditioned"
+    "profile-conditioned",
+    "security-controls",
+    "profile-applicability",
+    "security-evidence"
   ]
 }
 KOA:DOC-META:END -->
@@ -300,6 +308,10 @@ Profile strengthening does not transfer component ownership or weaken a global p
 | `sovereign_offline` | Local authority closure, no Internet dependency, signed offline imports, local revocation state, and local recovery material |
 | `appliance_shell` | Restricted user shell and narrower interaction surface without changing component authority |
 
+The profile table above is an explanatory baseline summary. Normative security-control identifiers, categories, applicability states, implementation bindings, validation bindings, failure behavior, and evidence classes are owned by `contracts/security-controls.contract.json` and rendered in `07-security/22-security-control-profile-matrix.md`.
+
+Profile contracts continue to own profile capabilities, component membership, constraints, and claims. The thematic security documents continue to own the meaning and required behavior of each control. Neither the table above nor a profile-local copy may become a second security-control applicability authority.
+
 ### 2.4 Excluded subjects
 
 This document does not define:
@@ -389,6 +401,18 @@ generated/evidence-catalog.json
 07-security/20-break-glass-security.md
 `
 
+### 3.7 Security-control orchestration
+
+`text
+contracts/security-controls.contract.json
+schemas/security-controls.contract.schema.json
+contracts/artifact-contracts/security-evidence.schema.json
+07-security/21-security-control-architecture.md
+07-security/22-security-control-profile-matrix.md
+`
+
+The contract owns control identity and applicability. The thematic documents own security meaning and behavior. The evidence schema owns control-specific evidence structure.
+
 The specialized documents refine this baseline without changing its ownership rules.
 
 ## 4. Model and Responsibilities
@@ -402,6 +426,9 @@ Security authority is distributed among registered owners.
 | Component identity and responsibility | Component registry |
 | Component interfaces, states, failures, and data boundaries | Component contract |
 | Profile inclusion and strengthening | Profile contract |
+| Security-control identifiers, category membership, and profile applicability | `contracts/security-controls.contract.json` |
+| Security-control thematic meaning and required behavior | Applicable thematic document under `07-security/` |
+| Security-control evidence structure | `contracts/artifact-contracts/security-evidence.schema.json` |
 | Authentication and trust assertions | Identity and Trust |
 | Governance decisions and obligations | Governance Policy Runtime |
 | CPU, memory, I/O, queue, and concurrency admission | Resource Governor |
@@ -1200,6 +1227,8 @@ An exception does not rewrite its underlying requirement.
 
 An expired, missing, or unverifiable exception cannot authorize continued deviation.
 
+An exception affecting a security control references its `control_id`, the exact applicability state or obligation affected, compensating controls, validation, evidence, and expiry. `not_applicable` is not an exception state: it requires a machine-resolvable fact proving that the controlled surface is absent or outside the profile boundary.
+
 ### 4.37 Security receipts
 
 Security-relevant receipts can cover:
@@ -1221,6 +1250,8 @@ Security-relevant receipts can cover:
 Receipts use references and minimized data where possible.
 
 They exclude secret values and unrestricted protected payloads.
+
+Control-specific evaluation records validate against `contracts/artifact-contracts/security-evidence.schema.json`. A receipt can reference security evidence, but it does not replace the evidence object or independently establish profile conformance.
 
 ## 5. Applicable Normative Requirements
 

@@ -1,0 +1,51 @@
+schema_version = "1.0.0"
+registry_owner = "workspace_controller"
+workspace_id_env = "KOA_WORKSPACE_ID"
+default_bind_address = "127.0.0.1"
+default_bind_address_class = "loopback"
+ordinary_port_min = 1024
+ordinary_port_max = 65535
+cross_workspace_connectivity = false
+silent_reallocation = false
+release_condition = "workspace_teardown"
+
+[[allocations]]
+allocation_id_template = "${KOA_WORKSPACE_ID}:postgres:5432:tcp"
+workspace_id_env = "KOA_WORKSPACE_ID"
+service_id = "postgres"
+internal_port = 5432
+host_port_env = "KOA_POSTGRES_HOST_PORT"
+protocol = "tcp"
+bind_address = "127.0.0.1"
+bind_address_class = "loopback"
+owner = "dev.local-services.postgres"
+state = "requested"
+release_condition = "workspace_teardown"
+
+[[allocations]]
+allocation_id_template = "${KOA_WORKSPACE_ID}:object-store-api:9000:tcp"
+workspace_id_env = "KOA_WORKSPACE_ID"
+service_id = "object-store"
+endpoint_id = "api"
+internal_port = 9000
+host_port_env = "KOA_OBJECT_STORE_API_HOST_PORT"
+protocol = "tcp"
+bind_address = "127.0.0.1"
+bind_address_class = "loopback"
+owner = "dev.local-services.object-store"
+state = "requested"
+release_condition = "workspace_teardown"
+
+[[allocations]]
+allocation_id_template = "${KOA_WORKSPACE_ID}:object-store-console:9001:tcp"
+workspace_id_env = "KOA_WORKSPACE_ID"
+service_id = "object-store"
+endpoint_id = "console"
+internal_port = 9001
+host_port_env = "KOA_OBJECT_STORE_CONSOLE_HOST_PORT"
+protocol = "tcp"
+bind_address = "127.0.0.1"
+bind_address_class = "loopback"
+owner = "dev.local-services.object-store"
+state = "requested"
+release_condition = "workspace_teardown"

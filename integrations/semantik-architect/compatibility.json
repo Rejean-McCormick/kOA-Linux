@@ -1,0 +1,60 @@
+{
+  "compatibility_manifest_version": "1.0.0",
+  "subsystem_id": "semantik_architect",
+  "status": "preparation_only",
+  "koa_contracts": {
+    "system_contract": {
+      "supported_exact_versions": [
+        "2.2.0"
+      ],
+      "all_other_versions": "rejected"
+    },
+    "subsystem_contract": {
+      "required_exact_version": "1.0.0"
+    },
+    "required_interface_schemas": [
+      "interfaces/transport/event-envelope.schema.json",
+      "interfaces/transport/error-envelope.schema.json",
+      "interfaces/transport/idempotency.schema.json",
+      "interfaces/transport/version-negotiation.schema.json",
+      "interfaces/health/health-status.schema.json",
+      "interfaces/health/readiness.schema.json",
+      "interfaces/receipts/receipt-envelope.schema.json",
+      "interfaces/receipts/correlation.schema.json",
+      "interfaces/jobs/job-request.schema.json",
+      "interfaces/jobs/job-status.schema.json",
+      "interfaces/identity/identity-context.schema.json",
+      "interfaces/capabilities/capability-snapshot.schema.json"
+    ],
+    "interface_schema_absence_result": "blocked"
+  },
+  "runtime": {
+    "python": ">=3.11,<4",
+    "transport": "http_over_unix",
+    "serialization": "json"
+  },
+  "profile_applicability": {
+    "supported": [
+      "developer_linux_workstation",
+      "developer_windows_wsl",
+      "build_farm"
+    ],
+    "all_other_profiles": "not_admitted_without_explicit_overlay"
+  },
+  "subsystem_source_compatibility": {
+    "status": "unresolved",
+    "default_for_unpinned_or_unversioned_source": "rejected",
+    "official_documentation_mount": "subsystems/semantik-architect",
+    "official_documentation_required": true
+  },
+  "final_alignment": {
+    "status": "blocked",
+    "requires": [
+      "pinned_repository_and_commit",
+      "verified_source_digest",
+      "verified_license_metadata",
+      "mounted_official_documentation",
+      "successful_contract_tests"
+    ]
+  }
+}

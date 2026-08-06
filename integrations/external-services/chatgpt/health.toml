@@ -1,0 +1,80 @@
+schema_version = 1
+health_policy_id = "chatgpt.external-ai-health"
+integration_id = "chatgpt"
+version = "1.0.0"
+status = "active"
+optional_capability = true
+
+[probing]
+probe_mode = "operation_scoped"
+background_network_probe = false
+startup_network_probe = false
+credential_probe_without_user_operation = false
+provider_content_probe = false
+network_calls_in_conformance_tests = false
+endpoint_from_controlled_configuration = true
+
+[health]
+states = ["healthy", "degraded", "unavailable", "disabled", "removed"]
+default_without_active_operation = "disabled"
+health_is_authority = false
+healthy_requires = ["integration_registered", "profile_permitted", "policy_active", "provider_assurance_current", "endpoint_configured", "credential_reference_resolvable", "provider_reachable"]
+degraded_when = ["quota_near_limit", "elevated_latency", "transient_provider_errors", "compatibility_reevaluation_pending"]
+unavailable_when = ["offline", "provider_unreachable", "provider_refusal", "quota_exhausted", "credential_unavailable", "terms_unresolved", "circuit_open", "compatibility_blocked"]
+
+[readiness]
+states = ["ready", "not_ready", "disabled", "removed"]
+ready_requires = ["explicit_user_operation", "transfer_preview_complete", "policy_allowed", "data_admitted", "health_healthy_or_permitted_degraded"]
+not_ready_affects = ["chatgpt_external_assistance"]
+unrelated_local_capabilities_ready = true
+
+[timeouts]
+attempt_timeout_ms = 30000
+total_timeout_ms = 45000
+
+[retries]
+maximum_attempts = 2
+full_jitter = true
+retryable_failure_classes = ["network_failure", "timeout", "provider_unavailable"]
+non_retryable_failure_classes = ["integration_not_registered", "profile_not_permitted", "user_action_missing", "transfer_preview_unavailable", "data_not_admitted", "provider_terms_unresolved", "provider_refusal", "quota_exhausted", "model_or_service_drift", "invalid_response", "local_validation_failure", "acceptance_rejected", "cancelled"]
+idempotency_required = true
+automatic_background_retry = false
+
+[circuit_breaker]
+states = ["closed", "open", "half_open"]
+failure_threshold = 3
+failure_window_seconds = 60
+open_duration_seconds = 120
+half_open_max_probes = 1
+half_open_max_concurrency = 1
+manual_override_requires_receipt = true
+
+[failure]
+terminal_states = ["blocked", "cancelled", "rejected", "unavailable", "invalid_candidate"]
+authoritative_mutation = false
+authoritative_success = false
+failure_receipt_required = true
+correlation_id_required = true
+user_visible_state_required = true
+silent_substitution = false
+
+[offline]
+health_state = "unavailable"
+readiness_state = "not_ready"
+assistive_capability_available = false
+core_operation_continues = true
+authoritative_local_state_preserved = true
+fallback_provider = "none"
+
+[disabled]
+health_state = "disabled"
+readiness_state = "disabled"
+new_operations_allowed = false
+core_operation_continues = true
+
+[removed]
+health_state = "removed"
+readiness_state = "removed"
+new_operations_allowed = false
+accepted_output_provenance_preserved = true
+core_operation_continues = true

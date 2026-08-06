@@ -1,0 +1,266 @@
+schema_version = 1
+profile_id = "sovereign_linux_node"
+allow_undeclared_services = false
+wildcard_binding_permitted = false
+databases_publicly_exposed = false
+metrics_publicly_exposed = false
+privileged_interfaces_publicly_exposed = false
+
+# Network services are inert until a deployment route supplies every required
+# identity, contract, address, port, and lifecycle field.
+
+[[service]]
+id = "public_web"
+owner = "konnaxion_or_declared_public_component"
+zone = "public"
+direction = "inbound"
+transport = "tcp"
+local_only = false
+public_exposure_allowed = true
+authenticated_encryption_required = true
+application_authorization_required = true
+payload_contract_required = true
+integration_metadata_required = false
+exact_destination_required = false
+default_enabled = false
+failure_behavior = "preserve_private_and_local_services"
+
+[[service]]
+id = "private_workflow"
+owner = "orgo_or_declared_private_component"
+zone = "private"
+direction = "inbound"
+transport = "tcp"
+local_only = false
+public_exposure_allowed = false
+authenticated_encryption_required = true
+application_authorization_required = true
+payload_contract_required = true
+integration_metadata_required = false
+exact_destination_required = false
+default_enabled = false
+failure_behavior = "preserve_local_authoritative_operation"
+
+[[service]]
+id = "administration"
+owner = "koa_node_agent_or_approved_access_broker"
+zone = "administration"
+direction = "inbound"
+transport = "tcp"
+local_only = false
+public_exposure_allowed = false
+authenticated_encryption_required = true
+application_authorization_required = true
+payload_contract_required = true
+integration_metadata_required = false
+exact_destination_required = false
+default_enabled = false
+failure_behavior = "preserve_console_recovery"
+
+[[service]]
+id = "federation_ingress"
+owner = "registered_federation_adapter"
+zone = "federation"
+direction = "inbound"
+transport = "tcp"
+local_only = false
+public_exposure_allowed = false
+authenticated_encryption_required = true
+application_authorization_required = true
+payload_contract_required = true
+integration_metadata_required = true
+exact_destination_required = false
+default_enabled = false
+failure_behavior = "keep_work_pending_until_peer_revalidation"
+
+[[service]]
+id = "federation_egress"
+owner = "registered_federation_adapter"
+zone = "federation"
+direction = "outbound"
+transport = "tcp"
+local_only = false
+public_exposure_allowed = false
+authenticated_encryption_required = true
+application_authorization_required = true
+payload_contract_required = true
+integration_metadata_required = true
+exact_destination_required = true
+default_enabled = false
+failure_behavior = "keep_work_pending_until_peer_revalidation"
+
+[[service]]
+id = "backup_ingress"
+owner = "approved_backup_authority"
+zone = "backup"
+direction = "inbound"
+transport = "tcp"
+local_only = false
+public_exposure_allowed = false
+authenticated_encryption_required = true
+application_authorization_required = true
+payload_contract_required = true
+integration_metadata_required = false
+exact_destination_required = false
+default_enabled = false
+failure_behavior = "preserve_local_data_and_reject_undeclared_restore"
+
+[[service]]
+id = "backup_egress"
+owner = "approved_backup_authority"
+zone = "backup"
+direction = "outbound"
+transport = "tcp"
+local_only = false
+public_exposure_allowed = false
+authenticated_encryption_required = true
+application_authorization_required = true
+payload_contract_required = true
+integration_metadata_required = false
+exact_destination_required = true
+default_enabled = false
+failure_behavior = "fail_backup_without_success_claim"
+
+[[service]]
+id = "local_dns_udp"
+owner = "declared_local_infrastructure"
+zone = "private"
+direction = "outbound"
+transport = "udp"
+local_only = false
+public_exposure_allowed = false
+authenticated_encryption_required = false
+application_authorization_required = false
+payload_contract_required = true
+integration_metadata_required = false
+exact_destination_required = true
+default_enabled = false
+failure_behavior = "preserve_local_operation_without_fallback_resolver"
+
+[[service]]
+id = "local_dns_tcp"
+owner = "declared_local_infrastructure"
+zone = "private"
+direction = "outbound"
+transport = "tcp"
+local_only = false
+public_exposure_allowed = false
+authenticated_encryption_required = false
+application_authorization_required = false
+payload_contract_required = true
+integration_metadata_required = false
+exact_destination_required = true
+default_enabled = false
+failure_behavior = "preserve_local_operation_without_fallback_resolver"
+
+[[service]]
+id = "trusted_time"
+owner = "declared_time_authority"
+zone = "private"
+direction = "outbound"
+transport = "udp"
+local_only = false
+public_exposure_allowed = false
+authenticated_encryption_required = false
+application_authorization_required = false
+payload_contract_required = true
+integration_metadata_required = false
+exact_destination_required = true
+default_enabled = false
+failure_behavior = "block_time_sensitive_operations_when_time_is_uncertain"
+
+[[service]]
+id = "update_mirror"
+owner = "release_and_artifact_authority"
+zone = "private"
+direction = "outbound"
+transport = "tcp"
+local_only = false
+public_exposure_allowed = false
+authenticated_encryption_required = true
+application_authorization_required = true
+payload_contract_required = true
+integration_metadata_required = false
+exact_destination_required = true
+default_enabled = false
+failure_behavior = "preserve_active_verified_release"
+
+[[service]]
+id = "external_integration_https"
+owner = "registered_integration_adapter"
+zone = "external_integration"
+direction = "outbound"
+transport = "tcp"
+local_only = false
+public_exposure_allowed = false
+authenticated_encryption_required = true
+application_authorization_required = true
+payload_contract_required = true
+integration_metadata_required = true
+exact_destination_required = true
+default_enabled = false
+failure_behavior = "disable_only_the_dependent_optional_capability"
+
+[[service]]
+id = "governance_api"
+owner = "governance_service_owner"
+zone = "governance"
+direction = "local_only"
+transport = "unix"
+local_only = true
+public_exposure_allowed = false
+authenticated_encryption_required = false
+application_authorization_required = true
+payload_contract_required = true
+integration_metadata_required = false
+exact_destination_required = false
+default_enabled = false
+failure_behavior = "block_new_governed_operations"
+
+[[service]]
+id = "privileged_broker"
+owner = "koa_node_agent"
+zone = "administration"
+direction = "local_only"
+transport = "unix"
+local_only = true
+public_exposure_allowed = false
+authenticated_encryption_required = false
+application_authorization_required = true
+payload_contract_required = true
+integration_metadata_required = false
+exact_destination_required = false
+default_enabled = false
+failure_behavior = "disable_host_mutation_and_preserve_ordinary_operation"
+
+[[service]]
+id = "component_database"
+owner = "owning_component"
+zone = "private"
+direction = "local_only"
+transport = "unix"
+local_only = true
+public_exposure_allowed = false
+authenticated_encryption_required = false
+application_authorization_required = true
+payload_contract_required = true
+integration_metadata_required = false
+exact_destination_required = false
+default_enabled = false
+failure_behavior = "never_expose_or_transfer_authority"
+
+[[service]]
+id = "local_metrics"
+owner = "owning_component_or_local_collector"
+zone = "administration"
+direction = "local_only"
+transport = "unix"
+local_only = true
+public_exposure_allowed = false
+authenticated_encryption_required = false
+application_authorization_required = true
+payload_contract_required = true
+integration_metadata_required = false
+exact_destination_required = false
+default_enabled = false
+failure_behavior = "retain_bounded_local_observability"

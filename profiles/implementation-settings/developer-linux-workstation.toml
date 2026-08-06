@@ -1,0 +1,73 @@
+settings_version = "1.0.0"
+profile_id = "developer_linux_workstation"
+profile_contract = "docs/contracts/profiles/developer-linux-workstation.profile.json"
+profile_contract_version = "1.0.0"
+profile_role = "primary"
+available_for_selection = true
+
+[validation]
+mode = "strict"
+unknown_parameter = "error"
+missing_contract = "error"
+contract_version_mismatch = "error"
+unsupported_parameter = "error"
+composition_conflict = "error"
+
+[authority]
+profile_membership = "profile_contract"
+component_membership = "profile_contract"
+capabilities = "profile_contract"
+resource_policy = "profile_contract"
+security_policy = "profile_contract"
+lifecycle_policy = "profile_contract"
+offline_policy = "profile_contract"
+external_integrations = "profile_contract"
+
+[source_layout]
+strategy = "shared_repository_tree"
+profile_specific_source_tree = false
+generated_output_root = "generated/profiles/developer_linux_workstation"
+
+[composition]
+kind = "primary"
+requires_base_profile = false
+overlays = "explicit_only"
+implicit_overlay_activation = false
+compatibility_source = "profile_contract"
+conflict_result = "error"
+
+[implementation.host]
+os_family = "linux"
+native_linux = true
+maintained_distribution = true
+immutable_system_image = false
+kubernetes_for_profile_conformance = false
+
+[implementation.workspace]
+unit = "repository_branch_or_worktree"
+workspace_id_required = true
+workspace_id_pattern = "^[a-z0-9]+(?:-[a-z0-9]+)*-[a-z0-9]{4,12}$"
+mutable_environment = "one_per_workspace"
+service_namespace = "one_per_workspace"
+network_namespace = "one_per_workspace_or_equivalent"
+port_allocation = "registry_managed_per_workspace"
+shared_mutable_service_state = false
+
+[implementation.python]
+dependency_manager = "uv"
+project_file = "pyproject.toml"
+lock_file = "uv.lock"
+virtual_environment = ".venv"
+sync_command = "uv sync --frozen"
+lock_refresh = "explicit_only"
+
+[implementation.containers]
+required = false
+mode_when_used = "rootless"
+preferred_runtime = "rootless_podman"
+privileged_by_default = false
+
+[implementation.resources]
+maximum_concurrent_heavy_workspaces = 2
+heavy_service_activation = "task_activated"
+heavy_services_permanently_active = false

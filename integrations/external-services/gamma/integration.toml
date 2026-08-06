@@ -1,0 +1,123 @@
+schema_version = "1.0.0"
+
+[integration]
+integration_id = "gamma"
+title = "Gamma"
+contract_version = "1.0.0"
+contract_ref = "docs/contracts/integrations/gamma.integration.json"
+integration_type = "external_media_service"
+role = "optional_external_presentation_surface"
+authority = "non_authoritative"
+availability = "optional"
+owner = "koa_external_integrations"
+
+[capability]
+capability_id = "presentation.generate_candidate"
+trigger = "explicit_user_action"
+direction = "request_response"
+result_class = "candidate_presentation_artifact"
+result_authority = "non_authoritative_candidate_source"
+controlled_export_required = true
+controlled_reimport_required = true
+local_validation_required = true
+explicit_acceptance_required = true
+background_invocation_allowed = false
+automatic_ingestion_invocation_allowed = false
+automatic_publication_allowed = false
+direct_authoritative_store_write_allowed = false
+
+[activation]
+default_enabled = false
+profile_permission_required = true
+governance_decision_required = true
+audit_receipts_required = true
+provider_terms_resolution_required = true
+credentials_resolution_required = true
+endpoint_resolution_required = true
+implicit_enablement_allowed = false
+
+[network]
+default_policy = "deny"
+direction = "outbound_only"
+protocol = "https"
+endpoint_reference = "config://integrations/gamma/provider-endpoint"
+hard_coded_endpoint_allowed = false
+inbound_callbacks_allowed = false
+remote_administration_allowed = false
+certificate_validation_required = true
+proxy_inheritance = "explicit_configuration_only"
+
+[limits]
+request_timeout_seconds = 90
+maximum_attempts = 1
+automatic_retry_allowed = false
+maximum_concurrency = 2
+maximum_queued_requests = 0
+maximum_request_bytes = 26214400
+maximum_response_bytes = 104857600
+provider_rate_limit_behavior = "fail_closed_and_report"
+
+[failure]
+provider_unavailable = "capability_unavailable"
+offline = "capability_unavailable"
+policy_indeterminate = "blocked"
+audit_unavailable = "blocked"
+terms_unresolved = "blocked"
+credentials_unavailable = "blocked"
+endpoint_unresolved = "blocked"
+transport_timeout = "unknown_result_requires_user_reconciliation"
+invalid_response = "rejected"
+controlled_import_failure = "rejected"
+authoritative_mutation_on_failure = false
+silent_substitution = false
+alternate_provider_fallback = false
+local_model_fallback = false
+
+[evidence]
+request_receipt_required = true
+transfer_receipt_required = true
+provider_result_receipt_required = true
+candidate_receipt_required = true
+failure_receipt_required = true
+raw_payloads_in_receipts = false
+required_correlation_fields = [
+  "operation_id",
+  "correlation_id",
+  "actor_id",
+  "requesting_component",
+  "provider_id",
+  "capability_id",
+]
+
+[lifecycle]
+states = [
+  "registered",
+  "disabled",
+  "enabled",
+  "degraded",
+  "revoked",
+  "retired",
+]
+removal_breaks_core = false
+retired_identifier_reuse_allowed = false
+preserve_accepted_output_provenance = true
+reconcile_pending_operations_before_removal = true
+revoke_credentials_on_removal = true
+close_network_paths_on_removal = true
+
+[dependencies]
+transport_schemas = [
+  "interfaces/transport/event-envelope.schema.json",
+  "interfaces/transport/error-envelope.schema.json",
+  "interfaces/transport/version-negotiation.schema.json",
+]
+health_schemas = [
+  "interfaces/health/health-status.schema.json",
+  "interfaces/health/readiness.schema.json",
+]
+receipt_schemas = [
+  "interfaces/receipts/receipt-envelope.schema.json",
+  "interfaces/receipts/correlation.schema.json",
+]
+policy_component = "governance-policy-runtime"
+audit_component = "audit-broker"

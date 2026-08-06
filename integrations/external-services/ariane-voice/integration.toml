@@ -1,0 +1,109 @@
+format_version = "1.0.0"
+integration_id = "ariane-voice"
+title = "Ariane Voice"
+contract_ref = "docs/contracts/integrations/ariane-voice.integration.json"
+integration_type = "external_voice"
+status = "active"
+availability = "optional"
+authority = "non_authoritative"
+result_role = "candidate_navigation_intent"
+undeclared_substitution = "prohibited"
+owning_subsystem_id = "ariane"
+required_for_local_navigation = false
+
+[activation]
+default_enabled = false
+trigger = "explicit_user_action"
+voice_mode_activation_required = true
+profile_permission_required = true
+policy_decision_required = true
+exact_transfer_confirmation_required = true
+background_activation = false
+scheduled_activation = false
+event_triggered_activation = false
+startup_network_call = false
+
+[capability]
+capability_id = "external_ariane_voice"
+request_class = "bounded_voice_candidate_request"
+accepted_inputs = ["scoped_audio_capture"]
+returned_candidates = ["candidate_transcript", "candidate_navigation_intent"]
+direct_command_execution = false
+direct_application_action = false
+sensitive_action_confirmation = false
+final_command_authority = "ariane"
+
+[data_flow]
+direction = "outbound_audio_inbound_candidate"
+source_owner = "requesting_user_session"
+requesting_owner = "ariane"
+destination_class = "managed_external_voice_provider"
+selected_outbound_fields = ["audio_frames", "locale", "operation_id", "correlation_id"]
+accepted_inbound_fields = ["candidate_transcript", "candidate_goal", "candidate_parameters", "provider_operation_ref"]
+implicit_repository_access = false
+implicit_component_store_access = false
+implicit_tenant_access = false
+implicit_profile_access = false
+implicit_secret_access = false
+direct_authoritative_write = false
+
+[transport]
+adapter_control_transport_ref = "interfaces/transport/http-over-unix.toml"
+error_envelope_ref = "interfaces/transport/error-envelope.schema.json"
+version_negotiation_ref = "interfaces/transport/version-negotiation.schema.json"
+provider_protocol = "https"
+provider_endpoint_source = "managed_configuration_reference"
+concrete_endpoint_in_repository = false
+inbound_listener = false
+webhook = false
+remote_administration = false
+network_policy = "default_deny_declared_egress_only"
+
+[limits]
+max_audio_duration_seconds = 30
+max_audio_bytes = 2097152
+connect_timeout_seconds = 3
+operation_timeout_seconds = 20
+max_concurrent_operations = 1
+queue_enabled = false
+max_queued_operations = 0
+
+[retry]
+max_attempts = 1
+automatic_retry = false
+backoff = "none"
+replay_requires_new_user_action = true
+
+[circuit_breaker]
+enabled = true
+failure_threshold = 3
+open_seconds = 60
+half_open_max_operations = 1
+
+[dependencies]
+transport_contract_bundle = "B-0014"
+health_receipt_contract_bundle = "B-0015"
+governance_policy_runtime_bundle = "B-0038"
+audit_broker_bundle = "B-0028"
+ariane_adapter_bundle = "B-0060"
+ariane_subsystem_contract_ref = "docs/contracts/subsystems/ariane.subsystem.json"
+health_schema_ref = "interfaces/health/health-status.schema.json"
+readiness_schema_ref = "interfaces/health/readiness.schema.json"
+receipt_schema_ref = "interfaces/receipts/receipt-envelope.schema.json"
+correlation_schema_ref = "interfaces/receipts/correlation.schema.json"
+
+[offline]
+behavior = "capability_unavailable"
+local_navigation_continues = true
+deferred_network_queue = false
+local_model_fallback = false
+alternate_provider_fallback = false
+
+[removal]
+revoke_credentials = true
+close_network_paths = true
+stop_adapter = true
+preserve_required_evidence = true
+reconcile_pending_candidates = true
+verify_local_navigation_independence = true
+reuse_retired_integration_id = false

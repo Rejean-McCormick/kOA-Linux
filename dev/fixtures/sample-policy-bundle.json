@@ -1,0 +1,619 @@
+{
+  "$schema": "contracts/artifact-contracts/policy-bundle.schema.json",
+  "artifact_id": "policy-bundle.development-fixture",
+  "artifact_type": "governance_policy_bundle",
+  "artifact_class": "policy_bundle",
+  "release_channel": "governance",
+  "version": "0.0.1",
+  "status": "candidate",
+  "language": "en",
+  "issued_at": "2026-08-06T12:00:00Z",
+  "authority_ref": "generated/authority-manifest.json",
+  "decisions_ref": "generated/decision-index.json",
+  "system_ref": "contracts/system.contract.json#/governance_policy",
+  "profiles_ref": "generated/profile-catalog.json",
+  "components_ref": "generated/component-catalog.json",
+  "integrations_ref": "contracts/integration-types.contract.json",
+  "artifact_classes_ref": "contracts/artifact-classes.contract.json",
+  "release_channels_ref": "contracts/release-channels.contract.json",
+  "requirements_ref": "generated/requirements-index.json",
+  "locks_ref": "generated/assertion-index.json",
+  "traceability_ref": "generated/traceability.json",
+  "exceptions_ref": "generated/exception-index.json",
+  "test_catalog_ref": "generated/test-catalog.json",
+  "evidence_ref": "generated/evidence-catalog.json",
+  "manifest": {
+    "name": "Synthetic Development Policy Fixture",
+    "description": "Non-authoritative candidate used only for deterministic schema and runtime tests.",
+    "policy_series": "development-fixture",
+    "owner_role": "governance-policy-owner",
+    "policy_domains": [
+      "authorization",
+      "separation_of_duties"
+    ],
+    "effective_from": "2026-08-06T12:00:00Z",
+    "environment_classes": [
+      "production",
+      "offline",
+      "recovery"
+    ],
+    "supersession_mode": "full_replacement",
+    "support_statement": "Development fixture only; it cannot be activated as governance authority.",
+    "operator_notice": "Synthetic fixture. Do not sign, publish, stage, or activate."
+  },
+  "scope": {
+    "scope_type": "global",
+    "scope_ids": [
+      "koa"
+    ],
+    "profiles": [
+      "user_lightweight",
+      "sovereign_linux_node"
+    ],
+    "overlays": [],
+    "components": [
+      "governance-policy-runtime",
+      "orgo"
+    ],
+    "actions": [
+      "workflow.transition"
+    ],
+    "resource_classes": [
+      "private_operational_work"
+    ],
+    "default_outside_scope": "not_applicable"
+  },
+  "runtime": {
+    "component_id": "governance-policy-runtime",
+    "engine_name": "koa-policy-runtime",
+    "minimum_version": "1.0.0",
+    "maximum_version": "1.9.99",
+    "deterministic": true,
+    "side_effect_free": true,
+    "supported_outcomes": [
+      "allow",
+      "deny",
+      "require_review"
+    ],
+    "unknown_fact_behavior": "require_review",
+    "resource_limits": {
+      "maximum_evaluation_milliseconds": 100,
+      "maximum_memory_mebibytes": 64,
+      "maximum_rule_depth": 16,
+      "maximum_rules_evaluated": 1000
+    },
+    "clock_policy": {
+      "clock_fact_id": "fact.context.current-time",
+      "confidence_fact_id": "fact.context.clock-confidence",
+      "untrusted_clock_behavior": "require_review"
+    },
+    "required_features": [
+      "declarative-rules",
+      "decision-receipts"
+    ],
+    "prohibited_features": [
+      "network_access_during_evaluation",
+      "filesystem_mutation_during_evaluation",
+      "external_ai_call_during_evaluation",
+      "resource_allocation_authority",
+      "component_state_mutation"
+    ]
+  },
+  "facts": [
+    {
+      "fact_id": "fact.subject.authenticated",
+      "description": "Whether the subject is authenticated.",
+      "source_kind": "provided",
+      "data_type": "boolean",
+      "required": true,
+      "missing_behavior": "deny",
+      "classification": "private",
+      "source_authority": "contracts/components/identity-and-trust.component.json",
+      "purpose": "Authorize workflow transition."
+    },
+    {
+      "fact_id": "fact.context.current-time",
+      "description": "Current evaluation time.",
+      "source_kind": "runtime_context",
+      "data_type": "date_time",
+      "required": true,
+      "missing_behavior": "error",
+      "classification": "internal",
+      "source_authority": "contracts/components/governance-policy-runtime.component.json"
+    },
+    {
+      "fact_id": "fact.context.clock-confidence",
+      "description": "Confidence in the evaluation clock.",
+      "source_kind": "runtime_context",
+      "data_type": "string",
+      "required": true,
+      "missing_behavior": "require_review",
+      "classification": "internal",
+      "source_authority": "contracts/components/governance-policy-runtime.component.json",
+      "allowed_values": [
+        "trusted",
+        "degraded",
+        "untrusted"
+      ]
+    }
+  ],
+  "modules": [
+    {
+      "module_id": "policy-module.workflow-auth",
+      "version": "1.0.0",
+      "title": "Workflow Authorization",
+      "description": "Authorizes authenticated workflow transitions.",
+      "domain": "authorization",
+      "evaluation_order": 10,
+      "dependencies": [],
+      "exports": [
+        "workflow-transition-decision"
+      ],
+      "required_fact_ids": [
+        "fact.subject.authenticated"
+      ],
+      "rules": [
+        {
+          "rule_id": "policy-rule.workflow-authenticated",
+          "version": "1.0.0",
+          "title": "Authenticated transition",
+          "description": "Allow the transition when authentication is present.",
+          "priority": 100,
+          "when": {
+            "compare": {
+              "left": {
+                "fact_ref": "fact.subject.authenticated"
+              },
+              "operator": "eq",
+              "right": {
+                "literal": true
+              }
+            }
+          },
+          "decision": {
+            "outcome": "allow",
+            "reason_codes": [
+              "subject_authenticated"
+            ],
+            "obligation_ids": [
+              "obligation.retain-receipt"
+            ],
+            "decision_validity_seconds": 60
+          },
+          "enabled": true
+        }
+      ]
+    }
+  ],
+  "decision_contract": {
+    "outcomes": [
+      "allow",
+      "deny",
+      "require_review"
+    ],
+    "reason_codes": [
+      {
+        "code": "subject_authenticated",
+        "title": "Subject authenticated",
+        "description": "The subject has a valid authenticated identity.",
+        "severity": "info",
+        "user_visible": true
+      },
+      {
+        "code": "subject_authentication_missing",
+        "title": "Authentication missing",
+        "description": "The subject authentication fact is absent or false.",
+        "severity": "error",
+        "user_visible": true,
+        "remediation": "Authenticate and submit the request again."
+      }
+    ],
+    "obligations": [
+      {
+        "obligation_id": "obligation.retain-receipt",
+        "type": "retain_receipt",
+        "description": "Retain the decision receipt.",
+        "enforcement_owner": "contracts/components/audit-broker.component.json",
+        "parameters": {
+          "retention_days": 2555
+        },
+        "failure_behavior": "block_completion",
+        "evidence_requirement_refs": [
+          "EVID-GOV-001"
+        ]
+      }
+    ],
+    "review_requirements": [
+      {
+        "review_requirement_id": "review.governance-default",
+        "description": "Default governance review.",
+        "reviewer_roles": [
+          "governance-reviewer"
+        ],
+        "minimum_approvals": 1,
+        "separation_of_duties": true,
+        "maximum_age_seconds": 86400,
+        "expiry_behavior": "require_new_review",
+        "dissent_recording_required": true,
+        "recourse_ref": "DOC-GOV-010"
+      }
+    ],
+    "receipt_contract": {
+      "schema_ref": "contracts/artifact-contracts/policy-decision-receipt.schema.json",
+      "required_fields": [
+        "receipt_id",
+        "policy_bundle_id",
+        "policy_bundle_version",
+        "module_id",
+        "rule_ids",
+        "subject_reference",
+        "action",
+        "resource_reference",
+        "scope",
+        "outcome",
+        "reason_codes",
+        "obligations",
+        "review_requirements",
+        "missing_fact_ids",
+        "evaluated_at",
+        "clock_confidence",
+        "correlation_id"
+      ],
+      "retention_class": "governance-decision",
+      "selective_disclosure": true
+    },
+    "missing_fact_reporting": true
+  },
+  "tests": {
+    "required_categories": [
+      "positive",
+      "negative",
+      "unknown_input",
+      "determinism",
+      "separation_of_duties",
+      "resource_limit",
+      "compatibility",
+      "recourse",
+      "supersession",
+      "emergency_expiry",
+      "offline",
+      "receipt"
+    ],
+    "vectors": [
+      {
+        "test_id": "policy-test.workflow-authenticated",
+        "category": "positive",
+        "title": "Authenticated subject is allowed.",
+        "input": {
+          "fact.subject.authenticated": true,
+          "fact.context.current-time": "2026-08-03T18:00:00-04:00",
+          "fact.context.clock-confidence": "trusted"
+        },
+        "expected": {
+          "outcome": "allow",
+          "reason_codes": [
+            "subject_authenticated"
+          ],
+          "obligation_ids": [
+            "obligation.retain-receipt"
+          ],
+          "maximum_evaluation_milliseconds": 100
+        },
+        "required": true,
+        "profile_refs": [
+          "user_lightweight",
+          "sovereign_linux_node"
+        ],
+        "evidence_ref": "EVID-GOV-TEST-001"
+      }
+    ],
+    "regression_corpus_refs": [
+      "TEST-GOV-POLICY-001"
+    ],
+    "execution_summary": {
+      "overall_result": "pass",
+      "executed_at": "2026-08-03T17:55:00-04:00",
+      "executor_ref": "TEST-GOV-POLICY-001",
+      "passed": 1,
+      "failed": 0,
+      "blocked": 0,
+      "evidence_refs": [
+        "EVID-GOV-TEST-001"
+      ]
+    }
+  },
+  "governance": {
+    "proposed_by": {
+      "identity_ref": "urn:koa:identity:policy-author",
+      "role": "policy-author"
+    },
+    "proposal_ref": "DOC-GOV-001",
+    "change_rationale": "Establish the initial deterministic workflow authorization policy.",
+    "impact_report_ref": "EVID-GOV-IMPACT-001",
+    "approvals": [
+      {
+        "approval_id": "approval-core-governance-1",
+        "approver": {
+          "identity_ref": "urn:koa:identity:governance-approver",
+          "role": "governance-approver"
+        },
+        "decision": "approve",
+        "approved_at": "2026-08-03T17:50:00-04:00",
+        "scope": [
+          "full-bundle"
+        ],
+        "conditions": [],
+        "evidence_ref": "EVID-GOV-APPROVAL-001"
+      }
+    ],
+    "separation_of_duties": {
+      "required": true,
+      "proposer_may_solely_approve": false,
+      "producer_may_solely_approve": false,
+      "incompatible_role_pairs": [
+        [
+          "policy-author",
+          "sole-governance-approver"
+        ]
+      ]
+    },
+    "recourse": {
+      "procedure_ref": "DOC-GOV-010",
+      "requester_roles": [
+        "subject",
+        "operator"
+      ],
+      "maximum_response_seconds": 604800,
+      "outcome_visibility": "authorized_participants"
+    },
+    "dissent_records": [],
+    "emergency_policy": {
+      "enabled": false
+    },
+    "fork": {
+      "is_local_fork": false
+    }
+  },
+  "compatibility": {
+    "release_channel_constraints": {
+      "system": {
+        "minimum": "1.0.0",
+        "maximum": "1.9.99",
+        "selection": "manifest_resolved"
+      },
+      "services": {
+        "minimum": "1.0.0",
+        "maximum": "1.9.99",
+        "selection": "manifest_resolved"
+      },
+      "governance": {
+        "minimum": "1.0.0",
+        "maximum": "1.0.0",
+        "selection": "exact",
+        "exact_release_ref": "urn:koa:release:governance:1.0.0"
+      },
+      "knowledge": {
+        "minimum": "1.0.0",
+        "maximum": "1.9.99",
+        "selection": "manifest_resolved"
+      }
+    },
+    "profile_rules": [
+      {
+        "profile_id": "user_lightweight",
+        "compatibility": "compatible",
+        "required_overlays": [],
+        "prohibited_overlays": [],
+        "conditions": []
+      },
+      {
+        "profile_id": "sovereign_linux_node",
+        "compatibility": "compatible",
+        "required_overlays": [],
+        "prohibited_overlays": [],
+        "conditions": [
+          "local-policy-runtime-present"
+        ]
+      }
+    ],
+    "component_contract_refs": [
+      "contracts/components/governance-policy-runtime.component.json",
+      "contracts/components/identity-and-trust.component.json",
+      "contracts/components/audit-broker.component.json"
+    ],
+    "artifact_dependencies": [],
+    "schema_dependencies": [
+      "contracts/artifact-contracts/policy-decision-receipt.schema.json"
+    ],
+    "incompatible_refs": [],
+    "required_validation_refs": [
+      "TEST-GOV-POLICY-001",
+      "TEST-GOV-POLICY-002"
+    ],
+    "supported_predecessor_bundle_refs": []
+  },
+  "activation": {
+    "mode": "atomic",
+    "partial_activation_permitted": false,
+    "staging_required": true,
+    "validation_before_activation": true,
+    "activation_authority_roles": [
+      "governance-release-operator"
+    ],
+    "pre_activation_checks": [
+      "signature",
+      "authority",
+      "scope",
+      "runtime_compatibility",
+      "release_set_compatibility",
+      "profile_compatibility",
+      "module_validation",
+      "fact_catalog_validation",
+      "reason_code_validation",
+      "obligation_validation",
+      "test_execution",
+      "offline_completeness",
+      "evidence_path",
+      "rollback_readiness"
+    ],
+    "health_gates": [
+      "runtime_load",
+      "deterministic_evaluation",
+      "decision_receipt",
+      "required_test_vectors",
+      "resource_limits",
+      "offline_evaluation",
+      "last_known_good_available",
+      "active_identity_reported"
+    ],
+    "last_known_good_required": true,
+    "rollback": {
+      "supported": true,
+      "requires_authority": true,
+      "requires_compatibility_validation": true,
+      "receipt_required": true,
+      "unsafe_behavior": "forward_repair"
+    },
+    "failure_behavior": "retain_active_bundle",
+    "receipt_required": true,
+    "receipt_schema_ref": "contracts/artifact-contracts/policy-activation-receipt.schema.json"
+  },
+  "offline": {
+    "offline_capable": true,
+    "required_local_inputs": [
+      "bundle_manifest",
+      "policy_modules",
+      "fact_schemas",
+      "reason_codes",
+      "obligations",
+      "review_requirements",
+      "test_vectors",
+      "runtime",
+      "trust_material",
+      "release_set_manifest",
+      "evidence_buffer",
+      "rollback_bundle"
+    ],
+    "remote_dependencies": [],
+    "validation_not_weakened": true,
+    "undeclared_provider_substitution_permitted": false,
+    "receipt_buffering": "durable_local",
+    "failure_behavior": "continue_local_policy"
+  },
+  "ai_boundary": {
+    "native_ai_authority": false,
+    "external_ai_evaluation_dependency": false,
+    "external_ai_output_authoritative": false,
+    "direct_component_mutation_permitted": false,
+    "direct_publication_permitted": false,
+    "privilege_grant_permitted": false,
+    "silent_provider_substitution_permitted": false,
+    "candidate_review_required": true,
+    "allowed_external_ai_capability_refs": []
+  },
+  "integration_controls": {
+    "default_deny_undeclared": true,
+    "removable": true,
+    "allowed_integration_refs": [],
+    "required_integration_refs": [],
+    "secret_material_embedded": false,
+    "failure_is_capability_scoped": true
+  },
+  "security": {
+    "default_classification": "restricted",
+    "private_key_material_embedded": false,
+    "secret_material_embedded": false,
+    "signing_policy": {
+      "canonicalization": "JCS",
+      "signature_purposes": [
+        "producer",
+        "governance_approval",
+        "release_publication"
+      ],
+      "separation_of_duties_required": true,
+      "revocation_checked": true
+    },
+    "allowed_signer_roles": [
+      "policy-producer",
+      "governance-approver",
+      "governance-release-publisher"
+    ],
+    "minimum_signatures": 1,
+    "selective_disclosure": true,
+    "log_payload_policy": "no_governed_payload",
+    "classified_section_names": [
+      "facts",
+      "tests"
+    ]
+  },
+  "provenance": {
+    "producer": {
+      "identity_ref": "urn:koa:identity:development-fixture-generator",
+      "role": "test-fixture-producer"
+    },
+    "produced_at": "2026-08-06T12:00:00Z",
+    "source_revision": "fixture:B-0013",
+    "build_profile": "build_farm",
+    "toolchain_ref": "contracts/toolchains/governance-policy.toolchain.json",
+    "source_refs": [
+      "dev/fixtures/sample-policy-bundle.json"
+    ],
+    "test_evidence_refs": [],
+    "approval_evidence_refs": [],
+    "reproducibility": "fully_attributable",
+    "simulation_evidence_refs": [],
+    "sbom_ref": "EVID-GOV-SBOM-001"
+  },
+  "lifecycle": {
+    "support_status": "supported",
+    "supersedes": [],
+    "revokes": [],
+    "withdrawal_behavior": "block_new_activation",
+    "retention": {
+      "manifest_retained": true,
+      "test_evidence_retained": true,
+      "decision_receipts_retain_original_bundle_identity": true,
+      "minimum_retention_days": 2555
+    },
+    "migration": {
+      "required": false,
+      "strategy": "none",
+      "preserve_existing_receipt_identity": true,
+      "partial_migration_permitted": false
+    },
+    "rollback_eligibility": "eligible_with_validation",
+    "forward_repair_supported": true
+  },
+  "signatures": [
+    {
+      "signature_id": "signature-development-fixture-producer",
+      "key_id": "urn:koa:key:development-fixture-untrusted",
+      "signer_identity_ref": "urn:koa:identity:development-fixture-generator",
+      "signer_role": "test-fixture-producer",
+      "algorithm": "Ed25519",
+      "canonicalization": "JCS",
+      "purpose": "producer",
+      "covered_sections": [
+        "manifest",
+        "scope",
+        "runtime",
+        "facts",
+        "modules",
+        "decision_contract",
+        "tests",
+        "governance",
+        "compatibility",
+        "activation",
+        "offline",
+        "ai_boundary",
+        "integration_controls",
+        "security",
+        "provenance",
+        "lifecycle"
+      ],
+      "signed_at": "2026-08-06T12:00:00Z",
+      "signature_value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "certificate_or_attestation_ref": "EVID-DEV-FIXTURE-SIGNER-001"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+schema_version = "1.0.0"
+integration_id = "sentient"
+storage_owner = "koa_integration_boundary"
+subsystem_authoritative_storage_owner = "sentient"
+direct_access_to_subsystem_database = false
+direct_access_to_other_component_storage = false
+shared_database_allowed = false
+shared_mutable_namespace_allowed = false
+
+[adapter_runtime]
+root_ref = "runtime://integrations/sentient"
+persistent = false
+allowed_content = ["socket_metadata", "health_probe_state", "bounded_temporary_files", "job_correlation_metadata"]
+secret_material_allowed = false
+
+[adapter_state]
+root_ref = "state://integrations/sentient-adapter"
+persistent = true
+authoritative = false
+allowed_content = [
+  "source_pin_state",
+  "compatibility_state",
+  "last_verified_health_summary",
+  "bounded_job_idempotency_metadata",
+  "candidate_descriptor_references",
+  "provenance_references",
+  "receipt_references",
+]
+rebuildable_from_authoritative_sources = true
+
+[workbench_isolation]
+workspace_root_ref = "workspace://sentient/{workspace_id}"
+candidate_root_ref = "candidates://sentient/{workspace_id}"
+queue_namespace_ref = "queue://sentient/{workspace_id}"
+cache_namespace_ref = "cache://sentient/{workspace_id}"
+index_namespace_ref = "index://sentient/{workspace_id}"
+model_namespace_ref = "model://sentient/{workspace_id}"
+shared_between_workspaces = false
+candidate_content_authoritative = false
+acceptance_occurs_outside_sentient = true
+
+[prohibitions]
+component_authoritative_state = true
+canonical_registry_mutation = true
+accepted_release_artifacts = true
+signing_material = true
+publication_credentials = true
+raw_private_keys = true
+credentials_in_plaintext = true
+protected_private_evidence = true
+undeclared_personal_or_cultural_content = true
+unrestricted_source_tree_copy = true
+
+[deletion]
+adapter_state_deletion_changes_sentient_authority = false
+workbench_cleanup_must_preserve_required_candidate_provenance = true
+critical_receipts_preserved_by_receipt_owner = true
+removal_must_not_delete_other_component_data = true
+removal_requires_storage_boundary_verification = true

@@ -1,0 +1,22 @@
+schema_version = 1
+policy_id = "koa.release.provenance"
+policy_version = "1.0.0"
+contract_version = "1.0.0"
+receipt_schema_version = "1.0.0"
+canonicalization = "utf8-json-sorted-keys-v1"
+hash_algorithm = "sha256"
+timestamp_source = "explicit"
+mutable_materials_allowed = false
+minimum_materials = 1
+minimum_transformations = 1
+minimum_tests = 1
+
+[identity]
+generator_id = "koa.release.generate-provenance"
+generator_version = "1.0.0"
+producer_component_id = "release_provenance_generator"
+
+[disclosure]
+default_class = "evidence_restricted"
+retention_class = "supply_chain_evidence"
+secret_values_allowed = false

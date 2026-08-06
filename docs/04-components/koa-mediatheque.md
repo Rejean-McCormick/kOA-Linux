@@ -22,7 +22,11 @@
     "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
     "contracts/artifact-contracts/uckk-learning-package.schema.json",
     "contracts/artifact-contracts/uckk-import-receipt.schema.json",
-    "04-components/uckk-import-bridge.md"
+    "04-components/uckk-import-bridge.md",
+    "contracts/architecture-patterns.contract.json",
+    "contracts/artifact-contracts/large-payload-reference.schema.json",
+    "contracts/artifact-contracts/cqrs-projection.schema.json",
+    "contracts/artifact-contracts/cache-policy.schema.json"
   ],
   "decision_ids": [
     "DEC-MEDIATHEQUE-001",
@@ -30,7 +34,10 @@
     "DEC-DATA-001",
     "DEC-COMP-001",
     "DEC-GOV-001",
-    "DEC-OFFLINE-001"
+    "DEC-OFFLINE-001",
+    "DEC-PAYLOAD-001",
+    "DEC-CQRS-001",
+    "DEC-CACHE-001"
   ],
   "requirement_ids": [
     "REQ-MEDIATHEQUE-001",
@@ -48,7 +55,20 @@
     "REQ-UCKK-IMPORT-003",
     "REQ-UCKK-IMPORT-004",
     "REQ-UCKK-IMPORT-005",
-    "REQ-UCKK-IMPORT-006"
+    "REQ-UCKK-IMPORT-006",
+    "REQ-PATTERN-025",
+    "REQ-PATTERN-026",
+    "REQ-PATTERN-027",
+    "REQ-PATTERN-028",
+    "REQ-PATTERN-029",
+    "REQ-PATTERN-030",
+    "REQ-PATTERN-036",
+    "REQ-PATTERN-037",
+    "REQ-PATTERN-038",
+    "REQ-PATTERN-039",
+    "REQ-PATTERN-040",
+    "REQ-PATTERN-041",
+    "REQ-PATTERN-042"
   ],
   "lock_ids": [
     "LOCK-MEDIATHEQUE-001",
@@ -59,7 +79,10 @@
     "LOCK-COMP-002",
     "LOCK-GOV-001",
     "LOCK-OFFLINE-001",
-    "LOCK-UCKK-EXT-002"
+    "LOCK-UCKK-EXT-002",
+    "LOCK-PAYLOAD-001",
+    "LOCK-CQRS-001",
+    "LOCK-CACHE-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -68,7 +91,8 @@
     "DOC-COMP-001",
     "DOC-COMP-002",
     "DOC-COMP-003",
-    "DOC-COMP-UCKK-IMPORT-001"
+    "DOC-COMP-UCKK-IMPORT-001",
+    "DOC-SYS-034"
   ],
   "tags": [
     "component",
@@ -82,7 +106,8 @@
     "backup",
     "restore",
     "import-from-uckk",
-    "offline-learning"
+    "offline-learning",
+    "architecture-patterns"
   ]
 }
 KOA:DOC-META:END -->
@@ -273,3 +298,7 @@ A conforming implementation proves:
 - no implicit bidirectional synchronization or automatic overwrite;
 - coordinated backup and restore;
 - candidate-only AI behavior.
+
+## Large media and read optimization
+
+The kOA Mediatheque remains owner of media payloads referenced by asynchronous work. Media above the profile inline limit uses a large payload reference. Optional search or recent-content views may use CQRS projections and cache policies, but acceptance, rights, publication authorization, and deletion remain owner operations against authoritative state.

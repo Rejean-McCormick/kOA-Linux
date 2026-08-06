@@ -4,11 +4,13 @@
 
 **Documentation architecture:** contract-first  
 **Status:** normative target architecture; implementation validation required  
-**Last documentation validation:** August 5, 2026
+**Last documentation validation:** August 6, 2026
 
 ## Overview
 
 kOA-Linux Operating System provides a governed local execution environment for knowledge, coordination, media, language, navigation, publication, recovery, and offline operation.
+
+kOA Spaces is the optional, replaceable global experience layer. It composes validated navigation and presentation contributions into the module selector, active-module sidebar, top bar, and shared page surface. It does not own business authority, authorization, workflows, subsystem data, host privilege, resource admission, release activation, backup, or recovery.
 
 It is not a general-purpose desktop distribution, and it does not absorb the internal authority of the applications and independently documented systems it hosts or integrates.
 
@@ -23,7 +25,7 @@ The repository defines:
 
 ## Core statement
 
-> kOA-Linux owns the local operating boundary. Each component or independent system owns its declared domain. The kOA Mediatheque is the private offline media authority. UCKK is the online Moodle learning and dissemination platform. Controlled interchange never merges their authority.
+> kOA-Linux owns the local operating boundary. Each component or independent system owns its declared domain. kOA Spaces owns only the optional global presentation and navigation frame. The kOA Mediatheque is the private offline media authority. UCKK is the online Moodle learning and dissemination platform. Interface composition and controlled interchange never merge authority.
 
 ## Authority model
 
@@ -43,6 +45,9 @@ AI-assisted work starts at [`docs/AI_CONTEXT.md`](docs/AI_CONTEXT.md).
 │                         user surfaces                            │
 │ local work • guidance • private instructions • offline learning │
 ├──────────────────────────────────────────────────────────────────┤
+│             optional kOA Spaces experience layer                 │
+│ module selector • sidebar • top bar • shared page surface       │
+├──────────────────────────────────────────────────────────────────┤
 │                 profile-selected kOA systems                     │
 │ Ariane • Konnaxion • Orgo • Kristal • language runtimes         │
 ├──────────────────────────────────────────────────────────────────┤
@@ -57,6 +62,41 @@ AI-assisted work starts at [`docs/AI_CONTEXT.md`](docs/AI_CONTEXT.md).
 │ courses • learning paths • instructions • UCKK Mediatheque      │
 └──────────────────────────────────────────────────────────────────┘
 ```
+
+## kOA Spaces experience layer
+
+kOA Spaces is an independently documented, optional subsystem integrated by kOA-Linux as the global experience and navigation layer.
+
+It owns:
+
+- the module selector;
+- the active-module sidebar;
+- global top-bar composition;
+- the shared page surface and presentation routing;
+- responsive and accessibility behavior of the global shell;
+- offline presentation state;
+- validation and atomic activation of Space definitions and interface manifests.
+
+It does not own:
+
+- authentication or authorization;
+- business workflows or domain state;
+- media, learning, task, governance, or publication authority;
+- release signing or host-level activation authority;
+- privileged host operations;
+- resource admission or scheduling;
+- backup, restore, or disaster recovery;
+- the internal implementation of Ariane, Konnaxion, Orgo, SenTient, SemantiK Architect, or another contributing system.
+
+A route, menu item, alias, sidebar entry, or widget is a presentation contribution only. Every operation remains authorized and executed by the system that owns the underlying capability and state. Removing kOA Spaces removes that presentation surface without transferring or deleting the authoritative state of contributing systems.
+
+Canonical entry points:
+
+- [`docs/02-system/21-koa-spaces-experience-layer.md`](docs/02-system/21-koa-spaces-experience-layer.md);
+- [`docs/02-system/22-koa-spaces-interface-composition.md`](docs/02-system/22-koa-spaces-interface-composition.md);
+- [`docs/03-profiles/14-koa-spaces-deployment.md`](docs/03-profiles/14-koa-spaces-deployment.md);
+- [`docs/04-components/subsystems/koa-spaces.md`](docs/04-components/subsystems/koa-spaces.md);
+- [`docs/contracts/subsystems/koa-spaces.subsystem.json`](docs/contracts/subsystems/koa-spaces.subsystem.json).
 
 ## The two Mediatheques
 
@@ -138,7 +178,7 @@ UCKK is not an internal kOA-Linux component and is not required for local or off
 
 ## Independently documented systems
 
-Ariane, Konnaxion, Orgo, SenTient, and SemantiK Architect retain authority over their internal behavior. kOA boundary summaries live under [`docs/04-components/subsystems/`](docs/04-components/subsystems/), and their machine-readable boundary contracts live under [`docs/contracts/subsystems/`](docs/contracts/subsystems/).
+Ariane, kOA Spaces, Konnaxion, Orgo, SenTient, and SemantiK Architect retain authority over their internal behavior. kOA boundary summaries live under [`docs/04-components/subsystems/`](docs/04-components/subsystems/), and their machine-readable boundary contracts live under [`docs/contracts/subsystems/`](docs/contracts/subsystems/). kOA Spaces is integrated only as the optional navigation and interface-composition layer; its presence does not make presentation artifacts authoritative.
 
 UCKK is handled as an external online Moodle integration rather than as a mounted local subsystem.
 
@@ -152,6 +192,7 @@ UCKK is handled as an external online Moodle integration rather than as a mounte
 6. **Deterministic-first operation** — core local behavior is reproducible; AI remains optional and non-authoritative.
 7. **Selective disclosure** — private local content is not transferred merely because a compatible online destination exists.
 8. **Portability and exit** — export, transfer, restore, self-hosting, and independent consumption remain testable capabilities.
+9. **Replaceable experience layer** — kOA Spaces may be disabled or replaced without transferring authority, deleting business state, or disabling native administration and subsystem interfaces.
 
 ## Documentation structure
 
@@ -164,7 +205,7 @@ UCKK is handled as an external online Moodle integration rather than as a mounte
 | [`docs/04-components/`](docs/04-components/) | Internal components and integration boundaries |
 | [`docs/05-development/`](docs/05-development/) | Development environments, builds, tests, and publication |
 | [`docs/06-lifecycle/`](docs/06-lifecycle/) | Artifacts, releases, activation, recovery, and contract evolution |
-| [`docs/07-security/`](docs/07-security/) | Trust, privileges, storage, network, privacy, rights, and supply chain |
+| [`docs/07-security/`](docs/07-security/) | Trust, privileges, security controls, profile applicability, storage, network, privacy, rights, and supply chain |
 | [`docs/08-operations/`](docs/08-operations/) | Health, capacity, backup, restore, incidents, and maintenance |
 | [`docs/09-conformance/`](docs/09-conformance/) | Requirements, evidence, traceability, and executable controls |
 | [`docs/10-adrs/`](docs/10-adrs/) | Active architectural decisions |
@@ -187,6 +228,28 @@ Do not edit files under `docs/generated/` manually.
 7. [`docs/04-components/uckk-import-bridge.md`](docs/04-components/uckk-import-bridge.md)
 8. [`docs/10-adrs/ADR-032-directional-interchange-between-koa-and-uckk-mediatheques.md`](docs/10-adrs/ADR-032-directional-interchange-between-koa-and-uckk-mediatheques.md)
 9. [`docs/09-conformance/00-conformance-model.md`](docs/09-conformance/00-conformance-model.md)
+
+### kOA Spaces architecture review
+
+1. [`docs/02-system/21-koa-spaces-experience-layer.md`](docs/02-system/21-koa-spaces-experience-layer.md)
+2. [`docs/02-system/22-koa-spaces-interface-composition.md`](docs/02-system/22-koa-spaces-interface-composition.md)
+3. [`docs/03-profiles/14-koa-spaces-deployment.md`](docs/03-profiles/14-koa-spaces-deployment.md)
+4. [`docs/04-components/subsystems/koa-spaces.md`](docs/04-components/subsystems/koa-spaces.md)
+5. [`docs/contracts/subsystems/koa-spaces.subsystem.json`](docs/contracts/subsystems/koa-spaces.subsystem.json)
+6. [`docs/contracts/artifact-contracts/space-definition.schema.json`](docs/contracts/artifact-contracts/space-definition.schema.json)
+7. [`docs/contracts/artifact-contracts/module-interface-manifest.schema.json`](docs/contracts/artifact-contracts/module-interface-manifest.schema.json)
+
+### Security architecture review
+
+1. [`docs/07-security/00-threat-model.md`](docs/07-security/00-threat-model.md)
+2. [`docs/07-security/01-security-baseline.md`](docs/07-security/01-security-baseline.md)
+3. [`docs/07-security/21-security-control-architecture.md`](docs/07-security/21-security-control-architecture.md)
+4. [`docs/07-security/22-security-control-profile-matrix.md`](docs/07-security/22-security-control-profile-matrix.md)
+5. [`docs/contracts/security-controls.contract.json`](docs/contracts/security-controls.contract.json)
+6. [`docs/09-conformance/04-profile-test-matrices.md`](docs/09-conformance/04-profile-test-matrices.md)
+7. [`docs/09-conformance/05-test-evidence.md`](docs/09-conformance/05-test-evidence.md)
+
+The thematic security documents define security behavior and requirements. The security-controls contract owns control identifiers, categories, profile applicability, validation bindings, failure behavior, and evidence classes.
 
 ## Validation
 

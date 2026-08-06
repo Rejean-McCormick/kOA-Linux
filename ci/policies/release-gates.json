@@ -1,0 +1,167 @@
+{
+  "schema_version": "1.0.0",
+  "policy_id": "koa.release-gates",
+  "policy_version": "1.0.0",
+  "status": "active",
+  "language": "en",
+  "authority_refs": [
+    "docs/09-conformance/19-release-gates.md",
+    "docs/09-conformance/06-release-evidence.md",
+    "docs/06-lifecycle/18-sbom-provenance-and-signing.md",
+    "docs/05-development/14-build-test-and-validation.md"
+  ],
+  "candidate": {
+    "release_set_schema": "docs/contracts/artifact-contracts/release-set.schema.json",
+    "required_channel_ids": [
+      "system",
+      "services",
+      "governance",
+      "knowledge"
+    ],
+    "required_compatibility_status": "tested_compatible",
+    "required_signature_status": "verified",
+    "required_activation_eligibility": "eligible",
+    "partial_activation_allowed": false,
+    "source_revision_pattern": "^[0-9a-f]{40}$",
+    "digest_algorithm": "sha256",
+    "archive_format": "ustar",
+    "source_date_epoch_required": true,
+    "validation_bundle_layout": {
+      "release_set": "release-set.json",
+      "artifacts_manifest": "artifacts-manifest.json",
+      "evidence_manifest": "evidence-manifest.json",
+      "gate_results": "gates/"
+    }
+  },
+  "gate_results": {
+    "allowed_results": [
+      "pass",
+      "fail",
+      "blocked",
+      "waived_by_approved_exception",
+      "expired",
+      "invalidated",
+      "not_applicable"
+    ],
+    "release_eligible_results": [
+      "pass",
+      "waived_by_approved_exception"
+    ],
+    "required_fields": [
+      "gate_id",
+      "gate_version",
+      "gate_class",
+      "release_set_ref",
+      "release_set_sha256",
+      "source_revision",
+      "profile_refs",
+      "scope",
+      "dependencies",
+      "evaluator",
+      "executed_checks",
+      "result",
+      "reason_codes",
+      "exception_refs",
+      "approval_refs",
+      "test_refs",
+      "evidence_refs",
+      "started_at",
+      "finished_at",
+      "valid_until",
+      "invalidation_triggers",
+      "receipt_ref"
+    ],
+    "mandatory_order": [
+      "canonical_authority",
+      "documentation",
+      "component_contracts",
+      "profiles",
+      "artifacts",
+      "release_set_compatibility",
+      "security",
+      "ai_boundary",
+      "tests",
+      "evidence",
+      "operations",
+      "disaster_recovery",
+      "migration",
+      "offline",
+      "integrations",
+      "profile_claims",
+      "ai_context",
+      "activation_readiness"
+    ],
+    "waiver_requirements": {
+      "exception_refs_min_items": 1,
+      "approval_refs_min_items": 1,
+      "prohibited_gate_classes": [
+        "canonical_authority",
+        "release_set_compatibility",
+        "security",
+        "evidence",
+        "disaster_recovery",
+        "activation_readiness"
+      ]
+    }
+  },
+  "required_dependencies": {
+    "B-0115": [
+      "ci/policies/security-gates.json",
+      "ci/policies/offline-gates.json",
+      "ci/scripts/check-clean.py",
+      "ci/scripts/check-changed-paths.py",
+      "ci/scripts/run-contracts.py",
+      "ci/scripts/run-components.py",
+      "ci/scripts/run-system-tests.py",
+      "ci/scripts/run-security.py",
+      "ci/scripts/run-offline.py",
+      "ci/scripts/run-reproducibility.py"
+    ],
+    "B-0101": [
+      "release/sbom/sbom-policy.toml",
+      "release/sbom/generate-sbom.py",
+      "release/provenance/provenance-policy.toml",
+      "release/provenance/generate-provenance.py",
+      "release/promotion/channels.toml",
+      "release/promotion/promote.py",
+      "release/promotion/rollback.py"
+    ]
+  },
+  "required_evidence_classes": [
+    "release_set",
+    "gate_record",
+    "test_result",
+    "sbom",
+    "provenance",
+    "signature_verification",
+    "recovery_readiness",
+    "approval"
+  ],
+  "publication": {
+    "eligible_decisions": [
+      "approved",
+      "approved_with_exceptions"
+    ],
+    "activation_authorized_by_publication": false,
+    "overwrite_allowed": false,
+    "mutable_alias_allowed": false,
+    "receipt_required": true,
+    "publish_exact_archive_digest": true
+  },
+  "workflow_action_pins": {
+    "actions/checkout": "de0fac2e4500dabe0009e67214ff5f5447ce83dd",
+    "actions/setup-python": "a309ff8b426b58ec0e2a45f0f869d46889d02405",
+    "actions/upload-artifact": "b7c566a772e6b6bfb58ed0dc250532a479d7789f",
+    "actions/download-artifact": "018cc2cf5baa6db3ef3c5f8a56943fffe632ef53"
+  },
+  "prohibited_behaviors": [
+    "publish_before_all_mandatory_gates_are_release_eligible",
+    "count_blocked_expired_invalidated_missing_or_stale_as_pass",
+    "mix_artifacts_from_multiple_release_sets",
+    "use_mutable_tags_or_uncommitted_inputs",
+    "edit_historical_gate_results_in_place",
+    "sign_inside_ci_workflow_without_the_separate_signing_authority",
+    "activate_a_release_set_from_evidence_publication",
+    "replace_missing_evidence_with_operator_assertion"
+  ]
+}

@@ -1,0 +1,67 @@
+schema_version = "1.0.0"
+integration_id = "ariane"
+health_contract_ref = "interfaces/health/health-status.schema.json"
+readiness_contract_ref = "interfaces/health/readiness.schema.json"
+status_accuracy = "degraded_state_must_not_appear_healthy"
+
+[liveness]
+meaning = "The adapter process can answer a bounded local probe."
+required_checks = ["adapter_process_responsive"]
+failure_state = "unavailable"
+
+[readiness]
+meaning = "The integration may accept a declared Ariane request."
+required_checks = [
+  "source_pin_verified",
+  "compatibility_verified",
+  "profile_membership_resolved",
+  "subsystem_endpoint_reachable",
+  "atlas_registry_healthy",
+  "driver_registry_healthy",
+  "identity_context_available",
+  "resource_admission_available",
+  "receipt_path_available",
+]
+missing_required_result = "blocked"
+
+[[checks]]
+check_id = "source_pin_verified"
+owner = "koa_integration_boundary"
+critical = true
+healthy_when = "repository, immutable revision, source digest, license, and documentation release are verified"
+
+[[checks]]
+check_id = "subsystem_endpoint_reachable"
+owner = "ariane"
+critical = true
+healthy_when = "the declared local subsystem endpoint answers the contract probe"
+
+[[checks]]
+check_id = "atlas_registry_healthy"
+owner = "ariane"
+critical = true
+healthy_when = "the subsystem reports a validated active Atlas registry"
+
+[[checks]]
+check_id = "driver_registry_healthy"
+owner = "ariane"
+critical = true
+healthy_when = "the subsystem reports compatible active drivers for the requested application"
+
+[[checks]]
+check_id = "receipt_path_available"
+owner = "koa_integration_boundary"
+critical = true
+healthy_when = "terminal and critical transition receipts can be durably recorded"
+
+[[checks]]
+check_id = "external_voice_available"
+owner = "ariane_voice_integration"
+critical = false
+healthy_when = "the separately approved voice adapter is available"
+unhealthy_effect = "disable_voice_only"
+
+[aggregation]
+voice_failure_changes_local_navigation_readiness = false
+unknown_check_result = "degraded_or_blocked"
+silent_success_allowed = false

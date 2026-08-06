@@ -1,0 +1,1463 @@
+{
+  "$schema": "../schemas/security-controls.contract.schema.json",
+  "contract_id": "security-controls",
+  "version": "1.0.0",
+  "status": "active",
+  "language": "en",
+  "title": "kOA Security Controls",
+  "owner": "security_architecture",
+  "authority": "canonical_control_identity_and_profile_applicability",
+  "applicability_states": [
+    "required",
+    "recommended",
+    "optional",
+    "prohibited",
+    "not_applicable"
+  ],
+  "profile_order": [
+    "user_lightweight",
+    "developer_linux_workstation",
+    "developer_windows_wsl",
+    "sovereign_linux_node",
+    "sovereign_hub",
+    "build_farm",
+    "control_plane",
+    "high_assurance",
+    "sovereign_offline",
+    "appliance_shell"
+  ],
+  "profiles": [
+    {
+      "profile_id": "user_lightweight",
+      "label": "User Lightweight",
+      "short_code": "UL",
+      "contract_ref": "contracts/profiles/user-lightweight.profile.json"
+    },
+    {
+      "profile_id": "developer_linux_workstation",
+      "label": "Developer Linux Workstation",
+      "short_code": "DL",
+      "contract_ref": "contracts/profiles/developer-linux-workstation.profile.json"
+    },
+    {
+      "profile_id": "developer_windows_wsl",
+      "label": "Developer Windows WSL",
+      "short_code": "DW",
+      "contract_ref": "contracts/profiles/developer-windows-wsl.profile.json"
+    },
+    {
+      "profile_id": "sovereign_linux_node",
+      "label": "Sovereign Linux Node",
+      "short_code": "SL",
+      "contract_ref": "contracts/profiles/sovereign-linux-node.profile.json"
+    },
+    {
+      "profile_id": "sovereign_hub",
+      "label": "Sovereign Hub",
+      "short_code": "SH",
+      "contract_ref": "contracts/profiles/sovereign-hub.profile.json"
+    },
+    {
+      "profile_id": "build_farm",
+      "label": "Build Farm",
+      "short_code": "BF",
+      "contract_ref": "contracts/profiles/build-farm.profile.json"
+    },
+    {
+      "profile_id": "control_plane",
+      "label": "Control Plane",
+      "short_code": "CP",
+      "contract_ref": "contracts/profiles/control-plane.profile.json"
+    },
+    {
+      "profile_id": "high_assurance",
+      "label": "High Assurance",
+      "short_code": "HA",
+      "contract_ref": "contracts/profiles/high-assurance.profile.json"
+    },
+    {
+      "profile_id": "sovereign_offline",
+      "label": "Sovereign Offline Overlay",
+      "short_code": "SO",
+      "contract_ref": "contracts/profiles/sovereign-offline.profile.json"
+    },
+    {
+      "profile_id": "appliance_shell",
+      "label": "Appliance Shell Overlay",
+      "short_code": "AS",
+      "contract_ref": "contracts/profiles/appliance-shell.profile.json"
+    }
+  ],
+  "invariants": [
+    {
+      "invariant_id": "SEC-INV-001",
+      "title": "Verified activation",
+      "statement": "No critical system, service, policy, or governed artifact becomes active without identity, digest, compatibility, and admission verification."
+    },
+    {
+      "invariant_id": "SEC-INV-002",
+      "title": "Default deny",
+      "statement": "Filesystem, network, device, process, privilege, and external-integration access is denied unless explicitly declared."
+    },
+    {
+      "invariant_id": "SEC-INV-003",
+      "title": "No implicit privilege",
+      "statement": "Locality, installation, user-interface visibility, application administration, or governance influence never implies machine privilege."
+    },
+    {
+      "invariant_id": "SEC-INV-004",
+      "title": "One owner per authoritative state",
+      "statement": "No component directly mutates another owner’s private authoritative state."
+    },
+    {
+      "invariant_id": "SEC-INV-005",
+      "title": "Closed privileged operations",
+      "statement": "No arbitrary shell command, path, unit, device operation, or capability crosses the privileged broker."
+    },
+    {
+      "invariant_id": "SEC-INV-006",
+      "title": "Traceable active artifacts",
+      "statement": "Every active governed artifact has origin, version, digest, signature policy, provenance, compatibility, and applicable SBOM evidence."
+    },
+    {
+      "invariant_id": "SEC-INV-007",
+      "title": "Accountability without indiscriminate surveillance",
+      "statement": "Critical actions are traceable while event collection and disclosure remain purpose-limited and privacy-minimized."
+    },
+    {
+      "invariant_id": "SEC-INV-008",
+      "title": "Proven recovery",
+      "statement": "Backup, rollback, and recovery claims require successful exercises and retained evidence."
+    }
+  ],
+  "categories": [
+    {
+      "category_id": "security_governance",
+      "title": "Security governance and control architecture",
+      "canonical_documents": [
+        "07-security/00-threat-model.md",
+        "07-security/21-security-control-architecture.md",
+        "07-security/22-security-control-profile-matrix.md"
+      ]
+    },
+    {
+      "category_id": "platform_integrity",
+      "title": "Platform integrity and activation",
+      "canonical_documents": [
+        "07-security/01-security-baseline.md",
+        "07-security/04-trust-root-scoping.md",
+        "07-security/09-storage-boundaries.md",
+        "06-lifecycle/13-activation-and-verification.md",
+        "06-lifecycle/14-recovery.md"
+      ]
+    },
+    {
+      "category_id": "identity_and_access",
+      "title": "Identity and authorization",
+      "canonical_documents": [
+        "07-security/03-identity-trust-and-signatures.md",
+        "07-security/05-privilege-boundaries.md"
+      ]
+    },
+    {
+      "category_id": "privilege",
+      "title": "Privilege boundaries",
+      "canonical_documents": [
+        "07-security/05-privilege-boundaries.md",
+        "07-security/06-privileged-broker.md"
+      ]
+    },
+    {
+      "category_id": "service_isolation",
+      "title": "Service isolation",
+      "canonical_documents": [
+        "07-security/02-security-domains.md",
+        "07-security/05-privilege-boundaries.md"
+      ]
+    },
+    {
+      "category_id": "key_and_secret_management",
+      "title": "Keys and secrets",
+      "canonical_documents": [
+        "07-security/04-trust-root-scoping.md",
+        "07-security/07-secrets-and-keys.md"
+      ]
+    },
+    {
+      "category_id": "network_security",
+      "title": "Network security",
+      "canonical_documents": [
+        "07-security/08-network-boundaries.md",
+        "07-security/12-external-integration-classification.md"
+      ]
+    },
+    {
+      "category_id": "data_security",
+      "title": "Data security",
+      "canonical_documents": [
+        "07-security/09-storage-boundaries.md",
+        "07-security/10-data-at-rest.md",
+        "07-security/13-privacy-and-disclosure.md"
+      ]
+    },
+    {
+      "category_id": "offline_import_security",
+      "title": "Offline import security",
+      "canonical_documents": [
+        "07-security/18-offline-import-security.md"
+      ]
+    },
+    {
+      "category_id": "supply_chain",
+      "title": "Software supply chain",
+      "canonical_documents": [
+        "07-security/19-software-supply-chain.md",
+        "06-lifecycle/18-sbom-provenance-and-signing.md"
+      ]
+    },
+    {
+      "category_id": "secure_development",
+      "title": "Secure development",
+      "canonical_documents": [
+        "05-development/13-development-security.md",
+        "05-development/14-build-test-and-validation.md"
+      ]
+    },
+    {
+      "category_id": "audit_and_detection",
+      "title": "Audit and detection",
+      "canonical_documents": [
+        "07-security/15-selective-audit.md",
+        "07-security/16-public-evidence-and-private-proof.md"
+      ]
+    },
+    {
+      "category_id": "incident_response",
+      "title": "Incident response",
+      "canonical_documents": [
+        "08-operations/12-incident-response.md"
+      ]
+    },
+    {
+      "category_id": "recovery",
+      "title": "Backup and recovery",
+      "canonical_documents": [
+        "08-operations/08-backup.md",
+        "08-operations/09-restore.md",
+        "08-operations/13-disaster-recovery.md"
+      ]
+    }
+  ],
+  "controls": [
+    {
+      "control_id": "SEC-GOV-001",
+      "title": "Current scoped threat model",
+      "category": "security_governance",
+      "status": "active",
+      "owner": "security_architecture",
+      "canonical_document": "07-security/00-threat-model.md",
+      "summary": "The deployment threat model identifies protected assets, trust boundaries, adversaries, abuse cases, preventive controls, detection paths, and recovery paths for the active profile.",
+      "failure_behavior": "block_release",
+      "evidence_class": "threat_model_evidence",
+      "implementation_binding": "docs/07-security/00-threat-model.md",
+      "validation_binding": "tests/security/threat-model/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "required",
+        "developer_windows_wsl": "required",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-GOV-002",
+      "title": "Explicit control applicability by profile",
+      "category": "security_governance",
+      "status": "active",
+      "owner": "security_architecture",
+      "canonical_document": "07-security/22-security-control-profile-matrix.md",
+      "summary": "Every active security control is classified for every profile contract as required, recommended, optional, prohibited, or not applicable.",
+      "failure_behavior": "block_conformance_claim",
+      "evidence_class": "security_profile_evidence",
+      "implementation_binding": "docs/contracts/security-controls.contract.json",
+      "validation_binding": "docs/tools/check_security_architecture.py",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "required",
+        "developer_windows_wsl": "required",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-GOV-003",
+      "title": "Control implementation validation and evidence binding",
+      "category": "security_governance",
+      "status": "active",
+      "owner": "security_architecture",
+      "canonical_document": "07-security/21-security-control-architecture.md",
+      "summary": "Every required control declares one owner, an implementation binding, a validation binding, a failure behavior, and an evidence class.",
+      "failure_behavior": "block_conformance_claim",
+      "evidence_class": "security_control_binding_evidence",
+      "implementation_binding": "docs/contracts/security-controls.contract.json",
+      "validation_binding": "docs/tools/check_security_architecture.py",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "required",
+        "developer_windows_wsl": "required",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-GOV-004",
+      "title": "Bounded security exceptions",
+      "category": "security_governance",
+      "status": "active",
+      "owner": "security_architecture",
+      "canonical_document": "00-governance/15-exceptions-and-waivers.md",
+      "summary": "A security exception identifies scope, owner, rationale, compensating controls, expiry, review conditions, and the conformance claims it suspends.",
+      "failure_behavior": "deny_exception_activation",
+      "evidence_class": "security_exception_evidence",
+      "implementation_binding": "docs/00-governance/15-exceptions-and-waivers.md",
+      "validation_binding": "tests/security/exceptions/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "required",
+        "developer_windows_wsl": "required",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-PLATFORM-001",
+      "title": "Verified boot chain",
+      "category": "platform_integrity",
+      "status": "active",
+      "owner": "host_platform",
+      "canonical_document": "07-security/01-security-baseline.md",
+      "summary": "Profiles that own the Linux boot chain verify firmware policy, bootloader, kernel, initramfs, and the selected system image before activation.",
+      "failure_behavior": "refuse_boot",
+      "evidence_class": "platform_integrity_evidence",
+      "implementation_binding": "host/boot/",
+      "validation_binding": "tests/security/verified-boot/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "recommended",
+        "developer_windows_wsl": "not_applicable",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      },
+      "applicability_condition": "Not applicable when the profile does not own the host boot chain."
+    },
+    {
+      "control_id": "SEC-PLATFORM-002",
+      "title": "Immutable verified system root",
+      "category": "platform_integrity",
+      "status": "active",
+      "owner": "host_platform",
+      "canonical_document": "07-security/09-storage-boundaries.md",
+      "summary": "The active operating-system root is immutable during normal operation and verified against an admitted integrity root.",
+      "failure_behavior": "refuse_activation",
+      "evidence_class": "platform_integrity_evidence",
+      "implementation_binding": "host/image/",
+      "validation_binding": "tests/security/immutable-root/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "recommended",
+        "developer_windows_wsl": "not_applicable",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-PLATFORM-003",
+      "title": "Atomic update and last-known-good rollback",
+      "category": "platform_integrity",
+      "status": "active",
+      "owner": "release_authority",
+      "canonical_document": "06-lifecycle/13-activation-and-verification.md",
+      "summary": "System and critical service updates activate atomically, preserve the prior known-good state, and never expose a partially activated release set.",
+      "failure_behavior": "restore_last_known_good",
+      "evidence_class": "release_activation_evidence",
+      "implementation_binding": "assembly/release-set-builder/",
+      "validation_binding": "tests/security/atomic-activation/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "recommended",
+        "developer_windows_wsl": "not_applicable",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-PLATFORM-004",
+      "title": "Separate verified recovery environment",
+      "category": "platform_integrity",
+      "status": "active",
+      "owner": "host_platform",
+      "canonical_document": "06-lifecycle/14-recovery.md",
+      "summary": "Recovery tooling is separated from the active mutable system, independently verified, and unable to silently replace active authority.",
+      "failure_behavior": "enter_safe_recovery",
+      "evidence_class": "recovery_environment_evidence",
+      "implementation_binding": "host/recovery/",
+      "validation_binding": "tests/security/recovery-environment/",
+      "applicability": {
+        "user_lightweight": "recommended",
+        "developer_linux_workstation": "recommended",
+        "developer_windows_wsl": "not_applicable",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "optional",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "recommended"
+      }
+    },
+    {
+      "control_id": "SEC-PLATFORM-005",
+      "title": "Hardware-rooted platform evidence by assurance level",
+      "category": "platform_integrity",
+      "status": "active",
+      "owner": "identity_and_trust",
+      "canonical_document": "07-security/04-trust-root-scoping.md",
+      "summary": "Hardware-backed key protection, measured boot, and attestation are enabled only where required by the active assurance profile and remain separable from ordinary application authorization.",
+      "failure_behavior": "deny_high_assurance_claim",
+      "evidence_class": "platform_attestation_evidence",
+      "implementation_binding": "host/security/trust-bootstrap/",
+      "validation_binding": "tests/security/platform-attestation/",
+      "applicability": {
+        "user_lightweight": "optional",
+        "developer_linux_workstation": "optional",
+        "developer_windows_wsl": "not_applicable",
+        "sovereign_linux_node": "recommended",
+        "sovereign_hub": "recommended",
+        "build_farm": "recommended",
+        "control_plane": "recommended",
+        "high_assurance": "required",
+        "sovereign_offline": "recommended",
+        "appliance_shell": "optional"
+      }
+    },
+    {
+      "control_id": "SEC-ID-001",
+      "title": "Distinct human device service artifact and release identities",
+      "category": "identity_and_access",
+      "status": "active",
+      "owner": "identity_and_trust",
+      "canonical_document": "07-security/03-identity-trust-and-signatures.md",
+      "summary": "Human, device, service, artifact, release, and signing identities are distinct and cannot be substituted for one another.",
+      "failure_behavior": "deny_operation",
+      "evidence_class": "identity_evidence",
+      "implementation_binding": "components/identity-and-trust/",
+      "validation_binding": "tests/security/identity-classes/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "required",
+        "developer_windows_wsl": "required",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-ID-002",
+      "title": "Phishing-resistant privileged and remote authentication",
+      "category": "identity_and_access",
+      "status": "active",
+      "owner": "identity_and_trust",
+      "canonical_document": "07-security/03-identity-trust-and-signatures.md",
+      "summary": "Privileged or remote administrative access uses multi-factor authentication resistant to credential replay and phishing where the profile exposes such access.",
+      "failure_behavior": "deny_administrative_access",
+      "evidence_class": "authentication_evidence",
+      "implementation_binding": "components/identity-and-trust/",
+      "validation_binding": "tests/security/privileged-authentication/",
+      "applicability": {
+        "user_lightweight": "optional",
+        "developer_linux_workstation": "optional",
+        "developer_windows_wsl": "optional",
+        "sovereign_linux_node": "recommended",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "recommended",
+        "appliance_shell": "optional"
+      }
+    },
+    {
+      "control_id": "SEC-ID-003",
+      "title": "Bounded revocable credentials",
+      "category": "identity_and_access",
+      "status": "active",
+      "owner": "identity_and_trust",
+      "canonical_document": "07-security/03-identity-trust-and-signatures.md",
+      "summary": "Credentials are scoped, expiring where practical, revocable, and invalidated when an identity, device, service, or trust relationship is retired.",
+      "failure_behavior": "deny_operation",
+      "evidence_class": "credential_lifecycle_evidence",
+      "implementation_binding": "components/identity-and-trust/",
+      "validation_binding": "tests/security/credential-lifecycle/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "required",
+        "developer_windows_wsl": "required",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-ID-004",
+      "title": "Authorization at the authoritative owner",
+      "category": "identity_and_access",
+      "status": "active",
+      "owner": "identity_and_trust",
+      "canonical_document": "07-security/05-privilege-boundaries.md",
+      "summary": "A user-interface state, local network position, installed module, or successful navigation decision never substitutes for authorization by the authoritative owner.",
+      "failure_behavior": "deny_operation",
+      "evidence_class": "authorization_evidence",
+      "implementation_binding": "interfaces/",
+      "validation_binding": "tests/security/authority-enforcement/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "required",
+        "developer_windows_wsl": "required",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-PRIV-001",
+      "title": "Default deny and least privilege",
+      "category": "privilege",
+      "status": "active",
+      "owner": "security_architecture",
+      "canonical_document": "07-security/05-privilege-boundaries.md",
+      "summary": "Filesystem, network, device, process, administrative, and cross-component privileges are denied unless explicitly declared and justified.",
+      "failure_behavior": "deny_operation",
+      "evidence_class": "least_privilege_evidence",
+      "implementation_binding": "host/security/",
+      "validation_binding": "tests/security/default-deny/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "required",
+        "developer_windows_wsl": "required",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-PRIV-002",
+      "title": "Closed typed privileged broker",
+      "category": "privilege",
+      "status": "active",
+      "owner": "koa_node_agent",
+      "canonical_document": "07-security/06-privileged-broker.md",
+      "summary": "Host mutations use a narrow registered operation set with typed parameters, caller identity, policy decision, idempotence, expiry, and execution receipt.",
+      "failure_behavior": "deny_privileged_operation",
+      "evidence_class": "privileged_operation_evidence",
+      "implementation_binding": "components/koa-node-agent/src/privileged-broker/",
+      "validation_binding": "tests/security/privileged-broker/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "required",
+        "developer_windows_wsl": "required",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-PRIV-003",
+      "title": "No arbitrary command path or unit through privilege boundary",
+      "category": "privilege",
+      "status": "active",
+      "owner": "koa_node_agent",
+      "canonical_document": "07-security/06-privileged-broker.md",
+      "summary": "The privileged boundary rejects free-form shell commands, arbitrary filesystem paths, arbitrary service names, and undeclared host operations.",
+      "failure_behavior": "deny_privileged_operation",
+      "evidence_class": "privileged_operation_evidence",
+      "implementation_binding": "components/koa-node-agent/src/privileged-broker/",
+      "validation_binding": "tests/security/privileged-broker-negative/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "required",
+        "developer_windows_wsl": "required",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-ISO-001",
+      "title": "Per-service principal and bounded runtime access",
+      "category": "service_isolation",
+      "status": "active",
+      "owner": "host_platform",
+      "canonical_document": "07-security/02-security-domains.md",
+      "summary": "Each service runs under a distinct principal with only its declared writable paths, sockets, devices, capabilities, and network destinations.",
+      "failure_behavior": "refuse_service_activation",
+      "evidence_class": "service_isolation_evidence",
+      "implementation_binding": "host/systemd/",
+      "validation_binding": "tests/security/service-isolation/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "required",
+        "developer_windows_wsl": "required",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-ISO-002",
+      "title": "Mandatory access control sandboxing and resource bounds",
+      "category": "service_isolation",
+      "status": "active",
+      "owner": "host_platform",
+      "canonical_document": "07-security/05-privilege-boundaries.md",
+      "summary": "Linux profiles apply declared mandatory access control, systemd or container sandboxing, syscall restrictions where compatible, and bounded CPU, memory, process, storage, and I/O use.",
+      "failure_behavior": "refuse_service_activation",
+      "evidence_class": "service_security_profile_evidence",
+      "implementation_binding": "host/security/",
+      "validation_binding": "tests/security/service-security-profiles/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "recommended",
+        "developer_windows_wsl": "not_applicable",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-KEY-001",
+      "title": "Secrets excluded from source images logs receipts and ordinary exports",
+      "category": "key_and_secret_management",
+      "status": "active",
+      "owner": "identity_and_trust",
+      "canonical_document": "07-security/07-secrets-and-keys.md",
+      "summary": "Private keys, passwords, tokens, and equivalent secrets are not committed to source, embedded in release images, emitted in logs or receipts, or included in ordinary exports.",
+      "failure_behavior": "block_release",
+      "evidence_class": "secret_handling_evidence",
+      "implementation_binding": "components/identity-and-trust/",
+      "validation_binding": "tests/security/secret-scanning/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "required",
+        "developer_windows_wsl": "required",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-KEY-002",
+      "title": "Scoped offline root trust",
+      "category": "key_and_secret_management",
+      "status": "active",
+      "owner": "identity_and_trust",
+      "canonical_document": "07-security/04-trust-root-scoping.md",
+      "summary": "Root trust is scoped by environment, release channel, artifact class, and authority domain, with the highest-impact roots retained offline.",
+      "failure_behavior": "deny_signature_trust",
+      "evidence_class": "trust_root_evidence",
+      "implementation_binding": "release/signing/",
+      "validation_binding": "tests/security/trust-root-scoping/",
+      "applicability": {
+        "user_lightweight": "optional",
+        "developer_linux_workstation": "optional",
+        "developer_windows_wsl": "optional",
+        "sovereign_linux_node": "recommended",
+        "sovereign_hub": "recommended",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "optional"
+      }
+    },
+    {
+      "control_id": "SEC-KEY-003",
+      "title": "Key rotation revocation and compromise response",
+      "category": "key_and_secret_management",
+      "status": "active",
+      "owner": "identity_and_trust",
+      "canonical_document": "07-security/07-secrets-and-keys.md",
+      "summary": "Every active key class has rotation, expiry, revocation, compromise declaration, replacement, and recovery procedures that are testable offline where required.",
+      "failure_behavior": "deny_signature_trust",
+      "evidence_class": "key_lifecycle_evidence",
+      "implementation_binding": "release/signing/",
+      "validation_binding": "tests/security/key-lifecycle/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "required",
+        "developer_windows_wsl": "required",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-KEY-004",
+      "title": "Separated or threshold release signing by risk",
+      "category": "key_and_secret_management",
+      "status": "active",
+      "owner": "release_authority",
+      "canonical_document": "07-security/04-trust-root-scoping.md",
+      "summary": "High-impact release promotion separates build, approval, signing, and publication, and uses multiple approvals or threshold signatures where required by the active profile.",
+      "failure_behavior": "block_release",
+      "evidence_class": "release_signing_evidence",
+      "implementation_binding": "release/signing/",
+      "validation_binding": "tests/security/release-signing/",
+      "applicability": {
+        "user_lightweight": "not_applicable",
+        "developer_linux_workstation": "not_applicable",
+        "developer_windows_wsl": "not_applicable",
+        "sovereign_linux_node": "not_applicable",
+        "sovereign_hub": "optional",
+        "build_farm": "recommended",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "recommended",
+        "appliance_shell": "not_applicable"
+      }
+    },
+    {
+      "control_id": "SEC-NET-001",
+      "title": "Inbound network deny by default",
+      "category": "network_security",
+      "status": "active",
+      "owner": "host_platform",
+      "canonical_document": "07-security/08-network-boundaries.md",
+      "summary": "No inbound listener is reachable beyond its declared interface, zone, identity, protocol, and profile requirement.",
+      "failure_behavior": "deny_network_flow",
+      "evidence_class": "network_policy_evidence",
+      "implementation_binding": "host/networking/firewall/",
+      "validation_binding": "tests/security/inbound-network/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "required",
+        "developer_windows_wsl": "required",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-NET-002",
+      "title": "Security-zone separation",
+      "category": "network_security",
+      "status": "active",
+      "owner": "host_platform",
+      "canonical_document": "07-security/08-network-boundaries.md",
+      "summary": "User, application, administration, synchronization, guest, recovery, and external-integration traffic are separated where present, with interzone traffic denied unless declared.",
+      "failure_behavior": "deny_network_flow",
+      "evidence_class": "network_segmentation_evidence",
+      "implementation_binding": "host/networking/zones/",
+      "validation_binding": "tests/security/network-zones/",
+      "applicability": {
+        "user_lightweight": "recommended",
+        "developer_linux_workstation": "optional",
+        "developer_windows_wsl": "optional",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "recommended"
+      }
+    },
+    {
+      "control_id": "SEC-NET-003",
+      "title": "Declared outbound destinations for external integrations",
+      "category": "network_security",
+      "status": "active",
+      "owner": "publication_gateway",
+      "canonical_document": "07-security/12-external-integration-classification.md",
+      "summary": "External integrations use a declared gateway or egress policy with allowed destinations, data classes, quotas, timeouts, and failure behavior.",
+      "failure_behavior": "deny_network_flow",
+      "evidence_class": "egress_policy_evidence",
+      "implementation_binding": "integrations/external-services/",
+      "validation_binding": "tests/security/egress-allowlist/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "required",
+        "developer_windows_wsl": "required",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-NET-004",
+      "title": "Authenticated encrypted cross-node communication",
+      "category": "network_security",
+      "status": "active",
+      "owner": "identity_and_trust",
+      "canonical_document": "07-security/08-network-boundaries.md",
+      "summary": "Sensitive cross-node communication authenticates both endpoints and protects confidentiality, integrity, replay resistance, and protocol version negotiation.",
+      "failure_behavior": "deny_network_flow",
+      "evidence_class": "transport_security_evidence",
+      "implementation_binding": "interfaces/http/",
+      "validation_binding": "tests/security/cross-node-transport/",
+      "applicability": {
+        "user_lightweight": "optional",
+        "developer_linux_workstation": "optional",
+        "developer_windows_wsl": "optional",
+        "sovereign_linux_node": "recommended",
+        "sovereign_hub": "required",
+        "build_farm": "recommended",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "optional"
+      }
+    },
+    {
+      "control_id": "SEC-DATA-001",
+      "title": "Data ownership classification retention and disclosure",
+      "category": "data_security",
+      "status": "active",
+      "owner": "data_owners",
+      "canonical_document": "07-security/13-privacy-and-disclosure.md",
+      "summary": "Every protected data class declares one owner, sensitivity, storage boundary, access conditions, retention, disclosure, export, backup, and deletion behavior.",
+      "failure_behavior": "deny_data_operation",
+      "evidence_class": "data_governance_evidence",
+      "implementation_binding": "components/",
+      "validation_binding": "tests/security/data-classification/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "required",
+        "developer_windows_wsl": "required",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-DATA-002",
+      "title": "Encryption and integrity for sensitive durable state",
+      "category": "data_security",
+      "status": "active",
+      "owner": "data_owners",
+      "canonical_document": "07-security/10-data-at-rest.md",
+      "summary": "Sensitive durable state and its backups are encrypted at rest, and integrity-protected where unauthorized modification would affect authority or safety.",
+      "failure_behavior": "deny_data_activation",
+      "evidence_class": "data_protection_evidence",
+      "implementation_binding": "host/storage/encryption/",
+      "validation_binding": "tests/security/data-at-rest/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "required",
+        "developer_windows_wsl": "required",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-DATA-003",
+      "title": "No direct cross-owner state access",
+      "category": "data_security",
+      "status": "active",
+      "owner": "security_architecture",
+      "canonical_document": "07-security/09-storage-boundaries.md",
+      "summary": "A component or subsystem does not directly read or write another owner’s private database, files, keys, or mutable state; declared interfaces mediate exchange.",
+      "failure_behavior": "deny_data_operation",
+      "evidence_class": "boundary_isolation_evidence",
+      "implementation_binding": "interfaces/",
+      "validation_binding": "tests/security/cross-owner-state/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "required",
+        "developer_windows_wsl": "required",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-OFFLINE-001",
+      "title": "Quarantine for removable and offline imports",
+      "category": "offline_import_security",
+      "status": "active",
+      "owner": "offline_import_gateway",
+      "canonical_document": "07-security/18-offline-import-security.md",
+      "summary": "Untrusted removable media and offline packages are mounted without execution, copied to quarantine, and never opened directly as active authority.",
+      "failure_behavior": "quarantine",
+      "evidence_class": "offline_import_evidence",
+      "implementation_binding": "host/devices/removable-media/",
+      "validation_binding": "tests/security/offline-quarantine/",
+      "applicability": {
+        "user_lightweight": "recommended",
+        "developer_linux_workstation": "optional",
+        "developer_windows_wsl": "not_applicable",
+        "sovereign_linux_node": "recommended",
+        "sovereign_hub": "recommended",
+        "build_farm": "optional",
+        "control_plane": "optional",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "recommended"
+      }
+    },
+    {
+      "control_id": "SEC-OFFLINE-002",
+      "title": "Bounded parsing signature provenance and import receipts",
+      "category": "offline_import_security",
+      "status": "active",
+      "owner": "offline_import_gateway",
+      "canonical_document": "07-security/18-offline-import-security.md",
+      "summary": "Offline admission enforces size and recursion limits, content-based type validation, signature and provenance checks, malware inspection where available, contract validation, and an immutable admission or rejection receipt.",
+      "failure_behavior": "quarantine",
+      "evidence_class": "offline_import_evidence",
+      "implementation_binding": "integrations/",
+      "validation_binding": "tests/security/offline-admission/",
+      "applicability": {
+        "user_lightweight": "recommended",
+        "developer_linux_workstation": "optional",
+        "developer_windows_wsl": "not_applicable",
+        "sovereign_linux_node": "recommended",
+        "sovereign_hub": "recommended",
+        "build_farm": "optional",
+        "control_plane": "optional",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "recommended"
+      }
+    },
+    {
+      "control_id": "SEC-SUPPLY-001",
+      "title": "Pinned source dependencies and images by digest",
+      "category": "supply_chain",
+      "status": "active",
+      "owner": "build_and_release",
+      "canonical_document": "07-security/19-software-supply-chain.md",
+      "summary": "Build inputs, dependencies, base images, subsystem releases, and toolchains are pinned to immutable revisions or digests and resolved without silent fallback.",
+      "failure_behavior": "block_build",
+      "evidence_class": "supply_chain_evidence",
+      "implementation_binding": "release/locks/",
+      "validation_binding": "tests/security/dependency-pinning/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "required",
+        "developer_windows_wsl": "required",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-SUPPLY-002",
+      "title": "Software bill of materials for released artifacts",
+      "category": "supply_chain",
+      "status": "active",
+      "owner": "build_and_release",
+      "canonical_document": "06-lifecycle/18-sbom-provenance-and-signing.md",
+      "summary": "Every released OS image, service bundle, policy bundle, and applicable artifact set carries an attributable SBOM suitable for vulnerability and license review.",
+      "failure_behavior": "block_release",
+      "evidence_class": "sbom_evidence",
+      "implementation_binding": "release/sbom/",
+      "validation_binding": "tests/security/sbom/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "required",
+        "developer_windows_wsl": "required",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-SUPPLY-003",
+      "title": "Build provenance for released artifacts",
+      "category": "supply_chain",
+      "status": "active",
+      "owner": "build_and_release",
+      "canonical_document": "06-lifecycle/18-sbom-provenance-and-signing.md",
+      "summary": "Released artifacts carry verifiable provenance linking source, revision, builder identity, toolchain, environment, transformations, tests, and resulting digest.",
+      "failure_behavior": "block_release",
+      "evidence_class": "provenance_evidence",
+      "implementation_binding": "release/provenance/",
+      "validation_binding": "tests/security/provenance/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "required",
+        "developer_windows_wsl": "required",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-SUPPLY-004",
+      "title": "Separated build approval signing and publication",
+      "category": "supply_chain",
+      "status": "active",
+      "owner": "release_authority",
+      "canonical_document": "07-security/19-software-supply-chain.md",
+      "summary": "A single compromised build worker cannot silently produce, approve, sign, publish, and activate a high-impact release.",
+      "failure_behavior": "block_release",
+      "evidence_class": "release_separation_evidence",
+      "implementation_binding": "release/promotion/",
+      "validation_binding": "tests/security/release-separation/",
+      "applicability": {
+        "user_lightweight": "not_applicable",
+        "developer_linux_workstation": "not_applicable",
+        "developer_windows_wsl": "not_applicable",
+        "sovereign_linux_node": "not_applicable",
+        "sovereign_hub": "optional",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "recommended",
+        "appliance_shell": "not_applicable"
+      }
+    },
+    {
+      "control_id": "SEC-SUPPLY-005",
+      "title": "Vulnerability response revocation and anti-rollback metadata",
+      "category": "supply_chain",
+      "status": "active",
+      "owner": "release_authority",
+      "canonical_document": "07-security/19-software-supply-chain.md",
+      "summary": "The release system can identify affected artifacts, revoke compromised versions or keys, publish bounded remediation, and reject stale, frozen, or unauthorized rollback metadata.",
+      "failure_behavior": "block_release",
+      "evidence_class": "vulnerability_response_evidence",
+      "implementation_binding": "release/verification/",
+      "validation_binding": "tests/security/revocation-and-rollback/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "required",
+        "developer_windows_wsl": "required",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-DEV-001",
+      "title": "Mandatory review static dependency and secret analysis",
+      "category": "secure_development",
+      "status": "active",
+      "owner": "component_maintainers",
+      "canonical_document": "05-development/13-development-security.md",
+      "summary": "Changes to security-relevant code and configuration require review and automated analysis for code defects, vulnerable dependencies, exposed secrets, unsafe configuration, and policy drift.",
+      "failure_behavior": "block_merge",
+      "evidence_class": "secure_development_evidence",
+      "implementation_binding": "ci/policies/",
+      "validation_binding": "tests/security/development-gates/",
+      "applicability": {
+        "user_lightweight": "optional",
+        "developer_linux_workstation": "required",
+        "developer_windows_wsl": "required",
+        "sovereign_linux_node": "recommended",
+        "sovereign_hub": "recommended",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "recommended",
+        "appliance_shell": "optional"
+      }
+    },
+    {
+      "control_id": "SEC-DEV-002",
+      "title": "Negative testing and fuzzing of parsers and privileged protocols",
+      "category": "secure_development",
+      "status": "active",
+      "owner": "component_maintainers",
+      "canonical_document": "05-development/14-build-test-and-validation.md",
+      "summary": "Parsers, importers, archive handlers, protocol decoders, privileged interfaces, and security-critical state machines receive negative tests and fuzzing proportionate to risk.",
+      "failure_behavior": "block_release",
+      "evidence_class": "secure_development_evidence",
+      "implementation_binding": "tests/security/fuzzing/",
+      "validation_binding": "tests/security/fuzzing/",
+      "applicability": {
+        "user_lightweight": "optional",
+        "developer_linux_workstation": "recommended",
+        "developer_windows_wsl": "recommended",
+        "sovereign_linux_node": "recommended",
+        "sovereign_hub": "recommended",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "recommended",
+        "appliance_shell": "optional"
+      }
+    },
+    {
+      "control_id": "SEC-AUDIT-001",
+      "title": "Structured security event records",
+      "category": "audit_and_detection",
+      "status": "active",
+      "owner": "audit_broker",
+      "canonical_document": "07-security/15-selective-audit.md",
+      "summary": "Security-relevant events record time, event identity, actor, service, action, target, policy or decision reference, outcome, correlation, software version, and disclosure class.",
+      "failure_behavior": "alert_and_preserve",
+      "evidence_class": "security_event_evidence",
+      "implementation_binding": "components/audit-broker/",
+      "validation_binding": "tests/security/security-events/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "required",
+        "developer_windows_wsl": "required",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-AUDIT-002",
+      "title": "Tamper-evident bounded audit retention",
+      "category": "audit_and_detection",
+      "status": "active",
+      "owner": "audit_broker",
+      "canonical_document": "07-security/16-public-evidence-and-private-proof.md",
+      "summary": "Critical audit records are integrity-protected, append-oriented, bounded by retention policy, and independently exportable without exposing unrestricted private evidence.",
+      "failure_behavior": "alert_and_preserve",
+      "evidence_class": "audit_integrity_evidence",
+      "implementation_binding": "components/audit-broker/",
+      "validation_binding": "tests/security/audit-integrity/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "required",
+        "developer_windows_wsl": "required",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-AUDIT-003",
+      "title": "Local audit continuity during network loss",
+      "category": "audit_and_detection",
+      "status": "active",
+      "owner": "audit_broker",
+      "canonical_document": "07-security/15-selective-audit.md",
+      "summary": "A network outage does not discard critical local security events; queued evidence remains bounded, inspectable, and safely transferable later.",
+      "failure_behavior": "degrade_with_local_capture",
+      "evidence_class": "audit_continuity_evidence",
+      "implementation_binding": "components/audit-broker/",
+      "validation_binding": "tests/security/offline-audit/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "optional",
+        "developer_windows_wsl": "optional",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "recommended",
+        "control_plane": "recommended",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-AUDIT-004",
+      "title": "Privacy-minimized selective security evidence",
+      "category": "audit_and_detection",
+      "status": "active",
+      "owner": "audit_broker",
+      "canonical_document": "07-security/16-public-evidence-and-private-proof.md",
+      "summary": "Security monitoring records the minimum information required for accountability and investigation and separates public evidence from restricted proof.",
+      "failure_behavior": "deny_unsafe_disclosure",
+      "evidence_class": "audit_privacy_evidence",
+      "implementation_binding": "components/audit-broker/",
+      "validation_binding": "tests/security/audit-privacy/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "required",
+        "developer_windows_wsl": "required",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-INC-001",
+      "title": "Detection alerting and containment ownership",
+      "category": "incident_response",
+      "status": "active",
+      "owner": "incident_response_owner",
+      "canonical_document": "08-operations/12-incident-response.md",
+      "summary": "Critical security signals have declared detection logic, severity, owner, containment action, escalation path, and offline behavior.",
+      "failure_behavior": "alert_and_contain",
+      "evidence_class": "incident_detection_evidence",
+      "implementation_binding": "operations/diagnostics/",
+      "validation_binding": "tests/security/detection-and-containment/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "required",
+        "developer_windows_wsl": "required",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-INC-002",
+      "title": "Incident evidence preservation and coordinated response",
+      "category": "incident_response",
+      "status": "active",
+      "owner": "incident_response_owner",
+      "canonical_document": "08-operations/12-incident-response.md",
+      "summary": "Incident procedures preserve relevant evidence, protect affected people and data, coordinate key or release revocation, and record decisions, actions, and recovery authorization.",
+      "failure_behavior": "enter_incident_mode",
+      "evidence_class": "incident_response_evidence",
+      "implementation_binding": "operations/recovery/",
+      "validation_binding": "tests/security/incident-response/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "required",
+        "developer_windows_wsl": "required",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-REC-001",
+      "title": "Encrypted offline or immutable backup",
+      "category": "recovery",
+      "status": "active",
+      "owner": "backup_restore_owner",
+      "canonical_document": "08-operations/08-backup.md",
+      "summary": "Critical authoritative state, configuration, trust material required for recovery, and release manifests have encrypted backups with at least one offline or immutable copy.",
+      "failure_behavior": "block_recovery_claim",
+      "evidence_class": "backup_evidence",
+      "implementation_binding": "operations/backup/",
+      "validation_binding": "tests/security/backup-integrity/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "required",
+        "developer_windows_wsl": "required",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-REC-002",
+      "title": "Regular restoration exercises",
+      "category": "recovery",
+      "status": "active",
+      "owner": "backup_restore_owner",
+      "canonical_document": "08-operations/09-restore.md",
+      "summary": "A backup strategy is not conforming until restoration has succeeded under the target profile with integrity, authority, and dependency checks.",
+      "failure_behavior": "block_recovery_claim",
+      "evidence_class": "restore_exercise_evidence",
+      "implementation_binding": "operations/restore/",
+      "validation_binding": "tests/security/restore-exercise/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "required",
+        "developer_windows_wsl": "required",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    },
+    {
+      "control_id": "SEC-REC-003",
+      "title": "Clean-room recovery and compromise reintroduction checks",
+      "category": "recovery",
+      "status": "active",
+      "owner": "backup_restore_owner",
+      "canonical_document": "08-operations/13-disaster-recovery.md",
+      "summary": "Recovery can occur in a clean environment and validates that restored data, configuration, keys, and artifacts do not silently reintroduce the compromise.",
+      "failure_behavior": "quarantine_restore",
+      "evidence_class": "clean_recovery_evidence",
+      "implementation_binding": "operations/recovery/",
+      "validation_binding": "tests/security/clean-recovery/",
+      "applicability": {
+        "user_lightweight": "recommended",
+        "developer_linux_workstation": "optional",
+        "developer_windows_wsl": "optional",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "recommended"
+      }
+    },
+    {
+      "control_id": "SEC-REC-004",
+      "title": "Profile-specific recovery objectives and evidence",
+      "category": "recovery",
+      "status": "active",
+      "owner": "backup_restore_owner",
+      "canonical_document": "08-operations/13-disaster-recovery.md",
+      "summary": "Each profile declares recovery point and recovery time objectives, last-known-good criteria, test frequency, and the evidence required for a recovery claim.",
+      "failure_behavior": "block_recovery_claim",
+      "evidence_class": "recovery_objective_evidence",
+      "implementation_binding": "operations/recovery/",
+      "validation_binding": "tests/security/recovery-objectives/",
+      "applicability": {
+        "user_lightweight": "required",
+        "developer_linux_workstation": "required",
+        "developer_windows_wsl": "required",
+        "sovereign_linux_node": "required",
+        "sovereign_hub": "required",
+        "build_farm": "required",
+        "control_plane": "required",
+        "high_assurance": "required",
+        "sovereign_offline": "required",
+        "appliance_shell": "required"
+      }
+    }
+  ],
+  "validation": {
+    "semantic_validator": "tools/check_security_architecture.py",
+    "matrix_document": "07-security/22-security-control-profile-matrix.md",
+    "evidence_schema": "contracts/artifact-contracts/security-evidence.schema.json",
+    "required_control_without_validation": "prohibited",
+    "required_control_without_evidence_class": "prohibited",
+    "unknown_profile": "prohibited",
+    "duplicate_control_id": "prohibited"
+  }
+}

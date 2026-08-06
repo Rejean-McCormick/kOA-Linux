@@ -1,0 +1,69 @@
+{
+  "$schema": "../artifact-contracts/integration-resilience-policy.schema.json",
+  "example": true,
+  "authority": "non_authoritative_example",
+  "artifact_class": "integration_resilience_policy",
+  "policy_id": "uckk-publication-interactive",
+  "version": "1.0.0",
+  "status": "active",
+  "scope": {
+    "profile_ids": [
+      "user_lightweight",
+      "sovereign_linux_node"
+    ],
+    "component_ids": [
+      "uckk-publication-bridge"
+    ],
+    "capability_ids": [
+      "publish_to_uckk"
+    ]
+  },
+  "destination": {
+    "destination_id": "uckk",
+    "boundary_kind": "external_network",
+    "optional": true
+  },
+  "timeout_budget": {
+    "attempt_timeout_ms": 5000,
+    "total_timeout_ms": 8000
+  },
+  "retry_policy": {
+    "maximum_attempts": 2,
+    "backoff_base_ms": 250,
+    "backoff_multiplier": 2.0,
+    "backoff_max_ms": 2000,
+    "full_jitter": true,
+    "retryable_failure_classes": [
+      "timeout",
+      "connection_reset",
+      "temporary_unavailable"
+    ]
+  },
+  "circuit_breaker": {
+    "states": [
+      "closed",
+      "open",
+      "half_open"
+    ],
+    "failure_threshold": 5,
+    "failure_window_seconds": 30,
+    "open_duration_seconds": 60,
+    "half_open_max_probes": 1,
+    "half_open_max_concurrency": 1,
+    "manual_override_requires_receipt": true
+  },
+  "degraded_response": {
+    "mode": "queued_for_later",
+    "authoritative_success_prohibited": true,
+    "user_visible_state": "Publication is pending; local content remains authoritative."
+  },
+  "observability": {
+    "metrics": [
+      "attempt_latency",
+      "failure_rate",
+      "circuit_state"
+    ],
+    "state_transition_events": true,
+    "correlation_id_required": true
+  }
+}

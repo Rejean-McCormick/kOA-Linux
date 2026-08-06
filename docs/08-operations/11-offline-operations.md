@@ -34,7 +34,11 @@
     "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
     "contracts/artifact-contracts/uckk-learning-package.schema.json",
     "contracts/artifact-contracts/uckk-import-receipt.schema.json",
-    "04-components/uckk-import-bridge.md"
+    "04-components/uckk-import-bridge.md",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md",
+    "03-profiles/14-koa-spaces-deployment.md"
   ],
   "decision_ids": [
     "DEC-PROFILE-001",
@@ -121,7 +125,8 @@
     "LOCK-UCKK-EXT-001",
     "LOCK-DEV-001",
     "LOCK-DEV-004",
-    "LOCK-UCKK-EXT-002"
+    "LOCK-UCKK-EXT-002",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -151,7 +156,10 @@
     "DOC-OPS-008",
     "DOC-OPS-009",
     "DOC-OPS-010",
-    "DOC-COMP-UCKK-IMPORT-001"
+    "DOC-COMP-UCKK-IMPORT-001",
+    "DOC-SYS-021",
+    "DOC-SYS-022",
+    "DOC-PROFILE-014"
   ],
   "tags": [
     "offline-operations",
@@ -166,7 +174,9 @@
     "recovery",
     "sovereign-offline",
     "import-from-uckk",
-    "offline-learning"
+    "offline-learning",
+    "koa-spaces",
+    "experience-layer"
   ]
 }
 KOA:DOC-META:END -->
@@ -1656,3 +1666,7 @@ The Resource Governor reduces optional background work, rotates logs, and evicts
 A node reconnects after thirty days.
 
 It verifies the peer, time, trust, revocation, policies, contracts, and Release Set before draining queues. Synchronization is throttled. Local interactive operation remains available, and the node reaches `connected_verified` only after critical conflicts and receipts are reconciled.
+
+## Offline Operation of kOA Spaces
+
+An enabled deployment stages and validates the active Space and required interface artifacts before disconnection. Operators verify local rendering, unavailable-state behavior, accessibility resources, deep-link failure handling, and administrative fallback. Reconnection does not trigger hidden synchronization or automatic replacement of local presentation state.

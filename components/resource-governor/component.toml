@@ -1,0 +1,76 @@
+schema_version = "1"
+component_id = "resource_governor"
+name = "Resource Governor"
+version = "1.0.0"
+contract = "docs/contracts/components/resource-governor.component.json"
+component_type = "runtime_component"
+owner = "resource-governance"
+language = "python"
+
+[entrypoints]
+module = "koa_resource_governor"
+console = "koa-resource-governor"
+bootstrap = "koa_resource_governor.bootstrap:bootstrap"
+
+[public_interfaces]
+interface_ids = [
+  "RG-IF-001",
+  "RG-IF-002",
+  "RG-IF-003",
+  "RG-IF-004",
+  "RG-IF-005",
+  "RG-IF-006",
+  "RG-IF-007",
+  "RG-IF-008",
+  "RG-IF-009",
+  "RG-IF-010",
+]
+capability_ids = [
+  "resource_envelope_resolution",
+  "resource_workload_admission",
+  "resource_runtime_enforcement",
+  "resource_priority_scheduling",
+  "resource_concurrency_control",
+  "resource_queue_management",
+  "resource_pressure_degradation",
+  "resource_observability",
+]
+
+[health]
+transport = "http_over_unix"
+liveness_path = "/health/liveness"
+readiness_path = "/health/readiness"
+status_query = "get_component_status"
+
+[state]
+owner = "resource_governor"
+root = "/var/lib/koa/resource-governor"
+runtime_root = "/run/koa/resource-governor"
+socket = "/run/koa/sockets/resource-governor.sock"
+direct_cross_component_writes = false
+workload_payload_storage = false
+
+[package]
+python_distribution = "koa-resource-governor"
+import_package = "koa_resource_governor"
+payload = "components/resource-governor/packaging/payload.toml"
+
+[dependencies]
+public_python_interfaces = "koa_interfaces"
+required_local = [
+  "active_profile",
+  "active_resource_envelope",
+  "profile_selected_enforcement_adapter",
+  "workload_execution_identity",
+  "resource_observation_source",
+]
+private_component_imports = false
+
+[authority]
+resource_admission_is_business_authorization = false
+policy_approval_is_resource_reservation = false
+limits_must_resolve_from_active_envelopes = true
+partial_envelope_activation = false
+unknown_enforcement_fails_closed = true
+unknown_observation_is_zero_usage = false
+critical_transition_requires_receipt = true

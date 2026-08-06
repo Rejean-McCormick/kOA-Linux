@@ -1,0 +1,263 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.koa.local/artifact-contracts/integration-resilience-policy.schema.json",
+  "title": "kOA Integration Resilience Policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "artifact_class",
+    "policy_id",
+    "version",
+    "status",
+    "scope",
+    "destination",
+    "timeout_budget",
+    "retry_policy",
+    "circuit_breaker",
+    "degraded_response",
+    "observability"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "artifact_class": {
+      "const": "integration_resilience_policy"
+    },
+    "example": {
+      "type": "boolean"
+    },
+    "authority": {
+      "type": "string"
+    },
+    "policy_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{2,127}$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "status": {
+      "enum": [
+        "active",
+        "deprecated",
+        "superseded"
+      ]
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profile_ids",
+        "component_ids",
+        "capability_ids"
+      ],
+      "properties": {
+        "profile_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "component_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "capability_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "destination": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "destination_id",
+        "boundary_kind"
+      ],
+      "properties": {
+        "destination_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "boundary_kind": {
+          "enum": [
+            "external_network",
+            "internal_network",
+            "local_process_boundary",
+            "database_connection"
+          ]
+        },
+        "optional": {
+          "type": "boolean"
+        }
+      }
+    },
+    "timeout_budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "attempt_timeout_ms",
+        "total_timeout_ms"
+      ],
+      "properties": {
+        "attempt_timeout_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "total_timeout_ms": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "retry_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "maximum_attempts",
+        "backoff_base_ms",
+        "backoff_multiplier",
+        "backoff_max_ms",
+        "full_jitter",
+        "retryable_failure_classes"
+      ],
+      "properties": {
+        "maximum_attempts": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "backoff_base_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "backoff_multiplier": {
+          "type": "number",
+          "minimum": 1
+        },
+        "backoff_max_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "full_jitter": {
+          "const": true
+        },
+        "retryable_failure_classes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "circuit_breaker": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "states",
+        "failure_threshold",
+        "failure_window_seconds",
+        "open_duration_seconds",
+        "half_open_max_probes",
+        "half_open_max_concurrency"
+      ],
+      "properties": {
+        "states": {
+          "const": [
+            "closed",
+            "open",
+            "half_open"
+          ]
+        },
+        "failure_threshold": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "failure_window_seconds": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "open_duration_seconds": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "half_open_max_probes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "half_open_max_concurrency": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "manual_override_requires_receipt": {
+          "const": true
+        }
+      }
+    },
+    "degraded_response": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "authoritative_success_prohibited",
+        "user_visible_state"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "capability_unavailable",
+            "stale_labeled_read",
+            "queued_for_later",
+            "empty_non_authoritative_result"
+          ]
+        },
+        "authoritative_success_prohibited": {
+          "const": true
+        },
+        "user_visible_state": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "observability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "metrics",
+        "state_transition_events",
+        "correlation_id_required"
+      ],
+      "properties": {
+        "metrics": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "state_transition_events": {
+          "const": true
+        },
+        "correlation_id_required": {
+          "const": true
+        }
+      }
+    }
+  }
+}

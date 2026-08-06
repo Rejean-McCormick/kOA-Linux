@@ -1,0 +1,388 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.koa.local/interfaces/transport/version-negotiation.schema.json",
+  "title": "kOA Interface Version Negotiation",
+  "description": "Version-offer, selection, and rejection messages for a declared interface. Negotiation selects only explicitly offered compatible versions; incompatible contracts block the transition and automatic schema guessing is prohibited.",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "semantic_version": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"
+    },
+    "identifier": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,254}$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "component_endpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "component_id"
+      ],
+      "properties": {
+        "component_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "instance_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "profile_id": {
+          "$ref": "#/$defs/identifier"
+        }
+      }
+    },
+    "receiver_selector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "identifier"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "component",
+            "capability",
+            "subscription",
+            "topic"
+          ]
+        },
+        "identifier": {
+          "$ref": "#/$defs/identifier"
+        }
+      }
+    },
+    "interface_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "interface_id",
+        "interface_version"
+      ],
+      "properties": {
+        "interface_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "interface_version": {
+          "$ref": "#/$defs/semantic_version"
+        },
+        "contract_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        }
+      }
+    },
+    "correlation_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "correlation_id"
+      ],
+      "properties": {
+        "correlation_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "causation_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "request_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "trace_id": {
+          "$ref": "#/$defs/identifier"
+        }
+      }
+    },
+    "payload_representation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "media_type",
+        "schema_ref",
+        "schema_version"
+      ],
+      "properties": {
+        "media_type": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9!#$&^_.+-]+/[A-Za-z0-9!#$&^_.+-]+(?:\\s*;\\s*[A-Za-z0-9!#$&^_.+-]+=[^;]+)*$"
+        },
+        "schema_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "schema_version": {
+          "$ref": "#/$defs/semantic_version"
+        },
+        "encoding": {
+          "type": "string",
+          "enum": [
+            "identity",
+            "base64",
+            "uri_reference"
+          ]
+        },
+        "content_digest": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "algorithm",
+            "value"
+          ],
+          "properties": {
+            "algorithm": {
+              "const": "sha256"
+            },
+            "value": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          }
+        }
+      }
+    },
+    "release_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "release_set_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "sender_release": {
+          "$ref": "#/$defs/semantic_version"
+        },
+        "receiver_release": {
+          "$ref": "#/$defs/semantic_version"
+        }
+      },
+      "minProperties": 1
+    },
+    "evidence_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "receipt_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/identifier"
+          }
+        },
+        "evidence_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          }
+        }
+      },
+      "minProperties": 1
+    }
+  },
+  "required": [
+    "schema_version",
+    "message_type",
+    "negotiation_id",
+    "interface_id",
+    "sender",
+    "intended_receiver",
+    "correlation_id",
+    "automatic_schema_guessing",
+    "authority"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "message_type": {
+      "type": "string",
+      "enum": [
+        "version_offer",
+        "version_selection",
+        "version_rejection"
+      ]
+    },
+    "negotiation_id": {
+      "$ref": "#/$defs/identifier"
+    },
+    "interface_id": {
+      "$ref": "#/$defs/identifier"
+    },
+    "sender": {
+      "$ref": "#/$defs/component_endpoint"
+    },
+    "intended_receiver": {
+      "$ref": "#/$defs/receiver_selector"
+    },
+    "correlation_id": {
+      "$ref": "#/$defs/identifier"
+    },
+    "offered_versions": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/semantic_version"
+      }
+    },
+    "preferred_version": {
+      "$ref": "#/$defs/semantic_version"
+    },
+    "selected_version": {
+      "$ref": "#/$defs/semantic_version"
+    },
+    "compatibility_mode": {
+      "type": "string",
+      "enum": [
+        "exact",
+        "backward_compatible",
+        "coordinated_transition_required"
+      ]
+    },
+    "rejection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reason_code",
+        "existing_valid_state_preserved"
+      ],
+      "properties": {
+        "reason_code": {
+          "type": "string",
+          "enum": [
+            "no_common_version",
+            "interface_unknown",
+            "contract_inactive",
+            "contract_invalid",
+            "release_incompatible",
+            "coordinated_transition_required"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "existing_valid_state_preserved": {
+          "const": true
+        }
+      }
+    },
+    "release_context": {
+      "$ref": "#/$defs/release_context"
+    },
+    "automatic_schema_guessing": {
+      "const": false
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "transport_grants_authority",
+        "selection_changes_domain_authority",
+        "receiving_contract_remains_authoritative"
+      ],
+      "properties": {
+        "transport_grants_authority": {
+          "const": false
+        },
+        "selection_changes_domain_authority": {
+          "const": false
+        },
+        "receiving_contract_remains_authoritative": {
+          "const": true
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "message_type": {
+            "const": "version_offer"
+          }
+        },
+        "required": [
+          "message_type"
+        ]
+      },
+      "then": {
+        "required": [
+          "offered_versions",
+          "preferred_version"
+        ],
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "selected_version"
+              ]
+            },
+            {
+              "required": [
+                "rejection"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "message_type": {
+            "const": "version_selection"
+          }
+        },
+        "required": [
+          "message_type"
+        ]
+      },
+      "then": {
+        "required": [
+          "offered_versions",
+          "selected_version",
+          "compatibility_mode"
+        ],
+        "not": {
+          "required": [
+            "rejection"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "message_type": {
+            "const": "version_rejection"
+          }
+        },
+        "required": [
+          "message_type"
+        ]
+      },
+      "then": {
+        "required": [
+          "rejection"
+        ],
+        "not": {
+          "required": [
+            "selected_version"
+          ]
+        }
+      }
+    }
+  ]
+}

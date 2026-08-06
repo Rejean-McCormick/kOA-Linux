@@ -1,0 +1,158 @@
+{
+  "$schema": "release-set.schema.json",
+  "artifact_class": "release_set",
+  "release_set_id": "replace.release-set",
+  "version": "0.0.0",
+  "lifecycle_status": "candidate",
+  "language": "en",
+  "issued_at": "1970-01-01T00:00:00Z",
+  "issuer": {
+    "issuer_id": "replace.release-authority",
+    "issuer_type": "release_authority",
+    "authority_ref": "docs/contracts/release-channels.contract.json"
+  },
+  "authority": {
+    "release_authority_ref": "docs/contracts/release-channels.contract.json",
+    "approval_refs": [
+      "generated/release/evidence/replace-approval.json"
+    ],
+    "decision_refs": [
+      "docs/contracts/system.contract.json"
+    ]
+  },
+  "channels": {
+    "system": {
+      "channel_id": "system",
+      "release_namespace": "koa.system",
+      "release_id": "replace.system.release",
+      "version": "0.0.0",
+      "release_manifest_ref": "generated/release/manifests/system/replace.json",
+      "artifact_refs": [
+        "generated/release/artifacts/system/replace.json"
+      ],
+      "provenance_ref": "generated/release/provenance/system/replace.json",
+      "validation_evidence_refs": [
+        "generated/release/evidence/system/replace-validation.json"
+      ],
+      "recovery": {
+        "mode": "rollback_or_forward_repair",
+        "procedure_ref": "generated/release/recovery/system/replace.json"
+      }
+    },
+    "services": {
+      "channel_id": "services",
+      "release_namespace": "koa.services",
+      "release_id": "replace.services.release",
+      "version": "0.0.0",
+      "release_manifest_ref": "generated/release/manifests/services/replace.json",
+      "artifact_refs": [
+        "generated/release/artifacts/services/replace.json"
+      ],
+      "provenance_ref": "generated/release/provenance/services/replace.json",
+      "validation_evidence_refs": [
+        "generated/release/evidence/services/replace-validation.json"
+      ],
+      "recovery": {
+        "mode": "rollback_or_forward_repair",
+        "procedure_ref": "generated/release/recovery/services/replace.json"
+      }
+    },
+    "governance": {
+      "channel_id": "governance",
+      "release_namespace": "koa.governance",
+      "release_id": "replace.governance.release",
+      "version": "0.0.0",
+      "release_manifest_ref": "generated/release/manifests/governance/replace.json",
+      "artifact_refs": [
+        "generated/release/artifacts/governance/replace.json"
+      ],
+      "provenance_ref": "generated/release/provenance/governance/replace.json",
+      "validation_evidence_refs": [
+        "generated/release/evidence/governance/replace-validation.json"
+      ],
+      "recovery": {
+        "mode": "rollback_or_forward_repair",
+        "procedure_ref": "generated/release/recovery/governance/replace.json"
+      }
+    },
+    "knowledge": {
+      "channel_id": "knowledge",
+      "release_namespace": "koa.knowledge",
+      "release_id": "replace.knowledge.release",
+      "version": "0.0.0",
+      "release_manifest_ref": "generated/release/manifests/knowledge/replace.json",
+      "artifact_refs": [
+        "generated/release/artifacts/knowledge/replace.json"
+      ],
+      "provenance_ref": "generated/release/provenance/knowledge/replace.json",
+      "validation_evidence_refs": [
+        "generated/release/evidence/knowledge/replace-validation.json"
+      ],
+      "recovery": {
+        "mode": "rollback_or_forward_repair",
+        "procedure_ref": "generated/release/recovery/knowledge/replace.json"
+      }
+    }
+  },
+  "compatibility": {
+    "status": "not_evaluated",
+    "evaluated_at": "1970-01-01T00:00:00Z",
+    "evaluator_ref": "generated/release/evidence/replace-evaluator.json",
+    "constraint_results": [
+      {
+        "constraint_id": "replace.cross-channel-compatibility",
+        "kind": "channel_release_identity",
+        "subject_ref": "docs/contracts/release-channels.contract.json",
+        "operator": "compatible_with",
+        "expected": "tested_compatible",
+        "actual": "not_evaluated",
+        "result": "blocked",
+        "evidence_refs": [
+          "generated/release/evidence/replace-compatibility.json"
+        ]
+      }
+    ],
+    "test_evidence_refs": [
+      "generated/release/evidence/replace-tests.json"
+    ],
+    "known_limitations": [
+      "Template values beginning with replace. must be resolved before publication."
+    ]
+  },
+  "activation": {
+    "eligibility": "blocked",
+    "strategy": "coordinated_staged_activation",
+    "partial_activation_allowed": false,
+    "activation_evidence_refs": [
+      "generated/release/evidence/replace-activation.json"
+    ],
+    "health_policy_ref": "generated/release/policy/replace-health.json",
+    "failure_result": "retain_current_active_set"
+  },
+  "signature": {
+    "signature_artifact_ref": "generated/release/signatures/replace-release-set.json",
+    "signer_identity_ref": "generated/release/identities/replace-signer.json",
+    "signing_authority_ref": "generated/release/identities/replace-release-authority.json",
+    "signed_at": "1970-01-01T00:00:00Z",
+    "verification_status": "unverified",
+    "verification_evidence_refs": [
+      "generated/release/evidence/replace-signature-verification.json"
+    ]
+  },
+  "provenance": {
+    "provenance_receipt_ref": "generated/release/provenance/replace-release-set.json",
+    "release_channels_registry_ref": "contracts/release-channels.contract.json",
+    "artifact_classes_registry_ref": "contracts/artifact-classes.contract.json",
+    "generator_id": "koa.assembly.release-set",
+    "generator_version": "0.0.0",
+    "source_release_refs": [
+      "generated/release/manifests/system/replace.json",
+      "generated/release/manifests/services/replace.json",
+      "generated/release/manifests/governance/replace.json",
+      "generated/release/manifests/knowledge/replace.json"
+    ]
+  },
+  "notes": [
+    "Non-authoritative candidate template. Resolve every replace.* value and validate all evidence before signing or activation."
+  ]
+}

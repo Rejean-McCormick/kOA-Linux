@@ -1,0 +1,131 @@
+format_version = "1.0.0"
+policy_id = "ariane-voice.boundary-policy"
+policy_version = "1.0.0"
+integration_id = "ariane-voice"
+integration_contract_ref = "docs/contracts/integrations/ariane-voice.integration.json"
+
+[authority]
+provider_role = "remote_voice_processing_only"
+output_authority = "candidate_input_until_ariane_acceptance"
+local_validation_owner = "ariane"
+direct_command_execution = false
+direct_authoritative_mutation = false
+policy_decision = false
+privilege_grant = false
+publication = false
+sensitive_confirmation = false
+
+[request]
+explicit_user_action_required = true
+one_declared_capability_per_request = true
+bounded_request_required = true
+background_invocation = false
+automatic_ingestion_trigger = false
+automatic_indexing_trigger = false
+automatic_routing_trigger = false
+automatic_policy_trigger = false
+automatic_release_trigger = false
+automatic_recovery_trigger = false
+automatic_privilege_trigger = false
+
+[transfer]
+preview_required = true
+exact_confirmation_required = true
+material_change_requires_new_confirmation = true
+minimization_required = true
+selected_fields_only = true
+allowed_data_classes = ["public", "internal"]
+conditionally_allowed_data_classes = ["personal"]
+blocked_data_classes = ["sensitive", "restricted", "secret", "cultural_rights_restricted", "no_ai"]
+allowed_fields = ["audio_frames", "locale", "operation_id", "correlation_id"]
+blocked_fields = ["repository_content", "component_store_data", "tenant_state", "profile_state", "credentials", "private_keys", "tokens", "unrestricted_logs", "screenshots", "clipboard", "unrelated_window_content", "hidden_application_context"]
+
+[personal_data]
+purpose_required = true
+explicit_consent_or_valid_authority_required = true
+smallest_necessary_audio_required = true
+provider_compatibility_required = true
+review_required = true
+
+[provider_terms]
+resolved_before_enablement = true
+provider_identity_required = true
+endpoint_identity_required = true
+retention_context_required = true
+training_or_reuse_behavior_required = true
+data_location_required = true
+account_separation_required = true
+unresolved_terms_result = "deny_activation"
+
+[credentials]
+dedicated_scope_required = true
+managed_secret_reference_only = true
+embedded_in_source = false
+embedded_in_manifest = false
+embedded_in_image = false
+embedded_in_log = false
+embedded_in_receipt = false
+user_visible_error_disclosure = false
+rotation_required = true
+revocation_required = true
+
+[candidate]
+allowed_types = ["candidate_transcript", "candidate_navigation_intent"]
+schema_validation_required = true
+provenance_required = true
+deterministic_command_validation_required = true
+profile_command_enablement_required = true
+unknown_intent_result = "reject"
+ambiguous_intent_result = "reject_or_explicit_local_confirmation"
+incomplete_intent_result = "reject"
+stale_intent_result = "reject"
+unsafe_intent_result = "reject"
+direct_execution = false
+persistent_authority = false
+
+[prohibited_effects]
+effects = [
+  "select_hidden_target",
+  "execute_click_or_keystroke",
+  "replace_atlas",
+  "bypass_application_permission",
+  "confirm_sensitive_action",
+  "write_ariane_state",
+  "write_application_state",
+  "grant_privilege",
+  "decide_policy",
+  "activate_release",
+  "publish_content",
+  "become_only_navigation_path"
+]
+
+[evidence]
+receipt_schema_ref = "interfaces/receipts/receipt-envelope.schema.json"
+correlation_schema_ref = "interfaces/receipts/correlation.schema.json"
+transfer_receipt_required = true
+provider_result_receipt_required = true
+failure_receipt_required = true
+local_acceptance_receipt_owner = "ariane"
+raw_audio_in_receipt = false
+transcript_in_receipt_by_default = false
+candidate_parameters_in_receipt_by_default = false
+credentials_in_receipt = false
+sensitive_content_in_logs = false
+required_metadata = ["operation_id", "correlation_id", "integration_id", "profile_ref", "endpoint_reference", "result", "duration", "retry_state", "candidate_reference", "reason_codes"]
+
+[failure]
+authoritative_mutation_on_failure = false
+silent_fallback = false
+alternate_provider = false
+local_model_substitution = false
+stale_credential_fallback = false
+weaker_policy_fallback = false
+broader_transfer_fallback = false
+failure_scope = "external_voice_capability_only"
+
+[removal]
+previously_accepted_output_provenance_preserved = true
+credentials_revoked = true
+network_path_closed = true
+pending_candidates_reconciled = true
+local_navigation_verified = true

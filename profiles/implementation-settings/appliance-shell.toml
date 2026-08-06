@@ -1,0 +1,73 @@
+settings_version = "1.0.0"
+profile_id = "appliance_shell"
+profile_contract = "docs/contracts/profiles/appliance-shell.profile.json"
+profile_contract_version = "1.0.0"
+profile_role = "overlay"
+available_for_selection = true
+
+[validation]
+mode = "strict"
+unknown_parameter = "error"
+missing_contract = "error"
+contract_version_mismatch = "error"
+unsupported_parameter = "error"
+composition_conflict = "error"
+
+[authority]
+profile_membership = "profile_contract"
+component_membership = "profile_contract"
+capabilities = "profile_contract"
+resource_policy = "profile_contract"
+security_policy = "profile_contract"
+lifecycle_policy = "profile_contract"
+offline_policy = "profile_contract"
+external_integrations = "profile_contract"
+
+[source_layout]
+strategy = "shared_repository_tree"
+profile_specific_source_tree = false
+generated_output_root = "generated/profiles/appliance_shell"
+
+[composition]
+kind = "overlay"
+requires_base_profile = true
+compatible_base_profiles = "profile_contract"
+application_order = "profile_contract"
+may_broaden_authority = false
+may_broaden_data_ownership = false
+may_broaden_external_integrations = false
+conflict_result = "error"
+
+[implementation.shell]
+session_type = "dedicated_appliance_session"
+display_protocol = "wayland"
+compositor_class = "minimal_wayland_compositor"
+full_desktop_environment = false
+window_management = "application_allowlist"
+primary_experience = "ariane_local_navigation"
+local_navigation_requires_external_ai = false
+unrestricted_browser_chrome = false
+unrestricted_external_navigation = false
+
+[implementation.session]
+ordinary_mode = "interactive_user"
+maintenance_entry = "explicit_authorized_transition"
+recovery_entry = "explicit_authorized_transition"
+unrestricted_terminal = false
+package_manager_ui = false
+host_administration_ui = false
+development_tools = false
+
+[implementation.resources]
+inherits_base_budget = true
+interactive_priority = true
+shell_process_class = "interactive_critical"
+background_workers = "base_profile_governed"
+heavy_jobs = "base_profile_governed"
+
+[implementation.lifecycle]
+artifact_verification = true
+compatibility_validation = true
+atomic_activation = true
+last_valid_shell_preserved = true
+fallback_to_unrestricted_desktop = false

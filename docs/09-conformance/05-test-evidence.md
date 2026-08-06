@@ -31,7 +31,12 @@
     "generated/exception-index.json",
     "generated/test-catalog.json",
     "generated/evidence-catalog.json",
-    "schemas/test-evidence.schema.json"
+    "schemas/test-evidence.schema.json",
+    "contracts/security-controls.contract.json",
+    "schemas/security-controls.contract.schema.json",
+    "contracts/artifact-contracts/security-evidence.schema.json",
+    "07-security/21-security-control-architecture.md",
+    "07-security/22-security-control-profile-matrix.md"
   ],
   "decision_ids": [
     "DEC-DATA-001",
@@ -141,7 +146,9 @@
     "provenance",
     "selective-audit",
     "retention",
-    "revocation"
+    "revocation",
+    "security-controls",
+    "security-evidence"
   ]
 }
 KOA:DOC-META:END -->
@@ -259,6 +266,9 @@ The test catalog owns the allowed class for each test.
 | Test identity, purpose, execution class, assertions, and applicability | `generated/test-catalog.json` |
 | Test execution record, outcome, validity, and evidence references | `generated/evidence-catalog.json` |
 | Evidence structure | `schemas/test-evidence.schema.json` |
+| Security-control identity and profile applicability | `contracts/security-controls.contract.json` |
+| Security-control evidence structure | `contracts/artifact-contracts/security-evidence.schema.json` |
+| Security-control architecture and matrix | `07-security/21-security-control-architecture.md` and `07-security/22-security-control-profile-matrix.md` |
 | Requirement, lock, profile, component, artifact, test, and evidence links | `generated/traceability.json` |
 | Normative statements | `generated/requirements-index.json` |
 | Cross-file invariants | `generated/assertion-index.json` |
@@ -401,6 +411,7 @@ A registered evidence object includes:
 - evidence ID;
 - execution ID;
 - test ID and version;
+- security `control_id` and effective applicability when the execution evaluates a security control;
 - execution class;
 - terminal outcome;
 - subject bindings;
@@ -409,6 +420,8 @@ A registered evidence object includes:
 - environment and toolchain identity;
 - fixtures and dependency identity;
 - policy and exception context;
+- implementation reference and version when required by a security control;
+- security-control result, evidence digest, disclosure class, retention class, and validity period when applicable;
 - start and completion timestamps;
 - executor and applicable witness identities;
 - assertion-level results;
@@ -420,6 +433,8 @@ A registered evidence object includes:
 - traceability references.
 
 The schema owns exact field names and enumerations.
+
+Generic test evidence validates against `schemas/test-evidence.schema.json`. Evidence that satisfies a declared security control additionally validates against `contracts/artifact-contracts/security-evidence.schema.json`; the two records may be linked or represented by one artifact only when both schemas and semantic bindings are satisfied.
 
 ### 4.6 Assertion model
 
@@ -620,11 +635,11 @@ renderer=requirements-list-v1
 ### 6.1 Select applicable tests
 
 1. resolve the claim scope;
-2. resolve applicable requirements, locks, decisions, profiles, components, artifacts, and exceptions;
+2. resolve applicable requirements, locks, decisions, profiles, components, artifacts, security controls, and exceptions;
 3. resolve traceability links;
 4. select the exact test catalog entries;
-5. evaluate applicability;
-6. record not-applicable dispositions with their canonical rule;
+5. evaluate test and security-control applicability;
+6. record not-applicable dispositions with their canonical rule and machine-resolvable profile fact;
 7. block the claim if a required authority has no declared test or controlled manual validation.
 
 ### 6.2 Prepare an execution
@@ -666,17 +681,19 @@ renderer=requirements-list-v1
 ### 6.5 Validate evidence
 
 1. validate against `schemas/test-evidence.schema.json`;
-2. resolve test and test version;
-3. verify execution identity uniqueness;
-4. verify exact subject bindings;
-5. verify every required assertion result;
-6. verify outcome consistency;
-7. verify environment and applicability;
-8. verify attachments and intrinsic integrity material;
-9. verify provenance and signatures where required;
-10. verify privacy and minimization;
-11. verify traceability and retention;
-12. accept, reject, or block the candidate.
+2. when a `control_id` is present, also validate against `contracts/artifact-contracts/security-evidence.schema.json` and resolve the control contract version;
+3. resolve test and test version;
+4. verify execution identity uniqueness;
+5. verify exact subject bindings;
+6. verify every required assertion result;
+7. verify outcome consistency;
+8. verify environment and applicability;
+9. verify implementation, exception, profile, and control bindings where applicable;
+10. verify attachments and intrinsic integrity material;
+11. verify provenance and signatures where required;
+12. verify privacy and minimization;
+13. verify traceability, validity, and retention;
+14. accept, reject, or block the candidate.
 
 ### 6.6 Register evidence
 
@@ -918,6 +935,10 @@ Test-evidence conformance validates when:
 35. no unresolved marker, placeholder, duplicate canonical owner, or non-intrinsic documentation hash appears;
 36. conformance, profile, artifact, release, security, lifecycle, and Interfile Alignment Lock checks pass.
 
+37. every security-evidence object resolves one active `control_id`, effective profile applicability, evaluated subject, implementation version, test set, result, digest, exception state, disclosure class, retention class, and validity period;
+38. security evidence cannot satisfy a required control when its profile, subject, implementation, test, exception, or validity binding differs;
+39. `docs/tools/check_security_architecture.py` passes.
+
 Applicable checks include:
 
 `bash
@@ -928,6 +949,7 @@ python docs/tools/check_release_sets.py
 python docs/tools/check_component_boundaries.py
 python docs/tools/check_canonical_ownership.py
 python docs/tools/check_interfile_locks.py
+python docs/tools/check_security_architecture.py
 python docs/tools/validate_docs.py
 `
 

@@ -22,7 +22,10 @@
     "generated/test-catalog.json",
     "generated/evidence-catalog.json",
     "generated/exception-index.json",
-    "generated/profile-catalog.json"
+    "generated/profile-catalog.json",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md"
   ],
   "decision_ids": [
     "DEC-LIFE-001",
@@ -77,7 +80,8 @@
     "LOCK-COMP-001",
     "LOCK-AI-002",
     "LOCK-PROFILE-001",
-    "LOCK-PROFILE-002"
+    "LOCK-PROFILE-002",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -120,7 +124,9 @@
     "activation",
     "rollback",
     "revocation",
-    "provenance"
+    "provenance",
+    "koa-spaces",
+    "experience-layer"
   ]
 }
 KOA:DOC-META:END -->
@@ -960,3 +966,7 @@ A normative Markdown document is validated for:
 - absence of unresolved authority.
 
 The file does not receive an automatic content hash. A signed documentation release bundle can still use integrity mechanisms at the bundle level when its artifact contract requires them.
+
+## kOA Spaces Release and Artifact Identity
+
+kOA Spaces has an independently versioned subsystem release identity. Space definitions, module interface manifests, route contributions, sidebar definitions, top-bar widgets, interface assets, and activation receipts have their own artifact identities and digests. A Space release set pins compatible presentation artifacts without changing the release identity of contributing systems.

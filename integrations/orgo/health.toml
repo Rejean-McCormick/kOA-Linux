@@ -1,0 +1,34 @@
+format_version = "1.0.0"
+integration_id = "orgo"
+owner = "koa-orgo-adapter"
+health_schema = "interfaces/health/health-status.schema.json"
+readiness_schema = "interfaces/health/readiness.schema.json"
+transport = "http_over_unix"
+socket = "/run/koa/orgo/adapter.sock"
+
+[liveness]
+check_id = "orgo.adapter.liveness"
+endpoint = "/health/live"
+timeout_seconds = 2
+failure_state = "failed"
+
+[readiness]
+check_id = "orgo.adapter.readiness"
+endpoint = "/health/ready"
+timeout_seconds = 3
+requires_source_pinned = true
+requires_compatibility = true
+requires_identity = true
+requires_storage = true
+requires_resource_admission = true
+
+[aggregation]
+health_and_readiness_distinct = true
+unknown_is_healthy = false
+missing_subsystem_state = "unavailable"
+incompatible_subsystem_state = "blocked"
+
+[privacy]
+include_secrets = false
+include_personal_data = false
+include_internal_workflow_state = false

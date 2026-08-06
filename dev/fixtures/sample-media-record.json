@@ -1,0 +1,133 @@
+{
+  "$schema": "../../docs/contracts/artifact-contracts/koa-media-record.schema.json",
+  "shared_frame": {
+    "$schema": "../../docs/contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
+    "frame_id": "koa-uckk-shared-mediatheque-frame",
+    "frame_version": "1.0.0",
+    "object_identity": {
+      "authority_domain_id": "koa-linux-development-fixtures",
+      "object_id": "koa_media_development_fixture",
+      "origin_system": "koa-linux",
+      "external_refs": []
+    },
+    "version_identity": {
+      "version_id": "koa_media_version_development_fixture_1",
+      "created_at": "2026-08-06T12:00:00Z",
+      "supersedes_version_ref": null,
+      "source_version_ref": null
+    },
+    "integrity": {
+      "algorithm": "sha256",
+      "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "signature_refs": []
+    },
+    "media": {
+      "media_type": "text/plain",
+      "title": "Synthetic Media Fixture",
+      "description": "Metadata-only fixture; no governed or user content is embedded.",
+      "language_tags": [
+        "en"
+      ],
+      "collections": [
+        "development-fixtures"
+      ],
+      "dimensions": [
+        "contract-validation"
+      ],
+      "tags": [
+        "synthetic",
+        "non-authoritative"
+      ]
+    },
+    "rights": {
+      "license_status": "not_applicable",
+      "license_ref": null,
+      "disclosure_status": "private",
+      "consent_refs": [],
+      "restriction_refs": [
+        "development-fixture-only"
+      ],
+      "cultural_rights_refs": [],
+      "expiry": null
+    },
+    "provenance": {
+      "source_system": "koa-linux-development-fixtures",
+      "source_object_ref": null,
+      "source_version_ref": null,
+      "acquisition_method": "created_local",
+      "acquired_at": "2026-08-06T12:00:00Z",
+      "derivation_refs": [],
+      "receipt_refs": []
+    },
+    "lifecycle": {
+      "state": "candidate",
+      "authority_domain_id": "koa-linux-development-fixtures",
+      "transitioned_at": "2026-08-06T12:00:00Z",
+      "retention_policy_ref": "development/workspace-delete"
+    }
+  },
+  "record_id": "koa_media_development_fixture",
+  "version_id": "koa_media_version_development_fixture_1",
+  "title": "Synthetic Media Fixture",
+  "description": "Metadata-only local fixture with no governed payload.",
+  "media_type": "text/plain",
+  "content": {
+    "availability": "offline_unavailable",
+    "storage_ref": "fixture://sample-media-record/content-not-included",
+    "size_bytes": 0,
+    "original_filename": "synthetic-fixture.txt",
+    "encoding": "utf-8"
+  },
+  "integrity": {
+    "algorithm": "sha256",
+    "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "verified_at": "2026-08-06T12:00:00Z",
+    "verified_by": "development-fixture-generator"
+  },
+  "classification": {
+    "collection_ids": [
+      "development-fixtures"
+    ],
+    "dimension_ids": [
+      "contract-validation"
+    ],
+    "tags": [
+      "synthetic",
+      "non-authoritative"
+    ],
+    "relationships": []
+  },
+  "rights": {
+    "disclosure": "private",
+    "publication": "prohibited",
+    "allowed_target_ids": [],
+    "ai_use": "prohibited",
+    "consent_refs": [],
+    "cultural_rights_refs": [],
+    "license": "NOASSERTION",
+    "embargo_until": null,
+    "retention_class": "workspace_ephemeral",
+    "restrictions": [
+      "development-fixture-only"
+    ]
+  },
+  "provenance": {
+    "source_type": "created_local",
+    "source_ref": "dev/fixtures/sample-media-record.json",
+    "creator_refs": [
+      "development-fixture-generator"
+    ],
+    "custodian_ref": "dev.local-services",
+    "acquired_at": "2026-08-06T12:00:00Z",
+    "derivation_refs": [],
+    "evidence_refs": []
+  },
+  "renditions": [],
+  "lifecycle": {
+    "record_state": "draft",
+    "version_state": "verified",
+    "created_at": "2026-08-06T12:00:00Z",
+    "updated_at": "2026-08-06T12:00:00Z"
+  },
+  "external_publications": []
+}

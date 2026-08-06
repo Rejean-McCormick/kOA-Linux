@@ -53,6 +53,42 @@
       "id": "LOCK-AUTH-005"
     },
     {
+      "id": "LOCK-BFF-001"
+    },
+    {
+      "id": "LOCK-CACHE-001"
+    },
+    {
+      "id": "LOCK-CODE-FS-001"
+    },
+    {
+      "id": "LOCK-CODE-FS-002"
+    },
+    {
+      "id": "LOCK-CODE-FS-003"
+    },
+    {
+      "id": "LOCK-CODE-FS-004"
+    },
+    {
+      "id": "LOCK-CODE-FS-005"
+    },
+    {
+      "id": "LOCK-CODE-FS-006"
+    },
+    {
+      "id": "LOCK-CODE-FS-007"
+    },
+    {
+      "id": "LOCK-CODE-FS-008"
+    },
+    {
+      "id": "LOCK-CODE-FS-009"
+    },
+    {
+      "id": "LOCK-CODE-FS-010"
+    },
+    {
       "id": "LOCK-COMP-001"
     },
     {
@@ -90,6 +126,9 @@
     },
     {
       "id": "LOCK-CONF-010"
+    },
+    {
+      "id": "LOCK-CQRS-001"
     },
     {
       "id": "LOCK-CULT-001"
@@ -314,6 +353,9 @@
       "id": "LOCK-MEDIATHEQUE-002"
     },
     {
+      "id": "LOCK-MSG-001"
+    },
+    {
       "id": "LOCK-OFFLINE-001"
     },
     {
@@ -335,6 +377,9 @@
       "id": "LOCK-OPS-006"
     },
     {
+      "id": "LOCK-PAYLOAD-001"
+    },
+    {
       "id": "LOCK-PORT-001"
     },
     {
@@ -351,6 +396,9 @@
     },
     {
       "id": "LOCK-REL-002"
+    },
+    {
+      "id": "LOCK-RES-001"
     },
     {
       "id": "LOCK-SEC-001"
@@ -383,6 +431,30 @@
       "id": "LOCK-SEC-010"
     },
     {
+      "id": "LOCK-SEC-CTRL-001"
+    },
+    {
+      "id": "LOCK-SEC-CTRL-002"
+    },
+    {
+      "id": "LOCK-SEC-CTRL-003"
+    },
+    {
+      "id": "LOCK-SEC-CTRL-004"
+    },
+    {
+      "id": "LOCK-SEC-CTRL-005"
+    },
+    {
+      "id": "LOCK-SEC-CTRL-006"
+    },
+    {
+      "id": "LOCK-SEC-CTRL-007"
+    },
+    {
+      "id": "LOCK-SEC-CTRL-008"
+    },
+    {
       "id": "LOCK-SENT-001"
     },
     {
@@ -396,6 +468,9 @@
     },
     {
       "id": "LOCK-SHELL-004"
+    },
+    {
+      "id": "LOCK-SPACES-001"
     },
     {
       "id": "LOCK-SYS-001"
@@ -441,6 +516,9 @@
     },
     {
       "id": "LOCK-USER-004"
+    },
+    {
+      "id": "LOCK-WF-001"
     }
   ]
 }

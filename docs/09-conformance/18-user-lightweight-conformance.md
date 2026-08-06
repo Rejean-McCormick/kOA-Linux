@@ -35,7 +35,11 @@
     "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
     "contracts/artifact-contracts/uckk-learning-package.schema.json",
     "contracts/artifact-contracts/uckk-import-receipt.schema.json",
-    "04-components/uckk-import-bridge.md"
+    "04-components/uckk-import-bridge.md",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md",
+    "03-profiles/14-koa-spaces-deployment.md"
   ],
   "decision_ids": [
     "DEC-PROFILE-001",
@@ -108,7 +112,8 @@
     "LOCK-DOC-002",
     "LOCK-MEDIATHEQUE-001",
     "LOCK-UCKK-EXT-001",
-    "LOCK-UCKK-EXT-002"
+    "LOCK-UCKK-EXT-002",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -174,7 +179,10 @@
     "DOC-CONF-012",
     "DOC-CONF-015",
     "DOC-CONF-019",
-    "DOC-COMP-UCKK-IMPORT-001"
+    "DOC-COMP-UCKK-IMPORT-001",
+    "DOC-SYS-021",
+    "DOC-SYS-022",
+    "DOC-PROFILE-014"
   ],
   "tags": [
     "conformance",
@@ -188,7 +196,9 @@
     "deterministic-media",
     "external-ai-optional",
     "import-from-uckk",
-    "offline-learning"
+    "offline-learning",
+    "koa-spaces",
+    "experience-layer"
   ]
 }
 KOA:DOC-META:END -->
@@ -705,3 +715,7 @@ Several components can use one PostgreSQL process while retaining separate datab
 > **Non-normative example:** This example illustrates an overlay.
 
 A `user_lightweight` installation with an explicitly compatible `appliance_shell` overlay has one base-profile result and one overlay-composition result. Appliance restrictions are not retroactively applied to every base-profile deployment.
+
+## Optional kOA Spaces Claim
+
+A user-lightweight release can add a kOA Spaces presentation claim only when the selected Space, required manifests, offline frame, resource envelope, accessibility checks, activation receipt, rollback, and fallback tests pass. The base user-lightweight conformance claim remains valid without kOA Spaces.

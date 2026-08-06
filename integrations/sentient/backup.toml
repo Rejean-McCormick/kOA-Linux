@@ -1,0 +1,60 @@
+schema_version = "1.0.0"
+integration_id = "sentient"
+backup_owner = "koa_operations"
+coordination_mode = "owner_separated"
+
+[koa_boundary]
+included = [
+  "source_lock",
+  "compatibility_declaration",
+  "integration_configuration",
+  "deployment_configuration",
+  "resource_envelope",
+  "health_configuration",
+  "storage_boundary",
+  "degradation_configuration",
+  "adapter_non_authoritative_state",
+  "candidate_descriptor_references",
+  "provenance_references",
+  "receipt_references",
+]
+excluded = [
+  "secrets",
+  "credentials",
+  "raw_private_keys",
+  "sentient_internal_database",
+  "sentient_internal_models",
+  "sentient_internal_indexes",
+  "sentient_internal_caches",
+  "unaccepted_candidate_content",
+  "other_component_authoritative_state",
+  "release_signing_material",
+]
+
+[sentient_owned_state]
+backup_owner = "sentient"
+koa_direct_backup_access = false
+coordination_interface_required = true
+restore_validation_owner = "sentient"
+
+[candidate_state]
+backup_policy = "profile_and_retention_defined"
+accepted_candidate_owner = "destination_component_or_workflow"
+unaccepted_candidate_restore_grants_authority = false
+required_provenance_preserved = true
+
+[restore]
+source_pin_reverification_required = true
+compatibility_reverification_required = true
+profile_membership_reverification_required = true
+isolation_reverification_required = true
+resource_admission_reverification_required = true
+receipt_path_reverification_required = true
+partial_restore_activation_allowed = false
+failed_validation_result = "integration_disabled"
+
+[evidence]
+backup_receipt_required = true
+restore_receipt_required = true
+cleanup_receipt_required = true
+secret_material_in_receipts_allowed = false

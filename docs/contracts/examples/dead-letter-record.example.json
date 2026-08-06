@@ -1,0 +1,39 @@
+{
+  "$schema": "../artifact-contracts/dead-letter-record.schema.json",
+  "example": true,
+  "authority": "non_authoritative_example",
+  "artifact_class": "dead_letter_record",
+  "record_id": "dlr-01J00000000000000000000000",
+  "source_queue_id": "uckk-publication-jobs",
+  "message_id": "msg-01J00000000000000000000000",
+  "authority_domain": "koa-local",
+  "tenant_id": "school-001",
+  "payload_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "payload_reference": "koa-object://mediatheque/course-42/v7",
+  "first_failed_at": "2026-08-05T22:00:00Z",
+  "quarantined_at": "2026-08-05T22:15:00Z",
+  "attempt_count": 5,
+  "failure": {
+    "class": "compatibility",
+    "permanent": true,
+    "reason_code": "unsupported_package_version",
+    "last_error_summary": "The destination rejected the declared package version."
+  },
+  "status": "under_review",
+  "redrive": {
+    "automatic": false,
+    "requires_compatibility_check": true,
+    "requires_authorization": true,
+    "redrive_count": 0,
+    "last_redrive_receipt_ref": null
+  },
+  "retention": {
+    "retain_until_closed": true,
+    "maximum_days": 365
+  },
+  "closure": {
+    "closed": false,
+    "outcome": "pending",
+    "receipt_ref": null
+  }
+}

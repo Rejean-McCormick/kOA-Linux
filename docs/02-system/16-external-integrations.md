@@ -29,7 +29,12 @@
     "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
     "contracts/artifact-contracts/uckk-learning-package.schema.json",
     "contracts/artifact-contracts/uckk-import-receipt.schema.json",
-    "04-components/uckk-import-bridge.md"
+    "04-components/uckk-import-bridge.md",
+    "contracts/architecture-patterns.contract.json",
+    "contracts/artifact-contracts/integration-resilience-policy.schema.json",
+    "contracts/artifact-contracts/dead-letter-record.schema.json",
+    "contracts/artifact-contracts/distributed-workflow.schema.json",
+    "contracts/artifact-contracts/large-payload-reference.schema.json"
   ],
   "decision_ids": [
     "DEC-INT-001",
@@ -40,7 +45,11 @@
     "DEC-ARI-001",
     "DEC-MEDIATHEQUE-001",
     "DEC-UCKK-EXT-001",
-    "DEC-SENT-001"
+    "DEC-SENT-001",
+    "DEC-RES-001",
+    "DEC-MSG-001",
+    "DEC-WF-001",
+    "DEC-PAYLOAD-001"
   ],
   "requirement_ids": [
     "REQ-SYS-INT-001",
@@ -83,7 +92,32 @@
     "REQ-UCKK-IMPORT-006",
     "REQ-SYS-INT-033",
     "REQ-SYS-INT-034",
-    "REQ-SYS-INT-035"
+    "REQ-SYS-INT-035",
+    "REQ-PATTERN-006",
+    "REQ-PATTERN-007",
+    "REQ-PATTERN-008",
+    "REQ-PATTERN-009",
+    "REQ-PATTERN-010",
+    "REQ-PATTERN-011",
+    "REQ-PATTERN-012",
+    "REQ-PATTERN-013",
+    "REQ-PATTERN-014",
+    "REQ-PATTERN-015",
+    "REQ-PATTERN-016",
+    "REQ-PATTERN-017",
+    "REQ-PATTERN-018",
+    "REQ-PATTERN-019",
+    "REQ-PATTERN-020",
+    "REQ-PATTERN-021",
+    "REQ-PATTERN-022",
+    "REQ-PATTERN-023",
+    "REQ-PATTERN-024",
+    "REQ-PATTERN-025",
+    "REQ-PATTERN-026",
+    "REQ-PATTERN-027",
+    "REQ-PATTERN-028",
+    "REQ-PATTERN-029",
+    "REQ-PATTERN-030"
   ],
   "lock_ids": [
     "LOCK-AI-001",
@@ -99,7 +133,11 @@
     "LOCK-COMP-002",
     "LOCK-PROFILE-001",
     "LOCK-PROFILE-002",
-    "LOCK-UCKK-EXT-002"
+    "LOCK-UCKK-EXT-002",
+    "LOCK-RES-001",
+    "LOCK-MSG-001",
+    "LOCK-WF-001",
+    "LOCK-PAYLOAD-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -142,7 +180,8 @@
     "federation",
     "removability",
     "import-from-uckk",
-    "offline-learning"
+    "offline-learning",
+    "architecture-patterns"
   ]
 }
 KOA:DOC-META:END -->
@@ -891,3 +930,7 @@ An optional notification provider is removed. Pending notifications are cancelle
 ### 11.11 Developer tool
 
 A developer profile uses an external analysis tool. The tool receives only workspace-scoped data, cannot write to runtime authoritative stores, and produces candidate findings that require local review.
+
+## Final resilience contract
+
+Every active external integration binds an `integration_resilience_policy`. An asynchronous integration also binds dead-letter behavior. A multi-owner operation binds a distributed workflow. A transfer above the active inline limit binds a large payload reference. These requirements apply to `publish_to_uckk` and `import_from_uckk` and preserve local authority while the remote platform is unavailable.

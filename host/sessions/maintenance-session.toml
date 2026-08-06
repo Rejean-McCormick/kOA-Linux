@@ -1,0 +1,53 @@
+schema_version = "1.0.0"
+session_id = "koa_appliance_maintenance"
+config_kind = "session"
+profile_overlay = "appliance_shell"
+session_mode = "maintenance"
+display_protocol = "wayland"
+
+[authority]
+requires_handoff = true
+required_context = "maintenance_authorized"
+separate_authentication = true
+direct_privileged_broker_access = false
+privileged_effects = "request_only"
+critical_transition_receipt_required = true
+max_handoff_ttl_seconds = 300
+
+[entrypoint]
+executable = "/usr/libexec/koa/koa-maintenance-session"
+arguments = []
+start_state = "maintenance_locked"
+
+[runtime]
+directory_name = "appliance-maintenance"
+mode = "0700"
+clean_on_start = true
+clean_on_exit = true
+reject_symlinks = true
+
+[environment]
+inherit = ["LANG", "LC_ALL", "LC_CTYPE", "XDG_RUNTIME_DIR", "WAYLAND_DISPLAY"]
+clear_unlisted = true
+profile_overlay = "appliance_shell"
+session_mode = "maintenance"
+
+[supervision]
+max_restarts = 0
+restart_window_seconds = 0
+termination_grace_seconds = 10
+crash_return_state = "terminate"
+integrity_failure_action = "request_recovery"
+
+[cleanup]
+remove_runtime_tree = true
+preserve_authoritative_state = true
+release_devices = "external_owner"
+unmount_media = "external_owner"
+
+[presentation]
+visible_mode_indicator = true
+maintenance_controls_visible = true
+recovery_controls_visible = false
+status_and_exit_controls_required = true
+route_authority = "registered_maintenance_interfaces_only"

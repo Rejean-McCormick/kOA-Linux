@@ -1,0 +1,94 @@
+{
+  "format_version": "1.0.0",
+  "policy_id": "security-gates",
+  "status": "active",
+  "language": "en",
+  "default_decision": "block",
+  "authority": {
+    "control_contract": "docs/contracts/security-controls.contract.json",
+    "control_architecture": "docs/07-security/21-security-control-architecture.md",
+    "release_gates": "docs/09-conformance/19-release-gates.md"
+  },
+  "evidence": {
+    "report_kind": "ci_gate_candidate_evidence",
+    "authoritative": false,
+    "output_name": "security-gate-report.json",
+    "deterministic": true,
+    "retention_days": 30,
+    "contains_sensitive_data": false
+  },
+  "gates": [
+    {
+      "gate_id": "security_static_architecture",
+      "suite": "security",
+      "blocking": true,
+      "commands": [
+        [
+          "{python}",
+          "docs/tools/check_security_architecture.py"
+        ],
+        [
+          "{python}",
+          "docs/tools/check_ai_boundary.py"
+        ],
+        [
+          "{python}",
+          "docs/tools/check_component_boundaries.py"
+        ],
+        [
+          "{python}",
+          "docs/tools/check_canonical_ownership.py"
+        ],
+        [
+          "{python}",
+          "docs/tools/check_uckk_external_boundary.py"
+        ]
+      ],
+      "required_paths": [
+        "docs/contracts/security-controls.contract.json",
+        "docs/07-security/21-security-control-architecture.md"
+      ],
+      "requirement_ids": [
+        "REQ-DEV-BTV-006",
+        "REQ-DEV-BTV-017"
+      ]
+    },
+    {
+      "gate_id": "security_system_tests",
+      "suite": "security",
+      "blocking": true,
+      "pytest_paths": [
+        "tests/security"
+      ],
+      "pytest_arguments": [
+        "-q",
+        "--disable-warnings",
+        "-p",
+        "no:cacheprovider"
+      ],
+      "required_paths": [
+        "tests/security"
+      ],
+      "requirement_ids": [
+        "REQ-DEV-BTV-011",
+        "REQ-DEV-BTV-012"
+      ]
+    }
+  ],
+  "prohibited": [
+    "counting skipped, blocked, errored, quarantined, or missing tests as passing evidence",
+    "network access introduced by the gate runner",
+    "release, signing, authorization, or activation decisions in hosted CI",
+    "publishing secrets, private evidence payloads, credentials, or tokens"
+  ],
+  "expected_inventory": [
+    "tests/security/test_privileged_catalog.py",
+    "tests/security/test_path_traversal.py",
+    "tests/security/test_capability_drop.py",
+    "tests/security/test_seccomp_profiles.py",
+    "tests/security/test_network_exposure.py",
+    "tests/security/test_secret_absence.py",
+    "tests/security/test_signature_failure.py",
+    "tests/security/test_break_glass.py"
+  ]
+}

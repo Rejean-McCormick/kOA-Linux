@@ -1,0 +1,27 @@
+format_version = "1.0.0"
+integration_id = "orgo"
+owner = "resource_governor"
+subject = "orgo"
+admission_required = true
+activation_without_resolved_envelope = false
+
+[resolution]
+mode = "profile_resolved"
+required_dimensions = ["cpu", "memory", "pids", "io", "storage", "concurrency", "queue"]
+allow_unbounded_dimension = false
+allow_adapter_override = false
+
+[priority]
+class = "profile_selected"
+preserve_before_optional_external_services = true
+
+[pressure]
+report_degraded_state = true
+accept_new_mutations_when_unadmitted = false
+silent_limit_increase = false
+substitute_other_component = false
+
+[observability]
+usage_receipts = true
+admission_receipts = true
+limit_breach_is_health_signal = true

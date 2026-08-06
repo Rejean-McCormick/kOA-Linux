@@ -1,0 +1,82 @@
+{
+  "$schema": "koa://schemas/independent-subsystem-compatibility/1.0.0",
+  "automatic_compatibility_override_allowed": false,
+  "behavioral_requirements": [
+    "deterministic_local_navigation_without_external_ai",
+    "external_voice_failure_does_not_disable_local_navigation",
+    "validated_atlas_and_driver_required",
+    "no_direct_cross_subsystem_writes",
+    "post_action_state_verification_required",
+    "visibility_is_not_authorization"
+  ],
+  "compatibility_version": "1.0.0",
+  "incompatibility_result": "integration_disabled",
+  "koa_contracts": {
+    "capability_snapshot": {
+      "ref": "interfaces/capabilities/capability-snapshot.schema.json",
+      "supported_major_versions": [
+        1
+      ]
+    },
+    "health": {
+      "ref": "interfaces/health/health-status.schema.json",
+      "supported_major_versions": [
+        1
+      ]
+    },
+    "identity_context": {
+      "ref": "interfaces/identity/identity-context.schema.json",
+      "supported_major_versions": [
+        1
+      ]
+    },
+    "module_interface": {
+      "ref": "docs/contracts/artifact-contracts/module-interface-manifest.schema.json",
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "readiness": {
+      "ref": "interfaces/health/readiness.schema.json",
+      "supported_major_versions": [
+        1
+      ]
+    },
+    "receipts": {
+      "ref": "interfaces/receipts/receipt-envelope.schema.json",
+      "supported_major_versions": [
+        1
+      ]
+    },
+    "system": {
+      "ref": "docs/contracts/system.contract.json",
+      "supported_major_versions": [
+        1
+      ]
+    },
+    "transport": {
+      "ref": "interfaces/transport/http-over-unix.toml",
+      "supported_major_versions": [
+        1
+      ]
+    }
+  },
+  "source_compatibility": {
+    "accepted_revisions": [],
+    "rejected_revisions": [
+      "unversioned",
+      "floating_branch",
+      "mutable_tag",
+      "unknown_digest"
+    ],
+    "status": "blocked_until_source_pin_resolved",
+    "unknown_revision_result": "blocked"
+  },
+  "subsystem_contract": {
+    "ref": "docs/contracts/subsystems/ariane.subsystem.json",
+    "supported_versions": [
+      "1.0.0"
+    ]
+  },
+  "subsystem_id": "ariane"
+}

@@ -19,7 +19,12 @@
     "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
     "contracts/artifact-contracts/uckk-learning-package.schema.json",
     "contracts/artifact-contracts/uckk-import-receipt.schema.json",
-    "04-components/uckk-import-bridge.md"
+    "04-components/uckk-import-bridge.md",
+    "contracts/architecture-patterns.contract.json",
+    "contracts/artifact-contracts/integration-resilience-policy.schema.json",
+    "contracts/artifact-contracts/dead-letter-record.schema.json",
+    "contracts/artifact-contracts/distributed-workflow.schema.json",
+    "contracts/artifact-contracts/large-payload-reference.schema.json"
   ],
   "decision_ids": [
     "DEC-MEDIATHEQUE-001",
@@ -27,7 +32,11 @@
     "DEC-DATA-001",
     "DEC-COMP-001",
     "DEC-GOV-001",
-    "DEC-OFFLINE-001"
+    "DEC-OFFLINE-001",
+    "DEC-RES-001",
+    "DEC-MSG-001",
+    "DEC-WF-001",
+    "DEC-PAYLOAD-001"
   ],
   "requirement_ids": [
     "REQ-UCKK-PUB-001",
@@ -47,7 +56,32 @@
     "REQ-UCKK-IMPORT-003",
     "REQ-UCKK-IMPORT-004",
     "REQ-UCKK-IMPORT-005",
-    "REQ-UCKK-IMPORT-006"
+    "REQ-UCKK-IMPORT-006",
+    "REQ-PATTERN-006",
+    "REQ-PATTERN-007",
+    "REQ-PATTERN-008",
+    "REQ-PATTERN-009",
+    "REQ-PATTERN-010",
+    "REQ-PATTERN-011",
+    "REQ-PATTERN-012",
+    "REQ-PATTERN-013",
+    "REQ-PATTERN-014",
+    "REQ-PATTERN-015",
+    "REQ-PATTERN-016",
+    "REQ-PATTERN-017",
+    "REQ-PATTERN-018",
+    "REQ-PATTERN-019",
+    "REQ-PATTERN-020",
+    "REQ-PATTERN-021",
+    "REQ-PATTERN-022",
+    "REQ-PATTERN-023",
+    "REQ-PATTERN-024",
+    "REQ-PATTERN-025",
+    "REQ-PATTERN-026",
+    "REQ-PATTERN-027",
+    "REQ-PATTERN-028",
+    "REQ-PATTERN-029",
+    "REQ-PATTERN-030"
   ],
   "lock_ids": [
     "LOCK-UCKK-EXT-001",
@@ -56,13 +90,18 @@
     "LOCK-DATA-001",
     "LOCK-GOV-001",
     "LOCK-OFFLINE-001",
-    "LOCK-UCKK-EXT-002"
+    "LOCK-UCKK-EXT-002",
+    "LOCK-RES-001",
+    "LOCK-MSG-001",
+    "LOCK-WF-001",
+    "LOCK-PAYLOAD-001"
   ],
   "exception_ids": [],
   "depends_on": [
     "DOC-SYS-012",
     "DOC-COMP-MEDIATHEQUE-001",
-    "DOC-COMP-UCKK-IMPORT-001"
+    "DOC-COMP-UCKK-IMPORT-001",
+    "DOC-SYS-034"
   ],
   "tags": [
     "integration",
@@ -74,7 +113,8 @@
     "idempotency",
     "offline-queue",
     "import-from-uckk",
-    "offline-learning"
+    "offline-learning",
+    "architecture-patterns"
   ]
 }
 KOA:DOC-META:END -->
@@ -212,3 +252,6 @@ The bridge conforms only when it proves explicit Publication Gateway authorizati
 
 Passing outbound conformance does not establish inbound import or complete two-direction Mediatheque interchange conformance.
 
+## Distributed publication resilience
+
+`publish_to_uckk` is implemented as a distributed workflow. Authorization, package construction, remote transfer, remote acceptance, and terminal receipt are distinct steps. Remote calls use the declared circuit policy. Large media uses verified references or bounded package members. Exhausted asynchronous failures enter monitored quarantine. Remote acceptance is never inferred from local send success.

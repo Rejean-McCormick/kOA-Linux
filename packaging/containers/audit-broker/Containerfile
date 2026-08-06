@@ -1,0 +1,81 @@
+# syntax=docker/dockerfile:1
+# Generated build inputs are owned by packaging/components/audit-broker.toml (B-0095).
+# Both image arguments MUST be immutable references containing @sha256:<digest>.
+ARG KOA_PYTHON_BUILD_IMAGE
+ARG KOA_PYTHON_RUNTIME_IMAGE
+
+FROM ${KOA_PYTHON_BUILD_IMAGE} AS builder
+ARG KOA_PYTHON_BUILD_IMAGE
+ARG KOA_PYTHON_RUNTIME_IMAGE
+ARG KOA_SOURCE_REVISION
+ARG KOA_IMAGE_VERSION
+ARG KOA_PACKAGE_MANIFEST_DIGEST
+ARG SOURCE_DATE_EPOCH
+
+ENV PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_NO_INPUT=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONHASHSEED=0 \
+    SOURCE_DATE_EPOCH=${SOURCE_DATE_EPOCH}
+
+RUN set -eu; \
+    case "${KOA_PYTHON_BUILD_IMAGE}" in *@sha256:*) ;; *) echo "build image must be digest-pinned" >&2; exit 64;; esac; \
+    case "${KOA_PYTHON_RUNTIME_IMAGE}" in *@sha256:*) ;; *) echo "runtime image must be digest-pinned" >&2; exit 64;; esac; \
+    test -n "${KOA_SOURCE_REVISION}"; \
+    test -n "${KOA_IMAGE_VERSION}"; \
+    case "${KOA_PACKAGE_MANIFEST_DIGEST}" in sha256:????????????????????????????????????????????????????????????????) ;; *) echo "package manifest digest is required" >&2; exit 64;; esac; \
+    case "${SOURCE_DATE_EPOCH}" in ''|*[!0-9]*) echo "SOURCE_DATE_EPOCH must be an integer" >&2; exit 64;; esac
+
+WORKDIR /build
+COPY runtime-requirements.lock /build/runtime-requirements.lock
+COPY wheelhouse/ /build/wheelhouse/
+
+RUN set -eu; \
+    test -s /build/runtime-requirements.lock; \
+    find /build/wheelhouse -type f -name '*.whl' -print -quit | grep -q .; \
+    umask 022; \
+    python -m pip install \
+      --no-index \
+      --no-deps \
+      --no-compile \
+      --only-binary=:all: \
+      --require-hashes \
+      --find-links=/build/wheelhouse \
+      --target=/opt/koa/site \
+      --requirement=/build/runtime-requirements.lock; \
+    PYTHONPATH=/opt/koa/site python -c 'import koa_audit_broker'; \
+    find /opt/koa/site -type f -name '*.pyc' -delete; \
+    find /opt/koa/site -type d -name '__pycache__' -empty -delete; \
+    find /opt/koa/site -type f -perm /6000 -exec chmod a-s {} +; \
+    chmod -R a-w /opt/koa/site
+
+FROM ${KOA_PYTHON_RUNTIME_IMAGE} AS runtime
+ARG KOA_PYTHON_RUNTIME_IMAGE
+ARG KOA_SOURCE_REVISION
+ARG KOA_IMAGE_VERSION
+ARG KOA_PACKAGE_MANIFEST_DIGEST
+
+LABEL org.opencontainers.image.title="kOA Audit Broker" \
+      org.opencontainers.image.version="${KOA_IMAGE_VERSION}" \
+      org.opencontainers.image.revision="${KOA_SOURCE_REVISION}" \
+      org.opencontainers.image.base.name="${KOA_PYTHON_RUNTIME_IMAGE}" \
+      io.koa.component.id="audit_broker" \
+      io.koa.artifact.class="service_artifact" \
+      io.koa.release.channel="services" \
+      io.koa.package-manifest.digest="${KOA_PACKAGE_MANIFEST_DIGEST}"
+
+ENV HOME=/nonexistent \
+    PATH=/usr/local/bin:/usr/bin:/bin \
+    PYTHONPATH=/opt/koa/site \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONHASHSEED=0 \
+    PYTHONUNBUFFERED=1
+
+WORKDIR /opt/koa
+COPY --from=builder --chown=65532:65532 /opt/koa/site /opt/koa/site
+
+USER 65532:65532
+STOPSIGNAL SIGTERM
+HEALTHCHECK NONE
+ENTRYPOINT ["python", "-m", "koa_audit_broker"]

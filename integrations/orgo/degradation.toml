@@ -1,0 +1,35 @@
+format_version = "1.0.0"
+integration_id = "orgo"
+default_state = "unavailable"
+
+[missing]
+module_state = "unavailable"
+routes_state = "unavailable"
+widgets_state = "unavailable"
+redirect_to_other_component = false
+shared_database_fallback = false
+cached_mutation = false
+local_ai_substitution = false
+external_provider_substitution = false
+
+[incompatible]
+state = "blocked"
+serve_mutating_interface = false
+allow_partial_activation = false
+
+[offline]
+state = "unavailable"
+claim_cached_read_only = false
+queue_mutations = false
+silent_retry = false
+
+[recovery]
+explicit_recheck_required = true
+resource_readmission_required = true
+compatibility_recheck_required = true
+identity_recheck_required = true
+receipt_required = true
+
+[isolation]
+other_modules_remain_available = true
+failure_scope = "orgo_only"

@@ -1,9 +1,9 @@
 {
   "$schema": "../schemas/artifact-classes.contract.schema.json",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "status": "active",
   "language": "en",
-  "effective_at": "2026-08-03T15:30:00-04:00",
+  "effective_at": "2026-08-05T19:14:00-04:00",
   "purpose": "Define the canonical artifact classes, lifecycle profiles, verification requirements, release-channel eligibility, activation behavior, recovery behavior, and retention expectations used by kOA.",
   "canonical_refs": [
     "generated/authority-manifest.json",
@@ -104,6 +104,46 @@
     {
       "invariant_id": "ART-INV-011",
       "statement": "File-content hashes are not required for ordinary Markdown documentation; artifact digests and signatures are used only where the artifact contract requires integrity verification."
+    },
+    {
+      "invariant_id": "ART-INV-012",
+      "statement": "A Space definition, module interface manifest, route contribution, sidebar contribution, or top-bar widget never grants authority or bypasses the owning system authorization path.",
+      "lock_ref": "LOCK-SPACES-001"
+    },
+    {
+      "invariant_id": "ART-INV-013",
+      "statement": "An integration resilience policy never converts a failed or open remote dependency into authoritative success.",
+      "lock_ref": "LOCK-RES-001"
+    },
+    {
+      "invariant_id": "ART-INV-014",
+      "statement": "A dead-letter record preserves failed asynchronous work until authorized redrive, authorized discard, or superseding repair is evidenced.",
+      "lock_ref": "LOCK-MSG-001"
+    },
+    {
+      "invariant_id": "ART-INV-015",
+      "statement": "A distributed workflow exposes pending and partial states and reaches a receipted terminal, compensated, or forward-repair outcome.",
+      "lock_ref": "LOCK-WF-001"
+    },
+    {
+      "invariant_id": "ART-INV-016",
+      "statement": "A large payload remains in owner-controlled object storage while control messages carry only a bounded verified reference.",
+      "lock_ref": "LOCK-PAYLOAD-001"
+    },
+    {
+      "invariant_id": "ART-INV-017",
+      "statement": "An experience view adapter shapes presentation but owns no business authority, business data, or cross-owner transaction.",
+      "lock_ref": "LOCK-BFF-001"
+    },
+    {
+      "invariant_id": "ART-INV-018",
+      "statement": "A CQRS read projection is non-authoritative, command-free, staleness-bounded, and rebuildable from its declared owner source.",
+      "lock_ref": "LOCK-CQRS-001"
+    },
+    {
+      "invariant_id": "ART-INV-019",
+      "statement": "A cache is non-authoritative, tenant-scoped, bounded by TTL and invalidation rules, and safe when empty or unavailable.",
+      "lock_ref": "LOCK-CACHE-001"
     }
   ],
   "controlled_vocabularies": {
@@ -119,7 +159,11 @@
       "evidence_and_deployment_bundle",
       "request",
       "configuration",
-      "allocation"
+      "allocation",
+      "operational_record",
+      "workflow",
+      "reference",
+      "projection"
     ],
     "verification_requirement_levels": [
       "required",
@@ -534,6 +578,222 @@
         }
       ],
       "mutation_policy": "Allocation history is append-only. Reassignment creates a new allocation record."
+    },
+    "quarantined_operational_record": {
+      "description": "Lifecycle for a quarantined asynchronous record that requires review and explicit closure.",
+      "states": [
+        "quarantined",
+        "under_review",
+        "approved_for_redrive",
+        "redriven",
+        "discard_approved",
+        "discarded",
+        "archived"
+      ],
+      "initial_state": "quarantined",
+      "terminal_states": [
+        "archived"
+      ],
+      "transitions": [
+        {
+          "from": "quarantined",
+          "to": "under_review"
+        },
+        {
+          "from": "under_review",
+          "to": "approved_for_redrive"
+        },
+        {
+          "from": "approved_for_redrive",
+          "to": "redriven"
+        },
+        {
+          "from": "under_review",
+          "to": "discard_approved"
+        },
+        {
+          "from": "discard_approved",
+          "to": "discarded"
+        },
+        {
+          "from": "redriven",
+          "to": "archived"
+        },
+        {
+          "from": "discarded",
+          "to": "archived"
+        }
+      ],
+      "mutation_policy": "The original failure record is immutable; review and closure actions append linked evidence."
+    },
+    "long_running_workflow": {
+      "description": "Lifecycle for a multi-owner transition with explicit pending, compensation, repair, and terminal states.",
+      "states": [
+        "pending",
+        "running",
+        "waiting_remote",
+        "compensating",
+        "forward_repair_required",
+        "human_intervention_required",
+        "completed",
+        "failed_closed",
+        "cancelled",
+        "archived"
+      ],
+      "initial_state": "pending",
+      "terminal_states": [
+        "archived"
+      ],
+      "transitions": [
+        {
+          "from": "pending",
+          "to": "running"
+        },
+        {
+          "from": "running",
+          "to": "waiting_remote"
+        },
+        {
+          "from": "waiting_remote",
+          "to": "running"
+        },
+        {
+          "from": "running",
+          "to": "compensating"
+        },
+        {
+          "from": "running",
+          "to": "forward_repair_required"
+        },
+        {
+          "from": "compensating",
+          "to": "failed_closed"
+        },
+        {
+          "from": "forward_repair_required",
+          "to": "human_intervention_required"
+        },
+        {
+          "from": "human_intervention_required",
+          "to": "completed"
+        },
+        {
+          "from": "running",
+          "to": "completed"
+        },
+        {
+          "from": "completed",
+          "to": "archived"
+        },
+        {
+          "from": "failed_closed",
+          "to": "archived"
+        },
+        {
+          "from": "cancelled",
+          "to": "archived"
+        }
+      ],
+      "mutation_policy": "State transitions append evidence; completed owner actions are not rewritten."
+    },
+    "ephemeral_authorized_reference": {
+      "description": "Lifecycle for a bounded object reference retained through workflow completion and then cleaned according to owner policy.",
+      "states": [
+        "issued",
+        "validated",
+        "in_use",
+        "terminal_hold",
+        "eligible_for_cleanup",
+        "deleted",
+        "archived"
+      ],
+      "initial_state": "issued",
+      "terminal_states": [
+        "archived"
+      ],
+      "transitions": [
+        {
+          "from": "issued",
+          "to": "validated"
+        },
+        {
+          "from": "validated",
+          "to": "in_use"
+        },
+        {
+          "from": "in_use",
+          "to": "terminal_hold"
+        },
+        {
+          "from": "terminal_hold",
+          "to": "eligible_for_cleanup"
+        },
+        {
+          "from": "eligible_for_cleanup",
+          "to": "deleted"
+        },
+        {
+          "from": "deleted",
+          "to": "archived"
+        }
+      ],
+      "mutation_policy": "The referenced payload remains owner-controlled; reference replacement creates a new reference identity."
+    },
+    "rebuildable_projection": {
+      "description": "Lifecycle for a non-authoritative read projection that can be invalidated and rebuilt from its declared owner source.",
+      "states": [
+        "declared",
+        "building",
+        "ready",
+        "lagging",
+        "invalid",
+        "rebuilding",
+        "retired",
+        "archived"
+      ],
+      "initial_state": "declared",
+      "terminal_states": [
+        "archived"
+      ],
+      "transitions": [
+        {
+          "from": "declared",
+          "to": "building"
+        },
+        {
+          "from": "building",
+          "to": "ready"
+        },
+        {
+          "from": "ready",
+          "to": "lagging"
+        },
+        {
+          "from": "lagging",
+          "to": "ready"
+        },
+        {
+          "from": "ready",
+          "to": "invalid"
+        },
+        {
+          "from": "invalid",
+          "to": "rebuilding"
+        },
+        {
+          "from": "rebuilding",
+          "to": "ready"
+        },
+        {
+          "from": "ready",
+          "to": "retired"
+        },
+        {
+          "from": "retired",
+          "to": "archived"
+        }
+      ],
+      "mutation_policy": "Projection contents are disposable and rebuilt from the canonical source; projection state never becomes owner state."
     }
   },
   "artifact_classes": {
@@ -1611,6 +1871,590 @@
         "LOCK-LIFE-001",
         "LOCK-LIFE-002",
         "LOCK-LIFE-004"
+      ]
+    },
+    "space_definition": {
+      "artifact_class_id": "ART-CLASS-020",
+      "canonical_name": "Space definition",
+      "description": "Validated configuration selecting and arranging interface modules, public aliases, navigation order, and offline presentation behavior for one kOA Space.",
+      "category": "configuration",
+      "schema_ref": "contracts/artifact-contracts/space-definition.schema.json",
+      "example_refs": [
+        "contracts/examples/koa-spaces-school.example.json"
+      ],
+      "lifecycle_profile": "versioned_configuration",
+      "identity_model": "space_id_and_version",
+      "release_channel_refs": [
+        "contracts/release-channels.contract.json#/channels/governance"
+      ],
+      "allowed_scopes": [
+        "profile",
+        "artifact_class"
+      ],
+      "producer_roles": [
+        "space_author",
+        "authorized_administrator"
+      ],
+      "consumer_roles": [
+        "koa_spaces",
+        "conformance_validator"
+      ],
+      "verification": {
+        "schema_validation": "required",
+        "signature": "required_when_published",
+        "provenance_receipt": "required_for_published_or_imported_artifacts",
+        "sbom": "not_applicable"
+      },
+      "activation": {
+        "model": "validate_stage_activate_atomically",
+        "partial_activation_allowed": false,
+        "preconditions": [
+          "schema_valid",
+          "referenced_modules_resolve",
+          "capability_requirements_resolve",
+          "offline_declarations_valid"
+        ]
+      },
+      "recovery": {
+        "strategy": "restore_previous_valid_space",
+        "forward_repair_allowed": true,
+        "failed_activation_effect": "candidate_space_remains_inactive"
+      },
+      "retention": {
+        "active_versions": "one_active_per_space_context",
+        "historical_versions": "retain_with_activation_receipts"
+      },
+      "lock_refs": [
+        "LOCK-SPACES-001",
+        "LOCK-LIFE-001",
+        "LOCK-LIFE-002"
+      ]
+    },
+    "module_interface_manifest": {
+      "artifact_class_id": "ART-CLASS-021",
+      "canonical_name": "module interface manifest",
+      "description": "Module-owned presentation manifest contributing routes, sidebar entries, top-bar widgets, labels, capability requirements, and offline behavior to kOA Spaces.",
+      "category": "manifest",
+      "schema_ref": "contracts/artifact-contracts/module-interface-manifest.schema.json",
+      "supporting_schema_refs": [
+        "contracts/artifact-contracts/route-contribution.schema.json",
+        "contracts/artifact-contracts/sidebar-navigation.schema.json",
+        "contracts/artifact-contracts/topbar-widget.schema.json"
+      ],
+      "example_refs": [],
+      "lifecycle_profile": "versioned_configuration",
+      "identity_model": "module_id_and_manifest_version",
+      "release_channel_refs": [
+        "contracts/release-channels.contract.json#/channels/services"
+      ],
+      "allowed_scopes": [
+        "component",
+        "profile",
+        "artifact_class"
+      ],
+      "producer_roles": [
+        "interface_module_owner"
+      ],
+      "consumer_roles": [
+        "koa_spaces",
+        "conformance_validator"
+      ],
+      "verification": {
+        "schema_validation": "required",
+        "signature": "required_when_published",
+        "provenance_receipt": "required_for_published_or_imported_artifacts",
+        "sbom": "not_applicable"
+      },
+      "activation": {
+        "model": "admit_with_module_and_profile_compatibility",
+        "partial_activation_allowed": false,
+        "preconditions": [
+          "module_identity_stable",
+          "routes_namespaced",
+          "capabilities_declared",
+          "authorization_owner_unchanged"
+        ]
+      },
+      "recovery": {
+        "strategy": "reject_manifest_or_restore_prior_compatible_manifest",
+        "forward_repair_allowed": true,
+        "failed_activation_effect": "module_interface_not_activated"
+      },
+      "retention": {
+        "active_versions": "one_compatible_version_per_module",
+        "historical_versions": "retain_with_space_activation_receipts"
+      },
+      "lock_refs": [
+        "LOCK-SPACES-001",
+        "LOCK-LIFE-001",
+        "LOCK-LIFE-002"
+      ]
+    },
+    "space_activation_receipt": {
+      "artifact_class_id": "ART-CLASS-022",
+      "canonical_name": "Space activation receipt",
+      "description": "Immutable evidence of Space validation, dependency resolution, activation, rejection, rollback, and selected interface-manifest versions.",
+      "category": "receipt",
+      "schema_ref": "contracts/artifact-contracts/space-activation-receipt.schema.json",
+      "example_refs": [],
+      "lifecycle_profile": "immutable_receipt",
+      "identity_model": "unique_receipt_id",
+      "release_channel_refs": [],
+      "allowed_scopes": [
+        "profile",
+        "artifact_class"
+      ],
+      "producer_roles": [
+        "koa_spaces",
+        "space_activation_controller"
+      ],
+      "consumer_roles": [
+        "audit_broker",
+        "evidence_collector",
+        "conformance_validator"
+      ],
+      "verification": {
+        "schema_validation": "required",
+        "signature": "required_for_privileged_or_cross_domain_decisions",
+        "provenance_receipt": "not_applicable",
+        "sbom": "not_applicable"
+      },
+      "activation": {
+        "model": "not_activated",
+        "partial_activation_allowed": false,
+        "preconditions": []
+      },
+      "recovery": {
+        "strategy": "append_corrective_receipt",
+        "forward_repair_allowed": true,
+        "failed_activation_effect": "space_activation_not_claimed"
+      },
+      "retention": {
+        "active_versions": "not_applicable",
+        "historical_versions": "retain_with_space_versions_and_manifest_bindings"
+      },
+      "lock_refs": [
+        "LOCK-SPACES-001",
+        "LOCK-LIFE-001",
+        "LOCK-LIFE-002"
+      ]
+    },
+    "integration_resilience_policy": {
+      "artifact_class_id": "ART-CLASS-023",
+      "canonical_name": "integration resilience policy",
+      "description": "Canonical integration resilience policy artifact defined by the architecture-pattern policy.",
+      "category": "policy",
+      "schema_ref": "contracts/artifact-contracts/integration-resilience-policy.schema.json",
+      "example_refs": [
+        "contracts/examples/integration-resilience-policy.example.json"
+      ],
+      "lifecycle_profile": "versioned_configuration",
+      "identity_model": "policy_id_and_version",
+      "release_channel_refs": [
+        "contracts/release-channels.contract.json#/channels/governance"
+      ],
+      "allowed_scopes": [
+        "global",
+        "profile",
+        "component",
+        "artifact_class"
+      ],
+      "producer_roles": [
+        "integration_owner",
+        "component_owner"
+      ],
+      "consumer_roles": [
+        "integration_runtime",
+        "resource_governor",
+        "conformance_validator"
+      ],
+      "verification": {
+        "schema_validation": "required",
+        "signature": "required_when_published",
+        "provenance_receipt": "required_for_published_or_imported_artifacts",
+        "sbom": "not_applicable"
+      },
+      "activation": {
+        "model": "validate_then_activate_or_record",
+        "partial_activation_allowed": false,
+        "preconditions": [
+          "schema_valid",
+          "owner_declared",
+          "applicability_condition_satisfied",
+          "authority_boundary_preserved"
+        ]
+      },
+      "recovery": {
+        "strategy": "restore_previous_policy_rebuild_or_forward_repair",
+        "forward_repair_allowed": true,
+        "failed_activation_effect": "candidate_remains_inactive"
+      },
+      "retention": {
+        "active_versions": "current_and_previous_or_workflow_bound",
+        "historical_versions": "retain_with_operational_and_conformance_evidence"
+      },
+      "lock_refs": [
+        "LOCK-RES-001",
+        "LOCK-LIFE-001",
+        "LOCK-LIFE-002"
+      ]
+    },
+    "dead_letter_record": {
+      "artifact_class_id": "ART-CLASS-024",
+      "canonical_name": "dead-letter record",
+      "description": "Canonical dead-letter record artifact defined by the architecture-pattern policy.",
+      "category": "operational_record",
+      "schema_ref": "contracts/artifact-contracts/dead-letter-record.schema.json",
+      "example_refs": [
+        "contracts/examples/dead-letter-record.example.json"
+      ],
+      "lifecycle_profile": "quarantined_operational_record",
+      "identity_model": "unique_record_id",
+      "release_channel_refs": [
+        "contracts/release-channels.contract.json#/channels/governance"
+      ],
+      "allowed_scopes": [
+        "global",
+        "profile",
+        "component",
+        "artifact_class"
+      ],
+      "producer_roles": [
+        "queue_runtime",
+        "job_controller"
+      ],
+      "consumer_roles": [
+        "operator",
+        "audit_broker",
+        "redrive_controller"
+      ],
+      "verification": {
+        "schema_validation": "required",
+        "signature": "required_when_published",
+        "provenance_receipt": "required_for_published_or_imported_artifacts",
+        "sbom": "not_applicable"
+      },
+      "activation": {
+        "model": "validate_then_activate_or_record",
+        "partial_activation_allowed": false,
+        "preconditions": [
+          "schema_valid",
+          "owner_declared",
+          "applicability_condition_satisfied",
+          "authority_boundary_preserved"
+        ]
+      },
+      "recovery": {
+        "strategy": "restore_previous_policy_rebuild_or_forward_repair",
+        "forward_repair_allowed": true,
+        "failed_activation_effect": "candidate_remains_inactive"
+      },
+      "retention": {
+        "active_versions": "current_and_previous_or_workflow_bound",
+        "historical_versions": "retain_with_operational_and_conformance_evidence"
+      },
+      "lock_refs": [
+        "LOCK-MSG-001",
+        "LOCK-LIFE-001",
+        "LOCK-LIFE-002"
+      ]
+    },
+    "distributed_workflow": {
+      "artifact_class_id": "ART-CLASS-025",
+      "canonical_name": "distributed workflow",
+      "description": "Canonical distributed workflow artifact defined by the architecture-pattern policy.",
+      "category": "workflow",
+      "schema_ref": "contracts/artifact-contracts/distributed-workflow.schema.json",
+      "example_refs": [
+        "contracts/examples/distributed-workflow.example.json"
+      ],
+      "lifecycle_profile": "long_running_workflow",
+      "identity_model": "workflow_id_instance_id_and_version",
+      "release_channel_refs": [
+        "contracts/release-channels.contract.json#/channels/governance"
+      ],
+      "allowed_scopes": [
+        "global",
+        "profile",
+        "component",
+        "artifact_class"
+      ],
+      "producer_roles": [
+        "workflow_owner",
+        "governance_policy_runtime"
+      ],
+      "consumer_roles": [
+        "participating_components",
+        "audit_broker",
+        "operator"
+      ],
+      "verification": {
+        "schema_validation": "required",
+        "signature": "required_when_published",
+        "provenance_receipt": "required_for_published_or_imported_artifacts",
+        "sbom": "not_applicable"
+      },
+      "activation": {
+        "model": "validate_then_activate_or_record",
+        "partial_activation_allowed": false,
+        "preconditions": [
+          "schema_valid",
+          "owner_declared",
+          "applicability_condition_satisfied",
+          "authority_boundary_preserved"
+        ]
+      },
+      "recovery": {
+        "strategy": "restore_previous_policy_rebuild_or_forward_repair",
+        "forward_repair_allowed": true,
+        "failed_activation_effect": "candidate_remains_inactive"
+      },
+      "retention": {
+        "active_versions": "current_and_previous_or_workflow_bound",
+        "historical_versions": "retain_with_operational_and_conformance_evidence"
+      },
+      "lock_refs": [
+        "LOCK-WF-001",
+        "LOCK-LIFE-001",
+        "LOCK-LIFE-002"
+      ]
+    },
+    "large_payload_reference": {
+      "artifact_class_id": "ART-CLASS-026",
+      "canonical_name": "large payload reference",
+      "description": "Canonical large payload reference artifact defined by the architecture-pattern policy.",
+      "category": "reference",
+      "schema_ref": "contracts/artifact-contracts/large-payload-reference.schema.json",
+      "example_refs": [
+        "contracts/examples/large-payload-reference.example.json"
+      ],
+      "lifecycle_profile": "ephemeral_authorized_reference",
+      "identity_model": "unique_reference_id",
+      "release_channel_refs": [
+        "contracts/release-channels.contract.json#/channels/governance"
+      ],
+      "allowed_scopes": [
+        "global",
+        "profile",
+        "component",
+        "artifact_class"
+      ],
+      "producer_roles": [
+        "payload_owner"
+      ],
+      "consumer_roles": [
+        "authorized_consumer",
+        "queue_runtime",
+        "workflow_runtime"
+      ],
+      "verification": {
+        "schema_validation": "required",
+        "signature": "required_when_published",
+        "provenance_receipt": "required_for_published_or_imported_artifacts",
+        "sbom": "not_applicable"
+      },
+      "activation": {
+        "model": "validate_then_activate_or_record",
+        "partial_activation_allowed": false,
+        "preconditions": [
+          "schema_valid",
+          "owner_declared",
+          "applicability_condition_satisfied",
+          "authority_boundary_preserved"
+        ]
+      },
+      "recovery": {
+        "strategy": "restore_previous_policy_rebuild_or_forward_repair",
+        "forward_repair_allowed": true,
+        "failed_activation_effect": "candidate_remains_inactive"
+      },
+      "retention": {
+        "active_versions": "current_and_previous_or_workflow_bound",
+        "historical_versions": "retain_with_operational_and_conformance_evidence"
+      },
+      "lock_refs": [
+        "LOCK-PAYLOAD-001",
+        "LOCK-LIFE-001",
+        "LOCK-LIFE-002"
+      ]
+    },
+    "experience_view_adapter": {
+      "artifact_class_id": "ART-CLASS-027",
+      "canonical_name": "experience view adapter",
+      "description": "Canonical experience view adapter artifact defined by the architecture-pattern policy.",
+      "category": "manifest",
+      "schema_ref": "contracts/artifact-contracts/experience-view-adapter.schema.json",
+      "example_refs": [
+        "contracts/examples/experience-view-adapter.example.json"
+      ],
+      "lifecycle_profile": "versioned_configuration",
+      "identity_model": "adapter_id_and_version",
+      "release_channel_refs": [
+        "contracts/release-channels.contract.json#/channels/governance"
+      ],
+      "allowed_scopes": [
+        "global",
+        "profile",
+        "component",
+        "artifact_class"
+      ],
+      "producer_roles": [
+        "experience_module_owner"
+      ],
+      "consumer_roles": [
+        "koa_spaces",
+        "interface_runtime",
+        "conformance_validator"
+      ],
+      "verification": {
+        "schema_validation": "required",
+        "signature": "required_when_published",
+        "provenance_receipt": "required_for_published_or_imported_artifacts",
+        "sbom": "not_applicable"
+      },
+      "activation": {
+        "model": "validate_then_activate_or_record",
+        "partial_activation_allowed": false,
+        "preconditions": [
+          "schema_valid",
+          "owner_declared",
+          "applicability_condition_satisfied",
+          "authority_boundary_preserved"
+        ]
+      },
+      "recovery": {
+        "strategy": "restore_previous_policy_rebuild_or_forward_repair",
+        "forward_repair_allowed": true,
+        "failed_activation_effect": "candidate_remains_inactive"
+      },
+      "retention": {
+        "active_versions": "current_and_previous_or_workflow_bound",
+        "historical_versions": "retain_with_operational_and_conformance_evidence"
+      },
+      "lock_refs": [
+        "LOCK-BFF-001",
+        "LOCK-SPACES-001",
+        "LOCK-LIFE-001",
+        "LOCK-LIFE-002"
+      ]
+    },
+    "cqrs_projection": {
+      "artifact_class_id": "ART-CLASS-028",
+      "canonical_name": "CQRS projection",
+      "description": "Canonical CQRS projection artifact defined by the architecture-pattern policy.",
+      "category": "projection",
+      "schema_ref": "contracts/artifact-contracts/cqrs-projection.schema.json",
+      "example_refs": [
+        "contracts/examples/cqrs-projection.example.json"
+      ],
+      "lifecycle_profile": "rebuildable_projection",
+      "identity_model": "projection_id_and_version",
+      "release_channel_refs": [
+        "contracts/release-channels.contract.json#/channels/governance"
+      ],
+      "allowed_scopes": [
+        "global",
+        "profile",
+        "component",
+        "artifact_class"
+      ],
+      "producer_roles": [
+        "component_owner"
+      ],
+      "consumer_roles": [
+        "query_runtime",
+        "experience_view_adapter",
+        "conformance_validator"
+      ],
+      "verification": {
+        "schema_validation": "required",
+        "signature": "required_when_published",
+        "provenance_receipt": "required_for_published_or_imported_artifacts",
+        "sbom": "not_applicable"
+      },
+      "activation": {
+        "model": "validate_then_activate_or_record",
+        "partial_activation_allowed": false,
+        "preconditions": [
+          "schema_valid",
+          "owner_declared",
+          "applicability_condition_satisfied",
+          "authority_boundary_preserved"
+        ]
+      },
+      "recovery": {
+        "strategy": "restore_previous_policy_rebuild_or_forward_repair",
+        "forward_repair_allowed": true,
+        "failed_activation_effect": "candidate_remains_inactive"
+      },
+      "retention": {
+        "active_versions": "current_and_previous_or_workflow_bound",
+        "historical_versions": "retain_with_operational_and_conformance_evidence"
+      },
+      "lock_refs": [
+        "LOCK-CQRS-001",
+        "LOCK-LIFE-001",
+        "LOCK-LIFE-002"
+      ]
+    },
+    "cache_policy": {
+      "artifact_class_id": "ART-CLASS-029",
+      "canonical_name": "cache policy",
+      "description": "Canonical cache policy artifact defined by the architecture-pattern policy.",
+      "category": "policy",
+      "schema_ref": "contracts/artifact-contracts/cache-policy.schema.json",
+      "example_refs": [
+        "contracts/examples/cache-policy.example.json"
+      ],
+      "lifecycle_profile": "versioned_configuration",
+      "identity_model": "policy_id_and_version",
+      "release_channel_refs": [
+        "contracts/release-channels.contract.json#/channels/governance"
+      ],
+      "allowed_scopes": [
+        "global",
+        "profile",
+        "component",
+        "artifact_class"
+      ],
+      "producer_roles": [
+        "component_owner",
+        "profile_owner"
+      ],
+      "consumer_roles": [
+        "cache_runtime",
+        "resource_governor",
+        "conformance_validator"
+      ],
+      "verification": {
+        "schema_validation": "required",
+        "signature": "required_when_published",
+        "provenance_receipt": "required_for_published_or_imported_artifacts",
+        "sbom": "not_applicable"
+      },
+      "activation": {
+        "model": "validate_then_activate_or_record",
+        "partial_activation_allowed": false,
+        "preconditions": [
+          "schema_valid",
+          "owner_declared",
+          "applicability_condition_satisfied",
+          "authority_boundary_preserved"
+        ]
+      },
+      "recovery": {
+        "strategy": "restore_previous_policy_rebuild_or_forward_repair",
+        "forward_repair_allowed": true,
+        "failed_activation_effect": "candidate_remains_inactive"
+      },
+      "retention": {
+        "active_versions": "current_and_previous_or_workflow_bound",
+        "historical_versions": "retain_with_operational_and_conformance_evidence"
+      },
+      "lock_refs": [
+        "LOCK-CACHE-001",
+        "LOCK-LIFE-001",
+        "LOCK-LIFE-002"
       ]
     }
   },

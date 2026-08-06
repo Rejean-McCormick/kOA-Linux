@@ -1,0 +1,81 @@
+{
+  "$schema": "../../../docs/contracts/artifact-contracts/space-definition.schema.json",
+  "space_id": "community_space",
+  "title": "Community Space",
+  "version": "1.0.0",
+  "description": "Presentation composition for community knowledge, coordination, media, and guidance.",
+  "default_module_id": "space_home",
+  "module_instances": [
+    {
+      "module_id": "space_home",
+      "manifest_ref": "global-widgets.json",
+      "enabled": true,
+      "required": true,
+      "order": 0,
+      "public_label": "Home",
+      "public_icon_ref": "icons/home.svg",
+      "home_route_override": null
+    },
+    {
+      "module_id": "konnaxion_community",
+      "manifest_ref": "manifests/konnaxion-community.module-interface.json",
+      "enabled": true,
+      "required": false,
+      "order": 10,
+      "public_label": "Community",
+      "public_icon_ref": "icons/community.svg",
+      "home_route_override": null
+    },
+    {
+      "module_id": "koa_mediatheque",
+      "manifest_ref": "manifests/koa-mediatheque.module-interface.json",
+      "enabled": true,
+      "required": false,
+      "order": 20,
+      "public_label": "Library",
+      "public_icon_ref": "icons/library.svg",
+      "home_route_override": null
+    },
+    {
+      "module_id": "orgo_community",
+      "manifest_ref": "manifests/orgo-community.module-interface.json",
+      "enabled": true,
+      "required": false,
+      "order": 30,
+      "public_label": "Work",
+      "public_icon_ref": "icons/work.svg",
+      "home_route_override": null
+    },
+    {
+      "module_id": "ariane",
+      "manifest_ref": "manifests/ariane.module-interface.json",
+      "enabled": true,
+      "required": false,
+      "order": 40,
+      "public_label": "Guidance",
+      "public_icon_ref": "icons/guidance.svg",
+      "home_route_override": null
+    }
+  ],
+  "global_topbar": [],
+  "appearance": {
+    "theme_ref": "themes/community.json",
+    "density": "comfortable",
+    "logo_ref": null,
+    "accent_token": null,
+    "allow_module_accent": true
+  },
+  "offline_policy": {
+    "shell_available": true,
+    "retain_last_validated_definition": true,
+    "unavailable_module_behavior": "show_declared_fallback",
+    "network_state_indicator": true
+  },
+  "assignment_scope": "organization",
+  "authority_boundary": {
+    "presentation_only": true,
+    "may_grant_capabilities": false,
+    "contains_business_state": false,
+    "contains_executable_extension": false
+  }
+}

@@ -1,0 +1,125 @@
+[metadata]
+policy_id = "koa.artifact_repository.metadata"
+policy_version = "1.0.0"
+status = "active"
+format = "canonical_structured_record"
+canonicalization_required = true
+deterministic_ordering_required = true
+unknown_critical_fields = "reject"
+duplicate_keys = "reject"
+append_only_history = true
+silent_rewrite_allowed = false
+
+[metadata.identity]
+required = [
+  "record_id",
+  "record_type",
+  "record_version",
+  "subject_artifact_id",
+  "subject_artifact_class",
+  "subject_artifact_version",
+  "release_channel",
+  "manifest_digest",
+]
+repository_location_is_identity = false
+mutable_tag_is_identity = false
+digest_alone_is_complete_identity = false
+canonical_artifact_identity_required = true
+
+[metadata.scope]
+required = [
+  "publisher_identity_ref",
+  "repository_identity_ref",
+  "environment_scope",
+  "profile_scope",
+  "audience_or_tenant_scope",
+]
+missing_scope_result = "blocked"
+scope_expansion_by_mirror_or_copy = false
+
+[metadata.evidence]
+required = [
+  "artifact_contract_ref",
+  "provenance_ref",
+  "signature_verification_ref",
+  "compatibility_evidence_refs",
+  "publication_receipt_ref",
+]
+sbom_ref_required_for_software_artifacts = true
+test_evidence_required_when_declared_by_artifact_class = true
+receipt_history_immutable = true
+verification_context_recorded = true
+
+[metadata.lifecycle]
+allowed_states = [
+  "available",
+  "quarantined",
+  "verified",
+  "approved",
+  "published",
+  "imported",
+  "staged",
+  "active",
+  "superseded",
+  "revoked",
+  "retired",
+  "rejected",
+]
+repository_publication_implies_activation = false
+verification_implies_approval = false
+signature_implies_compatibility = false
+presence_implies_trust = false
+state_transition_receipt_required = true
+
+[metadata.release_channels]
+allowed = ["system", "services", "governance", "knowledge"]
+exactly_one_channel_per_release_artifact = true
+offline_bundle_creates_fifth_channel = false
+release_set_merges_channel_identity = false
+unknown_channel_result = "blocked"
+
+[metadata.integrity]
+manifest_digest_required = true
+payload_digests_required = true
+algorithm_and_scope_declared = true
+received_identity_reverified = true
+mismatch_result = "security_failure"
+partial_metadata_visibility = false
+
+[metadata.revocation_and_supersession]
+modify_original_record = false
+append_new_relationship_record = true
+signer_and_scope_required = true
+effective_time_required = true
+reason_required = true
+new_use_of_revoked_artifact = "blocked"
+latest_alias_overrides_revocation = false
+
+[metadata.indexes]
+indexes_are_authoritative = false
+indexes_rebuildable = true
+index_input = "immutable_records_only"
+index_generation_deterministic = true
+missing_or_stale_index_changes_artifact_authority = false
+
+[metadata.offline]
+metadata_required_locally_for_offline_use = true
+remote_metadata_fetch_required = false
+missing_local_required_metadata = "blocked"
+network_unavailable_substitution_allowed = false
+stale_trust_or_revocation_state_treated_as_current = false
+queued_remote_publication_revalidated_after_reconnection = true
+
+[metadata.confidentiality]
+private_keys_allowed = false
+secrets_allowed = false
+protected_subject_metadata_encrypted_for_declared_recipients = true
+logs_and_receipts_minimized = true
+diagnostic_output_redacted = true
+
+[metadata.retention]
+policy_source = "artifact_class_active_profile_and_legal_policy"
+retain_import_manifest_and_verification_receipts = true
+retain_revocation_and_supersession_history = true
+cleanup_is_audited = true
+cleanup_receipt_required = true

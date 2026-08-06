@@ -1,0 +1,73 @@
+schema_version = "1"
+component_id = "koa_node_agent"
+name = "kOA Node Agent"
+version = "1.0.0"
+contract = "docs/contracts/components/koa-node-agent.component.json"
+component_type = "node_local_lifecycle_and_privileged_operation_broker"
+owner = "node-local-lifecycle"
+language = "rust"
+
+[entrypoints]
+library = "koa_node_agent"
+service = "koa-node-agent"
+bootstrap = "koa_node_agent::bootstrap"
+
+[public_interfaces]
+command_ids = [
+  "execute_node_operation",
+  "cancel_node_operation",
+  "acknowledge_recovery_result",
+]
+query_ids = [
+  "get_node_agent_capabilities",
+  "get_node_operation_status",
+  "get_node_agent_health",
+]
+interface_version = "1.0.0"
+transport = "profile_defined_authenticated_local_or_node_management_interface"
+local_unix_socket_permitted = true
+direct_database_access = false
+
+[health]
+query = "get_node_agent_health"
+authorization_required = true
+secrets_in_output = false
+application_data_in_output = false
+
+[state]
+owner = "koa_node_agent"
+root = "/var/lib/koa/node-agent"
+runtime_root = "/run/koa/node-agent"
+socket = "/run/koa/node-agent/node-agent.sock"
+staging_root = "/var/lib/koa/node-agent/staging"
+recovery_root = "/var/lib/koa/node-agent/recovery"
+direct_cross_component_writes = false
+
+[package]
+cargo_package = "koa-node-agent"
+library_crate = "koa_node_agent"
+payload = "components/koa-node-agent/packaging/payload.toml"
+
+[dependencies]
+public_rust_interfaces = "koa_interfaces"
+required_authorities = [
+  "identity_and_trust",
+  "governance_policy_runtime",
+  "resource_governor",
+  "audit_broker",
+  "active_profile_contract",
+  "artifact_and_release_contracts",
+]
+private_component_imports = false
+
+[authority]
+control_plane_request_is_sufficient_authority = false
+root_identity_is_application_authority = false
+operation_allowlist_is_closed = true
+arbitrary_shell_execution = false
+arbitrary_service_manager_control = false
+arbitrary_file_or_path_access = false
+raw_private_key_export = false
+partial_authoritative_activation = false
+critical_transition_requires_receipt = true
+silent_alternate_privileged_path = false

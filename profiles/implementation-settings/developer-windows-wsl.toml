@@ -1,0 +1,86 @@
+settings_version = "1.0.0"
+profile_id = "developer_windows_wsl"
+profile_contract = "docs/contracts/profiles/developer-windows-wsl.profile.json"
+profile_contract_version = "1.0.0"
+profile_role = "primary"
+available_for_selection = true
+
+[validation]
+mode = "strict"
+unknown_parameter = "error"
+missing_contract = "error"
+contract_version_mismatch = "error"
+unsupported_parameter = "error"
+composition_conflict = "error"
+
+[authority]
+profile_membership = "profile_contract"
+component_membership = "profile_contract"
+capabilities = "profile_contract"
+resource_policy = "profile_contract"
+security_policy = "profile_contract"
+lifecycle_policy = "profile_contract"
+offline_policy = "profile_contract"
+external_integrations = "profile_contract"
+
+[source_layout]
+strategy = "shared_repository_tree"
+profile_specific_source_tree = false
+generated_output_root = "generated/profiles/developer_windows_wsl"
+
+[composition]
+kind = "primary"
+requires_base_profile = false
+overlays = "explicit_only"
+implicit_overlay_activation = false
+compatibility_source = "profile_contract"
+conflict_result = "error"
+
+[implementation.host]
+host_os = "windows_11"
+virtualization_layer = "wsl2"
+guest_distribution = "ubuntu"
+guest_release = "24.04-lts"
+systemd_required = true
+default_user_unprivileged = true
+workspace_tools_from_windows_paths = false
+
+[implementation.workspace]
+root_policy = "inside_wsl_linux_filesystem"
+windows_mount_role = "controlled_import_export_only"
+mutable_runtime_state_on_windows_mount = false
+mutable_environment = "one_per_workspace"
+parallel_workspaces = true
+
+[implementation.python]
+dependency_manager = "uv"
+project_file = "pyproject.toml"
+lock_file = "uv.lock"
+virtual_environment = ".venv"
+sync_command = "uv sync --frozen"
+run_prefix = "uv run"
+direct_pip_install = false
+
+[implementation.containers]
+required = false
+selection = "workspace_declared"
+allowed_backends = ["podman_rootless_in_wsl", "docker_desktop_wsl_backend"]
+mixed_backends_per_workspace = false
+rootless_workloads = true
+privileged = false
+host_network = false
+
+[implementation.resources]
+heavy_cpu_jobs = 1
+media_processing_jobs = 1
+large_index_builds = 1
+sentient_workbenches = 1
+component_integration_stacks = 2
+overcommit = false
+
+[implementation.network]
+default_ingress = "deny"
+default_egress = "allow_registered_development_destinations"
+default_bind_address = "127.0.0.1"
+public_binding = false
+lan_binding = false

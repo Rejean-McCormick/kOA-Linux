@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0.0",
+  "integration_id": "konnaxion",
+  "status": "preparation_only",
+  "activation_allowed": false,
+  "subsystem_contract": {
+    "path": "docs/contracts/subsystems/konnaxion.subsystem.json",
+    "supported_versions": ["1.0.0"],
+    "sha256": "3da500f69f31e7416ba8fa5adf5b5d796a51c56f7b31948ccee296fb0e3bdbac"
+  },
+  "koa_contracts": [
+    {
+      "path": "docs/contracts/system.contract.json",
+      "supported_versions": ["2.2.0"],
+      "sha256": "650b2e7f31d8bead73ec0038b5d380754fa6b61b557ccf704f93df29f3aa4a83"
+    },
+    {
+      "path": "docs/contracts/terminology.contract.json",
+      "supported_versions": ["2.2.0"],
+      "sha256": "5554053929f07be0d78f73ef4cd08935bd26abdb55c9cc9cb5eab3c59c4692cf"
+    }
+  ],
+  "interface_schemas": [
+    {
+      "path": "docs/contracts/artifact-contracts/module-interface-manifest.schema.json",
+      "schema_id": "https://schemas.koa.local/artifact-contracts/module-interface-manifest.schema.json",
+      "sha256": "a607174b96b59ed0d1facff3f6a57a64968de617e8e30b0b97152122dfc0ac08"
+    },
+    {
+      "path": "docs/contracts/artifact-contracts/sidebar-navigation.schema.json",
+      "schema_id": "https://schemas.koa.local/artifact-contracts/sidebar-navigation.schema.json",
+      "sha256": "32bb72fb5b23d3c9d1d1d8ae02e146ae87cf19c8e0337ff5c89d09c7649bd5a2"
+    },
+    {
+      "path": "docs/contracts/artifact-contracts/topbar-widget.schema.json",
+      "schema_id": "https://schemas.koa.local/artifact-contracts/topbar-widget.schema.json",
+      "sha256": "0dfffe1f7a5e1423ee2d6839923769b27cae31726e6aca909fcdd99838e51aa2"
+    }
+  ],
+  "required_common_interfaces": [
+    "interfaces/transport/http-over-unix.toml",
+    "interfaces/transport/error-envelope.schema.json",
+    "interfaces/transport/version-negotiation.schema.json",
+    "interfaces/health/health-status.schema.json",
+    "interfaces/health/readiness.schema.json",
+    "interfaces/receipts/receipt-envelope.schema.json",
+    "interfaces/receipts/correlation.schema.json",
+    "interfaces/jobs/job-request.schema.json",
+    "interfaces/jobs/job-status.schema.json",
+    "interfaces/identity/identity-context.schema.json",
+    "interfaces/capabilities/capability-snapshot.schema.json"
+  ],
+  "rejected_conditions": [
+    "mutable_or_missing_subsystem_revision",
+    "missing_source_digest",
+    "missing_license_metadata",
+    "missing_official_documentation_mount",
+    "unsupported_subsystem_contract_version",
+    "missing_required_common_interface",
+    "undeclared_internal_api_assumption"
+  ]
+}

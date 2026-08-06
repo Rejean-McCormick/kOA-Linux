@@ -1,0 +1,482 @@
+{
+  "format": "koa.dependency-rules",
+  "format_version": "1.0.0",
+  "status": "active",
+  "authority": [
+    "docs/AI_CONTEXT.md",
+    "docs/contracts/ai-navigation.contract.json",
+    "docs/contracts/system.contract.json",
+    "docs/contracts/terminology.contract.json",
+    "docs/02-system/23-code-and-filesystem-architecture.md",
+    "docs/02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md",
+    "docs/02-system/code-and-filesystem-architecture/33-path-ownership-and-change-rules.md",
+    "docs/00-governance/07-ai-read-write-protocol.md",
+    "docs/00-governance/09-canonical-ownership.md",
+    "docs/00-governance/13-validation-pipeline.md",
+    "docs/05-development/04-dependency-isolation.md"
+  ],
+  "evaluation": {
+    "path_style": "repository_relative_posix",
+    "default": "deny",
+    "rule_order": "deny_rules_before_allow_rules",
+    "same_owner_private_imports": "allowed_only_by_layer_rules",
+    "cross_owner_private_imports": "prohibited",
+    "test_rules_apply_only_to_test_files": true,
+    "symlinks_escaping_repository": "prohibited"
+  },
+  "layers": [
+    {
+      "id": "canonical_contracts",
+      "patterns": [
+        "docs/contracts/**/*.json",
+        "docs/schemas/**/*.json"
+      ],
+      "may_depend_on": []
+    },
+    {
+      "id": "transport_interfaces",
+      "patterns": [
+        "interfaces/transport/**",
+        "interfaces/health/**",
+        "interfaces/receipts/**",
+        "interfaces/jobs/**",
+        "interfaces/identity/**",
+        "interfaces/capabilities/**"
+      ],
+      "may_depend_on": [
+        "canonical_contracts"
+      ]
+    },
+    {
+      "id": "generated_bindings",
+      "patterns": [
+        "generated/contract-bindings/**",
+        "interfaces/python/src/koa_interfaces/**",
+        "interfaces/rust/src/**"
+      ],
+      "may_depend_on": [
+        "canonical_contracts",
+        "transport_interfaces"
+      ]
+    },
+    {
+      "id": "component_domain",
+      "patterns": [
+        "components/*/src/*/domain/**",
+        "components/koa-node-agent/src/domain/**"
+      ],
+      "may_depend_on": [
+        "canonical_contracts",
+        "generated_bindings",
+        "transport_interfaces"
+      ]
+    },
+    {
+      "id": "component_ports",
+      "patterns": [
+        "components/*/src/*/ports/**",
+        "components/koa-node-agent/src/ports/**"
+      ],
+      "may_depend_on": [
+        "canonical_contracts",
+        "generated_bindings",
+        "transport_interfaces",
+        "component_domain"
+      ]
+    },
+    {
+      "id": "component_application",
+      "patterns": [
+        "components/*/src/*/application/**",
+        "components/koa-node-agent/src/application/**"
+      ],
+      "may_depend_on": [
+        "canonical_contracts",
+        "generated_bindings",
+        "transport_interfaces",
+        "component_domain",
+        "component_ports"
+      ]
+    },
+    {
+      "id": "component_adapters",
+      "patterns": [
+        "components/*/src/*/adapters/**",
+        "components/koa-node-agent/src/adapters/**",
+        "components/koa-node-agent/src/broker/**"
+      ],
+      "may_depend_on": [
+        "canonical_contracts",
+        "generated_bindings",
+        "transport_interfaces",
+        "component_domain",
+        "component_ports",
+        "component_application"
+      ]
+    },
+    {
+      "id": "component_api_runtime",
+      "patterns": [
+        "components/*/src/*/api/**",
+        "components/*/src/*/__init__.py",
+        "components/*/src/*/__main__.py",
+        "components/*/src/*/bootstrap.py",
+        "components/*/src/*/config.py",
+        "components/*/src/*/health.py",
+        "components/*/src/*/receipts.py",
+        "components/koa-node-agent/src/lib.rs",
+        "components/koa-node-agent/src/main.rs",
+        "components/koa-node-agent/src/config.rs",
+        "components/koa-node-agent/src/health.rs",
+        "components/koa-node-agent/src/receipts.rs",
+        "components/koa-node-agent/src/bin/**"
+      ],
+      "may_depend_on": [
+        "canonical_contracts",
+        "generated_bindings",
+        "transport_interfaces",
+        "component_domain",
+        "component_ports",
+        "component_application",
+        "component_adapters"
+      ]
+    },
+    {
+      "id": "integration_boundary",
+      "patterns": [
+        "integrations/*/adapter/src/**",
+        "integrations/external-services/*/**"
+      ],
+      "may_depend_on": [
+        "canonical_contracts",
+        "generated_bindings",
+        "transport_interfaces"
+      ]
+    },
+    {
+      "id": "profiles",
+      "patterns": [
+        "profiles/**"
+      ],
+      "may_depend_on": [
+        "canonical_contracts"
+      ]
+    },
+    {
+      "id": "assembly",
+      "patterns": [
+        "assembly/src/**"
+      ],
+      "may_depend_on": [
+        "canonical_contracts",
+        "generated_bindings",
+        "transport_interfaces",
+        "profiles"
+      ]
+    },
+    {
+      "id": "host",
+      "patterns": [
+        "host/**"
+      ],
+      "may_depend_on": [
+        "canonical_contracts",
+        "generated_bindings",
+        "transport_interfaces",
+        "assembly"
+      ]
+    },
+    {
+      "id": "packaging",
+      "patterns": [
+        "packaging/**"
+      ],
+      "may_depend_on": [
+        "canonical_contracts",
+        "profiles",
+        "assembly",
+        "host"
+      ]
+    },
+    {
+      "id": "release",
+      "patterns": [
+        "release/**"
+      ],
+      "may_depend_on": [
+        "canonical_contracts",
+        "packaging"
+      ]
+    },
+    {
+      "id": "operations",
+      "patterns": [
+        "operations/src/**"
+      ],
+      "may_depend_on": [
+        "canonical_contracts",
+        "generated_bindings",
+        "transport_interfaces"
+      ]
+    },
+    {
+      "id": "repository_tools",
+      "patterns": [
+        "tools/**",
+        "ci/**",
+        "dev/**"
+      ],
+      "may_depend_on": [
+        "canonical_contracts"
+      ]
+    },
+    {
+      "id": "tests",
+      "patterns": [
+        "tests/**",
+        "**/tests/**"
+      ],
+      "may_depend_on": [
+        "canonical_contracts",
+        "transport_interfaces",
+        "generated_bindings",
+        "component_domain",
+        "component_ports",
+        "component_application",
+        "component_adapters",
+        "component_api_runtime",
+        "integration_boundary",
+        "profiles",
+        "assembly",
+        "host",
+        "packaging",
+        "release",
+        "operations",
+        "repository_tools"
+      ]
+    }
+  ],
+  "owner_boundaries": {
+    "internal_components": {
+      "owner_pattern": "components/<component-id>/",
+      "public_surfaces": [
+        "docs/contracts/components/<component-id>.component.json",
+        "interfaces/**"
+      ],
+      "private_surfaces": [
+        "components/<component-id>/src/**",
+        "components/<component-id>/migrations/**"
+      ],
+      "cross_component_private_import": "deny",
+      "cross_component_store_write": "deny"
+    },
+    "integrations": {
+      "owner_pattern": "integrations/<integration-id>/",
+      "public_surfaces": [
+        "docs/contracts/integrations/**",
+        "docs/contracts/subsystems/**",
+        "interfaces/**"
+      ],
+      "private_surfaces": [
+        "integrations/<integration-id>/adapter/src/**"
+      ],
+      "cross_integration_private_import": "deny",
+      "vendored_subsystem_source": "deny"
+    }
+  },
+  "deny_rules": [
+    {
+      "id": "DENY-COMPONENT-PRIVATE-CROSS-IMPORT",
+      "from": "components/<A>/**",
+      "to": "components/<B>/src/**",
+      "when": "A != B",
+      "reason": "LOCK-CODE-FS-008 and component ownership"
+    },
+    {
+      "id": "DENY-COMPONENT-CROSS-MIGRATION",
+      "from": "components/<A>/**",
+      "to": "components/<B>/migrations/**",
+      "when": "A != B",
+      "reason": "one authoritative data owner"
+    },
+    {
+      "id": "DENY-DOMAIN-UPWARD-DEPENDENCY",
+      "from": [
+        "components/*/src/*/domain/**",
+        "components/koa-node-agent/src/domain/**"
+      ],
+      "to": [
+        "host/**",
+        "profiles/**",
+        "packaging/**",
+        "release/**",
+        "integrations/**",
+        "assembly/**"
+      ],
+      "reason": "domain remains independent of implementation and deployment"
+    },
+    {
+      "id": "DENY-INTEGRATION-PRIVATE-CROSS-IMPORT",
+      "from": "integrations/<A>/**",
+      "to": "integrations/<B>/adapter/src/**",
+      "when": "A != B",
+      "reason": "independent integration ownership"
+    },
+    {
+      "id": "DENY-SPACES-PRIVILEGED-BROKER",
+      "from": "integrations/koa-spaces/**",
+      "to": [
+        "components/koa-node-agent/src/broker/**",
+        "components/koa-node-agent/src/bin/koa-privileged-broker.rs"
+      ],
+      "reason": "kOA Spaces has no privileged authority"
+    },
+    {
+      "id": "DENY-PRESENTATION-EXECUTABLE-LOADING",
+      "from": [
+        "integrations/*/interface/**",
+        "profiles/**"
+      ],
+      "to": [
+        "components/**/src/**",
+        "host/**"
+      ],
+      "reason": "presentation and profile declarations do not load executable implementation"
+    },
+    {
+      "id": "DENY-RELEASE-LIVE-MUTATION",
+      "from": [
+        "release/**",
+        ".github/workflows/release.yml"
+      ],
+      "to": [
+        "/run/koa/**",
+        "/var/lib/koa/**",
+        "/etc/koa/**"
+      ],
+      "reason": "release construction cannot mutate live state"
+    },
+    {
+      "id": "DENY-DOCS-PRODUCT-IMPORT",
+      "from": "docs/**",
+      "to": [
+        "components/**",
+        "integrations/**",
+        "host/**",
+        "operations/**"
+      ],
+      "reason": "documentation is not product runtime source"
+    },
+    {
+      "id": "DENY-GENERATED-AS-AUTHORITY",
+      "from": [
+        "generated/**",
+        "docs/generated/**"
+      ],
+      "to": [
+        "docs/contracts/**"
+      ],
+      "reason": "generated projections cannot redefine canonical contracts"
+    }
+  ],
+  "allow_rules": [
+    {
+      "id": "ALLOW-CONTRACT-CONSUMPTION",
+      "from": [
+        "interfaces/**",
+        "components/**",
+        "integrations/**",
+        "assembly/**",
+        "host/**",
+        "packaging/**",
+        "release/**",
+        "operations/**",
+        "tests/**",
+        "tools/**"
+      ],
+      "to": [
+        "docs/contracts/**",
+        "docs/schemas/**"
+      ],
+      "access": "read_or_generate"
+    },
+    {
+      "id": "ALLOW-PUBLIC-INTERFACES",
+      "from": [
+        "components/**",
+        "integrations/**",
+        "assembly/**",
+        "host/**",
+        "operations/**",
+        "tests/**"
+      ],
+      "to": "interfaces/**",
+      "access": "public_only"
+    },
+    {
+      "id": "ALLOW-SAME-COMPONENT-LAYERED",
+      "from": "components/<A>/**",
+      "to": "components/<A>/**",
+      "access": "subject_to_layers"
+    },
+    {
+      "id": "ALLOW-INTEGRATION-ADAPTER-PUBLIC-CONTRACTS",
+      "from": "integrations/<A>/adapter/src/**",
+      "to": [
+        "docs/contracts/**",
+        "interfaces/**"
+      ],
+      "access": "public_only"
+    },
+    {
+      "id": "ALLOW-TEST-TARGETS",
+      "from": [
+        "tests/**",
+        "**/tests/**"
+      ],
+      "to": [
+        "components/**",
+        "integrations/**",
+        "assembly/**",
+        "host/**",
+        "operations/**"
+      ],
+      "access": "test_only_no_production_reexport"
+    },
+    {
+      "id": "ALLOW-TOOLS-READ-REPOSITORY",
+      "from": [
+        "tools/**",
+        "ci/**"
+      ],
+      "to": [
+        ".koa/**",
+        "docs/**",
+        "interfaces/**",
+        "components/**",
+        "integrations/**",
+        "profiles/**",
+        "assembly/**",
+        "host/**",
+        "packaging/**",
+        "release/**",
+        "operations/**",
+        "tests/**"
+      ],
+      "access": "read_or_validate_no_product_authority"
+    }
+  ],
+  "import_detection": {
+    "python_private_package_prefixes": [
+      "components.*",
+      "integrations.*",
+      "koa_*.*.adapters",
+      "koa_*.*.domain"
+    ],
+    "rust_private_crate_paths": [
+      "components/*/src/**"
+    ],
+    "filesystem_reads_do_not_grant_authority": true,
+    "declared_contract_or_artifact_required_for_cross_owner_data": true
+  }
+}

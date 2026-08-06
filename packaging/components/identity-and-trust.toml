@@ -1,0 +1,79 @@
+# Generated as source input for deterministic packaging; not a release lock.
+format = "koa.component-package"
+format_version = "1.0.0"
+status = "blocked_missing_upstream_bundle"
+package_id = "koa.services.component.identity-and-trust"
+component_id = "identity_and_trust"
+display_name = "Identity and Trust"
+release_channel = "services"
+artifact_class_key = "component_runtime"
+source_bundle = "B-0023"
+source_contract = "docs/contracts/components/identity-and-trust.component.json"
+source_project = "components/identity-and-trust/pyproject.toml"
+source_payload_manifest = "components/identity-and-trust/packaging/payload.toml"
+runtime_path_registry = ".koa/runtime-paths.json"
+activation_ready = false
+
+[admission]
+requires_clean_source = true
+requires_immutable_revision = true
+requires_payload_digest = true
+requires_sbom = true
+requires_provenance = true
+requires_signature = true
+requires_release_set = true
+requires_component_contract_validation = true
+default_on_missing_evidence = "reject"
+
+[build]
+build_kind = "python_wheel"
+network = "denied_unless_package_sources_admit_exact_input"
+lock_state_required = true
+reproducible_output_required = true
+secret_material_allowed = false
+mutable_workspace_state_allowed = false
+output_identity_source = "signed_artifact_manifest"
+
+[payload]
+resolution = "source_payload_manifest"
+destination_authority = ".koa/runtime-paths.json#repository_payload_mappings"
+unknown_destination = "reject"
+secret_material = "prohibited"
+mutable_state = "prohibited"
+runtime_state_creation = "owning_service_only"
+configuration_seed_only = true
+
+[configuration]
+format = "koa.component-config-seed"
+format_version = "1.0.0"
+component_id = "identity_and_trust"
+enabled = false
+activation = "effective_profile_and_release_set_only"
+socket_path = "/run/koa/sockets/identity-and-trust.sock"
+state_root = "/var/lib/koa/identity-and-trust/"
+destination = "/etc/koa/components/identity-and-trust/config.toml"
+install_mode = "seed_if_absent"
+owner = "koa-identity-and-trust"
+group = "koa-identity-and-trust"
+mode = "0640"
+secret_material = "not_present"
+
+[activation]
+strategy = "atomic_service_artifact_activation"
+health_gate_required = true
+readiness_gate_required = true
+rollback_or_forward_repair_required = true
+component_data_rollback_implicit = false
+blocked_by = ["B-0092", "B-0023"]
+
+[validation]
+required = [
+  "source_bundle_present",
+  "payload_manifest_valid",
+  "all_destinations_declared",
+  "no_secret_payload",
+  "no_mutable_state_payload",
+  "sbom_complete",
+  "provenance_verifiable",
+  "release_set_compatible",
+]

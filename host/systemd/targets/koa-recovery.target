@@ -1,0 +1,9 @@
+# Recovery membership is rendered separately and never inherits normal-mode services.
+[Unit]
+Description=kOA recovery environment
+Documentation=file:/usr/share/doc/koa/recipes/sovereign-linux/systemd-layout.md
+Requires=local-fs.target
+Wants=network-pre.target
+After=local-fs.target
+Conflicts=koa-node.target koa-critical.target koa-core.target koa-background.target koa-optional.target koa-activation.target
+AllowIsolate=yes

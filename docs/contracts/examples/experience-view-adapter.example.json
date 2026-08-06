@@ -1,0 +1,49 @@
+{
+  "$schema": "../artifact-contracts/experience-view-adapter.schema.json",
+  "example": true,
+  "authority": "non_authoritative_example",
+  "artifact_class": "experience_view_adapter",
+  "adapter_id": "school-space-dashboard",
+  "version": "1.0.0",
+  "experience_id": "school-space",
+  "owner_module_id": "koa_spaces",
+  "routes": [
+    {
+      "route_id": "school-home",
+      "path": "/school/home",
+      "response_contract_ref": "contracts/views/school-home.view.json"
+    }
+  ],
+  "data_sources": [
+    {
+      "owner_id": "orgo",
+      "interface_ref": "orgo://queries/open-work",
+      "access_mode": "query",
+      "authorization_rechecked_by_owner": true
+    },
+    {
+      "owner_id": "koa-mediatheque",
+      "interface_ref": "koa-mediatheque://queries/recent-learning",
+      "access_mode": "query",
+      "authorization_rechecked_by_owner": true
+    }
+  ],
+  "authority_boundary": {
+    "presentation_only": true,
+    "business_logic_owned": false,
+    "authoritative_storage": false,
+    "direct_database_writes": false,
+    "cross_owner_transaction_logic": false
+  },
+  "resilience": {
+    "bounded_parallel_fanout": 4,
+    "dependency_policy_refs": [
+      "integration-resilience-policy:local-module-query"
+    ]
+  },
+  "cache_policy_ref": "cache-policy:school-home",
+  "observability": {
+    "correlation_id_required": true,
+    "per_dependency_latency": true
+  }
+}

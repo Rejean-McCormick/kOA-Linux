@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.koa.local/interfaces/receipts/correlation.schema.json",
+  "title": "kOA Correlation Context",
+  "description": "Versioned correlation context shared by requests, component-local receipts, events, and evidence in one workflow. Correlation links records without merging component ownership, data authority, or decision authority.",
+  "$comment": "The semantic validator must ensure that all records in one workflow reuse the same correlation_id, that causation_id identifies the immediate declared cause when supplied, and that identifiers are never reused to imply shared authority.",
+  "x-koa-interface": {
+    "interface_id": "correlation_context",
+    "interface_version": "1.0.0",
+    "status": "active",
+    "owner": "cross-component-communication",
+    "canonical_refs": [
+      "docs/02-system/07-cross-component-communication.md",
+      "docs/02-system/20-receipts-and-critical-transitions.md",
+      "docs/contracts/artifact-contracts/decision-receipt.schema.json",
+      "docs/contracts/artifact-contracts/provenance-receipt.schema.json"
+    ],
+    "requirement_ids": [
+      "REQ-SYS-COMM-005",
+      "REQ-SYS-RCT-002",
+      "REQ-SYS-RCT-018"
+    ],
+    "semantic_rules": [
+      "one workflow uses one correlation identifier",
+      "component-local records retain independent authority",
+      "causation never substitutes for idempotency or authorization"
+    ]
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "correlation_id"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "correlation_id": {
+      "$ref": "#/$defs/stableId",
+      "description": "Stable identifier shared by all records belonging to one declared workflow."
+    },
+    "request_id": {
+      "$ref": "#/$defs/stableId",
+      "description": "Stable identity of the originating or currently handled request when one exists."
+    },
+    "causation_id": {
+      "$ref": "#/$defs/stableId",
+      "description": "Stable identity of the immediate declared request, event, receipt, or transition that caused this record."
+    }
+  },
+  "$defs": {
+    "stableId": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/@+-]*$"
+    }
+  }
+}

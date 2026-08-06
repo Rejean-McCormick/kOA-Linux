@@ -1,0 +1,13 @@
+[Unit]
+Description=Schedule policy-bounded kOA backups
+
+[Timer]
+OnBootSec=30min
+OnUnitActiveSec=24h
+AccuracySec=5min
+RandomizedDelaySec=30min
+Persistent=yes
+Unit=koa-backup.service
+
+[Install]
+WantedBy=timers.target

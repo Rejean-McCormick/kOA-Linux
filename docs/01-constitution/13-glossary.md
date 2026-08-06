@@ -20,7 +20,10 @@
     "contracts/release-channels.contract.json",
     "contracts/integration-types.contract.json",
     "contracts/integrations/uckk-import.integration.json",
-    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json"
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md"
   ],
   "decision_ids": [
     "DEC-DOC-001",
@@ -42,7 +45,8 @@
     "LOCK-IMPL-001",
     "LOCK-GOV-001",
     "LOCK-GATE-001",
-    "LOCK-DATA-001"
+    "LOCK-DATA-001",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -61,7 +65,9 @@
     "canonical-vocabulary",
     "aliases",
     "identifiers",
-    "ai-context"
+    "ai-context",
+    "koa-spaces",
+    "experience-layer"
   ]
 }
 KOA:DOC-META:END -->
@@ -699,3 +705,7 @@ Changes to behavior begin in the applicable semantic owner. Changes to canonical
 ## Final Rule
 
 > Canonical terminology is owned by `contracts/terminology.contract.json`. This glossary explains and projects that authority; it does not create a parallel vocabulary.
+
+## kOA Spaces Terms
+
+**kOA Spaces** is the optional, replaceable subsystem that composes the global presentation and navigation frame. A **Space** is one validated contextual presentation configuration. A **Space definition** selects and labels installed interface contributions. A **module interface manifest** declares routes, sidebar entries, widgets, capability visibility, accessibility metadata, and offline presentation behavior without granting authority. Canonical terminology remains owned by `contracts/terminology.contract.json` and the subsystem contract.

@@ -62,6 +62,18 @@
 | DOC-SYS-020 | 02-system/20-receipts-and-critical-transitions.md | active | normative_markdown |
 | DOC-SYS-021 | 02-system/21-koa-spaces-experience-layer.md | active | normative_markdown |
 | DOC-SYS-022 | 02-system/22-koa-spaces-interface-composition.md | active | normative_markdown |
+| DOC-SYS-023 | 02-system/23-code-and-filesystem-architecture.md | active | normative_markdown |
+| DOC-SYS-034 | 02-system/34-architecture-patterns.md | active | normative_markdown |
+| DOC-SYS-024 | 02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md | active | normative_markdown |
+| DOC-SYS-025 | 02-system/code-and-filesystem-architecture/25-internal-components-node-trust-governance.md | active | normative_markdown |
+| DOC-SYS-026 | 02-system/code-and-filesystem-architecture/26-internal-components-data-publication-and-knowledge.md | active | normative_markdown |
+| DOC-SYS-027 | 02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md | active | normative_markdown |
+| DOC-SYS-028 | 02-system/code-and-filesystem-architecture/28-uckk-external-services-and-transport-interfaces.md | active | normative_markdown |
+| DOC-SYS-029 | 02-system/code-and-filesystem-architecture/29-host-platform-files.md | active | normative_markdown |
+| DOC-SYS-030 | 02-system/code-and-filesystem-architecture/30-assembly-profiles-packaging-and-release.md | active | normative_markdown |
+| DOC-SYS-031 | 02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md | active | normative_markdown |
+| DOC-SYS-032 | 02-system/code-and-filesystem-architecture/32-installed-runtime-filesystem.md | active | normative_markdown |
+| DOC-SYS-033 | 02-system/code-and-filesystem-architecture/33-path-ownership-and-change-rules.md | active | normative_markdown |
 | DOC-PRO-000 | 03-profiles/00-profile-model.md | active | normative_markdown |
 | DOC-PROFILE-001 | 03-profiles/01-profile-composition-and-overlays.md | active | normative_markdown |
 | DOC-PROFILE-002 | 03-profiles/02-profile-inheritance.md | active | normative_markdown |
@@ -137,6 +149,7 @@
 | DOC-LIFE-017 | 06-lifecycle/17-contract-evolution-and-removal.md | active | normative_markdown |
 | DOC-LIFE-018 | 06-lifecycle/18-sbom-provenance-and-signing.md | active | normative_markdown |
 | DOC-LIFE-019 | 06-lifecycle/19-artifact-retention.md | active | normative_markdown |
+| DOC-LIFE-020 | 06-lifecycle/20-resilience-and-projection-artifacts.md | active | normative_markdown |
 | DOC-SEC-000 | 07-security/00-threat-model.md | active | normative_markdown |
 | DOC-SEC-001 | 07-security/01-security-baseline.md | active | normative_markdown |
 | DOC-SEC-002 | 07-security/02-security-domains.md | active | normative_markdown |
@@ -158,6 +171,8 @@
 | DOC-SEC-018 | 07-security/18-offline-import-security.md | active | normative_markdown |
 | DOC-SEC-019 | 07-security/19-software-supply-chain.md | active | normative_markdown |
 | DOC-SEC-020 | 07-security/20-break-glass-security.md | active | normative_markdown |
+| DOC-SEC-021 | 07-security/21-security-control-architecture.md | active | normative_markdown |
+| DOC-SEC-022 | 07-security/22-security-control-profile-matrix.md | active | normative_markdown |
 | DOC-OPS-000 | 08-operations/00-operating-model.md | active | normative_markdown |
 | DOC-OPS-001 | 08-operations/01-observability.md | active | normative_markdown |
 | DOC-OPS-002 | 08-operations/02-health-and-readiness.md | active | normative_markdown |
@@ -178,6 +193,7 @@
 | DOC-OPS-017 | 08-operations/17-user-lightweight-operations.md | active | normative_markdown |
 | DOC-OPS-018 | 08-operations/18-sovereign-node-operations.md | active | normative_markdown |
 | DOC-OPS-019 | 08-operations/19-build-farm-operations.md | active | normative_markdown |
+| DOC-OPS-020 | 08-operations/20-architecture-pattern-operations.md | active | normative_markdown |
 | DOC-CONF-000 | 09-conformance/00-conformance-model.md | active | normative_markdown |
 | DOC-CONF-001 | 09-conformance/01-requirement-identification.md | active | normative_markdown |
 | DOC-CONF-002 | 09-conformance/02-requirement-traceability.md | active | normative_markdown |
@@ -199,6 +215,7 @@
 | DOC-CONF-019 | 09-conformance/19-release-gates.md | active | normative_markdown |
 | DOC-CONF-020 | 09-conformance/20-subsystem-documentation-alignment.md | active | normative_markdown |
 | DOC-CONF-021 | 09-conformance/21-generated-navigation-rebuild.md | active | normative_markdown |
+| DOC-CONF-022 | 09-conformance/22-architecture-pattern-conformance.md | active | normative_markdown |
 | DOC-ADR-001 | 10-adrs/ADR-001-standard-maintained-linux-kernel.md | active | architecture_decision_record |
 | DOC-ADR-002 | 10-adrs/ADR-002-immutable-signed-os-image.md | accepted | adr |
 | DOC-ADR-003 | 10-adrs/ADR-003-appliance-shell-without-gnome.md | accepted | adr |
@@ -228,6 +245,7 @@
 | ADR-030 | 10-adrs/ADR-030-koa-mediatheque-as-an-internal-component.md | accepted | adr |
 | ADR-031 | 10-adrs/ADR-031-uckk-as-an-external-moodle-publication-target.md | superseded | adr |
 | ADR-032 | 10-adrs/ADR-032-directional-interchange-between-koa-and-uckk-mediatheques.md | active | adr |
+| ADR-033 | 10-adrs/ADR-033-koa-spaces-as-optional-replaceable-experience-subsystem.md | active | adr |
 | DOC-ADR-000 | 10-adrs/README.md | active | explanatory_markdown |
 | RECIPE-BUILD-FARM-001 | 11-recipes/build-farm/artifact-cache.md | active | non_normative_recipe |
 | DOC-RECIPE-BUILD-REPRO-001 | 11-recipes/build-farm/reproducible-worker.md | active | recipe |

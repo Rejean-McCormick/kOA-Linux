@@ -1,0 +1,4 @@
+# The generated root is build output. Track only its policy files.
+*
+!.gitignore
+!README.md

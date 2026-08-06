@@ -32,7 +32,15 @@
     "contracts/integrations/uckk-import.integration.json",
     "contracts/artifact-contracts/uckk-learning-package.schema.json",
     "contracts/artifact-contracts/uckk-import-receipt.schema.json",
-    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json"
+    "contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
+    "contracts/architecture-patterns.contract.json",
+    "contracts/artifact-contracts/integration-resilience-policy.schema.json",
+    "contracts/artifact-contracts/dead-letter-record.schema.json",
+    "contracts/artifact-contracts/distributed-workflow.schema.json",
+    "contracts/artifact-contracts/large-payload-reference.schema.json",
+    "contracts/artifact-contracts/experience-view-adapter.schema.json",
+    "contracts/artifact-contracts/cqrs-projection.schema.json",
+    "contracts/artifact-contracts/cache-policy.schema.json"
   ],
   "decision_ids": [
     "DEC-COMP-001",
@@ -45,7 +53,14 @@
     "DEC-AI-001",
     "DEC-PRIV-001",
     "DEC-LIFE-001",
-    "DEC-OFFLINE-001"
+    "DEC-OFFLINE-001",
+    "DEC-RES-001",
+    "DEC-MSG-001",
+    "DEC-WF-001",
+    "DEC-PAYLOAD-001",
+    "DEC-BFF-001",
+    "DEC-CQRS-001",
+    "DEC-CACHE-001"
   ],
   "requirement_ids": [
     "REQ-SYS-COMM-001",
@@ -67,7 +82,49 @@
     "REQ-SYS-COMM-017",
     "REQ-SYS-COMM-018",
     "REQ-SYS-COMM-019",
-    "REQ-SYS-COMM-020"
+    "REQ-SYS-COMM-020",
+    "REQ-PATTERN-001",
+    "REQ-PATTERN-002",
+    "REQ-PATTERN-003",
+    "REQ-PATTERN-004",
+    "REQ-PATTERN-005",
+    "REQ-PATTERN-006",
+    "REQ-PATTERN-007",
+    "REQ-PATTERN-008",
+    "REQ-PATTERN-009",
+    "REQ-PATTERN-010",
+    "REQ-PATTERN-011",
+    "REQ-PATTERN-012",
+    "REQ-PATTERN-013",
+    "REQ-PATTERN-014",
+    "REQ-PATTERN-015",
+    "REQ-PATTERN-016",
+    "REQ-PATTERN-017",
+    "REQ-PATTERN-018",
+    "REQ-PATTERN-019",
+    "REQ-PATTERN-020",
+    "REQ-PATTERN-021",
+    "REQ-PATTERN-022",
+    "REQ-PATTERN-023",
+    "REQ-PATTERN-024",
+    "REQ-PATTERN-025",
+    "REQ-PATTERN-026",
+    "REQ-PATTERN-027",
+    "REQ-PATTERN-028",
+    "REQ-PATTERN-029",
+    "REQ-PATTERN-030",
+    "REQ-PATTERN-031",
+    "REQ-PATTERN-032",
+    "REQ-PATTERN-033",
+    "REQ-PATTERN-034",
+    "REQ-PATTERN-035",
+    "REQ-PATTERN-036",
+    "REQ-PATTERN-037",
+    "REQ-PATTERN-038",
+    "REQ-PATTERN-039",
+    "REQ-PATTERN-040",
+    "REQ-PATTERN-041",
+    "REQ-PATTERN-042"
   ],
   "lock_ids": [
     "LOCK-DATA-001",
@@ -84,7 +141,14 @@
     "LOCK-PROFILE-001",
     "LOCK-PROFILE-002",
     "LOCK-IMPL-001",
-    "LOCK-IMPL-002"
+    "LOCK-IMPL-002",
+    "LOCK-RES-001",
+    "LOCK-MSG-001",
+    "LOCK-WF-001",
+    "LOCK-PAYLOAD-001",
+    "LOCK-BFF-001",
+    "LOCK-CQRS-001",
+    "LOCK-CACHE-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -122,7 +186,8 @@
     "idempotency",
     "compatibility",
     "receipts",
-    "safe-degradation"
+    "safe-degradation",
+    "architecture-patterns"
   ]
 }
 KOA:DOC-META:END -->
@@ -807,3 +872,14 @@ The sender queries status or retries with the same idempotency identity. The rec
 A consumer cannot process a newly introduced event version.
 
 The event is retained or routed according to the declared terminal-failure policy. The consumer does not reinterpret unsupported fields or silently discard a critical event. The compatibility failure blocks the affected consumer capability, not the publisher's committed fact.
+
+## Final architecture-pattern composition
+
+Cross-component communication applies the pattern contract as follows:
+
+- remote request-response paths use timeout budgets, backoff with jitter, and circuit breakers;
+- asynchronous paths use idempotent consumers, bounded retry, monitored dead-letter quarantine, and redrive evidence;
+- local commits that emit external work use Transactional Outbox or an equivalent atomic owner mechanism;
+- multi-owner transitions use a persisted distributed workflow with compensation or forward repair;
+- large objects remain in owner storage and messages carry large payload references;
+- read projections and caches remain non-authoritative and command-free.

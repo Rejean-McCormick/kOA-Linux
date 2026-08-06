@@ -1,0 +1,95 @@
+schema_version = "1.0.0"
+integration_id = "sentient"
+health_contract_ref = "interfaces/health/health-status.schema.json"
+readiness_contract_ref = "interfaces/health/readiness.schema.json"
+status_accuracy = "degraded_state_must_not_appear_healthy"
+core_health_dependency = false
+
+[liveness]
+meaning = "The local adapter process can answer a bounded probe without claiming that SenTient is ready."
+required_checks = ["adapter_process_responsive"]
+failure_state = "unavailable"
+
+[readiness]
+meaning = "One explicitly authorized, profile-compatible, isolated SenTient task may accept a declared workbench job."
+required_checks = [
+  "source_pin_verified",
+  "compatibility_verified",
+  "profile_membership_resolved",
+  "explicit_task_authorized",
+  "workspace_identity_resolved",
+  "isolation_verified",
+  "resource_admission_available",
+  "subsystem_endpoint_reachable",
+  "bounded_job_queue_available",
+  "candidate_provenance_path_available",
+  "receipt_path_available",
+]
+missing_required_result = "blocked"
+
+[[checks]]
+check_id = "source_pin_verified"
+owner = "koa_integration_boundary"
+critical = true
+healthy_when = "repository, immutable revision, source digest, license, and documentation release are verified"
+
+[[checks]]
+check_id = "profile_membership_resolved"
+owner = "koa_profile_assembly"
+critical = true
+healthy_when = "the active profile explicitly permits the optional SenTient workbench"
+
+[[checks]]
+check_id = "explicit_task_authorized"
+owner = "koa_governed_workflow"
+critical = true
+healthy_when = "a bounded task declares purpose, selected inputs, output disposition, stop conditions, cleanup, tests, and evidence"
+
+[[checks]]
+check_id = "isolation_verified"
+owner = "koa_integration_boundary"
+critical = true
+healthy_when = "identity, process, dependency, storage, queue, cache, index, model, artifact, temporary-data, resource, and network namespaces are isolated"
+
+[[checks]]
+check_id = "resource_admission_available"
+owner = "resource_governor"
+critical = true
+healthy_when = "the active profile resource envelope has admitted the task"
+
+[[checks]]
+check_id = "subsystem_endpoint_reachable"
+owner = "sentient"
+critical = true
+healthy_when = "the declared local subsystem endpoint answers the compatible contract probe"
+
+[[checks]]
+check_id = "bounded_job_queue_available"
+owner = "sentient"
+critical = true
+healthy_when = "the workbench reports bounded queue, deadline, cancellation, and idempotency support for the requested job"
+
+[[checks]]
+check_id = "candidate_provenance_path_available"
+owner = "koa_integration_boundary"
+critical = true
+healthy_when = "candidate outputs can retain required provenance and controlled-import metadata"
+
+[[checks]]
+check_id = "receipt_path_available"
+owner = "koa_integration_boundary"
+critical = true
+healthy_when = "job, degradation, cleanup, and candidate-handoff receipts can be durably recorded"
+
+[[checks]]
+check_id = "network_destination_available"
+owner = "registered_destination_integration"
+critical = false
+healthy_when = "a task-specific registered destination is authorized and reachable"
+unhealthy_effect = "disable_only_network_dependent_task_capabilities"
+
+[aggregation]
+optional_network_failure_changes_local_offline_task_readiness = false
+sentient_failure_changes_core_readiness = false
+unknown_check_result = "degraded_or_blocked"
+silent_success_allowed = false

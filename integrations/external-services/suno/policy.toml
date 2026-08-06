@@ -1,0 +1,180 @@
+schema_version = "1.0"
+policy_id = "suno-external-media-boundary"
+integration_id = "suno"
+status = "active"
+contract_ref = "docs/contracts/integrations/suno.integration.json"
+
+[invocation]
+allowed_triggers = ["explicit_user_action"]
+forbidden_triggers = [
+  "ingestion",
+  "indexing",
+  "classification",
+  "tagging",
+  "category_generation",
+  "routing",
+  "synchronization",
+  "background_enrichment",
+  "publication",
+  "backup",
+  "restore",
+  "uckk_publication",
+  "schedule",
+  "autonomous_agent",
+]
+operation_must_be_visible = true
+provider_and_capability_disclosure_required = true
+cancellation_state_visible = true
+offline_state_visible = true
+
+[data]
+allowed_classes = [
+  "user_instruction",
+  "explicitly_selected_text",
+  "explicitly_selected_public_media_reference",
+  "approved_structured_request",
+  "minimized_public_artifact_metadata",
+]
+prohibited_classes = [
+  "private_key",
+  "unrestricted_secret",
+  "credential",
+  "recovery_material",
+  "machine_privilege_material",
+  "full_authoritative_store_export",
+  "undeclared_personal_data",
+  "undeclared_private_media",
+  "undeclared_restricted_cultural_content",
+  "unpublished_governance_material",
+  "protected_evidence",
+  "unrelated_tenant_data",
+]
+transfer_preview_required = true
+purpose_binding_required = true
+rights_and_consent_check_required = true
+no_ai_eligibility_check_required = true
+minimum_necessary_only = true
+
+[candidate]
+provider_identity_required = true
+operation_identity_required = true
+input_references_required = true
+output_identity_required = true
+warnings_required_when_applicable = true
+candidate_label_required = true
+integrity_validation_required = true
+media_type_validation_required = true
+size_limit_validation_required = true
+rights_validation_required = true
+policy_validation_required = true
+owning_component_acceptance_required = true
+accepted_revision_owned_locally = true
+
+[authority]
+direct_authoritative_mutation = false
+privilege_grant = false
+policy_decision = false
+release_activation = false
+publication = false
+rights_resolution = false
+consent_inference = false
+
+[publication]
+separate_request_required = true
+gateway_required = true
+publication_policy_required = true
+publication_receipt_required = true
+provenance_preserved = true
+rights_constraints_preserved = true
+generation_implies_consent = false
+
+[resilience]
+silent_provider_substitution = false
+local_model_fallback = false
+native_ai_fallback = false
+hidden_retry = false
+failure_mutates_authoritative_state = false
+unrelated_local_capabilities_preserved = true
+deterministic_mediatheque_operations_preserved = true
+
+[evidence]
+minimum_operation_metadata_only = true
+sensitive_prompt_duplication = false
+candidate_media_duplication = false
+provider_identity = true
+operation_identity = true
+actor_or_session_identity = true
+owning_component_identity = true
+accepted_output_identity = true
+failure_receipt_required = true
+removal_evidence_required = true
+
+[[failure]]
+id = "user_not_explicit"
+outcome = "blocked"
+authoritative_mutation = false
+fallback = "none"
+preserved_capability = "local_workflow"
+
+[[failure]]
+id = "transfer_disclosure_unavailable"
+outcome = "blocked"
+authoritative_mutation = false
+fallback = "none"
+preserved_capability = "local_data_and_workflow"
+
+[[failure]]
+id = "profile_forbidden"
+outcome = "blocked"
+authoritative_mutation = false
+fallback = "none"
+preserved_capability = "profile_conformant_local_operation"
+
+[[failure]]
+id = "network_unavailable"
+outcome = "unavailable"
+authoritative_mutation = false
+fallback = "none"
+preserved_capability = "deterministic_local_mediatheque"
+
+[[failure]]
+id = "provider_unavailable"
+outcome = "unavailable"
+authoritative_mutation = false
+fallback = "none"
+preserved_capability = "deterministic_local_mediatheque"
+
+[[failure]]
+id = "quota_exhausted"
+outcome = "failed"
+authoritative_mutation = false
+fallback = "none"
+preserved_capability = "unrelated_local_authority"
+
+[[failure]]
+id = "provider_refused"
+outcome = "failed"
+authoritative_mutation = false
+fallback = "none"
+preserved_capability = "unrelated_local_authority"
+
+[[failure]]
+id = "invalid_output"
+outcome = "quarantined"
+authoritative_mutation = false
+fallback = "none"
+preserved_capability = "authoritative_local_state"
+
+[[failure]]
+id = "import_validation_failed"
+outcome = "rejected"
+authoritative_mutation = false
+fallback = "none"
+preserved_capability = "authoritative_local_state"
+
+[[failure]]
+id = "acceptance_not_granted"
+outcome = "candidate_only"
+authoritative_mutation = false
+fallback = "none"
+preserved_capability = "authoritative_local_state"

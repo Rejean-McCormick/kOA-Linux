@@ -1,0 +1,78 @@
+schema_version = 1
+profile_id = "sovereign_linux_node"
+table_family = "inet"
+table_name = "koa_node"
+physical_colocation_transfers_authority = false
+forwarding_required = false
+
+[[zone]]
+id = "public"
+purpose = "Approved public delivery endpoints only."
+profile_permitted = true
+active_by_default = false
+requires_explicit_activation = true
+requires_identity_and_application_authorization = true
+
+[[zone]]
+id = "private"
+purpose = "Protected user, tenant, workflow, and local application services."
+profile_permitted = true
+active_by_default = false
+requires_explicit_activation = true
+requires_identity_and_application_authorization = true
+
+[[zone]]
+id = "governance"
+purpose = "Identity, trust, policy, audit, consent, and publication-decision interfaces."
+profile_permitted = true
+active_by_default = false
+requires_explicit_activation = true
+requires_identity_and_application_authorization = true
+
+[[zone]]
+id = "administration"
+purpose = "Narrow operator access, maintenance, health, and recovery operations."
+profile_permitted = true
+active_by_default = false
+requires_explicit_activation = true
+requires_identity_and_application_authorization = true
+
+[[zone]]
+id = "federation"
+purpose = "Explicit artifact exchange with registered and trusted peers."
+profile_permitted = true
+active_by_default = false
+requires_explicit_activation = true
+requires_identity_and_application_authorization = true
+
+[[zone]]
+id = "backup"
+purpose = "Protected backup transfer and restore verification."
+profile_permitted = true
+active_by_default = false
+requires_explicit_activation = true
+requires_identity_and_application_authorization = true
+
+[[zone]]
+id = "development"
+purpose = "Workspace-scoped development traffic; prohibited by this production profile."
+profile_permitted = false
+active_by_default = false
+requires_explicit_activation = true
+requires_identity_and_application_authorization = true
+
+[[zone]]
+id = "external_integration"
+purpose = "Destination-specific egress for registered external providers."
+profile_permitted = true
+active_by_default = false
+requires_explicit_activation = true
+requires_identity_and_application_authorization = true
+
+[[zone]]
+id = "quarantine"
+purpose = "Inspection of untrusted or not-yet-accepted imports without an authoritative-store path."
+profile_permitted = true
+active_by_default = false
+requires_explicit_activation = true
+requires_identity_and_application_authorization = true

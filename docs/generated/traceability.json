@@ -10715,6 +10715,132 @@
       "id": "REQ-OPS-ULW-024"
     },
     {
+      "id": "REQ-PATTERN-001"
+    },
+    {
+      "id": "REQ-PATTERN-002"
+    },
+    {
+      "id": "REQ-PATTERN-003"
+    },
+    {
+      "id": "REQ-PATTERN-004"
+    },
+    {
+      "id": "REQ-PATTERN-005"
+    },
+    {
+      "id": "REQ-PATTERN-006"
+    },
+    {
+      "id": "REQ-PATTERN-007"
+    },
+    {
+      "id": "REQ-PATTERN-008"
+    },
+    {
+      "id": "REQ-PATTERN-009"
+    },
+    {
+      "id": "REQ-PATTERN-010"
+    },
+    {
+      "id": "REQ-PATTERN-011"
+    },
+    {
+      "id": "REQ-PATTERN-012"
+    },
+    {
+      "id": "REQ-PATTERN-013"
+    },
+    {
+      "id": "REQ-PATTERN-014"
+    },
+    {
+      "id": "REQ-PATTERN-015"
+    },
+    {
+      "id": "REQ-PATTERN-016"
+    },
+    {
+      "id": "REQ-PATTERN-017"
+    },
+    {
+      "id": "REQ-PATTERN-018"
+    },
+    {
+      "id": "REQ-PATTERN-019"
+    },
+    {
+      "id": "REQ-PATTERN-020"
+    },
+    {
+      "id": "REQ-PATTERN-021"
+    },
+    {
+      "id": "REQ-PATTERN-022"
+    },
+    {
+      "id": "REQ-PATTERN-023"
+    },
+    {
+      "id": "REQ-PATTERN-024"
+    },
+    {
+      "id": "REQ-PATTERN-025"
+    },
+    {
+      "id": "REQ-PATTERN-026"
+    },
+    {
+      "id": "REQ-PATTERN-027"
+    },
+    {
+      "id": "REQ-PATTERN-028"
+    },
+    {
+      "id": "REQ-PATTERN-029"
+    },
+    {
+      "id": "REQ-PATTERN-030"
+    },
+    {
+      "id": "REQ-PATTERN-031"
+    },
+    {
+      "id": "REQ-PATTERN-032"
+    },
+    {
+      "id": "REQ-PATTERN-033"
+    },
+    {
+      "id": "REQ-PATTERN-034"
+    },
+    {
+      "id": "REQ-PATTERN-035"
+    },
+    {
+      "id": "REQ-PATTERN-036"
+    },
+    {
+      "id": "REQ-PATTERN-037"
+    },
+    {
+      "id": "REQ-PATTERN-038"
+    },
+    {
+      "id": "REQ-PATTERN-039"
+    },
+    {
+      "id": "REQ-PATTERN-040"
+    },
+    {
+      "id": "REQ-PATTERN-041"
+    },
+    {
+      "id": "REQ-PATTERN-042"
+    },
+    {
       "id": "REQ-PRO-BUILD-001"
     },
     {
@@ -16213,6 +16339,42 @@
       "id": "LOCK-AUTH-005"
     },
     {
+      "id": "LOCK-BFF-001"
+    },
+    {
+      "id": "LOCK-CACHE-001"
+    },
+    {
+      "id": "LOCK-CODE-FS-001"
+    },
+    {
+      "id": "LOCK-CODE-FS-002"
+    },
+    {
+      "id": "LOCK-CODE-FS-003"
+    },
+    {
+      "id": "LOCK-CODE-FS-004"
+    },
+    {
+      "id": "LOCK-CODE-FS-005"
+    },
+    {
+      "id": "LOCK-CODE-FS-006"
+    },
+    {
+      "id": "LOCK-CODE-FS-007"
+    },
+    {
+      "id": "LOCK-CODE-FS-008"
+    },
+    {
+      "id": "LOCK-CODE-FS-009"
+    },
+    {
+      "id": "LOCK-CODE-FS-010"
+    },
+    {
       "id": "LOCK-COMP-001"
     },
     {
@@ -16250,6 +16412,9 @@
     },
     {
       "id": "LOCK-CONF-010"
+    },
+    {
+      "id": "LOCK-CQRS-001"
     },
     {
       "id": "LOCK-CULT-001"
@@ -16474,6 +16639,9 @@
       "id": "LOCK-MEDIATHEQUE-002"
     },
     {
+      "id": "LOCK-MSG-001"
+    },
+    {
       "id": "LOCK-OFFLINE-001"
     },
     {
@@ -16495,6 +16663,9 @@
       "id": "LOCK-OPS-006"
     },
     {
+      "id": "LOCK-PAYLOAD-001"
+    },
+    {
       "id": "LOCK-PORT-001"
     },
     {
@@ -16511,6 +16682,9 @@
     },
     {
       "id": "LOCK-REL-002"
+    },
+    {
+      "id": "LOCK-RES-001"
     },
     {
       "id": "LOCK-SEC-001"
@@ -16543,6 +16717,30 @@
       "id": "LOCK-SEC-010"
     },
     {
+      "id": "LOCK-SEC-CTRL-001"
+    },
+    {
+      "id": "LOCK-SEC-CTRL-002"
+    },
+    {
+      "id": "LOCK-SEC-CTRL-003"
+    },
+    {
+      "id": "LOCK-SEC-CTRL-004"
+    },
+    {
+      "id": "LOCK-SEC-CTRL-005"
+    },
+    {
+      "id": "LOCK-SEC-CTRL-006"
+    },
+    {
+      "id": "LOCK-SEC-CTRL-007"
+    },
+    {
+      "id": "LOCK-SEC-CTRL-008"
+    },
+    {
       "id": "LOCK-SENT-001"
     },
     {
@@ -16556,6 +16754,9 @@
     },
     {
       "id": "LOCK-SHELL-004"
+    },
+    {
+      "id": "LOCK-SPACES-001"
     },
     {
       "id": "LOCK-SYS-001"
@@ -16601,6 +16802,9 @@
     },
     {
       "id": "LOCK-USER-004"
+    },
+    {
+      "id": "LOCK-WF-001"
     }
   ],
   "decisions": [
@@ -16627,6 +16831,12 @@
     },
     {
       "id": "DEC-AUTH-001"
+    },
+    {
+      "id": "DEC-BFF-001"
+    },
+    {
+      "id": "DEC-CACHE-001"
     },
     {
       "id": "DEC-COMP-001"
@@ -16657,6 +16867,9 @@
     },
     {
       "id": "DEC-CONTAINER-001"
+    },
+    {
+      "id": "DEC-CQRS-001"
     },
     {
       "id": "DEC-CULT-001"
@@ -16767,6 +16980,9 @@
       "id": "DEC-MEDIATHEQUE-001"
     },
     {
+      "id": "DEC-MSG-001"
+    },
+    {
       "id": "DEC-OFFLINE-001"
     },
     {
@@ -16783,6 +16999,9 @@
     },
     {
       "id": "DEC-OS-001"
+    },
+    {
+      "id": "DEC-PAYLOAD-001"
     },
     {
       "id": "DEC-PORT-001"
@@ -16819,6 +17038,9 @@
     },
     {
       "id": "DEC-REL-001"
+    },
+    {
+      "id": "DEC-RES-001"
     },
     {
       "id": "DEC-SEC-001"
@@ -16909,6 +17131,9 @@
     },
     {
       "id": "DEC-USER-001"
+    },
+    {
+      "id": "DEC-WF-001"
     }
   ]
 }

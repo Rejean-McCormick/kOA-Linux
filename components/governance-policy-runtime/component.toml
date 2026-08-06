@@ -1,0 +1,150 @@
+schema_version = "1.0.0"
+
+[component]
+id = "governance_policy_runtime"
+name = "Governance Policy Runtime"
+contract_ref = "docs/contracts/components/governance-policy-runtime.component.json"
+contract_version = "1.0.0"
+component_class = "governance_service"
+logical_plane = "governance_identity_and_accountability"
+authority_role = "policy_authority"
+native = true
+profile_conditioned = true
+user_facing = false
+external_service = false
+ai_component = false
+
+[runtime]
+language = "python"
+package = "koa-governance-policy-runtime"
+module = "koa_governance_policy_runtime"
+entrypoint = "koa_governance_policy_runtime.__main__:main"
+activation_modes = ["always_available", "embedded_behind_registered_interface", "socket_activated", "task_activated"]
+selected_mode_owner = "docs/contracts/profiles/*.profile.json"
+
+[authority]
+primary_responsibility = "evaluate_registered_governance_decisions_against_exact_active_compatible_policy_set"
+decision_classes = ["authorization", "consent", "disclosure", "exception", "privilege"]
+owned_outcomes = ["policy_decision_receipt", "policy_diagnostics", "policy_evaluation_result", "policy_obligations", "policy_set_activation_state"]
+enforcement_owner = "authoritative_caller_or_execution_boundary"
+data_ownership_transfer_by_decision = false
+component_authority_transfer_by_decision = false
+publication_authority_transfer_by_decision = false
+privilege_ownership_transfer_by_decision = false
+partial_policy_activation_allowed = false
+external_ai_policy_authority_allowed = false
+
+[[interfaces.provided]]
+id = "IFACE-GOV-POL-001"
+name = "evaluate_decision"
+kind = "request_response"
+critical = true
+
+[[interfaces.provided]]
+id = "IFACE-GOV-POL-002"
+name = "get_policy_set_status"
+kind = "query"
+critical = false
+
+[[interfaces.provided]]
+id = "IFACE-GOV-POL-003"
+name = "stage_policy_bundle"
+kind = "command"
+critical = true
+
+[[interfaces.provided]]
+id = "IFACE-GOV-POL-004"
+name = "activate_policy_set"
+kind = "command"
+critical = true
+
+[[interfaces.provided]]
+id = "IFACE-GOV-POL-005"
+name = "rollback_policy_set"
+kind = "command"
+critical = true
+
+[[interfaces.provided]]
+id = "IFACE-GOV-POL-006"
+name = "get_decision_receipt"
+kind = "query"
+critical = false
+
+[[interfaces.provided]]
+id = "IFACE-GOV-POL-007"
+name = "health_and_readiness"
+kind = "query"
+critical = true
+
+[[dependencies.consumed]]
+id = "DEP-GOV-POL-001"
+component_id = "identity_and_trust"
+class = "required_runtime"
+authority_received = "verified_identity_and_trust_assertions_only"
+direct_data_write_allowed = false
+
+[[dependencies.consumed]]
+id = "DEP-GOV-POL-002"
+component_id = "audit_broker"
+class = "profile_conditioned_runtime"
+authority_received = "evidence_acceptance_status_only"
+direct_data_write_allowed = false
+
+[[dependencies.consumed]]
+id = "DEP-GOV-POL-003"
+component_id = "koa_node_agent"
+class = "activation_time"
+authority_received = "node_operation_result_only"
+direct_data_write_allowed = false
+
+[[dependencies.consumed]]
+id = "DEP-GOV-POL-004"
+component_id = "publication_gateway"
+class = "optional_runtime_consumer"
+authority_received = "publication_execution_result_only"
+direct_data_write_allowed = false
+
+[[dependencies.consumed]]
+id = "DEP-GOV-POL-005"
+component_id = "resource_governor"
+class = "independent_peer"
+authority_received = "none"
+direct_data_write_allowed = false
+
+[state]
+owned_roots = ["/var/lib/koa/governance-policy-runtime"]
+runtime_roots = ["/run/koa/governance-policy-runtime"]
+foreign_authoritative_state_write_allowed = false
+verified_input_cache_authority = "derived"
+stale_verified_input_use_result = "blocked"
+previous_valid_policy_set_retained_until_success = true
+mixed_policy_authority_allowed = false
+
+[health]
+checks = ["local_storage_accessible", "process_responsive", "receipt_store_accessible"]
+readiness_checks = ["active_policy_set_resolves", "authority_version_resolves", "critical_receipt_path_ready", "evaluator_version_compatible", "policy_set_compatible_with_components", "policy_set_compatible_with_profile", "required_exception_data_resolves", "required_trust_sources_resolve"]
+ready_requires_all_checks = true
+process_health_implies_readiness = false
+
+[degradation]
+capability_scoped = true
+partial_authority_allowed = false
+silent_fallback_allowed = false
+external_substitution_allowed = false
+remote_connectivity_required_for_native_evaluation = false
+
+[security]
+authenticated_callers_required = true
+verified_assertions_required = true
+least_privilege_required = true
+raw_secret_input_allowed = false
+raw_root_credential_input_allowed = false
+decision_result_is_privilege_credential = false
+decision_receipt_integrity_protection_required = true
+policy_bundle_signature_and_provenance_required = true
+sensitive_context_in_general_logs_allowed = false
+
+[packaging]
+python_requires = ">=3.11"
+release_channel = "governance"
+artifact_schema_ref = "docs/contracts/artifact-contracts/policy-bundle.schema.json"

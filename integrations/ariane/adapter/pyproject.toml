@@ -1,0 +1,26 @@
+[build-system]
+requires = ["hatchling>=1.25,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "koa-ariane-adapter"
+version = "1.0.0"
+description = "kOA boundary adapter for the independently owned Ariane subsystem"
+readme = "../README.md"
+requires-python = ">=3.12"
+license = { text = "Proprietary" }
+authors = [{ name = "kOA" }]
+dependencies = ["koa-interfaces>=1.0,<2.0"]
+
+[project.scripts]
+koa-ariane-adapter = "koa_ariane_adapter.bootstrap:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/koa_ariane_adapter"]
+
+[tool.koa]
+integration_id = "ariane"
+subsystem_contract = "docs/contracts/subsystems/ariane.subsystem.json"
+source_lock = "integrations/ariane/source.lock.json"
+activation_requires_resolved_source_pin = true
+internal_subsystem_source_vendored = false

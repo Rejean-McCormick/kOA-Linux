@@ -1,94 +1,110 @@
 <!-- KOA:DOC-META:BEGIN GENERATED
 {
- "doc_id": "DOC-RECIPES-000",
- "document_class": "non_normative_readme",
- "status": "active",
- "language": "en",
- "layer": "recipes",
- "scope": [
- "non_normative_implementation_guidance",
- "profile_conditioned_examples"
- ],
- "canonical_refs": [
- "generated/authority-manifest.json",
- "generated/decision-index.json",
- "contracts/system.contract.json",
- "generated/component-catalog.json",
- "generated/profile-catalog.json",
- "generated/toolchain-catalog.json",
- "contracts/release-channels.contract.json",
- "contracts/artifact-classes.contract.json",
- "contracts/integration-types.contract.json",
- "generated/requirements-index.json",
- "generated/assertion-index.json",
- "generated/traceability.json",
- "generated/test-catalog.json",
- "generated/evidence-catalog.json",
- "generated/exception-index.json"
- ],
- "decision_ids": [
- "DEC-PROFILE-001",
- "DEC-CONTAINER-001",
- "DEC-K8S-001",
- "DEC-DATA-001",
- "DEC-GOV-001",
- "DEC-GATE-001",
- "DEC-AI-001",
- "DEC-SENT-001",
- "DEC-REL-001",
- "DEC-DOC-CHANGE-001"
- ],
- "requirement_ids": [],
- "lock_ids": [
- "LOCK-IMPL-001",
- "LOCK-IMPL-002",
- "LOCK-PROFILE-001",
- "LOCK-DATA-001",
- "LOCK-GOV-001",
- "LOCK-GATE-001",
- "LOCK-AI-001",
- "LOCK-AI-002",
- "LOCK-SENT-001",
- "LOCK-DEV-001",
- "LOCK-DEV-002",
- "LOCK-DEV-003",
- "LOCK-DEV-004",
- "LOCK-DEV-005",
- "LOCK-LIFE-001",
- "LOCK-LIFE-002",
- "LOCK-LIFE-003",
- "LOCK-LIFE-004"
- ],
- "exception_ids": [],
- "depends_on": [
- "DOC-DEV-006",
- "DOC-DEV-016",
- "DOC-LIFE-013",
- "DOC-LIFE-015",
- "DOC-LIFE-016",
- "DOC-LIFE-019",
- "DOC-SEC-001",
- "DOC-SEC-012",
- "DOC-OPS-000",
- "DOC-OPS-009",
- "DOC-OPS-019",
- "DOC-CONF-010",
- "DOC-ADR-003"
- ],
- "tags": [
- "recipes",
- "readme",
- "non-normative",
- "implementation-guidance",
- "profiles",
- "development",
- "operations",
- "recovery",
- "build-farm",
- "validation",
- "cleanup",
- "safe-examples"
- ]
+  "doc_id": "DOC-RECIPES-000",
+  "document_class": "non_normative_readme",
+  "status": "active",
+  "language": "en",
+  "layer": "recipes",
+  "scope": [
+    "non_normative_implementation_guidance",
+    "profile_conditioned_examples"
+  ],
+  "canonical_refs": [
+    "generated/authority-manifest.json",
+    "generated/decision-index.json",
+    "contracts/system.contract.json",
+    "generated/component-catalog.json",
+    "generated/profile-catalog.json",
+    "generated/toolchain-catalog.json",
+    "contracts/release-channels.contract.json",
+    "contracts/artifact-classes.contract.json",
+    "contracts/integration-types.contract.json",
+    "generated/requirements-index.json",
+    "generated/assertion-index.json",
+    "generated/traceability.json",
+    "generated/test-catalog.json",
+    "generated/evidence-catalog.json",
+    "generated/exception-index.json",
+    "contracts/architecture-patterns.contract.json",
+    "02-system/34-architecture-patterns.md",
+    "06-lifecycle/20-resilience-and-projection-artifacts.md",
+    "08-operations/20-architecture-pattern-operations.md",
+    "09-conformance/22-architecture-pattern-conformance.md",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md",
+    "03-profiles/14-koa-spaces-deployment.md"
+  ],
+  "decision_ids": [
+    "DEC-PROFILE-001",
+    "DEC-CONTAINER-001",
+    "DEC-K8S-001",
+    "DEC-DATA-001",
+    "DEC-GOV-001",
+    "DEC-GATE-001",
+    "DEC-AI-001",
+    "DEC-SENT-001",
+    "DEC-REL-001",
+    "DEC-DOC-CHANGE-001"
+  ],
+  "requirement_ids": [],
+  "lock_ids": [
+    "LOCK-IMPL-001",
+    "LOCK-IMPL-002",
+    "LOCK-PROFILE-001",
+    "LOCK-DATA-001",
+    "LOCK-GOV-001",
+    "LOCK-GATE-001",
+    "LOCK-AI-001",
+    "LOCK-AI-002",
+    "LOCK-SENT-001",
+    "LOCK-DEV-001",
+    "LOCK-DEV-002",
+    "LOCK-DEV-003",
+    "LOCK-DEV-004",
+    "LOCK-DEV-005",
+    "LOCK-LIFE-001",
+    "LOCK-LIFE-002",
+    "LOCK-LIFE-003",
+    "LOCK-LIFE-004",
+    "LOCK-SPACES-001"
+  ],
+  "exception_ids": [],
+  "depends_on": [
+    "DOC-DEV-006",
+    "DOC-DEV-016",
+    "DOC-LIFE-013",
+    "DOC-LIFE-015",
+    "DOC-LIFE-016",
+    "DOC-LIFE-019",
+    "DOC-SEC-001",
+    "DOC-SEC-012",
+    "DOC-OPS-000",
+    "DOC-OPS-009",
+    "DOC-OPS-019",
+    "DOC-CONF-010",
+    "DOC-ADR-003",
+    "DOC-SYS-021",
+    "DOC-SYS-022",
+    "DOC-PROFILE-014"
+  ],
+  "tags": [
+    "recipes",
+    "readme",
+    "non-normative",
+    "implementation-guidance",
+    "profiles",
+    "development",
+    "operations",
+    "recovery",
+    "build-farm",
+    "validation",
+    "cleanup",
+    "safe-examples",
+    "architecture-patterns",
+    "koa-spaces",
+    "experience-layer"
+  ]
 }
 KOA:DOC-META:END -->
 
@@ -1452,3 +1468,11 @@ A recipe says:
 The recipe is invalid under .
 
 The external capability becomes unavailable while native local operation remains available.
+
+## Architecture pattern implementation
+
+Recipes that implement remote calls, asynchronous workers, multi-owner workflows, media transfer, experience aggregation, projections, or caches must begin from `contracts/architecture-patterns.contract.json` and the matching artifact contract. Recipe values may tighten profile limits but cannot weaken authority, retention, quarantine, staleness, or terminal-evidence rules.
+
+## kOA Spaces Recipes
+
+Recipes under `11-recipes/user-lightweight/` illustrate activation and contextual Space composition. They remain non-authoritative implementation guidance. They cannot redefine profile membership, artifact schemas, authorization, subsystem ownership, or the canonical kOA Spaces boundary.

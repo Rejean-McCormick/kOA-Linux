@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "integration_id": "koa_spaces",
+  "integration_version": "1.0.0",
+  "subsystem_contract": {
+    "path": "docs/contracts/subsystems/koa-spaces.subsystem.json",
+    "subsystem_id": "koa_spaces",
+    "version": "1.0.0"
+  },
+  "artifact_contracts": [
+    {
+      "artifact_class": "space_definition",
+      "schema": "docs/contracts/artifact-contracts/space-definition.schema.json",
+      "schema_version": "draft-2020-12",
+      "supported_artifact_versions": [
+        "1.0.0"
+      ]
+    },
+    {
+      "artifact_class": "module_interface_manifest",
+      "schema": "docs/contracts/artifact-contracts/module-interface-manifest.schema.json",
+      "schema_version": "draft-2020-12",
+      "supported_artifact_versions": [
+        "1.0.0"
+      ]
+    },
+    {
+      "artifact_class": "space_activation_receipt",
+      "schema": "docs/contracts/artifact-contracts/space-activation-receipt.schema.json",
+      "schema_version": "draft-2020-12",
+      "supported_artifact_versions": [
+        "1.0.0"
+      ]
+    }
+  ],
+  "common_interfaces": {
+    "transport": "interfaces/transport/http-over-unix.toml",
+    "health": "interfaces/health/health-status.schema.json",
+    "readiness": "interfaces/health/readiness.schema.json",
+    "receipts": "interfaces/receipts/receipt-envelope.schema.json",
+    "identity_context": "interfaces/identity/identity-context.schema.json",
+    "capabilities": "interfaces/capabilities/capability-snapshot.schema.json",
+    "status": "required_but_not_present_in_supplied_branch"
+  },
+  "profiles": {
+    "user_lightweight": "supported_optional",
+    "developer_linux_workstation": "supported_optional_stopped",
+    "developer_windows_wsl": "supported_optional_stopped",
+    "sovereign_linux_node": "supported_optional",
+    "sovereign_hub": "supported_optional_multi_space",
+    "sovereign_offline": "supported_with_local_artifact_restrictions",
+    "high_assurance": "supported_with_signed_or_hash_pinned_artifacts",
+    "appliance_shell": "supported_optional_primary_surface",
+    "build_farm": "artifact_build_and_validation_only",
+    "control_plane": "observation_and_distribution_only"
+  },
+  "compatibility_rules": {
+    "major_version_mismatch": "reject",
+    "unknown_artifact_version": "reject",
+    "unknown_widget_kind": "reject",
+    "unknown_route_action": "reject",
+    "missing_optional_module": "omit_without_substitution",
+    "missing_required_module": "block_activation",
+    "source_pin_unresolved": "block_build_and_activation"
+  }
+}

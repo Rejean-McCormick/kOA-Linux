@@ -1,0 +1,67 @@
+settings_version = "1.0.0"
+profile_id = "high_assurance"
+profile_contract = "docs/contracts/profiles/high-assurance.profile.json"
+profile_contract_version = "1.0.0"
+profile_role = "overlay"
+available_for_selection = true
+
+[validation]
+mode = "strict"
+unknown_parameter = "error"
+missing_contract = "error"
+contract_version_mismatch = "error"
+unsupported_parameter = "error"
+composition_conflict = "error"
+
+[authority]
+profile_membership = "profile_contract"
+component_membership = "profile_contract"
+capabilities = "profile_contract"
+resource_policy = "profile_contract"
+security_policy = "profile_contract"
+lifecycle_policy = "profile_contract"
+offline_policy = "profile_contract"
+external_integrations = "profile_contract"
+
+[source_layout]
+strategy = "shared_repository_tree"
+profile_specific_source_tree = false
+generated_output_root = "generated/profiles/high_assurance"
+
+[composition]
+kind = "overlay"
+requires_base_profile = true
+compatible_base_profiles = "profile_contract"
+application_order = "profile_contract"
+may_broaden_authority = false
+may_broaden_data_ownership = false
+may_broaden_external_integrations = false
+conflict_result = "error"
+
+[implementation.composition]
+primary_profile_count = 1
+permissions_merge = "intersection"
+obligations_merge = "union"
+resource_minimums_merge = "maximum"
+resource_maximums_merge = "minimum"
+network_exposure_merge = "most_restrictive"
+conflict = "blocked"
+
+[implementation.assurance]
+protected_capacity = true
+bounded_queues = true
+retry_and_timeout_budgets = true
+optional_heavy_work_stopped_first = true
+integrity_critical_writes_silent_kill = false
+
+[implementation.external_integrations]
+default = "disabled_until_explicitly_enabled"
+external_ai_default = "disabled"
+explicit_user_initiation = true
+direct_authoritative_write = false
+authority_or_privilege_decision = false
+output_status = "non_authoritative_candidate"
+
+[implementation.failure]
+missing_required_control = "claim_blocked"
+unresolved_composition = "blocked"

@@ -1,0 +1,73 @@
+schema_version = 1
+
+[service]
+service_id = "koa-spaces"
+process_model = "single_local_web_process"
+default_state = "disabled_unless_selected"
+unprivileged = true
+user = "koa-spaces"
+group = "koa-spaces"
+working_directory = "/var/lib/koa/integrations/koa-spaces"
+configuration_path = "/etc/koa/integrations/koa-spaces/config.toml"
+runtime_socket = "/run/koa/sockets/koa-spaces.sock"
+restart_policy = "on_failure_bounded"
+
+[network]
+listen_mode = "unix_socket_only"
+public_tcp_listener = false
+internet_required = false
+public_dns_required = false
+direct_subsystem_database_access = false
+outbound_network_default = "deny"
+
+[activation]
+mode = "staged_validated_atomic"
+previous_validated_space_required = true
+activation_receipt_required = true
+required_manifest_failure = "block_activation"
+optional_manifest_failure = "disable_contribution_and_report"
+route_collision_action = "block_activation"
+default_module_failure = "rollback"
+readiness_failure = "rollback"
+
+[profiles.user_lightweight]
+membership = "optional"
+default_activation = "selected_by_deployment"
+space_switching = "administrator_configurable"
+manifest_installation = "local_administrator_with_artifact_admission"
+
+[profiles.developer_linux_workstation]
+membership = "optional"
+default_activation = "stopped"
+multiple_space_preview = true
+
+[profiles.developer_windows_wsl]
+membership = "optional"
+default_activation = "stopped"
+multiple_space_preview = true
+
+[profiles.sovereign_linux_node]
+membership = "optional"
+default_activation = "disabled_unless_selected"
+
+[profiles.sovereign_hub]
+membership = "optional"
+default_activation = "disabled_unless_selected"
+multi_space = true
+assignment_scopes = ["organization", "cohort", "role", "device_class"]
+
+[profiles.sovereign_offline]
+membership = "inherited_optional"
+remote_interface_assets = "prohibited"
+local_artifacts_required = true
+
+[profiles.high_assurance]
+membership = "inherited_optional"
+signed_or_hash_pinned_artifacts = true
+review_evidence_required = true
+allowlisted_widget_actions_only = true
+
+[profiles.appliance_shell]
+membership = "optional_primary_surface"
+fallback_surface = "declared_appliance_recovery_surface"
+unrestricted_host_shell_fallback = false

@@ -1,0 +1,633 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.koa.local/interfaces/receipts/receipt-envelope.schema.json",
+  "title": "kOA Receipt Envelope",
+  "description": "Immutable, versioned, attributable, selectively disclosed common envelope for a critical decision or state transition. It separates request, authority decision, execution, authoritative commit, and terminal outcome and carries a shared correlation context without merging ownership.",
+  "$comment": "JSON Schema validates structure; persistence must additionally reserve receipt_id permanently, reject mutation after issuance, validate canonical references, enforce timestamp ordering, verify class payloads, and detect contradictory identities or outcomes.",
+  "x-koa-interface": {
+    "interface_id": "receipt_envelope",
+    "interface_version": "1.0.0",
+    "status": "active",
+    "owner": "receipt-and-evidence-architecture",
+    "canonical_refs": [
+      "docs/02-system/20-receipts-and-critical-transitions.md",
+      "docs/02-system/07-cross-component-communication.md",
+      "docs/contracts/artifact-contracts/decision-receipt.schema.json",
+      "docs/contracts/artifact-contracts/provenance-receipt.schema.json"
+    ],
+    "requirement_ids": [
+      "REQ-SYS-RCT-001",
+      "REQ-SYS-RCT-002",
+      "REQ-SYS-RCT-003",
+      "REQ-SYS-RCT-004",
+      "REQ-SYS-RCT-005",
+      "REQ-SYS-RCT-006",
+      "REQ-SYS-RCT-007",
+      "REQ-SYS-RCT-009",
+      "REQ-SYS-RCT-010",
+      "REQ-SYS-RCT-018",
+      "REQ-SYS-RCT-019",
+      "REQ-SYS-RCT-023",
+      "REQ-SYS-RCT-024"
+    ],
+    "semantic_rules": [
+      "receipt identifiers are unique immutable and permanently reserved",
+      "the owning producer emits its own receipt",
+      "decision execution and commit are never compressed into a success boolean",
+      "commit is reported only after the authoritative boundary succeeds",
+      "ordinary views exclude secrets protected evidence and content payloads"
+    ]
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "receipt_id",
+    "receipt_schema_version",
+    "receipt_class",
+    "transition_type",
+    "producer_component_id",
+    "subject_ref",
+    "actor_ref",
+    "target_refs",
+    "scope",
+    "requested_action",
+    "correlation",
+    "authority_refs",
+    "decision",
+    "execution_state",
+    "commit_state",
+    "outcome",
+    "requested_at",
+    "recorded_at",
+    "reason_codes",
+    "component_contract_refs",
+    "disclosure_class",
+    "retention_class"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "receipt_id": {
+      "type": "string",
+      "minLength": 11,
+      "maxLength": 256,
+      "pattern": "^receipt:[A-Za-z0-9][A-Za-z0-9._:/+-]*$"
+    },
+    "receipt_schema_version": {
+      "$ref": "#/$defs/semanticVersion"
+    },
+    "receipt_class": {
+      "type": "string",
+      "enum": [
+        "decision_receipt",
+        "transition_receipt",
+        "verification_receipt",
+        "transfer_receipt",
+        "recovery_receipt",
+        "evidence_access_receipt",
+        "cutover_receipt"
+      ]
+    },
+    "transition_type": {
+      "$ref": "#/$defs/snakeId"
+    },
+    "producer_component_id": {
+      "$ref": "#/$defs/snakeId"
+    },
+    "producer_instance_id": {
+      "$ref": "#/$defs/stableId"
+    },
+    "subject_ref": {
+      "$ref": "#/$defs/stableId"
+    },
+    "actor_ref": {
+      "$ref": "#/$defs/stableId"
+    },
+    "target_refs": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1024,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/stableId"
+      }
+    },
+    "scope": {
+      "$ref": "#/$defs/scope"
+    },
+    "requested_action": {
+      "$ref": "#/$defs/snakeId"
+    },
+    "correlation": {
+      "$ref": "correlation.schema.json"
+    },
+    "authority_refs": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1024,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/repositoryReference"
+      }
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "authorized",
+        "denied",
+        "indeterminate",
+        "not_applicable"
+      ]
+    },
+    "execution_state": {
+      "type": "string",
+      "enum": [
+        "not_started",
+        "accepted",
+        "queued",
+        "running",
+        "awaiting_dependency",
+        "awaiting_authority",
+        "completed",
+        "cancelled",
+        "failed",
+        "conflicted",
+        "expired"
+      ]
+    },
+    "commit_state": {
+      "type": "string",
+      "enum": [
+        "not_applicable",
+        "not_committed",
+        "committed",
+        "rolled_back",
+        "forward_repaired"
+      ]
+    },
+    "outcome": {
+      "type": "string",
+      "enum": [
+        "authorized",
+        "denied",
+        "indeterminate",
+        "prepared",
+        "committed",
+        "failed",
+        "cancelled",
+        "rolled_back",
+        "forward_repaired",
+        "expired",
+        "revoked",
+        "superseded",
+        "closed"
+      ]
+    },
+    "reason_codes": {
+      "type": "array",
+      "maxItems": 128,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/reasonCode"
+      }
+    },
+    "requested_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "decided_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "started_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "completed_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "committed_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "recorded_at": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "profile_refs": {
+      "type": "array",
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/repositoryReference"
+      }
+    },
+    "component_contract_refs": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 128,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/repositoryReference"
+      }
+    },
+    "artifact_refs": {
+      "type": "array",
+      "maxItems": 1024,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/stableId"
+      }
+    },
+    "release_refs": {
+      "type": "array",
+      "maxItems": 128,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/stableId"
+      }
+    },
+    "exception_refs": {
+      "type": "array",
+      "maxItems": 128,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/repositoryReference"
+      }
+    },
+    "test_refs": {
+      "type": "array",
+      "maxItems": 1024,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/repositoryReference"
+      }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "maxItems": 1024,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/repositoryReference"
+      }
+    },
+    "related_receipt_refs": {
+      "type": "array",
+      "maxItems": 1024,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^receipt:[A-Za-z0-9][A-Za-z0-9._:/+-]*$"
+      }
+    },
+    "supersedes_receipt_ref": {
+      "type": "string",
+      "pattern": "^receipt:[A-Za-z0-9][A-Za-z0-9._:/+-]*$"
+    },
+    "receipt_payload_schema_ref": {
+      "type": "string",
+      "format": "uri-reference"
+    },
+    "receipt_payload": {
+      "type": "object",
+      "maxProperties": 256
+    },
+    "disclosure_class": {
+      "type": "string",
+      "enum": [
+        "public_summary",
+        "tenant_visible",
+        "operator_restricted",
+        "security_restricted",
+        "evidence_restricted"
+      ]
+    },
+    "retention_class": {
+      "$ref": "#/$defs/snakeId"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "receipt_payload"
+        ]
+      },
+      "then": {
+        "required": [
+          "receipt_payload_schema_ref"
+        ]
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "receipt_payload_schema_ref"
+        ]
+      },
+      "then": {
+        "required": [
+          "receipt_payload"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "outcome": {
+            "const": "authorized"
+          }
+        },
+        "required": [
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "decision": {
+            "const": "authorized"
+          }
+        },
+        "required": [
+          "decided_at"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "outcome": {
+            "const": "denied"
+          }
+        },
+        "required": [
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "decision": {
+            "const": "denied"
+          },
+          "reason_codes": {
+            "minItems": 1
+          }
+        },
+        "required": [
+          "decided_at"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "outcome": {
+            "const": "indeterminate"
+          }
+        },
+        "required": [
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "decision": {
+            "const": "indeterminate"
+          },
+          "reason_codes": {
+            "minItems": 1
+          }
+        },
+        "required": [
+          "decided_at"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "outcome": {
+            "const": "prepared"
+          }
+        },
+        "required": [
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "commit_state": {
+            "const": "not_committed"
+          },
+          "execution_state": {
+            "const": "completed"
+          }
+        },
+        "required": [
+          "completed_at"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "outcome": {
+            "const": "committed"
+          }
+        },
+        "required": [
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "commit_state": {
+            "const": "committed"
+          },
+          "execution_state": {
+            "const": "completed"
+          }
+        },
+        "required": [
+          "completed_at",
+          "committed_at"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "outcome": {
+            "const": "rolled_back"
+          }
+        },
+        "required": [
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "commit_state": {
+            "const": "rolled_back"
+          },
+          "reason_codes": {
+            "minItems": 1
+          }
+        },
+        "required": [
+          "committed_at"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "outcome": {
+            "const": "forward_repaired"
+          }
+        },
+        "required": [
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "commit_state": {
+            "const": "forward_repaired"
+          },
+          "reason_codes": {
+            "minItems": 1
+          }
+        },
+        "required": [
+          "committed_at"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "outcome": {
+            "enum": [
+              "failed",
+              "cancelled",
+              "expired",
+              "revoked",
+              "superseded"
+            ]
+          }
+        },
+        "required": [
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "reason_codes": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "commit_state": {
+            "const": "committed"
+          }
+        },
+        "required": [
+          "commit_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "outcome": {
+            "const": "committed"
+          }
+        },
+        "required": [
+          "committed_at"
+        ]
+      }
+    }
+  ],
+  "$defs": {
+    "stableId": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/@+-]*$"
+    },
+    "snakeId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
+    },
+    "reasonCode": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 128,
+      "pattern": "^[A-Z][A-Z0-9_:-]*$"
+    },
+    "repositoryReference": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 1024,
+      "pattern": "^(?!(?:/|.*(?:^|/)\\.\\.(?:/|$)))(?:[^#\\s]+(?:#(?:/.*)?)?|(?:DOC|DEC|REQ|LOCK|ADR|TEST|EVID|EXC)-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3})$"
+    },
+    "semanticVersion": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "scope": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind"
+          ],
+          "properties": {
+            "kind": {
+              "const": "global"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "id"
+          ],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "profile",
+                "profile_overlay",
+                "component",
+                "tenant",
+                "node",
+                "workspace",
+                "artifact",
+                "release_set",
+                "subject",
+                "resource",
+                "publication",
+                "integration",
+                "recovery"
+              ]
+            },
+            "id": {
+              "$ref": "#/$defs/stableId"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

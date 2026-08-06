@@ -1,0 +1,878 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.koa.local/interfaces/jobs/job-request.schema.json",
+  "title": "kOA Job Request",
+  "description": "Defines a complete, schema-bound request for deferred, scheduled, queued, maintenance, or task-activated work. The request expresses intent and resource needs; it does not prove admission, authorization, dispatch, or domain completion.",
+  "$comment": "Canonical sources: docs/08-operations/06-job-scheduling.md; docs/02-system/07-cross-component-communication.md; docs/02-system/06-capability-model.md; docs/contracts/components/resource-governor.component.json. Identity, correlation, and idempotency are referenced from B-0015/B-0014 rather than redefined here.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "request_id",
+    "workload_owner_ref",
+    "workload_class",
+    "target_scope",
+    "criticality",
+    "priority",
+    "resource_request",
+    "submitted_at",
+    "execution_semantics",
+    "identity_context",
+    "correlation",
+    "input"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "request_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$",
+      "description": "Stable identity retained across retries."
+    },
+    "workload_owner_ref": {
+      "type": "string",
+      "pattern": "^\\S{1,512}$",
+      "description": "Owner of the workload and authoritative result semantics."
+    },
+    "workload_class": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{2,127}$"
+    },
+    "target_scope": {
+      "$ref": "#/$defs/target_scope"
+    },
+    "criticality": {
+      "$ref": "#/$defs/criticality"
+    },
+    "priority": {
+      "$ref": "#/$defs/priority"
+    },
+    "resource_request": {
+      "$ref": "#/$defs/resource_request"
+    },
+    "submitted_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "first_eligible_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "deadline": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "execution_semantics": {
+      "$ref": "#/$defs/execution_semantics"
+    },
+    "schedule": {
+      "$ref": "#/$defs/schedule"
+    },
+    "dependencies": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/dependency"
+      }
+    },
+    "queue_policy": {
+      "$ref": "#/$defs/queue_policy"
+    },
+    "retry_policy": {
+      "$ref": "#/$defs/retry_policy"
+    },
+    "cancellation_policy": {
+      "$ref": "#/$defs/cancellation_policy"
+    },
+    "checkpoint_policy": {
+      "$ref": "#/$defs/checkpoint_policy"
+    },
+    "policy_decision_ref": {
+      "type": "string",
+      "pattern": "^\\S{1,512}$"
+    },
+    "exception_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "identity_context": {
+      "$ref": "../identity/identity-context.schema.json"
+    },
+    "correlation": {
+      "$ref": "../receipts/correlation.schema.json"
+    },
+    "idempotency": {
+      "$ref": "../transport/idempotency.schema.json"
+    },
+    "input": {
+      "$ref": "#/$defs/input"
+    },
+    "expected_result_contract_ref": {
+      "type": "string",
+      "pattern": "^\\S{1,512}$"
+    },
+    "response_channel_ref": {
+      "type": "string",
+      "pattern": "^\\S{1,512}$"
+    },
+    "metadata": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_.-]{0,63}$"
+      },
+      "additionalProperties": {
+        "type": [
+          "string",
+          "number",
+          "integer",
+          "boolean",
+          "null"
+        ]
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "execution_semantics": {
+            "properties": {
+              "delivery_semantics": {
+                "const": "at_least_once"
+              }
+            },
+            "required": [
+              "delivery_semantics"
+            ]
+          }
+        },
+        "required": [
+          "execution_semantics"
+        ]
+      },
+      "then": {
+        "required": [
+          "idempotency"
+        ],
+        "properties": {
+          "execution_semantics": {
+            "properties": {
+              "idempotent_or_duplicate_safe": {
+                "const": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "retry_policy"
+        ]
+      },
+      "then": {
+        "required": [
+          "idempotency"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "execution_semantics": {
+            "properties": {
+              "schedule_class": {
+                "const": "deferred_one_time"
+              }
+            },
+            "required": [
+              "schedule_class"
+            ]
+          }
+        },
+        "required": [
+          "execution_semantics"
+        ]
+      },
+      "then": {
+        "required": [
+          "schedule",
+          "first_eligible_at"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "execution_semantics": {
+            "properties": {
+              "schedule_class": {
+                "const": "recurring_calendar"
+              }
+            },
+            "required": [
+              "schedule_class"
+            ]
+          }
+        },
+        "required": [
+          "execution_semantics"
+        ]
+      },
+      "then": {
+        "required": [
+          "schedule"
+        ],
+        "properties": {
+          "schedule": {
+            "required": [
+              "timezone",
+              "recurrence",
+              "overlap_policy",
+              "missed_run_policy",
+              "maximum_catch_up"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "execution_semantics": {
+            "properties": {
+              "schedule_class": {
+                "const": "maintenance"
+              }
+            },
+            "required": [
+              "schedule_class"
+            ]
+          }
+        },
+        "required": [
+          "execution_semantics"
+        ]
+      },
+      "then": {
+        "required": [
+          "schedule"
+        ],
+        "properties": {
+          "schedule": {
+            "required": [
+              "maintenance_window_ref"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "target_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "component_ref",
+        "capability_id",
+        "target_ref",
+        "environment",
+        "profile_ref"
+      ],
+      "properties": {
+        "component_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "capability_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$"
+        },
+        "target_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "environment": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "profile_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "overlay_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "tenant_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "workspace_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "node_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        }
+      }
+    },
+    "criticality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profile_criticality",
+        "component_criticality"
+      ],
+      "properties": {
+        "profile_criticality": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "component_criticality": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      }
+    },
+    "priority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "class",
+        "rank"
+      ],
+      "properties": {
+        "class": {
+          "type": "string",
+          "enum": [
+            "critical_integrity",
+            "authority_verification",
+            "interactive",
+            "operational",
+            "background",
+            "heavy_batch",
+            "best_effort"
+          ]
+        },
+        "rank": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "fairness_group": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      }
+    },
+    "resource_request": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "cpu_millicores": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "memory_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "temporary_storage_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "io_read_bytes_per_second": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "io_write_bytes_per_second": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "processes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "workers": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "concurrency": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "execution_timeout_seconds": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "execution_semantics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schedule_class",
+        "delivery_semantics",
+        "idempotent_or_duplicate_safe",
+        "interruptible",
+        "authoritative_commit_owner_ref",
+        "scheduler_acknowledgement_is_completion"
+      ],
+      "properties": {
+        "schedule_class": {
+          "type": "string",
+          "enum": [
+            "immediate",
+            "deferred_one_time",
+            "recurring_calendar",
+            "dependency_triggered",
+            "queue_driven",
+            "maintenance",
+            "task_activated"
+          ]
+        },
+        "delivery_semantics": {
+          "type": "string",
+          "enum": [
+            "at_most_once",
+            "at_least_once"
+          ]
+        },
+        "idempotent_or_duplicate_safe": {
+          "type": "boolean"
+        },
+        "interruptible": {
+          "type": "boolean"
+        },
+        "authoritative_commit_owner_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "scheduler_acknowledgement_is_completion": {
+          "const": false
+        }
+      }
+    },
+    "schedule": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "timezone": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "recurrence": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "final_eligible_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "overlap_policy": {
+          "type": "string",
+          "enum": [
+            "forbid_overlap",
+            "queue_one_successor",
+            "allow_bounded_overlap",
+            "replace_interruptible_prior_attempt"
+          ]
+        },
+        "overlap_limit": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "missed_run_policy": {
+          "type": "string",
+          "enum": [
+            "skip",
+            "run_once",
+            "bounded_catch_up"
+          ]
+        },
+        "maximum_catch_up": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "bounded_jitter_seconds": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "maintenance_window_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "overlap_policy": {
+                "const": "allow_bounded_overlap"
+              }
+            },
+            "required": [
+              "overlap_policy"
+            ]
+          },
+          "then": {
+            "required": [
+              "overlap_limit"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "missed_run_policy": {
+                "const": "bounded_catch_up"
+              }
+            },
+            "required": [
+              "missed_run_policy"
+            ]
+          },
+          "then": {
+            "properties": {
+              "maximum_catch_up": {
+                "minimum": 1
+              }
+            },
+            "required": [
+              "maximum_catch_up"
+            ]
+          }
+        }
+      ]
+    },
+    "dependency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dependency_ref",
+        "dependency_type",
+        "requirement",
+        "failure_behavior"
+      ],
+      "properties": {
+        "dependency_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "dependency_type": {
+          "type": "string",
+          "enum": [
+            "capability",
+            "component",
+            "authority",
+            "data",
+            "artifact",
+            "resource",
+            "profile",
+            "integration",
+            "environment"
+          ]
+        },
+        "requirement": {
+          "type": "string",
+          "enum": [
+            "hard",
+            "conditional",
+            "optional"
+          ]
+        },
+        "compatibility_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "failure_behavior": {
+          "type": "string",
+          "enum": [
+            "block",
+            "queue",
+            "defer",
+            "degrade",
+            "reject"
+          ]
+        },
+        "degradation_mode_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        }
+      }
+    },
+    "queue_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "owner_ref",
+        "durable_acceptance_required",
+        "ordering_rule_ref",
+        "capacity_exhaustion_behavior"
+      ],
+      "properties": {
+        "owner_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "durable_acceptance_required": {
+          "const": true
+        },
+        "ordering_rule_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "fairness_group": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "maximum_age_seconds": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "capacity_exhaustion_behavior": {
+          "type": "string",
+          "enum": [
+            "reject",
+            "defer"
+          ]
+        }
+      }
+    },
+    "retry_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "retryable_failure_classes",
+        "non_retryable_failure_classes",
+        "maximum_attempts",
+        "backoff",
+        "terminal_state"
+      ],
+      "properties": {
+        "retryable_failure_classes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "non_retryable_failure_classes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "maximum_attempts": {
+          "type": "integer",
+          "minimum": 2
+        },
+        "backoff": {
+          "$ref": "#/$defs/backoff"
+        },
+        "terminal_state": {
+          "const": "failed"
+        },
+        "revalidate_authority": {
+          "const": true
+        },
+        "revalidate_domain_preconditions": {
+          "const": true
+        }
+      }
+    },
+    "backoff": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "strategy",
+        "initial_delay_seconds",
+        "maximum_delay_seconds"
+      ],
+      "properties": {
+        "strategy": {
+          "type": "string",
+          "enum": [
+            "fixed",
+            "linear",
+            "exponential"
+          ]
+        },
+        "initial_delay_seconds": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "maximum_delay_seconds": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "jitter_seconds": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "cancellation_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "allowed",
+        "preserve_non_interruptible_critical_sections",
+        "prevents_retry"
+      ],
+      "properties": {
+        "allowed": {
+          "type": "boolean"
+        },
+        "interface_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "safe_stop_behavior": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "preserve_non_interruptible_critical_sections": {
+          "const": true
+        },
+        "prevents_retry": {
+          "const": true
+        }
+      }
+    },
+    "checkpoint_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "allowed"
+      ],
+      "properties": {
+        "allowed": {
+          "type": "boolean"
+        },
+        "owner_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "durability": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "version_compatibility_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "resume_prerequisite_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "expires_after_seconds": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "allowed": {
+                "const": true
+              }
+            },
+            "required": [
+              "allowed"
+            ]
+          },
+          "then": {
+            "required": [
+              "owner_ref",
+              "durability",
+              "version_compatibility_ref"
+            ]
+          }
+        }
+      ]
+    },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_ref"
+      ],
+      "properties": {
+        "contract_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "media_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "payload_ref": {
+          "type": "string",
+          "pattern": "^\\S{1,512}$"
+        },
+        "payload": {}
+      },
+      "oneOf": [
+        {
+          "required": [
+            "payload_ref"
+          ],
+          "not": {
+            "required": [
+              "payload"
+            ]
+          }
+        },
+        {
+          "required": [
+            "payload"
+          ],
+          "not": {
+            "required": [
+              "payload_ref"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

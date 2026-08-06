@@ -1,0 +1,8 @@
+# Service membership is rendered from the active profile; do not list services here.
+[Unit]
+Description=kOA required background services
+Documentation=file:/usr/share/doc/koa/recipes/sovereign-linux/systemd-layout.md
+Requires=koa-critical.target
+After=koa-critical.target
+Before=koa-node.target
+Conflicts=koa-recovery.target

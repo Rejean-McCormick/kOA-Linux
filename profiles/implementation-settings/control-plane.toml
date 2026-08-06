@@ -1,0 +1,66 @@
+settings_version = "1.0.0"
+profile_id = "control_plane"
+profile_contract = "docs/contracts/profiles/control-plane.profile.json"
+profile_contract_version = "1.0.0"
+profile_role = "primary"
+available_for_selection = true
+
+[validation]
+mode = "strict"
+unknown_parameter = "error"
+missing_contract = "error"
+contract_version_mismatch = "error"
+unsupported_parameter = "error"
+composition_conflict = "error"
+
+[authority]
+profile_membership = "profile_contract"
+component_membership = "profile_contract"
+capabilities = "profile_contract"
+resource_policy = "profile_contract"
+security_policy = "profile_contract"
+lifecycle_policy = "profile_contract"
+offline_policy = "profile_contract"
+external_integrations = "profile_contract"
+
+[source_layout]
+strategy = "shared_repository_tree"
+profile_specific_source_tree = false
+generated_output_root = "generated/profiles/control_plane"
+
+[composition]
+kind = "primary"
+requires_base_profile = false
+overlays = "explicit_only"
+implicit_overlay_activation = false
+compatibility_source = "profile_contract"
+conflict_result = "error"
+
+[implementation.topology]
+minimum_instances = 1
+high_availability_base_requirement = false
+multi_site_supported = true
+host_is_managed_node = true
+
+[implementation.orchestration]
+mode = "deployment_selected"
+permitted_modes = ["kubernetes", "non_kubernetes"]
+kubernetes_required = false
+endpoint_kubernetes_required = false
+containers_required = false
+rootless_where_supported = true
+
+[implementation.resources]
+rollout_concurrency = "explicitly_declared"
+unbounded_fleet_fanout = false
+pressure_behavior = "reduce_or_pause_new_rollouts"
+
+[implementation.connectivity]
+preferred_state = "restricted_network"
+internet_required = false
+node_queue = "bounded_visible_idempotent_expiring_reauthorized"
+new_remote_activation_without_connectivity = "blocked"
+
+[implementation.authority]
+declared_state_is_not_node_authority = true
+silent_substitution = false

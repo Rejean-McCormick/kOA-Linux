@@ -13,7 +13,15 @@
     "contracts/integration-types.contract.json",
     "contracts/system.contract.json",
     "generated/requirements-index.json",
-    "generated/assertion-index.json"
+    "generated/assertion-index.json",
+    "contracts/architecture-patterns.contract.json",
+    "contracts/artifact-contracts/integration-resilience-policy.schema.json",
+    "contracts/artifact-contracts/dead-letter-record.schema.json",
+    "contracts/artifact-contracts/distributed-workflow.schema.json",
+    "contracts/artifact-contracts/large-payload-reference.schema.json",
+    "contracts/artifact-contracts/experience-view-adapter.schema.json",
+    "contracts/artifact-contracts/cqrs-projection.schema.json",
+    "contracts/artifact-contracts/cache-policy.schema.json"
   ],
   "decision_ids": [
     "DEC-COMP-001",
@@ -27,7 +35,14 @@
     "DEC-UCKK-EXT-001",
     "DEC-OFFLINE-001",
     "DEC-REL-001",
-    "DEC-CONTAINER-001"
+    "DEC-CONTAINER-001",
+    "DEC-RES-001",
+    "DEC-MSG-001",
+    "DEC-WF-001",
+    "DEC-PAYLOAD-001",
+    "DEC-BFF-001",
+    "DEC-CQRS-001",
+    "DEC-CACHE-001"
   ],
   "requirement_ids": [
     "REQ-COMP-INT-001",
@@ -57,7 +72,49 @@
     "REQ-COMP-INT-025",
     "REQ-COMP-INT-026",
     "REQ-COMP-INT-027",
-    "REQ-COMP-INT-028"
+    "REQ-COMP-INT-028",
+    "REQ-PATTERN-001",
+    "REQ-PATTERN-002",
+    "REQ-PATTERN-003",
+    "REQ-PATTERN-004",
+    "REQ-PATTERN-005",
+    "REQ-PATTERN-006",
+    "REQ-PATTERN-007",
+    "REQ-PATTERN-008",
+    "REQ-PATTERN-009",
+    "REQ-PATTERN-010",
+    "REQ-PATTERN-011",
+    "REQ-PATTERN-012",
+    "REQ-PATTERN-013",
+    "REQ-PATTERN-014",
+    "REQ-PATTERN-015",
+    "REQ-PATTERN-016",
+    "REQ-PATTERN-017",
+    "REQ-PATTERN-018",
+    "REQ-PATTERN-019",
+    "REQ-PATTERN-020",
+    "REQ-PATTERN-021",
+    "REQ-PATTERN-022",
+    "REQ-PATTERN-023",
+    "REQ-PATTERN-024",
+    "REQ-PATTERN-025",
+    "REQ-PATTERN-026",
+    "REQ-PATTERN-027",
+    "REQ-PATTERN-028",
+    "REQ-PATTERN-029",
+    "REQ-PATTERN-030",
+    "REQ-PATTERN-031",
+    "REQ-PATTERN-032",
+    "REQ-PATTERN-033",
+    "REQ-PATTERN-034",
+    "REQ-PATTERN-035",
+    "REQ-PATTERN-036",
+    "REQ-PATTERN-037",
+    "REQ-PATTERN-038",
+    "REQ-PATTERN-039",
+    "REQ-PATTERN-040",
+    "REQ-PATTERN-041",
+    "REQ-PATTERN-042"
   ],
   "lock_ids": [
     "LOCK-COMP-001",
@@ -80,13 +137,21 @@
     "LOCK-INT-003",
     "LOCK-INT-004",
     "LOCK-INT-005",
-    "LOCK-UCKK-EXT-002"
+    "LOCK-UCKK-EXT-002",
+    "LOCK-RES-001",
+    "LOCK-MSG-001",
+    "LOCK-WF-001",
+    "LOCK-PAYLOAD-001",
+    "LOCK-BFF-001",
+    "LOCK-CQRS-001",
+    "LOCK-CACHE-001"
   ],
   "exception_ids": [],
   "depends_on": [
     "DOC-GOV-000",
     "DOC-SYS-004",
-    "DOC-COMP-000"
+    "DOC-COMP-000",
+    "DOC-SYS-034"
   ],
   "tags": [
     "component",
@@ -96,7 +161,8 @@
     "interfaces",
     "events",
     "gateways",
-    "versioning"
+    "versioning",
+    "architecture-patterns"
   ]
 }
 KOA:DOC-META:END -->
@@ -761,3 +827,7 @@ An optional external translation integration is removed. Credentials, routes, an
 ### 11.10 Partial delivery
 
 A destination accepts one part of a multi-object transfer before failing. The integration records partial delivery, enters remediation, and does not report complete success or retry the entire request blindly.
+
+## Architecture-pattern boundary rules
+
+Component contracts declare which of the seven patterns they activate and reference the corresponding validated artifact. The component remains the command and data owner. A workflow coordinator invokes owner interfaces. A projection consumes a declared feed. A cache reads the owner. A view adapter queries or delegates. None may write another component's authoritative store.

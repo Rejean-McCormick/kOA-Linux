@@ -1,0 +1,61 @@
+schema_version = "1.0.0"
+integration_id = "konnaxion"
+policy_id = "konnaxion-safe-degradation"
+default_result = "capability_unavailable"
+core_operation_continues = true
+preserve_local_authoritative_state = true
+silent_substitution = false
+weaker_policy_fallback = false
+background_synchronization = false
+
+[[conditions]]
+condition = "not_configured"
+result = "integration_hidden_or_unavailable"
+automatic_retry = false
+
+[[conditions]]
+condition = "network_loss"
+result = "provider_dependent_capabilities_unavailable"
+automatic_retry = false
+
+[[conditions]]
+condition = "provider_failure"
+result = "provider_dependent_capabilities_unavailable"
+automatic_retry = false
+
+[[conditions]]
+condition = "authentication_failure"
+result = "disabled_until_credentials_repaired"
+automatic_retry = false
+
+[[conditions]]
+condition = "incompatible_contract"
+result = "disabled"
+automatic_retry = false
+
+[[conditions]]
+condition = "rate_limited"
+result = "explicit_deferred_or_rejected"
+automatic_retry = false
+
+[[conditions]]
+condition = "timeout"
+result = "failed_with_terminal_receipt"
+automatic_retry = false
+
+[[conditions]]
+condition = "duplicate_delivery"
+result = "reject_or_return_existing_idempotent_result"
+automatic_retry = false
+
+[[conditions]]
+condition = "removed"
+result = "adapter_stopped_credentials_revoked_network_closed"
+automatic_retry = false
+
+[receipts]
+record_failure = true
+record_degradation = true
+record_recovery = true
+record_removal = true
+include_raw_payload = false

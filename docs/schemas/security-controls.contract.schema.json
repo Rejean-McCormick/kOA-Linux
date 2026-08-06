@@ -1,0 +1,307 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.koa.local/contracts/security-controls.contract.schema.json",
+  "title": "kOA Security Controls Contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "contract_id",
+    "version",
+    "status",
+    "language",
+    "title",
+    "owner",
+    "authority",
+    "applicability_states",
+    "profile_order",
+    "profiles",
+    "invariants",
+    "categories",
+    "controls",
+    "validation"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "const": "../schemas/security-controls.contract.schema.json"
+    },
+    "contract_id": {
+      "type": "string",
+      "const": "security-controls"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "status": {
+      "type": "string",
+      "const": "active"
+    },
+    "language": {
+      "type": "string",
+      "const": "en"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "owner": {
+      "$ref": "#/$defs/snakeId"
+    },
+    "authority": {
+      "type": "string",
+      "const": "canonical_control_identity_and_profile_applicability"
+    },
+    "applicability_states": {
+      "type": "array",
+      "const": [
+        "required",
+        "recommended",
+        "optional",
+        "prohibited",
+        "not_applicable"
+      ]
+    },
+    "profile_order": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/snakeId"
+      }
+    },
+    "profiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/profile"
+      }
+    },
+    "invariants": {
+      "type": "array",
+      "minItems": 8,
+      "uniqueItems": false,
+      "items": {
+        "$ref": "#/$defs/invariant"
+      }
+    },
+    "categories": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/category"
+      }
+    },
+    "controls": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/control"
+      }
+    },
+    "validation": {
+      "$ref": "#/$defs/validation"
+    }
+  },
+  "$defs": {
+    "snakeId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
+    },
+    "path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_.-]+(?:/[A-Za-z0-9_.-]+)*/?$"
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profile_id",
+        "label",
+        "short_code",
+        "contract_ref"
+      ],
+      "properties": {
+        "profile_id": {
+          "$ref": "#/$defs/snakeId"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "short_code": {
+          "type": "string",
+          "pattern": "^[A-Z]{2}$"
+        },
+        "contract_ref": {
+          "$ref": "#/$defs/path"
+        }
+      }
+    },
+    "invariant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "invariant_id",
+        "title",
+        "statement"
+      ],
+      "properties": {
+        "invariant_id": {
+          "type": "string",
+          "pattern": "^SEC-INV-[0-9]{3}$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "category": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "category_id",
+        "title",
+        "canonical_documents"
+      ],
+      "properties": {
+        "category_id": {
+          "$ref": "#/$defs/snakeId"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "canonical_documents": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/path"
+          }
+        }
+      }
+    },
+    "applicability": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "string",
+        "enum": [
+          "required",
+          "recommended",
+          "optional",
+          "prohibited",
+          "not_applicable"
+        ]
+      }
+    },
+    "control": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "control_id",
+        "title",
+        "category",
+        "status",
+        "owner",
+        "canonical_document",
+        "summary",
+        "failure_behavior",
+        "evidence_class",
+        "implementation_binding",
+        "validation_binding",
+        "applicability"
+      ],
+      "properties": {
+        "control_id": {
+          "type": "string",
+          "pattern": "^SEC-[A-Z]+-[0-9]{3}$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "category": {
+          "$ref": "#/$defs/snakeId"
+        },
+        "status": {
+          "type": "string",
+          "const": "active"
+        },
+        "owner": {
+          "$ref": "#/$defs/snakeId"
+        },
+        "canonical_document": {
+          "$ref": "#/$defs/path"
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 20
+        },
+        "failure_behavior": {
+          "$ref": "#/$defs/snakeId"
+        },
+        "evidence_class": {
+          "$ref": "#/$defs/snakeId"
+        },
+        "implementation_binding": {
+          "$ref": "#/$defs/path"
+        },
+        "validation_binding": {
+          "$ref": "#/$defs/path"
+        },
+        "applicability": {
+          "$ref": "#/$defs/applicability"
+        },
+        "applicability_condition": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "semantic_validator",
+        "matrix_document",
+        "evidence_schema",
+        "required_control_without_validation",
+        "required_control_without_evidence_class",
+        "unknown_profile",
+        "duplicate_control_id"
+      ],
+      "properties": {
+        "semantic_validator": {
+          "$ref": "#/$defs/path"
+        },
+        "matrix_document": {
+          "$ref": "#/$defs/path"
+        },
+        "evidence_schema": {
+          "$ref": "#/$defs/path"
+        },
+        "required_control_without_validation": {
+          "const": "prohibited"
+        },
+        "required_control_without_evidence_class": {
+          "const": "prohibited"
+        },
+        "unknown_profile": {
+          "const": "prohibited"
+        },
+        "duplicate_control_id": {
+          "const": "prohibited"
+        }
+      }
+    }
+  }
+}

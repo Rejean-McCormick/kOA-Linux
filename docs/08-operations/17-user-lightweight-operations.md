@@ -31,7 +31,11 @@
     "generated/evidence-catalog.json",
     "contracts/integrations/uckk-import.integration.json",
     "contracts/artifact-contracts/uckk-learning-package.schema.json",
-    "contracts/artifact-contracts/uckk-import-receipt.schema.json"
+    "contracts/artifact-contracts/uckk-import-receipt.schema.json",
+    "contracts/subsystems/koa-spaces.subsystem.json",
+    "02-system/21-koa-spaces-experience-layer.md",
+    "02-system/22-koa-spaces-interface-composition.md",
+    "03-profiles/14-koa-spaces-deployment.md"
   ],
   "decision_ids": [
     "DEC-SYS-001",
@@ -100,7 +104,8 @@
     "LOCK-ARI-002",
     "LOCK-IMPL-001",
     "LOCK-IMPL-002",
-    "LOCK-UCKK-EXT-002"
+    "LOCK-UCKK-EXT-002",
+    "LOCK-SPACES-001"
   ],
   "exception_ids": [],
   "depends_on": [
@@ -123,7 +128,10 @@
     "DOC-OPS-011",
     "DOC-OPS-012",
     "DOC-OPS-014",
-    "DOC-OPS-015"
+    "DOC-OPS-015",
+    "DOC-SYS-021",
+    "DOC-SYS-022",
+    "DOC-PROFILE-014"
   ],
   "tags": [
     "operations",
@@ -137,7 +145,9 @@
     "maintenance",
     "backup",
     "safe-degradation",
-    "non-ai"
+    "non-ai",
+    "koa-spaces",
+    "experience-layer"
   ]
 }
 KOA:DOC-META:END -->
@@ -603,3 +613,7 @@ These criteria define validation requirements. They do not claim that a particul
 > **Non-normative example:** Storage free space drops below the update reserve. Reconstructable caches are evicted, new media ingestion stops, and the pending services update remains blocked until rollback capacity is restored.
 
 > **Non-normative example:** A local service build succeeds on the machine. The result can support local diagnostics, but it does not create a release artifact, clean-worker evidence, sovereign-node conformance, or release authority.
+
+## Operating kOA Spaces on User Lightweight
+
+Operators keep one validated active Space, one last-known-good Space, bounded caches, and an explicit native or administrative fallback. Optional module failures are presentation-scoped. Updates to a Space are validated and activated atomically rather than edited directly in the active state.

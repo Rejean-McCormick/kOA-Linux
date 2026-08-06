@@ -1,0 +1,49 @@
+schema_version = "1.0.0"
+status = "profile_resolved"
+owner = "resource-governor"
+
+[admission]
+profile_envelope_required = true
+missing_envelope_result = "blocked"
+resource_reservation_before_job = true
+unbounded_execution_allowed = false
+
+[cpu]
+limit_source = "active_profile"
+compiler_jobs_are_background = true
+resource_pressure_action = "reduce_concurrency_then_defer"
+
+[memory]
+limit_source = "active_profile"
+out_of_memory_action = "fail_job_preserve_artifacts_and_receipt"
+swap_assumption_allowed = false
+
+[storage]
+workspace_limit_source = "active_profile"
+cache_limit_source = "active_profile"
+output_limit_source = "active_profile"
+unbounded_artifact_growth_allowed = false
+
+[concurrency]
+maximum_parallel_jobs_source = "active_profile"
+queue_policy = "bounded"
+queue_full_result = "resource_exhausted"
+
+[priority]
+class = "background_build"
+preserve = [
+  "core_navigation",
+  "identity_and_trust",
+  "governance_policy_runtime",
+  "audit_broker",
+  "active_language_runtime"
+]
+
+[degradation]
+order = [
+  "stop_accepting_new_jobs",
+  "reduce_parallel_jobs",
+  "defer_queued_jobs",
+  "terminate_expired_jobs",
+  "preserve_verified_outputs_and_terminal_receipts"
+]

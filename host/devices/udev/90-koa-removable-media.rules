@@ -1,0 +1,4 @@
+# Discovery only: mark removable filesystem partitions and suppress generic desktop automount.
+# This rule grants no ownership, mode, uaccess tag, mount, import, export, or execution authority.
+SUBSYSTEM=="block", ENV{ID_FS_USAGE}=="filesystem", ATTRS{removable}=="1", ENV{KOA_REMOVABLE_MEDIA}="1", ENV{UDISKS_IGNORE}="1"
+SUBSYSTEM=="block", ENV{ID_FS_USAGE}=="filesystem", ENV{ID_DRIVE_FLASH_SD}=="1", ENV{KOA_REMOVABLE_MEDIA}="1", ENV{UDISKS_IGNORE}="1"

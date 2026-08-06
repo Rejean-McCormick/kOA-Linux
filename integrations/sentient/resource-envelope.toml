@@ -1,0 +1,186 @@
+"$schema" = "contracts/artifact-contracts/resource-envelope.schema.json"
+schema_version = "1.0.0"
+envelope_id = "REN-SENTIENT-WORKBENCH-001"
+version = "1.0.0"
+status = "active"
+language = "en"
+title = "SenTient isolated workbench resource boundary"
+description = "Profile-resolved component boundary for optional task-activated SenTient work. Concrete CPU, memory, storage, queue, network, and time quantities are supplied by the compatible active profile and may only narrow this envelope."
+envelope_kind = "component_budget"
+effective_at = "2026-08-06T00:00:00Z"
+canonical_refs = [
+  "docs/contracts/subsystems/sentient.subsystem.json",
+  "docs/contracts/system.contract.json#/sentient_boundary",
+  "docs/10-adrs/ADR-018-sentient-as-isolated-optional-workbench.md",
+  "docs/08-operations/04-resource-envelopes.md",
+]
+decision_ids = ["DEC-SENT-001"]
+requirement_ids = ["REQ-SENT-002", "REQ-SENT-004", "REQ-SENT-021", "REQ-SENT-022", "REQ-SENT-031", "REQ-SENT-032"]
+lock_ids = ["LOCK-SENT-001"]
+tags = ["sentient", "optional-workbench", "task-activated", "candidate-only", "profile-resolved"]
+
+[scope]
+target_type = "component"
+target_id = "sentient"
+profile_ids = ["developer_linux_workstation", "developer_windows_wsl", "build_farm", "sovereign_hub"]
+environment = "development"
+component_id = "sentient"
+[scope.labels]
+workload = "isolated_workbench"
+authority = "candidate_only"
+selector_expression = "compatible active profile explicitly activates one admitted SenTient task"
+
+[ownership]
+declaring_owner = "docs/contracts/subsystems/sentient.subsystem.json"
+enforcement_owner_component_id = "resource_governor"
+enforcement_contract_ref = "contracts/components/resource-governor.component.json"
+resource_authority = "resource_limits_only"
+authorization_effect = "none"
+consent_effect = "none"
+disclosure_effect = "none"
+machine_privilege_effect = "none"
+cross_component_data_write = "prohibited"
+governance_policy_usage = "activation_authorization_only"
+
+[composition]
+composition_mode = "standalone"
+merge_strategy = "narrow_limits"
+implicit_inheritance = "prohibited"
+conflict_result = "blocked"
+child_overcommit = "prohibited"
+
+[resources.concurrency]
+global_max_active = 1
+admission_accounting = "required"
+
+[[resources.concurrency.limits]]
+limit_id = "sentient_workbenches"
+workload_class = "heavy"
+max_active = 1
+max_per_identity = 1
+max_per_component = 1
+overflow_behavior = "queue"
+fairness_key = "workspace"
+
+[scheduling]
+workload_class = "batch"
+priority = 20
+admission = "task_activated"
+preemption = "preemptible"
+fairness = "workspace_fair"
+resource_pressure_behavior = "stop_workload"
+scheduling_group = "sentient_optional_workbench"
+authorization_effect = "none"
+
+[activation]
+mode = "task_activated"
+always_on_allowed = false
+start_condition = "explicit_task"
+idle_shutdown = "required"
+idle_shutdown_after = "PT15M"
+max_warm_instances = 0
+startup_failure_behavior = "capability_unavailable"
+shutdown_behavior = "cancel_and_cleanup"
+
+[degradation]
+default_behavior = "shed_optional_then_stop"
+automatic_recovery = false
+revalidation_required = true
+silent_limit_expansion = "prohibited"
+policy_authority = "none"
+last_verified_envelope_behavior = "stop_new_work"
+
+[[degradation.steps]]
+step_id = "stop_optional_sentient_workload"
+order = 1
+action = "stop_workload"
+target = "sentient_workbench"
+authority_effect = "none"
+status_effect = "unavailable"
+preserved_capabilities = ["koa_core_operation", "component_authoritative_state", "release_and_publication_authority"]
+denied_work = ["new_sentient_jobs", "running_optional_sentient_jobs"]
+recovery_condition = "A compatible profile explicitly reactivates the task after fresh resource admission and isolation verification."
+receipt_required = true
+
+[degradation.steps.trigger]
+metric = "custom"
+custom_metric = "protected_service_resource_pressure"
+comparison = "equals"
+threshold = 1
+sustain_for = "PT1S"
+
+[enforcement]
+artifact_mode = "embedded_contract"
+enforcement_level = "hard"
+verification_frequency = "per_job"
+drift_behavior = "fail_job"
+missing_backend_behavior = "deny_start"
+policy_runtime_substitution = "prohibited"
+direct_host_privilege = "prohibited_outside_declared_broker"
+enforcement_receipt_required = true
+
+[[enforcement.backends]]
+backend_id = "profile_selected_isolated_workbench_backend"
+backend_type = "equivalent"
+resources = ["cpu", "memory", "io", "storage", "processes", "concurrency", "queues", "time", "network"]
+support_level = "measured_with_external_enforcement"
+privileged = false
+configuration_ref = "profiles/implementation-settings/"
+failure_behavior = "deny_start"
+
+[observability]
+health_states = ["healthy", "constrained", "degraded", "paused", "unavailable", "failed", "recovering"]
+correlation_required = true
+secret_material_allowed = false
+status_accuracy = "degraded_state_must_not_appear_healthy"
+
+[observability.sampling]
+mode = "per_operation"
+
+[[observability.metrics]]
+metric_id = "sentient_resource_state"
+resource = "health"
+unit = "state"
+required = true
+aggregation = "state"
+labels = ["profile_id", "workspace_id", "job_id"]
+
+[[observability.metrics]]
+metric_id = "sentient_active_workbenches"
+resource = "concurrency"
+unit = "count"
+required = true
+aggregation = "gauge"
+labels = ["profile_id", "workspace_id"]
+
+[lifecycle]
+activation_mode = "atomic_or_equivalent"
+partial_activation = "prohibited"
+rollback_or_forward_repair = "rollback_then_forward_repair"
+previous_verified_envelope_retained = true
+runtime_states = ["verified", "staged", "active", "constrained", "rejected", "superseded", "recovering"]
+
+[lifecycle.retention]
+active_envelope = "P3650D"
+previous_verified_envelope = "P3650D"
+allocation_receipts = "P365D"
+enforcement_receipts = "P365D"
+degradation_receipts = "P365D"
+recovery_evidence = "P365D"
+
+[receipts]
+receipt_schema_ref = "contracts/artifact-contracts/decision-receipt.schema.json"
+required_transition_classes = ["envelope_activation", "envelope_rejection", "admission", "job_failure", "degradation", "recovery"]
+required_fields = ["receipt_id", "envelope_id", "envelope_version", "target_type", "target_id", "profile_ids", "transition_class", "result_state", "reason_codes", "occurred_at", "correlation_id"]
+public_content = ["receipt_id", "envelope_id", "envelope_version", "target_type", "transition_class", "result_state", "reason_codes", "occurred_at", "correlation_id"]
+private_evidence_content = ["target_identity", "workspace_identity", "job_identity", "backend_configuration", "diagnostic_evidence"]
+correlation_required = true
+secret_material_allowed = false
+
+[validation]
+required_checks = ["schema_validation", "canonical_reference_resolution", "scope_resolution", "owner_resolution", "profile_scope_alignment", "component_scope_alignment", "concurrency_bound_validation", "backend_resource_coverage", "backend_capability_validation", "activation_behavior_validation", "idle_shutdown_validation", "degradation_order_validation", "safe_recovery_validation", "observability_coverage", "receipt_schema_alignment", "retention_validation", "resource_governor_boundary", "no_cross_component_write", "no_authorization_effect", "no_machine_privilege_effect", "traceability_complete"]
+test_ids = ["TEST-SENT-RESOURCE-ENVELOPE-001"]
+evidence_ids = ["EVID-SENT-RESOURCE-ENVELOPE-001"]
+activation_requires = "pass"
+missing_required_result = "blocked"
+automatic_semantic_fixes_allowed = false

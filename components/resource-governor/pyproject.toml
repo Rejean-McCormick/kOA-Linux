@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=77,<83", "wheel>=0.45,<1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "koa-resource-governor"
+version = "1.0.0"
+description = "kOA-Linux deterministic Resource Governor bootstrap surface"
+readme = "README.md"
+requires-python = ">=3.13,<3.14"
+license = { text = "Proprietary" }
+authors = [{ name = "kOA-Linux" }]
+dependencies = ["koa-interfaces>=1.0,<2.0"]
+
+[project.scripts]
+koa-resource-governor = "koa_resource_governor.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["koa_resource_governor*"]
+
+[tool.pytest.ini_options]
+addopts = "--strict-config --strict-markers"
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]

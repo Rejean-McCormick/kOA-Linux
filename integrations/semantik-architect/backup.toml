@@ -1,0 +1,38 @@
+schema_version = "1.0.0"
+
+[policy]
+backup_required = true
+backup_owner = "koa-operations"
+subsystem_internal_backup_owned_here = false
+
+[include]
+paths = [
+  "/var/lib/koa/integrations/semantik-architect/jobs",
+  "/var/lib/koa/integrations/semantik-architect/receipts"
+]
+content = [
+  "terminal_job_metadata",
+  "receipt_references",
+  "adapter_configuration_references"
+]
+
+[exclude]
+paths = [
+  "/run/koa/semantik-architect",
+  "/var/cache/koa/integrations/semantik-architect",
+  "/var/lib/koa/integrations/semantik-architect/quarantine"
+]
+content = [
+  "subsystem_source_checkout",
+  "subsystem_authoritative_state",
+  "credentials",
+  "compiled_artifacts_already_admitted_to_release_channels"
+]
+
+[restore]
+identity_verification_required = true
+compatibility_check_required = true
+source_pin_revalidation_required = true
+automatic_job_resume = false
+automatic_artifact_activation = false
+unverified_restore_result = "blocked"

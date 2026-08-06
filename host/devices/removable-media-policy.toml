@@ -1,0 +1,71 @@
+schema_version = "1.0.0"
+policy_id = "koa_removable_media_policy"
+profile_overlay = "appliance_shell"
+default_action = "deny"
+automount = false
+autorun = false
+execute_from_media = false
+physical_possession_grants_authority = false
+transport_signature_alone_grants_authority = false
+
+[discovery]
+udev_property = "KOA_REMOVABLE_MEDIA"
+discovery_is_authorization = false
+ordinary_session_notification = "metadata_only"
+device_node_exposed_to_shell = false
+
+[access]
+request_path = "owning_component_to_registered_privileged_device_operation"
+direct_broker_access_from_presentation = false
+separate_identity_verification = true
+policy_evaluation_required = true
+resource_admission_required = true
+operation_receipt_required = true
+unknown_filesystem = "deny"
+unknown_device_identity = "deny"
+
+[mount]
+default_mode = "read_only"
+mount_namespace = "operation_scoped"
+mount_root = "/run/koa/removable-media"
+required_options = ["nodev", "nosuid", "noexec"]
+write_mount_requires_explicit_operation = true
+persistent_mount = false
+ordinary_session_mount = false
+
+[import]
+staging_required = true
+staging_owner = "consuming_component_or_registered_import_adapter"
+quarantine_required = true
+identity_verification = true
+trust_verification = true
+integrity_verification = true
+replay_check = true
+compatibility_verification = true
+rights_and_ownership_check = true
+policy_evaluation = true
+authoritative_activation_from_mount = false
+
+[export]
+explicit_selection_required = true
+owning_component_export_required = true
+disclosure_policy_required = true
+write_operation_separate_from_read_discovery = true
+receipt_required = true
+raw_authoritative_store_export = false
+
+[cleanup]
+unmount_on_operation_completion = true
+remove_operation_runtime_state = true
+remove_staging_on_rejection = true
+preserve_authoritative_component_state = true
+session_launcher_performs_mount_operations = false
+session_launcher_performs_unmount_operations = false
+
+[failure]
+missing_authority = "deny"
+missing_policy = "deny"
+missing_resource_admission = "deny"
+missing_receipt_path = "deny_critical_transition"
+verification_failure = "quarantine_and_report"
+cleanup_failure = "block_reuse_and_report"

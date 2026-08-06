@@ -1,0 +1,143 @@
+schema_version = "1.0.0"
+manifest_kind = "independent_subsystem_package"
+package_id = "koa-integration-uckk"
+subsystem_id = "uckk"
+display_name = "UCKK"
+relationship_to_koa = "external_online_platform_integration"
+status = "definition_active_admission_resolved_at_assembly"
+release_channel = "services"
+authority = "non_authoritative_packaging_declaration"
+
+[ownership]
+manifest_owner = "koa-packaging"
+subsystem_implementation_owner = "external_subsystem_owner"
+koa_adapter_owner = "koa-integration-architecture"
+package_may_redefine_subsystem_authority = false
+package_may_redefine_profile_membership = false
+
+[dependencies]
+required_bundles = [
+  "B-0073",
+  "B-0074",
+]
+missing_dependency_result = "blocked"
+partial_dependency_acceptance = false
+
+[source]
+lock_path = "integrations/uckk/source.lock.json"
+pin_required = true
+required_lock_status = "pinned"
+immutable_revision_required = true
+source_digest_required = true
+license_metadata_required = true
+official_documentation_alignment_required = true
+mutable_revision_allowed = false
+automatic_source_discovery = false
+source_checkout_in_package = false
+unresolved_or_unpinned_result = "blocked"
+
+[contracts]
+canonical_refs = [
+  "docs/contracts/integrations/uckk-publication.integration.json",
+  "docs/contracts/integrations/uckk-import.integration.json",
+]
+integration_manifest = "integrations/uckk/integration.toml"
+compatibility_manifest = "integrations/uckk/compatibility.json"
+unsupported_contract_result = "blocked"
+
+[build]
+adapter_project = "integrations/uckk/adapter/pyproject.toml"
+output_kind = "python_wheel"
+output_distribution = "koa_uckk_adapter"
+build_from_verified_source_only = true
+network_access_during_package_assembly = false
+reproducible_build_required = true
+subsystem_source_build_is_out_of_scope = true
+
+[payload]
+include = [
+  "built_adapter_wheel",
+  "integration_boundary_manifests",
+  "interface_contribution_manifests",
+  "license_and_provenance_metadata",
+]
+exclude = [
+  "external_subsystem_source_checkout",
+  "external_subsystem_git_metadata",
+  "external_subsystem_internal_documentation",
+  "external_subsystem_database",
+  "runtime_state",
+  "cache",
+  "credentials",
+  "secrets",
+]
+external_repository_vendoring_allowed = false
+undeclared_file_inclusion_result = "blocked"
+
+[installation]
+adapter_root = "/usr/lib/koa/integrations/uckk"
+configuration_root = "/etc/koa/integrations/uckk"
+runtime_state_from_package_allowed = false
+credentials_from_package_allowed = false
+activation_after_install = false
+
+[deployment]
+manifest_ref = "integrations/uckk/deployment.toml"
+profile_resolution = "from_declared_integration_compatibility"
+undeclared_profile_result = "disabled"
+activation_model = "staged_atomic_activation"
+partial_activation_allowed = false
+
+[resources]
+manifest_ref = "integrations/uckk/resource-envelope.toml"
+admission_owner = "resource_governor"
+unbounded_resource_request_allowed = false
+missing_resource_envelope_result = "blocked"
+
+[storage]
+manifest_ref = "integrations/uckk/storage.toml"
+backup_manifest_ref = "integrations/uckk/backup.toml"
+ownership_must_be_preserved = true
+shared_authoritative_database_allowed = false
+direct_cross_subsystem_write_allowed = false
+state_migration_from_package_allowed = false
+restore_requires_identity_and_compatibility_verification = true
+
+[degradation]
+manifest_ref = "integrations/uckk/degradation.toml"
+silent_substitution_allowed = false
+missing_subsystem_behavior = "declared_capability_unavailable"
+existing_unrelated_koa_capabilities = "preserved"
+automatic_fallback_implementation = "none"
+
+[security]
+identity_verification_required = true
+governance_admission_required = true
+selective_audit_required = true
+secrets_embedded = false
+network_endpoints_embedded = false
+least_privilege_runtime_required = true
+
+[evidence]
+sbom_required = true
+provenance_required = true
+signature_required_for_published_package = true
+source_lock_digest_must_match = true
+compatibility_evidence_required = true
+contract_test_evidence_required = true
+storage_and_degradation_evidence_required = true
+
+[rollback]
+strategy = "disable_adapter_or_restore_previous_verified_package"
+preserve_subsystem_authoritative_state = true
+preserve_koa_owned_receipts = true
+failed_activation_effect = "previous_verified_state_remains_active"
+
+[directionality]
+operations = [
+  "publish_to_uckk",
+  "import_from_uckk",
+]
+generic_bidirectional_sync_allowed = false
+each_direction_requires_independent_contract_and_receipt = true
+remote_platform_code_in_package = false

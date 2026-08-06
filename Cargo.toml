@@ -1,0 +1,10 @@
+[workspace]
+resolver = "3"
+members = [
+    "components/koa-node-*",
+    "interfaces/rust*",
+]
+
+[workspace.package]
+edition = "2024"
+rust-version = "1.85.1"

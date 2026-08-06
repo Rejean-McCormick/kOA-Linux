@@ -1,0 +1,118 @@
+{
+  "checks": [
+    {
+      "check_id": "documentation",
+      "display_name": "Documentation",
+      "job_id": "documentation",
+      "job_name": "documentation",
+      "local_commands": [
+        [
+          "uv",
+          "sync",
+          "--frozen",
+          "--all-groups"
+        ],
+        [
+          "uv",
+          "run",
+          "--frozen",
+          "python",
+          "docs/tools/validate_docs.py"
+        ]
+      ],
+      "network_after_sync": "forbidden",
+      "produces_release_authority": false,
+      "required_context": "CI / Documentation / documentation",
+      "required_for": [
+        "merge_group",
+        "pull_request"
+      ],
+      "workflow_file": ".github/workflows/documentation.yml",
+      "workflow_name": "CI / Documentation"
+    },
+    {
+      "check_id": "contracts",
+      "display_name": "Contracts",
+      "job_id": "contracts",
+      "job_name": "contracts",
+      "local_commands": [
+        [
+          "uv",
+          "sync",
+          "--frozen",
+          "--all-groups"
+        ],
+        [
+          "uv",
+          "run",
+          "--frozen",
+          "python",
+          "ci/scripts/run-contracts.py"
+        ]
+      ],
+      "network_after_sync": "forbidden",
+      "produces_release_authority": false,
+      "required_context": "CI / Contracts / contracts",
+      "required_for": [
+        "merge_group",
+        "pull_request"
+      ],
+      "workflow_file": ".github/workflows/contracts.yml",
+      "workflow_name": "CI / Contracts"
+    },
+    {
+      "check_id": "components",
+      "display_name": "Components",
+      "job_id": "components",
+      "job_name": "components",
+      "local_commands": [
+        [
+          "uv",
+          "sync",
+          "--frozen",
+          "--all-groups"
+        ],
+        [
+          "uv",
+          "run",
+          "--frozen",
+          "python",
+          "ci/scripts/run-components.py"
+        ]
+      ],
+      "network_after_sync": "forbidden",
+      "produces_release_authority": false,
+      "required_context": "CI / Components / components",
+      "required_for": [
+        "merge_group",
+        "pull_request"
+      ],
+      "workflow_file": ".github/workflows/components.yml",
+      "workflow_name": "CI / Components"
+    }
+  ],
+  "description": "Stable merge-check identities and their exact repository-local commands.",
+  "execution_policy": {
+    "accepted_conclusions": [
+      "success"
+    ],
+    "all_checks_always_report": true,
+    "blocked_is_success": false,
+    "cancelled_is_success": false,
+    "dependency_installation": [
+      "uv",
+      "sync",
+      "--frozen",
+      "--all-groups"
+    ],
+    "failure_is_success": false,
+    "neutral_is_success": false,
+    "path_filters_control": "test selection only; never workflow creation or required-check emission",
+    "skipped_is_success": false,
+    "timed_out_is_success": false,
+    "working_directory": "."
+  },
+  "policy_id": "koa.required-checks",
+  "policy_version": "1.0.0",
+  "status": "active"
+}

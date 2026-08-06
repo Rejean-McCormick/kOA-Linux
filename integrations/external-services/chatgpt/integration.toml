@@ -1,0 +1,147 @@
+schema_version = 1
+integration_id = "chatgpt"
+title = "ChatGPT"
+version = "1.0.0"
+status = "active"
+integration_type = "external_ai"
+classification = "external_ai_assistance"
+role = "Approved candidate metadata and analysis surface."
+authority = "non_authoritative"
+output_authority = "candidate_input_only"
+undeclared_substitution = "prohibited"
+availability = "optional"
+enabled_by_default = false
+core_dependency = false
+native_dependency = false
+contract_ref = "docs/contracts/integrations/chatgpt.integration.json"
+owner_decision_id = "DEC-AI-001"
+
+[access]
+supported_modes = ["manual_user_mediated", "registered_integration"]
+invocation_modes = ["explicit_user_action"]
+background_invocation = false
+scheduled_invocation = false
+autonomous_invocation = false
+continuous_activation = false
+profile_permission_required = true
+operation_confirmation_required = true
+
+[[capabilities]]
+capability_id = "AI-CAP-001"
+name = "candidate_drafting"
+output_class = "candidate_text"
+output_authority = "candidate_input_only"
+
+[[capabilities]]
+capability_id = "AI-CAP-002"
+name = "candidate_summarization"
+output_class = "candidate_text"
+output_authority = "candidate_input_only"
+
+[[capabilities]]
+capability_id = "AI-CAP-003"
+name = "candidate_translation"
+output_class = "candidate_text"
+output_authority = "candidate_input_only"
+
+[[capabilities]]
+capability_id = "AI-CAP-004"
+name = "candidate_extraction"
+output_class = "candidate_structured_output"
+output_authority = "candidate_input_only"
+
+[[capabilities]]
+capability_id = "AI-CAP-005"
+name = "candidate_reconciliation"
+output_class = "candidate_analysis"
+output_authority = "candidate_input_only"
+
+[[capabilities]]
+capability_id = "AI-CAP-008"
+name = "development_assistance"
+output_class = "candidate_text_or_structured_output"
+output_authority = "candidate_input_only"
+
+[data_boundary]
+direction = "request_response"
+transfer_preview_required = true
+explicit_source_selection_required = true
+explicit_field_selection_required = true
+admission_required = true
+minimization_required = true
+hidden_context_transfer = false
+conversation_history_transfer_by_default = false
+repository_access = false
+component_store_access = false
+tenant_access = false
+profile_state_access = false
+host_access = false
+secret_access = false
+
+[data_boundary.classification]
+permitted_by_default = ["public"]
+requires_explicit_authority = ["internal", "personal", "sensitive", "restricted", "cultural_rights_restricted"]
+prohibited = ["secret", "no-AI"]
+
+[data_boundary.representations]
+allowed = ["explicitly_selected_text", "explicitly_selected_structured_data", "explicitly_selected_attachment"]
+exclude_unrelated_history = true
+exclude_hidden_metadata = true
+exclude_unrelated_tenant_data = true
+
+[network]
+direction = "egress_only"
+transport = "https"
+tls_required = true
+endpoint_source = "controlled_runtime_configuration"
+hard_coded_endpoint = false
+ingress_listener = false
+callbacks = false
+webhooks = false
+general_network_access = false
+
+[credentials]
+inline_credentials = false
+credential_source = "registered_secret_reference"
+credential_scope = "chatgpt_external_assistance_only"
+credential_reuse_for_other_services = false
+rotation_required = true
+revocation_required = true
+
+[provider_assurance]
+current_terms_resolution_required = true
+retention_resolution_required = true
+training_or_secondary_reuse_resolution_required = true
+data_location_resolution_required_when_applicable = true
+deletion_controls_resolution_required_when_applicable = true
+unresolved_assurance_blocks_operation = true
+model_or_service_drift_requires_reevaluation = true
+endpoint_drift_requires_reevaluation = true
+policy_drift_requires_reevaluation = true
+
+[adoption]
+controlled_import_required = true
+owning_component_validation_required = true
+owning_component_acceptance_required = true
+human_or_accountable_review_required = true
+provenance_required_when_accepted = true
+automatic_authoritative_adoption = false
+
+[prohibited_effects]
+direct_authoritative_store_write = false
+policy_decision = false
+privilege_authorization = false
+release_activation = false
+publication = false
+rights_determination = false
+arbitrary_tool_execution = false
+shell_access = false
+protected_signing_access = false
+node_agent_access = false
+
+[removal]
+removable_without_core_failure = true
+preserve_authoritative_local_data = true
+preserve_accepted_output_provenance = true
+remove_credentials_and_endpoint_configuration = true
+hidden_fallback_prohibited = true

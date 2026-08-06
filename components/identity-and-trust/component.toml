@@ -1,0 +1,60 @@
+schema_version = "1"
+component_id = "identity_and_trust"
+name = "Identity and Trust"
+version = "1.0.0"
+contract = "docs/contracts/components/identity-and-trust.component.json"
+component_type = "system_component"
+owner = "security-architecture"
+language = "python"
+
+[entrypoints]
+module = "koa_identity_and_trust"
+console = "koa-identity-and-trust"
+bootstrap = "koa_identity_and_trust.bootstrap:bootstrap"
+
+[public_interfaces]
+commands = [
+  "authenticate_subject",
+  "authenticate_service",
+  "validate_credential",
+  "verify_signature",
+  "issue_credential",
+  "register_trust_root",
+  "revoke_trust_object",
+  "apply_offline_trust_update",
+]
+queries = [
+  "resolve_identity",
+  "resolve_trust_context",
+  "get_component_status",
+]
+
+[health]
+transport = "http_over_unix"
+liveness_path = "/health/liveness"
+readiness_path = "/health/readiness"
+status_query = "get_component_status"
+
+[state]
+owner = "identity_and_trust"
+root = "/var/lib/koa/identity-and-trust"
+runtime_root = "/run/koa/identity-and-trust"
+socket = "/run/koa/sockets/identity-and-trust.sock"
+direct_cross_component_writes = false
+
+[package]
+python_distribution = "koa-identity-and-trust"
+import_package = "koa_identity_and_trust"
+payload = "components/identity-and-trust/packaging/payload.toml"
+
+[dependencies]
+public_python_interfaces = "koa_interfaces"
+components = []
+private_component_imports = false
+
+[authority]
+authentication_is_authorization = false
+implicit_trust_scope_expansion = false
+unknown_scope_fails_closed = true
+unknown_version_fails_closed = true
+private_material_in_receipts = false

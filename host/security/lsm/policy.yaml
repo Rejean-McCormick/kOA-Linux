@@ -1,0 +1,511 @@
+{
+  "schema_version": 1,
+  "policy_id": "koa-host-lsm",
+  "version": "1.0.0",
+  "status": "active",
+  "profile": "sovereign_linux_node",
+  "default_action": "deny",
+  "controls": [
+    "SEC-INV-002",
+    "SEC-INV-003",
+    "SEC-INV-005",
+    "SEC-PRIV-001",
+    "SEC-PRIV-002",
+    "SEC-PRIV-003",
+    "SEC-ISO-002"
+  ],
+  "authority": {
+    "policy_owner": "host_platform",
+    "identity_owner": "identity_and_trust",
+    "privileged_executor": "koa_node_agent",
+    "capability_policy_owner": "host/security/capabilities/",
+    "operation_catalog_owner": "contracts/components/koa-node-agent.component.json",
+    "capabilities_are_granted_here": false,
+    "ui_visibility_is_authorization": false
+  },
+  "backend": {
+    "apparmor_profile_prefix": "koa.",
+    "selinux_module_name": "koa_host",
+    "selinux_module_version": "1.0.0",
+    "capability_composition": "external_bounding_set",
+    "unknown_object_result": "reject",
+    "unknown_domain_result": "reject"
+  },
+  "objects": [
+    {
+      "id": "runtime_libraries",
+      "class": "immutable",
+      "managed_label": false,
+      "selinux_type": "lib_t",
+      "apparmor_read": [
+        "/etc/ld.so.cache",
+        "/etc/nsswitch.conf",
+        "/etc/passwd",
+        "/etc/group",
+        "/lib/**",
+        "/lib64/**",
+        "/usr/lib/**",
+        "/usr/lib64/**"
+      ],
+      "selinux_file_contexts": []
+    },
+    {
+      "id": "koa_immutable",
+      "class": "immutable",
+      "managed_label": true,
+      "selinux_type": "koa_immutable_t",
+      "apparmor_read": [
+        "/usr/lib/koa/**",
+        "/usr/share/koa/**"
+      ],
+      "selinux_file_contexts": [
+        "/usr/lib/koa(/.*)?",
+        "/usr/share/koa(/.*)?"
+      ]
+    },
+    {
+      "id": "broker_helpers",
+      "class": "executable",
+      "managed_label": true,
+      "selinux_type": "koa_broker_helper_exec_t",
+      "apparmor_read": [
+        "/usr/libexec/koa/koa-activation",
+        "/usr/libexec/koa/koa-offline-import",
+        "/usr/libexec/koa/koa-backup",
+        "/usr/libexec/koa/koa-maintenance"
+      ],
+      "selinux_file_contexts": [
+        "/usr/libexec/koa/koa-activation",
+        "/usr/libexec/koa/koa-offline-import",
+        "/usr/libexec/koa/koa-backup",
+        "/usr/libexec/koa/koa-maintenance"
+      ]
+    },
+    {
+      "id": "active_configuration",
+      "class": "configuration",
+      "managed_label": true,
+      "selinux_type": "koa_active_config_t",
+      "apparmor_read": [
+        "/etc/koa/active/",
+        "/etc/koa/active/**"
+      ],
+      "selinux_file_contexts": [
+        "/etc/koa/active(/.*)?"
+      ]
+    },
+    {
+      "id": "trust_configuration",
+      "class": "configuration",
+      "managed_label": true,
+      "selinux_type": "koa_trust_config_t",
+      "apparmor_read": [
+        "/etc/koa/trust/",
+        "/etc/koa/trust/**"
+      ],
+      "selinux_file_contexts": [
+        "/etc/koa/trust(/.*)?"
+      ]
+    },
+    {
+      "id": "identity_configuration",
+      "class": "configuration",
+      "managed_label": true,
+      "selinux_type": "koa_identity_config_t",
+      "apparmor_read": [
+        "/etc/koa/components/identity-and-trust/",
+        "/etc/koa/components/identity-and-trust/**"
+      ],
+      "selinux_file_contexts": [
+        "/etc/koa/components/identity-and-trust(/.*)?"
+      ]
+    },
+    {
+      "id": "node_configuration",
+      "class": "configuration",
+      "managed_label": true,
+      "selinux_type": "koa_node_config_t",
+      "apparmor_read": [
+        "/etc/koa/node/",
+        "/etc/koa/node/**",
+        "/etc/koa/components/koa-node-agent/",
+        "/etc/koa/components/koa-node-agent/**"
+      ],
+      "selinux_file_contexts": [
+        "/etc/koa/node(/.*)?",
+        "/etc/koa/components/koa-node-agent(/.*)?"
+      ]
+    },
+    {
+      "id": "identity_state",
+      "class": "state",
+      "managed_label": true,
+      "selinux_type": "koa_identity_state_t",
+      "apparmor_read": [
+        "/var/lib/koa/identity-and-trust/",
+        "/var/lib/koa/identity-and-trust/**"
+      ],
+      "selinux_file_contexts": [
+        "/var/lib/koa/identity-and-trust(/.*)?"
+      ]
+    },
+    {
+      "id": "node_state",
+      "class": "state",
+      "managed_label": true,
+      "selinux_type": "koa_node_state_t",
+      "apparmor_read": [
+        "/var/lib/koa/node/",
+        "/var/lib/koa/node/**"
+      ],
+      "selinux_file_contexts": [
+        "/var/lib/koa/node(/.*)?"
+      ]
+    },
+    {
+      "id": "artifact_state",
+      "class": "state",
+      "managed_label": true,
+      "selinux_type": "koa_artifact_state_t",
+      "apparmor_read": [
+        "/var/lib/koa/artifacts/",
+        "/var/lib/koa/artifacts/**"
+      ],
+      "selinux_file_contexts": [
+        "/var/lib/koa/artifacts(/.*)?"
+      ]
+    },
+    {
+      "id": "release_state",
+      "class": "state",
+      "managed_label": true,
+      "selinux_type": "koa_release_state_t",
+      "apparmor_read": [
+        "/var/lib/koa/releases/",
+        "/var/lib/koa/releases/**"
+      ],
+      "selinux_file_contexts": [
+        "/var/lib/koa/releases(/.*)?"
+      ]
+    },
+    {
+      "id": "receipt_state",
+      "class": "state",
+      "managed_label": true,
+      "selinux_type": "koa_receipt_state_t",
+      "apparmor_read": [
+        "/var/lib/koa/receipts/",
+        "/var/lib/koa/receipts/**"
+      ],
+      "selinux_file_contexts": [
+        "/var/lib/koa/receipts(/.*)?"
+      ]
+    },
+    {
+      "id": "quarantine_state",
+      "class": "state",
+      "managed_label": true,
+      "selinux_type": "koa_quarantine_state_t",
+      "apparmor_read": [
+        "/var/lib/koa/quarantine/",
+        "/var/lib/koa/quarantine/**",
+        "/var/lib/koa/offline-import/",
+        "/var/lib/koa/offline-import/**"
+      ],
+      "selinux_file_contexts": [
+        "/var/lib/koa/quarantine(/.*)?",
+        "/var/lib/koa/offline-import(/.*)?"
+      ]
+    },
+    {
+      "id": "recovery_state",
+      "class": "state",
+      "managed_label": true,
+      "selinux_type": "koa_recovery_state_t",
+      "apparmor_read": [
+        "/var/lib/koa/recovery/",
+        "/var/lib/koa/recovery/**",
+        "/var/lib/koa-recovery/",
+        "/var/lib/koa-recovery/**"
+      ],
+      "selinux_file_contexts": [
+        "/var/lib/koa/recovery(/.*)?",
+        "/var/lib/koa-recovery(/.*)?"
+      ]
+    },
+    {
+      "id": "identity_runtime",
+      "class": "runtime",
+      "managed_label": true,
+      "selinux_type": "koa_identity_runtime_t",
+      "owner_domain": "identity_and_trust",
+      "apparmor_read": [
+        "/run/koa/identity-and-trust/",
+        "/run/koa/identity-and-trust/**",
+        "/run/koa/sockets/identity-and-trust.sock"
+      ],
+      "selinux_file_contexts": [
+        "/run/koa/identity-and-trust(/.*)?",
+        "/run/koa/sockets/identity-and-trust\\.sock"
+      ],
+      "peer_selinux_type": "koa_identity_and_trust_t"
+    },
+    {
+      "id": "node_runtime",
+      "class": "runtime",
+      "managed_label": true,
+      "selinux_type": "koa_node_runtime_t",
+      "owner_domain": "koa_node_agent",
+      "apparmor_read": [
+        "/run/koa/node/",
+        "/run/koa/node/**",
+        "/run/koa/sockets/koa-node-agent.sock"
+      ],
+      "selinux_file_contexts": [
+        "/run/koa/node(/.*)?",
+        "/run/koa/sockets/koa-node-agent\\.sock"
+      ],
+      "peer_selinux_type": "koa_node_agent_t"
+    },
+    {
+      "id": "broker_runtime",
+      "class": "runtime",
+      "managed_label": true,
+      "selinux_type": "koa_broker_runtime_t",
+      "owner_domain": "koa_privileged_broker",
+      "apparmor_read": [
+        "/run/koa/locks/",
+        "/run/koa/locks/**",
+        "/run/koa/sockets/koa-privileged-broker.sock"
+      ],
+      "selinux_file_contexts": [
+        "/run/koa/locks(/.*)?",
+        "/run/koa/sockets/koa-privileged-broker\\.sock"
+      ],
+      "peer_selinux_type": "koa_privileged_broker_t"
+    },
+    {
+      "id": "activation_runtime",
+      "class": "runtime",
+      "managed_label": true,
+      "selinux_type": "koa_activation_runtime_t",
+      "apparmor_read": [
+        "/run/koa/activation/",
+        "/run/koa/activation/**"
+      ],
+      "selinux_file_contexts": [
+        "/run/koa/activation(/.*)?"
+      ]
+    },
+    {
+      "id": "recovery_runtime",
+      "class": "runtime",
+      "managed_label": true,
+      "selinux_type": "koa_recovery_runtime_t",
+      "apparmor_read": [
+        "/run/koa/recovery/",
+        "/run/koa/recovery/**"
+      ],
+      "selinux_file_contexts": [
+        "/run/koa/recovery(/.*)?"
+      ]
+    },
+    {
+      "id": "audit_socket",
+      "class": "runtime",
+      "managed_label": true,
+      "selinux_type": "koa_audit_socket_t",
+      "owner_domain": "audit_broker",
+      "apparmor_read": [
+        "/run/koa/sockets/audit-broker.sock"
+      ],
+      "selinux_file_contexts": [
+        "/run/koa/sockets/audit-broker\\.sock"
+      ],
+      "peer_selinux_type": "koa_audit_broker_t"
+    },
+    {
+      "id": "governance_socket",
+      "class": "runtime",
+      "managed_label": true,
+      "selinux_type": "koa_governance_socket_t",
+      "owner_domain": "governance_policy_runtime",
+      "apparmor_read": [
+        "/run/koa/sockets/governance-policy-runtime.sock"
+      ],
+      "selinux_file_contexts": [
+        "/run/koa/sockets/governance-policy-runtime\\.sock"
+      ],
+      "peer_selinux_type": "koa_governance_policy_runtime_t"
+    },
+    {
+      "id": "resource_socket",
+      "class": "runtime",
+      "managed_label": true,
+      "selinux_type": "koa_resource_socket_t",
+      "owner_domain": "resource_governor",
+      "apparmor_read": [
+        "/run/koa/sockets/resource-governor.sock"
+      ],
+      "selinux_file_contexts": [
+        "/run/koa/sockets/resource-governor\\.sock"
+      ],
+      "peer_selinux_type": "koa_resource_governor_t"
+    },
+    {
+      "id": "systemd_private_socket",
+      "class": "host_control",
+      "managed_label": false,
+      "selinux_type": "init_var_run_t",
+      "peer_selinux_type": "init_t",
+      "apparmor_read": [
+        "/run/systemd/private"
+      ],
+      "selinux_file_contexts": []
+    },
+    {
+      "id": "system_bus_socket",
+      "class": "host_control",
+      "managed_label": false,
+      "selinux_type": "system_dbusd_var_run_t",
+      "peer_selinux_type": "system_dbusd_t",
+      "apparmor_read": [
+        "/run/dbus/system_bus_socket"
+      ],
+      "selinux_file_contexts": []
+    }
+  ],
+  "domains": [
+    {
+      "id": "identity_and_trust",
+      "service_identity": "koa-identity",
+      "apparmor_profile": "koa.identity-and-trust",
+      "selinux_type": "koa_identity_and_trust_t",
+      "read_objects": [
+        "runtime_libraries",
+        "koa_immutable",
+        "active_configuration",
+        "trust_configuration",
+        "identity_configuration",
+        "identity_state"
+      ],
+      "write_objects": [
+        "identity_state",
+        "identity_runtime"
+      ],
+      "execute_objects": [],
+      "connect_sockets": [
+        "audit_socket"
+      ],
+      "network_families": [
+        "unix"
+      ],
+      "capability_mode": "none",
+      "ptrace": false,
+      "arbitrary_exec": false,
+      "accept_sockets": [
+        "identity_runtime"
+      ]
+    },
+    {
+      "id": "koa_node_agent",
+      "service_identity": "koa-node-agent",
+      "apparmor_profile": "koa.koa-node-agent",
+      "selinux_type": "koa_node_agent_t",
+      "read_objects": [
+        "runtime_libraries",
+        "koa_immutable",
+        "active_configuration",
+        "trust_configuration",
+        "node_configuration",
+        "node_state"
+      ],
+      "write_objects": [
+        "node_state",
+        "node_runtime",
+        "activation_runtime",
+        "receipt_state"
+      ],
+      "execute_objects": [],
+      "connect_sockets": [
+        "identity_runtime",
+        "governance_socket",
+        "audit_socket",
+        "resource_socket",
+        "broker_runtime"
+      ],
+      "network_families": [
+        "unix"
+      ],
+      "capability_mode": "none",
+      "ptrace": false,
+      "arbitrary_exec": false,
+      "accept_sockets": [
+        "node_runtime"
+      ]
+    },
+    {
+      "id": "koa_privileged_broker",
+      "service_identity": "koa-privileged-broker",
+      "apparmor_profile": "koa.koa-privileged-broker",
+      "selinux_type": "koa_privileged_broker_t",
+      "read_objects": [
+        "runtime_libraries",
+        "koa_immutable",
+        "active_configuration",
+        "trust_configuration",
+        "node_configuration",
+        "node_state",
+        "artifact_state",
+        "release_state",
+        "receipt_state",
+        "quarantine_state",
+        "recovery_state"
+      ],
+      "write_objects": [
+        "active_configuration",
+        "node_state",
+        "artifact_state",
+        "release_state",
+        "receipt_state",
+        "quarantine_state",
+        "recovery_state",
+        "broker_runtime",
+        "activation_runtime",
+        "recovery_runtime",
+        "systemd_private_socket",
+        "system_bus_socket"
+      ],
+      "execute_objects": [
+        "broker_helpers"
+      ],
+      "connect_sockets": [
+        "identity_runtime",
+        "governance_socket",
+        "audit_socket",
+        "resource_socket",
+        "systemd_private_socket",
+        "system_bus_socket"
+      ],
+      "network_families": [
+        "unix"
+      ],
+      "capability_mode": "external_bounding_set",
+      "ptrace": false,
+      "arbitrary_exec": false,
+      "accept_sockets": [
+        "broker_runtime"
+      ]
+    }
+  ],
+  "prohibitions": {
+    "shell_execution": true,
+    "arbitrary_service_names": true,
+    "arbitrary_paths": true,
+    "cross_component_database_access": true,
+    "public_network_listener": true,
+    "ambient_capabilities": true,
+    "break_glass_via_ordinary_domain": true,
+    "unscoped_trust_root_installation": true
+  }
+}
