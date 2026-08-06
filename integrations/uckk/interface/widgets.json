@@ -1,0 +1,44 @@
+[
+  {
+    "$schema": "../../../docs/contracts/artifact-contracts/topbar-widget.schema.json",
+    "widget_id": "uckk.publication-status",
+    "module_id": "uckk",
+    "kind": "status",
+    "slot": "status",
+    "priority": 60,
+    "scope": "module",
+    "label": "UCKK publication",
+    "label_key": "uckk.publication_status",
+    "icon_ref": null,
+    "required_capabilities": ["uckk_publication"],
+    "offline_behavior": "degraded",
+    "compact_only": true,
+    "activation": {
+      "kind": "status_provider",
+      "route_id": null,
+      "command_ref": null,
+      "status_provider_ref": "koa://integrations/uckk/publication-status"
+    }
+  },
+  {
+    "$schema": "../../../docs/contracts/artifact-contracts/topbar-widget.schema.json",
+    "widget_id": "uckk.import-status",
+    "module_id": "uckk",
+    "kind": "status",
+    "slot": "status",
+    "priority": 70,
+    "scope": "module",
+    "label": "UCKK import",
+    "label_key": "uckk.import_status",
+    "icon_ref": null,
+    "required_capabilities": ["uckk_import"],
+    "offline_behavior": "cached_read_only",
+    "compact_only": true,
+    "activation": {
+      "kind": "status_provider",
+      "route_id": null,
+      "command_ref": null,
+      "status_provider_ref": "koa://integrations/uckk/import-status"
+    }
+  }
+]

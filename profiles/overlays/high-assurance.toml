@@ -1,0 +1,66 @@
+format = "koa.profile-overlay/v1"
+overlay_id = "high_assurance"
+overlay_version = "1.0.0"
+source_contract = "docs/contracts/profiles/high-assurance.profile.json"
+implementation_settings = "profiles/implementation-settings/high-assurance.toml"
+independently_deployable = false
+preserve_primary_profile_identity = true
+composition_failure_result = "blocked"
+unresolved_conflicts_allowed = false
+
+[selection]
+requires_exactly_one_primary_profile = true
+compatible_primary_profiles = [
+  "build_farm",
+  "control_plane",
+  "developer_linux_workstation",
+  "sovereign_hub",
+  "sovereign_linux_node",
+  "user_lightweight",
+]
+incompatible_primary_profiles = ["developer_windows_wsl"]
+compatible_overlays = ["appliance_shell", "sovereign_offline"]
+incompatible_overlays = []
+
+[ordering]
+after = ["primary_profile"]
+before = ["appliance_shell", "sovereign_offline"]
+
+[authority]
+may_weaken_global_invariants = false
+may_expand_primary_capabilities = false
+may_broaden_data_ownership = false
+may_broaden_external_integrations = false
+may_add_required_control_components = true
+
+[merge]
+permissions = "intersection"
+obligations = "union"
+resource_minimums = "maximum"
+resource_maximums = "minimum"
+network_exposure = "most_restrictive"
+audit_and_evidence = "most_complete"
+retention = "most_restrictive_compatible_rule"
+conflict = "blocked"
+
+[validation]
+required_contract_sections = [
+  "composition",
+  "component_policy",
+  "hardware_assurance",
+  "host_and_runtime_security",
+  "identity_and_access",
+  "key_and_secret_custody",
+  "network_security",
+  "audit_and_evidence",
+  "recovery_and_resilience",
+  "conformance",
+]
+reject_when = [
+  "primary_profile_count_is_not_one",
+  "primary_profile_is_incompatible",
+  "selected_overlay_is_incompatible",
+  "required_control_component_is_unavailable",
+  "merge_conflict_is_unresolved",
+  "required_evidence_is_missing_or_expired",
+]

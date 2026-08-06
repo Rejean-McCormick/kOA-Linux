@@ -1,0 +1,61 @@
+format = "koa.profile-overlay/v1"
+overlay_id = "sovereign_offline"
+overlay_version = "1.0.0"
+source_contract = "docs/contracts/profiles/sovereign-offline.profile.json"
+implementation_settings = "profiles/implementation-settings/sovereign-offline.toml"
+independently_deployable = false
+preserve_primary_profile_identity = true
+composition_failure_result = "blocked"
+unresolved_conflicts_allowed = false
+
+[selection]
+requires_exactly_one_primary_profile = true
+compatible_primary_profiles = ["sovereign_hub", "sovereign_linux_node"]
+incompatible_primary_profiles = [
+  "build_farm",
+  "control_plane",
+  "developer_linux_workstation",
+  "developer_windows_wsl",
+  "user_lightweight",
+]
+compatible_overlays = ["appliance_shell", "high_assurance"]
+incompatible_overlays = []
+
+[ordering]
+after = ["primary_profile", "high_assurance"]
+before = ["appliance_shell"]
+
+[authority]
+may_weaken_global_invariants = false
+may_broaden_component_authority = false
+may_merge_component_authority = false
+may_broaden_external_dependencies = false
+may_add_offline_requirements = true
+
+[merge]
+strategy = "deny_ambiguous_composition"
+permissions = "intersection"
+obligations = "union"
+network_exposure = "most_restrictive"
+external_dependencies = "most_restrictive"
+conflict = "blocked"
+
+[validation]
+required_contract_sections = [
+  "composition",
+  "component_policy",
+  "offline_artifact_flow",
+  "offline_operation",
+  "security",
+  "conformance",
+]
+reject_when = [
+  "primary_profile_count_is_not_one",
+  "primary_profile_is_incompatible",
+  "selected_overlay_is_incompatible",
+  "required_offline_artifact_is_unavailable",
+  "external_dependency_remains_required",
+  "component_authority_would_be_merged",
+  "merge_conflict_is_unresolved",
+  "required_test_or_evidence_is_missing",
+]

@@ -1,20 +1,29 @@
-# Generated output root
+# Generated build outputs
 
-`generated/` is the deterministic build-output root for kOA code, deployment, profile, image, release, lock, catalog, and test-fixture projections.
+This directory is the non-normative root for reproducible code and deployment
+projections. Content produced here is derived from canonical contracts,
+schemas, profiles, assembly inputs, packaging declarations, and release
+policies. It does not create or override system authority.
 
-Only this file and `.gitignore` are maintained manually. Every other path below this directory MUST be produced by an approved generator from canonical contracts and explicit build inputs. Manual edits cannot create authority and MUST be discarded by the next clean rebuild.
+Except for this file and `.gitignore`, files under `generated/` must not be
+created or edited manually. A generated output is admissible only when it is:
 
-## Required properties
+- produced by a declared generator or reproducibly attributed to a build manifest;
+- written to a declared generated path;
+- deterministic for the same registered inputs;
+- attributable to its source references and source digest;
+- validated before packaging, release, or activation.
 
-Generated outputs MUST:
+The public generation entrypoints are provided by `koa_tools` and the assembly
+package. Depending on the output class, use the applicable `koa_tools`
+`assemble`, `build-bundle`, `build-image`, `release`, or `generate` command.
+Output paths supplied to these commands must remain beneath `generated/`.
 
-- identify their generator and generator version, or be reproducibly attributable to an immutable build manifest;
-- identify or bind the digests of their canonical inputs;
-- use deterministic ordering, timestamps supplied by the build context, and stable serialization;
-- remain outside component and data authority boundaries;
-- be reproducible by a clean build;
-- fail closed when a required input, contract, signature, compatibility result, or evidence reference is unresolved.
+The complete generated-root policy and its two manually maintained sentinel
+exceptions are registered in `.koa/generated-paths.json`. Canonical behavior is
+owned by the referenced documents and contracts, not by this README.
 
-Typical subtrees include `bindings/`, `profiles/`, `deployments/`, `images/`, `release/manifests/`, `release/locks/`, `release/evidence/`, and `test-fixtures/`. These names describe outputs only; they do not establish new source authorities.
-
-A clean-tree validation MUST fail when any generated output is committed outside the exceptions in `.gitignore` or when a rebuild differs from the recorded output.
+To discard local dynamic outputs while retaining the sentinels, remove every
+entry in this directory except `.gitignore` and `README.md`, then rerun the
+applicable declared generator. Do not restore an output from an undeclared
+fallback or substitute source.

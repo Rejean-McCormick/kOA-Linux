@@ -1,0 +1,70 @@
+format = "koa.profile-overlay/v1"
+overlay_id = "appliance_shell"
+overlay_version = "1.0.0"
+source_contract = "docs/contracts/profiles/appliance-shell.profile.json"
+implementation_settings = "profiles/implementation-settings/appliance-shell.toml"
+independently_deployable = false
+preserve_primary_profile_identity = true
+composition_failure_result = "blocked"
+unresolved_conflicts_allowed = false
+
+[selection]
+requires_exactly_one_primary_profile = true
+compatible_primary_profiles = ["sovereign_linux_node", "user_lightweight"]
+incompatible_primary_profiles = [
+  "build_farm",
+  "control_plane",
+  "developer_linux_workstation",
+  "developer_windows_wsl",
+  "sovereign_hub",
+]
+compatible_overlays = ["high_assurance", "sovereign_offline"]
+incompatible_overlays = []
+required_base_capabilities = ["ariane_local_navigation", "interactive_user"]
+
+[selection.required_host_properties]
+operating_system_family = "linux"
+local_graphical_seat = true
+wayland_capable = true
+local_input_available = true
+
+[ordering]
+after = ["primary_profile", "high_assurance", "sovereign_offline"]
+before = []
+
+[authority]
+may_weaken_global_invariants = false
+may_broaden_authority = false
+may_broaden_data_ownership = false
+may_broaden_external_integrations = false
+may_change_primary_profile_identity = false
+
+[merge]
+base_components = "inherit"
+base_resources = "inherit"
+base_security = "inherit"
+base_offline_envelope = "inherit"
+explicit_overlay_restrictions = "apply"
+conflict = "blocked"
+
+[validation]
+required_contract_sections = [
+  "composition",
+  "operating_modes",
+  "shell",
+  "components",
+  "capabilities",
+  "security",
+  "offline_behavior",
+  "conformance",
+]
+reject_when = [
+  "primary_profile_count_is_not_one",
+  "primary_profile_is_incompatible",
+  "required_host_property_is_missing",
+  "required_base_capability_is_missing",
+  "full_general_purpose_desktop_is_active",
+  "development_workspace_is_available_in_ordinary_session",
+  "unrestricted_external_navigation_is_available",
+  "merge_conflict_is_unresolved",
+]

@@ -1,0 +1,311 @@
+name: CI / System Image
+
+on:
+  workflow_call:
+    inputs:
+      source_root:
+        description: Repository-relative admitted materialized rootfs source directory.
+        required: true
+        type: string
+      package_resolution:
+        description: Repository-relative immutable package-resolution JSON.
+        required: true
+        type: string
+      release_set_verification:
+        description: Repository-relative verified Release Set receipt.
+        required: true
+        type: string
+      provenance:
+        description: Repository-relative provenance statement bound to the rootfs subject.
+        required: true
+        type: string
+      sbom:
+        description: Repository-relative SBOM bound to the rootfs subject.
+        required: true
+        type: string
+      signature_attestation:
+        description: Repository-relative pre-existing signature verification attestation.
+        required: true
+        type: string
+      image_id:
+        description: Immutable system-image identity.
+        required: true
+        type: string
+      image_version:
+        description: Semantic system-image version.
+        required: true
+        type: string
+      profile:
+        description: Canonical target profile identifier.
+        required: true
+        type: string
+      source_date_epoch:
+        description: Non-negative deterministic build epoch.
+        required: true
+        type: string
+    outputs:
+      artifact_name:
+        description: Name of the uploaded verified image candidate artifact.
+        value: ${{ jobs.system_image.outputs.artifact_name }}
+      evidence_manifest_sha256:
+        description: SHA-256 of the image evidence manifest.
+        value: ${{ jobs.system_image.outputs.evidence_manifest_sha256 }}
+  workflow_dispatch:
+    inputs:
+      source_root:
+        description: Repository-relative admitted materialized rootfs source directory.
+        required: true
+        type: string
+      package_resolution:
+        description: Repository-relative immutable package-resolution JSON.
+        required: true
+        type: string
+      release_set_verification:
+        description: Repository-relative verified Release Set receipt.
+        required: true
+        type: string
+      provenance:
+        description: Repository-relative provenance statement bound to the rootfs subject.
+        required: true
+        type: string
+      sbom:
+        description: Repository-relative SBOM bound to the rootfs subject.
+        required: true
+        type: string
+      signature_attestation:
+        description: Repository-relative pre-existing signature verification attestation.
+        required: true
+        type: string
+      image_id:
+        description: Immutable system-image identity.
+        required: true
+        type: string
+      image_version:
+        description: Semantic system-image version.
+        required: true
+        type: string
+      profile:
+        description: Canonical target profile identifier.
+        required: true
+        default: sovereign_linux_node
+        type: string
+      source_date_epoch:
+        description: Non-negative deterministic build epoch.
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system-image-${{ github.repository }}-${{ github.sha }}-${{ inputs.image_id }}-${{ inputs.image_version }}
+  cancel-in-progress: false
+
+jobs:
+  system_image:
+    name: system-image
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    outputs:
+      artifact_name: ${{ steps.evidence.outputs.artifact_name }}
+      evidence_manifest_sha256: ${{ steps.evidence.outputs.evidence_manifest_sha256 }}
+    env:
+      SOURCE_ROOT: ${{ inputs.source_root }}
+      PACKAGE_RESOLUTION: ${{ inputs.package_resolution }}
+      RELEASE_SET_VERIFICATION: ${{ inputs.release_set_verification }}
+      PROVENANCE: ${{ inputs.provenance }}
+      SBOM: ${{ inputs.sbom }}
+      SIGNATURE_ATTESTATION: ${{ inputs.signature_attestation }}
+      IMAGE_ID: ${{ inputs.image_id }}
+      IMAGE_VERSION: ${{ inputs.image_version }}
+      PROFILE: ${{ inputs.profile }}
+      SOURCE_DATE_EPOCH: ${{ inputs.source_date_epoch }}
+      OUTPUT_DIRECTORY: generated/system-image
+    steps:
+      - name: Check out immutable source revision
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Provision declared Python runtime
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405
+        with:
+          python-version: '3.13'
+
+      - name: Validate dependencies and bounded inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import os
+          from pathlib import Path, PurePosixPath
+
+          root = Path.cwd().resolve(strict=True)
+          required_files = (
+              "ci/scripts/run-system-tests.py",
+              "ci/scripts/run-reproducibility.py",
+              "host/image/build-rootfs.py",
+              "host/image/seal-image.py",
+              "host/image/verify-image.py",
+              "host/image/base-packages.yaml",
+              "host/image/filesystem-layout.yaml",
+              "host/image/partition-layout.yaml",
+              "host/image/image-manifest.yaml",
+          )
+          missing = [path for path in required_files if not (root / path).is_file()]
+          if missing:
+              raise SystemExit("missing B-0115 or image dependency files: " + ", ".join(missing))
+
+          def resolve_input(name: str, *, directory: bool = False) -> Path:
+              raw = os.environ[name]
+              pure = PurePosixPath(raw)
+              if not raw or pure.is_absolute() or ".." in pure.parts:
+                  raise SystemExit(f"{name} must be a normalized repository-relative path")
+              path = (root / Path(*pure.parts)).resolve(strict=True)
+              try:
+                  path.relative_to(root)
+              except ValueError as exc:
+                  raise SystemExit(f"{name} escapes the repository") from exc
+              if path.is_symlink() or (directory and not path.is_dir()) or (not directory and not path.is_file()):
+                  expected = "directory" if directory else "regular file"
+                  raise SystemExit(f"{name} must identify a non-symlink {expected}")
+              return path
+
+          resolve_input("SOURCE_ROOT", directory=True)
+          for variable in (
+              "PACKAGE_RESOLUTION",
+              "RELEASE_SET_VERIFICATION",
+              "PROVENANCE",
+              "SBOM",
+              "SIGNATURE_ATTESTATION",
+          ):
+              resolve_input(variable)
+
+          epoch = os.environ["SOURCE_DATE_EPOCH"]
+          if not epoch.isdigit() or int(epoch) < 0:
+              raise SystemExit("SOURCE_DATE_EPOCH must be a non-negative integer")
+          for variable in ("IMAGE_ID", "IMAGE_VERSION", "PROFILE"):
+              if not os.environ[variable].strip():
+                  raise SystemExit(f"{variable} must be non-empty")
+          PY
+          python ci/scripts/run-system-tests.py --check-config
+          python ci/scripts/run-reproducibility.py --check-config
+
+      - name: Build deterministic rootfs candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf "$OUTPUT_DIRECTORY"
+          mkdir -p "$OUTPUT_DIRECTORY"
+          python host/image/build-rootfs.py \
+            --source-root "$SOURCE_ROOT" \
+            --output-dir "$OUTPUT_DIRECTORY" \
+            --base-packages host/image/base-packages.yaml \
+            --filesystem-layout host/image/filesystem-layout.yaml \
+            --partition-layout host/image/partition-layout.yaml \
+            --image-manifest host/image/image-manifest.yaml \
+            --package-resolution "$PACKAGE_RESOLUTION" \
+            --source-date-epoch "$SOURCE_DATE_EPOCH" \
+            --archive-name rootfs.tar \
+            --build-manifest-name build-manifest.json
+
+      - name: Bind pre-existing verification evidence into image seal
+        shell: bash
+        run: |
+          set -euo pipefail
+          python host/image/seal-image.py \
+            --rootfs "$OUTPUT_DIRECTORY/rootfs.tar" \
+            --build-manifest "$OUTPUT_DIRECTORY/build-manifest.json" \
+            --release-set-verification "$RELEASE_SET_VERIFICATION" \
+            --provenance "$PROVENANCE" \
+            --sbom "$SBOM" \
+            --signature-attestation "$SIGNATURE_ATTESTATION" \
+            --image-id "$IMAGE_ID" \
+            --image-version "$IMAGE_VERSION" \
+            --profile "$PROFILE" \
+            --output "$OUTPUT_DIRECTORY/image-seal.json"
+
+      - name: Re-verify sealed system image
+        shell: bash
+        run: |
+          set -euo pipefail
+          python host/image/verify-image.py \
+            --seal "$OUTPUT_DIRECTORY/image-seal.json" \
+            --rootfs "$OUTPUT_DIRECTORY/rootfs.tar" \
+            --build-manifest "$OUTPUT_DIRECTORY/build-manifest.json" \
+            --release-set-verification "$RELEASE_SET_VERIFICATION" \
+            --provenance "$PROVENANCE" \
+            --sbom "$SBOM" \
+            --signature-attestation "$SIGNATURE_ATTESTATION" \
+            --output "$OUTPUT_DIRECTORY/image-verification.json"
+
+      - name: Record exact image and evidence digests
+        id: evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path.cwd().resolve(strict=True)
+          output = root / os.environ["OUTPUT_DIRECTORY"]
+
+          def record(path: Path) -> dict[str, object]:
+              raw = path.read_bytes()
+              return {
+                  "path": path.relative_to(root).as_posix(),
+                  "sha256": hashlib.sha256(raw).hexdigest(),
+                  "size": len(raw),
+              }
+
+          produced = [
+              output / "rootfs.tar",
+              output / "build-manifest.json",
+              output / "image-seal.json",
+              output / "image-verification.json",
+          ]
+          inputs = [
+              root / os.environ["PACKAGE_RESOLUTION"],
+              root / os.environ["RELEASE_SET_VERIFICATION"],
+              root / os.environ["PROVENANCE"],
+              root / os.environ["SBOM"],
+              root / os.environ["SIGNATURE_ATTESTATION"],
+          ]
+          manifest = {
+              "schema_version": "1.0.0",
+              "evidence_class": "system_image",
+              "source_revision": os.environ["GITHUB_SHA"],
+              "source_date_epoch": int(os.environ["SOURCE_DATE_EPOCH"]),
+              "image_id": os.environ["IMAGE_ID"],
+              "image_version": os.environ["IMAGE_VERSION"],
+              "profile": os.environ["PROFILE"],
+              "activation_authorized": False,
+              "verification_required": True,
+              "inputs": [record(path) for path in inputs],
+              "outputs": [record(path) for path in produced],
+          }
+          manifest_path = output / "system-image-evidence-manifest.json"
+          raw = (json.dumps(manifest, sort_keys=True, separators=(",", ":")) + "\n").encode()
+          manifest_path.write_bytes(raw)
+          digest = hashlib.sha256(raw).hexdigest()
+          artifact_name = f"system-image-{os.environ['GITHUB_SHA']}"
+          github_output = Path(os.environ["GITHUB_OUTPUT"])
+          with github_output.open("a", encoding="utf-8") as stream:
+              stream.write(f"artifact_name={artifact_name}\n")
+              stream.write(f"evidence_manifest_sha256={digest}\n")
+          PY
+
+      - name: Upload verified image candidate and evidence
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: ${{ steps.evidence.outputs.artifact_name }}
+          path: generated/system-image
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0
+          overwrite: false
+          include-hidden-files: false

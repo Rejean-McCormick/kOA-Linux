@@ -1,0 +1,42 @@
+schema_version = "1.0.0"
+integration_id = "uckk"
+storage_owner = "koa"
+shared_authoritative_storage = false
+direct_uckk_database_access = false
+direct_koa_mediatheque_database_access = false
+credentials_in_storage = false
+
+[publication]
+state_owner = "uckk_publication_bridge"
+queue_namespace = "queue://uckk/publication"
+workflow_namespace = "workflow://uckk/publication"
+receipt_reference_namespace = "receipt://uckk/publication"
+source_payload_storage_owner = "koa_mediatheque"
+remote_object_storage_owner = "uckk"
+queue_bounded_by_profile = true
+remote_success_requires_validated_receipt = true
+
+[import]
+state_owner = "uckk_import_bridge"
+queue_namespace = "queue://uckk/import"
+quarantine_namespace = "quarantine://uckk/import"
+receipt_reference_namespace = "receipt://uckk/import"
+accepted_record_storage_owner = "koa_mediatheque"
+remote_source_storage_owner = "uckk"
+quarantine_bounded_by_profile = true
+incomplete_package_remains_quarantined = true
+acceptance_creates_separate_local_identity = true
+
+[separation]
+publication_and_import_queues_shared = false
+publication_and_import_credentials_shared = false
+publication_and_import_receipts_shared = false
+publication_and_import_retry_state_shared = false
+reconnection_starts_sync = false
+
+[retention]
+queue_retention = "profile_defined_bounded"
+quarantine_retention = "profile_defined_bounded"
+terminal_receipt_retention = "receipt_owner_policy"
+dead_letter_retention = "profile_defined_bounded"
+cleanup_requires_evidence = true

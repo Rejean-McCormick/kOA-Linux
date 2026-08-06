@@ -1,0 +1,59 @@
+schema_version = "1.0.0"
+integration_id = "uckk"
+deployment_owner = "koa"
+activation_mode = "profile_defined_optional"
+external_platform_process_managed_by_koa = false
+adapter_process_model = "koa_owned_boundary_process"
+partial_activation_allowed = true
+generic_sync_process_allowed = false
+
+[profile_resolution]
+owner = "docs/contracts/profiles/*.profile.json"
+implicit_membership_allowed = false
+overlay_may_only_narrow = true
+unsupported_profile_result = "integration_unavailable"
+
+[process_boundary]
+adapter_process_separate = true
+direct_host_privilege = false
+privileged_broker_required_for_host_operations = true
+shell_execution_interface_exposed = false
+public_listener_allowed = false
+
+[network]
+default_policy = "deny"
+allowlisted_https_endpoints_only = true
+undeclared_egress_allowed = false
+direct_database_access = false
+credentials_from_managed_secret_store = true
+credentials_in_repository = false
+
+[directions.publish_to_uckk]
+credential_identity = "uckk_publication"
+queue_identity = "uckk_publication_queue"
+retry_state_identity = "uckk_publication_retry"
+receipt_identity = "uckk_publication_receipt"
+remote_operations_source = "docs/contracts/integrations/uckk-publication.integration.json#/allowed_operations"
+
+[directions.import_from_uckk]
+credential_identity = "uckk_import"
+queue_identity = "uckk_import_queue"
+retry_state_identity = "uckk_import_retry"
+receipt_identity = "uckk_import_receipt"
+quarantine_identity = "uckk_import_quarantine"
+remote_operations_source = "docs/contracts/integrations/uckk-import.integration.json#/allowed_operations"
+
+[lifecycle]
+states = ["declared", "validated", "staged", "active", "degraded", "blocked", "disabled", "superseded"]
+activation_preconditions = [
+  "source_pin_verified",
+  "directional_contracts_valid",
+  "compatibility_verified",
+  "profile_membership_resolved",
+  "resource_envelope_admitted",
+  "health_contract_loaded",
+  "receipt_paths_available",
+]
+failed_start_result = "direction_unavailable"
+previous_verified_configuration_retained = true
+rollback_or_disable_required = true

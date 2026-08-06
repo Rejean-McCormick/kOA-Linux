@@ -1,0 +1,38 @@
+name: CI / Security
+
+"on":
+  merge_group:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-security-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  security:
+    name: security
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      PYTHONHASHSEED: "0"
+      UV_NO_PROGRESS: "1"
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install UV
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: false
+      - name: Synchronize frozen workspace
+        run: uv sync --frozen --all-groups
+      - name: Run security validation
+        run: uv run --frozen python ci/scripts/run-security.py

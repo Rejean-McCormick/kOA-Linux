@@ -1,0 +1,108 @@
+name: Architecture change
+description: Propose a semantic, structural, ownership, boundary, or canonical-path change.
+title: "[Architecture]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form only for changes that may alter canonical meaning, ownership, boundaries, compatibility, privilege, persistent state, release responsibility, or a frozen path. Start from `docs/AI_CONTEXT.md` and identify the owning authority before proposing implementation.
+  - type: input
+    id: change_id
+    attributes:
+      label: Stable change identifier
+      description: Provide the assigned CHG-ID. Do not invent a temporary identifier in implementation.
+      placeholder: CHG-YYYY-NNN
+    validations:
+      required: true
+  - type: input
+    id: owner_decisions
+    attributes:
+      label: Accepted owner decision references
+      description: List the accepted decision IDs that authorize this semantic change.
+      placeholder: DEC-...; ADR-...
+    validations:
+      required: true
+  - type: dropdown
+    id: semantic_class
+    attributes:
+      label: Semantic change class
+      description: Select the largest applicable class when classification is ambiguous.
+      options:
+        - patch — meaning and compatibility preserved
+        - minor — backward-compatible extension
+        - major — incompatible, canonical-path, ownership, lock, or authority change
+    validations:
+      required: true
+  - type: textarea
+    id: canonical_targets
+    attributes:
+      label: Canonical targets
+      description: List exact paths, JSON Pointers, object IDs, contracts, requirements, locks, and profiles targeted by the change.
+      placeholder: |
+        - path: docs/contracts/...
+          pointer: /...
+          object_id: ...
+    validations:
+      required: true
+  - type: textarea
+    id: current_problem
+    attributes:
+      label: Current state and problem
+      description: Describe the current authoritative behavior, the observed limitation, and why an ordinary implementation change is insufficient.
+    validations:
+      required: true
+  - type: textarea
+    id: proposed_decision
+    attributes:
+      label: Proposed decision and resulting invariant
+      description: State the proposed authority, boundary, ownership, compatibility, or path rule precisely. Include explicit non-goals.
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Direct and transitive impact
+      description: Identify affected documents, contracts, components, profiles, integrations, generated outputs, tests, evidence, release gates, and consumers.
+      placeholder: |
+        Direct impact:
+        - ...
+        Transitive impact:
+        - ...
+        Dispositions:
+        - updated / reviewed_no_change / regenerated / deprecated / superseded / exception_applied / blocked
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility_migration
+    attributes:
+      label: Compatibility, migration, and activation
+      description: Describe compatibility adapters, migration ordering, activation prerequisites, version changes, and invalidation triggers. Write "Not applicable" with rationale when none apply.
+    validations:
+      required: true
+  - type: textarea
+    id: recovery
+    attributes:
+      label: Rollback or forward-repair plan
+      description: State how a complete previously valid authority state is restored, or why rollback is unsafe and forward repair is required.
+    validations:
+      required: true
+  - type: textarea
+    id: validation_evidence
+    attributes:
+      label: Validation and evidence plan
+      description: List exact local commands, tests, schemas, boundary checks, generated-content checks, and evidence required before activation.
+    validations:
+      required: true
+  - type: checkboxes
+    id: declarations
+    attributes:
+      label: Required declarations
+      options:
+        - label: I identified the canonical owner and loaded the applicable authority sources.
+          required: true
+        - label: I did not use generated indexes to invent or override a rule.
+          required: true
+        - label: I listed blocked or unresolved impacts instead of reporting them as passed.
+          required: true
+        - label: I will not modify a frozen path, ownership rule, lock, or authority without the accepted decision required by its mutation policy.
+          required: true

@@ -1,0 +1,138 @@
+{
+  "$schema": "../../../docs/contracts/artifact-contracts/module-interface-manifest.schema.json",
+  "manifest_id": "uckk.module-interface",
+  "manifest_version": "1.0.0",
+  "module_id": "uckk",
+  "public_name": "UCKK interchange",
+  "description": "Presentation-only entry points for the separate publish_to_uckk and import_from_uckk workflows. Visibility grants no authorization or acceptance.",
+  "icon_ref": null,
+  "home_route_id": "uckk.publication",
+  "required_capabilities": [],
+  "routes": [
+    {
+      "$schema": "../../../docs/contracts/artifact-contracts/route-contribution.schema.json",
+      "route_id": "uckk.publication",
+      "module_id": "uckk",
+      "path": "/uckk/publication",
+      "aliases": [],
+      "label_key": "uckk.publication",
+      "default_label": "Publish to UCKK",
+      "page_ref": "integration://uckk/publish_to_uckk",
+      "availability": "conditional",
+      "deep_link_allowed": true,
+      "offline_behavior": "degraded",
+      "safe_fallback_route_id": "uckk.publication",
+      "capability_policy": {
+        "required_capabilities": ["uckk_publication"],
+        "denied_behavior": "disabled"
+      }
+    },
+    {
+      "$schema": "../../../docs/contracts/artifact-contracts/route-contribution.schema.json",
+      "route_id": "uckk.import",
+      "module_id": "uckk",
+      "path": "/uckk/import",
+      "aliases": [],
+      "label_key": "uckk.import",
+      "default_label": "Import from UCKK",
+      "page_ref": "integration://uckk/import_from_uckk",
+      "availability": "conditional",
+      "deep_link_allowed": true,
+      "offline_behavior": "cached_read_only",
+      "safe_fallback_route_id": "uckk.import",
+      "capability_policy": {
+        "required_capabilities": ["uckk_import"],
+        "denied_behavior": "disabled"
+      }
+    }
+  ],
+  "sidebar": {
+    "$schema": "../../../docs/contracts/artifact-contracts/sidebar-navigation.schema.json",
+    "module_id": "uckk",
+    "visible_depth": 2,
+    "items": [
+      {
+        "item_id": "uckk.publication",
+        "label": "Publish to UCKK",
+        "label_key": "uckk.publication",
+        "order": 0,
+        "icon_ref": null,
+        "route_id": "uckk.publication",
+        "availability": "conditional",
+        "required_capabilities": ["uckk_publication"],
+        "badge_provider_ref": "koa://integrations/uckk/publication-status"
+      },
+      {
+        "item_id": "uckk.import",
+        "label": "Import from UCKK",
+        "label_key": "uckk.import",
+        "order": 10,
+        "icon_ref": null,
+        "route_id": "uckk.import",
+        "availability": "conditional",
+        "required_capabilities": ["uckk_import"],
+        "badge_provider_ref": "koa://integrations/uckk/import-status"
+      }
+    ]
+  },
+  "topbar_widgets": [
+    {
+      "$schema": "../../../docs/contracts/artifact-contracts/topbar-widget.schema.json",
+      "widget_id": "uckk.publication-status",
+      "module_id": "uckk",
+      "kind": "status",
+      "slot": "status",
+      "priority": 60,
+      "scope": "module",
+      "label": "UCKK publication",
+      "label_key": "uckk.publication_status",
+      "icon_ref": null,
+      "required_capabilities": ["uckk_publication"],
+      "offline_behavior": "degraded",
+      "compact_only": true,
+      "activation": {
+        "kind": "status_provider",
+        "route_id": null,
+        "command_ref": null,
+        "status_provider_ref": "koa://integrations/uckk/publication-status"
+      }
+    },
+    {
+      "$schema": "../../../docs/contracts/artifact-contracts/topbar-widget.schema.json",
+      "widget_id": "uckk.import-status",
+      "module_id": "uckk",
+      "kind": "status",
+      "slot": "status",
+      "priority": 70,
+      "scope": "module",
+      "label": "UCKK import",
+      "label_key": "uckk.import_status",
+      "icon_ref": null,
+      "required_capabilities": ["uckk_import"],
+      "offline_behavior": "cached_read_only",
+      "compact_only": true,
+      "activation": {
+        "kind": "status_provider",
+        "route_id": null,
+        "command_ref": null,
+        "status_provider_ref": "koa://integrations/uckk/import-status"
+      }
+    }
+  ],
+  "localization_refs": [],
+  "accessibility": {
+    "keyboard_navigation": true,
+    "screen_reader_labels": true,
+    "reduced_motion": "supported"
+  },
+  "offline_behavior": {
+    "module_state": "degraded",
+    "fallback_route_id": "uckk.import"
+  },
+  "authority_boundary": {
+    "presentation_only": true,
+    "may_grant_capabilities": false,
+    "menu_visibility_is_authorization": false,
+    "direct_domain_writes": false
+  }
+}

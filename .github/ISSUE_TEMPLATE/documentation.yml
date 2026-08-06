@@ -1,0 +1,84 @@
+name: Documentation change
+description: Propose a correction or clarification while preserving canonical ownership and generated-content rules.
+title: "[Documentation]: "
+body:
+  - type: input
+    id: document
+    attributes:
+      label: Document path and document ID
+      description: Identify the exact Markdown path and DOC-ID, or the exact contract path and object ID.
+      placeholder: docs/... — DOC-...
+    validations:
+      required: true
+  - type: dropdown
+    id: document_class
+    attributes:
+      label: Document or content class
+      options:
+        - Normative Markdown
+        - Explanatory Markdown
+        - Contract or schema
+        - Generated projection or generated block
+        - Recipe or example
+    validations:
+      required: true
+  - type: input
+    id: canonical_owner
+    attributes:
+      label: Canonical owner and authority source
+      description: State the owner and the source that owns the meaning being changed.
+      placeholder: owner_id — docs/contracts/... or docs/...
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Current text and problem
+      description: Quote only the minimum relevant text and explain whether it is incorrect, ambiguous, stale, inconsistent, or incomplete.
+    validations:
+      required: true
+  - type: textarea
+    id: proposed_change
+    attributes:
+      label: Proposed change
+      description: Describe the replacement meaning and why it remains within the current authority. Identify whether an accepted decision is required.
+    validations:
+      required: true
+  - type: dropdown
+    id: semantic_impact
+    attributes:
+      label: Semantic impact
+      options:
+        - Editorial only — no meaning or compatibility change
+        - Patch — meaning clarified without architectural change
+        - Minor — backward-compatible semantic extension
+        - Major — authority, compatibility, lock, ownership, or canonical-path change
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impacted references and generated outputs
+      description: List affected contracts, requirements, locks, profiles, documents, generated blocks, indexes, AI contexts, tests, and evidence. Use explicit dispositions.
+    validations:
+      required: true
+  - type: textarea
+    id: validation
+    attributes:
+      label: Validation plan
+      description: List exact documentation, schema, graph, lock, language, generated-content, and traceability commands to execute.
+    validations:
+      required: true
+  - type: checkboxes
+    id: declarations
+    attributes:
+      label: Required declarations
+      options:
+        - label: I will edit the canonical source before any derived or explanatory projection.
+          required: true
+        - label: I will not hand-edit generated files or generated blocks.
+          required: true
+        - label: I identified all affected objects and will record blocked or reviewed-no-change dispositions explicitly.
+          required: true
+        - label: I will preserve document metadata, terminology, stable identifiers, and canonical references.
+          required: true

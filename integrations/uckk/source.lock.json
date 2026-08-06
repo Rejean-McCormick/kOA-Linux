@@ -1,0 +1,71 @@
+{
+  "lock_version": "1.0.0",
+  "source_id": "uckk",
+  "source_class": "external_platform",
+  "pin_state": "blocked_missing_external_platform_release_metadata",
+  "repository_or_bundle": null,
+  "immutable_revision": null,
+  "source_digest": null,
+  "license_metadata": {
+    "spdx_expression": null,
+    "license_files": [],
+    "verified": false
+  },
+  "expected_documentation_release": null,
+  "verification": {
+    "status": "blocked",
+    "network_lookup_allowed": false,
+    "activation_allowed": false,
+    "blocked_reasons": [
+      "repository_or_bundle_not_provided",
+      "immutable_revision_not_provided",
+      "source_digest_not_provided",
+      "license_metadata_not_verified",
+      "expected_documentation_release_not_provided",
+      "moodle_api_and_mapping_versions_not_verified"
+    ]
+  },
+  "directional_contracts": [
+    {
+      "direction": "publish_to_uckk",
+      "path": "docs/contracts/integrations/uckk-publication.integration.json",
+      "version": "1.1.0",
+      "sha256": "ef8891c335816eac879b76580f393ceca6958f5799970335e27f34f82f2fd0ac"
+    },
+    {
+      "direction": "import_from_uckk",
+      "path": "docs/contracts/integrations/uckk-import.integration.json",
+      "version": "1.1.0",
+      "sha256": "3187ccdceb1a46ecc0472f19ac283ea2171c1dc07477d7e67999b5a330d1da1f"
+    }
+  ],
+  "boundary_pins": [
+    {
+      "path": "docs/contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
+      "sha256": "2388ceabe56c01e30b5bd7fd9dd82da4304f998e58a78eeaaaff6cd08b2bf7b2"
+    },
+    {
+      "path": "docs/contracts/artifact-contracts/uckk-publication-package.schema.json",
+      "sha256": "a888a752f5080a2bbcea7326bd26bde0e8fb8c0fd25685e13fdf584e37449abc"
+    },
+    {
+      "path": "docs/contracts/artifact-contracts/uckk-publication-receipt.schema.json",
+      "sha256": "f00e5e015c9d894b398ec0da498e7d8a5d28eb16ff7f44d6963a555e786d7098"
+    },
+    {
+      "path": "docs/contracts/artifact-contracts/uckk-learning-package.schema.json",
+      "sha256": "eaccb72818b8146dc9e678f17b5a6a6b9d4dbbe2f1e2ca829ae5bef04b2f1c6f"
+    },
+    {
+      "path": "docs/contracts/artifact-contracts/uckk-import-receipt.schema.json",
+      "sha256": "8cbf052937a10007def065a03c3409795d6eaba8f5ef2e76fad32922446139ca"
+    }
+  ],
+  "rules": {
+    "floating_revision_allowed": false,
+    "unverified_source_activation_allowed": false,
+    "registry_replaces_this_lock": false,
+    "direct_platform_database_access_allowed": false,
+    "generic_bidirectional_sync_allowed": false
+  }
+}

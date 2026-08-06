@@ -1,0 +1,102 @@
+schema_version = "1.0"
+
+[component]
+id = "publication_gateway"
+display_name = "Publication Gateway"
+class = "governed_gateway"
+domain = "cross_domain_publication"
+version = "0.1.0"
+status = "active"
+contract_ref = "contracts/components/publication-gateway.component.json"
+contract_version = "1.0.0"
+package = "koa_publication_gateway"
+entrypoint = "koa_publication_gateway.__main__:main"
+release_channel = "services"
+
+[ownership]
+owns = [
+  "publication_request_lifecycle",
+  "publication_decision_record",
+  "bounded_release_representation",
+  "publication_staging_state",
+  "publication_execution_state",
+  "publication_receipt",
+  "publication_reversal_record",
+  "publication_retry_state",
+]
+does_not_own = [
+  "source_component_authoritative_data",
+  "source_content_semantic_truth",
+  "identity_source_records",
+  "governance_policy_content",
+  "cultural_authority",
+  "consent_grant",
+  "destination_component_authoritative_data",
+  "uckk_destination_state",
+  "external_service_authority",
+  "release_channel_identity",
+]
+direct_cross_component_authoritative_writes = false
+authority_transfer_by_publication = false
+
+[interfaces]
+version = "1.0.0"
+commands = [
+  "publication_request",
+  "revocation_or_withdrawal_notice",
+  "controlled_retry",
+]
+queries = [
+  "publication_status_query",
+  "health",
+  "queue_inspection",
+]
+direct_database_access = false
+unregistered_interface_result = "rejected"
+
+[startup]
+implicit_adapter_selection = false
+partial_authoritative_activation_allowed = false
+previous_valid_state_preserved_on_failure = true
+required_preconditions = [
+  "configuration_valid",
+  "contract_and_schema_versions_supported",
+  "identity_and_trust_available",
+  "governance_policy_runtime_available",
+  "receipt_store_ready",
+  "audit_path_ready_when_required",
+  "resource_envelope_available",
+  "publisher_adapter_explicitly_bound",
+  "trusted_time_available",
+]
+readiness_requires = [
+  "publication_request_validation_ready",
+  "authority_resolution_ready",
+  "bounded_representation_path_ready",
+  "destination_delivery_path_ready",
+  "destination_acknowledgement_path_ready",
+  "receipt_persistence_ready",
+]
+
+[security]
+default_network_posture = "deny_except_declared_flows"
+component_scoped_service_identity = true
+requester_authentication_required = true
+authorization_required = true
+replay_protection_required = true
+idempotency_required = true
+secrets_by_reference_only = true
+source_or_destination_database_access = false
+privileged_host_operations = false
+
+[degradation]
+missing_required_authority = "affected_publication_operation_blocked"
+identity_or_trust_unavailable = "new_publication_blocked"
+governance_runtime_unavailable = "new_governed_publication_blocked"
+audit_broker_unavailable = "retain_local_evidence_and_block_when_mandatory"
+destination_unavailable = "queue_or_fail_by_request_policy"
+receipt_persistence_unavailable = "do_not_report_success"
+partial_delivery = "enter_remediation_and_prevent_silent_retry"
+resource_exhaustion = "preserve_accepted_state_then_queue_or_deny_new_work"
+automatic_remote_release_after_reconnection = false
+silent_scope_expansion = false

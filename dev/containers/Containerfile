@@ -1,0 +1,34 @@
+# syntax=docker/dockerfile:1
+
+# The active development profile or toolchain must supply an immutable OCI
+# image reference, preferably including a digest. This bundle does not invent a
+# universal development base image.
+ARG KOA_DEV_BASE_IMAGE
+FROM ${KOA_DEV_BASE_IMAGE}
+
+ARG KOA_WORKSPACE_ID
+ARG KOA_DEV_UID=65532
+ARG KOA_DEV_GID=65532
+
+LABEL org.koa.role="optional-development-workspace" \
+      org.koa.workspace-id="${KOA_WORKSPACE_ID}" \
+      org.koa.authority="non-authoritative-development"
+
+USER 0:0
+RUN test -n "${KOA_WORKSPACE_ID}" \
+    && mkdir -p /workspaces/koa-linux /home/koa /home/koa/.cache/uv \
+    && chown -R "${KOA_DEV_UID}:${KOA_DEV_GID}" /workspaces/koa-linux /home/koa
+
+ENV HOME=/home/koa \
+    UV_CACHE_DIR=/home/koa/.cache/uv \
+    UV_PROJECT_ENVIRONMENT=/workspaces/koa-linux/.venv \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+WORKDIR /workspaces/koa-linux
+USER ${KOA_DEV_UID}:${KOA_DEV_GID}
+
+HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
+    CMD ["python", "-c", "import pathlib,sys; sys.exit(0 if pathlib.Path('/workspaces/koa-linux').is_dir() else 1)"]
+
+CMD ["python", "-c", "import time; time.sleep(2147483647)"]

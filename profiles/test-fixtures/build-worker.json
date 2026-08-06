@@ -1,0 +1,49 @@
+{
+  "format": "koa.profile-composition-fixture/v1",
+  "fixture_id": "build-worker",
+  "description": "Invalid composition proving that the appliance-shell overlay is rejected for the build-farm primary profile.",
+  "authority_refs": [
+    "docs/contracts/profiles/build-farm.profile.json",
+    "docs/contracts/profiles/appliance-shell.profile.json"
+  ],
+  "input": {
+    "primary_profile": {
+      "profile_id": "build_farm",
+      "version": "1.0.0",
+      "implementation_settings": "profiles/implementation-settings/build-farm.toml"
+    },
+    "overlays": [
+      {
+        "overlay_id": "appliance_shell",
+        "version": "1.0.0",
+        "overlay_file": "profiles/overlays/appliance-shell.toml"
+      }
+    ],
+    "active_exceptions": [],
+    "host_facts": {
+      "operating_system_family": "linux",
+      "local_graphical_seat": true,
+      "wayland_capable": true,
+      "local_input_available": true
+    },
+    "available_capabilities": [
+      "ariane_local_navigation",
+      "interactive_user"
+    ]
+  },
+  "expected": {
+    "result": "blocked",
+    "activation": "rejected",
+    "effective_primary_profile_id": null,
+    "effective_overlay_ids": [],
+    "failure_class": "incompatible_composition",
+    "reasons": [
+      {
+        "kind": "overlay_incompatible_with_primary",
+        "primary_profile_id": "build_farm",
+        "overlay_id": "appliance_shell"
+      }
+    ],
+    "preserve_last_valid_effective_profile": true
+  }
+}

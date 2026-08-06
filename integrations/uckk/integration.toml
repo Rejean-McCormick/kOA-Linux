@@ -1,0 +1,76 @@
+schema_version = "1.0.0"
+integration_id = "uckk"
+title = "UCKK directional interchange"
+version = "1.0.0"
+status = "prepared_blocked"
+relationship_to_koa = "external_platform"
+platform_type = "moodle"
+inside_koa_linux = false
+optional = true
+required_for_local_operation = false
+required_for_offline_operation = false
+activation_allowed = false
+activation_block_reason = "external_platform_source_pin_and_release_compatibility_evidence_unresolved"
+source_lock_ref = "integrations/uckk/source.lock.json"
+compatibility_ref = "integrations/uckk/compatibility.json"
+adapter_entrypoint = "koa_uckk_adapter.bootstrap:build_adapter"
+implicit_bidirectional_sync = false
+
+[authority]
+local_media_owner = "koa_mediatheque"
+remote_state_owner = "uckk"
+publication_authorization_owner = "publication_gateway"
+import_acceptance_owner = "koa_mediatheque"
+policy_evaluation_owner = "governance_policy_runtime_when_required"
+shared_authority = false
+shared_storage = false
+shared_identity_namespace = false
+direct_cross_system_database_write = false
+
+[interfaces]
+transport_contract_ref = "interfaces/transport/http-over-unix.toml"
+error_contract_ref = "interfaces/transport/error-envelope.schema.json"
+idempotency_contract_ref = "interfaces/transport/idempotency.schema.json"
+version_negotiation_ref = "interfaces/transport/version-negotiation.schema.json"
+health_contract_ref = "interfaces/health/health-status.schema.json"
+readiness_contract_ref = "interfaces/health/readiness.schema.json"
+receipt_contract_ref = "interfaces/receipts/receipt-envelope.schema.json"
+correlation_contract_ref = "interfaces/receipts/correlation.schema.json"
+identity_context_ref = "interfaces/identity/identity-context.schema.json"
+capability_snapshot_ref = "interfaces/capabilities/capability-snapshot.schema.json"
+module_interface_ref = "integrations/uckk/interface/module-interface.json"
+sidebar_ref = "integrations/uckk/interface/sidebar.json"
+widgets_ref = "integrations/uckk/interface/widgets.json"
+
+[directions.publish_to_uckk]
+contract_ref = "docs/contracts/integrations/uckk-publication.integration.json"
+direction = "outbound_publication"
+workflow_id = "uckk.publish_to_uckk"
+package_contract_ref = "docs/contracts/artifact-contracts/uckk-publication-package.schema.json"
+receipt_contract_ref = "docs/contracts/artifact-contracts/uckk-publication-receipt.schema.json"
+credentials_scope = "publication_only"
+queue_id = "uckk_publication_queue"
+authoritative_effect = "none"
+
+[directions.import_from_uckk]
+contract_ref = "docs/contracts/integrations/uckk-import.integration.json"
+direction = "inbound_import"
+workflow_id = "uckk.import_from_uckk"
+package_contract_ref = "docs/contracts/artifact-contracts/uckk-learning-package.schema.json"
+receipt_contract_ref = "docs/contracts/artifact-contracts/uckk-import-receipt.schema.json"
+credentials_scope = "import_only"
+queue_id = "uckk_import_queue"
+quarantine_required = true
+authoritative_effect = "candidate_until_local_acceptance"
+
+[activation]
+require_source_pin = true
+require_compatibility_validation = true
+require_profile_membership = true
+require_identity_context = true
+require_resource_admission = true
+require_health_and_readiness = true
+require_receipt_path = true
+partial_direction_activation_allowed = true
+direction_state_must_be_reported_separately = true
+unresolved_result = "blocked"

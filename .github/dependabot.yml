@@ -1,0 +1,49 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "04:00"
+      timezone: Etc/UTC
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: deps(actions)
+
+  - package-ecosystem: cargo
+    directory: /
+    schedule:
+      interval: weekly
+      day: tuesday
+      time: "04:00"
+      timezone: Etc/UTC
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: deps(rust)
+
+  - package-ecosystem: pip
+    directories:
+      - /assembly
+      - /components/audit-broker
+      - /components/governance-policy-runtime
+      - /components/identity-and-trust
+      - /components/koa-mediatheque
+      - /components/kristal-runtime
+      - /components/resource-governor
+      - /integrations/ariane/adapter
+      - /integrations/koa-spaces/adapter
+      - /integrations/konnaxion/adapter
+      - /integrations/orgo/adapter
+      - /integrations/semantik-architect/adapter
+      - /integrations/sentient/adapter
+      - /interfaces/python
+      - /operations
+    schedule:
+      interval: weekly
+      day: wednesday
+      time: "04:00"
+      timezone: Etc/UTC
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: deps(python)

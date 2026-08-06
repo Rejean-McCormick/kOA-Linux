@@ -1,0 +1,84 @@
+# Local secrets and credentials. Committed examples and templates remain visible.
+.env
+.env.*
+!.env.example
+!.env.*.example
+!.env.template
+!.env.*.template
+.secrets/
+*.private.key
+*.private.pem
+*.p12
+*.pfx
+*.kdbx
+id_dsa
+id_ecdsa
+id_ed25519
+id_rsa
+
+# Workspace-local mutable state.
+.koa/runtime/
+.workspace/run/
+.workspace/tmp/
+*.pid
+*.sock
+*.sqlite
+*.sqlite3
+*.db
+*.db-shm
+*.db-wal
+
+# Python environments, caches, coverage, and package output.
+.venv/
+venv/
+ENV/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.pyright/
+.ruff_cache/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+*.egg-info/
+.eggs/
+
+# Rust and other language build caches.
+target/
+node_modules/
+.npm/
+.pnpm-store/
+.yarn/cache/
+
+# Generic local build and temporary output.
+/build/
+/dist/
+/.cache/
+/.uv-cache/
+*.log
+*.tmp
+*.temp
+*.bak
+*.backup
+*.swp
+*.swo
+*~
+
+# IDE and operating-system metadata.
+.idea/
+.vscode/
+.DS_Store
+.AppleDouble
+Thumbs.db
+Desktop.ini
+
+# Generated repository payloads. Keep only their declared source placeholders.
+/generated/*
+!/generated/.gitignore
+!/generated/README.md
+/_delivery/
+/evidence/
+/validation-support/

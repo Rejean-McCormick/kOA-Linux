@@ -1,0 +1,48 @@
+minimum_pre_commit_version: "4.0.0"
+default_install_hook_types: [pre-commit]
+fail_fast: false
+
+repos:
+  - repo: local
+    hooks:
+      - id: uv-lock-check
+        name: verify frozen UV lock
+        entry: uv lock --check
+        language: system
+        pass_filenames: false
+        always_run: true
+
+      - id: koa-tools-compile
+        name: compile repository tooling
+        entry: uv run --frozen python -m compileall -q tools/src/koa_tools tools/tests
+        language: system
+        pass_filenames: false
+        always_run: true
+
+      - id: koa-tools-lint
+        name: lint repository tooling
+        entry: uv run --frozen ruff check tools/src/koa_tools tools/tests
+        language: system
+        pass_filenames: false
+        always_run: true
+
+      - id: koa-tools-format
+        name: verify repository tooling format
+        entry: uv run --frozen ruff format --check tools/src/koa_tools tools/tests
+        language: system
+        pass_filenames: false
+        always_run: true
+
+      - id: koa-tools-tests
+        name: test repository tooling
+        entry: uv run --frozen pytest -q tools/tests
+        language: system
+        pass_filenames: false
+        always_run: true
+
+      - id: greenfield-architecture
+        name: validate frozen file architecture
+        entry: uv run --frozen python docs/tools/check_greenfield_architecture.py
+        language: system
+        pass_filenames: false
+        always_run: true

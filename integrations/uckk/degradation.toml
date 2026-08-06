@@ -1,0 +1,75 @@
+schema_version = "1.0.0"
+integration_id = "uckk"
+state_model_ref = "docs/contracts/system.contract.json#/capability_degradation"
+authoritative_local_state_preserved = true
+undeclared_substitution = "prohibited"
+generic_bidirectional_fallback = "prohibited"
+
+[preserved_baseline]
+capabilities = [
+  "koa_mediatheque_local_operation",
+  "accepted_offline_learning_content",
+  "identity_governance_audit_and_security",
+  "local_backup_and_recovery",
+]
+
+[[conditions]]
+condition_id = "external_source_pin_unresolved"
+result_state = "blocked"
+affected_capabilities = ["uckk_publication", "uckk_import"]
+action = "keep_directional_integrations_disabled"
+recovery_preconditions = ["verified_immutable_source_pin", "verified_license_metadata", "verified_external_platform_release", "compatibility_pass"]
+
+[[conditions]]
+condition_id = "uckk_unavailable"
+result_state = "degraded"
+affected_capabilities = ["uckk_publication_transport", "uckk_live_import"]
+action = "preserve_visible_bounded_directional_state_without_remote_success"
+preserved_capabilities = ["koa_mediatheque_local_operation", "accepted_offline_learning_content"]
+silent_substitute_allowed = false
+
+[[conditions]]
+condition_id = "publication_destination_unavailable"
+result_state = "degraded"
+affected_capabilities = ["publish_to_uckk"]
+action = "queue_or_fail_according_to_bounded_policy"
+preserved_capabilities = ["local_media_availability", "publication_request_visibility"]
+remote_success_prohibited = true
+
+[[conditions]]
+condition_id = "publication_authorization_or_source_changed"
+result_state = "blocked"
+affected_capabilities = ["publish_to_uckk"]
+action = "cancel_pending_transmission_and_require_new_decision"
+remote_success_prohibited = true
+
+[[conditions]]
+condition_id = "import_source_or_package_unverifiable"
+result_state = "blocked"
+affected_capabilities = ["import_from_uckk_acceptance"]
+action = "retain_in_quarantine_or_reject_according_to_policy"
+local_acceptance_prohibited = true
+
+[[conditions]]
+condition_id = "import_live_transport_unavailable"
+result_state = "degraded"
+affected_capabilities = ["uckk_catalog_discovery", "uckk_live_download", "uckk_remote_update_check"]
+action = "defer_remote_operations_and_preserve_accepted_offline_content"
+automatic_upload_on_reconnection = false
+
+[[conditions]]
+condition_id = "direction_specific_circuit_open"
+result_state = "unavailable"
+affected_capabilities = ["affected_direction_only"]
+action = "report_direction_unavailable_and_keep_other_direction_independent"
+shared_circuit_state = false
+
+[recovery]
+automatic_authority_expansion_allowed = false
+fresh_source_verification_required = true
+fresh_compatibility_check_required = true
+fresh_authorization_required_for_publication = true
+fresh_package_verification_required_for_import = true
+fresh_resource_admission_required = true
+fresh_health_required = true
+terminal_evidence_required = true

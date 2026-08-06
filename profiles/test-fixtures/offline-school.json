@@ -1,0 +1,62 @@
+{
+  "format": "koa.profile-composition-fixture/v1",
+  "fixture_id": "offline-school",
+  "description": "Valid offline appliance composition for a sovereign Linux node, ordered from assurance to offline restrictions to presentation restrictions.",
+  "authority_refs": [
+    "docs/contracts/profiles/sovereign-linux-node.profile.json",
+    "docs/contracts/profiles/high-assurance.profile.json",
+    "docs/contracts/profiles/sovereign-offline.profile.json",
+    "docs/contracts/profiles/appliance-shell.profile.json"
+  ],
+  "input": {
+    "primary_profile": {
+      "profile_id": "sovereign_linux_node",
+      "version": "1.0.0",
+      "implementation_settings": "profiles/implementation-settings/sovereign-linux-node.toml"
+    },
+    "overlays": [
+      {
+        "overlay_id": "high_assurance",
+        "version": "1.0.0",
+        "overlay_file": "profiles/overlays/high-assurance.toml"
+      },
+      {
+        "overlay_id": "sovereign_offline",
+        "version": "1.0.0",
+        "overlay_file": "profiles/overlays/sovereign-offline.toml"
+      },
+      {
+        "overlay_id": "appliance_shell",
+        "version": "1.0.0",
+        "overlay_file": "profiles/overlays/appliance-shell.toml"
+      }
+    ],
+    "active_exceptions": [],
+    "host_facts": {
+      "operating_system_family": "linux",
+      "local_graphical_seat": true,
+      "wayland_capable": true,
+      "local_input_available": true
+    },
+    "available_capabilities": [
+      "ariane_local_navigation",
+      "interactive_user",
+      "local_identity",
+      "local_policy_evaluation",
+      "offline_bundle_import",
+      "resource_governance",
+      "verified_activation"
+    ]
+  },
+  "expected": {
+    "result": "valid",
+    "activation": "permitted_after_required_conformance",
+    "effective_primary_profile_id": "sovereign_linux_node",
+    "effective_overlay_ids": [
+      "high_assurance",
+      "sovereign_offline",
+      "appliance_shell"
+    ],
+    "unresolved_conflicts": []
+  }
+}

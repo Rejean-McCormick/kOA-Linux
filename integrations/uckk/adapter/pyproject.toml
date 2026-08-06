@@ -1,0 +1,24 @@
+[build-system]
+requires = ["hatchling>=1.25,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "koa-uckk-adapter"
+version = "1.0.0"
+description = "Directional kOA boundary adapter for the external UCKK Moodle platform"
+readme = "../README.md"
+requires-python = ">=3.12"
+license = { text = "LicenseRef-kOA-Repository" }
+authors = [{ name = "kOA" }]
+dependencies = ["koa-interfaces>=1.0,<2.0"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/koa_uckk_adapter"]
+
+[tool.koa]
+integration_id = "uckk"
+publication_contract = "docs/contracts/integrations/uckk-publication.integration.json"
+import_contract = "docs/contracts/integrations/uckk-import.integration.json"
+source_lock = "integrations/uckk/source.lock.json"
+activation_requires_resolved_source_pin = true
+bidirectional_sync_interface = false

@@ -1,0 +1,38 @@
+name: CI / Components
+
+"on":
+  merge_group:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-components-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  components:
+    name: components
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      PYTHONHASHSEED: "0"
+      UV_NO_PROGRESS: "1"
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install UV
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: false
+      - name: Synchronize frozen workspace
+        run: uv sync --frozen --all-groups
+      - name: Run component validation
+        run: uv run --frozen python ci/scripts/run-components.py

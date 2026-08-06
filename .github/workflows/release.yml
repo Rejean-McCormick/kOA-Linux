@@ -1,0 +1,367 @@
+name: CI / Release Candidate
+
+on:
+  workflow_call:
+    inputs:
+      input_root:
+        description: Repository-relative directory containing the immutable candidate inputs.
+        required: true
+        type: string
+      release_set:
+        description: Path relative to input_root for release-set.json.
+        required: true
+        type: string
+      gate_results:
+        description: Path relative to input_root for the mandatory gate-result directory.
+        required: true
+        type: string
+      artifacts_manifest:
+        description: Path relative to input_root for artifacts-manifest.json.
+        required: true
+        type: string
+      evidence_manifest:
+        description: Path relative to input_root for evidence-manifest.json.
+        required: true
+        type: string
+      source_date_epoch:
+        description: Non-negative deterministic archive epoch.
+        required: true
+        type: string
+      evaluated_at:
+        description: RFC3339 instant used to evaluate gate validity.
+        required: true
+        type: string
+      publish_evidence:
+        description: Publish the approved evidence bundle after candidate verification.
+        required: false
+        default: false
+        type: boolean
+      approval:
+        description: Path relative to input_root for the external approval record.
+        required: false
+        default: ''
+        type: string
+      published_at:
+        description: RFC3339 publication instant; required when publish_evidence is true.
+        required: false
+        default: ''
+        type: string
+    outputs:
+      candidate_artifact_name:
+        description: Name of the uploaded immutable candidate artifact.
+        value: ${{ jobs.release_candidate.outputs.candidate_artifact_name }}
+      candidate_sha256:
+        description: SHA-256 of release-candidate.tar.
+        value: ${{ jobs.release_candidate.outputs.candidate_sha256 }}
+  workflow_dispatch:
+    inputs:
+      input_root:
+        description: Repository-relative directory containing the immutable candidate inputs.
+        required: true
+        default: generated/release-input
+        type: string
+      release_set:
+        description: Path relative to input_root for release-set.json.
+        required: true
+        default: release-set.json
+        type: string
+      gate_results:
+        description: Path relative to input_root for the mandatory gate-result directory.
+        required: true
+        default: gates
+        type: string
+      artifacts_manifest:
+        description: Path relative to input_root for artifacts-manifest.json.
+        required: true
+        default: artifacts-manifest.json
+        type: string
+      evidence_manifest:
+        description: Path relative to input_root for evidence-manifest.json.
+        required: true
+        default: evidence-manifest.json
+        type: string
+      source_date_epoch:
+        description: Non-negative deterministic archive epoch.
+        required: true
+        type: string
+      evaluated_at:
+        description: RFC3339 instant used to evaluate gate validity.
+        required: true
+        type: string
+      publish_evidence:
+        description: Publish the approved evidence bundle after candidate verification.
+        required: true
+        default: false
+        type: boolean
+      approval:
+        description: Path relative to input_root for the external approval record.
+        required: false
+        type: string
+      published_at:
+        description: RFC3339 publication instant; required when publish_evidence is true.
+        required: false
+        type: string
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: release-candidate-${{ github.repository }}-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  release_candidate:
+    name: release-candidate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    outputs:
+      candidate_artifact_name: ${{ steps.candidate_metadata.outputs.candidate_artifact_name }}
+      candidate_sha256: ${{ steps.candidate_metadata.outputs.candidate_sha256 }}
+    env:
+      INPUT_ROOT: ${{ inputs.input_root }}
+      RELEASE_SET: ${{ inputs.release_set }}
+      GATE_RESULTS: ${{ inputs.gate_results }}
+      ARTIFACTS_MANIFEST: ${{ inputs.artifacts_manifest }}
+      EVIDENCE_MANIFEST: ${{ inputs.evidence_manifest }}
+      SOURCE_DATE_EPOCH: ${{ inputs.source_date_epoch }}
+      EVALUATED_AT: ${{ inputs.evaluated_at }}
+      CANDIDATE_OUTPUT: generated/release-candidate
+    steps:
+      - name: Check out immutable source revision
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Provision declared Python runtime
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405
+        with:
+          python-version: '3.13'
+
+      - name: Validate dependency gates and immutable inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path, PurePosixPath
+
+          root = Path.cwd().resolve(strict=True)
+          policy_path = root / "ci/policies/release-gates.json"
+          policy = json.loads(policy_path.read_text(encoding="utf-8"))
+          missing = []
+          for bundle_id, paths in policy["required_dependencies"].items():
+              for relative in paths:
+                  if not (root / relative).is_file():
+                      missing.append(f"{bundle_id}:{relative}")
+          if missing:
+              raise SystemExit("missing release dependency files: " + ", ".join(missing))
+
+          def normalized(value: str, label: str) -> PurePosixPath:
+              pure = PurePosixPath(value)
+              if not value or pure.is_absolute() or ".." in pure.parts:
+                  raise SystemExit(f"{label} must be a normalized relative path")
+              return pure
+
+          input_root_rel = normalized(os.environ["INPUT_ROOT"], "INPUT_ROOT")
+          input_root = (root / Path(*input_root_rel.parts)).resolve(strict=True)
+          try:
+              input_root.relative_to(root)
+          except ValueError as exc:
+              raise SystemExit("INPUT_ROOT escapes the repository") from exc
+          if input_root.is_symlink() or not input_root.is_dir():
+              raise SystemExit("INPUT_ROOT must be a non-symlink directory")
+
+          for variable, directory in (
+              ("RELEASE_SET", False),
+              ("GATE_RESULTS", True),
+              ("ARTIFACTS_MANIFEST", False),
+              ("EVIDENCE_MANIFEST", False),
+          ):
+              relative = normalized(os.environ[variable], variable)
+              path = (input_root / Path(*relative.parts)).resolve(strict=True)
+              try:
+                  path.relative_to(input_root)
+              except ValueError as exc:
+                  raise SystemExit(f"{variable} escapes INPUT_ROOT") from exc
+              if path.is_symlink() or (directory and not path.is_dir()) or (not directory and not path.is_file()):
+                  expected = "directory" if directory else "regular file"
+                  raise SystemExit(f"{variable} must identify a non-symlink {expected}")
+
+          epoch = os.environ["SOURCE_DATE_EPOCH"]
+          if not epoch.isdigit() or int(epoch) < 0:
+              raise SystemExit("SOURCE_DATE_EPOCH must be a non-negative integer")
+          if not os.environ["EVALUATED_AT"].strip():
+              raise SystemExit("EVALUATED_AT must be explicit")
+          PY
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test -z "$(git status --porcelain=v1 --untracked-files=all)"
+          python ci/scripts/run-system-tests.py --check-config
+          python ci/scripts/run-security.py --check-config
+          python ci/scripts/run-offline.py --check-config
+          python ci/scripts/run-reproducibility.py --check-config
+
+      - name: Build candidate only after every mandatory gate is eligible
+        shell: bash
+        run: |
+          set -euo pipefail
+          python ci/scripts/build-release-candidate.py \
+            --repository-root . \
+            --input-root "$INPUT_ROOT" \
+            --release-set "$RELEASE_SET" \
+            --gate-results "$GATE_RESULTS" \
+            --artifacts-manifest "$ARTIFACTS_MANIFEST" \
+            --evidence-manifest "$EVIDENCE_MANIFEST" \
+            --source-revision "$GITHUB_SHA" \
+            --source-date-epoch "$SOURCE_DATE_EPOCH" \
+            --evaluated-at "$EVALUATED_AT" \
+            --output "$CANDIDATE_OUTPUT"
+
+      - name: Verify candidate archive checksum and manifest binding
+        id: candidate_metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path.cwd().resolve(strict=True)
+          candidate = root / os.environ["CANDIDATE_OUTPUT"]
+          archive = candidate / "release-candidate.tar"
+          manifest = json.loads((candidate / "release-candidate-manifest.json").read_text(encoding="utf-8"))
+          digest = hashlib.sha256(archive.read_bytes()).hexdigest()
+          expected = manifest.get("archive", {}).get("sha256")
+          checksum = (candidate / "release-candidate.sha256").read_text(encoding="ascii").strip()
+          if digest != expected or checksum != f"{digest}  release-candidate.tar":
+              raise SystemExit("release candidate digest binding failed")
+          if manifest.get("activation_authorized") is not False:
+              raise SystemExit("release candidate must not authorize activation")
+          artifact_name = f"release-candidate-{os.environ['GITHUB_SHA']}"
+          with Path(os.environ["GITHUB_OUTPUT"]).open("a", encoding="utf-8") as stream:
+              stream.write(f"candidate_artifact_name={artifact_name}\n")
+              stream.write(f"candidate_sha256={digest}\n")
+          PY
+
+      - name: Upload immutable release candidate
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: ${{ steps.candidate_metadata.outputs.candidate_artifact_name }}
+          path: generated/release-candidate
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0
+          overwrite: false
+          include-hidden-files: false
+
+  publish_evidence:
+    name: publish-evidence
+    if: ${{ inputs.publish_evidence }}
+    needs: release_candidate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment: release-evidence-publication
+    env:
+      INPUT_ROOT: ${{ inputs.input_root }}
+      APPROVAL: ${{ inputs.approval }}
+      PUBLISHED_AT: ${{ inputs.published_at }}
+      CANDIDATE_ARTIFACT_NAME: ${{ needs.release_candidate.outputs.candidate_artifact_name }}
+      EXPECTED_CANDIDATE_SHA256: ${{ needs.release_candidate.outputs.candidate_sha256 }}
+      CANDIDATE_DIRECTORY: generated/release-candidate
+      PUBLICATION_DIRECTORY: generated/published-release-evidence
+    steps:
+      - name: Check out the same immutable source revision
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Provision declared Python runtime
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405
+        with:
+          python-version: '3.13'
+
+      - name: Download the verified candidate from this workflow
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53
+        with:
+          name: ${{ env.CANDIDATE_ARTIFACT_NAME }}
+          path: generated/release-candidate
+
+      - name: Validate external approval and deterministic publication time
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import os
+          from pathlib import Path, PurePosixPath
+
+          root = Path.cwd().resolve(strict=True)
+          input_root_raw = os.environ["INPUT_ROOT"]
+          approval_raw = os.environ["APPROVAL"]
+          if not approval_raw:
+              raise SystemExit("APPROVAL is required when publish_evidence is true")
+          if not os.environ["PUBLISHED_AT"].strip():
+              raise SystemExit("PUBLISHED_AT is required when publish_evidence is true")
+          input_root = (root / Path(*PurePosixPath(input_root_raw).parts)).resolve(strict=True)
+          approval_rel = PurePosixPath(approval_raw)
+          if approval_rel.is_absolute() or ".." in approval_rel.parts:
+              raise SystemExit("APPROVAL must be relative to INPUT_ROOT")
+          approval = (input_root / Path(*approval_rel.parts)).resolve(strict=True)
+          try:
+              approval.relative_to(input_root)
+          except ValueError as exc:
+              raise SystemExit("APPROVAL escapes INPUT_ROOT") from exc
+          if approval.is_symlink() or not approval.is_file():
+              raise SystemExit("APPROVAL must be a non-symlink regular file")
+          PY
+
+      - name: Publish evidence only after candidate and approval verification
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf "$PUBLICATION_DIRECTORY"
+          mkdir -p "$PUBLICATION_DIRECTORY"
+          python ci/scripts/publish-evidence.py \
+            --policy ci/policies/release-gates.json \
+            --candidate-archive "$CANDIDATE_DIRECTORY/release-candidate.tar" \
+            --candidate-manifest "$CANDIDATE_DIRECTORY/release-candidate-manifest.json" \
+            --candidate-checksum "$CANDIDATE_DIRECTORY/release-candidate.sha256" \
+            --approval "$INPUT_ROOT/$APPROVAL" \
+            --destination "$PUBLICATION_DIRECTORY" \
+            --published-at "$PUBLISHED_AT" \
+            > "$PUBLICATION_DIRECTORY/publication-command-result.json"
+
+      - name: Verify publication receipt retains exact candidate digest
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          publication_root = Path(os.environ["PUBLICATION_DIRECTORY"])
+          receipts = sorted(publication_root.glob("*/publication-receipt.json"))
+          if len(receipts) != 1:
+              raise SystemExit("exactly one immutable publication receipt is required")
+          receipt = json.loads(receipts[0].read_text(encoding="utf-8"))
+          if receipt.get("candidate_sha256") != os.environ["EXPECTED_CANDIDATE_SHA256"]:
+              raise SystemExit("publication receipt is not bound to the verified candidate digest")
+          if receipt.get("activation_authorized") is not False:
+              raise SystemExit("evidence publication must not authorize activation")
+          PY
+
+      - name: Upload immutable published evidence package
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: published-release-evidence-${{ github.sha }}
+          path: generated/published-release-evidence
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 0
+          overwrite: false
+          include-hidden-files: false

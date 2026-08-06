@@ -1,0 +1,59 @@
+# kOA-Linux review ownership.
+#
+# This maintained projection mirrors the active rules in .koa/path-ownership.json.
+# GitHub team slugs mirror canonical owner_id values with underscores changed to hyphens.
+# Repository administrators must provision each visible team with write access before
+# enforcing required code-owner review.
+
+/.editorconfig                                                       @koa-linux/repository-governance
+/.gitattributes                                                      @koa-linux/repository-governance
+/.github/**                                                          @koa-linux/repository-governance
+/.gitignore                                                          @koa-linux/repository-governance
+/.koa/**                                                             @koa-linux/repository-architecture-governance
+/.pre-commit-config.yaml                                             @koa-linux/repository-tooling
+/.python-version                                                     @koa-linux/repository-tooling
+/.rustfmt.toml                                                       @koa-linux/repository-tooling
+/CHANGELOG.md                                                        @koa-linux/repository-governance
+/CONTRIBUTING.md                                                     @koa-linux/repository-governance
+/Cargo.lock                                                          @koa-linux/repository-tooling
+/Cargo.toml                                                          @koa-linux/repository-tooling
+/LICENSES/**                                                         @koa-linux/repository-legal
+/NOTICE.md                                                           @koa-linux/repository-legal
+/README.md                                                           @koa-linux/repository-governance
+/REUSE.toml                                                          @koa-linux/repository-legal
+/SECURITY.md                                                         @koa-linux/repository-governance
+/assembly/**                                                         @koa-linux/system-assembly
+/ci/**                                                               @koa-linux/ci-orchestration
+/components/audit-broker/**                                          @koa-linux/audit-broker
+/components/governance-policy-runtime/**                             @koa-linux/governance-policy-runtime
+/components/identity-and-trust/**                                    @koa-linux/identity-and-trust
+/components/koa-mediatheque/**                                       @koa-linux/koa-mediatheque
+/components/koa-node-agent/**                                        @koa-linux/koa-node-agent
+/components/kristal-runtime/**                                       @koa-linux/kristal-runtime
+/components/publication-gateway/**                                   @koa-linux/publication-gateway
+/components/resource-governor/**                                     @koa-linux/resource-governor
+/dev/**                                                              @koa-linux/local-development
+/docs/**                                                             @koa-linux/documentation-governance
+/generated/**                                                        @koa-linux/generators
+/host/**                                                             @koa-linux/host-platform-integration
+/integrations/ariane/**                                              @koa-linux/ariane
+/integrations/external-services/ariane-voice/**                      @koa-linux/ariane-voice
+/integrations/external-services/chatgpt/**                           @koa-linux/chatgpt
+/integrations/external-services/gamma/**                             @koa-linux/gamma
+/integrations/external-services/suno/**                              @koa-linux/suno
+/integrations/koa-spaces/**                                          @koa-linux/koa-spaces
+/integrations/konnaxion/**                                           @koa-linux/konnaxion
+/integrations/orgo/**                                                @koa-linux/orgo
+/integrations/semantik-architect/**                                  @koa-linux/semantik-architect
+/integrations/sentient/**                                            @koa-linux/sentient
+/integrations/uckk/**                                                @koa-linux/uckk-integration-boundary
+/interfaces/**                                                       @koa-linux/transport-and-binding-maintainers
+/operations/**                                                       @koa-linux/operations-implementation
+/packaging/**                                                        @koa-linux/packaging
+/profiles/**                                                         @koa-linux/profile-implementation-settings
+/pyproject.toml                                                      @koa-linux/repository-tooling
+/release/**                                                          @koa-linux/release-engineering
+/rust-toolchain.toml                                                 @koa-linux/repository-tooling
+/tests/**                                                            @koa-linux/cross-system-conformance
+/tools/**                                                            @koa-linux/repository-tooling
+/uv.lock                                                             @koa-linux/repository-tooling

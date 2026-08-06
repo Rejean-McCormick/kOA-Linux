@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../docs/contracts/artifact-contracts/sidebar-navigation.schema.json",
+  "module_id": "uckk",
+  "visible_depth": 2,
+  "items": [
+    {
+      "item_id": "uckk.publication",
+      "label": "Publish to UCKK",
+      "label_key": "uckk.publication",
+      "order": 0,
+      "icon_ref": null,
+      "route_id": "uckk.publication",
+      "availability": "conditional",
+      "required_capabilities": ["uckk_publication"],
+      "badge_provider_ref": "koa://integrations/uckk/publication-status"
+    },
+    {
+      "item_id": "uckk.import",
+      "label": "Import from UCKK",
+      "label_key": "uckk.import",
+      "order": 10,
+      "icon_ref": null,
+      "route_id": "uckk.import",
+      "availability": "conditional",
+      "required_capabilities": ["uckk_import"],
+      "badge_provider_ref": "koa://integrations/uckk/import-status"
+    }
+  ]
+}

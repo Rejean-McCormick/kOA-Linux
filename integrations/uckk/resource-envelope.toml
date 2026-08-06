@@ -1,0 +1,248 @@
+"$schema" = "contracts/artifact-contracts/resource-envelope.schema.json"
+schema_version = "1.0.0"
+envelope_id = "REN-UCKK-DIRECTIONAL-001"
+version = "1.0.0"
+status = "active"
+language = "en"
+title = "UCKK directional interchange profile-resolved resource boundary"
+description = "Capability boundary for the separate publish_to_uckk and import_from_uckk workflows. Concrete quantities are supplied by the active profile and may only narrow this envelope."
+envelope_kind = "capability_budget"
+effective_at = "2026-08-06T00:00:00Z"
+canonical_refs = [
+  "docs/contracts/integrations/uckk-publication.integration.json",
+  "docs/contracts/integrations/uckk-import.integration.json",
+  "docs/02-system/12-koa-mediatheque-system-boundary.md",
+  "docs/08-operations/04-resource-envelopes.md",
+]
+decision_ids = ["DEC-UCKK-EXT-001", "DEC-MEDIATHEQUE-001"]
+requirement_ids = ["REQ-UCKK-PUB-001", "REQ-UCKK-PUB-012", "REQ-UCKK-IMPORT-001", "REQ-UCKK-IMPORT-012"]
+lock_ids = ["LOCK-UCKK-EXT-001", "LOCK-UCKK-EXT-002", "LOCK-RES-001", "LOCK-WF-001"]
+tags = ["uckk", "directional", "external-platform", "profile-resolved"]
+
+[scope]
+target_type = "capability"
+target_id = "uckk_directional_interchange"
+profile_ids = [
+  "user_lightweight",
+  "developer_linux_workstation",
+  "developer_windows_wsl",
+  "sovereign_linux_node",
+  "sovereign_hub",
+  "control_plane",
+  "high_assurance",
+  "sovereign_offline",
+  "appliance_shell",
+]
+environment = "production"
+capability_id = "uckk_directional_interchange"
+[scope.labels]
+workload = "background"
+directions = "publish_to_uckk,import_from_uckk"
+selector_expression = "active profile explicitly enables one or both UCKK directions and supplies concrete resource quantities"
+
+[ownership]
+declaring_owner = "contracts/system.contract.json#/uckk_external_platform"
+enforcement_owner_component_id = "resource_governor"
+enforcement_contract_ref = "contracts/components/resource-governor.component.json"
+resource_authority = "resource_limits_only"
+authorization_effect = "none"
+consent_effect = "none"
+disclosure_effect = "none"
+machine_privilege_effect = "none"
+cross_component_data_write = "prohibited"
+governance_policy_usage = "profile_defined"
+
+[composition]
+composition_mode = "standalone"
+merge_strategy = "narrow_limits"
+implicit_inheritance = "prohibited"
+conflict_result = "blocked"
+child_overcommit = "prohibited"
+
+[resources.concurrency]
+global_max_active = 4
+admission_accounting = "required"
+
+[[resources.concurrency.limits]]
+limit_id = "uckk_publication_workflows"
+workload_class = "background"
+max_active = 2
+max_per_identity = 1
+max_per_component = 2
+overflow_behavior = "queue"
+fairness_key = "identity"
+
+[[resources.concurrency.limits]]
+limit_id = "uckk_import_workflows"
+workload_class = "background"
+max_active = 2
+max_per_identity = 1
+max_per_component = 2
+overflow_behavior = "queue"
+fairness_key = "identity"
+
+[[resources.queues.queues]]
+queue_id = "uckk_publication_queue"
+max_items = 256
+max_bytes = 1073741824
+max_age = "P7D"
+overflow_behavior = "pause_producer"
+priority_levels = 4
+dead_letter_behavior = "bounded_review_queue"
+accounting = "required"
+[resources.queues.queues.retry_policy]
+max_attempts = 8
+jitter = "bounded"
+non_idempotent_retry = "prohibited_without_receipt_and_reconciliation"
+[resources.queues.queues.retry_policy.backoff]
+strategy = "exponential"
+initial_delay = "PT5S"
+max_delay = "PT1H"
+multiplier = 2
+
+[[resources.queues.queues]]
+queue_id = "uckk_import_queue"
+max_items = 128
+max_bytes = 4294967296
+max_age = "P7D"
+overflow_behavior = "pause_producer"
+priority_levels = 4
+dead_letter_behavior = "bounded_review_queue"
+accounting = "required"
+[resources.queues.queues.retry_policy]
+max_attempts = 8
+jitter = "bounded"
+non_idempotent_retry = "prohibited_without_receipt_and_reconciliation"
+[resources.queues.queues.retry_policy.backoff]
+strategy = "exponential"
+initial_delay = "PT5S"
+max_delay = "PT1H"
+multiplier = 2
+
+[scheduling]
+workload_class = "background"
+priority = 30
+admission = "queue_if_capacity_unavailable"
+preemption = "preemptible"
+fairness = "identity_fair"
+resource_pressure_behavior = "pause"
+scheduling_group = "uckk_directional_interchange"
+authorization_effect = "none"
+
+[activation]
+mode = "task_activated"
+always_on_allowed = false
+start_condition = "explicit_task"
+idle_shutdown = "required"
+idle_shutdown_after = "PT5M"
+max_warm_instances = 0
+startup_failure_behavior = "capability_unavailable"
+shutdown_behavior = "graceful_then_stop"
+
+[degradation]
+default_behavior = "queue_then_reject"
+automatic_recovery = true
+revalidation_required = true
+recovery_stability_duration = "PT30S"
+silent_limit_expansion = "prohibited"
+policy_authority = "none"
+last_verified_envelope_behavior = "continue_within_last_verified_limits"
+
+[[degradation.steps]]
+step_id = "pause_new_uckk_work"
+order = 1
+action = "pause_optional_work"
+target = "uckk_new_directional_work"
+authority_effect = "none"
+status_effect = "constrained"
+preserved_capabilities = ["koa_mediatheque_local_operation", "accepted_offline_learning_content"]
+denied_work = ["new_publication_transmission", "new_live_import_download"]
+recovery_condition = "The active profile reports stable capacity and each affected direction passes fresh validation."
+receipt_required = true
+[degradation.steps.trigger]
+metric = "queue_items_percent"
+comparison = "greater_than_or_equal"
+threshold = 90
+sustain_for = "PT5S"
+
+[enforcement]
+artifact_mode = "embedded_contract"
+enforcement_level = "soft_with_hard_ceiling"
+verification_frequency = "on_activation"
+drift_behavior = "stop_new_work"
+missing_backend_behavior = "deny_start"
+policy_runtime_substitution = "prohibited"
+direct_host_privilege = "prohibited_outside_declared_broker"
+enforcement_receipt_required = true
+
+[[enforcement.backends]]
+backend_id = "profile_selected_backend"
+backend_type = "equivalent"
+resources = ["cpu", "memory", "io", "storage", "concurrency", "queues", "time", "network"]
+support_level = "measured_with_external_enforcement"
+privileged = false
+configuration_ref = "profiles/implementation-settings/"
+failure_behavior = "deny_start"
+
+[observability]
+health_states = ["healthy", "constrained", "degraded", "paused", "unavailable", "recovering"]
+correlation_required = true
+secret_material_allowed = false
+status_accuracy = "degraded_state_must_not_appear_healthy"
+[observability.sampling]
+mode = "continuous"
+
+[[observability.metrics]]
+metric_id = "uckk_publication_queue_depth"
+resource = "queues"
+unit = "count"
+required = true
+aggregation = "gauge"
+labels = ["profile_id", "direction"]
+
+[[observability.metrics]]
+metric_id = "uckk_import_queue_depth"
+resource = "queues"
+unit = "count"
+required = true
+aggregation = "gauge"
+labels = ["profile_id", "direction"]
+
+[[observability.metrics]]
+metric_id = "uckk_direction_health"
+resource = "health"
+unit = "state"
+required = true
+aggregation = "state"
+labels = ["profile_id", "direction"]
+
+[lifecycle]
+activation_mode = "atomic_or_equivalent"
+partial_activation = "prohibited"
+rollback_or_forward_repair = "rollback_then_forward_repair"
+previous_verified_envelope_retained = true
+runtime_states = ["verified", "staged", "active", "constrained", "superseded", "recovering"]
+[lifecycle.retention]
+active_envelope = "P3650D"
+previous_verified_envelope = "P3650D"
+allocation_receipts = "P365D"
+enforcement_receipts = "P365D"
+degradation_receipts = "P365D"
+recovery_evidence = "P365D"
+
+[receipts]
+receipt_schema_ref = "contracts/artifact-contracts/decision-receipt.schema.json"
+required_transition_classes = ["envelope_activation", "envelope_rejection", "admission", "queueing", "degradation", "recovery"]
+required_fields = ["receipt_id", "envelope_id", "envelope_version", "target_type", "target_id", "profile_ids", "transition_class", "result_state", "reason_codes", "occurred_at", "correlation_id"]
+public_content = ["receipt_id", "envelope_id", "envelope_version", "target_type", "transition_class", "result_state", "reason_codes", "occurred_at", "correlation_id"]
+private_evidence_content = ["target_identity", "backend_configuration", "diagnostic_evidence"]
+correlation_required = true
+secret_material_allowed = false
+
+[validation]
+required_checks = ["schema_validation", "canonical_reference_resolution", "scope_resolution", "owner_resolution", "profile_scope_alignment", "queue_bound_validation", "retry_bound_validation", "concurrency_bound_validation", "backend_resource_coverage", "backend_capability_validation", "degradation_order_validation", "safe_recovery_validation", "observability_coverage", "receipt_schema_alignment", "retention_validation", "resource_governor_boundary", "no_authorization_effect", "no_machine_privilege_effect"]
+test_ids = ["TEST-UCKK-DIRECTIONAL-RESOURCE-001"]
+evidence_ids = ["EVID-UCKK-DIRECTIONAL-RESOURCE-001"]
+activation_requires = "pass"
+missing_required_result = "blocked"
+automatic_semantic_fixes_allowed = false

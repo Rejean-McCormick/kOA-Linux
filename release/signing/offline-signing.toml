@@ -1,0 +1,44 @@
+schema_version = "1.0"
+policy_id = "koa.release-signing.offline"
+status = "active"
+authority = "docs/06-lifecycle/12-artifact-verification.md"
+activation = "profile_or_policy_required"
+
+[custody]
+private_key_material_in_repository = false
+private_key_export_allowed = false
+network_key_retrieval_allowed = false
+build_worker_key_access_allowed = false
+ordinary_service_key_access_allowed = false
+approved_custody_required = true
+separate_input_and_output_media = true
+operator_identity_required = true
+signing_receipt_required = true
+post_operation_media_review_required = true
+
+[input]
+immutable_subject_required = true
+subject_digest_required = true
+approval_refs_required = true
+provenance_refs_required = true
+sbom_refs_required_when_applicable = true
+release_channel_scope_required = true
+profile_scope_required = true
+environment_scope_required = true
+anti_replay_sequence_required = true
+
+[trust]
+pinned_trust_bundle_digest_required = true
+trust_bundle_expiry_required = true
+revocation_snapshot_expiry_required = true
+unknown_clock_result = "blocked"
+expired_trust_result = "blocked"
+replayed_sequence_result = "blocked"
+unsupported_algorithm_result = "blocked"
+
+[output]
+detached_signature_envelope_required = true
+canonical_statement_required = true
+signature_self_verification_required = true
+private_material_in_output_allowed = false
+publication_or_activation_implied = false

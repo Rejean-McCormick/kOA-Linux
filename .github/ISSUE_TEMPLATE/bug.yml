@@ -1,0 +1,92 @@
+name: Bug report
+description: Report a reproducible implementation defect without redefining architecture or authority.
+title: "[Bug]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not disclose vulnerabilities, private keys, credentials, governed payloads, production data, or unrestricted identities in a public issue. Follow `SECURITY.md` for security reports.
+  - type: input
+    id: affected_scope
+    attributes:
+      label: Affected path, component, integration, or tool
+      description: Identify the narrowest repository path or public capability that exhibits the defect.
+      placeholder: components/... or capability_id
+    validations:
+      required: true
+  - type: input
+    id: authority
+    attributes:
+      label: Owning contract or authority
+      description: Provide the contract or normative document that defines the expected behavior.
+      placeholder: docs/contracts/... or docs/...
+    validations:
+      required: true
+  - type: input
+    id: version_context
+    attributes:
+      label: Version, profile, and environment
+      description: Include the exact commit or Release Set, effective profile, platform, and relevant artifact versions.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal deterministic reproduction
+      description: Provide ordered steps using synthetic, minimized inputs. State prerequisites and the exact command or public interface invoked.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+      description: Describe the expected state, receipt, diagnostic, or fail-closed behavior from the owning authority.
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+      description: Include exact reason codes, exit codes, and minimized diagnostics. Redact secrets and governed payload content.
+    validations:
+      required: true
+  - type: dropdown
+    id: degradation
+    attributes:
+      label: Degradation behavior observed
+      options:
+        - Correctly isolated to the affected capability
+        - Incorrectly reported success
+        - Incorrectly affected unrelated capabilities
+        - Failed closed but with an incorrect diagnostic
+        - Not applicable
+    validations:
+      required: true
+  - type: dropdown
+    id: security_sensitive
+    attributes:
+      label: Could this report expose a security or privacy issue?
+      options:
+        - "No"
+        - Uncertain — no sensitive details included
+        - Yes — details were reported privately under SECURITY.md
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Tests and evidence
+      description: List existing failing tests, a proposed regression test location, and any synthetic evidence references.
+    validations:
+      required: true
+  - type: checkboxes
+    id: declarations
+    attributes:
+      label: Required declarations
+      options:
+        - label: I confirmed that the behavior is not an unsupported state already documented to fail explicitly.
+          required: true
+        - label: I used only synthetic or minimized data and removed secrets and governed payload content.
+          required: true
+        - label: I did not propose a cross-component private import, direct foreign-store write, hidden fallback, or undeclared substitution.
+          required: true

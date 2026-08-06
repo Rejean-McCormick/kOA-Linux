@@ -1,0 +1,121 @@
+schema_version = "1.0"
+policy_id = "koa.release-signing.roles"
+status = "active"
+authority = "docs/07-security/03-identity-trust-and-signatures.md"
+
+[separation]
+build_may_sign = false
+signer_may_approve_own_build = false
+signer_may_publish = false
+publisher_may_activate = false
+ordinary_service_may_hold_release_key = false
+workspace_may_hold_release_key = false
+private_key_material_in_repository = false
+
+[[roles]]
+role_id = "release_set_authority"
+role_kind = "signer"
+description = "Signs the immutable cross-channel Release Set statement after compatibility and approval evidence exist."
+allowed_artifact_classes = ["release_set"]
+allowed_release_channels = ["system", "services", "governance", "knowledge"]
+allowed_purposes = ["release_set_verification"]
+requires_external_custody = true
+may_build = false
+may_publish = false
+may_activate = false
+
+[[roles]]
+role_id = "system_release_signer"
+role_kind = "signer"
+description = "Signs system-channel release statements only."
+allowed_artifact_classes = ["system_image", "boot_artifact", "recovery_artifact"]
+allowed_release_channels = ["system"]
+allowed_purposes = ["channel_release_verification"]
+requires_external_custody = true
+may_build = false
+may_publish = false
+may_activate = false
+
+[[roles]]
+role_id = "services_release_signer"
+role_kind = "signer"
+description = "Signs services-channel release statements only."
+allowed_artifact_classes = ["service_release", "component_runtime", "service_configuration_bundle"]
+allowed_release_channels = ["services"]
+allowed_purposes = ["channel_release_verification"]
+requires_external_custody = true
+may_build = false
+may_publish = false
+may_activate = false
+
+[[roles]]
+role_id = "governance_release_signer"
+role_kind = "signer"
+description = "Signs governance-channel release statements only."
+allowed_artifact_classes = ["governance_policy_bundle"]
+allowed_release_channels = ["governance"]
+allowed_purposes = ["channel_release_verification"]
+requires_external_custody = true
+may_build = false
+may_publish = false
+may_activate = false
+
+[[roles]]
+role_id = "knowledge_release_signer"
+role_kind = "signer"
+description = "Signs knowledge-channel release statements only."
+allowed_artifact_classes = ["kristal_artifact", "pgf_artifact", "atlas", "language_runtime_pack", "approved_knowledge_package"]
+allowed_release_channels = ["knowledge"]
+allowed_purposes = ["channel_release_verification"]
+requires_external_custody = true
+may_build = false
+may_publish = false
+may_activate = false
+
+[[roles]]
+role_id = "release_security_approver"
+role_kind = "co_signer"
+description = "Provides an independent security approval signature over the exact Release Set statement when required by profile policy."
+allowed_artifact_classes = ["release_set"]
+allowed_release_channels = ["system", "services", "governance", "knowledge"]
+allowed_purposes = ["release_set_verification"]
+requires_external_custody = true
+may_build = false
+may_publish = false
+may_activate = false
+
+[[roles]]
+role_id = "offline_release_authority"
+role_kind = "co_signer"
+description = "Provides the separately-custodied offline signature required by disconnected or recovery-sensitive profile policy."
+allowed_artifact_classes = ["release_set"]
+allowed_release_channels = ["system", "services", "governance", "knowledge"]
+allowed_purposes = ["release_set_verification"]
+requires_external_custody = true
+may_build = false
+may_publish = false
+may_activate = false
+
+[[roles]]
+role_id = "release_publisher"
+role_kind = "publisher"
+description = "Publishes already verified release material and cannot satisfy a signing threshold."
+allowed_artifact_classes = []
+allowed_release_channels = ["system", "services", "governance", "knowledge"]
+allowed_purposes = ["release_publication"]
+requires_external_custody = false
+may_build = false
+may_publish = true
+may_activate = false
+
+[[roles]]
+role_id = "release_activation_authority"
+role_kind = "activation_authority"
+description = "Owns activation after verification and cannot satisfy a signing threshold by virtue of activation authority."
+allowed_artifact_classes = []
+allowed_release_channels = ["system", "services", "governance", "knowledge"]
+allowed_purposes = ["release_activation"]
+requires_external_custody = false
+may_build = false
+may_publish = false
+may_activate = true

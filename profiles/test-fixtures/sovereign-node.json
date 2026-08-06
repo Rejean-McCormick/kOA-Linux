@@ -1,0 +1,45 @@
+{
+  "format": "koa.profile-composition-fixture/v1",
+  "fixture_id": "sovereign-node",
+  "description": "Valid sovereign Linux node strengthened by the high-assurance overlay.",
+  "authority_refs": [
+    "docs/contracts/profiles/sovereign-linux-node.profile.json",
+    "docs/contracts/profiles/high-assurance.profile.json"
+  ],
+  "input": {
+    "primary_profile": {
+      "profile_id": "sovereign_linux_node",
+      "version": "1.0.0",
+      "implementation_settings": "profiles/implementation-settings/sovereign-linux-node.toml"
+    },
+    "overlays": [
+      {
+        "overlay_id": "high_assurance",
+        "version": "1.0.0",
+        "overlay_file": "profiles/overlays/high-assurance.toml"
+      }
+    ],
+    "active_exceptions": [],
+    "host_facts": {
+      "operating_system_family": "linux",
+      "local_graphical_seat": false,
+      "wayland_capable": false,
+      "local_input_available": true
+    },
+    "available_capabilities": [
+      "local_identity",
+      "local_policy_evaluation",
+      "resource_governance",
+      "verified_activation"
+    ]
+  },
+  "expected": {
+    "result": "valid",
+    "activation": "permitted_after_required_conformance",
+    "effective_primary_profile_id": "sovereign_linux_node",
+    "effective_overlay_ids": [
+      "high_assurance"
+    ],
+    "unresolved_conflicts": []
+  }
+}

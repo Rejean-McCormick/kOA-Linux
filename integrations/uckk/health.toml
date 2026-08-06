@@ -1,0 +1,38 @@
+schema_version = "1.0.0"
+integration_id = "uckk"
+health_owner = "koa_uckk_adapter"
+health_contract_ref = "interfaces/health/health-status.schema.json"
+readiness_contract_ref = "interfaces/health/readiness.schema.json"
+capability_snapshot_ref = "interfaces/capabilities/capability-snapshot.schema.json"
+reporting_mode = "directional"
+combined_healthy_requires_both_directions = false
+core_impact = "none"
+secret_material_allowed = false
+
+[states]
+admitted = ["healthy", "degraded", "unavailable", "blocked"]
+unknown_state_result = "blocked"
+degraded_must_not_appear_healthy = true
+
+[directions.publish_to_uckk]
+capability_id = "uckk_publication"
+probe_operations = ["authenticate", "validate_destination_capability"]
+ready_requires = ["source_pin_verified", "endpoint_allowlisted", "credentials_resolvable", "mapping_compatible", "receipt_path_available"]
+offline_state = "degraded"
+offline_reason_code = "uckk_publication_transport_unavailable"
+local_operation_preserved = true
+
+[directions.import_from_uckk]
+capability_id = "uckk_import"
+probe_operations = ["authenticate", "discover_declared_catalog"]
+ready_requires = ["source_pin_verified", "source_allowlisted", "credentials_resolvable", "package_verification_available", "quarantine_available", "receipt_path_available"]
+offline_state = "degraded"
+offline_reason_code = "uckk_live_import_unavailable"
+accepted_offline_content_preserved = true
+
+[reporting]
+correlation_required = true
+reason_code_required_when_not_healthy = true
+last_success_may_not_override_current_failure = true
+raw_remote_body_in_health = false
+credential_material_in_health = false

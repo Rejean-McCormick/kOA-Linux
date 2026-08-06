@@ -1,0 +1,26 @@
+{
+  "name": "kOA-Linux isolated development workspace",
+  "dockerComposeFile": "compose.yaml",
+  "service": "workspace",
+  "runServices": [
+    "workspace"
+  ],
+  "workspaceFolder": "/workspaces/koa-linux",
+  "remoteUser": "65532",
+  "containerUser": "65532",
+  "overrideCommand": false,
+  "shutdownAction": "stopCompose",
+  "containerEnv": {
+    "KOA_WORKSPACE_ID": "${localEnv:KOA_WORKSPACE_ID}",
+    "KOA_ACTIVE_PROFILE": "${localEnv:KOA_ACTIVE_PROFILE}"
+  },
+  "postCreateCommand": "test -f pyproject.toml && test -f uv.lock && test -f .python-version && uv sync --frozen",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "python.defaultInterpreterPath": "/workspaces/koa-linux/.venv/bin/python",
+        "python.terminal.activateEnvironment": false
+      }
+    }
+  }
+}

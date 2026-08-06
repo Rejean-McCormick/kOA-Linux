@@ -1,0 +1,66 @@
+name: "${KOA_COMPOSE_PROJECT_NAME:?KOA_COMPOSE_PROJECT_NAME is required}"
+
+services:
+  workspace:
+    build:
+      context: ../..
+      dockerfile: dev/containers/Containerfile
+      args:
+        KOA_DEV_BASE_IMAGE: "${KOA_DEV_BASE_IMAGE:?KOA_DEV_BASE_IMAGE must be an immutable OCI image reference}"
+        KOA_WORKSPACE_ID: "${KOA_WORKSPACE_ID:?KOA_WORKSPACE_ID is required}"
+        KOA_DEV_UID: "${KOA_DEV_UID:-65532}"
+        KOA_DEV_GID: "${KOA_DEV_GID:-65532}"
+    restart: "no"
+    working_dir: /workspaces/koa-linux
+    environment:
+      KOA_WORKSPACE_ID: "${KOA_WORKSPACE_ID:?KOA_WORKSPACE_ID is required}"
+      KOA_ACTIVE_PROFILE: "${KOA_ACTIVE_PROFILE:?KOA_ACTIVE_PROFILE is required}"
+      UV_CACHE_DIR: /home/koa/.cache/uv
+      UV_PROJECT_ENVIRONMENT: /workspaces/koa-linux/.venv
+    volumes:
+      - type: bind
+        source: ../..
+        target: /workspaces/koa-linux
+      - type: volume
+        source: uv_cache
+        target: /home/koa/.cache/uv
+    networks:
+      - workspace
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=256m
+      - /run:rw,noexec,nosuid,nodev,size=32m
+    cap_drop: ["ALL"]
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 512
+    mem_limit: "${KOA_DEV_MEMORY_LIMIT:-8g}"
+    cpus: "${KOA_DEV_CPU_LIMIT:-4.0}"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import pathlib,sys; sys.exit(0 if pathlib.Path('/workspaces/koa-linux').is_dir() else 1)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    labels:
+      org.koa.workspace-id: "${KOA_WORKSPACE_ID}"
+      org.koa.owner: "local_development"
+      org.koa.lifecycle: "workspace-scoped"
+      org.koa.authority: "non-authoritative-development"
+
+networks:
+  workspace:
+    name: "${KOA_WORKSPACE_ID:?KOA_WORKSPACE_ID is required}_dev"
+    driver: bridge
+    labels:
+      org.koa.workspace-id: "${KOA_WORKSPACE_ID}"
+      org.koa.owner: "local_development"
+      org.koa.lifecycle: "workspace-scoped"
+
+volumes:
+  uv_cache:
+    name: "${KOA_WORKSPACE_ID:?KOA_WORKSPACE_ID is required}_uv_cache"
+    labels:
+      org.koa.workspace-id: "${KOA_WORKSPACE_ID}"
+      org.koa.owner: "local_development"
+      org.koa.lifecycle: "workspace-scoped-disposable-cache"

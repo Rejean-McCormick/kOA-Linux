@@ -1,0 +1,272 @@
+{
+  "$schema": "../../docs/schemas/developer-workspace.schema.json",
+  "canonical_refs": [
+    "docs/contracts/profiles/developer-windows-wsl.profile.json",
+    "docs/contracts/toolchains/python-uv.toolchain.json",
+    "docs/05-development/03-workspace-isolation.md",
+    "docs/05-development/06-service-containers.md",
+    "docs/05-development/10-parallel-applications-and-branches.md"
+  ],
+  "contract_type": "developer_workspace",
+  "created_at": "2026-08-06T18:37:02Z",
+  "decision_ids": [
+    "DEC-DEV-001",
+    "DEC-DEV-002"
+  ],
+  "description": "Deterministic non-active development workspace fixture. Activation remains blocked until the common Python workspace files from B-0001 are present and frozen dependency synchronization passes.",
+  "exception_ids": [],
+  "identity": {
+    "branch_or_purpose": "wsl",
+    "component": "koa-linux",
+    "derivation_template": "{component}-{branch_or_purpose}-{unique_suffix}",
+    "display_name": "kOA-Linux wsl development workspace fixture",
+    "namespace_prefix": "koa-linux-wsl-local001",
+    "unique_suffix": "local001",
+    "workspace_id_matches_derivation": true
+  },
+  "isolation": {
+    "databases": {
+      "cross_component_direct_writes_allowed": false,
+      "cross_workspace_mutable_sharing_allowed": false,
+      "databases": [],
+      "isolation_model": "separate_database",
+      "workspace_scoped_database_identity": true
+    },
+    "dependency_environment": {
+      "mutable_environment_shared": false,
+      "python": {
+        "declared_python_version": "3.13",
+        "global_application_installation_allowed": false,
+        "lock_file": "uv.lock",
+        "lockfile_refresh_requires_explicit_action": true,
+        "manager": "uv",
+        "per_workspace_virtual_environment": true,
+        "project_file": "pyproject.toml",
+        "python_version_file": ".python-version",
+        "shared_content_addressed_download_cache_allowed": true,
+        "shared_mutable_virtual_environment_allowed": false,
+        "validation_sync_command": "uv sync --frozen",
+        "virtual_environment_path": ".venv"
+      },
+      "strategy": "per_workspace",
+      "toolchains": [
+        "python_uv"
+      ],
+      "workspace_removal_is_independent": true
+    },
+    "network": {
+      "cross_workspace_default_connectivity": false,
+      "isolated_logical_network": true,
+      "network_name": "koa-linux-wsl-local001-net",
+      "network_names_prefixed": true
+    },
+    "parallel_execution": {
+      "collision_domains": [
+        "host_ports",
+        "process_names",
+        "service_names",
+        "database_names",
+        "database_users",
+        "database_schemas",
+        "networks",
+        "volumes",
+        "secrets",
+        "sockets",
+        "temporary_files",
+        "logs"
+      ],
+      "collision_free": true,
+      "minimum_concurrent_workspaces": 2,
+      "simultaneous_workspaces_supported": true
+    },
+    "ports": {
+      "allocation_registry_ref": "dev/local-services/ports.toml",
+      "allocations": [],
+      "fixed_internal_ports_allowed": true,
+      "host_allocation_strategy": "workspace_scoped_allocation_registry",
+      "host_port_collisions_allowed": false
+    },
+    "secrets": {
+      "cross_workspace_secret_reuse_allowed": false,
+      "generated_local_certificates_namespaced": true,
+      "namespace_prefix": "koa-linux-wsl-local001",
+      "references": [],
+      "secret_values_embedded": false
+    },
+    "services": {
+      "container_names_prefixed": true,
+      "mechanism": "mixed_equivalent",
+      "service_names_prefixed": true,
+      "services": [],
+      "shared_mutable_service_identity_allowed": false
+    },
+    "state": {
+      "namespace_prefix": "koa-linux-wsl-local001",
+      "namespaced_resources": [
+        "dependency_environment",
+        "containers",
+        "networks",
+        "volumes",
+        "database_names",
+        "database_users",
+        "database_schemas",
+        "unix_sockets",
+        "temporary_directories",
+        "log_directories",
+        "pid_files",
+        "service_names",
+        "secret_names",
+        "local_certificates",
+        "development_queues",
+        "host_ports"
+      ],
+      "shared_mutable_state_allowed": false,
+      "workspace_local_directories": {
+        "logs": ".koa/workspaces/koa-linux-wsl-local001/logs",
+        "runtime": ".koa/workspaces/koa-linux-wsl-local001/runtime",
+        "temporary": ".koa/workspaces/koa-linux-wsl-local001/tmp"
+      }
+    }
+  },
+  "lifecycle": {
+    "activation_is_explicit": true,
+    "creation_is_explicit": true,
+    "orphan_cleanup_required": true,
+    "removal_does_not_affect_other_workspaces": true,
+    "retained_resources": [
+      "shared_content_addressed_download_cache"
+    ],
+    "shared_download_cache_may_be_retained": true,
+    "teardown_is_explicit": true
+  },
+  "lock_ids": [
+    "LOCK-DEV-001",
+    "LOCK-DEV-002",
+    "LOCK-DEV-003",
+    "LOCK-DEV-004",
+    "LOCK-DEV-005"
+  ],
+  "owner": "local-development",
+  "profile_id": "developer_windows_wsl",
+  "reproducibility": {
+    "clean_environment_rebuild_supported": true,
+    "declared_runtime_versions": true,
+    "dependency_upgrade_requires_impact_and_tests": true,
+    "frozen_validation_sync": true,
+    "shared_cache_is_not_installed_environment": true,
+    "validation_commands": [
+      "uv sync --frozen",
+      "python docs/tools/check_development_isolation.py",
+      "python docs/tools/check_greenfield_architecture.py"
+    ],
+    "versioned_lockfiles": true,
+    "versioned_project_manifests": true
+  },
+  "requirement_ids": [
+    "REQ-DEV-UV-001",
+    "REQ-DEV-UV-002",
+    "REQ-DEV-UV-003",
+    "REQ-DEV-STATE-001",
+    "REQ-DEV-PARALLEL-001"
+  ],
+  "resource_budget": {
+    "cpu": {
+      "maximum_cores": 4.0,
+      "weight": 100
+    },
+    "heavy_jobs": {
+      "default_activation": "task_activated",
+      "maximum_concurrent": 1,
+      "services": [
+        "sentient",
+        "uckk_package_validation_job"
+      ]
+    },
+    "io": {
+      "priority": "normal"
+    },
+    "memory": {
+      "maximum_mb": 8192,
+      "swap_maximum_mb": 4096
+    },
+    "processes": {
+      "maximum": 512
+    },
+    "queues": {
+      "maximum_pending_jobs": 32
+    }
+  },
+  "source_control": {
+    "clean_repository_required_for_validation": true,
+    "ref_name": "completion/b-0012-conteneurs-et-workspaces-de-developpement",
+    "repository_id": "koa-linux",
+    "workspace_kind": "task_workspace",
+    "workspace_root": "."
+  },
+  "status": "suspended",
+  "tags": [
+    "development",
+    "workspace-isolation",
+    "developer-windows-wsl"
+  ],
+  "updated_at": "2026-08-06T18:37:02Z",
+  "validation": {
+    "activation_requires": "pass",
+    "required_checks": [
+      "workspace_id_derivation",
+      "dependency_environment_isolation",
+      "workspace_state_namespacing",
+      "parallel_workspace_collision_check",
+      "reproducible_dependency_sync",
+      "resource_budget_validation",
+      "secret_reference_validation",
+      "independent_teardown_validation"
+    ],
+    "results": [
+      {
+        "check_id": "workspace_id_derivation",
+        "message": "The deterministic fixture declares the required isolation property.",
+        "result": "pass"
+      },
+      {
+        "check_id": "dependency_environment_isolation",
+        "message": "The deterministic fixture declares the required isolation property.",
+        "result": "pass"
+      },
+      {
+        "check_id": "workspace_state_namespacing",
+        "message": "The deterministic fixture declares the required isolation property.",
+        "result": "pass"
+      },
+      {
+        "check_id": "parallel_workspace_collision_check",
+        "message": "The deterministic fixture declares the required isolation property.",
+        "result": "pass"
+      },
+      {
+        "check_id": "reproducible_dependency_sync",
+        "message": "B-0001 is incomplete in the supplied snapshot: pyproject.toml, uv.lock, and .python-version are not available at repository root.",
+        "result": "blocked"
+      },
+      {
+        "check_id": "resource_budget_validation",
+        "message": "The deterministic fixture declares the required isolation property.",
+        "result": "pass"
+      },
+      {
+        "check_id": "secret_reference_validation",
+        "message": "The deterministic fixture declares the required isolation property.",
+        "result": "pass"
+      },
+      {
+        "check_id": "independent_teardown_validation",
+        "message": "The deterministic fixture declares the required isolation property.",
+        "result": "pass"
+      }
+    ],
+    "validated_at": "2026-08-06T18:37:02Z",
+    "validator_version": "1.0.0"
+  },
+  "version": "1.0.0",
+  "workspace_id": "koa-linux-wsl-local001"
+}

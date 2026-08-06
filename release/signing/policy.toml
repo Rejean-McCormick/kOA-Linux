@@ -1,0 +1,71 @@
+schema_version = "1.0"
+policy_id = "koa.release-signing.policy"
+status = "active"
+authority = "docs/06-lifecycle/18-sbom-provenance-and-signing.md"
+roles_ref = "release/signing/roles.toml"
+
+[statement]
+domain = "koa.release-signature.v1"
+canonical_representation = "koa-canonical-json-v1"
+purpose = "release_set_verification"
+digest_algorithm = "sha256"
+required_subject_artifact_class = "release_set"
+required_release_channels = ["system", "services", "governance", "knowledge"]
+require_exact_channel_set = true
+require_subject_path_binding = true
+require_subject_digest_binding = true
+require_identity_and_version_binding = true
+require_environment_binding = true
+require_profile_binding = true
+require_approval_refs_binding = true
+require_sequence = true
+require_expiry = true
+
+[algorithms]
+accepted = ["ed25519", "ecdsa-p256-sha256", "rsa-pss-sha256"]
+minimum_rsa_bits = 3072
+allowed_ec_curves = ["secp256r1"]
+algorithm_substitution_allowed = false
+
+[baseline]
+required_role_thresholds = { release_set_authority = 1 }
+require_distinct_key_ids = true
+require_distinct_signer_ids = true
+require_all_signatures_over_identical_statement = true
+require_compatibility_status = "tested_compatible"
+require_activation_eligibility = "eligible"
+allow_partial_activation = false
+allowed_lifecycle_statuses = ["validated", "active"]
+
+[profile_requirements.high_assurance]
+required_role_thresholds = { release_set_authority = 2, release_security_approver = 1 }
+offline_signature_required = false
+
+[profile_requirements.control_plane]
+required_role_thresholds = { release_set_authority = 2, release_security_approver = 1 }
+offline_signature_required = false
+
+[profile_requirements.sovereign_offline]
+required_role_thresholds = { release_set_authority = 1, offline_release_authority = 1 }
+offline_signature_required = true
+
+[profile_requirements.sovereign_hub]
+required_role_thresholds = { release_set_authority = 1 }
+offline_signature_required = false
+
+[fail_closed]
+missing_policy = "blocked"
+missing_role = "blocked"
+missing_signature = "blocked"
+unknown_algorithm = "blocked"
+unknown_signer = "blocked"
+wrong_scope = "blocked"
+expired_signature = "blocked"
+expired_key = "blocked"
+revoked_key = "blocked"
+stale_or_expired_trust_bundle = "blocked"
+schema_failure = "blocked"
+incomplete_release_set = "blocked"
+compatibility_failure = "blocked"
+reference_escape = "blocked"
+crypto_backend_unavailable = "blocked"

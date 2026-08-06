@@ -1,0 +1,95 @@
+{
+  "schema_version": "1.0.0",
+  "integration_id": "uckk",
+  "compatibility_version": "1.0.0",
+  "status": "boundary_pinned_external_release_unresolved",
+  "activation_allowed": false,
+  "automatic_compatibility_override_allowed": false,
+  "directional_contracts": {
+    "publish_to_uckk": {
+      "ref": "docs/contracts/integrations/uckk-publication.integration.json",
+      "version": "1.1.0",
+      "sha256": "ef8891c335816eac879b76580f393ceca6958f5799970335e27f34f82f2fd0ac",
+      "direction": "outbound_publication"
+    },
+    "import_from_uckk": {
+      "ref": "docs/contracts/integrations/uckk-import.integration.json",
+      "version": "1.1.0",
+      "sha256": "3187ccdceb1a46ecc0472f19ac283ea2171c1dc07477d7e67999b5a330d1da1f",
+      "direction": "inbound_import"
+    }
+  },
+  "shared_frame": {
+    "ref": "docs/contracts/artifact-contracts/shared-mediatheque-frame.schema.json",
+    "sha256": "2388ceabe56c01e30b5bd7fd9dd82da4304f998e58a78eeaaaff6cd08b2bf7b2",
+    "authority_effect": "none",
+    "mapping_version_required": true,
+    "lossy_mapping_result": "blocked_or_explicit_review"
+  },
+  "artifact_contracts": {
+    "publication_package": {
+      "ref": "docs/contracts/artifact-contracts/uckk-publication-package.schema.json",
+      "sha256": "a888a752f5080a2bbcea7326bd26bde0e8fb8c0fd25685e13fdf584e37449abc"
+    },
+    "publication_receipt": {
+      "ref": "docs/contracts/artifact-contracts/uckk-publication-receipt.schema.json",
+      "sha256": "f00e5e015c9d894b398ec0da498e7d8a5d28eb16ff7f44d6963a555e786d7098"
+    },
+    "learning_package": {
+      "ref": "docs/contracts/artifact-contracts/uckk-learning-package.schema.json",
+      "sha256": "eaccb72818b8146dc9e678f17b5a6a6b9d4dbbe2f1e2ca829ae5bef04b2f1c6f"
+    },
+    "import_receipt": {
+      "ref": "docs/contracts/artifact-contracts/uckk-import-receipt.schema.json",
+      "sha256": "8cbf052937a10007def065a03c3409795d6eaba8f5ef2e76fad32922446139ca"
+    }
+  },
+  "common_interfaces": {
+    "transport": {
+      "ref": "interfaces/transport/http-over-unix.toml",
+      "sha256": "39ae716cd1b2503c0deaedc36a0d72da61e2c7de7bcc32ab4b494ed358a6c9d6"
+    },
+    "health": {
+      "ref": "interfaces/health/health-status.schema.json",
+      "sha256": "16e16696608456ce30dc2c3a845c16306e370532bf39497eef853e07e4357ca2"
+    },
+    "readiness": {
+      "ref": "interfaces/health/readiness.schema.json",
+      "sha256": "69f266cafdd2a0a54cc5de26520792ebb5a50e6a95f5c5028c6b981142cac493"
+    },
+    "receipts": {
+      "ref": "interfaces/receipts/receipt-envelope.schema.json",
+      "sha256": "b320ac5da4a093eb9de4fe186b3fed5f0636669cd808431c46c4af9970240868"
+    },
+    "identity_context": {
+      "ref": "interfaces/identity/identity-context.schema.json",
+      "sha256": "00db42e2a7f642e5d4495e9276801b5f71089ee550fec93504d2a3924ecab0ad"
+    },
+    "capability_snapshot": {
+      "ref": "interfaces/capabilities/capability-snapshot.schema.json",
+      "sha256": "b0498b763740fe56e548946aaec5bdd85bec8d653aacc69266d93c018377b792"
+    }
+  },
+  "external_platform": {
+    "platform_type": "moodle",
+    "repository_or_bundle": null,
+    "immutable_revision": null,
+    "source_digest": null,
+    "expected_documentation_release": null,
+    "moodle_api_version": null,
+    "publication_mapping_version": null,
+    "import_mapping_version": null,
+    "status": "blocked_until_source_lock_and_endpoint_evidence_resolved"
+  },
+  "separation_requirements": {
+    "credentials_shared": false,
+    "queues_shared": false,
+    "receipts_shared": false,
+    "retry_state_shared": false,
+    "generic_sync_interface_allowed": false,
+    "remote_change_implies_local_overwrite": false,
+    "publication_implies_authority_transfer": false
+  },
+  "unknown_version_result": "blocked",
+  "unsupported_mapping_result": "blocked_or_explicit_review"
+}

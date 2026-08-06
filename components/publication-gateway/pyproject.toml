@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=82,<83"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "koa-publication-gateway"
+version = "0.1.0"
+description = "Governed cross-domain publication boundary for kOA-Linux"
+readme = "README.md"
+requires-python = ">=3.13,<3.14"
+license = "LicenseRef-kOA-Linux"
+authors = [{ name = "kOA-Linux contributors" }]
+dependencies = ["koa-interfaces>=0.1.0,<0.2.0"]
+
+[project.scripts]
+koa-publication-gateway = "koa_publication_gateway.__main__:main"
+
+[dependency-groups]
+dev = [
+  "jsonschema>=4.23,<5",
+  "pytest>=9,<10",
+  "ruff>=0.12,<1",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["koa_publication_gateway*"]
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-config --strict-markers"
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.pyright]
+pythonVersion = "3.13"
+typeCheckingMode = "strict"
+include = ["src"]
