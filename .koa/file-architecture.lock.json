@@ -7415,5 +7415,9 @@
     "tests",
     "tools",
     "uv.lock"
+  ],
+  "inventory_scope": "implementation_only",
+  "ignored_paths": [
+    "docs"
   ]
 }

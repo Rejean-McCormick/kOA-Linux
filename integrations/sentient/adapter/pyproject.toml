@@ -12,8 +12,8 @@ license = { text = "LicenseRef-Unresolved-SenTient" }
 authors = [{ name = "kOA" }]
 dependencies = ["koa-interfaces>=1.0,<2.0"]
 
-[project.scripts]
-koa-sentient-adapter = "koa_sentient_adapter.bootstrap:main"
+[project.entry-points."koa.integrations"]
+sentient = "koa_sentient_adapter.bootstrap:bootstrap_adapter"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/koa_sentient_adapter"]

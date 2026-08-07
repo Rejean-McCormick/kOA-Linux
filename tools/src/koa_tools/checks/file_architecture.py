@@ -158,15 +158,19 @@ def check_file_architecture(
     expected, lock_findings = _path_values(lock_data)
     findings.extend(lock_findings)
     ignored = _ignored_patterns(lock_data)
+    expected_set = set(expected)
+    discovered = {
+        normalize_repository_path(path)
+        for path in (paths if paths is not None else iter_repository_files(base))
+    }
     actual = sorted(
         {
-            normalize_repository_path(path)
-            for path in (paths if paths is not None else iter_repository_files(base))
-            if not _is_ignored(str(path).replace("\\", "/"), ignored)
+            path
+            for path in discovered
+            if path in expected_set or not _is_ignored(path, ignored)
         },
         key=str.casefold,
     )
-    expected_set = set(expected)
     actual_set = set(actual)
     for path in sorted(actual_set - expected_set, key=str.casefold):
         findings.append(Finding("FILE_UNKNOWN", "committed path is not present in the frozen architecture lock", path))

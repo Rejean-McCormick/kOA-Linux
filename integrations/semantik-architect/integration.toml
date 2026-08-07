@@ -7,7 +7,7 @@ display_name = "SemantiK Architect"
 relationship = "integrated_subsystem"
 status = "preparation_only"
 owner = "koa-integration-architecture"
-adapter_entrypoint = "koa_semantik_architect_adapter.bootstrap:main"
+adapter_entrypoint = "koa_semantik_architect_adapter.bootstrap:create_adapter"
 source_lock = "source.lock.json"
 compatibility_manifest = "compatibility.json"
 

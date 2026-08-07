@@ -6,13 +6,14 @@ build-backend = "hatchling.build"
 name = "koa-semantik-architect-adapter"
 version = "0.1.0"
 description = "kOA boundary adapter for the separately owned SemantiK Architect subsystem"
+readme = "../README.md"
 requires-python = ">=3.11"
 dependencies = [
-  "koa-interfaces==0.1.0",
+  "koa-interfaces>=1.0,<2.0",
 ]
 
-[project.scripts]
-koa-semantik-architect-adapter = "koa_semantik_architect_adapter.bootstrap:main"
+[project.entry-points."koa.integrations"]
+semantik_architect = "koa_semantik_architect_adapter.bootstrap:create_adapter"
 
 [dependency-groups]
 dev = [

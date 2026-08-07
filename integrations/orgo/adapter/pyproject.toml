@@ -10,10 +10,10 @@ readme = "../README.md"
 requires-python = ">=3.12"
 license = { text = "LicenseRef-kOA-Repository" }
 authors = [{ name = "kOA-Linux contributors" }]
-dependencies = ["koa-interfaces>=0.1.0,<0.2.0"]
+dependencies = ["koa-interfaces>=1.0,<2.0"]
 
 [project.entry-points."koa.integrations"]
-orgo = "koa_orgo_adapter.bootstrap:bootstrap"
+orgo = "koa_orgo_adapter.bootstrap:build_adapter"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/koa_orgo_adapter"]

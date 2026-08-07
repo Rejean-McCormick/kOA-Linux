@@ -16,7 +16,7 @@ authority_transfer_by_visibility = false
 [adapter]
 package = "koa-orgo-adapter"
 module = "koa_orgo_adapter"
-entrypoint = "koa_orgo_adapter.bootstrap:bootstrap"
+entrypoint = "koa_orgo_adapter.bootstrap:build_adapter"
 transport = "http_over_unix"
 socket = "/run/koa/orgo/adapter.sock"
 

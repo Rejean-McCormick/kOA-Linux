@@ -131,5 +131,15 @@
     "unknown_generator_result": "fail",
     "broken_source_result": "fail",
     "manual_patch_result": "fail"
-  }
+  },
+  "entries": [
+    {
+      "path": "docs/generated",
+      "renderer": "documentation_governance"
+    },
+    {
+      "path": "generated",
+      "renderer": "declared_owning_generators"
+    }
+  ]
 }
