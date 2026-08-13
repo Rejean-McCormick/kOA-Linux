@@ -149,8 +149,7 @@
     {
       "id": "persistent_state",
       "roots": [
-        "/var/lib/koa",
-        "/var/lib/koa-recovery"
+        "/var/lib/koa"
       ],
       "mutation": "owning_component_or_lifecycle_controller_only",
       "shared_writable_database_root": "prohibited",
@@ -179,7 +178,16 @@
         "/var/lib/koa/backups/",
         "/var/lib/koa/offline-import/",
         "/var/lib/koa/recovery/",
-        "/var/lib/koa/support-bundles/",
+        "/var/lib/koa/support-bundles/"
+      ]
+    },
+    {
+      "id": "recovery_state",
+      "roots": [
+        "/var/lib/koa-recovery"
+      ],
+      "mutation": "recovery_controller_only",
+      "paths": [
         "/var/lib/koa-recovery/"
       ]
     },

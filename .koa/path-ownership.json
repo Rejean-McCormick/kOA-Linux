@@ -474,7 +474,7 @@
       ]
     }
   ],
-  "registry_sha256": "6712abe85510eb1487035293001ddf2735ca72d0ff95f898011ac774a4b92e11",
+  "registry_sha256": "8fc282fef34fff9a9d0c6cc515a17f54470698cedf75ee4d175738f337c18b74",
   "repository_id": "koa_linux_operating_system",
   "resolution_strategy": "exact_then_longest_prefix",
   "rules": [
@@ -722,6 +722,46 @@
       "match": "exact",
       "owner_id": "repository_tooling",
       "path": "rust-toolchain.toml"
+    },
+    {
+      "match": "exact",
+      "owner_id": "cross_system_conformance",
+      "path": "tests/system/qemu_harness.py"
+    },
+    {
+      "match": "exact",
+      "owner_id": "cross_system_conformance",
+      "path": "tests/system/qemu-machine.toml"
+    },
+    {
+      "match": "exact",
+      "owner_id": "cross_system_conformance",
+      "path": "tests/system/test_qemu_boot.py"
+    },
+    {
+      "match": "exact",
+      "owner_id": "cross_system_conformance",
+      "path": "tests/system/test_qemu_appliance_session.py"
+    },
+    {
+      "match": "exact",
+      "owner_id": "cross_system_conformance",
+      "path": "tests/system/test_qemu_navigation.py"
+    },
+    {
+      "match": "exact",
+      "owner_id": "cross_system_conformance",
+      "path": "tests/system/test_qemu_mediatheque.py"
+    },
+    {
+      "match": "exact",
+      "owner_id": "cross_system_conformance",
+      "path": "tests/system/test_qemu_semantik_architect.py"
+    },
+    {
+      "match": "exact",
+      "owner_id": "cross_system_conformance",
+      "path": "tests/offline/test_qemu_offline_navigation.py"
     },
     {
       "match": "prefix",

@@ -1,29 +1,23 @@
-# Generated build outputs
+# Generated Outputs
 
-This directory is the non-normative root for reproducible code and deployment
-projections. Content produced here is derived from canonical contracts,
-schemas, profiles, assembly inputs, packaging declarations, and release
-policies. It does not create or override system authority.
+`generated/` is the repository output root for declared code and deployment projections.
 
-Except for this file and `.gitignore`, files under `generated/` must not be
-created or edited manually. A generated output is admissible only when it is:
+## Authority
 
-- produced by a declared generator or reproducibly attributed to a build manifest;
-- written to a declared generated path;
-- deterministic for the same registered inputs;
-- attributable to its source references and source digest;
-- validated before packaging, release, or activation.
+Generated instances are derived, reproducible projections. They are not source authority and must not redefine canonical contracts, architecture, policy, ownership, runtime authority, or release authority.
 
-The public generation entrypoints are provided by `koa_tools` and the assembly
-package. Depending on the output class, use the applicable `koa_tools`
-`assemble`, `build-bundle`, `build-image`, `release`, or `generate` command.
-Output paths supplied to these commands must remain beneath `generated/`.
+Source authority remains in the source contracts, schemas, profiles, assembly metadata, packaging metadata, release metadata, and other inputs declared by the owning generator or active manifest.
 
-The complete generated-root policy and its two manually maintained sentinel
-exceptions are registered in `.koa/generated-paths.json`. Canonical behavior is
-owned by the referenced documents and contracts, not by this README.
+## Editing
 
-To discard local dynamic outputs while retaining the sentinels, remove every
-entry in this directory except `.gitignore` and `README.md`, then rerun the
-applicable declared generator. Do not restore an output from an undeclared
-fallback or substitute source.
+Do not edit generated projections manually. The only manually maintained control files allowed in this root are `generated/.gitignore` and `generated/README.md`.
+
+Every other committed output under `generated/` must be declared by `.koa/generated-paths.json` and carry the provenance metadata, or manifest attribution, required by the active generated-content policy.
+
+## Rebuild
+
+Rebuild each projection with the owning generator or renderer declared by its active registry or manifest, using only its declared source inputs. Do not create or patch an output path by hand.
+
+A clean rebuild must be deterministic and byte-equivalent after the repository's declared newline normalization. Validate generated content with the repository validation tooling before treating a projection as current.
+
+Deleting a generated projection must never delete or transfer its source authority. Runtime state, secrets, private keys, user data, databases, queues, caches, and mutable operational state do not belong in this root.

@@ -10,6 +10,7 @@ import os
 import platform
 import subprocess
 import sys
+import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Any
 
@@ -19,10 +20,39 @@ EVIDENCE_TYPE = 'reproducibility_test'
 DEFAULT_PATHS = []
 DEFAULT_COMMANDS = []
 DEFAULT_POLICY = 'ci/policies/offline-gates.json'
+COMMAND_TIMEOUT_SECONDS = 900
+GIT_TIMEOUT_SECONDS = 30
+_PASSTHROUGH_ENVIRONMENT = ('PATH', 'HOME', 'USERPROFILE', 'SYSTEMROOT', 'WINDIR', 'TMPDIR', 'TEMP', 'TMP')
+
+
+def _minimal_environment(extra: dict[str, str] | None = None) -> dict[str, str]:
+    environment = {key: os.environ[key] for key in _PASSTHROUGH_ENVIRONMENT if os.environ.get(key)}
+    environment.update({
+        'PYTHONDONTWRITEBYTECODE': '1',
+        'PYTEST_DISABLE_PLUGIN_AUTOLOAD': '1',
+        'PYTHONHASHSEED': '0',
+        'PYTEST_ADDOPTS': '-p no:cacheprovider',
+        'NO_PROXY': '*',
+        'no_proxy': '*',
+    })
+    environment.update(extra or {})
+    return environment
 
 
 def _git(root: Path, *args: str) -> str | None:
-    result = subprocess.run(["git", "-C", str(root), *args], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True, check=False)
+    try:
+        result = subprocess.run(
+            ["git", *args],
+            cwd=root,
+            env=_minimal_environment(),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+            text=True,
+            timeout=GIT_TIMEOUT_SECONDS,
+            check=False,
+        )
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        return None
     return result.stdout.strip() if result.returncode == 0 else None
 
 
@@ -30,9 +60,34 @@ def _digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def _command_record(argv: list[str], code: int) -> dict[str, Any]:
+def _command_record(
+    argv: list[str],
+    code: int,
+    *,
+    outcome: str | None = None,
+    skipped_tests: int = 0,
+    reason: str | None = None,
+) -> dict[str, Any]:
     displayed = ['{python}' if index == 0 and item == sys.executable else item for index, item in enumerate(argv)]
-    return {"argv": displayed, "exit_code": code, "outcome": "passed" if code == 0 else "failed"}
+    record: dict[str, Any] = {
+        "argv": displayed,
+        "exit_code": code,
+        "outcome": outcome or ("passed" if code == 0 else "failed"),
+    }
+    if skipped_tests:
+        record["skipped_tests"] = skipped_tests
+    if reason:
+        record["reason"] = reason
+    return record
+
+
+def _is_pytest_command(argv: list[str]) -> bool:
+    return len(argv) >= 3 and argv[0] == sys.executable and argv[1:3] == ["-m", "pytest"]
+
+
+def _count_junit_skips(path: Path) -> int:
+    root = ET.parse(path).getroot()
+    return sum(1 for case in root.iter("testcase") if case.find("skipped") is not None)
 
 
 def _normalise_command(command: list[str]) -> list[str]:
@@ -124,23 +179,58 @@ def main() -> int:
 
     records: list[dict[str, Any]] = []
     outcome = "blocked" if missing else "passed"
-    environment = os.environ.copy()
-    environment.update({
-        "PYTHONDONTWRITEBYTECODE": "1",
-        "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
-        "PYTHONHASHSEED": environment.get("PYTHONHASHSEED", "0"),
-        "PYTEST_ADDOPTS": " ".join(filter(None, [environment.get("PYTEST_ADDOPTS", ""), "-p no:cacheprovider"])),
-    })
-    environment.update(policy_env)
+    environment = _minimal_environment(policy_env)
 
     if not missing:
-        for argv in commands:
+        for index, argv in enumerate(commands, start=1):
             print(f"[{SUITE_ID}] $ {' '.join(argv)}", flush=True)
-            result = subprocess.run(argv, cwd=root, env=environment, check=False)
-            records.append(_command_record(argv, result.returncode))
-            if result.returncode != 0:
+            executed = list(argv)
+            junit_path = evidence_dir / f".pytest-{index:02d}.xml" if _is_pytest_command(argv) else None
+            if junit_path is not None:
+                junit_path.unlink(missing_ok=True)
+                executed.append(f"--junitxml={junit_path}")
+            try:
+                result = subprocess.run(
+                    executed,
+                    cwd=root,
+                    env=environment,
+                    timeout=COMMAND_TIMEOUT_SECONDS,
+                    check=False,
+                )
+            except FileNotFoundError as exc:
+                records.append(_command_record(argv, 127, outcome="blocked", reason=f"tool_not_found:{exc.filename}"))
+                outcome = "blocked"
+                break
+            except subprocess.TimeoutExpired:
+                records.append(_command_record(argv, 124, outcome="failed", reason="bounded_timeout_exceeded"))
                 outcome = "failed"
                 break
+
+            skipped = 0
+            if junit_path is not None and junit_path.is_file():
+                try:
+                    skipped = _count_junit_skips(junit_path)
+                except (OSError, ET.ParseError):
+                    records.append(_command_record(argv, 2, outcome="blocked", reason="invalid_pytest_junit_evidence"))
+                    outcome = "blocked"
+                    junit_path.unlink(missing_ok=True)
+                    break
+                junit_path.unlink(missing_ok=True)
+            if result.returncode != 0:
+                records.append(_command_record(argv, result.returncode, outcome="failed", skipped_tests=skipped))
+                outcome = "failed"
+                break
+            if skipped:
+                records.append(_command_record(
+                    argv,
+                    result.returncode,
+                    outcome="blocked",
+                    skipped_tests=skipped,
+                    reason="skipped_or_xfailed_tests_are_not_passing_evidence",
+                ))
+                outcome = "blocked"
+                break
+            records.append(_command_record(argv, result.returncode))
 
     core = {
         "format_version": "1.0.0",
@@ -157,6 +247,13 @@ def main() -> int:
         "missing_paths": missing,
         "commands": records,
         "outcome": outcome,
+        "reproducibility_scope": {
+            "identical_inputs_required": True,
+            "identical_toolchain_required": True,
+            "byte_compared_outputs": ["koa-rootfs.tar", "rootfs-build.json"],
+            "declared_variable_inputs": ["SOURCE_DATE_EPOCH"],
+            "excluded_filesystem_metadata": ["output_directory_inode", "output_directory_ctime"],
+        },
         "environment": {
             "python": platform.python_version(),
             "implementation": platform.python_implementation(),
@@ -165,6 +262,7 @@ def main() -> int:
         },
         "notes": [
             "This report is candidate CI evidence only.",
+            "Skipped or xfailed tests are blocked and never count as passing reproducibility evidence.",
             "It does not authorize merge, release, signing, publication, or activation."
         ],
     }

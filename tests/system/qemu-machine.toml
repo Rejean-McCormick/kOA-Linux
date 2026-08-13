@@ -1,0 +1,39 @@
+# Reference virtual machine for kOA system validation.
+# This file describes test infrastructure only. It is not a product profile,
+# release manifest, networking policy, or activation authority.
+format = "koa.qemu-validation-machine"
+format_version = "1.0.0"
+status = "active"
+scope = "reference_validation_platform"
+architecture = "x86_64"
+
+[qemu]
+binary = "qemu-system-x86_64"
+machine = "q35"
+accelerator = "tcg"
+cpu = "max"
+smp = 2
+memory_mib = 2048
+video_device = "virtio-vga"
+rng_device = "virtio-rng-pci"
+timeout_seconds = 240
+shutdown_timeout_seconds = 10
+max_serial_log_bytes = 8388608
+max_qemu_log_bytes = 1048576
+
+[uefi]
+required = true
+code_candidates = [
+  "/usr/share/OVMF/OVMF_CODE.fd",
+  "/usr/share/edk2/x64/OVMF_CODE.fd",
+  "/usr/share/edk2/ovmf/OVMF_CODE.fd",
+]
+vars_candidates = [
+  "/usr/share/OVMF/OVMF_VARS.fd",
+  "/usr/share/edk2/x64/OVMF_VARS.fd",
+  "/usr/share/edk2/ovmf/OVMF_VARS.fd",
+]
+
+[network]
+default_enabled = false
+model = "virtio-net-pci"

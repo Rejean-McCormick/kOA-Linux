@@ -68,6 +68,10 @@ This document freezes the installed path classes and fixed control files for kOA
 /usr/bin/koa-node-agentctl
 /usr/libexec/koa/koa-node-agent
 /usr/libexec/koa/koa-privileged-broker
+/usr/libexec/koa/session_runtime.py
+/usr/libexec/koa/koa-appliance-session
+/usr/libexec/koa/koa-maintenance-session
+/usr/libexec/koa/koa-recovery-session
 /usr/libexec/koa/koa-activation
 /usr/libexec/koa/koa-health-aggregate
 /usr/libexec/koa/koa-offline-import

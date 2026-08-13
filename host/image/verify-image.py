@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Re-verify a sealed system image and emit a non-authorizing receipt."""
+"""Re-verify a sealed system image, including boot and recovery artifacts, without activation."""
 from __future__ import annotations
 
 import argparse
@@ -7,9 +7,19 @@ import hashlib
 import json
 import os
 import sys
+import tarfile
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+
+_BOOT_MEMBERS = {"boot-artifact.json", "boot/kernel", "boot/initramfs", "boot/material"}
+_RECOVERY_MEMBERS = {
+    "recovery-artifact.json",
+    "recovery/kernel",
+    "recovery/initramfs",
+    "recovery/material",
+    "recovery/rootfs",
+}
 
 
 class ImageVerificationError(ValueError):
@@ -47,6 +57,13 @@ def _sha256_file(path: Path) -> str:
     with path.open("rb") as handle:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _sha256_stream(handle: Any) -> str:
+    digest = hashlib.sha256()
+    for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+        digest.update(chunk)
     return digest.hexdigest()
 
 
@@ -106,6 +123,105 @@ def _check_evidence_reference(seal: dict[str, Any], key: str, raw: bytes) -> Non
         raise ImageVerificationError(f"evidence_digest_mismatch:{key}")
 
 
+def _load_tar_manifest(path: Path, *, manifest_name: str, members: set[str]) -> tuple[dict[str, Any], tarfile.TarFile]:
+    try:
+        archive = tarfile.open(path, mode="r:*")
+    except tarfile.TarError as exc:
+        raise ImageVerificationError(f"invalid_artifact_archive:{path.name}") from exc
+    names = [member.name for member in archive.getmembers()]
+    if len(names) != len(set(names)):
+        archive.close()
+        raise ImageVerificationError(f"duplicate_tar_member:{path.name}")
+    if set(names) != members or any(not member.isfile() for member in archive.getmembers()):
+        archive.close()
+        raise ImageVerificationError(f"artifact_members_incomplete_or_unknown:{path.name}")
+    handle = archive.extractfile(manifest_name)
+    if handle is None:
+        archive.close()
+        raise ImageVerificationError(f"artifact_manifest_missing:{manifest_name}")
+    try:
+        manifest = json.loads(handle.read().decode("utf-8"), object_pairs_hook=_reject_duplicates)
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        archive.close()
+        raise ImageVerificationError(f"invalid_artifact_manifest:{manifest_name}") from exc
+    if not isinstance(manifest, dict):
+        archive.close()
+        raise ImageVerificationError(f"artifact_manifest_must_be_object:{manifest_name}")
+    return manifest, archive
+
+
+def _check_member(archive: tarfile.TarFile, manifest: dict[str, Any], key: str, member_name: str) -> None:
+    record = manifest.get(key)
+    if not isinstance(record, dict):
+        raise ImageVerificationError(f"artifact_record_missing:{key}")
+    member = archive.getmember(member_name)
+    if record.get("size_bytes") != member.size:
+        raise ImageVerificationError(f"artifact_member_size_mismatch:{key}")
+    handle = archive.extractfile(member)
+    if handle is None:
+        raise ImageVerificationError(f"artifact_member_missing:{member_name}")
+    if _digest(record.get("sha256"), f"{key}.sha256") != _sha256_stream(handle):
+        raise ImageVerificationError(f"artifact_member_digest_mismatch:{key}")
+
+
+def _verify_boot_artifact(path: Path, *, image_id: str, image_version: str, profile_id: str) -> dict[str, Any]:
+    manifest, archive = _load_tar_manifest(path, manifest_name="boot-artifact.json", members=_BOOT_MEMBERS)
+    try:
+        if manifest.get("artifact_class") != "boot_artifact" or manifest.get("release_channel") != "system":
+            raise ImageVerificationError("boot_artifact_identity_mismatch")
+        image = manifest.get("image")
+        if not isinstance(image, dict):
+            raise ImageVerificationError("boot_artifact_image_identity_missing")
+        if image.get("image_id") != image_id or image.get("image_version") != image_version or image.get("profile_id") != profile_id:
+            raise ImageVerificationError("boot_artifact_image_identity_mismatch")
+        if manifest.get("activation_authorized") is not False:
+            raise ImageVerificationError("boot_artifact_must_not_authorize_activation")
+        kernel = manifest.get("kernel")
+        if not isinstance(kernel, dict) or not kernel.get("maintenance_ref") or not kernel.get("provenance_ref"):
+            raise ImageVerificationError("kernel_identity_and_provenance_required")
+        _check_member(archive, manifest, "kernel", "boot/kernel")
+        _check_member(archive, manifest, "initramfs", "boot/initramfs")
+        _check_member(archive, manifest, "boot_material", "boot/material")
+        return manifest
+    finally:
+        archive.close()
+
+
+def _verify_recovery_artifact(path: Path, *, image_id: str, image_version: str, profile_id: str) -> dict[str, Any]:
+    manifest, archive = _load_tar_manifest(path, manifest_name="recovery-artifact.json", members=_RECOVERY_MEMBERS)
+    try:
+        if manifest.get("artifact_class") != "recovery_artifact" or manifest.get("release_channel") != "system":
+            raise ImageVerificationError("recovery_artifact_identity_mismatch")
+        image = manifest.get("image")
+        if not isinstance(image, dict):
+            raise ImageVerificationError("recovery_artifact_image_identity_missing")
+        if image.get("image_id") != image_id or image.get("image_version") != image_version or image.get("profile_id") != profile_id:
+            raise ImageVerificationError("recovery_artifact_image_identity_mismatch")
+        if manifest.get("independent_invocation_required") is not True:
+            raise ImageVerificationError("recovery_independent_invocation_requirement_missing")
+        if manifest.get("activation_authorized") is not False:
+            raise ImageVerificationError("recovery_artifact_must_not_authorize_activation")
+        kernel = manifest.get("kernel")
+        if not isinstance(kernel, dict) or not kernel.get("maintenance_ref") or not kernel.get("provenance_ref"):
+            raise ImageVerificationError("recovery_kernel_identity_and_provenance_required")
+        _check_member(archive, manifest, "kernel", "recovery/kernel")
+        _check_member(archive, manifest, "initramfs", "recovery/initramfs")
+        _check_member(archive, manifest, "boot_material", "recovery/material")
+        _check_member(archive, manifest, "rootfs", "recovery/rootfs")
+        return manifest
+    finally:
+        archive.close()
+
+
+def _complete_artifact_paths(args: argparse.Namespace) -> tuple[Path, Path, Path, Path] | None:
+    values = (args.boot_artifact, args.disk_image, args.disk_build_manifest, args.recovery_artifact)
+    if not any(value is not None for value in values):
+        return None
+    if any(value is None for value in values):
+        raise ImageVerificationError("complete_image_inputs_must_be_supplied_together")
+    return values  # type: ignore[return-value]
+
+
 def verify(args: argparse.Namespace) -> dict[str, Any]:
     verified_at = _event_time(args.verified_at)
     layers: list[dict[str, str]] = []
@@ -134,12 +250,84 @@ def verify(args: argparse.Namespace) -> dict[str, Any]:
 
     build, build_raw = _load_json(args.build_manifest)
     _check_evidence_reference(seal, "build_manifest", build_raw)
-    archive = build.get("archive")
-    if not isinstance(archive, dict) or _digest(archive.get("sha256"), "build.archive.sha256") != rootfs_digest:
+    archive_record = build.get("archive")
+    if not isinstance(archive_record, dict) or _digest(archive_record.get("sha256"), "build.archive.sha256") != rootfs_digest:
         raise ImageVerificationError("build_manifest_rootfs_mismatch")
     if build.get("candidate_code_executed") is not False or build.get("component_owned_state_included") is not False:
         raise ImageVerificationError("unsafe_build_manifest")
     layers.append({"layer": "build_evidence", "outcome": "verified"})
+
+    scope = seal.get("artifact_scope", "rootfs_only")
+    complete_paths = _complete_artifact_paths(args)
+    subject_digest = rootfs_digest
+    boot_digest: str | None = None
+    recovery_digest: str | None = None
+    if scope == "complete_disk_image":
+        if complete_paths is None:
+            raise ImageVerificationError("complete_image_verification_inputs_required")
+        boot_artifact, disk_image, disk_build_manifest_path, recovery_artifact = complete_paths
+        disk_digest = _sha256_file(disk_image)
+        system_image = seal.get("system_image")
+        if not isinstance(system_image, dict) or _digest(system_image.get("sha256"), "seal.system_image.sha256") != disk_digest:
+            raise ImageVerificationError("system_image_digest_mismatch")
+        if system_image.get("size_bytes") != disk_image.stat().st_size:
+            raise ImageVerificationError("system_image_size_mismatch")
+        subject_digest = disk_digest
+        layers.append({"layer": "disk_image_integrity", "outcome": "verified"})
+
+        disk_build, disk_build_raw = _load_json(disk_build_manifest_path)
+        _check_evidence_reference(seal, "disk_build_manifest", disk_build_raw)
+        image = disk_build.get("image")
+        if not isinstance(image, dict) or _digest(image.get("sha256"), "disk_build.image.sha256") != disk_digest:
+            raise ImageVerificationError("disk_build_manifest_image_mismatch")
+        if image.get("image_id") != seal.get("image_id") or image.get("image_version") != seal.get("image_version") or image.get("profile_id") != seal.get("profile_id"):
+            raise ImageVerificationError("disk_build_manifest_identity_mismatch")
+        if disk_build.get("activation_authorized") is not False:
+            raise ImageVerificationError("disk_build_must_not_authorize_activation")
+        staging = disk_build.get("staging")
+        if not isinstance(staging, dict) or staging.get("active_target_mutated") is not False:
+            raise ImageVerificationError("disk_build_active_target_mutation_detected")
+
+        boot_digest = _sha256_file(boot_artifact)
+        recovery_digest = _sha256_file(recovery_artifact)
+        inputs = disk_build.get("inputs")
+        if not isinstance(inputs, dict):
+            raise ImageVerificationError("disk_build_inputs_missing")
+        expected_inputs = {
+            "rootfs": rootfs_digest,
+            "boot_artifact": boot_digest,
+            "recovery_artifact": recovery_digest,
+        }
+        for key, digest in expected_inputs.items():
+            record = inputs.get(key)
+            if not isinstance(record, dict) or _digest(record.get("sha256"), f"disk_build.inputs.{key}.sha256") != digest:
+                raise ImageVerificationError(f"disk_build_input_digest_mismatch:{key}")
+        layers.append({"layer": "disk_build_metadata", "outcome": "verified"})
+
+        boot_ref = seal.get("boot_artifact")
+        recovery_ref = seal.get("recovery_artifact")
+        if not isinstance(boot_ref, dict) or _digest(boot_ref.get("sha256"), "seal.boot_artifact.sha256") != boot_digest:
+            raise ImageVerificationError("boot_artifact_seal_digest_mismatch")
+        if not isinstance(recovery_ref, dict) or _digest(recovery_ref.get("sha256"), "seal.recovery_artifact.sha256") != recovery_digest:
+            raise ImageVerificationError("recovery_artifact_seal_digest_mismatch")
+        _verify_boot_artifact(
+            boot_artifact,
+            image_id=str(seal.get("image_id")),
+            image_version=str(seal.get("image_version")),
+            profile_id=str(seal.get("profile_id")),
+        )
+        layers.append({"layer": "boot_artifact", "outcome": "verified"})
+        _verify_recovery_artifact(
+            recovery_artifact,
+            image_id=str(seal.get("image_id")),
+            image_version=str(seal.get("image_version")),
+            profile_id=str(seal.get("profile_id")),
+        )
+        layers.append({"layer": "recovery_artifact", "outcome": "verified"})
+    elif scope != "rootfs_only":
+        raise ImageVerificationError("unknown_artifact_scope")
+    elif complete_paths is not None:
+        raise ImageVerificationError("complete_inputs_not_permitted_for_rootfs_only_seal")
 
     release_receipt, release_raw = _load_json(args.release_set_verification)
     _check_evidence_reference(seal, "release_set_verification", release_raw)
@@ -158,35 +346,42 @@ def verify(args: argparse.Namespace) -> dict[str, Any]:
 
     provenance, provenance_raw = _load_json(args.provenance)
     _check_evidence_reference(seal, "provenance", provenance_raw)
-    if provenance.get("outcome") not in {"verified", "pass"} or _subject_digest(provenance, "provenance") != rootfs_digest:
-        raise ImageVerificationError("provenance_not_verified_for_rootfs")
+    if provenance.get("outcome") not in {"verified", "pass"} or _subject_digest(provenance, "provenance") != subject_digest:
+        raise ImageVerificationError("provenance_not_verified_for_system_image")
     layers.append({"layer": "provenance", "outcome": "verified"})
 
     sbom, sbom_raw = _load_json(args.sbom)
     _check_evidence_reference(seal, "sbom", sbom_raw)
-    if _subject_digest(sbom, "sbom") != rootfs_digest or not (sbom.get("components") or sbom.get("packages")):
-        raise ImageVerificationError("sbom_not_bound_to_rootfs")
+    if _subject_digest(sbom, "sbom") != subject_digest or not (sbom.get("components") or sbom.get("packages")):
+        raise ImageVerificationError("sbom_not_bound_to_system_image")
     layers.append({"layer": "sbom", "outcome": "verified"})
 
     signature, signature_raw = _load_json(args.signature_attestation)
     _check_evidence_reference(seal, "signature_attestation", signature_raw)
-    if signature.get("verification_status") != "verified" or _subject_digest(signature, "signature") != rootfs_digest:
-        raise ImageVerificationError("signature_not_verified_for_rootfs")
+    if signature.get("verification_status") != "verified" or _subject_digest(signature, "signature") != subject_digest:
+        raise ImageVerificationError("signature_not_verified_for_system_image")
     if not signature.get("signer_identity_ref") or not signature.get("signing_authority_ref"):
         raise ImageVerificationError("signature_identity_missing")
     layers.append({"layer": "signature", "outcome": "verified"})
 
+    image_receipt: dict[str, Any] = {
+        "image_id": seal.get("image_id"),
+        "image_version": seal.get("image_version"),
+        "sha256": subject_digest,
+        "rootfs_sha256": rootfs_digest,
+        "seal_sha256": stored_seal_digest,
+    }
+    if boot_digest is not None:
+        image_receipt["boot_artifact_sha256"] = boot_digest
+    if recovery_digest is not None:
+        image_receipt["recovery_artifact_sha256"] = recovery_digest
     return {
         "schema_version": 1,
         "receipt_type": "system_image_verification",
         "outcome": "verified",
         "verified_at": verified_at,
-        "image": {
-            "image_id": seal.get("image_id"),
-            "image_version": seal.get("image_version"),
-            "sha256": rootfs_digest,
-            "seal_sha256": stored_seal_digest,
-        },
+        "artifact_scope": scope,
+        "image": image_receipt,
         "release_set": release_identity,
         "profile_id": seal.get("profile_id"),
         "layers": layers,
@@ -200,6 +395,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--seal", type=Path, required=True)
     parser.add_argument("--rootfs", type=Path, required=True)
     parser.add_argument("--build-manifest", type=Path, required=True)
+    parser.add_argument("--boot-artifact", type=Path)
+    parser.add_argument("--disk-image", type=Path)
+    parser.add_argument("--disk-build-manifest", type=Path)
+    parser.add_argument("--recovery-artifact", type=Path)
     parser.add_argument("--release-set-verification", type=Path, required=True)
     parser.add_argument("--provenance", type=Path, required=True)
     parser.add_argument("--sbom", type=Path, required=True)
@@ -213,17 +412,20 @@ def main(argv: list[str] | None = None) -> int:
         checked_at = receipt["verified_at"]
         _atomic_json(args.output, receipt)
         return 0
-    except (OSError, ImageVerificationError) as exc:
+    except (OSError, ImageVerificationError, tarfile.TarError) as exc:
         try:
             checked_at = checked_at or _event_time(args.verified_at)
-            _atomic_json(args.output, {
-                "schema_version": 1,
-                "receipt_type": "system_image_verification",
-                "outcome": "failed",
-                "verified_at": checked_at,
-                "reason": str(exc),
-                "activation_authorized": False,
-            })
+            _atomic_json(
+                args.output,
+                {
+                    "schema_version": 1,
+                    "receipt_type": "system_image_verification",
+                    "outcome": "failed",
+                    "verified_at": checked_at,
+                    "reason": str(exc),
+                    "activation_authorized": False,
+                },
+            )
         except (OSError, ImageVerificationError) as write_error:
             print(f"failed to write failure receipt: {write_error}", file=sys.stderr)
         print(f"image verification failed: {exc}", file=sys.stderr)

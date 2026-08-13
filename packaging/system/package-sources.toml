@@ -73,3 +73,24 @@ required = [
   "license_policy_checked",
   "no_secret_exposure",
 ]
+
+[materialization]
+resolver = "exact_manifest_only"
+network_access = "prohibited"
+package_manager_invocation = "prohibited"
+implicit_repository_lookup = "prohibited"
+artifact_format = "tar_archive"
+collision_policy = "reject_non_directory_collisions"
+path_traversal = "reject"
+special_files = "reject"
+hardlinks = "reject"
+
+[[materialization.sources]]
+source_id = "release-artifact-store"
+source_kind = "system_channel_artifact"
+transport = "filesystem"
+admitted = true
+network = false
+artifact_path_mode = "package_store_relative"
+admission = "signed_manifest_and_digest_only"
+provenance_requirement = "release_provenance_or_verified_offline_bundle"

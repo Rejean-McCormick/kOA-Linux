@@ -175,6 +175,17 @@ tests/conformance/test_release_evidence.py
 tests/conformance/test_profile_claims.py
 tests/conformance/test_filesystem_architecture.py
 ```
+
+### 3.1 Registered ordinary additions
+
+The following implementation files are registered after the frozen baseline inventory under the ordinary-addition rules in `33-path-ownership-and-change-rules.md`. They inherit the existing `tests/` owner and do not amend a structural root or authority boundary.
+
+- `tests/reproducibility/test_image_binary_determinism.py` — byte-for-byte system-image rootfs reproducibility evidence for identical declared inputs and toolchain, including the declared `SOURCE_DATE_EPOCH` variable.
+- `tests/system/test_qemu_navigation.py` — QEMU-observed keyboard navigation on the local surface admitted by the effective profile; an unselected kOA Spaces source is not a prerequisite.
+- `tests/system/test_qemu_mediatheque.py` — QEMU-observed kOA Mediatheque availability only when its admitted artifact belongs to the active Release Set services channel; service payloads remain outside the system image.
+- `tests/system/test_qemu_semantik_architect.py` — fail-closed QEMU validation for an independently sourced SemantiK Architect artifact, with unselected or unadmitted states never promoted to pass.
+- `tests/offline/test_qemu_offline_navigation.py` — QEMU validation with the VM network device disabled, preserving admitted local navigation and deterministic Mediatheque behavior when selected.
+
 ## 4. Repository Tooling
 
 ```text

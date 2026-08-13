@@ -348,3 +348,94 @@ def test_release_lock_round_trip_and_duplicate_key_rejection(
     path.write_text('{"format":"koa.release-lock","format":"duplicate"}', encoding="utf-8")
     with pytest.raises(ReleaseLockError, match="duplicate object key"):
         load_release_lock(path)
+
+
+def test_assembly_bundle_captures_resolved_inputs_deterministically() -> None:
+    from koa_assembly.releases.release_set import build_assembly_bundle
+
+    plan = {
+        "plan_id": "sovereign-node-release",
+        "profile_id": "sovereign-linux-node",
+        "services": [],
+    }
+    digests = {
+        "profiles/overlays/high-assurance.toml": "sha256:" + "b" * 64,
+        "docs/contracts/profiles/sovereign-linux-node.profile.json": "sha256:" + "a" * 64,
+    }
+    projections = {
+        "entrypoint.koa-activation": "generated/assembly/B-0092/entrypoints/koa-activation",
+        "assembly_bundle": "generated/assembly/B-0092/bundle.json",
+    }
+    tools = {"python": "3.13.7", "koa_assembly": "0.1.0"}
+
+    first = build_assembly_bundle(
+        bundle_id="B-0092",
+        resolved_plan=plan,
+        profile_id="sovereign-linux-node",
+        profile_contract_ref="docs/contracts/profiles/sovereign-linux-node.profile.json",
+        overlay_refs=("profiles/overlays/high-assurance.toml",),
+        input_digests=digests,
+        tool_versions=tools,
+        projection_refs=projections,
+    )
+    second = build_assembly_bundle(
+        bundle_id="B-0092",
+        resolved_plan=deepcopy(plan),
+        profile_id="sovereign-linux-node",
+        profile_contract_ref="docs/contracts/profiles/sovereign-linux-node.profile.json",
+        overlay_refs=("profiles/overlays/high-assurance.toml",),
+        input_digests=dict(reversed(list(digests.items()))),
+        tool_versions=dict(reversed(list(tools.items()))),
+        projection_refs=dict(reversed(list(projections.items()))),
+    )
+
+    assert first.canonical_bytes() == second.canonical_bytes()
+    document = first.to_dict()
+    assert document["bundle_id"] == "B-0092"
+    assert document["resolved_plan"] == plan
+    assert document["profile"] == {
+        "profile_id": "sovereign-linux-node",
+        "contract_ref": "docs/contracts/profiles/sovereign-linux-node.profile.json",
+        "overlays": ["profiles/overlays/high-assurance.toml"],
+    }
+    assert document["input_digests"] == dict(sorted(digests.items()))
+    assert document["tool_versions"] == dict(sorted(tools.items()))
+    assert document["projection_refs"] == dict(sorted(projections.items()))
+
+
+def test_assembly_bundle_fails_closed_for_missing_authority_digest() -> None:
+    from koa_assembly.releases.release_set import build_assembly_bundle
+
+    with pytest.raises(ManifestValidationError, match="require input digests"):
+        build_assembly_bundle(
+            bundle_id="B-0092",
+            resolved_plan={"profile_id": "sovereign-linux-node"},
+            profile_id="sovereign-linux-node",
+            profile_contract_ref="docs/contracts/profiles/sovereign-linux-node.profile.json",
+            overlay_refs=("profiles/overlays/high-assurance.toml",),
+            input_digests={
+                "docs/contracts/profiles/sovereign-linux-node.profile.json": "sha256:"
+                + "a" * 64
+            },
+            tool_versions={"koa_assembly": "0.1.0"},
+            projection_refs={"assembly_bundle": "generated/assembly/B-0092/bundle.json"},
+        )
+
+
+def test_assembly_bundle_rejects_projection_outside_generated_root() -> None:
+    from koa_assembly.releases.release_set import build_assembly_bundle
+
+    with pytest.raises(ManifestValidationError, match="must be under generated"):
+        build_assembly_bundle(
+            bundle_id="B-0092",
+            resolved_plan={"profile_id": "sovereign-linux-node"},
+            profile_id="sovereign-linux-node",
+            profile_contract_ref="docs/contracts/profiles/sovereign-linux-node.profile.json",
+            overlay_refs=(),
+            input_digests={
+                "docs/contracts/profiles/sovereign-linux-node.profile.json": "sha256:"
+                + "a" * 64
+            },
+            tool_versions={"koa_assembly": "0.1.0"},
+            projection_refs={"assembly_bundle": "assembly/B-0092/bundle.json"},
+        )

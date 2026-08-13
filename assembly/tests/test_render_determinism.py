@@ -4,6 +4,7 @@ from copy import deepcopy
 from dataclasses import dataclass
 import json
 from pathlib import Path
+import tomllib
 
 import pytest
 
@@ -323,3 +324,233 @@ def test_outputs_contain_no_timestamp_or_host_specific_path() -> None:
     for files in render_all(sample_plan()).values():
         combined = b"\n".join(item.content for item in files).decode("utf-8")
         assert not any(value in combined for value in forbidden)
+
+
+
+def appliance_systemd_plan() -> dict:
+    plan = sample_plan()
+    plan["profile_id"] = "sovereign-linux-node"
+    plan["plan_id"] = "sovereign-node-appliance-session"
+    plan["source_digests"].update(
+        {
+            "profiles/implementation-settings/appliance-shell.toml": SHA_E,
+            "profiles/overlays/appliance-shell.toml": SHA_F,
+        }
+    )
+    plan["services"] = [
+        {
+            "id": "display-session",
+            "kind": "native",
+            "command": ["/usr/libexec/koa/display-session"],
+            "resources": {"cpu_millis": 300, "memory_bytes": 134217728, "pids": 32},
+            "criticality": "critical",
+        },
+        {
+            "id": "session-shell",
+            "kind": "native",
+            "command": ["/usr/libexec/koa/session-shell"],
+            "dependencies": ["display-session"],
+            "resources": {"cpu_millis": 250, "memory_bytes": 100663296, "pids": 24},
+            "criticality": "critical",
+        },
+        {
+            "id": "presentation-surface",
+            "kind": "native",
+            "command": ["/usr/libexec/koa/presentation-surface"],
+            "dependencies": ["session-shell"],
+            "resources": {"cpu_millis": 200, "memory_bytes": 67108864, "pids": 16},
+            "criticality": "core",
+        },
+    ]
+    plan["networks"] = []
+    plan["volumes"] = []
+
+    def policy(*, unit_class: str, private_devices: bool, restart_delay: int) -> dict:
+        return {
+            "unit_class": unit_class,
+            "restart": {"policy": "on-failure", "delay_seconds": restart_delay},
+            "sandbox": {
+                "no_new_privileges": True,
+                "private_tmp": True,
+                "private_devices": private_devices,
+                "protect_system": "strict",
+                "protect_home": "yes",
+                "protect_kernel_tunables": True,
+                "protect_kernel_modules": True,
+                "protect_kernel_logs": True,
+                "protect_control_groups": True,
+                "protect_clock": True,
+                "protect_hostname": True,
+                "protect_proc": "invisible",
+                "proc_subset": "pid",
+                "restrict_suid_sgid": True,
+                "restrict_realtime": True,
+                "lock_personality": True,
+                "memory_deny_write_execute": True,
+                "remove_ipc": True,
+                "restrict_namespaces": True,
+                "restrict_address_families": ["AF_UNIX"],
+                "system_call_architectures": ["native"],
+                "system_call_filter": ["@system-service"],
+                "umask": "0077",
+            },
+        }
+
+    plan["systemd_projection"] = {
+        "format": "koa.systemd-projection/v1",
+        "policy_source": "profiles/implementation-settings/appliance-shell.toml",
+        "overlay_source": "profiles/overlays/appliance-shell.toml",
+        "services": {
+            "display-session": policy(
+                unit_class="subsystem", private_devices=False, restart_delay=1
+            ),
+            "session-shell": policy(
+                unit_class="component", private_devices=True, restart_delay=2
+            ),
+            "presentation-surface": policy(
+                unit_class="subsystem", private_devices=True, restart_delay=3
+            ),
+        },
+    }
+    return plan
+
+
+def _service_text(outputs: tuple[RenderedFile, ...], service_id: str) -> str:
+    path = f"systemd/koa-{service_id}.service"
+    return next(item.text for item in outputs if item.path == path)
+
+
+def test_appliance_systemd_projection_derives_names_order_policy_and_resources() -> None:
+    outputs = render("systemd", appliance_systemd_plan())
+    service_paths = {item.path for item in outputs if item.path.endswith(".service")}
+    assert service_paths == {
+        "systemd/koa-display-session.service",
+        "systemd/koa-presentation-surface.service",
+        "systemd/koa-session-shell.service",
+    }
+    assert "systemd/koa-wayland-compositor.service" not in service_paths
+    assert "systemd/koa-appliance-shell.service" not in service_paths
+
+    shell = _service_text(outputs, "session-shell")
+    assert "# Template-Class: component" in shell
+    assert "Requires=koa-display-session.service" in shell
+    assert "After=koa-display-session.service" in shell
+    assert "Restart=on-failure" in shell
+    assert "RestartSec=2s" in shell
+    assert "PrivateDevices=yes" in shell
+    assert "ProtectSystem=strict" in shell
+    assert "ProtectKernelTunables=yes" in shell
+    assert "ProtectKernelModules=yes" in shell
+    assert "ProtectProc=invisible" in shell
+    assert "ProcSubset=pid" in shell
+    assert "RestrictRealtime=yes" in shell
+    assert "RemoveIPC=yes" in shell
+    assert "RestrictAddressFamilies=AF_UNIX" in shell
+    assert "SystemCallArchitectures=native" in shell
+    assert "SystemCallFilter=@system-service" in shell
+    assert "UMask=0077" in shell
+    assert "CPUQuota=25%" in shell
+    assert "MemoryMax=100663296" in shell
+    assert "TasksMax=24" in shell
+    assert "WantedBy=koa-critical.target" in shell
+
+
+def test_appliance_systemd_projection_is_deterministic_under_input_reordering() -> None:
+    original = appliance_systemd_plan()
+    reordered = deepcopy(original)
+    reordered["services"].reverse()
+    reordered["source_digests"] = dict(reversed(list(reordered["source_digests"].items())))
+    reordered["systemd_projection"]["services"] = dict(
+        reversed(list(reordered["systemd_projection"]["services"].items()))
+    )
+    assert as_bytes(render("systemd", original)) == as_bytes(render("systemd", reordered))
+
+
+def test_appliance_systemd_projection_fails_closed_on_incomplete_or_unowned_policy() -> None:
+    plan = appliance_systemd_plan()
+    del plan["systemd_projection"]
+    with pytest.raises(RenderError, match="require an explicit systemd_projection"):
+        render("systemd", plan)
+
+    plan = appliance_systemd_plan()
+    del plan["systemd_projection"]["services"]["session-shell"]
+    with pytest.raises(RenderError, match="missing enabled services"):
+        render("systemd", plan)
+
+    plan = appliance_systemd_plan()
+    plan["systemd_projection"]["services"]["unknown-service"] = deepcopy(
+        plan["systemd_projection"]["services"]["session-shell"]
+    )
+    with pytest.raises(RenderError, match="inactive or unknown services"):
+        render("systemd", plan)
+
+    plan = appliance_systemd_plan()
+    del plan["source_digests"]["profiles/implementation-settings/appliance-shell.toml"]
+    with pytest.raises(RenderError, match="digested profiles/ authority"):
+        render("systemd", plan)
+
+    plan = appliance_systemd_plan()
+    del plan["systemd_projection"]["services"]["session-shell"]["sandbox"]["private_devices"]
+    with pytest.raises(RenderError, match="sandbox.*missing"):
+        render("systemd", plan)
+
+
+def test_appliance_systemd_policy_change_changes_rendered_unit() -> None:
+    first = appliance_systemd_plan()
+    second = deepcopy(first)
+    second["systemd_projection"]["services"]["session-shell"]["restart"]["delay_seconds"] = 7
+    assert as_bytes(render("systemd", first)) != as_bytes(render("systemd", second))
+    assert "RestartSec=7s" in _service_text(render("systemd", second), "session-shell")
+
+
+def test_host_service_templates_require_plan_derived_runtime_policy() -> None:
+    root = Path(__file__).resolve().parents[2]
+    for relative in (
+        "host/systemd/templates/koa-component.service.in",
+        "host/systemd/templates/koa-subsystem.service.in",
+    ):
+        template = (root / relative).read_text(encoding="utf-8")
+        assert "{{RESTART_POLICY_LINES}}" in template
+        assert "{{SANDBOX_POLICY_LINES}}" in template
+        assert "{{RESOURCE_ENVELOPE_LINES}}" in template
+        assert "Restart=on-failure" not in template
+        assert "NoNewPrivileges=yes" not in template
+        assert "UMask=0027" not in template
+
+
+def test_appliance_profile_declares_derived_systemd_projection_without_host_authority() -> None:
+    root = Path(__file__).resolve().parents[2]
+    settings = tomllib.loads(
+        (root / "profiles/implementation-settings/appliance-shell.toml").read_text(encoding="utf-8")
+    )
+    overlay = tomllib.loads(
+        (root / "profiles/overlays/appliance-shell.toml").read_text(encoding="utf-8")
+    )
+    contract = json.loads(
+        (root / "docs/contracts/profiles/appliance-shell.profile.json").read_text(encoding="utf-8")
+    )
+
+    projection = settings["implementation"]["systemd_projection"]
+    assert projection["format"] == "koa.systemd-projection/v1"
+    assert projection["unit_name_source"] == "resolved_service_id"
+    assert projection["dependency_source"] == "resolved_service_dependencies"
+    assert projection["restart_policy_source"] == "resolved_lifecycle_policy"
+    assert projection["sandbox_policy_source"] == "resolved_security_policy"
+    assert projection["resource_envelope_source"] == "resolved_resource_plan"
+    assert projection["require_explicit_service_policy"] is True
+    assert projection["allow_static_profile_units"] is False
+    assert projection["presentation_grants_host_authority"] is False
+    assert overlay["authority"]["presentation_grants_host_authority"] is False
+    assert "static_profile_systemd_unit_is_selected" in overlay["validation"]["reject_when"]
+    assert contract["koa_spaces"]["authority"] == "non_authoritative_presentation"
+    assert contract["koa_spaces"]["presentation_grants_authority"] is False
+
+
+def test_existing_generated_root_admits_service_units_and_static_units_are_absent() -> None:
+    root = Path(__file__).resolve().parents[2]
+    generated = json.loads((root / ".koa/generated-paths.json").read_text(encoding="utf-8"))
+    generated_root = next(item for item in generated["roots"] if item["path"] == "generated/")
+    assert "service units" in generated_root["allowed_content"]
+    assert {item["path"] for item in generated["entries"]} == {"docs/generated", "generated"}
+    assert not (root / "host/systemd/units/koa-wayland-compositor.service").exists()
+    assert not (root / "host/systemd/units/koa-appliance-shell.service").exists()

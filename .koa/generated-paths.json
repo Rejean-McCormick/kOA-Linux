@@ -55,6 +55,7 @@
         "contract bindings",
         "profile plans",
         "service units",
+        "entrypoint adapters",
         "deployment manifests",
         "image manifests",
         "release locks",

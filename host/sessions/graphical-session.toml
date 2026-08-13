@@ -38,3 +38,9 @@ fallback_to_unrestricted_desktop = false
 preserve_authoritative_application_state = true
 restart_bounded_shell_components = true
 recovery_after_repeated_or_integrity_failure = true
+
+[runtime_resolution]
+effective_profile_path = "/etc/koa/active/profile.json"
+surface_plan_key = "session_runtime"
+missing_plan = "block"
+unknown_surface = "deny"

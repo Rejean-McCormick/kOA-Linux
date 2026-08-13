@@ -118,6 +118,32 @@ def _iter_source(root: Path) -> Iterable[Path]:
             yield current_path / filename
 
 
+def _materialized_tree_digest(root: Path) -> str:
+    digest = hashlib.sha256()
+    for path in _iter_source(root):
+        relative = PurePosixPath(*path.relative_to(root).parts).as_posix()
+        metadata = path.lstat()
+        if stat.S_ISDIR(metadata.st_mode):
+            record: dict[str, Any] = {"kind": "directory", "mode": f"{stat.S_IMODE(metadata.st_mode):04o}", "path": relative}
+        elif stat.S_ISREG(metadata.st_mode):
+            record = {
+                "kind": "file",
+                "mode": f"{stat.S_IMODE(metadata.st_mode):04o}",
+                "path": relative,
+                "sha256": _sha256_file(path),
+                "size": metadata.st_size,
+            }
+        elif stat.S_ISLNK(metadata.st_mode):
+            target = os.readlink(path)
+            _safe_symlink_target(path.relative_to(root), target)
+            record = {"kind": "symlink", "mode": "0777", "path": relative, "target": target}
+        else:
+            raise BuildError(f"special_file_prohibited:{relative}")
+        digest.update(json.dumps(record, sort_keys=True, separators=(",", ":")).encode("utf-8"))
+        digest.update(b"\n")
+    return digest.hexdigest()
+
+
 def _tar_info(name: str, mode: int, epoch: int, kind: str, size: int = 0, linkname: str = "") -> tarfile.TarInfo:
     info = tarfile.TarInfo(name=name)
     info.uid = 0
@@ -139,10 +165,24 @@ def _tar_info(name: str, mode: int, epoch: int, kind: str, size: int = 0, linkna
     return info
 
 
-def _validate_package_resolution(base: dict[str, Any], resolution: dict[str, Any]) -> None:
+def _valid_sha256(value: Any) -> bool:
+    return isinstance(value, str) and len(value) == 64 and all(ch in "0123456789abcdef" for ch in value)
+
+
+def _exact_version(value: Any) -> bool:
+    if not isinstance(value, str) or not value or any(character.isspace() for character in value):
+        return False
+    if value.casefold() in {"latest", "stable", "current", "main", "master", "head"}:
+        return False
+    return not any(token in value for token in "*<>=^~,")
+
+
+def _validate_package_resolution(base: dict[str, Any], resolution: dict[str, Any]) -> str:
     required = base.get("required_capabilities")
     if not isinstance(required, list) or not required:
         raise BuildError("base_package_capabilities_missing")
+    if resolution.get("package_set_id") != base.get("package_set_id") or resolution.get("profile_id") != base.get("profile_id"):
+        raise BuildError("package_resolution_identity_mismatch")
     resolved = resolution.get("capabilities")
     if not isinstance(resolved, dict):
         raise BuildError("package_resolution_capabilities_missing")
@@ -151,15 +191,43 @@ def _validate_package_resolution(base: dict[str, Any], resolution: dict[str, Any
         raise BuildError("invalid_base_package_capability")
     if set(resolved) != expected:
         raise BuildError("package_resolution_must_match_required_capabilities_exactly")
+    required_fields = {
+        "package_id", "version", "sha256", "source_id", "source_ref", "artifact_path",
+        "source_kind", "owner", "immutable_identity", "content_digest", "trust_scope",
+        "provenance_ref", "admission_checks", "evidence_refs",
+    }
     for capability, record in resolved.items():
-        if not isinstance(record, dict):
+        if not isinstance(record, dict) or set(record) != required_fields:
             raise BuildError(f"invalid_package_resolution:{capability}")
-        digest = record.get("sha256")
-        if not isinstance(digest, str) or len(digest) != 64 or any(ch not in "0123456789abcdef" for ch in digest):
+        for field in (
+            "package_id", "source_id", "source_ref", "artifact_path", "source_kind", "owner",
+            "immutable_identity", "trust_scope", "provenance_ref",
+        ):
+            if not isinstance(record.get(field), str) or not record[field].strip():
+                raise BuildError(f"package_{field}_required:{capability}")
+        if not _exact_version(record.get("version")):
+            raise BuildError(f"package_version_must_be_exact:{capability}")
+        if not _valid_sha256(record.get("sha256")) or record.get("content_digest") != record.get("sha256"):
             raise BuildError(f"invalid_package_digest:{capability}")
-        reference = record.get("source_ref")
-        if not isinstance(reference, str) or not reference.strip():
-            raise BuildError(f"package_source_ref_required:{capability}")
+        if record.get("immutable_identity") != record.get("source_ref"):
+            raise BuildError(f"package_source_identity_mismatch:{capability}")
+        checks = record.get("admission_checks")
+        required_checks = {"trust_scope_verified", "provenance_verified", "revocation_checked", "license_policy_checked"}
+        if not isinstance(checks, dict) or set(checks) != required_checks or any(value is not True for value in checks.values()):
+            raise BuildError(f"package_admission_not_verified:{capability}")
+        evidence_refs = record.get("evidence_refs")
+        if not isinstance(evidence_refs, list) or not evidence_refs or not all(isinstance(item, str) and item.strip() for item in evidence_refs):
+            raise BuildError(f"package_admission_evidence_required:{capability}")
+
+    materialization = resolution.get("materialization")
+    if not isinstance(materialization, dict) or materialization.get("status") != "materialized":
+        raise BuildError("verified_materialization_required")
+    if materialization.get("network_accessed") is not False or materialization.get("candidate_code_executed") is not False:
+        raise BuildError("unsafe_materialization_state")
+    tree_digest = materialization.get("rootfs_tree_sha256")
+    if not _valid_sha256(tree_digest):
+        raise BuildError("materialized_tree_digest_required")
+    return tree_digest
 
 
 def build(args: argparse.Namespace) -> dict[str, Any]:
@@ -176,7 +244,9 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     partition, partition_raw = _load_document(args.partition_layout)
     definition, definition_raw = _load_document(args.image_manifest)
     resolution, resolution_raw = _load_document(args.package_resolution)
-    _validate_package_resolution(base, resolution)
+    expected_tree_digest = _validate_package_resolution(base, resolution)
+    if _materialized_tree_digest(source_root) != expected_tree_digest:
+        raise BuildError("materialized_tree_digest_mismatch")
 
     if definition.get("artifact_class") != "system_image" or definition.get("release_channel") != "system":
         raise BuildError("image_definition_identity_mismatch")

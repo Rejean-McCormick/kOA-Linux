@@ -88,3 +88,15 @@ required = [
   "offline_operation",
   "receipt_emission",
 ]
+
+[build_pipeline]
+builder = "host/image/build-recovery-artifact.py"
+verification_command = "host/image/build-recovery-artifact.py verify"
+independent_invocation_required = true
+activation_side_effects = false
+source_date_epoch_required = true
+
+[build_pipeline.reference_backend]
+id = "qemu-uefi-validation"
+scope = "test_only"
+product_requirement = false

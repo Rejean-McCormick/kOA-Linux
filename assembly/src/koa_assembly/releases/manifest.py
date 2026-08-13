@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
 from dataclasses import dataclass
 from hashlib import sha256
 import re
+from pathlib import PurePosixPath
 from types import MappingProxyType
 from typing import Any, Iterable, Mapping
 
@@ -28,6 +30,9 @@ _SEMVER = re.compile(
 )
 _HEX_SHA256 = re.compile(r"^[0-9a-f]{64}$")
 _REF = re.compile(r"^(?:[a-z][a-z0-9+.-]*:|[A-Za-z0-9_.-]+/|[A-Za-z0-9_.-]+$).+$")
+_BUNDLE_ID = re.compile(r"^B-[0-9]{4}$")
+_PROFILE_ID = re.compile(r"^[a-z0-9]+(?:[._-][a-z0-9]+)*$")
+_TOOL_ID = re.compile(r"^[a-z0-9]+(?:[._:-][a-z0-9]+)*$")
 
 
 class ManifestValidationError(ValueError):
@@ -326,6 +331,129 @@ class ReleaseManifest:
     def digest(self) -> str:
         return sha256(self.canonical_bytes()).hexdigest()
 
+
+
+@dataclass(frozen=True, slots=True)
+class AssemblyBundleManifest:
+    """Closed deterministic manifest for one generated assembly-plan bundle."""
+
+    bundle_id: str
+    profile_id: str
+    profile_contract_ref: str
+    overlay_refs: tuple[str, ...]
+    resolved_plan: Mapping[str, Any]
+    input_digests: tuple[tuple[str, str], ...]
+    tool_versions: tuple[tuple[str, str], ...]
+    projection_refs: tuple[tuple[str, str], ...]
+
+    def __post_init__(self) -> None:
+        if not _BUNDLE_ID.fullmatch(self.bundle_id):
+            raise ManifestValidationError("bundle_id must match B-<four digits>")
+        if not _PROFILE_ID.fullmatch(self.profile_id):
+            raise ManifestValidationError("profile_id must be a stable lowercase identifier")
+        _require_repository_ref(self.profile_contract_ref, "profile_contract_ref")
+        overlays = tuple(sorted(set(self.overlay_refs)))
+        if len(overlays) != len(self.overlay_refs):
+            raise ManifestValidationError("overlay_refs values must be unique")
+        for ref in overlays:
+            _require_repository_ref(ref, "overlay_refs")
+        object.__setattr__(self, "overlay_refs", overlays)
+
+        plan = deepcopy(dict(self.resolved_plan))
+        if plan.get("profile_id") != self.profile_id:
+            raise ManifestValidationError("resolved_plan.profile_id must match profile_id")
+        object.__setattr__(self, "resolved_plan", MappingProxyType(plan))
+
+        digests = _digest_pairs(self.input_digests)
+        required_sources = {self.profile_contract_ref, *overlays}
+        missing_sources = sorted(required_sources - {path for path, _ in digests})
+        if missing_sources:
+            raise ManifestValidationError(
+                "profile and overlay authorities require input digests: "
+                + ", ".join(missing_sources)
+            )
+        object.__setattr__(self, "input_digests", digests)
+
+        tools = tuple(sorted(self.tool_versions))
+        if not tools:
+            raise ManifestValidationError("tool_versions must not be empty")
+        if len({key for key, _ in tools}) != len(tools):
+            raise ManifestValidationError("tool_versions keys must be unique")
+        for key, version in tools:
+            if not isinstance(key, str) or not _TOOL_ID.fullmatch(key):
+                raise ManifestValidationError(f"invalid tool version key: {key!r}")
+            if not isinstance(version, str) or not version.strip() or "\n" in version:
+                raise ManifestValidationError(
+                    f"tool_versions.{key} must be a non-empty single-line string"
+                )
+        object.__setattr__(self, "tool_versions", tools)
+
+        projections = tuple(sorted(self.projection_refs))
+        if not projections:
+            raise ManifestValidationError("projection_refs must not be empty")
+        if len({key for key, _ in projections}) != len(projections):
+            raise ManifestValidationError("projection_refs keys must be unique")
+        for key, ref in projections:
+            if not isinstance(key, str) or not _TOOL_ID.fullmatch(key):
+                raise ManifestValidationError(f"invalid projection key: {key!r}")
+            _require_generated_ref(ref, f"projection_refs.{key}")
+        object.__setattr__(self, "projection_refs", projections)
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "format": "koa.assembly-bundle",
+            "format_version": "1.0.0",
+            "bundle_id": self.bundle_id,
+            "profile": {
+                "profile_id": self.profile_id,
+                "contract_ref": self.profile_contract_ref,
+                "overlays": list(self.overlay_refs),
+            },
+            "resolved_plan": deepcopy(dict(self.resolved_plan)),
+            "input_digests": dict(self.input_digests),
+            "tool_versions": dict(self.tool_versions),
+            "projection_refs": dict(self.projection_refs),
+        }
+
+    def canonical_bytes(self) -> bytes:
+        return canonical_json_bytes(self.to_dict())
+
+    @property
+    def digest(self) -> str:
+        return sha256(self.canonical_bytes()).hexdigest()
+
+
+def _digest_pairs(values: Iterable[tuple[str, str]]) -> tuple[tuple[str, str], ...]:
+    pairs = tuple(sorted(values))
+    if not pairs:
+        raise ManifestValidationError("input_digests must not be empty")
+    if len({path for path, _ in pairs}) != len(pairs):
+        raise ManifestValidationError("input_digests paths must be unique")
+    normalized: list[tuple[str, str]] = []
+    for path, digest in pairs:
+        _require_repository_ref(path, "input_digests path")
+        if not isinstance(digest, str):
+            raise ManifestValidationError(f"input digest for {path!r} must be a string")
+        value = digest.lower().removeprefix("sha256:")
+        if not _HEX_SHA256.fullmatch(value):
+            raise ManifestValidationError(f"input digest for {path!r} must be sha256")
+        normalized.append((path, f"sha256:{value}"))
+    return tuple(normalized)
+
+
+def _require_repository_ref(value: str, field_name: str) -> None:
+    if not isinstance(value, str) or not value or value.startswith("/"):
+        raise ManifestValidationError(f"{field_name} must be a repository-relative reference")
+    path = PurePosixPath(value.split("#", 1)[0])
+    if not path.parts or ".." in path.parts:
+        raise ManifestValidationError(f"{field_name} must not escape the repository")
+
+
+def _require_generated_ref(value: str, field_name: str) -> None:
+    _require_repository_ref(value, field_name)
+    path = PurePosixPath(value.split("#", 1)[0])
+    if not path.parts or path.parts[0] != "generated":
+        raise ManifestValidationError(f"{field_name} must be under generated/")
 
 def build_release_manifest(
     *,

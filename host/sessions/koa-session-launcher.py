@@ -57,6 +57,7 @@ GRAPHICAL_TOP_KEYS = {
     "input",
     "accessibility",
     "failure",
+    "runtime_resolution",
 }
 SESSION_TOP_KEYS = {
     "schema_version",
@@ -94,6 +95,12 @@ class LauncherError(RuntimeError):
 
 
 @dataclass(frozen=True)
+class GraphicalRuntimePolicy:
+    effective_profile_path: Path
+    surface_plan_key: str
+
+
+@dataclass(frozen=True)
 class SessionPlan:
     session_id: str
     session_mode: str
@@ -109,12 +116,18 @@ class SessionPlan:
     authority_context: str
     max_handoff_ttl_seconds: int
     critical_transition_receipt_required: bool
+    required_surface_roles: tuple[str, ...]
+    optional_surface_roles: tuple[str, ...]
+    required_native_capabilities: tuple[str, ...]
 
     def as_dict(self) -> dict[str, Any]:
         return {
             "arguments": list(self.arguments),
             "authority_context": self.authority_context,
             "critical_transition_receipt_required": self.critical_transition_receipt_required,
+            "required_native_capabilities": list(self.required_native_capabilities),
+            "required_surface_roles": list(self.required_surface_roles),
+            "optional_surface_roles": list(self.optional_surface_roles),
             "executable": str(self.executable),
             "inherited_environment": list(self.inherited_environment),
             "max_handoff_ttl_seconds": self.max_handoff_ttl_seconds,
@@ -205,7 +218,7 @@ def _string_list(value: Any, label: str, *, maximum: int = 32) -> tuple[str, ...
     return result
 
 
-def validate_graphical_policy(data: Mapping[str, Any]) -> None:
+def validate_graphical_policy(data: Mapping[str, Any]) -> GraphicalRuntimePolicy:
     _exact_keys(data, GRAPHICAL_TOP_KEYS, "graphical policy")
     if data["schema_version"] != SCHEMA_VERSION:
         raise LauncherError("unsupported graphical policy schema")
@@ -281,6 +294,22 @@ def validate_graphical_policy(data: Mapping[str, Any]) -> None:
         if not _bool(failure[key], f"failure.{key}"):
             raise LauncherError(f"failure.{key} is required")
 
+    runtime_resolution = _table(
+        data,
+        "runtime_resolution",
+        {"effective_profile_path", "surface_plan_key", "missing_plan", "unknown_surface"},
+    )
+    effective_profile_path = Path(
+        _string(runtime_resolution["effective_profile_path"], "runtime_resolution.effective_profile_path")
+    )
+    if not effective_profile_path.is_absolute() or effective_profile_path != Path("/etc/koa/active/profile.json"):
+        raise LauncherError("runtime resolution must use the active effective profile projection")
+    if runtime_resolution["surface_plan_key"] != "session_runtime":
+        raise LauncherError("runtime resolution must consume the session_runtime projection")
+    if runtime_resolution["missing_plan"] != "block" or runtime_resolution["unknown_surface"] != "deny":
+        raise LauncherError("runtime resolution must fail closed")
+    return GraphicalRuntimePolicy(effective_profile_path, "session_runtime")
+
 
 def build_session_plan(data: Mapping[str, Any]) -> SessionPlan:
     _exact_keys(data, SESSION_TOP_KEYS, "session configuration")
@@ -334,7 +363,20 @@ def build_session_plan(data: Mapping[str, Any]) -> SessionPlan:
     if start_state != expected_state:
         raise LauncherError(f"invalid start state for {mode}")
 
-    runtime = _table(data, "runtime", {"directory_name", "mode", "clean_on_start", "clean_on_exit", "reject_symlinks"})
+    runtime = _table(
+        data,
+        "runtime",
+        {
+            "directory_name",
+            "mode",
+            "clean_on_start",
+            "clean_on_exit",
+            "reject_symlinks",
+            "required_surface_roles",
+            "optional_surface_roles",
+            "required_native_capabilities",
+        },
+    )
     runtime_name = _string(runtime["directory_name"], "runtime.directory_name")
     if "/" in runtime_name or runtime_name in {".", ".."}:
         raise LauncherError("runtime.directory_name must be one path segment")
@@ -343,6 +385,34 @@ def build_session_plan(data: Mapping[str, Any]) -> SessionPlan:
     for key in ("clean_on_start", "clean_on_exit", "reject_symlinks"):
         if not _bool(runtime[key], f"runtime.{key}"):
             raise LauncherError(f"runtime.{key} must be true")
+    required_surface_roles = _string_list(
+        runtime["required_surface_roles"], "runtime.required_surface_roles", maximum=3
+    )
+    optional_surface_roles = _string_list(
+        runtime["optional_surface_roles"], "runtime.optional_surface_roles", maximum=3
+    )
+    required_native_capabilities = _string_list(
+        runtime["required_native_capabilities"], "runtime.required_native_capabilities", maximum=8
+    )
+    expected_runtime_envelope = {
+        "interactive_user": (
+            ("compositor", "native_shell"),
+            ("embedded_web_engine",),
+            ("status", "recovery", "accessibility", "session_exit", "safe_maintenance"),
+        ),
+        "maintenance": (
+            ("compositor", "native_shell"),
+            (),
+            ("status", "accessibility", "session_exit", "maintenance"),
+        ),
+        "recovery": (
+            ("compositor", "native_shell"),
+            (),
+            ("status", "recovery", "accessibility", "session_exit"),
+        ),
+    }[mode]
+    if (required_surface_roles, optional_surface_roles, required_native_capabilities) != expected_runtime_envelope:
+        raise LauncherError(f"runtime surface envelope does not match session mode {mode}")
 
     environment = _table(data, "environment", {"inherit", "clear_unlisted", "profile_overlay", "session_mode"})
     inherited = _string_list(environment["inherit"], "environment.inherit")
@@ -413,6 +483,9 @@ def build_session_plan(data: Mapping[str, Any]) -> SessionPlan:
         authority_context=required_context,
         max_handoff_ttl_seconds=ttl,
         critical_transition_receipt_required=receipt_required,
+        required_surface_roles=required_surface_roles,
+        optional_surface_roles=optional_surface_roles,
+        required_native_capabilities=required_native_capabilities,
     )
 
 
@@ -546,7 +619,13 @@ def cleanup_runtime(runtime: Path) -> None:
     _safe_remove_tree(runtime, base)
 
 
-def build_environment(plan: SessionPlan, runtime: Path, handoff: Mapping[str, Any] | None) -> dict[str, str]:
+def build_environment(
+    plan: SessionPlan,
+    runtime: Path,
+    handoff: Mapping[str, Any] | None,
+    graphical_runtime: GraphicalRuntimePolicy,
+    authority_fd: int | None,
+) -> dict[str, str]:
     environment: dict[str, str] = {}
     for key in plan.inherited_environment:
         value = os.environ.get(key)
@@ -561,12 +640,23 @@ def build_environment(plan: SessionPlan, runtime: Path, handoff: Mapping[str, An
             "KOA_SESSION_MODE": plan.session_mode,
             "KOA_SESSION_RUNTIME_DIR": str(runtime),
             "KOA_SESSION_START_STATE": plan.start_state,
+            "KOA_EFFECTIVE_PROFILE_PATH": str(graphical_runtime.effective_profile_path),
+            "KOA_SESSION_SURFACE_PLAN_KEY": graphical_runtime.surface_plan_key,
+            "KOA_SESSION_REQUIRED_SURFACES": json.dumps(list(plan.required_surface_roles), separators=(",", ":")),
+            "KOA_SESSION_OPTIONAL_SURFACES": json.dumps(list(plan.optional_surface_roles), separators=(",", ":")),
+            "KOA_SESSION_REQUIRED_NATIVE_CAPABILITIES": json.dumps(
+                list(plan.required_native_capabilities), separators=(",", ":")
+            ),
+            "KOA_SESSION_TERMINATION_GRACE_SECONDS": str(plan.termination_grace_seconds),
             "PATH": "/usr/bin:/bin",
         }
     )
     if handoff is not None:
+        if authority_fd is None:
+            raise LauncherError("validated authority handoff fd is required")
         environment["KOA_SESSION_DECISION_RECEIPT_ID"] = str(handoff["decision_receipt_id"])
         environment["KOA_SESSION_AUTHORITY_CONTEXT"] = plan.authority_context
+        environment["KOA_SESSION_AUTHORITY_FD"] = str(authority_fd)
     return environment
 
 
@@ -575,10 +665,15 @@ def _emit(event: str, plan: SessionPlan, **fields: Any) -> None:
     print(json.dumps(payload, sort_keys=True, separators=(",", ":")), file=sys.stderr, flush=True)
 
 
-def run_session(plan: SessionPlan, handoff: Mapping[str, Any] | None) -> int:
-    if plan.requires_handoff and handoff is None:
+def run_session(
+    plan: SessionPlan,
+    handoff: Mapping[str, Any] | None,
+    graphical_runtime: GraphicalRuntimePolicy,
+    authority_fd: int | None,
+) -> int:
+    if plan.requires_handoff and (handoff is None or authority_fd is None):
         raise LauncherError("authorized session requires a validated authority handoff")
-    if not plan.requires_handoff and handoff is not None:
+    if not plan.requires_handoff and (handoff is not None or authority_fd is not None):
         raise LauncherError("ordinary session does not accept authority handoff state")
     try:
         info = plan.executable.lstat()
@@ -593,7 +688,7 @@ def run_session(plan: SessionPlan, handoff: Mapping[str, Any] | None) -> int:
     if not os.access(plan.executable, os.X_OK):
         raise LauncherError("session entrypoint is not executable")
     runtime = prepare_runtime(plan)
-    environment = build_environment(plan, runtime, handoff)
+    environment = build_environment(plan, runtime, handoff, graphical_runtime, authority_fd)
     command = [str(plan.executable), *plan.arguments]
     stop_requested = False
     child: subprocess.Popen[bytes] | None = None
@@ -622,6 +717,7 @@ def run_session(plan: SessionPlan, handoff: Mapping[str, Any] | None) -> int:
                 cwd=runtime,
                 env=environment,
                 close_fds=True,
+                pass_fds=(() if authority_fd is None else (authority_fd,)),
                 start_new_session=True,
             )
             return_code = child.wait()
@@ -635,7 +731,7 @@ def run_session(plan: SessionPlan, handoff: Mapping[str, Any] | None) -> int:
             attempts.append(now)
             cleanup_runtime(runtime)
             runtime = prepare_runtime(plan)
-            environment = build_environment(plan, runtime, handoff)
+            environment = build_environment(plan, runtime, handoff, graphical_runtime, authority_fd)
             environment["KOA_SESSION_START_STATE"] = "locked"
     finally:
         if child is not None and child.poll() is None:
@@ -674,7 +770,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         require_protected = args.require_installed_policy_protection or args.action == "run"
         graphical = _read_toml(args.graphical_policy, require_protected=require_protected)
         session = _read_toml(args.session, require_protected=require_protected)
-        validate_graphical_policy(graphical)
+        graphical_runtime = validate_graphical_policy(graphical)
         plan = build_session_plan(session)
 
         handoff: Mapping[str, Any] | None = None
@@ -693,7 +789,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         if args.action == "plan":
             print(json.dumps(plan.as_dict(), sort_keys=True, indent=2))
             return 0
-        return run_session(plan, handoff)
+        return run_session(plan, handoff, graphical_runtime, args.authority_fd)
     except LauncherError as exc:
         print(json.dumps({"status": "blocked", "error": str(exc)}, sort_keys=True), file=sys.stderr)
         return 78

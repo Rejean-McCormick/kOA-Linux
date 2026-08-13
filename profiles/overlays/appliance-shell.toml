@@ -38,6 +38,7 @@ may_broaden_authority = false
 may_broaden_data_ownership = false
 may_broaden_external_integrations = false
 may_change_primary_profile_identity = false
+presentation_grants_host_authority = false
 
 [merge]
 base_components = "inherit"
@@ -67,4 +68,7 @@ reject_when = [
   "development_workspace_is_available_in_ordinary_session",
   "unrestricted_external_navigation_is_available",
   "merge_conflict_is_unresolved",
+  "systemd_projection_is_not_effective_plan_derived",
+  "static_profile_systemd_unit_is_selected",
+  "presentation_surface_grants_host_authority",
 ]

@@ -1,4 +1,4 @@
-# Dynamic generated outputs are never hand-maintained.
+# Generated projections and build artifacts are derived by default.
 *
-!.gitignore
-!README.md
+!/.gitignore
+!/README.md

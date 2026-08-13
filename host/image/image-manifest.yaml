@@ -8,13 +8,24 @@
     "format": "deterministic-tar",
     "digest_algorithm": "sha256",
     "execute_candidate_code": false,
-    "preserve_component_owned_state": true,
-    "source_date_epoch_required": true
+    "preserve_component_owned_state": false,
+    "source_date_epoch_required": true,
+    "orchestrator": "tools/src/koa_tools/commands/build_image.py",
+    "boot_artifact_builder": "host/image/build-boot-artifact.py",
+    "disk_image_builder": "host/image/build-disk-image.py",
+    "recovery_artifact_builder": "host/image/build-recovery-artifact.py",
+    "activation_side_effects": false
   },
   "inputs": {
     "base_packages": "host/image/base-packages.yaml",
     "filesystem_layout": "host/image/filesystem-layout.yaml",
-    "partition_layout": "host/image/partition-layout.yaml"
+    "partition_layout": "host/image/partition-layout.yaml",
+    "rootfs_artifact": "generated input from host/image/build-rootfs.py",
+    "kernel": "profile-selected admitted maintained kernel artifact",
+    "initramfs": "profile-selected admitted initramfs artifact",
+    "boot_material": "profile-selected boot material",
+    "recovery_rootfs": "independent recovery rootfs artifact",
+    "assembly_manifest": "generated output from the canonical assembly image renderer"
   },
   "required_evidence": [
     "verified_release_set_receipt",
@@ -30,9 +41,56 @@
     "recovery_target_required": true
   },
   "prohibited_payload_prefixes": [
+    "/etc/koa/secrets.d",
     "/run/koa",
     "/var/cache/koa",
+    "/var/cache/koa-build",
+    "/var/lib/koa-recovery",
     "/var/lib/koa/boot",
     "/var/lib/koa/components"
-  ]
+  ],
+  "outputs": {
+    "boot_artifact": {
+      "artifact_class": "boot_artifact",
+      "release_channel": "system"
+    },
+    "disk_image": {
+      "artifact_class": "system_image",
+      "release_channel": "system",
+      "staging": "inactive_only"
+    },
+    "recovery_artifact": {
+      "artifact_class": "recovery_artifact",
+      "release_channel": "system",
+      "independent_invocation_required": true
+    }
+  },
+  "verification": {
+    "boot_artifact_fields": [
+      "kernel",
+      "initramfs",
+      "boot_material",
+      "image_identity",
+      "architecture",
+      "kernel_provenance_ref"
+    ],
+    "disk_image_fields": [
+      "image_identity",
+      "boot_artifact_digest",
+      "rootfs_digest",
+      "recovery_artifact_digest",
+      "partition_layout_digest",
+      "provenance_refs"
+    ],
+    "recovery_artifact_fields": [
+      "kernel",
+      "initramfs",
+      "boot_material",
+      "rootfs",
+      "image_identity",
+      "independent_invocation_required"
+    ],
+    "final_verifier": "host/image/verify-image.py",
+    "final_evidence_subject": "complete_disk_image_digest"
+  }
 }

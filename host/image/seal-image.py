@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Bind a deterministic rootfs to verified release, provenance, SBOM, and signature evidence."""
+"""Bind a system-image candidate to verified release, provenance, SBOM, and signature evidence."""
 from __future__ import annotations
 
 import argparse
@@ -101,8 +101,63 @@ def _atomic_json(path: Path, value: dict[str, Any]) -> None:
     os.replace(temporary, path)
 
 
-def _reference(path: Path, raw: bytes) -> dict[str, str]:
-    return {"name": path.name, "sha256": _sha256_bytes(raw)}
+def _reference(path: Path, raw: bytes | None = None) -> dict[str, Any]:
+    return {
+        "name": path.name,
+        "sha256": _sha256_bytes(raw) if raw is not None else _sha256_file(path),
+        "size_bytes": path.stat().st_size,
+    }
+
+
+def _complete_artifact_paths(args: argparse.Namespace) -> tuple[Path, Path, Path, Path] | None:
+    values = (args.boot_artifact, args.disk_image, args.disk_build_manifest, args.recovery_artifact)
+    if not any(value is not None for value in values):
+        return None
+    if any(value is None for value in values):
+        raise SealError("complete_image_inputs_must_be_supplied_together")
+    return values  # type: ignore[return-value]
+
+
+def _validate_disk_build(
+    manifest: dict[str, Any],
+    *,
+    args: argparse.Namespace,
+    disk_digest: str,
+    rootfs_digest: str,
+    boot_digest: str,
+    recovery_digest: str,
+) -> None:
+    if manifest.get("artifact_class") != "system_image" or manifest.get("release_channel") != "system":
+        raise SealError("disk_build_manifest_identity_mismatch")
+    image = manifest.get("image")
+    if not isinstance(image, dict):
+        raise SealError("disk_build_image_identity_missing")
+    if image.get("image_id") != args.image_id or image.get("image_version") != args.image_version:
+        raise SealError("disk_build_image_identity_mismatch")
+    if image.get("profile_id") != args.profile:
+        raise SealError("disk_build_profile_mismatch")
+    if _require_digest(image.get("sha256"), "disk_build.image.sha256") != disk_digest:
+        raise SealError("disk_build_image_digest_mismatch")
+    inputs = manifest.get("inputs")
+    if not isinstance(inputs, dict):
+        raise SealError("disk_build_inputs_missing")
+    expected = {
+        "rootfs": rootfs_digest,
+        "boot_artifact": boot_digest,
+        "recovery_artifact": recovery_digest,
+    }
+    for key, digest in expected.items():
+        record = inputs.get(key)
+        if not isinstance(record, dict) or _require_digest(record.get("sha256"), f"disk_build.inputs.{key}.sha256") != digest:
+            raise SealError(f"disk_build_input_digest_mismatch:{key}")
+    staging = manifest.get("staging")
+    if not isinstance(staging, dict) or staging.get("active_target_mutated") is not False:
+        raise SealError("disk_build_active_target_must_remain_unchanged")
+    if manifest.get("activation_authorized") is not False:
+        raise SealError("disk_build_must_not_authorize_activation")
+    refs = manifest.get("provenance_refs")
+    if not isinstance(refs, list) or not refs or not all(isinstance(item, str) and item for item in refs):
+        raise SealError("disk_build_provenance_references_required")
 
 
 def seal(args: argparse.Namespace) -> dict[str, Any]:
@@ -122,6 +177,33 @@ def seal(args: argparse.Namespace) -> dict[str, Any]:
     if build_manifest.get("component_owned_state_included") is not False:
         raise SealError("component_owned_state_must_not_be_in_image")
 
+    complete_paths = _complete_artifact_paths(args)
+    artifact_scope = "rootfs_only"
+    subject_digest = rootfs_digest
+    complete_payload: dict[str, Any] = {}
+    disk_build_raw: bytes | None = None
+    if complete_paths is not None:
+        boot_artifact, disk_image, disk_build_manifest_path, recovery_artifact = complete_paths
+        boot_digest = _sha256_file(boot_artifact)
+        recovery_digest = _sha256_file(recovery_artifact)
+        disk_digest = _sha256_file(disk_image)
+        disk_build_manifest, disk_build_raw = _load_json(disk_build_manifest_path)
+        _validate_disk_build(
+            disk_build_manifest,
+            args=args,
+            disk_digest=disk_digest,
+            rootfs_digest=rootfs_digest,
+            boot_digest=boot_digest,
+            recovery_digest=recovery_digest,
+        )
+        artifact_scope = "complete_disk_image"
+        subject_digest = disk_digest
+        complete_payload = {
+            "system_image": _reference(disk_image),
+            "boot_artifact": _reference(boot_artifact),
+            "recovery_artifact": _reference(recovery_artifact),
+        }
+
     release_receipt, release_raw = _load_json(args.release_set_verification)
     if release_receipt.get("receipt_type") != "release_set_verification" or release_receipt.get("outcome") != "verified":
         raise SealError("release_set_verification_required")
@@ -135,13 +217,13 @@ def seal(args: argparse.Namespace) -> dict[str, Any]:
     provenance, provenance_raw = _load_json(args.provenance)
     if provenance.get("outcome") not in {"verified", "pass"}:
         raise SealError("verified_provenance_required")
-    if _subject_digest(provenance, "provenance") != rootfs_digest:
+    if _subject_digest(provenance, "provenance") != subject_digest:
         raise SealError("provenance_subject_digest_mismatch")
     if not provenance.get("producer_ref") or not provenance.get("source_refs"):
         raise SealError("provenance_identity_and_sources_required")
 
     sbom, sbom_raw = _load_json(args.sbom)
-    if _subject_digest(sbom, "sbom") != rootfs_digest:
+    if _subject_digest(sbom, "sbom") != subject_digest:
         raise SealError("sbom_subject_digest_mismatch")
     if not (sbom.get("bomFormat") or sbom.get("spdxVersion")):
         raise SealError("recognized_sbom_format_required")
@@ -151,7 +233,7 @@ def seal(args: argparse.Namespace) -> dict[str, Any]:
     signature, signature_raw = _load_json(args.signature_attestation)
     if signature.get("verification_status") != "verified":
         raise SealError("verified_signature_attestation_required")
-    if _subject_digest(signature, "signature_attestation") != rootfs_digest:
+    if _subject_digest(signature, "signature_attestation") != subject_digest:
         raise SealError("signature_subject_digest_mismatch")
     if not signature.get("signer_identity_ref") or not signature.get("signing_authority_ref"):
         raise SealError("signature_identity_and_authority_required")
@@ -159,9 +241,20 @@ def seal(args: argparse.Namespace) -> dict[str, Any]:
     if not isinstance(evidence_refs, list) or not evidence_refs:
         raise SealError("signature_verification_evidence_required")
 
+    evidence: dict[str, Any] = {
+        "build_manifest": _reference(args.build_manifest, build_raw),
+        "release_set_verification": _reference(args.release_set_verification, release_raw),
+        "provenance": _reference(args.provenance, provenance_raw),
+        "sbom": _reference(args.sbom, sbom_raw),
+        "signature_attestation": _reference(args.signature_attestation, signature_raw),
+    }
+    if complete_paths is not None and disk_build_raw is not None:
+        evidence["disk_build_manifest"] = _reference(complete_paths[2], disk_build_raw)
+
     payload: dict[str, Any] = {
         "schema_version": 1,
         "artifact_class": "system_image",
+        "artifact_scope": artifact_scope,
         "image_id": args.image_id,
         "image_version": args.image_version,
         "release_channel": "system",
@@ -174,6 +267,7 @@ def seal(args: argparse.Namespace) -> dict[str, Any]:
             "size_bytes": args.rootfs.stat().st_size,
             "format": archive.get("format"),
         },
+        **complete_payload,
         "release_set": {
             "release_set_id": release_set.get("release_set_id"),
             "release_set_version": release_set.get("release_set_version"),
@@ -181,13 +275,7 @@ def seal(args: argparse.Namespace) -> dict[str, Any]:
             "system_release_id": release_set.get("system_release_id"),
             "system_release_version": release_set.get("system_release_version"),
         },
-        "evidence": {
-            "build_manifest": _reference(args.build_manifest, build_raw),
-            "release_set_verification": _reference(args.release_set_verification, release_raw),
-            "provenance": _reference(args.provenance, provenance_raw),
-            "sbom": _reference(args.sbom, sbom_raw),
-            "signature_attestation": _reference(args.signature_attestation, signature_raw),
-        },
+        "evidence": evidence,
         "activation": {
             "eligible": False,
             "reason": "verification_receipt_and_explicit_slot_selection_required",
@@ -205,6 +293,10 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--rootfs", type=Path, required=True)
     parser.add_argument("--build-manifest", type=Path, required=True)
+    parser.add_argument("--boot-artifact", type=Path)
+    parser.add_argument("--disk-image", type=Path)
+    parser.add_argument("--disk-build-manifest", type=Path)
+    parser.add_argument("--recovery-artifact", type=Path)
     parser.add_argument("--release-set-verification", type=Path, required=True)
     parser.add_argument("--provenance", type=Path, required=True)
     parser.add_argument("--sbom", type=Path, required=True)

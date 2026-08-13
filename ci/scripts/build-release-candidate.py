@@ -150,8 +150,42 @@ def validate_release_set(release_set: dict[str, Any], policy: dict[str, Any], sc
     return release_set_id, release_set_sha
 
 
+GIT_TIMEOUT_SECONDS = 30
+_GIT_ENVIRONMENT_KEYS = (
+    "PATH",
+    "HOME",
+    "USERPROFILE",
+    "SYSTEMROOT",
+    "WINDIR",
+    "TMPDIR",
+    "TEMP",
+    "TMP",
+)
+
+
+def _minimal_git_environment() -> dict[str, str]:
+    return {
+        key: os.environ[key]
+        for key in _GIT_ENVIRONMENT_KEYS
+        if key in os.environ and os.environ[key]
+    }
+
+
 def git_output(root: Path, *args: str) -> str:
-    proc = subprocess.run(["git", "-C", str(root), *args], text=True, capture_output=True, check=False)
+    try:
+        proc = subprocess.run(
+            ["git", *args],
+            cwd=root,
+            env=_minimal_git_environment(),
+            text=True,
+            capture_output=True,
+            timeout=GIT_TIMEOUT_SECONDS,
+            check=False,
+        )
+    except FileNotFoundError as exc:
+        raise CandidateError("git executable is unavailable") from exc
+    except subprocess.TimeoutExpired as exc:
+        raise CandidateError(f"git {' '.join(args)} exceeded the bounded timeout") from exc
     if proc.returncode != 0:
         raise CandidateError(f"git {' '.join(args)} failed: {proc.stderr.strip()}")
     return proc.stdout.strip()
@@ -346,8 +380,6 @@ def add_file(archive: tarfile.TarFile, name: str, path: Path, epoch: int) -> Non
 
 def rooted(base: Path, path: Path) -> Path:
     return path if path.is_absolute() else base / path
-
-
 def build(args: argparse.Namespace) -> dict[str, Any]:
     root = args.repository_root.resolve(strict=True)
     input_root = rooted(root, args.input_root).resolve(strict=True)

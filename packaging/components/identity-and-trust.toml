@@ -33,6 +33,15 @@ reproducible_output_required = true
 secret_material_allowed = false
 mutable_workspace_state_allowed = false
 output_identity_source = "signed_artifact_manifest"
+lock_ref = "uv.lock"
+
+[upstream_bundle]
+format = "koa.component-build-bundle"
+format_version = "1.0.0"
+builder = "build-component"
+output = "generated/component-bundles/identity-and-trust"
+activation_authority = false
+missing_bundle = "block_packaging"
 
 [payload]
 resolution = "source_payload_manifest"

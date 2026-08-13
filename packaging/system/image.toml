@@ -9,6 +9,7 @@ profile_contract = "docs/contracts/profiles/sovereign-linux-node.profile.json"
 package_sources = "packaging/system/package-sources.toml"
 runtime_path_registry = ".koa/runtime-paths.json"
 assembly_plan_bundle = "B-0092"
+assembly_plan_bundle_source = "generated/assembly/B-0092/bundle.json"
 activation_ready = false
 
 [identity]
@@ -65,18 +66,21 @@ source_manifests = [
 destination = "/usr/libexec/koa/koa-activation"
 provider = "assembly_generated_entrypoint"
 provider_bundle = "B-0092"
+source = "generated/assembly/B-0092/entrypoints/koa-activation"
 missing_provider = "block_build"
 
 [executables.koa-health-aggregate]
 destination = "/usr/libexec/koa/koa-health-aggregate"
 provider = "assembly_generated_entrypoint"
 provider_bundle = "B-0092"
+source = "generated/assembly/B-0092/entrypoints/koa-health-aggregate"
 missing_provider = "block_build"
 
 [executables.koa-offline-import]
 destination = "/usr/libexec/koa/koa-offline-import"
 provider = "assembly_generated_entrypoint"
 provider_bundle = "B-0092"
+source = "generated/assembly/B-0092/entrypoints/koa-offline-import"
 missing_provider = "block_build"
 
 [share.appliance-shell]

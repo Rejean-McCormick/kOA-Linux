@@ -16,7 +16,7 @@ from jsonschema import FormatChecker
 from jsonschema.validators import validator_for
 
 from ..model import canonical_json_bytes, freeze_mapping, thaw_json
-from .manifest import CANONICAL_CHANNEL_NAMESPACES, ReleaseManifest
+from .manifest import AssemblyBundleManifest, CANONICAL_CHANNEL_NAMESPACES, ReleaseManifest
 
 
 DEFAULT_RELEASE_SET_SCHEMA = (
@@ -113,6 +113,35 @@ class ReleaseSet:
     def digest(self) -> str:
         return sha256(self.canonical_bytes()).hexdigest()
 
+
+
+def build_assembly_bundle(
+    *,
+    bundle_id: str,
+    resolved_plan: Mapping[str, Any],
+    profile_id: str,
+    profile_contract_ref: str,
+    overlay_refs: Iterable[str],
+    input_digests: Mapping[str, str],
+    tool_versions: Mapping[str, str],
+    projection_refs: Mapping[str, str],
+) -> AssemblyBundleManifest:
+    """Build the deterministic assembly bundle consumed by packaging.
+
+    This object is a derived assembly manifest. It does not publish, sign, or
+    activate a Release Set and therefore does not merge release-channel authority.
+    """
+
+    return AssemblyBundleManifest(
+        bundle_id=bundle_id,
+        profile_id=profile_id,
+        profile_contract_ref=profile_contract_ref,
+        overlay_refs=tuple(overlay_refs),
+        resolved_plan=deepcopy(dict(resolved_plan)),
+        input_digests=tuple(input_digests.items()),
+        tool_versions=tuple(tool_versions.items()),
+        projection_refs=tuple(projection_refs.items()),
+    )
 
 def build_release_set(
     *,

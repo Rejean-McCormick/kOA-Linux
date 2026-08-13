@@ -25,6 +25,9 @@ mode = "0700"
 clean_on_start = true
 clean_on_exit = true
 reject_symlinks = true
+required_surface_roles = ["compositor", "native_shell"]
+optional_surface_roles = ["embedded_web_engine"]
+required_native_capabilities = ["status", "recovery", "accessibility", "session_exit", "safe_maintenance"]
 
 [environment]
 inherit = ["LANG", "LC_ALL", "LC_CTYPE", "XDG_RUNTIME_DIR", "WAYLAND_DISPLAY"]

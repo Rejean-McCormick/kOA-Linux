@@ -3,13 +3,18 @@
 from __future__ import annotations
 
 import argparse
+from hashlib import sha256
 import json
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import sys
-from typing import Iterable, Sequence
+import tomllib
+from typing import Any, Iterable, Mapping, Sequence
 
+from . import __version__
 from .contract_loader import ContractLoader, LoadOutcome, LoadPolicy
 from .diagnostics import DiagnosticBag
+from .renderers import RenderError, write_rendered_files
+from .renderers.image import render_assembly_bundle
 
 
 EXIT_OK = 0
@@ -66,12 +71,41 @@ def build_parser() -> argparse.ArgumentParser:
         default=[],
         help="override the authority paths checked by doctor; repeatable",
     )
+
+    bundle = subparsers.add_parser(
+        "render-bundle",
+        help="render one deterministic assembly bundle from an already resolved plan",
+    )
+    bundle.add_argument("--plan", required=True, help="repository-relative resolved plan JSON")
+    bundle.add_argument(
+        "--settings",
+        required=True,
+        help="repository-relative system packaging TOML that owns generated entrypoints",
+    )
+    bundle.add_argument(
+        "--overlay",
+        action="append",
+        default=[],
+        help="repository-relative applied overlay authority; repeatable",
+    )
+    bundle.add_argument(
+        "--output",
+        required=True,
+        help="repository-relative generated output root",
+    )
+    bundle.add_argument(
+        "--check",
+        action="store_true",
+        help="compare existing generated files without writing",
+    )
     return parser
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
+    if args.command == "render-bundle":
+        return _render_bundle_command(args)
     try:
         loader = ContractLoader(
             Path(args.repository_root),
@@ -130,6 +164,164 @@ def main(argv: Sequence[str] | None = None) -> int:
         return _render_outcomes(outcomes, args.format)
     parser.error("unreachable command")
     return EXIT_USAGE
+
+
+class _BundleBlockedError(ValueError):
+    """Raised when declared packaging inputs cannot produce a safe bundle."""
+
+
+def _render_bundle_command(args: argparse.Namespace) -> int:
+    try:
+        root = Path(args.repository_root).resolve(strict=True)
+        plan_path, plan_ref = _repository_path(root, args.plan, must_exist=True)
+        settings_path, settings_ref = _repository_path(root, args.settings, must_exist=True)
+        output_root, output_ref = _repository_path(root, args.output, must_exist=False)
+        if not (output_ref == "generated" or output_ref.startswith("generated/")):
+            raise _BundleBlockedError("render-bundle output must remain under generated/")
+
+        plan = json.loads(plan_path.read_text(encoding="utf-8"))
+        if not isinstance(plan, Mapping):
+            raise _BundleBlockedError("resolved plan JSON must be an object")
+        settings_bytes = settings_path.read_bytes()
+        settings = tomllib.loads(settings_bytes.decode("utf-8"))
+        if not isinstance(settings, Mapping):
+            raise _BundleBlockedError("system packaging settings must be a TOML table")
+
+        bundle_id = _required_setting(settings, "assembly_plan_bundle")
+        profile_contract_ref = _required_setting(settings, "profile_contract")
+        expected_bundle_ref = f"generated/assembly/{bundle_id}/bundle.json"
+        if settings.get("assembly_plan_bundle_source") != expected_bundle_ref:
+            raise _BundleBlockedError(
+                "assembly_plan_bundle_source must identify the derived B-0092 bundle path"
+            )
+        delegates = _packaging_entrypoint_delegates(settings, bundle_id)
+        settings_digest = "sha256:" + sha256(settings_bytes).hexdigest()
+        files = render_assembly_bundle(
+            plan,
+            bundle_id=bundle_id,
+            profile_contract_ref=profile_contract_ref,
+            overlay_refs=tuple(sorted(set(args.overlay))),
+            tool_versions={
+                "koa_assembly": __version__,
+                "python": (
+                    f"{sys.version_info.major}.{sys.version_info.minor}."
+                    f"{sys.version_info.micro}"
+                ),
+            },
+            entrypoint_delegates=delegates,
+            additional_input_digests={settings_ref: settings_digest},
+        )
+        if args.check:
+            mismatches = _render_mismatches(output_root, files)
+            if mismatches:
+                raise _BundleBlockedError(
+                    "generated bundle drift: " + ", ".join(mismatches)
+                )
+        else:
+            write_rendered_files(output_root, files)
+    except (
+        OSError,
+        UnicodeDecodeError,
+        json.JSONDecodeError,
+        tomllib.TOMLDecodeError,
+        RenderError,
+        _BundleBlockedError,
+        ValueError,
+    ) as exc:
+        _write_bundle_result("blocked", str(exc), args.format, stream=sys.stderr)
+        return EXIT_BLOCKED
+
+    _write_bundle_result(
+        "pass",
+        f"rendered {len(files)} deterministic file(s) from {plan_ref} using {settings_ref}",
+        args.format,
+    )
+    return EXIT_OK
+
+
+def _repository_path(
+    root: Path, value: str, *, must_exist: bool
+) -> tuple[Path, str]:
+    if not isinstance(value, str) or not value.strip():
+        raise _BundleBlockedError("repository path must be a non-empty string")
+    reference = value.replace("\\", "/")
+    pure = PurePosixPath(reference)
+    if pure.is_absolute() or ".." in pure.parts:
+        raise _BundleBlockedError(f"repository path must be relative and confined: {value!r}")
+    path = (root / pure.as_posix()).resolve(strict=must_exist)
+    if path != root and root not in path.parents:
+        raise _BundleBlockedError(f"repository path escapes root: {value!r}")
+    if must_exist and not path.is_file():
+        raise _BundleBlockedError(f"repository input is not a file: {reference}")
+    return path, pure.as_posix().rstrip("/")
+
+
+def _required_setting(settings: Mapping[str, Any], key: str) -> str:
+    value = settings.get(key)
+    if not isinstance(value, str) or not value.strip():
+        raise _BundleBlockedError(f"packaging setting {key} must be a non-empty string")
+    return value
+
+
+def _packaging_entrypoint_delegates(
+    settings: Mapping[str, Any], bundle_id: str
+) -> dict[str, tuple[str, ...]]:
+    expected = ("koa-activation", "koa-health-aggregate", "koa-offline-import")
+    executables = settings.get("executables")
+    if not isinstance(executables, Mapping):
+        raise _BundleBlockedError("packaging settings must declare [executables]")
+    result: dict[str, tuple[str, ...]] = {}
+    for name in expected:
+        entry = executables.get(name)
+        if not isinstance(entry, Mapping):
+            raise _BundleBlockedError(f"packaging executable {name} is missing")
+        expected_source = f"generated/assembly/{bundle_id}/entrypoints/{name}"
+        expected_destination = f"/usr/libexec/koa/{name}"
+        if entry.get("destination") != expected_destination:
+            raise _BundleBlockedError(
+                f"packaging executable {name} must install at {expected_destination}"
+            )
+        if entry.get("provider") != "assembly_generated_entrypoint":
+            raise _BundleBlockedError(f"packaging executable {name} has an unsupported provider")
+        if entry.get("provider_bundle") != bundle_id:
+            raise _BundleBlockedError(f"packaging executable {name} has the wrong provider bundle")
+        if entry.get("source") != expected_source:
+            raise _BundleBlockedError(
+                f"packaging executable {name} must source the derived entrypoint {expected_source}"
+            )
+        if entry.get("missing_provider") != "block_build":
+            raise _BundleBlockedError(
+                f"packaging executable {name} must fail closed when its provider is missing"
+            )
+        argv = entry.get("delegate_argv")
+        if (
+            not isinstance(argv, list)
+            or not argv
+            or not all(isinstance(item, str) for item in argv)
+        ):
+            raise _BundleBlockedError(
+                f"packaging executable {name} requires an owner-declared delegate_argv"
+            )
+        result[name] = tuple(argv)
+    return result
+
+
+def _render_mismatches(root: Path, files: Sequence[Any]) -> tuple[str, ...]:
+    mismatches: list[str] = []
+    for item in files:
+        target = root.joinpath(*PurePosixPath(item.path).parts)
+        if not target.is_file() or target.read_bytes() != item.content:
+            mismatches.append(item.path)
+    return tuple(sorted(mismatches))
+
+
+def _write_bundle_result(
+    result: str, message: str, output_format: str, *, stream: Any = sys.stdout
+) -> None:
+    if output_format == "json":
+        print(json.dumps({"result": result, "message": message}, sort_keys=True), file=stream)
+    else:
+        print(f"{result.upper()}: {message}", file=stream)
 
 
 def _render_outcomes(outcomes: Iterable[LoadOutcome], output_format: str) -> int:

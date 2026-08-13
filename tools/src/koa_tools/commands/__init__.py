@@ -101,6 +101,7 @@ COMMAND_MODULES: tuple[str, ...] = (
     "generate",
     "assemble",
     "build_image",
+    "build_component",
     "build_bundle",
     "release",
 )
@@ -311,12 +312,13 @@ def run_plan(
 def load_commands() -> tuple[CommandDefinition, ...]:
     """Load command definitions lazily to avoid CLI import cycles."""
 
-    from . import assemble, build_bundle, build_image, generate, release
+    from . import assemble, build_bundle, build_component, build_image, generate, release
 
     definitions = (
         generate.COMMAND,
         assemble.COMMAND,
         build_image.COMMAND,
+        build_component.COMMAND,
         build_bundle.COMMAND,
         release.COMMAND,
     )

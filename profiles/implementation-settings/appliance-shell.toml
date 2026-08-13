@@ -71,3 +71,44 @@ compatibility_validation = true
 atomic_activation = true
 last_valid_shell_preserved = true
 fallback_to_unrestricted_desktop = false
+
+[implementation.systemd_projection]
+format = "koa.systemd-projection/v1"
+policy_source = "effective_profile"
+overlay_source = "appliance_shell"
+generated_subtree = "generated/systemd"
+unit_name_source = "resolved_service_id"
+dependency_source = "resolved_service_dependencies"
+restart_policy_source = "resolved_lifecycle_policy"
+sandbox_policy_source = "resolved_security_policy"
+resource_envelope_source = "resolved_resource_plan"
+unit_class_source = "resolved_service_owner_kind"
+require_explicit_service_policy = true
+allow_static_profile_units = false
+presentation_grants_host_authority = false
+required_service_policy_sections = ["unit_class", "restart", "sandbox"]
+required_sandbox_directives = [
+  "no_new_privileges",
+  "private_tmp",
+  "private_devices",
+  "protect_system",
+  "protect_home",
+  "protect_kernel_tunables",
+  "protect_kernel_modules",
+  "protect_kernel_logs",
+  "protect_control_groups",
+  "protect_clock",
+  "protect_hostname",
+  "protect_proc",
+  "proc_subset",
+  "restrict_suid_sgid",
+  "restrict_realtime",
+  "lock_personality",
+  "memory_deny_write_execute",
+  "remove_ipc",
+  "restrict_namespaces",
+  "restrict_address_families",
+  "system_call_architectures",
+  "system_call_filter",
+  "umask",
+]

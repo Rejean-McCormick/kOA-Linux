@@ -141,6 +141,10 @@ host/sessions/appliance-session.toml
 host/sessions/maintenance-session.toml
 host/sessions/recovery-session.toml
 host/sessions/koa-session-launcher.py
+host/sessions/session_runtime.py
+host/sessions/koa-appliance-session.py
+host/sessions/koa-maintenance-session.py
+host/sessions/koa-recovery-session.py
 host/adapters/README.md
 host/adapters/systemd.py
 host/adapters/podman.py
