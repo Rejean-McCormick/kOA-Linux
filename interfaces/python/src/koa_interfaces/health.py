@@ -85,6 +85,16 @@ def _raise_boolean(field_name: str) -> bool:
     raise InterfaceValidationError(f"{field_name} must be a boolean")
 
 
+def _plain_value(value: Any) -> Any:
+    if isinstance(value, Mapping):
+        return {str(key): _plain_value(item) for key, item in value.items()}
+    if isinstance(value, tuple):
+        return [_plain_value(item) for item in value]
+    if isinstance(value, list):
+        return [_plain_value(item) for item in value]
+    return value
+
+
 @dataclass(frozen=True, slots=True)
 class CapabilityState:
     capability_id: str
@@ -201,31 +211,224 @@ class CapabilityState:
 
 @dataclass(frozen=True, slots=True)
 class HealthStatus:
+    """Component health binding.
+
+    Canonical instances serialize to ``health-status.schema.json``.  The legacy
+    constructor fields remain accepted temporarily so existing component code
+    can migrate without changing its in-process health API in the same patch.
+    """
+
     component_id: str
-    instance_id: str
-    state: HealthState
     observed_at: datetime
-    contract_version: str
-    schema_version: str
-    capabilities: tuple[CapabilityState, ...]
-    startup_complete: bool
-    freshness_seconds: int
+    schema_version: str = "1.0.0"
+
+    # Canonical health-status fields.
+    health_report_id: str | None = None
+    component_contract_ref: str | None = None
+    process_liveness: Mapping[str, Any] | None = None
+    startup: Mapping[str, Any] | None = None
+    overall_state: HealthState | None = None
+    readiness: tuple[Mapping[str, Any], ...] = ()
+    freshness: Mapping[str, Any] | None = None
+    disclosure_class: str | None = None
+    component_instance_id: str | None = None
+    profile_refs: tuple[str, ...] = ()
+    limitations: tuple[Mapping[str, Any], ...] = ()
+    recovery_conditions: tuple[str, ...] = ()
+    evidence_refs: tuple[str, ...] = ()
+
+    # Legacy compatibility surface.  These fields are never emitted by a
+    # canonical instance.
+    instance_id: str | None = None
+    state: HealthState | None = None
+    contract_version: str | None = None
+    capabilities: tuple[CapabilityState, ...] = ()
+    startup_complete: bool | None = None
+    freshness_seconds: int | None = None
     reason_codes: tuple[str, ...] = ()
     active_artifact_refs: tuple[str, ...] = ()
     details: Mapping[str, Any] = field(default_factory=lambda: MappingProxyType({}))
+
+    _canonical_mode: bool = field(init=False, repr=False, compare=False, default=False)
 
     SCHEMA_PATH = HEALTH_STATUS_SCHEMA_PATH
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "component_id", _require_text(self.component_id, "component_id"))
-        object.__setattr__(self, "instance_id", _require_text(self.instance_id, "instance_id"))
-        object.__setattr__(self, "state", _enum_value(HealthState, self.state, "state"))
         object.__setattr__(self, "observed_at", _parse_timestamp(self.observed_at, "observed_at"))
         object.__setattr__(
-            self, "contract_version", _require_text(self.contract_version, "contract_version")
+            self, "schema_version", _require_text(self.schema_version, "schema_version")
+        )
+        object.__setattr__(self, "reason_codes", _string_tuple(self.reason_codes, "reason_codes"))
+
+        canonical_mode = any(
+            value is not None
+            for value in (
+                self.health_report_id,
+                self.component_contract_ref,
+                self.process_liveness,
+                self.startup,
+                self.overall_state,
+                self.freshness,
+                self.disclosure_class,
+            )
+        ) or bool(self.readiness)
+        object.__setattr__(self, "_canonical_mode", canonical_mode)
+
+        if canonical_mode:
+            self._validate_canonical()
+        else:
+            self._validate_legacy()
+
+    def _validate_canonical(self) -> None:
+        required_text = {
+            "health_report_id": self.health_report_id,
+            "component_contract_ref": self.component_contract_ref,
+            "disclosure_class": self.disclosure_class,
+        }
+        missing = [name for name, value in required_text.items() if value is None]
+        if self.process_liveness is None:
+            missing.append("process_liveness")
+        if self.startup is None:
+            missing.append("startup")
+        if self.overall_state is None:
+            missing.append("overall_state")
+        if not self.readiness:
+            missing.append("readiness")
+        if self.freshness is None:
+            missing.append("freshness")
+        if missing:
+            raise InterfaceValidationError(
+                "canonical health status missing fields: " + ", ".join(sorted(missing))
+            )
+
+        health_report_id = _require_text(self.health_report_id, "health_report_id")
+        if not health_report_id.startswith("health:"):
+            raise InterfaceValidationError("health_report_id must start with 'health:'")
+        object.__setattr__(self, "health_report_id", health_report_id)
+        object.__setattr__(
+            self,
+            "component_contract_ref",
+            _require_text(self.component_contract_ref, "component_contract_ref"),
         )
         object.__setattr__(
-            self, "schema_version", _require_text(self.schema_version, "schema_version")
+            self,
+            "component_instance_id",
+            _optional_text(self.component_instance_id, "component_instance_id"),
+        )
+        object.__setattr__(self, "overall_state", _enum_value(HealthState, self.overall_state, "overall_state"))
+        object.__setattr__(self, "state", self.overall_state)
+
+        disclosure = _require_text(self.disclosure_class, "disclosure_class")
+        allowed_disclosures = {
+            "minimal_public",
+            "authenticated_operational",
+            "restricted_diagnostic",
+            "machine_readable_local",
+        }
+        if disclosure not in allowed_disclosures:
+            raise InterfaceValidationError("unsupported disclosure_class")
+        object.__setattr__(self, "disclosure_class", disclosure)
+
+        process_liveness = self._health_mapping(
+            self.process_liveness,
+            "process_liveness",
+            required={"state", "observed_at", "reason_codes"},
+        )
+        liveness_state = process_liveness["state"]
+        if liveness_state not in {"alive", "stopping", "failed"}:
+            raise InterfaceValidationError("process_liveness.state is invalid")
+        if liveness_state in {"stopping", "failed"} and not process_liveness["reason_codes"]:
+            raise InterfaceValidationError(
+                "non-alive process_liveness requires reason_codes"
+            )
+        object.__setattr__(self, "process_liveness", process_liveness)
+
+        startup = self._health_mapping(
+            self.startup,
+            "startup",
+            required={"state", "observed_at", "reason_codes"},
+        )
+        startup_state = _enum_value(HealthState, startup["state"], "startup.state")
+        if startup_state is not HealthState.HEALTHY and not startup["reason_codes"]:
+            raise InterfaceValidationError("non-healthy startup requires reason_codes")
+        object.__setattr__(self, "startup", startup)
+        object.__setattr__(self, "startup_complete", startup_state is HealthState.HEALTHY)
+
+        readiness_items: list[Mapping[str, Any]] = []
+        for item in self.readiness:
+            if not isinstance(item, Mapping):
+                raise InterfaceValidationError("readiness must contain objects")
+            readiness_items.append(MappingProxyType(dict(item)))
+        object.__setattr__(self, "readiness", tuple(readiness_items))
+
+        freshness = self._health_mapping(
+            self.freshness,
+            "freshness",
+            required={"source", "confidence", "staleness_state", "observed_at"},
+        )
+        if freshness["confidence"] not in {"direct", "derived", "reported", "unknown"}:
+            raise InterfaceValidationError("freshness.confidence is invalid")
+        if freshness["staleness_state"] not in {"current", "stale", "unknown"}:
+            raise InterfaceValidationError("freshness.staleness_state is invalid")
+        age_seconds = freshness.get("age_seconds")
+        if age_seconds is not None and (
+            not isinstance(age_seconds, int) or isinstance(age_seconds, bool) or age_seconds < 0
+        ):
+            raise InterfaceValidationError("freshness.age_seconds must be a non-negative integer")
+        object.__setattr__(self, "freshness", freshness)
+        object.__setattr__(self, "freshness_seconds", age_seconds if age_seconds is not None else 0)
+
+        object.__setattr__(self, "profile_refs", _string_tuple(self.profile_refs, "profile_refs"))
+        object.__setattr__(
+            self,
+            "recovery_conditions",
+            _string_tuple(self.recovery_conditions, "recovery_conditions"),
+        )
+        object.__setattr__(self, "evidence_refs", _string_tuple(self.evidence_refs, "evidence_refs"))
+        limitation_items: list[Mapping[str, Any]] = []
+        for item in self.limitations:
+            if not isinstance(item, Mapping):
+                raise InterfaceValidationError("limitations must contain objects")
+            limitation_items.append(MappingProxyType(dict(item)))
+        object.__setattr__(self, "limitations", tuple(limitation_items))
+
+        if liveness_state == "failed" and self.overall_state is not HealthState.FAILED:
+            raise InterfaceValidationError(
+                "failed process_liveness requires overall_state=failed"
+            )
+        if liveness_state == "stopping" and self.overall_state is not HealthState.STOPPING:
+            raise InterfaceValidationError(
+                "stopping process_liveness requires overall_state=stopping"
+            )
+        if self.overall_state is not HealthState.HEALTHY and not self.reason_codes:
+            raise InterfaceValidationError("non-healthy overall_state requires reason_codes")
+        if freshness["staleness_state"] == "stale" and self.overall_state is HealthState.HEALTHY:
+            raise InterfaceValidationError("stale freshness cannot report overall_state=healthy")
+        if freshness["staleness_state"] == "stale" and not self.reason_codes:
+            raise InterfaceValidationError("stale freshness requires reason_codes")
+
+        # Compatibility aliases for code that reads these attributes.
+        if self.instance_id is None and self.component_instance_id is not None:
+            object.__setattr__(self, "instance_id", self.component_instance_id)
+
+    def _validate_legacy(self) -> None:
+        required = {
+            "instance_id": self.instance_id,
+            "state": self.state,
+            "contract_version": self.contract_version,
+            "startup_complete": self.startup_complete,
+            "freshness_seconds": self.freshness_seconds,
+        }
+        missing = [name for name, value in required.items() if value is None]
+        if missing:
+            raise InterfaceValidationError(
+                "legacy health status missing fields: " + ", ".join(sorted(missing))
+            )
+        object.__setattr__(self, "instance_id", _require_text(self.instance_id, "instance_id"))
+        object.__setattr__(self, "state", _enum_value(HealthState, self.state, "state"))
+        object.__setattr__(
+            self, "contract_version", _require_text(self.contract_version, "contract_version")
         )
         if not isinstance(self.capabilities, tuple):
             object.__setattr__(self, "capabilities", tuple(self.capabilities))
@@ -233,9 +436,14 @@ class HealthStatus:
             isinstance(item, CapabilityState) for item in self.capabilities
         ):
             raise InterfaceValidationError("capabilities must contain CapabilityState values")
-        if not isinstance(self.freshness_seconds, int) or self.freshness_seconds < 0:
+        if not isinstance(self.startup_complete, bool):
+            _raise_boolean("startup_complete")
+        if (
+            not isinstance(self.freshness_seconds, int)
+            or isinstance(self.freshness_seconds, bool)
+            or self.freshness_seconds < 0
+        ):
             raise InterfaceValidationError("freshness_seconds must be a non-negative integer")
-        object.__setattr__(self, "reason_codes", _string_tuple(self.reason_codes, "reason_codes"))
         object.__setattr__(
             self,
             "active_artifact_refs",
@@ -254,7 +462,50 @@ class HealthStatus:
         if not self.startup_complete and self.state is HealthState.HEALTHY:
             raise InterfaceValidationError("healthy status requires startup_complete=true")
 
+    @staticmethod
+    def _health_mapping(
+        value: Mapping[str, Any] | None,
+        field_name: str,
+        *,
+        required: set[str],
+    ) -> Mapping[str, Any]:
+        if not isinstance(value, Mapping):
+            raise InterfaceValidationError(f"{field_name} must be an object")
+        missing = sorted(required - set(value))
+        if missing:
+            raise InterfaceValidationError(
+                f"{field_name} missing fields: {', '.join(missing)}"
+            )
+        return MappingProxyType(dict(value))
+
     def to_dict(self) -> dict[str, Any]:
+        if self._canonical_mode:
+            result: dict[str, Any] = {
+                "schema_version": self.schema_version,
+                "health_report_id": self.health_report_id,
+                "component_id": self.component_id,
+                "component_contract_ref": self.component_contract_ref,
+                "process_liveness": _plain_value(self.process_liveness),
+                "startup": _plain_value(self.startup),
+                "overall_state": self.overall_state.value,
+                "readiness": [_plain_value(item) for item in self.readiness],
+                "freshness": _plain_value(self.freshness),
+                "observed_at": _format_timestamp(self.observed_at),
+                "reason_codes": list(self.reason_codes),
+                "disclosure_class": self.disclosure_class,
+            }
+            if self.component_instance_id is not None:
+                result["component_instance_id"] = self.component_instance_id
+            if self.profile_refs:
+                result["profile_refs"] = list(self.profile_refs)
+            if self.limitations:
+                result["limitations"] = [_plain_value(item) for item in self.limitations]
+            if self.recovery_conditions:
+                result["recovery_conditions"] = list(self.recovery_conditions)
+            if self.evidence_refs:
+                result["evidence_refs"] = list(self.evidence_refs)
+            return result
+
         return {
             "component_id": self.component_id,
             "instance_id": self.instance_id,
@@ -274,10 +525,86 @@ class HealthStatus:
     def from_dict(cls, data: Mapping[str, Any]) -> HealthStatus:
         if not isinstance(data, Mapping):
             raise InterfaceValidationError("health status must be an object")
+
+        if "health_report_id" in data or "component_contract_ref" in data:
+            allowed = {
+                "schema_version",
+                "health_report_id",
+                "component_id",
+                "component_instance_id",
+                "component_contract_ref",
+                "profile_refs",
+                "process_liveness",
+                "startup",
+                "overall_state",
+                "readiness",
+                "limitations",
+                "freshness",
+                "observed_at",
+                "reason_codes",
+                "recovery_conditions",
+                "evidence_refs",
+                "disclosure_class",
+            }
+            _unexpected_fields(data, allowed)
+            required = {
+                "schema_version",
+                "health_report_id",
+                "component_id",
+                "component_contract_ref",
+                "process_liveness",
+                "startup",
+                "overall_state",
+                "readiness",
+                "freshness",
+                "observed_at",
+                "reason_codes",
+                "disclosure_class",
+            }
+            missing = sorted(required - set(data))
+            if missing:
+                raise InterfaceValidationError(f"missing fields: {', '.join(missing)}")
+            raw_readiness = data["readiness"]
+            if isinstance(raw_readiness, str) or not isinstance(raw_readiness, (list, tuple)):
+                raise InterfaceValidationError("readiness must be an array")
+            raw_limitations = data.get("limitations", ())
+            if isinstance(raw_limitations, str) or not isinstance(raw_limitations, (list, tuple)):
+                raise InterfaceValidationError("limitations must be an array")
+            return cls(
+                component_id=data["component_id"],
+                observed_at=data["observed_at"],
+                schema_version=data["schema_version"],
+                health_report_id=data["health_report_id"],
+                component_instance_id=data.get("component_instance_id"),
+                component_contract_ref=data["component_contract_ref"],
+                profile_refs=_string_tuple(data.get("profile_refs"), "profile_refs"),
+                process_liveness=data["process_liveness"],
+                startup=data["startup"],
+                overall_state=data["overall_state"],
+                readiness=tuple(raw_readiness),
+                limitations=tuple(raw_limitations),
+                freshness=data["freshness"],
+                reason_codes=_string_tuple(data.get("reason_codes"), "reason_codes"),
+                recovery_conditions=_string_tuple(
+                    data.get("recovery_conditions"), "recovery_conditions"
+                ),
+                evidence_refs=_string_tuple(data.get("evidence_refs"), "evidence_refs"),
+                disclosure_class=data["disclosure_class"],
+            )
+
         allowed = {
-            "component_id", "instance_id", "state", "observed_at", "contract_version",
-            "schema_version", "capabilities", "startup_complete", "freshness_seconds",
-            "reason_codes", "active_artifact_refs", "details",
+            "component_id",
+            "instance_id",
+            "state",
+            "observed_at",
+            "contract_version",
+            "schema_version",
+            "capabilities",
+            "startup_complete",
+            "freshness_seconds",
+            "reason_codes",
+            "active_artifact_refs",
+            "details",
         }
         _unexpected_fields(data, allowed)
         required = allowed - {"reason_codes", "active_artifact_refs", "details"}
@@ -289,11 +616,11 @@ class HealthStatus:
             raise InterfaceValidationError("capabilities must be an array")
         return cls(
             component_id=data["component_id"],
+            observed_at=data["observed_at"],
+            schema_version=data["schema_version"],
             instance_id=data["instance_id"],
             state=data["state"],
-            observed_at=data["observed_at"],
             contract_version=data["contract_version"],
-            schema_version=data["schema_version"],
             capabilities=tuple(CapabilityState.from_dict(item) for item in raw_capabilities),
             startup_complete=(
                 data["startup_complete"]

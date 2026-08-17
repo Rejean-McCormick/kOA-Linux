@@ -9,7 +9,7 @@ from koa_konnaxion_adapter.capabilities import CapabilityState, DependencyState
 from koa_konnaxion_adapter.client import AdapterRequest, RequestContext, TransportTimeout, TransportUnavailable
 from koa_konnaxion_adapter.routes import RouteDeclaration
 
-from conftest import FakeTransport
+from ._support import FakeTransport
 
 
 def _runtime(declarations, observations, manifests, transport):

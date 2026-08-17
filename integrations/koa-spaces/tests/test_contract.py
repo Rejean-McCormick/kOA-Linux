@@ -13,7 +13,7 @@ from koa_spaces_adapter import (
     validate_receipt,
 )
 
-from conftest import ROOT, load_schema
+from ._support import ROOT, load_schema
 
 
 def _validator(name: str) -> Draft202012Validator:

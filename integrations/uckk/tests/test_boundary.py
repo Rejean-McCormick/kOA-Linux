@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from conftest import LOCAL_AUTHORITY, NOW, SOURCE_AUTHORITY, make_service
+from ._support import LOCAL_AUTHORITY, NOW, SOURCE_AUTHORITY, make_service
 from koa_uckk_adapter.learning_import import ImportAction, ImportRequest
 from koa_uckk_adapter.mediatheque_frame import FrameMappingError
 from koa_uckk_adapter.package_verification import TransportKind, VerificationDisposition

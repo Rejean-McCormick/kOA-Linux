@@ -4,7 +4,7 @@ from copy import deepcopy
 
 import pytest
 
-from conftest import make_service
+from ._support import make_service
 from koa_uckk_adapter.learning_import import (
     ImportAction,
     ImportRequest,

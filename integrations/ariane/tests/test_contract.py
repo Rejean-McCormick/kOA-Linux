@@ -14,7 +14,7 @@ from koa_ariane_adapter import (
     bootstrap_adapter,
 )
 
-from conftest import NOW, FakeTransport
+from ._support import NOW, FakeTransport
 
 
 def test_canonical_capability_ids_are_preserved() -> None:

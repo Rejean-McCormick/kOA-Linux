@@ -1,18 +1,24 @@
 use koa_interfaces::client::{ResponseDisposition, ResponseEnvelope};
-use koa_interfaces::error::{ErrorCategory, OutcomeKnowledge, TransportErrorKind};
-use koa_interfaces::health::{DependencyState, StalenessState};
+use koa_interfaces::error::{
+    ErrorAuthoritativeEffect, ErrorAuthority, ErrorCategory, ErrorCorrelationContext,
+    ErrorDisclosure, ErrorFinality, ErrorOutcome, ErrorOutcomeState, ErrorRetry,
+    ErrorRetryStrategy, TransportErrorKind,
+};
+use koa_interfaces::health::{HealthFreshness, HealthLiveness, HealthLivenessState, HealthStartup};
 use koa_interfaces::{
-    schema, AuthoritativeOutcome, CapabilityAvailability, CapabilityReadiness,
+    schema, AuthoritativeOutcome, CapabilityAvailability,
     CapabilitySnapshot, CapabilitySnapshotEntry,
-    CommitState, CorrelationContext, DecisionState, DependencyHealth,
-    DependencyRequirement, DisclosureClass, ErrorEnvelope, EventEnvelope,
-    ExecutionState, Freshness, HealthStatus, IdempotencyContext, IdentityContext,
-    InteractionClass, InterfaceClient, JobRequest, JobStatus, JobTerminality, OperationalState,
-    ReadinessStatus, ReceiptClass, ReceiptEnvelope, ReceiptOutcome, Transport,
-    TransportError, VersionNegotiation,
+    CommitState, CorrelationContext, DecisionState, DisclosureClass, DuplicateHandling, ErrorEnvelope, EventAuthority,
+    EventCorrelationContext, EventDisclosure, EventEnvelope, EventEvidence,
+    EventInterfaceReference, EventOrdering, EventPayloadRepresentation, EventPublisher,
+    EventReceiverKind, EventReceiverSelector, EventReplay, ExecutionState, HealthStatus, IdempotencyAntiReplay, IdempotencyAuthority, IdempotencyCanonicalRequest, IdempotencyContext, IdempotencyDuplicateHandling, IdempotencyExpectedState, IdempotencyScope, IdempotencyValidity, IdentityContext, InterfaceClient, JobRequest,
+    JobStatus, JobTerminality, OperationalState, PayloadEncoding, ReplayMode,
+    ReceiptClass, ReceiptEnvelope, ReceiptOutcome, Transport,
+    TransportError, VersionCompatibilityMode, VersionNegotiation, VersionNegotiationAuthority,
+    VersionNegotiationMessageType, VersionNegotiationSender, VersionReceiverKind,
+    VersionReceiverSelector,
 };
 use serde_json::{json, Value};
-use std::collections::BTreeMap;
 
 const FIXTURE_SCHEMA_VERSION: &str = "1.0.0";
 
@@ -33,52 +39,131 @@ fn correlation() -> CorrelationContext {
 
 fn request() -> EventEnvelope<Value> {
     EventEnvelope {
-        schema: schema::EVENT_ENVELOPE.to_owned(),
         schema_version: FIXTURE_SCHEMA_VERSION.to_owned(),
-        interface_id: "example.command".to_owned(),
-        interface_version: "1.0.0".to_owned(),
+        envelope_type: "domain_event".to_owned(),
         message_id: "message-001".to_owned(),
-        interaction_class: InteractionClass::Command,
-        sender_component_id: "requesting_component".to_owned(),
-        receiver_component_id: "owning_component".to_owned(),
-        operation: "change_owned_state".to_owned(),
-        correlation: correlation(),
-        identity: Some(IdentityContext {
-            subject_ref: Some("subject:record-1".to_owned()),
-            authority_refs: vec!["policy:decision-1".to_owned()],
-            ..IdentityContext::new(FIXTURE_SCHEMA_VERSION, "identity:operator-1")
-        }),
-        idempotency: Some(IdempotencyContext {
-            schema: schema::IDEMPOTENCY.to_owned(),
-            schema_version: FIXTURE_SCHEMA_VERSION.to_owned(),
-            idempotency_key: "workspace-1:change-1".to_owned(),
-            request_digest: "sha256:0123456789abcdef".to_owned(),
-            namespace: Some("workspace-1".to_owned()),
-        }),
-        payload_schema: "components/example/change-request.schema.json".to_owned(),
-        created_at: "2026-08-06T12:00:00Z".to_owned(),
+        event_id: "event-001".to_owned(),
+        event_type: "example.change_committed".to_owned(),
+        event_version: "1.0.0".to_owned(),
+        interface: EventInterfaceReference {
+            interface_id: "example.events".to_owned(),
+            interface_version: "1.0.0".to_owned(),
+            contract_ref: Some("docs/contracts/components/example.component.json".to_owned()),
+        },
+        publisher: EventPublisher {
+            component_id: "owning_component".to_owned(),
+            instance_id: None,
+            profile_id: None,
+        },
+        intended_receivers: vec![EventReceiverSelector {
+            kind: EventReceiverKind::Component,
+            identifier: "requesting_component".to_owned(),
+        }],
+        correlation: EventCorrelationContext {
+            correlation_id: "workflow-001".to_owned(),
+            request_id: "request-001".to_owned(),
+            causation_id: None,
+            trace_id: None,
+        },
+        occurred_at: "2026-08-06T12:00:00Z".to_owned(),
+        committed_at: "2026-08-06T12:00:01Z".to_owned(),
         expires_at: None,
-        authority_refs: vec!["policy:decision-1".to_owned()],
-        evidence_refs: Vec::new(),
+        payload_representation: EventPayloadRepresentation {
+            media_type: "application/json".to_owned(),
+            schema_ref: "components/example/change-event.schema.json".to_owned(),
+            schema_version: "1.0.0".to_owned(),
+            encoding: Some(PayloadEncoding::Identity),
+            content_digest: None,
+        },
         payload: json!({"expected_state": "old", "target_state": "new"}),
+        ordering: EventOrdering {
+            scope: "example.record".to_owned(),
+            sequence: 1,
+            partition_key: Some("record-001".to_owned()),
+        },
+        replay: EventReplay {
+            mode: ReplayMode::Original,
+            duplicate_handling: DuplicateHandling::IgnoreIfApplied,
+            original_message_id: None,
+            replayed_at: None,
+            replay_reason: None,
+        },
+        compatibility: None,
+        disclosure: EventDisclosure {
+            class: DisclosureClass::OperatorRestricted,
+            payload_minimized: true,
+            redaction_applied: None,
+        },
+        evidence: Some(EventEvidence {
+            receipt_refs: vec!["receipt-001".to_owned()],
+            evidence_refs: Vec::new(),
+        }),
+        authority: EventAuthority {
+            effect: "committed_fact_evidence".to_owned(),
+            publisher_owns_fact: true,
+            grants_mutation_authority: false,
+            transfers_ownership: false,
+        },
     }
 }
 
 fn remote_error() -> ErrorEnvelope {
     ErrorEnvelope {
-        schema: schema::ERROR_ENVELOPE.to_owned(),
         schema_version: FIXTURE_SCHEMA_VERSION.to_owned(),
+        envelope_type: "error".to_owned(),
         error_id: "error-001".to_owned(),
         error_code: "policy_denied".to_owned(),
-        category: ErrorCategory::AuthorizationDenied,
+        error_class: ErrorCategory::Authorization,
         message: "The requested operation is not authorized.".to_owned(),
-        correlation: correlation(),
-        retryable: false,
-        outcome_knowledge: OutcomeKnowledge::KnownNoEffect,
-        retry_after_seconds: None,
-        reason_codes: vec!["policy_denied".to_owned()],
-        details: BTreeMap::new(),
-        recorded_at: "2026-08-06T12:00:01Z".to_owned(),
+        reason_codes: vec!["POLICY_DENIED".to_owned()],
+        interface: EventInterfaceReference {
+            interface_id: "example.command".to_owned(),
+            interface_version: "1.0.0".to_owned(),
+            contract_ref: Some("docs/contracts/components/example.component.json".to_owned()),
+        },
+        producer: EventPublisher {
+            component_id: "owning_component".to_owned(),
+            instance_id: None,
+            profile_id: None,
+        },
+        intended_receiver: EventReceiverSelector {
+            kind: EventReceiverKind::Component,
+            identifier: "requesting_component".to_owned(),
+        },
+        correlation: ErrorCorrelationContext {
+            correlation_id: "workflow-001".to_owned(),
+            causation_id: None,
+            request_id: Some("request-001".to_owned()),
+            trace_id: None,
+        },
+        occurred_at: "2026-08-06T12:00:01Z".to_owned(),
+        payload_representation: None,
+        release_context: None,
+        outcome: ErrorOutcome {
+            state: ErrorOutcomeState::Rejected,
+            finality: ErrorFinality::Final,
+            authoritative_effect: ErrorAuthoritativeEffect::None,
+            status_ref: None,
+        },
+        retry: ErrorRetry {
+            allowed: false,
+            strategy: ErrorRetryStrategy::None,
+            after_seconds: None,
+            maximum_attempts: None,
+            idempotency_required: None,
+        },
+        details: None,
+        disclosure: ErrorDisclosure {
+            class: DisclosureClass::OperatorRestricted,
+            payload_minimized: true,
+            contains_secrets: false,
+        },
+        evidence: None,
+        authority: ErrorAuthority {
+            transport_grants_authority: false,
+            error_grants_authority: false,
+            transfers_ownership: false,
+        },
     }
 }
 
@@ -111,15 +196,39 @@ fn schema_identifiers_are_repository_relative_and_stable() {
 }
 
 #[test]
-fn version_selection_must_be_offered() {
+fn version_selection_must_be_explicit_and_offered() {
     let valid = VersionNegotiation {
-        schema: schema::VERSION_NEGOTIATION.to_owned(),
         schema_version: FIXTURE_SCHEMA_VERSION.to_owned(),
+        message_type: VersionNegotiationMessageType::VersionSelection,
+        negotiation_id: "negotiation-001".to_owned(),
         interface_id: "example.command".to_owned(),
-        supported_versions: vec!["1.0.0".to_owned(), "1.1.0".to_owned()],
+        sender: VersionNegotiationSender {
+            component_id: "example_client".to_owned(),
+            instance_id: None,
+            profile_id: None,
+        },
+        intended_receiver: VersionReceiverSelector {
+            kind: VersionReceiverKind::Component,
+            identifier: "example_server".to_owned(),
+        },
+        correlation_id: "correlation-001".to_owned(),
+        offered_versions: Some(vec!["1.0.0".to_owned(), "1.1.0".to_owned()]),
+        preferred_version: None,
         selected_version: Some("1.1.0".to_owned()),
+        compatibility_mode: Some(VersionCompatibilityMode::Exact),
+        rejection: None,
+        release_context: None,
+        automatic_schema_guessing: false,
+        authority: VersionNegotiationAuthority {
+            transport_grants_authority: false,
+            selection_changes_domain_authority: false,
+            receiving_contract_remains_authoritative: true,
+        },
     };
     assert!(valid.validate().is_ok());
+    let encoded = serde_json::to_value(&valid).expect("serialize version negotiation");
+    assert_eq!(encoded["message_type"], "version_selection");
+    assert_eq!(encoded["automatic_schema_guessing"], false);
 
     let invalid = VersionNegotiation {
         selected_version: Some("2.0.0".to_owned()),
@@ -136,82 +245,95 @@ fn event_envelope_round_trips_without_changing_contract_values() {
     let original = request();
     original.validate_metadata().expect("request metadata");
     let encoded = serde_json::to_value(&original).expect("serialize request");
-    assert_eq!(encoded["interaction_class"], "command");
-    assert_eq!(encoded["schema"], schema::EVENT_ENVELOPE);
+    assert_eq!(encoded["envelope_type"], "domain_event");
+    assert_eq!(encoded["interface"]["interface_version"], "1.0.0");
+    assert_eq!(encoded["authority"]["grants_mutation_authority"], false);
     let decoded: EventEnvelope<Value> =
         serde_json::from_value(encoded).expect("deserialize request");
     assert_eq!(decoded, original);
 }
 
 #[test]
-fn unknown_interaction_class_is_rejected() {
+fn unknown_receiver_kind_is_rejected() {
     let mut encoded = serde_json::to_value(request()).expect("serialize request");
-    encoded["interaction_class"] = json!("invented_fallback");
+    encoded["intended_receivers"][0]["kind"] = json!("invented_fallback");
     assert!(serde_json::from_value::<EventEnvelope<Value>>(encoded).is_err());
 }
 
 #[test]
 fn health_preserves_liveness_and_readiness_separation() {
-    let mut readiness = BTreeMap::new();
-    readiness.insert(koa_interfaces::ReadinessClass::LocalRead, ReadinessStatus::Ready);
-    readiness.insert(
-        koa_interfaces::ReadinessClass::AuthoritativeWrite,
-        ReadinessStatus::Blocked,
-    );
-    let status = HealthStatus {
-        schema: schema::HEALTH_STATUS.to_owned(),
-        schema_version: FIXTURE_SCHEMA_VERSION.to_owned(),
-        component_id: "example_component".to_owned(),
-        instance_id: Some("example-1".to_owned()),
-        state: OperationalState::ReadOnly,
-        liveness: true,
-        startup_complete: true,
-        observed_at: "2026-08-06T12:00:00Z".to_owned(),
-        capabilities: vec![CapabilityReadiness {
-            schema: schema::READINESS.to_owned(),
-            schema_version: FIXTURE_SCHEMA_VERSION.to_owned(),
-            capability_id: "example.read".to_owned(),
-            owner_component_id: "example_component".to_owned(),
-            availability: CapabilityAvailability::Degraded,
-            observed_state: OperationalState::ReadOnly,
-            observed_at: "2026-08-06T12:00:00Z".to_owned(),
-            readiness,
-            usable_operation_classes: vec!["local_read".to_owned()],
-            denied_operation_classes: vec!["authoritative_write".to_owned()],
-            dependencies: vec![DependencyHealth {
-                dependency_ref: "governance_policy_runtime".to_owned(),
-                requirement: DependencyRequirement::RequiredForCapability,
-                state: DependencyState::Unavailable,
-                observed_at: "2026-08-06T12:00:00Z".to_owned(),
-                reason_codes: vec!["dependency_unavailable".to_owned()],
-            }],
-            active_contract_id: "example-component".to_owned(),
-            active_contract_version: "1.0.0".to_owned(),
-            active_schema_version: Some("1.0.0".to_owned()),
-            active_artifact_refs: Vec::new(),
-            reason_codes: vec!["write_policy_unavailable".to_owned()],
-            recovery_conditions: vec!["policy_runtime_ready".to_owned()],
-            evidence_refs: Vec::new(),
-            freshness: vec![Freshness {
-                source: "policy_runtime".to_owned(),
-                observed_at: "2026-08-06T12:00:00Z".to_owned(),
-                expected_refresh_seconds: 30,
-                age_seconds: 4,
-                staleness: StalenessState::Current,
-                effect_on_capability: None,
-            }],
+    let readiness = json!({
+        "schema_version": "1.0.0",
+        "readiness_id": "readiness:example_component:local_read:001",
+        "component_id": "example_component",
+        "component_contract_ref": "docs/contracts/components/example.component.json",
+        "capability_id": "local_read",
+        "readiness_class": "readiness.local_read",
+        "ready": true,
+        "operational_state": "healthy",
+        "usable_operation_classes": ["read"],
+        "denied_operation_classes": [],
+        "conditions": [{
+            "condition_id": "process_alive",
+            "category": "process_liveness",
+            "required": true,
+            "status": "satisfied",
+            "observed_at": "2026-08-06T12:00:00Z"
         }],
-        reason_codes: vec!["write_policy_unavailable".to_owned()],
+        "freshness": {
+            "source": "health:example_component",
+            "confidence": "direct",
+            "staleness_state": "current",
+            "observed_at": "2026-08-06T12:00:00Z",
+            "age_seconds": 0
+        },
+        "observed_at": "2026-08-06T12:00:00Z",
+        "reason_codes": []
+    });
+    let status = HealthStatus {
+        schema_version: FIXTURE_SCHEMA_VERSION.to_owned(),
+        health_report_id: "health:example_component:001".to_owned(),
+        component_id: "example_component".to_owned(),
+        component_instance_id: Some("example-1".to_owned()),
+        component_contract_ref: "docs/contracts/components/example.component.json".to_owned(),
+        profile_refs: Vec::new(),
+        process_liveness: HealthLiveness {
+            state: HealthLivenessState::Alive,
+            observed_at: "2026-08-06T12:00:00Z".to_owned(),
+            reason_codes: Vec::new(),
+        },
+        startup: HealthStartup {
+            state: OperationalState::Healthy,
+            stage: None,
+            started_at: Some("2026-08-06T11:59:00Z".to_owned()),
+            observed_at: "2026-08-06T12:00:00Z".to_owned(),
+            reason_codes: Vec::new(),
+        },
+        overall_state: OperationalState::Healthy,
+        readiness: vec![readiness],
+        limitations: Vec::new(),
+        freshness: HealthFreshness {
+            source: "health:example_component".to_owned(),
+            confidence: "direct".to_owned(),
+            staleness_state: "current".to_owned(),
+            observed_at: "2026-08-06T12:00:00Z".to_owned(),
+            valid_until: None,
+            expected_refresh_at: None,
+            age_seconds: Some(0),
+        },
+        observed_at: "2026-08-06T12:00:00Z".to_owned(),
+        reason_codes: Vec::new(),
+        recovery_conditions: Vec::new(),
         evidence_refs: Vec::new(),
+        disclosure_class: "machine_readable_local".to_owned(),
     };
     status.validate().expect("health status");
     let value = serde_json::to_value(status).expect("serialize health");
-    assert_eq!(value["liveness"], true);
-    assert_eq!(value["state"], "read_only");
-    assert_eq!(
-        value["capabilities"][0]["readiness"]["readiness.authoritative_write"],
-        "blocked"
-    );
+    assert_eq!(value["process_liveness"]["state"], "alive");
+    assert_eq!(value["overall_state"], "healthy");
+    assert_eq!(value["readiness"][0]["readiness_class"], "readiness.local_read");
+    assert_eq!(value["disclosure_class"], "machine_readable_local");
+    assert!(value.get("capabilities").is_none());
 }
 
 #[test]
@@ -261,18 +383,32 @@ fn committed_receipt_requires_matching_commit_state_and_timestamp() {
 }
 
 #[test]
-fn error_retry_delay_requires_retryable_error() {
+fn error_retry_object_enforces_canonical_constraints() {
     let mut error = remote_error();
-    error.retry_after_seconds = Some(5);
+    error.retry.after_seconds = Some(5);
     assert_eq!(
         error
             .validate()
-            .expect_err("non-retryable delay must fail")
+            .expect_err("disabled retry timing must fail")
             .field(),
-        "retry_after_seconds"
+        "retry.after_seconds"
     );
-    error.retryable = true;
+
+    error.retry = ErrorRetry {
+        allowed: true,
+        strategy: ErrorRetryStrategy::BoundedBackoff,
+        after_seconds: Some(5),
+        maximum_attempts: Some(3),
+        idempotency_required: Some(true),
+    };
     assert!(error.validate().is_ok());
+
+    let encoded = serde_json::to_value(&error).expect("serialize canonical error");
+    assert_eq!(encoded["envelope_type"], "error");
+    assert_eq!(encoded["error_class"], "authorization");
+    assert!(encoded.get("schema").is_none());
+    assert!(encoded.get("category").is_none());
+    assert!(encoded.get("retryable").is_none());
 }
 
 #[test]
@@ -342,11 +478,42 @@ fn job_request_round_trips_with_stable_correlation_and_idempotency() {
         correlation: correlation(),
         identity: Some(IdentityContext::new(FIXTURE_SCHEMA_VERSION, "identity:operator-1")),
         idempotency: Some(IdempotencyContext {
-            schema: schema::IDEMPOTENCY.to_owned(),
             schema_version: FIXTURE_SCHEMA_VERSION.to_owned(),
             idempotency_key: "workspace-1:job-001".to_owned(),
-            request_digest: "sha256:0123456789abcdef".to_owned(),
-            namespace: Some("workspace-1".to_owned()),
+            request_id: Some("request-001".to_owned()),
+            correlation_id: Some("workflow-001".to_owned()),
+            operation: "example.deferred_work".to_owned(),
+            owner_component_id: "owning_component".to_owned(),
+            scope: IdempotencyScope {
+                kind: "owner_operation".to_owned(),
+                target_ref: None,
+                workflow_id: None,
+                step_id: None,
+            },
+            canonical_request: IdempotencyCanonicalRequest {
+                algorithm: "sha256".to_owned(),
+                digest: "0".repeat(64),
+                media_type: "application/json".to_owned(),
+                schema_ref: None,
+                schema_version: None,
+            },
+            expected_state: None::<IdempotencyExpectedState>,
+            duplicate_handling: IdempotencyDuplicateHandling {
+                action: "return_prior_result".to_owned(),
+                result_consistency: "exact_prior_result".to_owned(),
+                terminal_result_ref_required: Some(true),
+            },
+            validity: IdempotencyValidity {
+                created_at: "2026-08-06T12:00:00Z".to_owned(),
+                expires_at: None,
+                retain_terminal_result_seconds: Some(3600),
+            },
+            anti_replay: None::<IdempotencyAntiReplay>,
+            authority: IdempotencyAuthority {
+                receiving_owner_enforces: true,
+                transport_grants_authority: false,
+                duplicate_effects_permitted: false,
+            },
         }),
         requested_at: "2026-08-06T12:00:00Z".to_owned(),
         expires_at: None,
@@ -356,6 +523,16 @@ fn job_request_round_trips_with_stable_correlation_and_idempotency() {
     job.validate_metadata().expect("job request");
     let value = serde_json::to_value(&job).expect("serialize job request");
     assert_eq!(value["correlation"]["correlation_id"], "workflow-001");
+    assert_eq!(
+        value["idempotency"]["idempotency_key"],
+        "workspace-1:job-001"
+    );
+    assert_eq!(
+        value["idempotency"]["duplicate_handling"]["action"],
+        "return_prior_result"
+    );
+    assert!(value["idempotency"].get("schema").is_none());
+    assert!(value["idempotency"].get("request_digest").is_none());
     let decoded: JobRequest<Value> =
         serde_json::from_value(value).expect("deserialize job request");
     assert_eq!(decoded, job);

@@ -11,7 +11,7 @@ from koa_semantik_architect_adapter import (
     SemantikArchitectClient,
     create_adapter,
 )
-from conftest import FakeArtifactAdmission, FakeRuntimeValidation
+from ._support import FakeArtifactAdmission, FakeRuntimeValidation
 
 PACKAGE = Path(__file__).parents[1] / "adapter" / "src" / "koa_semantik_architect_adapter"
 

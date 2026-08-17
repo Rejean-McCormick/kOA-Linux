@@ -156,7 +156,7 @@ def test_compiler_job_cancellation_success(transport, all_capabilities):
 
 
 def test_artifact_and_runtime_pack_success_paths(artifact_candidate, language_pack_manifest):
-    from conftest import FakeArtifactAdmission, FakeRuntimeValidation
+    from ._support import FakeArtifactAdmission, FakeRuntimeValidation
     from koa_semantik_architect_adapter import (
         ArtifactBridge,
         ArtifactBridgeState,

@@ -17,7 +17,7 @@ from koa_spaces_adapter import (
     validate_manifest,
 )
 
-from conftest import PACKAGE, ROOT
+from ._support import PACKAGE, ROOT
 
 
 class HostPort:
@@ -94,24 +94,40 @@ def test_source_boundary_has_no_private_component_import_or_direct_execution():
 
 def test_only_declared_bundle_files_exist():
     allowed = {
-        "integrations/koa-spaces/adapter/src/koa_spaces_adapter/__init__.py",
-        "integrations/koa-spaces/adapter/src/koa_spaces_adapter/bootstrap.py",
-        "integrations/koa-spaces/adapter/src/koa_spaces_adapter/capabilities.py",
-        "integrations/koa-spaces/adapter/src/koa_spaces_adapter/client.py",
-        "integrations/koa-spaces/adapter/src/koa_spaces_adapter/health.py",
-        "integrations/koa-spaces/adapter/src/koa_spaces_adapter/host_bridge.py",
-        "integrations/koa-spaces/adapter/src/koa_spaces_adapter/module_manifest.py",
-        "integrations/koa-spaces/adapter/src/koa_spaces_adapter/receipts.py",
-        "integrations/koa-spaces/adapter/src/koa_spaces_adapter/route_bridge.py",
-        "integrations/koa-spaces/adapter/src/koa_spaces_adapter/space_activation.py",
-        "integrations/koa-spaces/tests/conftest.py",
-        "integrations/koa-spaces/tests/test_boundary.py",
-        "integrations/koa-spaces/tests/test_contract.py",
-        "integrations/koa-spaces/tests/test_degradation.py",
-        "integrations/koa-spaces/tests/test_health.py",
+        'integrations/koa-spaces/README.md',
+        'integrations/koa-spaces/adapter/pyproject.toml',
+        'integrations/koa-spaces/adapter/src/koa_spaces_adapter/__init__.py',
+        'integrations/koa-spaces/adapter/src/koa_spaces_adapter/bootstrap.py',
+        'integrations/koa-spaces/adapter/src/koa_spaces_adapter/capabilities.py',
+        'integrations/koa-spaces/adapter/src/koa_spaces_adapter/client.py',
+        'integrations/koa-spaces/adapter/src/koa_spaces_adapter/health.py',
+        'integrations/koa-spaces/adapter/src/koa_spaces_adapter/host_bridge.py',
+        'integrations/koa-spaces/adapter/src/koa_spaces_adapter/module_manifest.py',
+        'integrations/koa-spaces/adapter/src/koa_spaces_adapter/receipts.py',
+        'integrations/koa-spaces/adapter/src/koa_spaces_adapter/route_bridge.py',
+        'integrations/koa-spaces/adapter/src/koa_spaces_adapter/space_activation.py',
+        'integrations/koa-spaces/backup.toml',
+        'integrations/koa-spaces/compatibility.json',
+        'integrations/koa-spaces/degradation.toml',
+        'integrations/koa-spaces/deployment.toml',
+        'integrations/koa-spaces/health.toml',
+        'integrations/koa-spaces/integration.toml',
+        'integrations/koa-spaces/interface/community-space.json',
+        'integrations/koa-spaces/interface/default-space.json',
+        'integrations/koa-spaces/interface/global-widgets.json',
+        'integrations/koa-spaces/interface/school-space.json',
+        'integrations/koa-spaces/resource-envelope.toml',
+        'integrations/koa-spaces/source.lock.json',
+        'integrations/koa-spaces/storage.toml',
+        'integrations/koa-spaces/tests/_support.py',
+        'integrations/koa-spaces/tests/conftest.py',
+        'integrations/koa-spaces/tests/test_boundary.py',
+        'integrations/koa-spaces/tests/test_contract.py',
+        'integrations/koa-spaces/tests/test_degradation.py',
+        'integrations/koa-spaces/tests/test_health.py',
     }
     actual = {
-        str(path.relative_to(ROOT))
+        path.relative_to(ROOT).as_posix()
         for path in (ROOT / "integrations/koa-spaces").rglob("*")
         if path.is_file() and "__pycache__" not in path.parts
     }

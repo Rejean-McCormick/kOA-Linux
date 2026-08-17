@@ -8,7 +8,7 @@ from pathlib import Path
 from jsonschema import Draft202012Validator
 
 from koa_mediatheque.api import COMPONENT_ID, CONTRACT_VERSION, OPERATIONS, ROUTES
-from conftest import sample_media_record, sample_shared_frame
+from .._support import sample_media_record, sample_shared_frame
 
 
 def _contract(root: Path) -> dict:

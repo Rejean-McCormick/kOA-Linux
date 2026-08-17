@@ -6,7 +6,7 @@ from koa_mediatheque.api import ApiRequest, OPERATIONS, build_router
 from koa_mediatheque.workers.preview_worker import PreviewJob, PreviewWorkerError, run as run_preview
 from koa_mediatheque.workers.text_extraction_worker import TextExtractionJob, TextExtractionWorkerError, run as run_text
 from koa_mediatheque.workers.thumbnail_worker import ThumbnailJob, ThumbnailWorkerError, run as run_thumbnail
-from conftest import DIGEST, headers_for, request_for, response_for
+from .._support import DIGEST, headers_for, request_for, response_for
 
 
 class FailingService:

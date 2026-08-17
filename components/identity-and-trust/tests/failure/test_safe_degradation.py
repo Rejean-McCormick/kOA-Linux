@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 
 from koa_identity_and_trust.api import ComponentFailure, OPERATIONS, RequestContext, build_router
 
-from conftest import headers_for, request_for, response_for
+from .._support import headers_for, request_for, response_for
 
 
 @dataclass

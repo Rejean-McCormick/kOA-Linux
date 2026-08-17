@@ -17,10 +17,7 @@ from koa_interfaces import (  # noqa: E402
     CapabilitySnapshot,
     CapabilityState,
     Correlation,
-    DeliveryGuarantee,
-    DuplicateOutcome,
     ErrorCategory,
-    ErrorDisposition,
     ErrorEnvelope,
     EventEnvelope,
     HealthState,
@@ -31,7 +28,6 @@ from koa_interfaces import (  # noqa: E402
     JobRequest,
     JobState,
     JobStatus,
-    Ordering,
     Readiness,
     ReadinessClass,
     ReceiptClass,
@@ -72,6 +68,40 @@ def _capability() -> CapabilityState:
     )
 
 
+
+def _health_readiness_sample() -> dict[str, object]:
+    observed = NOW.isoformat().replace("+00:00", "Z")
+    return {
+        "schema_version": "1.0.0",
+        "readiness_id": "readiness:test_component:local_read:001",
+        "component_id": "test_component",
+        "component_contract_ref": "docs/contracts/components/test.component.json",
+        "capability_id": "local_read",
+        "readiness_class": "readiness.local_read",
+        "ready": True,
+        "operational_state": "healthy",
+        "usable_operation_classes": ["read"],
+        "denied_operation_classes": [],
+        "conditions": [
+            {
+                "condition_id": "process_alive",
+                "category": "process_liveness",
+                "required": True,
+                "status": "satisfied",
+                "observed_at": observed,
+            }
+        ],
+        "freshness": {
+            "source": "health:test_component",
+            "confidence": "direct",
+            "staleness_state": "current",
+            "observed_at": observed,
+            "age_seconds": 0,
+        },
+        "observed_at": observed,
+        "reason_codes": [],
+    }
+
 def _samples() -> dict[str, dict]:
     correlation = Correlation("corr:test:001", request_id="request:test:001")
     identity = IdentityContext(
@@ -83,51 +113,153 @@ def _samples() -> dict[str, dict]:
         authority_refs=("decision:test:001",),
     )
     idempotency = Idempotency(
-        required=True,
-        key="idem:test:001",
-        duplicate_outcome=DuplicateOutcome.RETURN_PRIOR_RESULT,
-        retention_rule="retain until the terminal result expires",
+        idempotency_key="idem:test:001",
+        request_id="request:test:001",
+        correlation_id=correlation.correlation_id,
+        operation="test.work",
+        owner_component_id="test_worker",
+        scope={"kind": "owner_operation"},
+        canonical_request={
+            "algorithm": "sha256",
+            "digest": "0" * 64,
+            "media_type": "application/json",
+        },
+        duplicate_handling={
+            "action": "return_prior_result",
+            "result_consistency": "exact_prior_result",
+            "terminal_result_ref_required": True,
+        },
+        validity={
+            "created_at": NOW.isoformat().replace("+00:00", "Z"),
+            "retain_terminal_result_seconds": 3600,
+        },
+        authority={
+            "receiving_owner_enforces": True,
+            "transport_grants_authority": False,
+            "duplicate_effects_permitted": False,
+        },
     )
     error = ErrorEnvelope(
         error_id="error:test:001",
-        code="dependency_unavailable",
-        category=ErrorCategory.DEPENDENCY_UNAVAILABLE,
+        error_code="dependency_unavailable",
+        error_class=ErrorCategory.DEPENDENCY_UNAVAILABLE,
         message="required dependency is unavailable",
-        disposition=ErrorDisposition.RECONCILE_BEFORE_RETRY,
-        observed_at=NOW,
-        correlation_id=correlation.correlation_id,
-        reason_codes=("dependency_unavailable",),
+        interface={
+            "interface_id": "test.errors",
+            "interface_version": "1.0.0",
+            "contract_ref": "docs/contracts/components/test.component.json",
+        },
+        producer={"component_id": "test_source"},
+        intended_receiver={"kind": "component", "identifier": "test_target"},
+        correlation=correlation.to_dict(),
+        occurred_at=NOW,
+        outcome={
+            "state": "blocked",
+            "finality": "non_final",
+            "authoritative_effect": "unchanged",
+        },
+        retry={
+            "allowed": True,
+            "strategy": "status_resolution",
+            "idempotency_required": True,
+        },
+        reason_codes=("DEPENDENCY_UNAVAILABLE",),
+        details={"dependency_ref": "test_dependency"},
+        disclosure={
+            "class": "operator_restricted",
+            "payload_minimized": True,
+            "contains_secrets": False,
+        },
+        authority={
+            "transport_grants_authority": False,
+            "error_grants_authority": False,
+            "transfers_ownership": False,
+        },
     )
     capability = _capability()
     return {
         "event_envelope": EventEnvelope(
+            message_id="message:test:001",
             event_id="event:test:001",
             event_type="test.fact_committed",
-            interface_version="1.0.0",
-            sender="test_source",
-            intended_receiver="test_target",
-            payload_schema="urn:koa:test:payload:1",
-            payload={"value": 1},
-            created_at=NOW,
+            event_version="1.0.0",
+            interface={
+                "interface_id": "test.events",
+                "interface_version": "1.0.0",
+                "contract_ref": "docs/contracts/components/test.component.json",
+            },
+            publisher={"component_id": "test_source"},
+            intended_receivers=(
+                {"kind": "component", "identifier": "test_target"},
+            ),
             correlation=correlation,
-            delivery_guarantee=DeliveryGuarantee.EFFECTIVELY_ONCE,
-            ordering=Ordering.PER_KEY,
-            ordering_key="subject:test:001",
-            idempotency=idempotency,
+            occurred_at=NOW,
+            committed_at=NOW,
+            payload_representation={
+                "media_type": "application/json",
+                "schema_ref": "urn:koa:test:payload:1",
+                "schema_version": "1.0.0",
+                "encoding": "identity",
+            },
+            payload={"value": 1},
+            ordering={
+                "scope": "test.subject",
+                "sequence": 1,
+                "partition_key": "subject:test:001",
+            },
+            replay={"mode": "original", "duplicate_handling": "ignore_if_applied"},
+            disclosure={"class": "operator_restricted", "payload_minimized": True},
+            authority={
+                "effect": "committed_fact_evidence",
+                "publisher_owns_fact": True,
+                "grants_mutation_authority": False,
+                "transfers_ownership": False,
+            },
         ).to_dict(),
         "error_envelope": error.to_dict(),
         "idempotency": idempotency.to_dict(),
-        "version_negotiation": VersionNegotiation(("1.0.0",), selected_version="1.0.0").to_dict(),
+        "version_negotiation": VersionNegotiation(
+            message_type="version_selection",
+            negotiation_id="negotiation:test:001",
+            interface_id="test.command",
+            sender={"component_id": "test_source"},
+            intended_receiver={"kind": "component", "identifier": "test_target"},
+            correlation_id=correlation.correlation_id,
+            offered_versions=("1.0.0",),
+            selected_version="1.0.0",
+            compatibility_mode="exact",
+            authority={
+                "transport_grants_authority": False,
+                "selection_changes_domain_authority": False,
+                "receiving_contract_remains_authoritative": True,
+            },
+        ).to_dict(),
         "health_status": HealthStatus(
             component_id="test_component",
-            instance_id="instance:test:001",
-            state=HealthState.HEALTHY,
             observed_at=NOW,
-            contract_version="1.0.0",
-            schema_version="1.0.0",
-            capabilities=(capability,),
-            startup_complete=True,
-            freshness_seconds=5,
+            health_report_id="health:test_component:001",
+            component_instance_id="instance:test:001",
+            component_contract_ref="docs/contracts/components/test.component.json",
+            process_liveness={
+                "state": "alive",
+                "observed_at": NOW.isoformat().replace("+00:00", "Z"),
+                "reason_codes": [],
+            },
+            startup={
+                "state": "healthy",
+                "observed_at": NOW.isoformat().replace("+00:00", "Z"),
+                "reason_codes": [],
+            },
+            overall_state=HealthState.HEALTHY,
+            readiness=(_health_readiness_sample(),),
+            freshness={
+                "source": "health:test_component",
+                "confidence": "direct",
+                "staleness_state": "current",
+                "observed_at": NOW.isoformat().replace("+00:00", "Z"),
+                "age_seconds": 0,
+            },
+            disclosure_class="machine_readable_local",
         ).to_dict(),
         "readiness": Readiness(
             component_id="test_component",
@@ -198,6 +330,7 @@ def test_binding_round_trips_are_deterministic() -> None:
     assert Correlation.from_dict(samples["correlation"]).to_dict() == samples["correlation"]
     assert Idempotency.from_dict(samples["idempotency"]).to_dict() == samples["idempotency"]
     assert VersionNegotiation.from_dict(samples["version_negotiation"]).to_dict() == samples["version_negotiation"]
+    assert HealthStatus.from_dict(samples["health_status"]).to_dict() == samples["health_status"]
 
 
 def test_binding_payloads_validate_when_dependency_schemas_are_present(

@@ -9,7 +9,7 @@ import tomllib
 import jsonschema
 import pytest
 
-from conftest import make_kristal_artifact, make_runtime_pack, repository_root
+from .._support import make_kristal_artifact, make_runtime_pack, repository_root
 from koa_kristal_runtime.api import INTERFACE_IDS, ROUTE_DEFINITIONS, ApiRequest, create_api
 from koa_kristal_runtime.api.models import ModelValidationError, RuntimePackValidationRequest, VERIFICATION_CHECKS
 

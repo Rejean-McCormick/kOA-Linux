@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from koa_mediatheque.api import ApiRequest, OPERATIONS
-from conftest import headers_for, request_for
+from .._support import headers_for, request_for
 
 
 def test_every_declared_operation_dispatches_through_public_port(router, complete_service):
@@ -35,7 +35,7 @@ def test_workers_complete_with_verified_references():
     from koa_mediatheque.workers.preview_worker import PreviewJob, run as run_preview
     from koa_mediatheque.workers.text_extraction_worker import TextExtractionJob, run as run_text
     from koa_mediatheque.workers.thumbnail_worker import ThumbnailJob, run as run_thumbnail
-    from conftest import DIGEST
+    from .._support import DIGEST
 
     class Processor:
         def generate(self, **kwargs):

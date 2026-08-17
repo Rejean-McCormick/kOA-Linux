@@ -16,7 +16,7 @@ from koa_ariane_adapter import (
     ReceiptOutcome,
 )
 
-from conftest import NOW
+from ._support import NOW
 
 
 ADAPTER_ROOT = Path(__file__).resolve().parents[1] / "adapter" / "src" / "koa_ariane_adapter"

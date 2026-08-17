@@ -14,7 +14,7 @@ from koa_ariane_adapter import (
     bootstrap_adapter,
 )
 
-from conftest import CandidateVoiceService, FailingVoiceService, NOW
+from ._support import CandidateVoiceService, FailingVoiceService, NOW
 
 
 def test_navigation_transport_failure_degrades_only_navigation(

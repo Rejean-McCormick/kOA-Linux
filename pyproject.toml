@@ -14,10 +14,16 @@ dependencies = []
 koa = "koa_tools.cli:main"
 
 [dependency-groups]
+runtime = []
 development = [
   "pre-commit==4.3.0",
 ]
 test = [
+  "jsonschema>=4.26,<5",
+  "koa-interfaces>=1.0,<2.0",
+  "koa-konnaxion-adapter==0.1.0",
+  "koa-resource-governor==1.0.0",
+  "koa-sentient-adapter==1.0.0",
   "pytest==9.0.3",
 ]
 quality = [
@@ -25,6 +31,13 @@ quality = [
   "ruff==0.12.12",
 ]
 build = []
+
+
+[tool.uv.sources]
+koa-interfaces = { path = "interfaces/python" }
+koa-konnaxion-adapter = { path = "integrations/konnaxion/adapter" }
+koa-resource-governor = { path = "components/resource-governor" }
+koa-sentient-adapter = { path = "integrations/sentient/adapter" }
 
 [[tool.uv.index]]
 name = "pypi"

@@ -11,7 +11,7 @@ from koa_semantik_architect_adapter import (
     RuntimePackValidationDecision,
     SemantikArchitectClient,
 )
-from conftest import FakeArtifactAdmission, FakeRuntimeValidation
+from ._support import FakeArtifactAdmission, FakeRuntimeValidation
 
 
 def test_compiler_unavailable_returns_blocked_receipt(transport, all_capabilities, compiler_request):

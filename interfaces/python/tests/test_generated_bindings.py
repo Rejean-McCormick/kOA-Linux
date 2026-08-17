@@ -15,10 +15,7 @@ from koa_interfaces import (
     CapabilitySnapshot,
     CapabilityState,
     Correlation,
-    DeliveryGuarantee,
-    DuplicateOutcome,
     ErrorCategory,
-    ErrorDisposition,
     ErrorEnvelope,
     EventEnvelope,
     HealthState,
@@ -30,7 +27,6 @@ from koa_interfaces import (
     JobRequest,
     JobState,
     JobStatus,
-    Ordering,
     Readiness,
     ReadinessClass,
     ReceiptClass,
@@ -57,18 +53,129 @@ def _capability() -> CapabilityState:
     )
 
 
+def _canonical_readiness(*, ready: bool = True) -> dict[str, Any]:
+    observed = NOW.isoformat().replace("+00:00", "Z")
+    return {
+        "schema_version": "1.0.0",
+        "readiness_id": "readiness:test_component:local_read:001",
+        "component_id": "test_component",
+        "component_contract_ref": "docs/contracts/components/test.component.json",
+        "capability_id": "local_read",
+        "readiness_class": "readiness.local_read",
+        "ready": ready,
+        "operational_state": "healthy" if ready else "unavailable",
+        "usable_operation_classes": ["read"] if ready else [],
+        "denied_operation_classes": [] if ready else ["read"],
+        "conditions": [
+            {
+                "condition_id": "process_alive",
+                "category": "process_liveness",
+                "required": True,
+                "status": "satisfied" if ready else "unsatisfied",
+                "observed_at": observed,
+                **({} if ready else {"reason_codes": ["PROCESS_UNAVAILABLE"]}),
+            }
+        ],
+        "freshness": {
+            "source": "health:test_component",
+            "confidence": "direct",
+            "staleness_state": "current",
+            "observed_at": observed,
+            "age_seconds": 0,
+        },
+        "observed_at": observed,
+        "reason_codes": [] if ready else ["PROCESS_UNAVAILABLE"],
+    }
+
+
+def _idempotency(
+    key: str,
+    *,
+    operation: str = "test.work",
+    owner_component_id: str = "test_worker",
+) -> Idempotency:
+    return Idempotency(
+        idempotency_key=key,
+        request_id="request:test:job:001",
+        correlation_id="corr:test:job:001",
+        operation=operation,
+        owner_component_id=owner_component_id,
+        scope={"kind": "owner_operation"},
+        canonical_request={
+            "algorithm": "sha256",
+            "digest": "0" * 64,
+            "media_type": "application/json",
+        },
+        duplicate_handling={
+            "action": "return_prior_result",
+            "result_consistency": "exact_prior_result",
+            "terminal_result_ref_required": True,
+        },
+        validity={
+            "created_at": NOW.isoformat().replace("+00:00", "Z"),
+            "retain_terminal_result_seconds": 3600,
+        },
+        authority={
+            "receiving_owner_enforces": True,
+            "transport_grants_authority": False,
+            "duplicate_effects_permitted": False,
+        },
+    )
+
+
 def _error() -> ErrorEnvelope:
     return ErrorEnvelope(
         error_id="error:test:001",
-        code="dependency_unavailable",
-        category=ErrorCategory.DEPENDENCY_UNAVAILABLE,
+        error_code="dependency_unavailable",
+        error_class=ErrorCategory.DEPENDENCY_UNAVAILABLE,
         message="required dependency is unavailable",
-        disposition=ErrorDisposition.RETRY_SAME_REQUEST,
-        observed_at=NOW,
-        correlation_id="corr:test:001",
-        reason_codes=("dependency_unavailable",),
-        details={"dependency": "test-peer"},
+        interface={
+            "interface_id": "test.health",
+            "interface_version": "1.0.0",
+            "contract_ref": "docs/contracts/components/test.component.json",
+        },
+        producer={"component_id": "test-peer"},
+        intended_receiver={"kind": "component", "identifier": "test-client"},
+        correlation={"correlation_id": "corr:test:001"},
+        occurred_at=NOW,
+        outcome={
+            "state": "blocked",
+            "finality": "non_final",
+            "authoritative_effect": "unchanged",
+        },
+        retry={
+            "allowed": True,
+            "strategy": "bounded_backoff",
+            "after_seconds": 1,
+            "maximum_attempts": 3,
+            "idempotency_required": True,
+        },
+        reason_codes=("DEPENDENCY_UNAVAILABLE",),
+        details={"dependency_ref": "test-peer"},
+        disclosure={
+            "class": "operator_restricted",
+            "payload_minimized": True,
+            "contains_secrets": False,
+        },
+        authority={
+            "transport_grants_authority": False,
+            "error_grants_authority": False,
+            "transfers_ownership": False,
+        },
     )
+
+
+def test_error_envelope_round_trip_uses_canonical_schema_shape() -> None:
+    error = _error()
+    encoded = error.to_dict()
+    assert encoded["schema_version"] == "1.0.0"
+    assert encoded["envelope_type"] == "error"
+    assert encoded["error_code"] == "dependency_unavailable"
+    assert encoded["error_class"] == "dependency"
+    assert "code" not in encoded
+    assert "category" not in encoded
+    assert "disposition" not in encoded
+    assert ErrorEnvelope.from_dict(encoded) == error
 
 
 def test_schema_catalog_resolves_all_dependency_owned_schema_identifiers(tmp_path: Path) -> None:
@@ -97,57 +204,129 @@ def test_schema_catalog_fails_closed_when_a_dependency_schema_is_missing(tmp_pat
         SchemaCatalog.from_repository(tmp_path)
 
 
-def test_event_round_trip_preserves_correlation_ordering_and_idempotency() -> None:
-    event = EventEnvelope(
-        event_id="EVENT-TEST-001",
-        event_type="test.fact_committed",
-        interface_version="1.0.0",
-        sender="source_component",
-        intended_receiver="target_component",
-        payload_schema="https://schemas.koa.local/test-payload.schema.json",
-        payload={"value": 7},
-        created_at=NOW,
-        correlation=Correlation(
+def test_idempotency_round_trip_uses_canonical_schema_shape() -> None:
+    context = _idempotency("idem:test:001")
+    encoded = context.to_dict()
+    assert encoded["schema_version"] == "1.0.0"
+    assert encoded["idempotency_key"] == "idem:test:001"
+    assert encoded["duplicate_handling"]["action"] == "return_prior_result"
+    assert encoded["authority"]["receiving_owner_enforces"] is True
+    assert "required" not in encoded
+    assert "key" not in encoded
+    assert Idempotency.from_dict(encoded) == context
+
+
+def _event(**overrides: Any) -> EventEnvelope:
+    values: dict[str, Any] = {
+        "message_id": "message:test:001",
+        "event_id": "EVENT-TEST-001",
+        "event_type": "test.fact_committed",
+        "event_version": "1.0.0",
+        "interface": {
+            "interface_id": "test.events",
+            "interface_version": "1.0.0",
+            "contract_ref": "docs/contracts/components/test.component.json",
+        },
+        "publisher": {"component_id": "source_component"},
+        "intended_receivers": (
+            {"kind": "component", "identifier": "target_component"},
+        ),
+        "correlation": Correlation(
             correlation_id="corr:test:001",
             request_id="request:test:001",
             causation_id="event:test:000",
         ),
-        delivery_guarantee=DeliveryGuarantee.EFFECTIVELY_ONCE,
-        ordering=Ordering.PER_KEY,
-        ordering_key="subject:test:001",
-        idempotency=Idempotency(
-            required=True,
-            key="idem:test:001",
-            duplicate_outcome=DuplicateOutcome.RETURN_PRIOR_RESULT,
-            retention_rule="retain for the component contract period",
-        ),
-        evidence_refs=("evidence:test:001",),
+        "occurred_at": NOW,
+        "committed_at": NOW,
+        "payload_representation": {
+            "media_type": "application/json",
+            "schema_ref": "https://schemas.koa.local/test-payload.schema.json",
+            "schema_version": "1.0.0",
+            "encoding": "identity",
+        },
+        "payload": {"value": 7},
+        "ordering": {
+            "scope": "test.subject",
+            "sequence": 1,
+            "partition_key": "subject:test:001",
+        },
+        "replay": {"mode": "original", "duplicate_handling": "ignore_if_applied"},
+        "disclosure": {"class": "operator_restricted", "payload_minimized": True},
+        "authority": {
+            "effect": "committed_fact_evidence",
+            "publisher_owns_fact": True,
+            "grants_mutation_authority": False,
+            "transfers_ownership": False,
+        },
+        "evidence": {"evidence_refs": ["evidence:test:001"]},
+    }
+    values.update(overrides)
+    return EventEnvelope(**values)
+
+
+def test_event_round_trip_preserves_canonical_domain_event_fields() -> None:
+    event = _event()
+    encoded = event.to_dict()
+    assert encoded["envelope_type"] == "domain_event"
+    assert encoded["interface"]["interface_version"] == "1.0.0"
+    assert encoded["authority"]["grants_mutation_authority"] is False
+    assert EventEnvelope.from_dict(encoded) == event
+
+
+def test_event_replay_requires_original_identity_and_timestamp() -> None:
+    with pytest.raises(InterfaceValidationError, match="replay mode missing fields"):
+        _event(replay={"mode": "replay", "duplicate_handling": "ignore_if_applied"})
+
+
+def _version_offer() -> VersionNegotiation:
+    return VersionNegotiation(
+        message_type="version_offer",
+        negotiation_id="negotiation:test:001",
+        interface_id="test.command",
+        sender={"component_id": "test_client"},
+        intended_receiver={"kind": "component", "identifier": "test_server"},
+        correlation_id="corr:test:001",
+        offered_versions=("2.0.0", "1.1.0", "1.0.0"),
+        preferred_version="1.1.0",
+        authority={
+            "transport_grants_authority": False,
+            "selection_changes_domain_authority": False,
+            "receiving_contract_remains_authoritative": True,
+        },
     )
-    assert EventEnvelope.from_dict(event.to_dict()) == event
 
 
-def test_event_rejects_per_key_ordering_without_key() -> None:
-    with pytest.raises(InterfaceValidationError, match="ordering_key"):
-        EventEnvelope(
-            event_id="EVENT-TEST-001",
-            event_type="test.fact_committed",
-            interface_version="1.0.0",
-            sender="source_component",
-            intended_receiver="target_component",
-            payload_schema="schema:test",
-            payload={},
-            created_at=NOW,
-            correlation=Correlation("corr:test:001"),
-            delivery_guarantee=DeliveryGuarantee.AT_LEAST_ONCE,
-            ordering=Ordering.PER_KEY,
-        )
-
-
-def test_version_negotiation_selects_first_local_preference() -> None:
-    binding = VersionNegotiation(("2.0.0", "1.1.0", "1.0.0"))
-    assert binding.select(("1.0.0", "1.1.0")) == "1.1.0"
+def test_version_negotiation_round_trip_uses_canonical_message_shape() -> None:
+    offer = _version_offer()
+    encoded = offer.to_dict()
+    assert encoded["message_type"] == "version_offer"
+    assert encoded["offered_versions"] == ["2.0.0", "1.1.0", "1.0.0"]
+    assert encoded["preferred_version"] == "1.1.0"
+    assert encoded["automatic_schema_guessing"] is False
+    assert VersionNegotiation.from_dict(encoded) == offer
+    assert offer.select(("1.0.0", "1.1.0")) == "1.1.0"
     with pytest.raises(InterfaceValidationError, match="no mutually supported"):
-        binding.select(("0.9.0",))
+        offer.select(("0.9.0",))
+
+
+def test_version_selection_must_select_an_explicitly_offered_version() -> None:
+    with pytest.raises(InterfaceValidationError, match="selected_version must be present"):
+        VersionNegotiation(
+            message_type="version_selection",
+            negotiation_id="negotiation:test:001",
+            interface_id="test.command",
+            sender={"component_id": "test_server"},
+            intended_receiver={"kind": "component", "identifier": "test_client"},
+            correlation_id="corr:test:001",
+            offered_versions=("1.0.0", "1.1.0"),
+            selected_version="2.0.0",
+            compatibility_mode="exact",
+            authority={
+                "transport_grants_authority": False,
+                "selection_changes_domain_authority": False,
+                "receiving_contract_remains_authoritative": True,
+            },
+        )
 
 
 def test_identity_context_does_not_conflate_authentication_and_authority() -> None:
@@ -162,45 +341,75 @@ def test_identity_context_does_not_conflate_authentication_and_authority() -> No
         )
 
 
-def test_health_round_trip_preserves_per_capability_state() -> None:
+def test_health_round_trip_preserves_canonical_liveness_and_readiness() -> None:
     status = HealthStatus(
         component_id="test_component",
-        instance_id="instance:test:001",
-        state=HealthState.HEALTHY,
         observed_at=NOW,
-        contract_version="1.0.0",
-        schema_version="1.0.0",
-        capabilities=(_capability(),),
-        startup_complete=True,
-        freshness_seconds=5,
+        health_report_id="health:test_component:001",
+        component_instance_id="instance:test:001",
+        component_contract_ref="docs/contracts/components/test.component.json",
+        process_liveness={
+            "state": "alive",
+            "observed_at": NOW.isoformat().replace("+00:00", "Z"),
+            "reason_codes": [],
+        },
+        startup={
+            "state": "healthy",
+            "observed_at": NOW.isoformat().replace("+00:00", "Z"),
+            "reason_codes": [],
+        },
+        overall_state=HealthState.HEALTHY,
+        readiness=(_canonical_readiness(),),
+        freshness={
+            "source": "health:test_component",
+            "confidence": "direct",
+            "staleness_state": "current",
+            "observed_at": NOW.isoformat().replace("+00:00", "Z"),
+            "age_seconds": 0,
+        },
+        disclosure_class="machine_readable_local",
     )
-    assert HealthStatus.from_dict(status.to_dict()) == status
+    encoded = status.to_dict()
+    assert encoded["process_liveness"]["state"] == "alive"
+    assert encoded["overall_state"] == "healthy"
+    assert encoded["readiness"][0]["readiness_class"] == "readiness.local_read"
+    assert "capabilities" not in encoded
+    assert "startup_complete" not in encoded
+    assert HealthStatus.from_dict(encoded).to_dict() == encoded
 
 
-def test_aggregate_health_cannot_hide_failed_critical_capability() -> None:
-    capability = CapabilityState(
-        capability_id="critical_write",
-        health_state=HealthState.UNAVAILABLE,
-        availability_state=AvailabilityState.UNAVAILABLE,
-        critical=True,
-        denied_operations=("write",),
-        reason_codes=("trust_unavailable",),
-    )
-    with pytest.raises(InterfaceValidationError, match="cannot hide"):
+def test_failed_process_liveness_cannot_hide_aggregate_failure() -> None:
+    with pytest.raises(InterfaceValidationError, match="overall_state=failed"):
         HealthStatus(
             component_id="test_component",
-            instance_id="instance:test:001",
-            state=HealthState.HEALTHY,
             observed_at=NOW,
-            contract_version="1.0.0",
-            schema_version="1.0.0",
-            capabilities=(capability,),
-            startup_complete=True,
-            freshness_seconds=5,
+            health_report_id="health:test_component:002",
+            component_contract_ref="docs/contracts/components/test.component.json",
+            process_liveness={
+                "state": "failed",
+                "observed_at": NOW.isoformat().replace("+00:00", "Z"),
+                "reason_codes": ["PROCESS_FAILED"],
+            },
+            startup={
+                "state": "failed",
+                "observed_at": NOW.isoformat().replace("+00:00", "Z"),
+                "reason_codes": ["PROCESS_FAILED"],
+            },
+            overall_state=HealthState.DEGRADED,
+            readiness=(_canonical_readiness(ready=False),),
+            freshness={
+                "source": "health:test_component",
+                "confidence": "direct",
+                "staleness_state": "current",
+                "observed_at": NOW.isoformat().replace("+00:00", "Z"),
+                "age_seconds": 0,
+            },
+            reason_codes=("PROCESS_FAILED",),
+            disclosure_class="machine_readable_local",
         )
 
 
-def test_boolean_fields_fail_closed_instead_of_using_truthiness() -> None:
+def test_legacy_boolean_fields_fail_closed_instead_of_using_truthiness() -> None:
     with pytest.raises(InterfaceValidationError, match="startup_complete must be a boolean"):
         HealthStatus.from_dict(
             {
@@ -291,12 +500,7 @@ def test_job_request_requires_idempotency_and_job_status_is_explicit() -> None:
         payload={"work": "bounded"},
         created_at=NOW,
         correlation=Correlation("corr:test:job:001"),
-        idempotency=Idempotency(
-            required=True,
-            key="idem:test:job:001",
-            duplicate_outcome=DuplicateOutcome.RETURN_PRIOR_RESULT,
-            retention_rule="retain until terminal status expires",
-        ),
+        idempotency=_idempotency("idem:test:job:001"),
         identity_context=identity,
     )
     assert JobRequest.from_dict(request.to_dict()) == request
@@ -383,6 +587,10 @@ class _OneShotUnixServer:
             server.close()
 
 
+@pytest.mark.skipif(
+    not hasattr(socket, "AF_UNIX"),
+    reason="AF_UNIX is unavailable on this Python/Windows build",
+)
 def test_unix_http_client_sends_correlation_without_implicit_retry(tmp_path: Path) -> None:
     socket_path = tmp_path / "service.sock"
     response = JobStatus(
@@ -405,12 +613,7 @@ def test_unix_http_client_sends_correlation_without_implicit_retry(tmp_path: Pat
         payload={"work": "bounded"},
         created_at=NOW,
         correlation=Correlation("corr:test:job:001", request_id="request:test:job:001"),
-        idempotency=Idempotency(
-            required=True,
-            key="idem:test:job:001",
-            duplicate_outcome=DuplicateOutcome.RETURN_PRIOR_RESULT,
-            retention_rule="retain until terminal status expires",
-        ),
+        idempotency=_idempotency("idem:test:job:001"),
     )
     status = client.submit_job(request)
     server.join()
@@ -419,6 +622,10 @@ def test_unix_http_client_sends_correlation_without_implicit_retry(tmp_path: Pat
     assert "Idempotency-Key: idem:test:job:001" in server.request_head
 
 
+@pytest.mark.skipif(
+    not hasattr(socket, "AF_UNIX"),
+    reason="AF_UNIX is unavailable on this Python/Windows build",
+)
 def test_unix_http_client_raises_typed_remote_error(tmp_path: Path) -> None:
     socket_path = tmp_path / "service.sock"
     server = _OneShotUnixServer(socket_path, 503, _error().to_dict())

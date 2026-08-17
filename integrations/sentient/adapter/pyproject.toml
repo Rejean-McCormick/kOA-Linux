@@ -6,7 +6,6 @@ build-backend = "hatchling.build"
 name = "koa-sentient-adapter"
 version = "1.0.0"
 description = "kOA boundary adapter for the independently owned SenTient subsystem"
-readme = "../README.md"
 requires-python = ">=3.12"
 license = { text = "LicenseRef-Unresolved-SenTient" }
 authors = [{ name = "kOA" }]

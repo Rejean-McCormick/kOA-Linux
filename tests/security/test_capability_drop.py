@@ -37,17 +37,30 @@ def _walk(value: Any, path: tuple[str, ...] = ()):
         yield path, value
 
 
-def _capability_findings(payload: Any) -> list[str]:
+def _capability_findings(
+    payload: Any, *, broker_operation_scoped: set[str] | None = None
+) -> list[str]:
     findings: list[str] = []
+    broker_allowed = broker_operation_scoped or set()
     for path, value in _walk(payload):
         key_context = ".".join(path).lower()
         if not isinstance(value, str):
             continue
         normalized = value.upper()
-        if any(word in key_context for word in ("add", "ambient", "effective", "permitted", "bounding")):
-            if normalized in {"*", "ALL", "CAP_ALL"}:
-                findings.append(f"wildcard capability at {'.'.join(path)}")
-            if normalized in DANGEROUS_DEFAULTS and "exception" not in key_context:
+        capability_field = any(
+            word in key_context for word in ("add", "ambient", "effective", "permitted", "bounding")
+        )
+        if not capability_field:
+            continue
+        if normalized in {"*", "ALL", "CAP_ALL"}:
+            findings.append(f"wildcard capability at {'.'.join(path)}")
+            continue
+        broker_profile = "profiles.koa_privileged_broker" in key_context
+        broker_bounded_field = broker_profile and any(
+            word in key_context for word in ("permitted", "bounding")
+        )
+        if normalized in DANGEROUS_DEFAULTS and "exception" not in key_context:
+            if not (broker_bounded_field and normalized in broker_allowed):
                 findings.append(f"dangerous default capability {normalized} at {'.'.join(path)}")
     return findings
 
@@ -100,5 +113,43 @@ def test_repository_component_defaults_drop_all_and_add_no_dangerous_caps() -> N
     defaults = json.loads(DEFAULTS.read_text(encoding="utf-8"))
     assert isinstance(catalog, dict) and catalog
     assert isinstance(defaults, dict) and defaults
-    assert _capability_findings(defaults) == []
-    assert _has_default_deny(defaults), "component defaults must deny capabilities unless explicitly added"
+
+    capability_entries = catalog.get("capabilities", [])
+    broker_operation_scoped = {
+        item["name"].upper()
+        for item in capability_entries
+        if isinstance(item, dict)
+        and isinstance(item.get("name"), str)
+        and item.get("broker_admission") == "operation_scoped"
+    }
+    admitted_broker = {
+        item.upper()
+        for item in catalog.get("admitted_profiles", {}).get("koa_privileged_broker", [])
+        if isinstance(item, str)
+    }
+    broker_operation_scoped &= admitted_broker
+
+    assert _capability_findings(
+        defaults, broker_operation_scoped=broker_operation_scoped
+    ) == []
+
+    profiles = defaults["profiles"]
+    assert _has_default_deny(
+        profiles["ordinary_component"]
+    ), "ordinary component defaults must deny all capabilities"
+    assert _has_default_deny(
+        profiles["koa_node_agent"]
+    ), "Node Agent defaults must deny all direct capabilities"
+    assert _has_default_deny(
+        profiles["appliance_browser"]
+    ), "appliance browser defaults must deny all capabilities"
+
+    broker = profiles["koa_privileged_broker"]
+    assert set(broker["bounding"]) <= broker_operation_scoped
+    assert set(broker["permitted"]) <= broker_operation_scoped
+    assert broker["effective"] == []
+    assert broker["inheritable"] == []
+    assert broker["ambient"] == []
+    assert broker["no_new_privileges"] is True
+    assert broker["idle_effective_set_must_be_empty"] is True
+    assert broker["operation_binding_required"] is True

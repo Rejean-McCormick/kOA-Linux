@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from koa_resource_governor.api import OPERATIONS
 
-from conftest import headers_for, request_for
+from .._support import headers_for, request_for
 
 
 def test_every_declared_operation_dispatches_through_public_service(router, complete_service):
