@@ -28,7 +28,6 @@ from koa_interfaces import (
     JobState,
     JobStatus,
     Readiness,
-    ReadinessClass,
     ReceiptClass,
     ReceiptCommitState,
     ReceiptEnvelope,
@@ -50,6 +49,12 @@ def _capability() -> CapabilityState:
         authority_effect="authoritative_change",
         critical=True,
         usable_operations=("read", "write"),
+        capability_ref="docs/contracts/system.contract.json#/global_capabilities/0",
+        owner_component_ref="component:test_component",
+        capability_class="authoritative_state",
+        offline_behavior="continuous",
+        observed_at=NOW,
+        dependency_observations=(),
     )
 
 
@@ -162,6 +167,116 @@ def _error() -> ErrorEnvelope:
             "error_grants_authority": False,
             "transfers_ownership": False,
         },
+    )
+
+
+def _identity_context(*, authorization_status: str = "granted") -> IdentityContext:
+    observed = NOW.isoformat().replace("+00:00", "Z")
+    authority_refs = ["decision:test:001"] if authorization_status == "granted" else []
+    return IdentityContext(
+        context_id="identity-context:test:001",
+        observed_at=NOW,
+        actor={
+            "identity_id": "service:test-client",
+            "subject_type": "service",
+            "identity_state": "active",
+        },
+        subject={
+            "identity_id": "subject:test:001",
+            "subject_type": "human",
+            "identity_state": "active",
+        },
+        actor_subject_relation="acts_for",
+        scope={
+            "environment": "test",
+            "profile_ref": "profile:test",
+            "component_ref": "component:test_worker",
+            "capability_id": "test_work",
+            "target_ref": "target:test:001",
+        },
+        authentication={
+            "result": "established",
+            "authenticated_at": observed,
+            "assurance_level": "local_peer_verified",
+            "factor_classes": ["service_credential"],
+        },
+        trust={
+            "result": "trusted",
+            "verified_at": observed,
+            "intended_use": "test_work",
+        },
+        authority={
+            "authorization_status": authorization_status,
+            "identity_context_grants_authority": False,
+            "authority_refs": authority_refs,
+            "policy_decision_refs": [],
+            "consent_refs": [],
+            "delegation_refs": [],
+        },
+    )
+
+
+def _target_scope() -> dict[str, Any]:
+    return {
+        "component_ref": "component:test_worker",
+        "capability_id": "test_work",
+        "target_ref": "target:test:001",
+        "environment": "test",
+        "profile_ref": "profile:test",
+    }
+
+
+def _job_request() -> JobRequest:
+    return JobRequest(
+        request_id="request:test:job:001",
+        workload_owner_ref="component:test_worker",
+        workload_class="test_work",
+        target_scope=_target_scope(),
+        criticality={"profile_criticality": "normal", "component_criticality": "normal"},
+        priority={"class": "background", "rank": 100},
+        resource_request={"cpu_millicores": 100, "memory_bytes": 1_048_576},
+        submitted_at=NOW,
+        execution_semantics={
+            "schedule_class": "immediate",
+            "delivery_semantics": "at_least_once",
+            "idempotent_or_duplicate_safe": True,
+            "interruptible": True,
+            "authoritative_commit_owner_ref": "component:test_worker",
+            "scheduler_acknowledgement_is_completion": False,
+        },
+        identity_context=_identity_context(),
+        correlation=Correlation("corr:test:job:001", request_id="request:test:job:001"),
+        idempotency=_idempotency("idem:test:job:001", operation="test_work"),
+        input={
+            "contract_ref": "urn:koa:test:job-payload:1",
+            "media_type": "application/json",
+            "payload": {"work": "bounded"},
+        },
+    )
+
+
+def _submitted_status(*, correlation: Correlation | None = None) -> JobStatus:
+    corr = correlation or Correlation("corr:test:job:001", request_id="request:test:job:001")
+    observed = NOW.isoformat().replace("+00:00", "Z")
+    return JobStatus(
+        status_id="status:test:job:001",
+        request_id="request:test:job:001",
+        workload_owner_ref="component:test_worker",
+        target_scope=_target_scope(),
+        observed_at=NOW,
+        current_state=JobState.SUBMITTED,
+        state_entered_at=NOW,
+        terminal=False,
+        transition={
+            "from_state": None,
+            "to_state": "submitted",
+            "transitioned_at": observed,
+            "reason_codes": [],
+        },
+        attempt_count=0,
+        authoritative_outcome="no_effect",
+        correlation=corr,
+        receipt_refs=(),
     )
 
 
@@ -330,14 +445,30 @@ def test_version_selection_must_select_an_explicitly_offered_version() -> None:
 
 
 def test_identity_context_does_not_conflate_authentication_and_authority() -> None:
-    with pytest.raises(InterfaceValidationError, match="cannot assert authority"):
+    context = _identity_context(authorization_status="not_evaluated")
+    assert context.authenticated
+    assert context.authority_refs == ()
+    assert context.to_dict()["grants_action_authority"] is False
+    observed = NOW.isoformat().replace("+00:00", "Z")
+    with pytest.raises(InterfaceValidationError, match="identity_context_grants_authority"):
         IdentityContext(
-            actor_ref="service:test",
-            subject_ref="subject:test",
-            identity_type=IdentityType.SERVICE,
-            authenticated=False,
-            assurance_level="none",
-            authority_refs=("decision:test",),
+            context_id="identity-context:test:invalid",
+            observed_at=NOW,
+            actor={"identity_id": "service:test-client", "subject_type": "service", "identity_state": "active"},
+            subject={"identity_id": "subject:test:001", "subject_type": "human", "identity_state": "active"},
+            actor_subject_relation="acts_for",
+            scope=_target_scope(),
+            authentication={
+                "result": "established", "authenticated_at": observed,
+                "assurance_level": "local_peer_verified", "factor_classes": ["service_credential"],
+            },
+            trust={"result": "trusted", "verified_at": observed, "intended_use": "test_work"},
+            authority={
+                "authorization_status": "granted",
+                "identity_context_grants_authority": True,
+                "authority_refs": ["decision:test:001"],
+                "policy_decision_refs": [], "consent_refs": [], "delegation_refs": [],
+            },
         )
 
 
@@ -426,25 +557,14 @@ def test_legacy_boolean_fields_fail_closed_instead_of_using_truthiness() -> None
         )
 
 
-def test_readiness_requires_explicit_usable_or_denied_operations() -> None:
-    ready = Readiness(
-        component_id="test_component",
-        readiness_class=ReadinessClass.LOCAL_READ,
-        state=HealthState.READ_ONLY,
-        accepting_work=True,
-        observed_at=NOW,
-        usable_operations=("read",),
-        denied_operations=("write",),
-    )
+def test_readiness_requires_explicit_usable_or_denied_operation_classes() -> None:
+    ready = Readiness.from_dict(_canonical_readiness())
     assert Readiness.from_dict(ready.to_dict()) == ready
-    with pytest.raises(InterfaceValidationError, match="denied_operations"):
-        Readiness(
-            component_id="test_component",
-            readiness_class=ReadinessClass.AUTHORITATIVE_WRITE,
-            state=HealthState.UNAVAILABLE,
-            accepting_work=False,
-            observed_at=NOW,
-        )
+
+    blocked = _canonical_readiness(ready=False)
+    blocked["denied_operation_classes"] = []
+    with pytest.raises(InterfaceValidationError, match="denied_operation_classes"):
+        Readiness.from_dict(blocked)
 
 
 def test_receipt_round_trip_separates_commit_from_transport_success() -> None:
@@ -455,17 +575,33 @@ def test_receipt_round_trip_separates_commit_from_transport_success() -> None:
         transition_type="test_state_change",
         producer_component_id="test_component",
         subject_ref="subject:test:001",
-        scope="component:test_component",
+        actor_ref="service:test-client",
+        target_refs=("target:test:001",),
+        scope={"kind": "component", "id": "test_component"},
+        requested_action="test_state_change",
         correlation=Correlation("corr:test:001", request_id="request:test:001"),
-        outcome=ReceiptOutcome.COMMITTED,
+        authority_refs=("decision:test:001",),
+        decision="authorized",
+        execution_state="completed",
         commit_state=ReceiptCommitState.COMMITTED,
+        outcome=ReceiptOutcome.COMMITTED,
         requested_at=NOW,
+        completed_at=NOW,
         committed_at=NOW,
         recorded_at=NOW,
-        target_refs=("target:test:001",),
-        authority_refs=("decision:test:001",),
+        reason_codes=(),
+        component_contract_refs=("docs/contracts/components/test.component.json",),
     )
-    assert ReceiptEnvelope.from_dict(receipt.to_dict()) == receipt
+    encoded = receipt.to_dict()
+    assert encoded["schema_version"] == "1.0.0"
+    assert encoded["correlation"]["schema_version"] == "1.0.0"
+    assert encoded["scope"] == {"kind": "component", "id": "test_component"}
+    assert "correlation_id" not in encoded
+    assert "request_id" not in encoded
+    assert "extensions" not in encoded
+    assert "reason_code" not in encoded
+    assert ReceiptEnvelope.from_dict(encoded) == receipt
+
     with pytest.raises(InterfaceValidationError, match="commit_state"):
         ReceiptEnvelope(
             receipt_id="receipt:test:002",
@@ -474,63 +610,119 @@ def test_receipt_round_trip_separates_commit_from_transport_success() -> None:
             transition_type="test_state_change",
             producer_component_id="test_component",
             subject_ref="subject:test:001",
-            scope="component:test_component",
+            actor_ref="service:test-client",
+            target_refs=("target:test:001",),
+            scope={"kind": "component", "id": "test_component"},
+            requested_action="test_state_change",
             correlation=Correlation("corr:test:002"),
+            authority_refs=("decision:test:001",),
+            decision="authorized",
+            execution_state="completed",
+            commit_state=ReceiptCommitState.NOT_COMMITTED,
             outcome=ReceiptOutcome.COMMITTED,
+            requested_at=NOW,
+            completed_at=NOW,
+            committed_at=NOW,
             recorded_at=NOW,
+            reason_codes=(),
+            component_contract_refs=("docs/contracts/components/test.component.json",),
         )
 
-
 def test_job_request_requires_idempotency_and_job_status_is_explicit() -> None:
-    identity = IdentityContext(
-        actor_ref="service:test-client",
-        subject_ref="subject:test:001",
-        identity_type=IdentityType.SERVICE,
-        authenticated=True,
-        assurance_level="local_peer_verified",
-        authority_refs=("decision:test:001",),
-    )
-    request = JobRequest(
-        job_id="JOB-TEST-001",
-        job_type="test.work",
-        interface_version="1.0.0",
-        sender="test_client",
-        intended_receiver="test_worker",
-        payload_schema="schema:test-job",
-        payload={"work": "bounded"},
-        created_at=NOW,
-        correlation=Correlation("corr:test:job:001"),
-        idempotency=_idempotency("idem:test:job:001"),
-        identity_context=identity,
-    )
-    assert JobRequest.from_dict(request.to_dict()) == request
+    request = _job_request()
+    encoded_request = request.to_dict()
+    assert encoded_request["request_id"] == "request:test:job:001"
+    assert encoded_request["execution_semantics"]["scheduler_acknowledgement_is_completion"] is False
+    assert JobRequest.from_dict(encoded_request) == request
+
+    observed = NOW.isoformat().replace("+00:00", "Z")
     status = JobStatus(
-        job_id=request.job_id,
-        state=JobState.COMPLETED,
+        status_id="status:test:job:completed:001",
+        request_id=request.request_id,
+        workload_owner_ref=request.workload_owner_ref,
+        target_scope=request.target_scope,
         observed_at=NOW,
-        correlation_id=request.correlation.correlation_id,
-        progress=100,
-        result={"outcome": "no_effect"},
+        current_state=JobState.COMPLETED,
+        state_entered_at=NOW,
+        terminal=True,
+        transition={
+            "from_state": "running", "to_state": "completed",
+            "transitioned_at": observed, "reason_codes": [],
+        },
+        attempt_count=1,
+        attempt={
+            "attempt_id": "attempt:test:001", "attempt_number": 1,
+            "state": "completed", "started_at": observed, "ended_at": observed,
+        },
+        authoritative_outcome="no_effect",
+        result={
+            "result_id": "result:test:001",
+            "owner_result_ref": "owner-result:test:001",
+            "owner_verified": True,
+            "scheduler_synthesized": False,
+            "recorded_at": observed,
+        },
+        progress=1.0,
+        correlation=request.correlation,
+        receipt_refs=(),
     )
     assert status.terminal
     assert JobStatus.from_dict(status.to_dict()) == status
-    with pytest.raises(InterfaceValidationError, match="failed job must contain"):
+    with pytest.raises(InterfaceValidationError, match="failed job must contain failure"):
         JobStatus(
-            job_id=request.job_id,
-            state=JobState.FAILED,
+            status_id="status:test:job:failed:001",
+            request_id=request.request_id,
+            workload_owner_ref=request.workload_owner_ref,
+            target_scope=request.target_scope,
             observed_at=NOW,
-            correlation_id=request.correlation.correlation_id,
+            current_state=JobState.FAILED,
+            state_entered_at=NOW,
+            terminal=True,
+            transition={
+                "from_state": "running", "to_state": "failed",
+                "transitioned_at": observed, "reason_codes": ["execution_failed"],
+            },
+            attempt_count=1,
+            attempt={
+                "attempt_id": "attempt:test:002", "attempt_number": 1,
+                "state": "failed", "started_at": observed, "ended_at": observed,
+            },
+            authoritative_outcome="no_effect",
+            correlation=request.correlation,
+            receipt_refs=(),
         )
+
+
+def test_capability_snapshot_round_trip_uses_canonical_schema_shape() -> None:
+    snapshot = CapabilitySnapshot(
+        snapshot_id="snapshot:test:001",
+        producer_component_ref="component:test_component",
+        observed_at=NOW,
+        profile_ref="profile:user_lightweight",
+        scope={"environment": "test", "component_ref": "component:test_component"},
+        capabilities=(_capability(),),
+        correlation=Correlation(
+            "corr:test:capability:001", request_id="request:test:capability:001"
+        ).to_dict(),
+    )
+    encoded = snapshot.to_dict()
+    assert encoded["schema_version"] == "1.0.0"
+    assert encoded["substitution_applied"] is False
+    assert encoded["capabilities"][0]["availability_state"] == "available"
+    assert "health_state" not in encoded["capabilities"][0]
+    assert CapabilitySnapshot.from_dict(encoded).to_dict() == encoded
 
 
 def test_capability_snapshot_rejects_duplicate_capability_ids() -> None:
     with pytest.raises(InterfaceValidationError, match="must be unique"):
         CapabilitySnapshot(
-            snapshot_id="snapshot:test:001",
-            component_id="test_component",
+            snapshot_id="snapshot:test:duplicate:001",
+            producer_component_ref="component:test_component",
             observed_at=NOW,
-            contract_version="1.0.0",
+            profile_ref="profile:user_lightweight",
+            scope={"environment": "test", "component_ref": "component:test_component"},
             capabilities=(_capability(), _capability()),
+            correlation=Correlation("corr:test:capability:duplicate:001").to_dict(),
         )
 
 
@@ -593,31 +785,14 @@ class _OneShotUnixServer:
 )
 def test_unix_http_client_sends_correlation_without_implicit_retry(tmp_path: Path) -> None:
     socket_path = tmp_path / "service.sock"
-    response = JobStatus(
-        job_id="JOB-TEST-001",
-        state=JobState.ACCEPTED,
-        observed_at=NOW,
-        correlation_id="corr:test:job:001",
-        progress=0,
-    ).to_dict()
+    response = _submitted_status().to_dict()
     server = _OneShotUnixServer(socket_path, 202, response)
     server.start()
     client = UnixHttpClient(socket_path, sender="test_client")
-    request = JobRequest(
-        job_id="JOB-TEST-001",
-        job_type="test.work",
-        interface_version="1.0.0",
-        sender="test_client",
-        intended_receiver="test_worker",
-        payload_schema="schema:test-job",
-        payload={"work": "bounded"},
-        created_at=NOW,
-        correlation=Correlation("corr:test:job:001", request_id="request:test:job:001"),
-        idempotency=_idempotency("idem:test:job:001"),
-    )
+    request = _job_request()
     status = client.submit_job(request)
     server.join()
-    assert status.state is JobState.ACCEPTED
+    assert status.state is JobState.SUBMITTED
     assert "X-Correlation-ID: corr:test:job:001" in server.request_head
     assert "Idempotency-Key: idem:test:job:001" in server.request_head
 

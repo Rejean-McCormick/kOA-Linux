@@ -5,9 +5,11 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.util
 import json
 import os
 import platform
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -19,6 +21,12 @@ EVIDENCE_TYPE = 'security_test'
 DEFAULT_PATHS = []
 DEFAULT_COMMANDS = []
 DEFAULT_POLICY = 'ci/policies/security-gates.json'
+QEMU_TEST_PATH = 'tests/security/test_qemu_appliance_confinement.py'
+QEMU_SUPPORT_PATHS = [
+    QEMU_TEST_PATH,
+    'tests/system/qemu_harness.py',
+    'tests/system/qemu-machine.toml',
+]
 
 
 def _git(root: Path, *args: str) -> str | None:
@@ -91,12 +99,106 @@ def _build_commands(root: Path, policy: Path | None) -> tuple[list[list[str]], l
     return commands, sorted(set(required)), env, policy_digest
 
 
+def _command_includes_qemu(command: list[str]) -> bool:
+    for item in command:
+        normalized = item.replace("\\", "/").rstrip("/")
+        if normalized in {QEMU_TEST_PATH, "tests/security"}:
+            return True
+    return False
+
+
+def _commands_include_qemu(root: Path, commands: list[list[str]]) -> bool:
+    return (root / QEMU_TEST_PATH).is_file() and any(
+        _command_includes_qemu(command) for command in commands
+    )
+
+
+def _load_qemu_harness(root: Path):
+    path = root / "tests/system/qemu_harness.py"
+    spec = importlib.util.spec_from_file_location("koa_qemu_harness_security_ci", path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError("cannot load tests/system/qemu_harness.py")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+def _qemu_runtime_environment(
+    root: Path, args: argparse.Namespace
+) -> tuple[dict[str, str], list[str]]:
+    environment: dict[str, str] = {}
+    blocked: list[str] = []
+
+    def configured(name: str, argument: str | None) -> str:
+        value = (argument or os.environ.get(name, "")).strip()
+        if value:
+            environment[name] = value
+        return value
+
+    image_value = configured("KOA_QEMU_IMAGE", args.qemu_image)
+    configured("KOA_QEMU_EXPECTED_RELEASE_IDENTITY", args.qemu_expected_release_identity)
+    configured("KOA_QEMU_CONFINEMENT_READY_REGEX", args.qemu_confinement_ready_regex)
+    configured("KOA_QEMU_GENERAL_SURFACE_DENIED_REGEX", args.qemu_general_surface_denied_regex)
+    configured("KOA_QEMU_PRIVILEGE_PATH_DENIED_REGEX", args.qemu_privilege_path_denied_regex)
+    environment["KOA_QEMU_NETWORK"] = args.qemu_network or os.environ.get("KOA_QEMU_NETWORK", "off")
+    environment["KOA_QEMU_IMAGE_FORMAT"] = args.qemu_image_format or os.environ.get("KOA_QEMU_IMAGE_FORMAT", "raw")
+
+    for name in (
+        "KOA_QEMU_IMAGE",
+        "KOA_QEMU_EXPECTED_RELEASE_IDENTITY",
+        "KOA_QEMU_CONFINEMENT_READY_REGEX",
+        "KOA_QEMU_GENERAL_SURFACE_DENIED_REGEX",
+        "KOA_QEMU_PRIVILEGE_PATH_DENIED_REGEX",
+    ):
+        if not environment.get(name):
+            blocked.append(f"{name} is required for QEMU confinement validation")
+
+    if environment["KOA_QEMU_NETWORK"] not in {"on", "off"}:
+        blocked.append("KOA_QEMU_NETWORK must be 'on' or 'off'")
+    if environment["KOA_QEMU_IMAGE_FORMAT"] not in {"raw", "qcow2"}:
+        blocked.append("KOA_QEMU_IMAGE_FORMAT must be 'raw' or 'qcow2'")
+
+    for name in (
+        "KOA_QEMU_CONFINEMENT_READY_REGEX",
+        "KOA_QEMU_GENERAL_SURFACE_DENIED_REGEX",
+        "KOA_QEMU_PRIVILEGE_PATH_DENIED_REGEX",
+    ):
+        value = environment.get(name)
+        if value:
+            try:
+                re.compile(value)
+            except re.error as exc:
+                raise ValueError(f"{name} is not a valid regular expression: {exc}") from exc
+
+    if image_value:
+        image = Path(image_value).expanduser()
+        if not image.is_file() or image.is_symlink():
+            blocked.append(f"KOA_QEMU_IMAGE must reference a regular file: {image}")
+
+    if not blocked and image_value:
+        harness_module = _load_qemu_harness(root)
+        harness = harness_module.QemuHarness.from_file(root / "tests/system/qemu-machine.toml")
+        try:
+            harness.preflight(Path(image_value).expanduser())
+        except harness_module.QemuBlockedError as exc:
+            blocked.append(str(exc))
+    return environment, blocked
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo-root", type=Path, default=Path.cwd())
     parser.add_argument("--policy", type=Path)
     parser.add_argument("--evidence-dir", type=Path)
     parser.add_argument("--check-config", action="store_true")
+    parser.add_argument("--qemu-image")
+    parser.add_argument("--qemu-image-format", choices=("raw", "qcow2"))
+    parser.add_argument("--qemu-network", choices=("on", "off"))
+    parser.add_argument("--qemu-expected-release-identity")
+    parser.add_argument("--qemu-confinement-ready-regex")
+    parser.add_argument("--qemu-general-surface-denied-regex")
+    parser.add_argument("--qemu-privilege-path-denied-regex")
     args = parser.parse_args()
 
     root = args.repo_root.resolve()
@@ -110,9 +212,25 @@ def main() -> int:
     except (OSError, json.JSONDecodeError, ValueError) as exc:
         print(f"{SUITE_ID}: invalid gate configuration: {exc}", file=sys.stderr)
         return 2
+    qemu_required = _commands_include_qemu(root, commands)
+    if qemu_required:
+        required = sorted(set([*required, *QEMU_SUPPORT_PATHS]))
     missing = sorted(path for path in required if not (root / path).exists())
     if args.check_config:
-        print(json.dumps({"suite_id": SUITE_ID, "commands": commands, "required_paths": required, "missing_paths": missing, "policy_digest": policy_digest}, indent=2, sort_keys=True))
+        print(
+            json.dumps(
+                {
+                    "suite_id": SUITE_ID,
+                    "commands": commands,
+                    "required_paths": required,
+                    "missing_paths": missing,
+                    "policy_digest": policy_digest,
+                    "qemu_machine_validation": qemu_required,
+                },
+                indent=2,
+                sort_keys=True,
+            )
+        )
         return 1 if missing else 0
 
     revision = os.environ.get("GITHUB_SHA") or _git(root, "rev-parse", "HEAD") or "unversioned"
@@ -123,7 +241,16 @@ def main() -> int:
     evidence_dir.mkdir(parents=True, exist_ok=True)
 
     records: list[dict[str, Any]] = []
-    outcome = "blocked" if missing else "passed"
+    qemu_environment: dict[str, str] = {}
+    blocked_reasons: list[str] = []
+    if not missing and qemu_required:
+        try:
+            qemu_environment, blocked_reasons = _qemu_runtime_environment(root, args)
+        except (OSError, RuntimeError, ValueError) as exc:
+            print(f"{SUITE_ID}: invalid QEMU validation configuration: {exc}", file=sys.stderr)
+            return 2
+
+    outcome = "blocked" if missing or blocked_reasons else "passed"
     environment = os.environ.copy()
     environment.update({
         "PYTHONDONTWRITEBYTECODE": "1",
@@ -132,9 +259,12 @@ def main() -> int:
         "PYTEST_ADDOPTS": " ".join(filter(None, [environment.get("PYTEST_ADDOPTS", ""), "-p no:cacheprovider"])),
     })
     environment.update(policy_env)
+    environment.update(qemu_environment)
 
     if not missing:
         for argv in commands:
+            if blocked_reasons and _command_includes_qemu(argv):
+                break
             print(f"[{SUITE_ID}] $ {' '.join(argv)}", flush=True)
             result = subprocess.run(argv, cwd=root, env=environment, check=False)
             records.append(_command_record(argv, result.returncode))
@@ -155,6 +285,7 @@ def main() -> int:
         "policy_digest": policy_digest,
         "required_paths": required,
         "missing_paths": missing,
+        "blocked_reasons": blocked_reasons,
         "commands": records,
         "outcome": outcome,
         "environment": {

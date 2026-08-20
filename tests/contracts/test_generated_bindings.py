@@ -29,7 +29,6 @@ from koa_interfaces import (  # noqa: E402
     JobState,
     JobStatus,
     Readiness,
-    ReadinessClass,
     ReceiptClass,
     ReceiptCommitState,
     ReceiptEnvelope,
@@ -57,7 +56,7 @@ EXPECTED_SCHEMA_PATHS = {
 
 def _capability() -> CapabilityState:
     return CapabilityState(
-        capability_id="test.read",
+        capability_id="local_authoritative_operation",
         health_state=HealthState.HEALTHY,
         availability_state=AvailabilityState.AVAILABLE,
         execution_state=CapabilityExecutionState.COMPLETED,
@@ -65,6 +64,12 @@ def _capability() -> CapabilityState:
         authority_effect="authoritative_change",
         critical=True,
         usable_operations=("read",),
+        capability_ref="docs/contracts/system.contract.json#/global_capabilities/0",
+        owner_component_ref="component:test_component",
+        capability_class="authoritative_state",
+        offline_behavior="continuous",
+        observed_at=NOW,
+        dependency_observations=(),
     )
 
 
@@ -102,16 +107,113 @@ def _health_readiness_sample() -> dict[str, object]:
         "reason_codes": [],
     }
 
+def _target_scope() -> dict[str, object]:
+    return {
+        "component_ref": "component:test_worker",
+        "capability_id": "test_work",
+        "target_ref": "target:test:001",
+        "environment": "test",
+        "profile_ref": "profile:test",
+    }
+
+
+def _identity_context() -> IdentityContext:
+    observed = NOW.isoformat().replace("+00:00", "Z")
+    return IdentityContext(
+        context_id="identity-context:test:001",
+        observed_at=NOW,
+        actor={
+            "identity_id": "service:test-client",
+            "subject_type": "service",
+            "identity_state": "active",
+        },
+        subject={
+            "identity_id": "subject:test:001",
+            "subject_type": "human",
+            "identity_state": "active",
+        },
+        actor_subject_relation="acts_for",
+        scope=_target_scope(),
+        authentication={
+            "result": "established",
+            "authenticated_at": observed,
+            "assurance_level": "local_peer_verified",
+            "factor_classes": ["service_credential"],
+        },
+        trust={
+            "result": "trusted",
+            "verified_at": observed,
+            "intended_use": "test_work",
+        },
+        authority={
+            "authorization_status": "granted",
+            "identity_context_grants_authority": False,
+            "authority_refs": ["decision:test:001"],
+            "policy_decision_refs": [],
+            "consent_refs": [],
+            "delegation_refs": [],
+        },
+    )
+
+
+def _job_request_sample(
+    correlation: Correlation, identity: IdentityContext, idempotency: Idempotency
+) -> dict[str, object]:
+    return JobRequest(
+        request_id="request:test:001",
+        workload_owner_ref="component:test_worker",
+        workload_class="test_work",
+        target_scope=_target_scope(),
+        criticality={"profile_criticality": "normal", "component_criticality": "normal"},
+        priority={"class": "background", "rank": 100},
+        resource_request={"cpu_millicores": 100, "memory_bytes": 1_048_576},
+        submitted_at=NOW,
+        execution_semantics={
+            "schedule_class": "immediate",
+            "delivery_semantics": "at_least_once",
+            "idempotent_or_duplicate_safe": True,
+            "interruptible": True,
+            "authoritative_commit_owner_ref": "component:test_worker",
+            "scheduler_acknowledgement_is_completion": False,
+        },
+        identity_context=identity,
+        correlation=correlation,
+        idempotency=idempotency,
+        input={
+            "contract_ref": "urn:koa:test:job-payload:1",
+            "media_type": "application/json",
+            "payload": {"operation": "bounded"},
+        },
+    ).to_dict()
+
+
+def _job_status_sample(correlation: Correlation) -> dict[str, object]:
+    observed = NOW.isoformat().replace("+00:00", "Z")
+    return JobStatus(
+        status_id="status:test:001",
+        request_id="request:test:001",
+        workload_owner_ref="component:test_worker",
+        target_scope=_target_scope(),
+        observed_at=NOW,
+        current_state=JobState.SUBMITTED,
+        state_entered_at=NOW,
+        terminal=False,
+        transition={
+            "from_state": None,
+            "to_state": "submitted",
+            "transitioned_at": observed,
+            "reason_codes": [],
+        },
+        attempt_count=0,
+        authoritative_outcome="no_effect",
+        correlation=correlation,
+        receipt_refs=(),
+    ).to_dict()
+
+
 def _samples() -> dict[str, dict]:
     correlation = Correlation("corr:test:001", request_id="request:test:001")
-    identity = IdentityContext(
-        actor_ref="service:test-client",
-        subject_ref="subject:test:001",
-        identity_type=IdentityType.SERVICE,
-        authenticated=True,
-        assurance_level="local_peer_verified",
-        authority_refs=("decision:test:001",),
-    )
+    identity = _identity_context()
     idempotency = Idempotency(
         idempotency_key="idem:test:001",
         request_id="request:test:001",
@@ -151,7 +253,10 @@ def _samples() -> dict[str, dict]:
         },
         producer={"component_id": "test_source"},
         intended_receiver={"kind": "component", "identifier": "test_target"},
-        correlation=correlation.to_dict(),
+        correlation={
+            "correlation_id": correlation.correlation_id,
+            "request_id": correlation.request_id,
+        },
         occurred_at=NOW,
         outcome={
             "state": "blocked",
@@ -261,14 +366,7 @@ def _samples() -> dict[str, dict]:
             },
             disclosure_class="machine_readable_local",
         ).to_dict(),
-        "readiness": Readiness(
-            component_id="test_component",
-            readiness_class=ReadinessClass.LOCAL_READ,
-            state=HealthState.HEALTHY,
-            accepting_work=True,
-            observed_at=NOW,
-            usable_operations=("read",),
-        ).to_dict(),
+        "readiness": Readiness.from_dict(_health_readiness_sample()).to_dict(),
         "receipt_envelope": ReceiptEnvelope(
             receipt_id="receipt:test:001",
             receipt_schema_version="1.0.0",
@@ -276,45 +374,35 @@ def _samples() -> dict[str, dict]:
             transition_type="test_state_change",
             producer_component_id="test_component",
             subject_ref="subject:test:001",
-            scope="component:test_component",
+            actor_ref="service:test-client",
+            target_refs=("target:test:001",),
+            scope={"kind": "component", "id": "test_component"},
+            requested_action="test_state_change",
             correlation=correlation,
-            outcome=ReceiptOutcome.COMMITTED,
+            authority_refs=("decision:test:001",),
+            decision="authorized",
+            execution_state="completed",
             commit_state=ReceiptCommitState.COMMITTED,
+            outcome=ReceiptOutcome.COMMITTED,
             requested_at=NOW,
+            completed_at=NOW,
             committed_at=NOW,
             recorded_at=NOW,
-            authority_refs=("decision:test:001",),
+            reason_codes=(),
+            component_contract_refs=("docs/contracts/components/test.component.json",),
         ).to_dict(),
         "correlation": correlation.to_dict(),
-        "job_request": JobRequest(
-            job_id="job:test:001",
-            job_type="test.work",
-            interface_version="1.0.0",
-            sender="test_client",
-            intended_receiver="test_worker",
-            payload_schema="urn:koa:test:job-payload:1",
-            payload={"operation": "bounded"},
-            created_at=NOW,
-            correlation=correlation,
-            idempotency=idempotency,
-            identity_context=identity,
-        ).to_dict(),
-        "job_status": JobStatus(
-            job_id="job:test:001",
-            state=JobState.COMPLETED,
-            observed_at=NOW,
-            correlation_id=correlation.correlation_id,
-            progress=100,
-            result={"outcome": "no_effect"},
-        ).to_dict(),
+        "job_request": _job_request_sample(correlation, identity, idempotency),
+        "job_status": _job_status_sample(correlation),
         "identity_context": identity.to_dict(),
         "capability_snapshot": CapabilitySnapshot(
             snapshot_id="snapshot:test:001",
-            component_id="test_component",
+            producer_component_ref="component:test_component",
             observed_at=NOW,
-            contract_version="1.0.0",
+            profile_ref="profile:user_lightweight",
+            scope={"environment": "test", "component_ref": "component:test_component"},
             capabilities=(capability,),
-            profile_refs=("profile:user_lightweight",),
+            correlation=correlation.to_dict(),
         ).to_dict(),
     }
 
@@ -331,6 +419,10 @@ def test_binding_round_trips_are_deterministic() -> None:
     assert Idempotency.from_dict(samples["idempotency"]).to_dict() == samples["idempotency"]
     assert VersionNegotiation.from_dict(samples["version_negotiation"]).to_dict() == samples["version_negotiation"]
     assert HealthStatus.from_dict(samples["health_status"]).to_dict() == samples["health_status"]
+    assert IdentityContext.from_dict(samples["identity_context"]).to_dict() == samples["identity_context"]
+    assert JobRequest.from_dict(samples["job_request"]).to_dict() == samples["job_request"]
+    assert JobStatus.from_dict(samples["job_status"]).to_dict() == samples["job_status"]
+    assert CapabilitySnapshot.from_dict(samples["capability_snapshot"]).to_dict() == samples["capability_snapshot"]
 
 
 def test_binding_payloads_validate_when_dependency_schemas_are_present(

@@ -278,6 +278,28 @@ def test_python_bundle_contains_declared_payload_and_evidence_not_workspace(
     assert "--no-build-isolation" in uv_build
 
 
+
+def test_payload_inventory_uses_logical_mode_not_host_mode(tmp_path: Path) -> None:
+    payload_root = tmp_path / "payload"
+    binary = payload_root / "artifacts" / "koa-node-agent"
+    binary.parent.mkdir(parents=True)
+    binary.write_bytes(b"fixture-binary")
+    binary.chmod(0o600)
+
+    rows = build_component._payload_files(
+        payload_root,
+        logical_modes={"artifacts/koa-node-agent": 0o755},
+    )
+
+    assert rows == [
+        {
+            "path": "artifacts/koa-node-agent",
+            "sha256": build_component._sha(binary),
+            "size_bytes": len(b"fixture-binary"),
+            "mode": "0755",
+        }
+    ]
+
 def test_rust_bundle_builds_only_declared_node_agent_binaries(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from io import StringIO
+from importlib import import_module
+from inspect import Parameter, signature
 from pathlib import Path
 import subprocess
 import sys
@@ -80,7 +82,11 @@ def test_missing_repository_root_fails_explicitly(tmp_path: Path) -> None:
 
 def test_missing_command_module_fails_explicitly(tmp_path: Path) -> None:
     root = _workspace(tmp_path)
-    code, stdout, stderr = _invoke(["validate"], start_directory=root)
+    missing = ModuleNotFoundError("catalogued command module is absent")
+    missing.name = "koa_tools.commands.validate"
+
+    with patch.object(cli, "import_module", side_effect=missing):
+        code, stdout, stderr = _invoke(["validate"], start_directory=root)
 
     assert code == cli.ExitCode.UNAVAILABLE
     assert stdout == ""
@@ -111,6 +117,37 @@ def test_dispatch_passes_only_command_arguments_and_resolved_root(tmp_path: Path
         "argv": ("--strict", "item"),
         "repository_root": root.resolve(),
     }
+
+
+@pytest.mark.parametrize("spec", cli.COMMANDS, ids=lambda spec: spec.name)
+def test_catalogued_command_main_accepts_resolved_repository_root(spec: cli.CommandSpec) -> None:
+    module = import_module(spec.module)
+    handler = getattr(module, "main")
+    parameter = signature(handler).parameters.get("repository_root")
+
+    assert parameter is not None
+    assert parameter.kind is Parameter.KEYWORD_ONLY
+
+
+@pytest.mark.parametrize("spec", cli.COMMANDS, ids=lambda spec: spec.name)
+def test_catalogued_command_help_dispatches_through_root_cli(
+    spec: cli.CommandSpec,
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    root = _workspace(tmp_path)
+
+    code, stdout, stderr = _invoke(
+        ["--repository-root", str(root), spec.name, "--help"],
+        start_directory=root.parent,
+    )
+    captured = capsys.readouterr()
+
+    assert code == cli.ExitCode.OK
+    assert stdout == ""
+    assert stderr == ""
+    assert captured.err == ""
+    assert "usage:" in captured.out
 
 
 def test_non_integer_command_result_is_a_software_error(tmp_path: Path) -> None:

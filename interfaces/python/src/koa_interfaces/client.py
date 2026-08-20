@@ -77,17 +77,25 @@ class DuplicateOutcome(StrEnum):
 
 
 class JobState(StrEnum):
-    NOT_STARTED = "not_started"
-    ACCEPTED = "accepted"
-    QUEUED = "queued"
+    SUBMITTED = "submitted"
+    VALIDATING = "validating"
+    ADMITTED = "admitted"
+    ELIGIBLE = "eligible"
+    DISPATCHED = "dispatched"
+    STARTING = "starting"
     RUNNING = "running"
-    AWAITING_DEPENDENCY = "awaiting_dependency"
-    AWAITING_AUTHORITY = "awaiting_authority"
     COMPLETED = "completed"
-    CANCELLED = "cancelled"
+    QUEUED = "queued"
+    DEFERRED = "deferred"
+    BLOCKED = "blocked"
+    REJECTED = "rejected"
+    CHECKPOINTING = "checkpointing"
+    SUSPENDED = "suspended"
+    RETRY_WAIT = "retry_wait"
     FAILED = "failed"
-    CONFLICTED = "conflicted"
+    CANCELLED = "cancelled"
     EXPIRED = "expired"
+    RESTORING = "restoring"
 
 
 class IdentityType(StrEnum):
@@ -771,76 +779,264 @@ class VersionNegotiation:
 
 @dataclass(frozen=True, slots=True)
 class IdentityContext:
-    actor_ref: str
-    subject_ref: str
-    identity_type: IdentityType
-    authenticated: bool
-    assurance_level: str
-    authority_refs: tuple[str, ...] = ()
+    """Canonical identity context projected from identity-context.schema.json."""
+
+    context_id: str
+    observed_at: datetime
+    actor: Mapping[str, Any]
+    subject: Mapping[str, Any]
+    actor_subject_relation: str
+    scope: Mapping[str, Any]
+    authentication: Mapping[str, Any]
+    trust: Mapping[str, Any]
+    authority: Mapping[str, Any]
+    schema_version: str = "1.0.0"
+    valid_until: datetime | None = None
+    requesting_component_ref: str | None = None
     delegation_refs: tuple[str, ...] = ()
-    attributes: Mapping[str, Any] = field(default_factory=lambda: MappingProxyType({}))
+    evidence_refs: tuple[str, ...] = ()
+    grants_action_authority: bool = False
 
     SCHEMA_PATH: ClassVar[str] = IDENTITY_CONTEXT_SCHEMA_PATH
 
     def __post_init__(self) -> None:
-        object.__setattr__(self, "actor_ref", _require_text(self.actor_ref, "actor_ref"))
-        object.__setattr__(self, "subject_ref", _require_text(self.subject_ref, "subject_ref"))
+        object.__setattr__(self, "context_id", _require_text(self.context_id, "context_id"))
+        object.__setattr__(self, "schema_version", _require_text(self.schema_version, "schema_version"))
+        if self.schema_version != "1.0.0":
+            raise InterfaceValidationError("schema_version must be 1.0.0")
+        object.__setattr__(self, "observed_at", _parse_timestamp(self.observed_at, "observed_at"))
+        if self.valid_until is not None:
+            object.__setattr__(self, "valid_until", _parse_timestamp(self.valid_until, "valid_until"))
+            if self.valid_until <= self.observed_at:
+                raise InterfaceValidationError("valid_until must be later than observed_at")
         object.__setattr__(
             self,
-            "identity_type",
-            _enum_value(IdentityType, self.identity_type, "identity_type"),
+            "requesting_component_ref",
+            _optional_text(self.requesting_component_ref, "requesting_component_ref"),
         )
-        object.__setattr__(
-            self, "assurance_level", _require_text(self.assurance_level, "assurance_level")
-        )
-        object.__setattr__(
-            self, "authority_refs", _string_tuple(self.authority_refs, "authority_refs")
-        )
-        object.__setattr__(
-            self, "delegation_refs", _string_tuple(self.delegation_refs, "delegation_refs")
-        )
-        object.__setattr__(self, "attributes", _freeze_mapping(self.attributes, "attributes"))
-        if not self.authenticated and self.authority_refs:
-            raise InterfaceValidationError(
-                "unauthenticated identity context cannot assert authority_refs"
+
+        identity_types = {
+            "human", "service", "component_instance", "node", "device", "workspace",
+            "tenant", "organization", "external_integration", "artifact_signer",
+            "recovery_operator",
+        }
+        identity_states = {"pending", "active", "suspended", "revoked", "expired", "retired"}
+        for field_name in ("actor", "subject"):
+            value = _closed_event_mapping(
+                getattr(self, field_name),
+                field_name=field_name,
+                required={"identity_id", "subject_type", "identity_state"},
+                allowed={
+                    "identity_id", "subject_type", "identity_state", "owner_ref",
+                    "tenant_ref", "display_name", "credential_refs", "evidence_refs",
+                },
             )
+            _require_text(value["identity_id"], f"{field_name}.identity_id")
+            if value["subject_type"] not in identity_types:
+                raise InterfaceValidationError(f"{field_name}.subject_type is not supported")
+            if value["identity_state"] not in identity_states:
+                raise InterfaceValidationError(f"{field_name}.identity_state is not supported")
+            for key in ("owner_ref", "tenant_ref", "display_name"):
+                if key in value:
+                    _require_text(value[key], f"{field_name}.{key}")
+            for key in ("credential_refs", "evidence_refs"):
+                if key in value:
+                    _string_tuple(value[key], f"{field_name}.{key}")
+            object.__setattr__(self, field_name, value)
+
+        object.__setattr__(
+            self,
+            "actor_subject_relation",
+            _require_text(self.actor_subject_relation, "actor_subject_relation"),
+        )
+
+        scope = _closed_event_mapping(
+            self.scope,
+            field_name="scope",
+            required={"environment", "profile_ref", "component_ref", "capability_id", "target_ref"},
+            allowed={
+                "tenant_ref", "organization_ref", "environment", "profile_ref", "overlay_refs",
+                "component_ref", "capability_id", "target_ref", "purpose",
+            },
+        )
+        for key in (
+            "tenant_ref", "organization_ref", "environment", "profile_ref",
+            "component_ref", "capability_id", "target_ref", "purpose",
+        ):
+            if key in scope:
+                _require_text(scope[key], f"scope.{key}")
+        if "overlay_refs" in scope:
+            _string_tuple(scope["overlay_refs"], "scope.overlay_refs")
+        object.__setattr__(self, "scope", scope)
+
+        authentication = _closed_event_mapping(
+            self.authentication,
+            field_name="authentication",
+            required={"result", "authenticated_at", "assurance_level", "factor_classes"},
+            allowed={
+                "result", "authenticated_at", "expires_at", "assurance_level",
+                "factor_classes", "authentication_ref", "reason_codes",
+            },
+        )
+        if authentication["result"] not in {"established", "not_established", "indeterminate"}:
+            raise InterfaceValidationError("authentication.result is not supported")
+        _parse_timestamp(authentication["authenticated_at"], "authentication.authenticated_at")
+        if "expires_at" in authentication:
+            _parse_timestamp(authentication["expires_at"], "authentication.expires_at")
+        _require_text(authentication["assurance_level"], "authentication.assurance_level")
+        factors = _string_tuple(authentication["factor_classes"], "authentication.factor_classes")
+        allowed_factors = {
+            "knowledge", "possession", "inherence", "service_credential",
+            "device_credential", "recovery_credential",
+        }
+        if any(item not in allowed_factors for item in factors):
+            raise InterfaceValidationError("authentication.factor_classes contains an unsupported value")
+        if "authentication_ref" in authentication:
+            _require_text(authentication["authentication_ref"], "authentication.authentication_ref")
+        if "reason_codes" in authentication:
+            _string_tuple(authentication["reason_codes"], "authentication.reason_codes")
+        object.__setattr__(self, "authentication", authentication)
+
+        trust = _closed_event_mapping(
+            self.trust,
+            field_name="trust",
+            required={"result", "verified_at", "intended_use"},
+            allowed={
+                "result", "verified_at", "intended_use", "verification_ref",
+                "trust_root_ref", "validated_scope_refs", "reason_codes",
+            },
+        )
+        if trust["result"] not in {"trusted", "untrusted", "indeterminate"}:
+            raise InterfaceValidationError("trust.result is not supported")
+        _parse_timestamp(trust["verified_at"], "trust.verified_at")
+        _require_text(trust["intended_use"], "trust.intended_use")
+        for key in ("verification_ref", "trust_root_ref"):
+            if key in trust:
+                _require_text(trust[key], f"trust.{key}")
+        for key in ("validated_scope_refs", "reason_codes"):
+            if key in trust:
+                _string_tuple(trust[key], f"trust.{key}")
+        object.__setattr__(self, "trust", trust)
+
+        authority = _closed_event_mapping(
+            self.authority,
+            field_name="authority",
+            required={
+                "authorization_status", "identity_context_grants_authority", "authority_refs",
+                "policy_decision_refs", "consent_refs", "delegation_refs",
+            },
+            allowed={
+                "authorization_status", "identity_context_grants_authority", "authority_refs",
+                "policy_decision_refs", "consent_refs", "delegation_refs", "obligation_refs",
+                "exception_refs", "reason_codes",
+            },
+        )
+        if authority["authorization_status"] not in {
+            "not_evaluated", "granted", "denied", "indeterminate"
+        }:
+            raise InterfaceValidationError("authority.authorization_status is not supported")
+        if authority["identity_context_grants_authority"] is not False:
+            raise InterfaceValidationError("authority.identity_context_grants_authority must be false")
+        ref_fields = (
+            "authority_refs", "policy_decision_refs", "consent_refs", "delegation_refs",
+            "obligation_refs", "exception_refs", "reason_codes",
+        )
+        ref_values: dict[str, tuple[str, ...]] = {}
+        for key in ref_fields:
+            if key in authority:
+                ref_values[key] = _string_tuple(authority[key], f"authority.{key}")
+        if authority["authorization_status"] == "granted" and not any(
+            ref_values.get(key)
+            for key in ("authority_refs", "policy_decision_refs", "consent_refs", "delegation_refs")
+        ):
+            raise InterfaceValidationError(
+                "granted authority must reference an authority, policy decision, consent, or delegation"
+            )
+        object.__setattr__(self, "authority", authority)
+
+        object.__setattr__(self, "delegation_refs", _string_tuple(self.delegation_refs, "delegation_refs"))
+        object.__setattr__(self, "evidence_refs", _string_tuple(self.evidence_refs, "evidence_refs"))
+        if self.grants_action_authority is not False:
+            raise InterfaceValidationError("grants_action_authority must be false")
+
+    @property
+    def actor_ref(self) -> str:
+        return str(self.actor["identity_id"])
+
+    @property
+    def subject_ref(self) -> str:
+        return str(self.subject["identity_id"])
+
+    @property
+    def authenticated(self) -> bool:
+        return self.authentication["result"] == "established"
+
+    @property
+    def assurance_level(self) -> str:
+        return str(self.authentication["assurance_level"])
+
+    @property
+    def authority_refs(self) -> tuple[str, ...]:
+        return tuple(self.authority["authority_refs"])
 
     def to_dict(self) -> dict[str, Any]:
-        return {
-            "actor_ref": self.actor_ref,
-            "subject_ref": self.subject_ref,
-            "identity_type": self.identity_type.value,
-            "authenticated": self.authenticated,
-            "assurance_level": self.assurance_level,
-            "authority_refs": list(self.authority_refs),
-            "delegation_refs": list(self.delegation_refs),
-            "attributes": dict(self.attributes),
+        result: dict[str, Any] = {
+            "schema_version": self.schema_version,
+            "context_id": self.context_id,
+            "observed_at": _format_timestamp(self.observed_at),
+            "actor": _plain_json_value(self.actor),
+            "subject": _plain_json_value(self.subject),
+            "actor_subject_relation": self.actor_subject_relation,
+            "scope": _plain_json_value(self.scope),
+            "authentication": _plain_json_value(self.authentication),
+            "trust": _plain_json_value(self.trust),
+            "authority": _plain_json_value(self.authority),
+            "grants_action_authority": False,
         }
+        if self.valid_until is not None:
+            result["valid_until"] = _format_timestamp(self.valid_until)
+        if self.requesting_component_ref is not None:
+            result["requesting_component_ref"] = self.requesting_component_ref
+        if self.delegation_refs:
+            result["delegation_refs"] = list(self.delegation_refs)
+        if self.evidence_refs:
+            result["evidence_refs"] = list(self.evidence_refs)
+        return result
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> IdentityContext:
         if not isinstance(data, Mapping):
             raise InterfaceValidationError("identity context must be an object")
         allowed = {
-            "actor_ref", "subject_ref", "identity_type", "authenticated", "assurance_level",
-            "authority_refs", "delegation_refs", "attributes",
+            "schema_version", "context_id", "observed_at", "valid_until", "actor", "subject",
+            "actor_subject_relation", "requesting_component_ref", "scope", "authentication",
+            "trust", "authority", "delegation_refs", "evidence_refs", "grants_action_authority",
         }
         _unexpected_fields(data, allowed)
-        required = {"actor_ref", "subject_ref", "identity_type", "authenticated", "assurance_level"}
+        required = {
+            "schema_version", "context_id", "observed_at", "actor", "subject",
+            "actor_subject_relation", "scope", "authentication", "trust", "authority",
+            "grants_action_authority",
+        }
         missing = sorted(required - set(data))
         if missing:
             raise InterfaceValidationError(f"missing fields: {', '.join(missing)}")
-        if not isinstance(data["authenticated"], bool):
-            raise InterfaceValidationError("authenticated must be a boolean")
         return cls(
-            actor_ref=data["actor_ref"],
-            subject_ref=data["subject_ref"],
-            identity_type=data["identity_type"],
-            authenticated=data["authenticated"],
-            assurance_level=data["assurance_level"],
-            authority_refs=_string_tuple(data.get("authority_refs"), "authority_refs"),
+            schema_version=data["schema_version"],
+            context_id=data["context_id"],
+            observed_at=data["observed_at"],
+            valid_until=data.get("valid_until"),
+            actor=data["actor"],
+            subject=data["subject"],
+            actor_subject_relation=data["actor_subject_relation"],
+            requesting_component_ref=data.get("requesting_component_ref"),
+            scope=data["scope"],
+            authentication=data["authentication"],
+            trust=data["trust"],
+            authority=data["authority"],
             delegation_refs=_string_tuple(data.get("delegation_refs"), "delegation_refs"),
-            attributes=_freeze_mapping(data.get("attributes"), "attributes"),
+            evidence_refs=_string_tuple(data.get("evidence_refs"), "evidence_refs"),
+            grants_action_authority=data["grants_action_authority"],
         )
 
 
@@ -1154,7 +1350,7 @@ class EventEnvelope:
             "interface": _plain_json_value(self.interface),
             "publisher": _plain_json_value(self.publisher),
             "intended_receivers": _plain_json_value(self.intended_receivers),
-            "correlation": self.correlation.to_dict(),
+            "correlation": self.correlation.to_event_dict(),
             "occurred_at": _format_timestamp(self.occurred_at),
             "committed_at": _format_timestamp(self.committed_at),
             "payload_representation": _plain_json_value(self.payload_representation),
@@ -1237,7 +1433,7 @@ class EventEnvelope:
             interface=data["interface"],
             publisher=data["publisher"],
             intended_receivers=tuple(receivers),
-            correlation=Correlation.from_dict(data["correlation"]),
+            correlation=Correlation.from_event_dict(data["correlation"]),
             occurred_at=data["occurred_at"],
             committed_at=data["committed_at"],
             expires_at=data.get("expires_at"),
@@ -1254,67 +1450,252 @@ class EventEnvelope:
 
 @dataclass(frozen=True, slots=True)
 class JobRequest:
-    job_id: str
-    job_type: str
-    interface_version: str
-    sender: str
-    intended_receiver: str
-    payload_schema: str
-    payload: Mapping[str, Any]
-    created_at: datetime
+    """Canonical deferred-work request projected from job-request.schema.json."""
+
+    request_id: str
+    workload_owner_ref: str
+    workload_class: str
+    target_scope: Mapping[str, Any]
+    criticality: Mapping[str, Any]
+    priority: Mapping[str, Any]
+    resource_request: Mapping[str, Any]
+    submitted_at: datetime
+    execution_semantics: Mapping[str, Any]
+    identity_context: IdentityContext
     correlation: Correlation
-    idempotency: Idempotency
+    input: Mapping[str, Any]
+    schema_version: str = "1.0.0"
+    first_eligible_at: datetime | None = None
     deadline: datetime | None = None
-    result_channel: str | None = None
-    identity_context: IdentityContext | None = None
+    expires_at: datetime | None = None
+    schedule: Mapping[str, Any] | None = None
+    dependencies: tuple[Mapping[str, Any], ...] = ()
+    queue_policy: Mapping[str, Any] | None = None
+    retry_policy: Mapping[str, Any] | None = None
+    cancellation_policy: Mapping[str, Any] | None = None
+    checkpoint_policy: Mapping[str, Any] | None = None
+    policy_decision_ref: str | None = None
+    exception_refs: tuple[str, ...] = ()
+    idempotency: Idempotency | None = None
+    expected_result_contract_ref: str | None = None
+    response_channel_ref: str | None = None
+    metadata: Mapping[str, Any] = field(default_factory=lambda: MappingProxyType({}))
 
     SCHEMA_PATH: ClassVar[str] = JOB_REQUEST_SCHEMA_PATH
 
     def __post_init__(self) -> None:
-        for field_name in (
-            "job_id", "job_type", "interface_version", "sender", "intended_receiver",
-            "payload_schema",
-        ):
+        for field_name in ("request_id", "workload_owner_ref", "workload_class", "schema_version"):
             object.__setattr__(self, field_name, _require_text(getattr(self, field_name), field_name))
-        object.__setattr__(self, "payload", _freeze_mapping(self.payload, "payload"))
-        object.__setattr__(self, "created_at", _parse_timestamp(self.created_at, "created_at"))
+        if self.schema_version != "1.0.0":
+            raise InterfaceValidationError("schema_version must be 1.0.0")
+
+        target_scope = _closed_event_mapping(
+            self.target_scope,
+            field_name="target_scope",
+            required={"component_ref", "capability_id", "target_ref", "environment", "profile_ref"},
+            allowed={
+                "component_ref", "capability_id", "target_ref", "environment", "profile_ref",
+                "overlay_refs", "tenant_ref", "workspace_ref", "node_ref",
+            },
+        )
+        for key in ("component_ref", "capability_id", "target_ref", "environment", "profile_ref",
+                    "tenant_ref", "workspace_ref", "node_ref"):
+            if key in target_scope:
+                _require_text(target_scope[key], f"target_scope.{key}")
+        if "overlay_refs" in target_scope:
+            _string_tuple(target_scope["overlay_refs"], "target_scope.overlay_refs")
+        object.__setattr__(self, "target_scope", target_scope)
+
+        criticality = _closed_event_mapping(
+            self.criticality, field_name="criticality",
+            required={"profile_criticality", "component_criticality"},
+            allowed={"profile_criticality", "component_criticality"},
+        )
+        _require_text(criticality["profile_criticality"], "criticality.profile_criticality")
+        _require_text(criticality["component_criticality"], "criticality.component_criticality")
+        object.__setattr__(self, "criticality", criticality)
+
+        priority = _closed_event_mapping(
+            self.priority, field_name="priority", required={"class", "rank"},
+            allowed={"class", "rank", "fairness_group"},
+        )
+        if priority["class"] not in {
+            "critical_integrity", "authority_verification", "interactive", "operational",
+            "background", "heavy_batch", "best_effort",
+        }:
+            raise InterfaceValidationError("priority.class is not supported")
+        rank = priority["rank"]
+        if isinstance(rank, bool) or not isinstance(rank, int) or not 0 <= rank <= 1_000_000:
+            raise InterfaceValidationError("priority.rank must be an integer from 0 to 1000000")
+        if "fairness_group" in priority:
+            _require_text(priority["fairness_group"], "priority.fairness_group")
+        object.__setattr__(self, "priority", priority)
+
+        if not isinstance(self.resource_request, Mapping) or not self.resource_request:
+            raise InterfaceValidationError("resource_request must be a non-empty object")
+        allowed_resources = {
+            "cpu_millicores", "memory_bytes", "temporary_storage_bytes",
+            "io_read_bytes_per_second", "io_write_bytes_per_second", "processes",
+            "workers", "concurrency", "execution_timeout_seconds",
+        }
+        _unexpected_fields(self.resource_request, allowed_resources)
+        for key, value in self.resource_request.items():
+            if isinstance(value, bool) or not isinstance(value, int) or value < 1:
+                raise InterfaceValidationError(f"resource_request.{key} must be an integer >= 1")
+        object.__setattr__(self, "resource_request", _freeze_json_value(self.resource_request, "resource_request"))
+
+        object.__setattr__(self, "submitted_at", _parse_timestamp(self.submitted_at, "submitted_at"))
+        for field_name in ("first_eligible_at", "deadline", "expires_at"):
+            value = getattr(self, field_name)
+            if value is not None:
+                object.__setattr__(self, field_name, _parse_timestamp(value, field_name))
+        if self.deadline is not None and self.deadline <= self.submitted_at:
+            raise InterfaceValidationError("deadline must be later than submitted_at")
+        if self.expires_at is not None and self.expires_at <= self.submitted_at:
+            raise InterfaceValidationError("expires_at must be later than submitted_at")
+
+        execution = _closed_event_mapping(
+            self.execution_semantics, field_name="execution_semantics",
+            required={
+                "schedule_class", "delivery_semantics", "idempotent_or_duplicate_safe",
+                "interruptible", "authoritative_commit_owner_ref",
+                "scheduler_acknowledgement_is_completion",
+            },
+            allowed={
+                "schedule_class", "delivery_semantics", "idempotent_or_duplicate_safe",
+                "interruptible", "authoritative_commit_owner_ref",
+                "scheduler_acknowledgement_is_completion",
+            },
+        )
+        schedule_class = execution["schedule_class"]
+        if schedule_class not in {
+            "immediate", "deferred_one_time", "recurring_calendar", "dependency_triggered",
+            "queue_driven", "maintenance", "task_activated",
+        }:
+            raise InterfaceValidationError("execution_semantics.schedule_class is not supported")
+        if execution["delivery_semantics"] not in {"at_most_once", "at_least_once"}:
+            raise InterfaceValidationError("execution_semantics.delivery_semantics is not supported")
+        for key in ("idempotent_or_duplicate_safe", "interruptible"):
+            if not isinstance(execution[key], bool):
+                raise InterfaceValidationError(f"execution_semantics.{key} must be a boolean")
+        _require_text(execution["authoritative_commit_owner_ref"], "execution_semantics.authoritative_commit_owner_ref")
+        if execution["scheduler_acknowledgement_is_completion"] is not False:
+            raise InterfaceValidationError(
+                "execution_semantics.scheduler_acknowledgement_is_completion must be false"
+            )
+        object.__setattr__(self, "execution_semantics", execution)
+
+        if not isinstance(self.identity_context, IdentityContext):
+            raise InterfaceValidationError("identity_context must be an IdentityContext")
         if not isinstance(self.correlation, Correlation):
             raise InterfaceValidationError("correlation must be a Correlation")
-        if not isinstance(self.idempotency, Idempotency):
+        if self.idempotency is not None and not isinstance(self.idempotency, Idempotency):
             raise InterfaceValidationError("idempotency must be an Idempotency")
-        if not self.idempotency.required:
-            raise InterfaceValidationError("job requests require an idempotency strategy")
-        if self.deadline is not None:
-            object.__setattr__(self, "deadline", _parse_timestamp(self.deadline, "deadline"))
-            if self.deadline <= self.created_at:
-                raise InterfaceValidationError("deadline must be later than created_at")
-        object.__setattr__(
-            self, "result_channel", _optional_text(self.result_channel, "result_channel")
+        if execution["delivery_semantics"] == "at_least_once":
+            if execution["idempotent_or_duplicate_safe"] is not True:
+                raise InterfaceValidationError(
+                    "at_least_once delivery requires idempotent_or_duplicate_safe=true"
+                )
+            if self.idempotency is None:
+                raise InterfaceValidationError("at_least_once delivery requires idempotency")
+        if self.retry_policy is not None and self.idempotency is None:
+            raise InterfaceValidationError("retry_policy requires idempotency")
+
+        input_value = _closed_event_mapping(
+            self.input, field_name="input", required={"contract_ref"},
+            allowed={"contract_ref", "media_type", "payload_ref", "payload"},
         )
-        if self.identity_context is not None and not isinstance(
-            self.identity_context, IdentityContext
-        ):
-            raise InterfaceValidationError("identity_context must be an IdentityContext")
+        _require_text(input_value["contract_ref"], "input.contract_ref")
+        if "media_type" in input_value:
+            _require_text(input_value["media_type"], "input.media_type")
+        has_payload = "payload" in input_value
+        has_payload_ref = "payload_ref" in input_value
+        if has_payload == has_payload_ref:
+            raise InterfaceValidationError("input requires exactly one of payload or payload_ref")
+        if has_payload_ref:
+            _require_text(input_value["payload_ref"], "input.payload_ref")
+        object.__setattr__(self, "input", input_value)
+
+        if self.schedule is not None:
+            object.__setattr__(self, "schedule", _freeze_json_value(self.schedule, "schedule"))
+        if schedule_class == "deferred_one_time" and (self.schedule is None or self.first_eligible_at is None):
+            raise InterfaceValidationError("deferred_one_time requires schedule and first_eligible_at")
+        if schedule_class in {"recurring_calendar", "maintenance"} and self.schedule is None:
+            raise InterfaceValidationError(f"{schedule_class} requires schedule")
+
+        frozen_dependencies: list[Mapping[str, Any]] = []
+        for index, dependency in enumerate(self.dependencies):
+            if not isinstance(dependency, Mapping):
+                raise InterfaceValidationError(f"dependencies[{index}] must be an object")
+            frozen_dependencies.append(_freeze_json_value(dependency, f"dependencies[{index}]"))
+        object.__setattr__(self, "dependencies", tuple(frozen_dependencies))
+        for field_name in ("queue_policy", "retry_policy", "cancellation_policy", "checkpoint_policy"):
+            value = getattr(self, field_name)
+            if value is not None:
+                object.__setattr__(self, field_name, _freeze_json_value(value, field_name))
+        for field_name in ("policy_decision_ref", "expected_result_contract_ref", "response_channel_ref"):
+            object.__setattr__(self, field_name, _optional_text(getattr(self, field_name), field_name))
+        object.__setattr__(self, "exception_refs", _string_tuple(self.exception_refs, "exception_refs"))
+        object.__setattr__(self, "metadata", _freeze_mapping(self.metadata, "metadata"))
+
+    @property
+    def job_id(self) -> str:
+        return self.request_id
+
+    @property
+    def job_type(self) -> str:
+        return self.workload_class
+
+    @property
+    def created_at(self) -> datetime:
+        return self.submitted_at
+
+    @property
+    def payload_schema(self) -> str:
+        return str(self.input["contract_ref"])
+
+    @property
+    def payload(self) -> Any:
+        return self.input.get("payload")
 
     def to_dict(self) -> dict[str, Any]:
         result: dict[str, Any] = {
-            "job_id": self.job_id,
-            "job_type": self.job_type,
-            "interface_version": self.interface_version,
-            "sender": self.sender,
-            "intended_receiver": self.intended_receiver,
-            "payload_schema": self.payload_schema,
-            "payload": dict(self.payload),
-            "created_at": _format_timestamp(self.created_at),
+            "schema_version": self.schema_version,
+            "request_id": self.request_id,
+            "workload_owner_ref": self.workload_owner_ref,
+            "workload_class": self.workload_class,
+            "target_scope": _plain_json_value(self.target_scope),
+            "criticality": _plain_json_value(self.criticality),
+            "priority": _plain_json_value(self.priority),
+            "resource_request": _plain_json_value(self.resource_request),
+            "submitted_at": _format_timestamp(self.submitted_at),
+            "execution_semantics": _plain_json_value(self.execution_semantics),
+            "identity_context": self.identity_context.to_dict(),
             "correlation": self.correlation.to_dict(),
-            "idempotency": self.idempotency.to_dict(),
+            "input": _plain_json_value(self.input),
         }
-        if self.deadline is not None:
-            result["deadline"] = _format_timestamp(self.deadline)
-        if self.result_channel is not None:
-            result["result_channel"] = self.result_channel
-        if self.identity_context is not None:
-            result["identity_context"] = self.identity_context.to_dict()
+        for field_name in ("first_eligible_at", "deadline", "expires_at"):
+            value = getattr(self, field_name)
+            if value is not None:
+                result[field_name] = _format_timestamp(value)
+        for field_name in ("schedule", "queue_policy", "retry_policy", "cancellation_policy", "checkpoint_policy"):
+            value = getattr(self, field_name)
+            if value is not None:
+                result[field_name] = _plain_json_value(value)
+        if self.dependencies:
+            result["dependencies"] = [_plain_json_value(item) for item in self.dependencies]
+        if self.policy_decision_ref is not None:
+            result["policy_decision_ref"] = self.policy_decision_ref
+        if self.exception_refs:
+            result["exception_refs"] = list(self.exception_refs)
+        if self.idempotency is not None:
+            result["idempotency"] = self.idempotency.to_dict()
+        if self.expected_result_contract_ref is not None:
+            result["expected_result_contract_ref"] = self.expected_result_contract_ref
+        if self.response_channel_ref is not None:
+            result["response_channel_ref"] = self.response_channel_ref
+        if self.metadata:
+            result["metadata"] = dict(self.metadata)
         return result
 
     @classmethod
@@ -1322,93 +1703,262 @@ class JobRequest:
         if not isinstance(data, Mapping):
             raise InterfaceValidationError("job request must be an object")
         allowed = {
-            "job_id", "job_type", "interface_version", "sender", "intended_receiver",
-            "payload_schema", "payload", "created_at", "correlation", "idempotency",
-            "deadline", "result_channel", "identity_context",
+            "schema_version", "request_id", "workload_owner_ref", "workload_class",
+            "target_scope", "criticality", "priority", "resource_request", "submitted_at",
+            "first_eligible_at", "deadline", "expires_at", "execution_semantics", "schedule",
+            "dependencies", "queue_policy", "retry_policy", "cancellation_policy",
+            "checkpoint_policy", "policy_decision_ref", "exception_refs", "identity_context",
+            "correlation", "idempotency", "input", "expected_result_contract_ref",
+            "response_channel_ref", "metadata",
         }
         _unexpected_fields(data, allowed)
-        required = allowed - {"deadline", "result_channel", "identity_context"}
+        required = {
+            "schema_version", "request_id", "workload_owner_ref", "workload_class",
+            "target_scope", "criticality", "priority", "resource_request", "submitted_at",
+            "execution_semantics", "identity_context", "correlation", "input",
+        }
         missing = sorted(required - set(data))
         if missing:
             raise InterfaceValidationError(f"missing fields: {', '.join(missing)}")
-        identity = data.get("identity_context")
+        dependencies = data.get("dependencies", ())
+        if isinstance(dependencies, (str, bytes)) or not isinstance(dependencies, (list, tuple)):
+            raise InterfaceValidationError("dependencies must be an array")
         return cls(
-            job_id=data["job_id"],
-            job_type=data["job_type"],
-            interface_version=data["interface_version"],
-            sender=data["sender"],
-            intended_receiver=data["intended_receiver"],
-            payload_schema=data["payload_schema"],
-            payload=_freeze_mapping(data["payload"], "payload"),
-            created_at=data["created_at"],
-            correlation=Correlation.from_dict(data["correlation"]),
-            idempotency=Idempotency.from_dict(data["idempotency"]),
+            schema_version=data["schema_version"],
+            request_id=data["request_id"],
+            workload_owner_ref=data["workload_owner_ref"],
+            workload_class=data["workload_class"],
+            target_scope=data["target_scope"],
+            criticality=data["criticality"],
+            priority=data["priority"],
+            resource_request=data["resource_request"],
+            submitted_at=data["submitted_at"],
+            first_eligible_at=data.get("first_eligible_at"),
             deadline=data.get("deadline"),
-            result_channel=data.get("result_channel"),
-            identity_context=IdentityContext.from_dict(identity) if identity is not None else None,
+            expires_at=data.get("expires_at"),
+            execution_semantics=data["execution_semantics"],
+            schedule=data.get("schedule"),
+            dependencies=tuple(dependencies),
+            queue_policy=data.get("queue_policy"),
+            retry_policy=data.get("retry_policy"),
+            cancellation_policy=data.get("cancellation_policy"),
+            checkpoint_policy=data.get("checkpoint_policy"),
+            policy_decision_ref=data.get("policy_decision_ref"),
+            exception_refs=_string_tuple(data.get("exception_refs"), "exception_refs"),
+            identity_context=IdentityContext.from_dict(data["identity_context"]),
+            correlation=Correlation.from_dict(data["correlation"]),
+            idempotency=Idempotency.from_dict(data["idempotency"]) if "idempotency" in data else None,
+            input=data["input"],
+            expected_result_contract_ref=data.get("expected_result_contract_ref"),
+            response_channel_ref=data.get("response_channel_ref"),
+            metadata=_freeze_mapping(data.get("metadata"), "metadata"),
         )
 
 
 @dataclass(frozen=True, slots=True)
 class JobStatus:
-    job_id: str
-    state: JobState
+    """Canonical observable job state projected from job-status.schema.json."""
+
+    status_id: str
+    request_id: str
+    workload_owner_ref: str
+    target_scope: Mapping[str, Any]
     observed_at: datetime
-    correlation_id: str
-    progress: int | None = None
+    current_state: JobState
+    state_entered_at: datetime
+    terminal: bool
+    transition: Mapping[str, Any]
+    attempt_count: int
+    authoritative_outcome: str
+    correlation: Correlation
+    receipt_refs: tuple[str, ...]
+    schema_version: str = "1.0.0"
+    state_history: tuple[Mapping[str, Any], ...] = ()
+    admission: Mapping[str, Any] | None = None
+    queue: Mapping[str, Any] | None = None
+    attempt: Mapping[str, Any] | None = None
+    execution_binding: Mapping[str, Any] | None = None
+    worker: Mapping[str, Any] | None = None
+    checkpoint: Mapping[str, Any] | None = None
+    retry: Mapping[str, Any] | None = None
+    cancellation: Mapping[str, Any] | None = None
+    expiration: Mapping[str, Any] | None = None
+    timing: Mapping[str, Any] | None = None
+    resource_observations: tuple[Mapping[str, Any], ...] = ()
+    progress: float | None = None
     result: Mapping[str, Any] | None = None
-    error: ErrorEnvelope | None = None
-    reason_codes: tuple[str, ...] = ()
+    failure: ErrorEnvelope | None = None
+    current_authorization_state: str | None = None
+    scheduler_acknowledgement_is_completion: bool = False
+    evidence_refs: tuple[str, ...] = ()
 
     SCHEMA_PATH: ClassVar[str] = JOB_STATUS_SCHEMA_PATH
 
     def __post_init__(self) -> None:
-        object.__setattr__(self, "job_id", _require_text(self.job_id, "job_id"))
-        object.__setattr__(self, "state", _enum_value(JobState, self.state, "state"))
+        for field_name in ("status_id", "request_id", "workload_owner_ref", "schema_version"):
+            object.__setattr__(self, field_name, _require_text(getattr(self, field_name), field_name))
+        if self.schema_version != "1.0.0":
+            raise InterfaceValidationError("schema_version must be 1.0.0")
+        object.__setattr__(self, "current_state", _enum_value(JobState, self.current_state, "current_state"))
         object.__setattr__(self, "observed_at", _parse_timestamp(self.observed_at, "observed_at"))
-        object.__setattr__(
-            self, "correlation_id", _require_text(self.correlation_id, "correlation_id")
+        object.__setattr__(self, "state_entered_at", _parse_timestamp(self.state_entered_at, "state_entered_at"))
+        if not isinstance(self.terminal, bool):
+            raise InterfaceValidationError("terminal must be a boolean")
+        terminal_states = {
+            JobState.COMPLETED, JobState.DEFERRED, JobState.REJECTED, JobState.FAILED,
+            JobState.CANCELLED, JobState.EXPIRED,
+        }
+        if self.terminal is not (self.current_state in terminal_states):
+            raise InterfaceValidationError("terminal does not match current_state")
+        if isinstance(self.attempt_count, bool) or not isinstance(self.attempt_count, int) or self.attempt_count < 0:
+            raise InterfaceValidationError("attempt_count must be an integer >= 0")
+        if self.scheduler_acknowledgement_is_completion is not False:
+            raise InterfaceValidationError("scheduler_acknowledgement_is_completion must be false")
+
+        target_scope = _closed_event_mapping(
+            self.target_scope, field_name="target_scope",
+            required={"component_ref", "capability_id", "target_ref", "environment", "profile_ref"},
+            allowed={
+                "component_ref", "capability_id", "target_ref", "environment", "profile_ref",
+                "overlay_refs", "tenant_ref", "workspace_ref", "node_ref",
+            },
         )
-        if self.progress is not None and (
-            not isinstance(self.progress, int) or not 0 <= self.progress <= 100
+        object.__setattr__(self, "target_scope", target_scope)
+
+        transition = _closed_event_mapping(
+            self.transition, field_name="transition",
+            required={"from_state", "to_state", "transitioned_at", "reason_codes"},
+            allowed={"from_state", "to_state", "transitioned_at", "reason_codes", "actor_ref", "receipt_ref"},
+        )
+        if transition["to_state"] != self.current_state.value:
+            raise InterfaceValidationError("transition.to_state must match current_state")
+        if transition["from_state"] is not None:
+            try:
+                JobState(transition["from_state"])
+            except ValueError as exc:
+                raise InterfaceValidationError("transition.from_state is not supported") from exc
+        _parse_timestamp(transition["transitioned_at"], "transition.transitioned_at")
+        _string_tuple(transition["reason_codes"], "transition.reason_codes")
+        object.__setattr__(self, "transition", transition)
+
+        if not isinstance(self.correlation, Correlation):
+            raise InterfaceValidationError("correlation must be a Correlation")
+        object.__setattr__(self, "receipt_refs", _string_tuple(self.receipt_refs, "receipt_refs"))
+        object.__setattr__(self, "evidence_refs", _string_tuple(self.evidence_refs, "evidence_refs"))
+
+        histories: list[Mapping[str, Any]] = []
+        for index, item in enumerate(self.state_history):
+            if not isinstance(item, Mapping):
+                raise InterfaceValidationError(f"state_history[{index}] must be an object")
+            histories.append(_freeze_json_value(item, f"state_history[{index}]"))
+        object.__setattr__(self, "state_history", tuple(histories))
+        observations: list[Mapping[str, Any]] = []
+        for index, item in enumerate(self.resource_observations):
+            if not isinstance(item, Mapping):
+                raise InterfaceValidationError(f"resource_observations[{index}] must be an object")
+            observations.append(_freeze_json_value(item, f"resource_observations[{index}]"))
+        object.__setattr__(self, "resource_observations", tuple(observations))
+
+        for field_name in (
+            "admission", "queue", "attempt", "execution_binding", "worker", "checkpoint",
+            "retry", "cancellation", "expiration", "timing", "result",
         ):
-            raise InterfaceValidationError("progress must be an integer from 0 to 100")
-        if self.result is not None:
-            object.__setattr__(self, "result", _freeze_mapping(self.result, "result"))
-        if self.error is not None and not isinstance(self.error, ErrorEnvelope):
-            raise InterfaceValidationError("error must be an ErrorEnvelope")
-        object.__setattr__(self, "reason_codes", _string_tuple(self.reason_codes, "reason_codes"))
-        if self.state is JobState.COMPLETED and self.error is not None:
-            raise InterfaceValidationError("completed job cannot contain an error")
-        if self.state is JobState.FAILED and self.error is None:
-            raise InterfaceValidationError("failed job must contain an error")
-        if self.state is JobState.COMPLETED and self.progress not in {None, 100}:
-            raise InterfaceValidationError("completed job progress must be 100 when present")
+            value = getattr(self, field_name)
+            if value is not None:
+                object.__setattr__(self, field_name, _freeze_json_value(value, field_name))
+        if self.failure is not None and not isinstance(self.failure, ErrorEnvelope):
+            raise InterfaceValidationError("failure must be an ErrorEnvelope")
+        if self.progress is not None:
+            if isinstance(self.progress, bool) or not isinstance(self.progress, (int, float)) or not 0 <= self.progress <= 1:
+                raise InterfaceValidationError("progress must be a number from 0 to 1")
+            object.__setattr__(self, "progress", float(self.progress))
+
+        allowed_outcomes = {
+            "no_effect", "candidate_created", "request_recorded", "change_committed",
+            "policy_decision_recorded", "evidence_recorded", "external_effect_confirmed",
+            "rolled_back",
+        }
+        if self.authoritative_outcome not in allowed_outcomes:
+            raise InterfaceValidationError("authoritative_outcome is not supported")
+        if self.current_authorization_state is not None and self.current_authorization_state not in {
+            "not_evaluated", "valid", "revoked", "expired", "indeterminate", "not_required"
+        }:
+            raise InterfaceValidationError("current_authorization_state is not supported")
+
+        attempt_states = {
+            JobState.DISPATCHED, JobState.STARTING, JobState.RUNNING, JobState.CHECKPOINTING,
+            JobState.SUSPENDED, JobState.RETRY_WAIT, JobState.COMPLETED, JobState.FAILED,
+        }
+        if self.current_state in attempt_states:
+            if self.attempt is None or self.attempt_count < 1:
+                raise InterfaceValidationError("current_state requires attempt and attempt_count >= 1")
+        if self.current_state is JobState.COMPLETED:
+            if self.result is None:
+                raise InterfaceValidationError("completed job must contain result")
+            if self.result.get("owner_verified") is not True or self.result.get("scheduler_synthesized") is not False:
+                raise InterfaceValidationError(
+                    "completed result must be owner_verified and not scheduler_synthesized"
+                )
+            if self.failure is not None:
+                raise InterfaceValidationError("completed job cannot contain failure")
+        if self.current_state is JobState.FAILED and self.failure is None:
+            raise InterfaceValidationError("failed job must contain failure")
 
     @property
-    def terminal(self) -> bool:
-        return self.state in {
-            JobState.COMPLETED,
-            JobState.CANCELLED,
-            JobState.FAILED,
-            JobState.CONFLICTED,
-            JobState.EXPIRED,
-        }
+    def state(self) -> JobState:
+        return self.current_state
+
+    @property
+    def job_id(self) -> str:
+        return self.request_id
+
+    @property
+    def correlation_id(self) -> str:
+        return self.correlation.correlation_id
+
+    @property
+    def error(self) -> ErrorEnvelope | None:
+        return self.failure
 
     def to_dict(self) -> dict[str, Any]:
         result: dict[str, Any] = {
-            "job_id": self.job_id,
-            "state": self.state.value,
+            "schema_version": self.schema_version,
+            "status_id": self.status_id,
+            "request_id": self.request_id,
+            "workload_owner_ref": self.workload_owner_ref,
+            "target_scope": _plain_json_value(self.target_scope),
             "observed_at": _format_timestamp(self.observed_at),
-            "correlation_id": self.correlation_id,
-            "reason_codes": list(self.reason_codes),
+            "current_state": self.current_state.value,
+            "state_entered_at": _format_timestamp(self.state_entered_at),
+            "terminal": self.terminal,
+            "transition": _plain_json_value(self.transition),
+            "attempt_count": self.attempt_count,
+            "authoritative_outcome": self.authoritative_outcome,
+            "scheduler_acknowledgement_is_completion": False,
+            "correlation": self.correlation.to_dict(),
+            "receipt_refs": list(self.receipt_refs),
         }
+        if self.state_history:
+            result["state_history"] = [_plain_json_value(item) for item in self.state_history]
+        for field_name in (
+            "admission", "queue", "attempt", "execution_binding", "worker", "checkpoint",
+            "retry", "cancellation", "expiration", "timing", "result",
+        ):
+            value = getattr(self, field_name)
+            if value is not None:
+                result[field_name] = _plain_json_value(value)
+        if self.resource_observations:
+            result["resource_observations"] = [
+                _plain_json_value(item) for item in self.resource_observations
+            ]
         if self.progress is not None:
             result["progress"] = self.progress
-        if self.result is not None:
-            result["result"] = dict(self.result)
-        if self.error is not None:
-            result["error"] = self.error.to_dict()
+        if self.failure is not None:
+            result["failure"] = self.failure.to_dict()
+        if self.current_authorization_state is not None:
+            result["current_authorization_state"] = self.current_authorization_state
+        if self.evidence_refs:
+            result["evidence_refs"] = list(self.evidence_refs)
         return result
 
     @classmethod
@@ -1416,24 +1966,58 @@ class JobStatus:
         if not isinstance(data, Mapping):
             raise InterfaceValidationError("job status must be an object")
         allowed = {
-            "job_id", "state", "observed_at", "correlation_id", "progress", "result",
-            "error", "reason_codes",
+            "schema_version", "status_id", "request_id", "workload_owner_ref", "target_scope",
+            "observed_at", "current_state", "state_entered_at", "terminal", "transition",
+            "state_history", "admission", "queue", "attempt_count", "attempt",
+            "execution_binding", "worker", "checkpoint", "retry", "cancellation", "expiration",
+            "timing", "resource_observations", "progress", "authoritative_outcome", "result",
+            "failure", "current_authorization_state", "scheduler_acknowledgement_is_completion",
+            "correlation", "receipt_refs", "evidence_refs",
         }
         _unexpected_fields(data, allowed)
-        required = {"job_id", "state", "observed_at", "correlation_id"}
+        required = {
+            "schema_version", "status_id", "request_id", "workload_owner_ref", "target_scope",
+            "observed_at", "current_state", "state_entered_at", "terminal", "transition",
+            "attempt_count", "authoritative_outcome", "scheduler_acknowledgement_is_completion",
+            "correlation", "receipt_refs",
+        }
         missing = sorted(required - set(data))
         if missing:
             raise InterfaceValidationError(f"missing fields: {', '.join(missing)}")
-        error = data.get("error")
+        failure = data.get("failure")
         return cls(
-            job_id=data["job_id"],
-            state=data["state"],
+            schema_version=data["schema_version"],
+            status_id=data["status_id"],
+            request_id=data["request_id"],
+            workload_owner_ref=data["workload_owner_ref"],
+            target_scope=data["target_scope"],
             observed_at=data["observed_at"],
-            correlation_id=data["correlation_id"],
+            current_state=data["current_state"],
+            state_entered_at=data["state_entered_at"],
+            terminal=data["terminal"],
+            transition=data["transition"],
+            state_history=tuple(data.get("state_history", ())),
+            admission=data.get("admission"),
+            queue=data.get("queue"),
+            attempt_count=data["attempt_count"],
+            attempt=data.get("attempt"),
+            execution_binding=data.get("execution_binding"),
+            worker=data.get("worker"),
+            checkpoint=data.get("checkpoint"),
+            retry=data.get("retry"),
+            cancellation=data.get("cancellation"),
+            expiration=data.get("expiration"),
+            timing=data.get("timing"),
+            resource_observations=tuple(data.get("resource_observations", ())),
             progress=data.get("progress"),
-            result=_freeze_mapping(data["result"], "result") if "result" in data else None,
-            error=ErrorEnvelope.from_dict(error) if error is not None else None,
-            reason_codes=_string_tuple(data.get("reason_codes"), "reason_codes"),
+            authoritative_outcome=data["authoritative_outcome"],
+            result=data.get("result"),
+            failure=ErrorEnvelope.from_dict(failure) if failure is not None else None,
+            current_authorization_state=data.get("current_authorization_state"),
+            scheduler_acknowledgement_is_completion=data["scheduler_acknowledgement_is_completion"],
+            correlation=Correlation.from_dict(data["correlation"]),
+            receipt_refs=_string_tuple(data.get("receipt_refs"), "receipt_refs"),
+            evidence_refs=_string_tuple(data.get("evidence_refs"), "evidence_refs"),
         )
 
 
@@ -1604,7 +2188,7 @@ class UnixHttpClient:
             "/jobs",
             body=request.to_dict(),
             correlation=request.correlation,
-            idempotency_key=request.idempotency.key,
+            idempotency_key=request.idempotency.key if request.idempotency is not None else None,
             expected_status=(200, 202),
         )
         if payload is None:

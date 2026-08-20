@@ -342,12 +342,21 @@ def register_commands(subparsers: argparse._SubParsersAction) -> tuple[CommandDe
 def standalone_main(
     definition: CommandDefinition,
     argv: Sequence[str] | None = None,
+    *,
+    repository_root_override: str | os.PathLike[str] | None = None,
 ) -> int:
-    """Run one command module directly for local validation and diagnostics."""
+    """Run one command module directly or through the repository-level CLI.
+
+    The root CLI resolves the repository before dispatch and passes it separately
+    from command-specific arguments.  Direct module execution may instead use
+    the command's ``--repository-root`` option.
+    """
 
     parser = argparse.ArgumentParser(prog=f"koa {definition.name}", description=definition.summary)
     definition.configure(parser)
     args = parser.parse_args(argv)
+    if repository_root_override is not None:
+        args.repository_root = Path(repository_root_override).expanduser().resolve()
     try:
         return definition.execute(args)
     except CommandError as exc:

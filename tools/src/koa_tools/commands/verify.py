@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+from pathlib import Path
 from typing import Sequence
 
 from . import validate
@@ -27,9 +28,16 @@ def run(args: argparse.Namespace) -> int:
     return validate.run(args)
 
 
-def main(argv: Sequence[str] | None = None) -> int:
+def main(
+    argv: Sequence[str] | None = None,
+    *,
+    repository_root: str | Path | None = None,
+) -> int:
     parser = configure_parser(argparse.ArgumentParser(prog="koa verify", description=__doc__))
-    return run(parser.parse_args(argv))
+    args = parser.parse_args(argv)
+    if repository_root is not None:
+        args.root = Path(repository_root).expanduser().resolve()
+    return run(args)
 
 
 if __name__ == "__main__":

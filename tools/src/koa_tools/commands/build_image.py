@@ -412,8 +412,16 @@ COMMAND = CommandDefinition(
 )
 
 
-def main(argv: Sequence[str] | None = None) -> int:
-    return standalone_main(COMMAND, argv)
+def main(
+    argv: Sequence[str] | None = None,
+    *,
+    repository_root: str | os.PathLike[str] | None = None,
+) -> int:
+    return standalone_main(
+        COMMAND,
+        argv,
+        repository_root_override=repository_root,
+    )
 
 
 if __name__ == "__main__":

@@ -311,14 +311,31 @@ def _copy_tree(source: Path, destination: Path) -> None:
             _copy(item, target)
 
 
-def _materialize(repository: Repository, spec: BuildSpec, build_root: Path, payload_root: Path) -> list[dict[str, str]]:
+def _declared_mode(value: str | None, *, location: str, default: int | None = None) -> int:
+    if value is None:
+        if default is None:
+            raise ComponentBuildError(f"{location}.mode must be declared")
+        return default
+    if len(value) != 4 or any(character not in "01234567" for character in value):
+        raise ComponentBuildError(f"{location}.mode must be a four-digit octal mode")
+    return int(value, 8)
+
+
+def _materialize(
+    repository: Repository,
+    spec: BuildSpec,
+    build_root: Path,
+    payload_root: Path,
+) -> tuple[list[dict[str, str]], dict[str, int]]:
     records: list[dict[str, str]] = []
+    logical_modes: dict[str, int] = {}
     if spec.build_kind == "python_wheel":
         wheels = sorted((build_root / "wheel").glob("*.whl"))
         if len(wheels) != 1:
             raise ComponentBuildError(f"python_wheel build must produce exactly one wheel; found {len(wheels)}")
         target = payload_root / "artifacts" / wheels[0].name
         _copy(wheels[0], target)
+        logical_modes[target.relative_to(payload_root).as_posix()] = 0o644
         records.append({"source": spec.project_ref, "destination": target.relative_to(payload_root).as_posix(), "representation": "python_wheel"})
         extra = 0
         for entry in spec.entries:
@@ -328,26 +345,47 @@ def _materialize(repository: Repository, spec: BuildSpec, build_root: Path, payl
             extra += 1
             source = repository.resolve(f"{spec.source_root}/{entry.source}", must_exist=True)
             target = payload_root / "declared" / f"{extra:04d}"
-            _copy_tree(source, target) if source.is_dir() else _copy(source, target)
+            declared_mode = _declared_mode(
+                entry.mode, location=f"payload entry {entry.source}", default=0o644
+            )
+            if source.is_dir():
+                _copy_tree(source, target)
+                for materialized in target.rglob("*"):
+                    if materialized.is_file() and not materialized.is_symlink():
+                        logical_modes[materialized.relative_to(payload_root).as_posix()] = declared_mode
+            else:
+                _copy(source, target, declared_mode)
+                logical_modes[target.relative_to(payload_root).as_posix()] = declared_mode
             records.append({"source": entry.source, "destination": entry.destination, "representation": f"declared/{extra:04d}"})
-        return records
+        return records, logical_modes
     for entry in spec.entries:
         if not entry.source.startswith("target/release/"):
             raise ComponentBuildError(f"Rust payload is not a declared release binary: {entry.source}")
         name = Path(entry.source).name
-        _copy(build_root / "target" / "release" / name, payload_root / "artifacts" / name, 0o755)
+        logical_mode = _declared_mode(entry.mode, location=f"payload entry {entry.source}")
+        target = payload_root / "artifacts" / name
+        _copy(build_root / "target" / "release" / name, target, logical_mode)
+        logical_modes[target.relative_to(payload_root).as_posix()] = logical_mode
         records.append({"source": entry.source, "destination": entry.destination, "representation": f"artifacts/{name}"})
-    return records
+    return records, logical_modes
 
 
-def _payload_files(payload_root: Path) -> list[dict[str, Any]]:
+def _payload_files(
+    payload_root: Path,
+    *,
+    logical_modes: Mapping[str, int] | None = None,
+) -> list[dict[str, Any]]:
+    modes = logical_modes or {}
     rows = []
     for path in sorted(payload_root.rglob("*"), key=lambda item: item.as_posix()):
         if path.is_file() and not path.is_symlink():
-            rows.append({"path": path.relative_to(payload_root).as_posix(), "sha256": _sha(path), "size_bytes": path.stat().st_size, "mode": f"{stat.S_IMODE(path.stat().st_mode):04o}"})
+            relative = path.relative_to(payload_root).as_posix()
+            mode = modes.get(relative, 0o644)
+            rows.append({"path": relative, "sha256": _sha(path), "size_bytes": path.stat().st_size, "mode": f"{mode:04o}"})
     if not rows:
         raise ComponentBuildError("component build produced an empty payload")
     return rows
+
 
 
 def _compatibility(repository: Repository, spec: BuildSpec) -> dict[str, str]:
@@ -421,9 +459,9 @@ def execute(args: argparse.Namespace) -> int:
         run_process(argv, cwd=repository.root, environment=env, timeout=300)
         payload_root = stage / "payload"
         payload_root.mkdir(parents=True)
-        declared = _materialize(repository, spec, build_root, payload_root)
+        declared, logical_modes = _materialize(repository, spec, build_root, payload_root)
         _copy(repository.resolve(spec.payload_ref, must_exist=True), stage / "payload-manifest.toml")
-        payload_files = _payload_files(payload_root)
+        payload_files = _payload_files(payload_root, logical_modes=logical_modes)
         digest_path = stage / "payload-digests.json"
         _write_json(digest_path, {"algorithm": "sha256", "component_id": spec.component_id, "files": payload_files})
         sbom, provenance = _evidence(repository, spec, stage, payload_root, digest_path, revision, tool, tool_version, argv, build_root, epoch, env)

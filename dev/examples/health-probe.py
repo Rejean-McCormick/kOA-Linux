@@ -72,7 +72,12 @@ def main(argv: Sequence[str] | None = None) -> int:
         )
         return EXIT_NOT_READY
 
-    ready = health.startup_complete and readiness.accepting_work
+    if health.startup_complete is not None:
+        startup_ready = health.startup_complete
+    else:
+        startup = health.startup or {}
+        startup_ready = startup.get("state") == "healthy"
+    ready = startup_ready and readiness.ready
     print(
         json.dumps(
             {

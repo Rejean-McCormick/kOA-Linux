@@ -72,7 +72,7 @@ class ReadinessSnapshot:
 
     @property
     def accepting_publication(self) -> bool:
-        return self.publication.accepting_work
+        return self.publication.ready
 
     def as_dict(self) -> dict[str, object]:
         return {
@@ -290,25 +290,99 @@ class PublicationGatewayHealth:
                 }
             ),
         )
+        observed_text = observed_at.isoformat().replace("+00:00", "Z")
         dependency_map = MappingProxyType(
             {
-                "audit_broker": state.audit_broker.value,
-                "governance_policy_runtime": state.governance_policy_runtime.value,
-                "identity_and_trust": state.identity_and_trust.value,
-                "resource_governor": state.resource_governor.value,
+                "audit_broker": state.audit_broker,
+                "governance_policy_runtime": state.governance_policy_runtime,
+                "identity_and_trust": state.identity_and_trust,
+                "resource_governor": state.resource_governor,
             }
         )
+        dependencies = tuple(
+            {
+                "dependency_id": name,
+                "classification": "required_component",
+                "state": dependency_state.value,
+                "required_for_this_class": True,
+                "observed_at": observed_text,
+                **(
+                    {}
+                    if dependency_state is DependencyState.AVAILABLE
+                    else {"reason_codes": [f"{name.upper()}_{dependency_state.value.upper()}"]}
+                ),
+            }
+            for name, dependency_state in dependency_map.items()
+        )
+
+        publication_conditions = (
+            _readiness_condition(
+                "startup_complete",
+                "startup_completion",
+                CheckState.PASS if state.startup_complete else CheckState.FAIL,
+                observed_text,
+            ),
+            *(
+                _readiness_condition(
+                    name,
+                    _condition_category(name),
+                    value,
+                    observed_text,
+                )
+                for name, value in readiness_checks
+            ),
+        )
+        inspection_conditions = (
+            _readiness_condition(
+                "process_responsive",
+                "process_liveness",
+                state.process_responsive,
+                observed_text,
+            ),
+        )
+        publication_reason_codes = tuple(
+            sorted({reason.upper() for reason in reasons})
+        )
+        if not publication_ready and not publication_reason_codes:
+            publication_reason_codes = ("PUBLICATION_NOT_READY",)
+
+        if aggregate_state is HealthState.HEALTHY:
+            publication_state = (
+                HealthState.HEALTHY if publication_ready else HealthState.DEGRADED
+            )
+        else:
+            publication_state = aggregate_state
+
+        readiness_freshness = MappingProxyType(
+            {
+                "source": f"health:{self.COMPONENT_ID}",
+                "confidence": "direct",
+                "staleness_state": "current",
+                "observed_at": observed_text,
+                "age_seconds": 0,
+            }
+        )
+        contract_ref = "docs/contracts/components/publication-gateway.component.json"
         publication_readiness = Readiness(
+            readiness_id="readiness:publication_gateway:governed_publication",
             component_id=self.COMPONENT_ID,
+            component_instance_id=self._instance_id,
+            component_contract_ref=contract_ref,
+            capability_id="governed_publication",
             readiness_class=ReadinessClass.PUBLICATION,
-            state=HealthState.HEALTHY if publication_ready else HealthState.DEGRADED,
-            accepting_work=publication_ready,
+            ready=publication_ready,
+            operational_state=publication_state,
+            usable_operation_classes=PUBLICATION_OPERATIONS if publication_ready else (),
+            denied_operation_classes=() if publication_ready else PUBLICATION_OPERATIONS,
+            conditions=publication_conditions,
+            dependencies=dependencies,
+            active_contract=MappingProxyType(
+                {"ref": contract_ref, "version": self.CONTRACT_VERSION}
+            ),
+            profile_refs=state.profile_refs,
+            freshness=readiness_freshness,
             observed_at=observed_at,
-            capability_id="publication_gateway.governed_publication",
-            usable_operations=PUBLICATION_OPERATIONS if publication_ready else (),
-            denied_operations=() if publication_ready else PUBLICATION_OPERATIONS,
-            required_dependencies=dependency_map,
-            reason_codes=() if publication_ready else tuple(sorted(reasons)),
+            reason_codes=() if publication_ready else publication_reason_codes,
             recovery_conditions=(
                 "bind_explicit_publisher_and_receipt_store",
                 "restore_required_authorities",
@@ -318,16 +392,22 @@ class PublicationGatewayHealth:
             else (),
         )
         inspection_readiness = Readiness(
+            readiness_id="readiness:publication_gateway:local_inspection",
             component_id=self.COMPONENT_ID,
+            component_instance_id=self._instance_id,
+            component_contract_ref=contract_ref,
+            capability_id="local_inspection",
             readiness_class=ReadinessClass.LOCAL_READ,
-            state=HealthState.HEALTHY if local_inspection_ready else HealthState.UNAVAILABLE,
-            accepting_work=local_inspection_ready,
+            ready=local_inspection_ready,
+            operational_state=(
+                HealthState.HEALTHY if local_inspection_ready else HealthState.UNAVAILABLE
+            ),
+            usable_operation_classes=INSPECTION_OPERATIONS if local_inspection_ready else (),
+            denied_operation_classes=() if local_inspection_ready else INSPECTION_OPERATIONS,
+            conditions=inspection_conditions,
+            freshness=readiness_freshness,
             observed_at=observed_at,
-            capability_id="publication_gateway.local_inspection",
-            usable_operations=INSPECTION_OPERATIONS if local_inspection_ready else (),
-            denied_operations=() if local_inspection_ready else INSPECTION_OPERATIONS,
-            required_dependencies=MappingProxyType({}),
-            reason_codes=() if local_inspection_ready else ("process_unavailable",),
+            reason_codes=() if local_inspection_ready else ("PROCESS_UNAVAILABLE",),
             recovery_conditions=() if local_inspection_ready else ("restore_process",),
         )
         return GatewayStatus(
@@ -341,6 +421,42 @@ class PublicationGatewayHealth:
             queue_depth=state.queue_depth,
             inflight_publications=state.inflight_publications,
         )
+
+
+def _condition_category(name: str) -> str:
+    return {
+        "audit_path_ready": "dependency_readiness",
+        "destination_acknowledgement_path_ready": "execution_readiness",
+        "governance_policy_runtime_ready": "policy_readiness",
+        "identity_and_trust_ready": "identity_and_trust_readiness",
+        "publisher_adapter_ready": "execution_readiness",
+        "receipt_directory_accessible": "execution_readiness",
+        "receipt_store_ready": "execution_readiness",
+        "resource_envelope_ready": "dependency_readiness",
+        "schema_versions_supported": "contract_readiness",
+        "staging_directory_accessible": "execution_readiness",
+        "trusted_time_ready": "dependency_readiness",
+    }[name]
+
+
+def _readiness_condition(
+    condition_id: str, category: str, state: CheckState, observed_at: str
+) -> dict[str, object]:
+    status = {
+        CheckState.PASS: "satisfied",
+        CheckState.FAIL: "unsatisfied",
+        CheckState.UNKNOWN: "unknown",
+    }[state]
+    result: dict[str, object] = {
+        "condition_id": condition_id,
+        "category": category,
+        "required": True,
+        "status": status,
+        "observed_at": observed_at,
+    }
+    if state is not CheckState.PASS:
+        result["reason_codes"] = [f"{condition_id.upper()}_{state.value.upper()}"]
+    return result
 
 
 def _dependency_check(state: DependencyState) -> CheckState:
