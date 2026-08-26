@@ -11,8 +11,8 @@ pub use policy_client::{
     PolicyDecisionStatus, PolicyEvaluationRequest,
 };
 pub use receipt_store::{
-    ReceiptRecord, ReceiptStore, ReceiptStoreError, ReceiptStoreErrorCode,
-    ReceiptWriteDisposition, MAX_RECEIPT_BYTES,
+    ReceiptRecord, ReceiptStore, ReceiptStoreError, ReceiptStoreErrorCode, ReceiptWriteDisposition,
+    MAX_RECEIPT_BYTES,
 };
 pub use system_backend::{
     BackendError, BackendErrorCode, BackendIdentifier, BackendOperationResult, DeclaredVolume,

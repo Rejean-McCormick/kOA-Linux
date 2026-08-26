@@ -227,8 +227,8 @@ impl PrivilegedBroker {
                     "policy_decision_required",
                     "this operation requires a bound policy decision reference",
                 ));
-            }
-            None => {}
+            },
+            None => {},
         }
 
         if request.expected_current_state.is_empty() {
@@ -324,12 +324,15 @@ impl PrivilegedBroker {
                     verified_after_state: None,
                     receipt_ref: None,
                 };
-            }
+            },
         };
 
         let scopes = conflict_scopes(&validated);
         {
-            let mut state = self.state.lock().unwrap_or_else(|poisoned| poisoned.into_inner());
+            let mut state = self
+                .state
+                .lock()
+                .unwrap_or_else(|poisoned| poisoned.into_inner());
             if let Some(record) = state.records.get(&validated.request_id) {
                 if record.fingerprint == validated.canonical_fingerprint {
                     return record.result.clone();
@@ -340,7 +343,10 @@ impl PrivilegedBroker {
                     "request identity was already bound to a different canonical body",
                 );
             }
-            if scopes.iter().any(|scope| state.active_scopes.contains(scope)) {
+            if scopes
+                .iter()
+                .any(|scope| state.active_scopes.contains(scope))
+            {
                 return conflict_result(
                     &validated,
                     "target_scope_busy",
@@ -368,7 +374,10 @@ impl PrivilegedBroker {
             },
         };
 
-        let mut state = self.state.lock().unwrap_or_else(|poisoned| poisoned.into_inner());
+        let mut state = self
+            .state
+            .lock()
+            .unwrap_or_else(|poisoned| poisoned.into_inner());
         if result.status.is_terminal() {
             for scope in &scopes {
                 state.active_scopes.remove(scope);
@@ -394,12 +403,13 @@ impl PrivilegedBroker {
         outcome: BackendOutcome,
     ) -> Result<BrokerResult, AdmissionError> {
         let stored = {
-            let state = self.state.lock().unwrap_or_else(|poisoned| poisoned.into_inner());
-            state
-                .records
-                .get(request_id)
-                .cloned()
-                .ok_or_else(|| AdmissionError::new("request_not_found", "accepted request is unknown"))?
+            let state = self
+                .state
+                .lock()
+                .unwrap_or_else(|poisoned| poisoned.into_inner());
+            state.records.get(request_id).cloned().ok_or_else(|| {
+                AdmissionError::new("request_not_found", "accepted request is unknown")
+            })?
         };
         if stored.result.status != BrokerStatus::Accepted {
             return Err(AdmissionError::new(
@@ -416,12 +426,16 @@ impl PrivilegedBroker {
             ));
         }
 
-        let mut state = self.state.lock().unwrap_or_else(|poisoned| poisoned.into_inner());
-        let current = state
-            .records
-            .get(request_id)
-            .ok_or_else(|| AdmissionError::new("request_not_found", "accepted request disappeared"))?;
-        if current.fingerprint != stored.fingerprint || current.result.status != BrokerStatus::Accepted {
+        let mut state = self
+            .state
+            .lock()
+            .unwrap_or_else(|poisoned| poisoned.into_inner());
+        let current = state.records.get(request_id).ok_or_else(|| {
+            AdmissionError::new("request_not_found", "accepted request disappeared")
+        })?;
+        if current.fingerprint != stored.fingerprint
+            || current.result.status != BrokerStatus::Accepted
+        {
             return Err(AdmissionError::new(
                 "request_state_conflict",
                 "accepted request changed while it was being finalized",
@@ -494,7 +508,7 @@ impl PrivilegedBroker {
                     verified_after_state: Some(verified_after_state),
                     receipt_ref: durable_receipt_ref,
                 }
-            }
+            },
             BackendOutcome::Accepted { operation_ref } => {
                 if operation_ref.is_empty() {
                     return base(
@@ -514,10 +528,12 @@ impl PrivilegedBroker {
                     verified_after_state: None,
                     receipt_ref: None,
                 }
-            }
-            BackendOutcome::Failed { code, message } => {
-                base(BrokerStatus::Failed, &bounded_code(&code), bounded_message(&message))
-            }
+            },
+            BackendOutcome::Failed { code, message } => base(
+                BrokerStatus::Failed,
+                &bounded_code(&code),
+                bounded_message(&message),
+            ),
             BackendOutcome::UnknownEffect { code, message } => base(
                 BrokerStatus::RecoveryRequired,
                 &bounded_code(&code),
@@ -558,7 +574,11 @@ fn canonical_request_bytes(request: &BrokerRequest, operation: OperationId) -> V
     push_field(&mut output, "operation", operation.as_str());
     push_field(&mut output, "request_id", &request.request_id);
     push_field(&mut output, "caller_identity", &request.caller_identity);
-    push_field(&mut output, "profile_context_ref", &request.profile_context_ref);
+    push_field(
+        &mut output,
+        "profile_context_ref",
+        &request.profile_context_ref,
+    );
     push_field(
         &mut output,
         "policy_decision_ref",
@@ -647,7 +667,7 @@ fn json_escape(value: &str) -> String {
             '\t' => escaped.push_str("\\t"),
             character if character.is_control() => {
                 escaped.push_str(&format!("\\u{:04x}", character as u32));
-            }
+            },
             character => escaped.push(character),
         }
     }
@@ -705,19 +725,19 @@ mod tests {
             "manage_knowledge_artifact" => {
                 parameters.insert("action".to_owned(), "quarantine".to_owned());
                 vec!["artifact:knowledge:example".to_owned()]
-            }
+            },
             "import_offline_bundle" => {
                 parameters.insert("target_state".to_owned(), "quarantine".to_owned());
                 vec!["bundle:offline:example".to_owned()]
-            }
+            },
             "manage_declared_encrypted_volume" => {
                 parameters.insert("action".to_owned(), "mount".to_owned());
                 vec!["volume:declared:example".to_owned()]
-            }
+            },
             "restart_allowlisted_service_group" => {
                 parameters.insert("critical".to_owned(), "true".to_owned());
                 vec!["service-group:example".to_owned()]
-            }
+            },
             _ => vec!["artifact:example".to_owned()],
         };
         BrokerRequest {
@@ -745,7 +765,9 @@ mod tests {
         assert_eq!(result.status, BrokerStatus::Rejected);
 
         let mut invalid = request("activate_service_bundle");
-        invalid.parameters.insert("command".to_owned(), "shutdown".to_owned());
+        invalid
+            .parameters
+            .insert("command".to_owned(), "shutdown".to_owned());
         let result = broker.execute(invalid, 1_000, &CompletingBackend);
         assert_eq!(result.status, BrokerStatus::Rejected);
     }
@@ -777,11 +799,7 @@ mod tests {
         }
 
         let broker = PrivilegedBroker::default();
-        let result = broker.execute(
-            request("activate_system_artifact"),
-            1_000,
-            &MissingReceipt,
-        );
+        let result = broker.execute(request("activate_system_artifact"), 1_000, &MissingReceipt);
         assert_eq!(result.status, BrokerStatus::RecoveryRequired);
     }
 }

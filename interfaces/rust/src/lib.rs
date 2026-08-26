@@ -18,12 +18,11 @@ pub mod receipt;
 pub use client::{InterfaceClient, Transport};
 pub use error::{ClientError, ErrorCategory, ErrorEnvelope, TransportError};
 pub use health::{
-    CapabilityReadiness, DependencyHealth, DependencyRequirement, Freshness,
-    HealthStatus, OperationalState, ReadinessClass, ReadinessStatus,
+    CapabilityReadiness, DependencyHealth, DependencyRequirement, Freshness, HealthStatus,
+    OperationalState, ReadinessClass, ReadinessStatus,
 };
 pub use receipt::{
-    CommitState, DecisionState, DisclosureClass, ReceiptClass, ReceiptEnvelope,
-    ReceiptOutcome,
+    CommitState, DecisionState, DisclosureClass, ReceiptClass, ReceiptEnvelope, ReceiptOutcome,
 };
 
 /// Canonical repository-relative schema identifiers consumed by this crate.
@@ -31,8 +30,7 @@ pub mod schema {
     pub const EVENT_ENVELOPE: &str = "interfaces/transport/event-envelope.schema.json";
     pub const ERROR_ENVELOPE: &str = "interfaces/transport/error-envelope.schema.json";
     pub const IDEMPOTENCY: &str = "interfaces/transport/idempotency.schema.json";
-    pub const VERSION_NEGOTIATION: &str =
-        "interfaces/transport/version-negotiation.schema.json";
+    pub const VERSION_NEGOTIATION: &str = "interfaces/transport/version-negotiation.schema.json";
     pub const HEALTH_STATUS: &str = "interfaces/health/health-status.schema.json";
     pub const READINESS: &str = "interfaces/health/readiness.schema.json";
     pub const RECEIPT_ENVELOPE: &str = "interfaces/receipts/receipt-envelope.schema.json";
@@ -40,10 +38,8 @@ pub mod schema {
     pub const JOB_REQUEST: &str = "interfaces/jobs/job-request.schema.json";
     pub const JOB_STATUS: &str = "interfaces/jobs/job-status.schema.json";
     pub const IDENTITY_CONTEXT: &str = "interfaces/identity/identity-context.schema.json";
-    pub const CAPABILITY_SNAPSHOT: &str =
-        "interfaces/capabilities/capability-snapshot.schema.json";
+    pub const CAPABILITY_SNAPSHOT: &str = "interfaces/capabilities/capability-snapshot.schema.json";
 }
-
 
 /// A versioned interaction class crossing an ownership boundary.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -128,10 +124,7 @@ pub struct IdentityContext {
 
 impl IdentityContext {
     #[must_use]
-    pub fn new(
-        schema_version: impl Into<String>,
-        actor_ref: impl Into<String>,
-    ) -> Self {
+    pub fn new(schema_version: impl Into<String>, actor_ref: impl Into<String>) -> Self {
         Self {
             schema: schema::IDENTITY_CONTEXT.to_owned(),
             schema_version: schema_version.into(),
@@ -274,7 +267,7 @@ impl IdempotencyContext {
         require_non_empty("owner_component_id", &self.owner_component_id)?;
 
         match self.scope.kind.as_str() {
-            "owner_operation" => {}
+            "owner_operation" => {},
             "owner_operation_target" => {
                 if self.scope.target_ref.as_deref().unwrap_or("").is_empty() {
                     return Err(BindingValidationError::new(
@@ -282,7 +275,7 @@ impl IdempotencyContext {
                         "is required for owner_operation_target",
                     ));
                 }
-            }
+            },
             "workflow_step" => {
                 if self.scope.workflow_id.as_deref().unwrap_or("").is_empty() {
                     return Err(BindingValidationError::new(
@@ -296,13 +289,13 @@ impl IdempotencyContext {
                         "is required for workflow_step",
                     ));
                 }
-            }
+            },
             _ => {
                 return Err(BindingValidationError::new(
                     "scope.kind",
                     "must be owner_operation, owner_operation_target, or workflow_step",
                 ));
-            }
+            },
         }
         optional_non_empty("scope.target_ref", self.scope.target_ref.as_deref())?;
         optional_non_empty("scope.workflow_id", self.scope.workflow_id.as_deref())?;
@@ -337,14 +330,14 @@ impl IdempotencyContext {
             (Some(schema_ref), Some(schema_version)) => {
                 require_non_empty("canonical_request.schema_ref", schema_ref)?;
                 require_non_empty("canonical_request.schema_version", schema_version)?;
-            }
-            (None, None) => {}
+            },
+            (None, None) => {},
             _ => {
                 return Err(BindingValidationError::new(
                     "canonical_request.schema_ref",
                     "schema_ref and schema_version must be provided together",
                 ));
-            }
+            },
         }
 
         if let Some(expected_state) = &self.expected_state {
@@ -370,7 +363,7 @@ impl IdempotencyContext {
                     "duplicate_handling.action",
                     "contains an unsupported duplicate action",
                 ));
-            }
+            },
         };
         if !matches!(
             self.duplicate_handling.result_consistency.as_str(),
@@ -597,9 +590,10 @@ impl VersionNegotiation {
         optional_non_empty("preferred_version", self.preferred_version.as_deref())?;
         optional_non_empty("selected_version", self.selected_version.as_deref())?;
 
-        if let (Some(preferred), Some(offered)) =
-            (self.preferred_version.as_deref(), self.offered_versions.as_ref())
-        {
+        if let (Some(preferred), Some(offered)) = (
+            self.preferred_version.as_deref(),
+            self.offered_versions.as_ref(),
+        ) {
             if !offered.iter().any(|version| version == preferred) {
                 return Err(BindingValidationError::new(
                     "preferred_version",
@@ -607,9 +601,10 @@ impl VersionNegotiation {
                 ));
             }
         }
-        if let (Some(selected), Some(offered)) =
-            (self.selected_version.as_deref(), self.offered_versions.as_ref())
-        {
+        if let (Some(selected), Some(offered)) = (
+            self.selected_version.as_deref(),
+            self.offered_versions.as_ref(),
+        ) {
             if !offered.iter().any(|version| version == selected) {
                 return Err(BindingValidationError::new(
                     "selected_version",
@@ -691,7 +686,7 @@ impl VersionNegotiation {
                         "version_offer must omit selected_version and rejection",
                     ));
                 }
-            }
+            },
             VersionNegotiationMessageType::VersionSelection => {
                 if self.offered_versions.is_none()
                     || self.selected_version.is_none()
@@ -708,7 +703,7 @@ impl VersionNegotiation {
                         "version_selection must omit rejection",
                     ));
                 }
-            }
+            },
             VersionNegotiationMessageType::VersionRejection => {
                 if self.rejection.is_none() {
                     return Err(BindingValidationError::new(
@@ -722,12 +717,11 @@ impl VersionNegotiation {
                         "version_rejection must omit selected_version",
                     ));
                 }
-            }
+            },
         }
         Ok(())
     }
 }
-
 
 /// Interface identity carried by the canonical domain-event envelope.
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -944,9 +938,15 @@ impl<T> EventEnvelope<T> {
             "interface.interface_version",
             &self.interface.interface_version,
         )?;
-        optional_non_empty("interface.contract_ref", self.interface.contract_ref.as_deref())?;
+        optional_non_empty(
+            "interface.contract_ref",
+            self.interface.contract_ref.as_deref(),
+        )?;
         require_non_empty("publisher.component_id", &self.publisher.component_id)?;
-        optional_non_empty("publisher.instance_id", self.publisher.instance_id.as_deref())?;
+        optional_non_empty(
+            "publisher.instance_id",
+            self.publisher.instance_id.as_deref(),
+        )?;
         optional_non_empty("publisher.profile_id", self.publisher.profile_id.as_deref())?;
         if self.intended_receivers.is_empty() {
             return Err(BindingValidationError::new(
@@ -957,9 +957,15 @@ impl<T> EventEnvelope<T> {
         for receiver in &self.intended_receivers {
             require_non_empty("intended_receivers.identifier", &receiver.identifier)?;
         }
-        require_non_empty("correlation.correlation_id", &self.correlation.correlation_id)?;
+        require_non_empty(
+            "correlation.correlation_id",
+            &self.correlation.correlation_id,
+        )?;
         require_non_empty("correlation.request_id", &self.correlation.request_id)?;
-        optional_non_empty("correlation.causation_id", self.correlation.causation_id.as_deref())?;
+        optional_non_empty(
+            "correlation.causation_id",
+            self.correlation.causation_id.as_deref(),
+        )?;
         optional_non_empty("correlation.trace_id", self.correlation.trace_id.as_deref())?;
         require_non_empty("occurred_at", &self.occurred_at)?;
         require_non_empty("committed_at", &self.committed_at)?;
@@ -996,7 +1002,10 @@ impl<T> EventEnvelope<T> {
             }
         }
         require_non_empty("ordering.scope", &self.ordering.scope)?;
-        optional_non_empty("ordering.partition_key", self.ordering.partition_key.as_deref())?;
+        optional_non_empty(
+            "ordering.partition_key",
+            self.ordering.partition_key.as_deref(),
+        )?;
         match self.replay.mode {
             ReplayMode::Original => {
                 if self.replay.original_message_id.is_some()
@@ -1008,7 +1017,7 @@ impl<T> EventEnvelope<T> {
                         "original mode must omit replay-only fields",
                     ));
                 }
-            }
+            },
             ReplayMode::Replay => {
                 if self.replay.original_message_id.is_none() || self.replay.replayed_at.is_none() {
                     return Err(BindingValidationError::new(
@@ -1022,7 +1031,7 @@ impl<T> EventEnvelope<T> {
                 )?;
                 optional_non_empty("replay.replayed_at", self.replay.replayed_at.as_deref())?;
                 optional_non_empty("replay.replay_reason", self.replay.replay_reason.as_deref())?;
-            }
+            },
         }
         if !self.disclosure.payload_minimized {
             return Err(BindingValidationError::new(

@@ -19,7 +19,9 @@ fn read_component(relative: &str) -> String {
 }
 
 fn contains_any(source: &str, alternatives: &[&str]) -> bool {
-    alternatives.iter().any(|candidate| source.contains(candidate))
+    alternatives
+        .iter()
+        .any(|candidate| source.contains(candidate))
 }
 
 fn lexical_escape(candidate: &str) -> bool {
@@ -54,11 +56,21 @@ fn attack_corpus_covers_relative_absolute_windows_and_nul_escapes() {
         "safe\0suffix",
         "",
     ] {
-        assert!(lexical_escape(candidate), "attack corpus missed {candidate:?}");
+        assert!(
+            lexical_escape(candidate),
+            "attack corpus missed {candidate:?}"
+        );
     }
 
-    for candidate in ["artifact.img", "staging/release-set-001", "receipts/receipt-001.json"] {
-        assert!(!lexical_escape(candidate), "safe relative path rejected: {candidate}");
+    for candidate in [
+        "artifact.img",
+        "staging/release-set-001",
+        "receipts/receipt-001.json",
+    ] {
+        assert!(
+            !lexical_escape(candidate),
+            "safe relative path rejected: {candidate}"
+        );
     }
 }
 

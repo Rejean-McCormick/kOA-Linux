@@ -130,7 +130,7 @@ impl AuthorizationDecision {
         policy_decision_required: bool,
     ) -> Result<(), AuthorizationError> {
         match self.status {
-            AuthorizationStatus::Approved => {}
+            AuthorizationStatus::Approved => {},
             AuthorizationStatus::Denied => return Err(AuthorizationError::Denied),
             AuthorizationStatus::Revoked => return Err(AuthorizationError::Revoked),
         }
@@ -200,11 +200,11 @@ impl fmt::Display for AuthorizationBuildError {
         formatter.write_str(match self {
             Self::InvalidValidityWindow => {
                 "authorization expiry must be later than its not-before time"
-            }
+            },
             Self::DuplicateTargetScope => "authorization target scope contains duplicates",
             Self::TooManyTargetScopeEntries => {
                 "authorization target scope exceeds the bounded entry limit"
-            }
+            },
         })
     }
 }

@@ -199,9 +199,7 @@ impl RecoveryStrategy {
             Self::Revert => "revert",
             Self::Restore => "restore",
             Self::ForwardRepair => "forward_repair",
-            Self::ReconstructionFromVerifiedArtifacts => {
-                "reconstruction_from_verified_artifacts"
-            }
+            Self::ReconstructionFromVerifiedArtifacts => "reconstruction_from_verified_artifacts",
         }
     }
 }
@@ -258,18 +256,16 @@ impl OperationParameters {
             Self::ActivateGovernanceBundle => Operation::ActivateGovernanceBundle,
             Self::ManageKnowledgeArtifact { .. } => Operation::ManageKnowledgeArtifact,
             Self::ImportOfflineBundle { .. } => Operation::ImportOfflineBundle,
-            Self::ManageDeclaredEncryptedVolume { .. } => {
-                Operation::ManageDeclaredEncryptedVolume
-            }
+            Self::ManageDeclaredEncryptedVolume { .. } => Operation::ManageDeclaredEncryptedVolume,
             Self::RestartAllowlistedServiceGroup { .. } => {
                 Operation::RestartAllowlistedServiceGroup
-            }
+            },
             Self::RotateNodeScopedKey { .. } => Operation::RotateNodeScopedKey,
             Self::ExportNodeEvidence { .. } => Operation::ExportNodeEvidence,
             Self::EnterRecoveryTarget { .. } => Operation::EnterRecoveryTarget,
             Self::ExecuteRollbackOrForwardRepair { .. } => {
                 Operation::ExecuteRollbackOrForwardRepair
-            }
+            },
         }
     }
 
@@ -300,13 +296,13 @@ impl OperationParameters {
             Self::InspectNodeState => "inspect_node_state".to_owned(),
             Self::StageSystemArtifact { staging_path } => {
                 format!("stage_system_artifact|{}", staging_path.canonical())
-            }
+            },
             Self::ActivateSystemArtifact => "activate_system_artifact".to_owned(),
             Self::ActivateServiceBundle => "activate_service_bundle".to_owned(),
             Self::ActivateGovernanceBundle => "activate_governance_bundle".to_owned(),
             Self::ManageKnowledgeArtifact { action } => {
                 format!("manage_knowledge_artifact|{}", action.as_str())
-            }
+            },
             Self::ImportOfflineBundle {
                 destination,
                 target_state,
@@ -343,7 +339,7 @@ impl OperationParameters {
             ),
             Self::EnterRecoveryTarget { recovery_target } => {
                 format!("enter_recovery_target|{recovery_target}")
-            }
+            },
             Self::ExecuteRollbackOrForwardRepair {
                 failed_request_id,
                 recovery_plan_ref,
@@ -536,8 +532,16 @@ impl NodeOperationRequest {
         append_field(&mut output, "operation", self.operation.as_str());
         append_field(&mut output, "request_id", self.request_id.as_str());
         append_field(&mut output, "idempotency_id", self.idempotency_id.as_str());
-        append_field(&mut output, "caller_identity", self.caller_identity.as_str());
-        append_field(&mut output, "service_identity", self.service_identity.as_str());
+        append_field(
+            &mut output,
+            "caller_identity",
+            self.caller_identity.as_str(),
+        );
+        append_field(
+            &mut output,
+            "service_identity",
+            self.service_identity.as_str(),
+        );
         append_field(
             &mut output,
             "profile_context_ref",
@@ -596,7 +600,8 @@ impl RequestIdentityBinding {
     }
 
     pub fn compare(&self, candidate: &NodeOperationRequest) -> ReplayDisposition {
-        if self.request_id != candidate.request_id || self.idempotency_id != candidate.idempotency_id
+        if self.request_id != candidate.request_id
+            || self.idempotency_id != candidate.idempotency_id
         {
             ReplayDisposition::UnrelatedIdentity
         } else if self.canonical_body == candidate.canonical_body() {
@@ -709,7 +714,8 @@ fn validate_bounded_value(
 }
 
 fn validate_volume_parameters(parameters: &OperationParameters) -> Result<(), RequestBuildError> {
-    let OperationParameters::ManageDeclaredEncryptedVolume { action, mount_path } = parameters else {
+    let OperationParameters::ManageDeclaredEncryptedVolume { action, mount_path } = parameters
+    else {
         return Ok(());
     };
     match (action, mount_path) {

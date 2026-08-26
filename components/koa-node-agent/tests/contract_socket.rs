@@ -1,11 +1,11 @@
 #![forbid(unsafe_code)]
 
+#[path = "../src/adapters/mod.rs"]
+mod adapters;
 #[path = "../src/domain/mod.rs"]
 mod domain;
 #[path = "../src/ports/mod.rs"]
 mod ports;
-#[path = "../src/adapters/mod.rs"]
-mod adapters;
 
 use std::fs;
 use std::io::Cursor;
@@ -147,7 +147,9 @@ fn unauthorized_peer_is_rejected_without_invoking_handler() {
     let socket = runtime.join("node-agent.sock");
     let invoked = Arc::new(Mutex::new(false));
     let handler_invoked = Arc::clone(&invoked);
-    let denied_uid = current_uid().checked_add(1).expect("UID increment is bounded");
+    let denied_uid = current_uid()
+        .checked_add(1)
+        .expect("UID increment is bounded");
     let server = UnixSocketServer::bind(
         UnixSocketConfig {
             runtime_root: runtime.clone(),
@@ -184,8 +186,14 @@ fn unauthorized_peer_is_rejected_without_invoking_handler() {
         .join()
         .expect("server thread joins")
         .expect_err("server rejects unallowlisted peer");
-    assert_eq!(server_error.code(), SocketProtocolErrorCode::PeerUnauthorized);
-    assert!(client_result.is_err(), "connection closes without a success frame");
+    assert_eq!(
+        server_error.code(),
+        SocketProtocolErrorCode::PeerUnauthorized
+    );
+    assert!(
+        client_result.is_err(),
+        "connection closes without a success frame"
+    );
     assert!(!*invoked.lock().expect("handler flag lock"));
     fs::remove_dir(runtime).expect("temporary runtime directory is removed");
 }
@@ -212,10 +220,7 @@ struct SystemdManagerDouble {
 }
 
 impl adapters::SystemdManager for SystemdManagerDouble {
-    fn unit_state(
-        &self,
-        unit: &str,
-    ) -> Result<adapters::UnitState, adapters::SystemdManagerError> {
+    fn unit_state(&self, unit: &str) -> Result<adapters::UnitState, adapters::SystemdManagerError> {
         Ok(*self
             .states
             .lock()
@@ -265,14 +270,8 @@ impl adapters::MountManager for MountManagerDouble {
         Ok(())
     }
 
-    fn unmount(
-        &self,
-        target: &std::path::Path,
-    ) -> Result<(), adapters::MountManagerError> {
-        self.mounts
-            .lock()
-            .expect("mount state lock")
-            .remove(target);
+    fn unmount(&self, target: &std::path::Path) -> Result<(), adapters::MountManagerError> {
+        self.mounts.lock().expect("mount state lock").remove(target);
         Ok(())
     }
 }
@@ -287,10 +286,7 @@ impl adapters::NetworkManager for NetworkManagerDouble {
         Ok(self.active.lock().expect("network state lock").clone())
     }
 
-    fn activate_policy_ref(
-        &self,
-        policy_ref: &str,
-    ) -> Result<(), adapters::NetworkManagerError> {
+    fn activate_policy_ref(&self, policy_ref: &str) -> Result<(), adapters::NetworkManagerError> {
         *self.active.lock().expect("network state lock") = policy_ref.to_owned();
         Ok(())
     }
@@ -316,12 +312,9 @@ fn immutable_receipt_store_is_idempotent_and_conflict_detecting() {
         store.append(&record).expect("equivalent replay succeeds"),
         ReceiptWriteDisposition::EquivalentReplay
     );
-    let conflicting = ReceiptRecord::new(
-        "receipt-1",
-        "request-1",
-        br#"{"result":"failed"}"#.to_vec(),
-    )
-    .expect("conflicting receipt is structurally valid");
+    let conflicting =
+        ReceiptRecord::new("receipt-1", "request-1", br#"{"result":"failed"}"#.to_vec())
+            .expect("conflicting receipt is structurally valid");
     assert_eq!(
         store.append(&conflicting).unwrap_err().code(),
         ReceiptStoreErrorCode::Conflict
@@ -335,9 +328,7 @@ fn immutable_receipt_store_is_idempotent_and_conflict_detecting() {
 
 #[test]
 fn systemd_adapter_uses_only_units_bound_to_the_declared_group() {
-    use ports::{
-        BackendErrorCode, BackendIdentifier, ServiceGroupRequest, SystemdBackend,
-    };
+    use ports::{BackendErrorCode, BackendIdentifier, ServiceGroupRequest, SystemdBackend};
 
     let manager = SystemdManagerDouble::default();
     manager
@@ -347,11 +338,10 @@ fn systemd_adapter_uses_only_units_bound_to_the_declared_group() {
         .insert("koa-a.service".to_owned(), adapters::UnitState::Inactive);
     let adapter = adapters::SystemdBackendAdapter::new(
         manager,
-        [adapters::ServiceGroupBinding::new(
-            "core-services",
-            ["koa-a.service".to_owned()],
-        )
-        .expect("service group binding is valid")],
+        [
+            adapters::ServiceGroupBinding::new("core-services", ["koa-a.service".to_owned()])
+                .expect("service group binding is valid"),
+        ],
     )
     .expect("systemd adapter configuration is valid");
     let result = adapter
@@ -374,9 +364,7 @@ fn systemd_adapter_uses_only_units_bound_to_the_declared_group() {
 #[test]
 fn mount_adapter_resolves_only_the_declared_volume() {
     use domain::{AllowedRoot, EncryptedVolumeAction, SafePath};
-    use ports::{
-        BackendErrorCode, BackendIdentifier, DeclaredVolume, MountBackend, VolumeRequest,
-    };
+    use ports::{BackendErrorCode, BackendIdentifier, DeclaredVolume, MountBackend, VolumeRequest};
 
     let runtime = temporary_directory("mount-backend");
     let source_root_path = runtime.join("devices");
@@ -400,7 +388,10 @@ fn mount_adapter_resolves_only_the_declared_volume() {
             action: EncryptedVolumeAction::Mount,
         })
         .expect("declared volume mounts");
-    assert_eq!(result.after_state.get("mounted").map(String::as_str), Some("true"));
+    assert_eq!(
+        result.after_state.get("mounted").map(String::as_str),
+        Some("true")
+    );
     let error = adapter
         .apply_volume_action(&VolumeRequest {
             volume_id: BackendIdentifier::new("vault").expect("volume id is valid"),
@@ -413,9 +404,7 @@ fn mount_adapter_resolves_only_the_declared_volume() {
 
 #[test]
 fn network_adapter_activates_only_a_bound_policy_after_expected_state_check() {
-    use ports::{
-        BackendErrorCode, BackendIdentifier, NetworkBackend, NetworkPolicyRequest,
-    };
+    use ports::{BackendErrorCode, BackendIdentifier, NetworkBackend, NetworkPolicyRequest};
 
     let active = Arc::new(Mutex::new("network-policy:old".to_owned()));
     let manager = NetworkManagerDouble {
@@ -423,11 +412,10 @@ fn network_adapter_activates_only_a_bound_policy_after_expected_state_check() {
     };
     let adapter = adapters::NetworkBackendAdapter::new(
         manager,
-        [adapters::NetworkPolicyBinding::new(
-            "locked-down",
-            "network-policy:new",
-        )
-        .expect("policy binding is valid")],
+        [
+            adapters::NetworkPolicyBinding::new("locked-down", "network-policy:new")
+                .expect("policy binding is valid"),
+        ],
     )
     .expect("network adapter configuration is valid");
     let result = adapter
@@ -437,7 +425,10 @@ fn network_adapter_activates_only_a_bound_policy_after_expected_state_check() {
         })
         .expect("declared network policy activates");
     assert_eq!(
-        result.after_state.get("active_policy_ref").map(String::as_str),
+        result
+            .after_state
+            .get("active_policy_ref")
+            .map(String::as_str),
         Some("network-policy:new")
     );
     let error = adapter
@@ -453,8 +444,7 @@ fn network_adapter_activates_only_a_bound_policy_after_expected_state_check() {
 fn policy_decision_must_remain_bound_and_current() {
     use domain::{AuthorizationClass, Operation};
     use ports::{
-        PolicyClientErrorCode, PolicyDecisionRecord, PolicyDecisionStatus,
-        PolicyEvaluationRequest,
+        PolicyClientErrorCode, PolicyDecisionRecord, PolicyDecisionStatus, PolicyEvaluationRequest,
     };
 
     let request = PolicyEvaluationRequest {

@@ -386,9 +386,7 @@ impl NodeAgentConfig {
 
         let selected_path = match path {
             Some(value) => Some(value.to_path_buf()),
-            None => env_map
-                .get("KOA_NODE_AGENT_CONFIG_PATH")
-                .map(PathBuf::from),
+            None => env_map.get("KOA_NODE_AGENT_CONFIG_PATH").map(PathBuf::from),
         };
         if let Some(value) = selected_path.as_deref() {
             validate_absolute_normalized_path(value, "config_path")?;
@@ -402,7 +400,7 @@ impl NodeAgentConfig {
                     ))
                 })?;
                 Self::from_toml_str(&raw)?
-            }
+            },
             None => Self::default(),
         };
         config.apply_environment(&env_map)?;
@@ -504,7 +502,7 @@ impl NodeAgentConfig {
             "profile_context_ref" => {
                 let value = parse_string(raw_value, origin)?;
                 self.profile_context_ref = if value.is_empty() { None } else { Some(value) };
-            }
+            },
             "state_root" => self.state_root = PathBuf::from(parse_string(raw_value, origin)?),
             "runtime_root" => self.runtime_root = PathBuf::from(parse_string(raw_value, origin)?),
             "socket_path" => self.socket_path = PathBuf::from(parse_string(raw_value, origin)?),
@@ -515,45 +513,45 @@ impl NodeAgentConfig {
                     .into_iter()
                     .map(|value| value.parse())
                     .collect::<Result<_, _>>()?;
-            }
+            },
             "identity_verification_mode" => {
                 self.identity_verification_mode = parse_string(raw_value, origin)?.parse()?;
-            }
+            },
             "profile_validation_mode" => {
                 self.profile_validation_mode = parse_string(raw_value, origin)?.parse()?;
-            }
+            },
             "policy_runtime_mode" => {
                 self.policy_runtime_mode = parse_string(raw_value, origin)?.parse()?;
-            }
+            },
             "artifact_verification_mode" => {
                 self.artifact_verification_mode = parse_string(raw_value, origin)?.parse()?;
-            }
+            },
             "resource_envelope_mode" => {
                 self.resource_envelope_mode = parse_string(raw_value, origin)?.parse()?;
-            }
+            },
             "control_plane_mode" => {
                 self.control_plane_mode = parse_string(raw_value, origin)?.parse()?;
-            }
+            },
             "receipt_store_mode" => {
                 self.receipt_store_mode = parse_string(raw_value, origin)?.parse()?;
-            }
+            },
             "idempotency_store_mode" => {
                 self.idempotency_store_mode = parse_string(raw_value, origin)?.parse()?;
-            }
+            },
             "staging_capacity_state" => {
                 self.staging_capacity_state = parse_string(raw_value, origin)?.parse()?;
-            }
+            },
             "recovery_path_state" => {
                 self.recovery_path_state = parse_string(raw_value, origin)?.parse()?;
-            }
+            },
             "resource_pressure_state" => {
                 self.resource_pressure_state = parse_string(raw_value, origin)?.parse()?;
-            }
+            },
             _ => {
                 return Err(ConfigurationError::new(format!(
                     "unknown configuration key: {key}"
                 )))
-            }
+            },
         }
         Ok(())
     }
@@ -642,10 +640,7 @@ fn validate_profile_reference(value: &str) -> Result<(), ConfigurationError> {
     Ok(())
 }
 
-fn validate_absolute_normalized_path(
-    path: &Path,
-    name: &str,
-) -> Result<(), ConfigurationError> {
+fn validate_absolute_normalized_path(path: &Path, name: &str) -> Result<(), ConfigurationError> {
     if !path.is_absolute() {
         return Err(ConfigurationError::new(format!(
             "{name} must be an absolute path"
@@ -687,9 +682,7 @@ fn parse_component_table(raw: &str) -> Result<BTreeMap<String, String>, Configur
                 )));
             }
             if in_component_table {
-                return Err(ConfigurationError::new(
-                    "duplicate [koa_node_agent] table",
-                ));
+                return Err(ConfigurationError::new("duplicate [koa_node_agent] table"));
             }
             in_component_table = true;
             continue;
@@ -732,7 +725,7 @@ fn strip_comment(line: &str) -> &str {
             '\\' if quoted => escaped = true,
             '"' => quoted = !quoted,
             '#' if !quoted => return &line[..index],
-            _ => {}
+            _ => {},
         }
     }
     line
@@ -757,10 +750,7 @@ fn parse_string(raw: &str, origin: ValueOrigin) -> Result<String, ConfigurationE
     Ok(value.to_owned())
 }
 
-fn parse_string_list(
-    raw: &str,
-    origin: ValueOrigin,
-) -> Result<Vec<String>, ConfigurationError> {
+fn parse_string_list(raw: &str, origin: ValueOrigin) -> Result<Vec<String>, ConfigurationError> {
     let value = raw.trim();
     if value.starts_with('[') && value.ends_with(']') {
         let inner = &value[1..value.len() - 1];

@@ -43,10 +43,7 @@ pub struct SafePath {
 }
 
 impl SafePath {
-    pub fn new(
-        root: &AllowedRoot,
-        relative: impl Into<PathBuf>,
-    ) -> Result<Self, SafePathError> {
+    pub fn new(root: &AllowedRoot, relative: impl Into<PathBuf>) -> Result<Self, SafePathError> {
         let relative = relative.into();
         validate_relative_path(&relative)?;
         Ok(Self {
@@ -208,11 +205,20 @@ fn validate_relative_path(path: &Path) -> Result<(), SafePathError> {
     }
     validate_utf8_and_length(path)?;
     for component in path.components() {
-        if !matches!(component, Component::Normal(_)) {
-            return Err(SafePathError::new(
-                SafePathErrorCode::PathContainsTraversal,
-                "only normal relative path components are permitted",
-            ));
+        match component {
+            Component::Normal(_) => {},
+            Component::Prefix(_) | Component::RootDir => {
+                return Err(SafePathError::new(
+                    SafePathErrorCode::PathMustBeRelative,
+                    "platform-prefixed or rooted operation paths are not permitted",
+                ));
+            },
+            Component::CurDir | Component::ParentDir => {
+                return Err(SafePathError::new(
+                    SafePathErrorCode::PathContainsTraversal,
+                    "only normal relative path components are permitted",
+                ));
+            },
         }
     }
     Ok(())
@@ -237,7 +243,34 @@ fn validate_utf8_and_length(path: &Path) -> Result<(), SafePathError> {
             "operation paths may not contain control characters",
         ));
     }
-    if value.split('/').any(|component| component == "." || component == "..") {
+
+    // std::path interprets path syntax according to the host platform.
+    // Koali artifacts must reject Windows prefixes even when validated on
+    // a Linux build host, where Component::Prefix is never produced.
+    let bytes = value.as_bytes();
+    let has_windows_drive_prefix =
+        bytes.len() >= 2 && bytes[0].is_ascii_alphabetic() && bytes[1] == b':';
+
+    if has_windows_drive_prefix || value.starts_with("\\\\") {
+        return Err(SafePathError::new(
+            SafePathErrorCode::PathMustBeRelative,
+            "platform-prefixed operation paths are not permitted",
+        ));
+    }
+
+    // Backslash is a Windows path separator. Reject it rather than allowing
+    // a host-dependent interpretation of the same canonical request.
+    if value.contains('\\') {
+        return Err(SafePathError::new(
+            SafePathErrorCode::PathContainsTraversal,
+            "operation paths may not contain platform-specific separators",
+        ));
+    }
+
+    if value
+        .split('/')
+        .any(|component| component == "." || component == "..")
+    {
         return Err(SafePathError::new(
             SafePathErrorCode::PathContainsTraversal,
             "operation paths may not contain '.' or '..' components",

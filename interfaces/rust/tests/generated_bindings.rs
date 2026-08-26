@@ -6,19 +6,20 @@ use koa_interfaces::error::{
 };
 use koa_interfaces::health::{HealthFreshness, HealthLiveness, HealthLivenessState, HealthStartup};
 use koa_interfaces::{
-    schema, AuthoritativeOutcome, CapabilityAvailability,
-    CapabilitySnapshot, CapabilitySnapshotEntry,
-    CommitState, CorrelationContext, DecisionState, DisclosureClass, DuplicateHandling, ErrorEnvelope, EventAuthority,
-    EventCorrelationContext, EventDisclosure, EventEnvelope, EventEvidence,
-    EventInterfaceReference, EventOrdering, EventPayloadRepresentation, EventPublisher,
-    EventReceiverKind, EventReceiverSelector, EventReplay, ExecutionState, HealthStatus, IdempotencyAntiReplay, IdempotencyAuthority, IdempotencyCanonicalRequest, IdempotencyContext, IdempotencyDuplicateHandling, IdempotencyExpectedState, IdempotencyScope, IdempotencyValidity, IdentityContext, InterfaceClient, JobRequest,
-    JobStatus, JobTerminality, OperationalState, PayloadEncoding, ReplayMode,
-    ReceiptClass, ReceiptEnvelope, ReceiptOutcome, Transport,
-    TransportError, VersionCompatibilityMode, VersionNegotiation, VersionNegotiationAuthority,
-    VersionNegotiationMessageType, VersionNegotiationSender, VersionReceiverKind,
-    VersionReceiverSelector,
+    AuthoritativeOutcome, CapabilityAvailability, CapabilitySnapshot, CapabilitySnapshotEntry,
+    CommitState, CorrelationContext, DecisionState, DisclosureClass, DuplicateHandling,
+    ErrorEnvelope, EventAuthority, EventCorrelationContext, EventDisclosure, EventEnvelope,
+    EventEvidence, EventInterfaceReference, EventOrdering, EventPayloadRepresentation,
+    EventPublisher, EventReceiverKind, EventReceiverSelector, EventReplay, ExecutionState,
+    HealthStatus, IdempotencyAntiReplay, IdempotencyAuthority, IdempotencyCanonicalRequest,
+    IdempotencyContext, IdempotencyDuplicateHandling, IdempotencyExpectedState, IdempotencyScope,
+    IdempotencyValidity, IdentityContext, InterfaceClient, JobRequest, JobStatus, JobTerminality,
+    OperationalState, PayloadEncoding, ReceiptClass, ReceiptEnvelope, ReceiptOutcome, ReplayMode,
+    Transport, TransportError, VersionCompatibilityMode, VersionNegotiation,
+    VersionNegotiationAuthority, VersionNegotiationMessageType, VersionNegotiationSender,
+    VersionReceiverKind, VersionReceiverSelector, schema,
 };
-use serde_json::{json, Value};
+use serde_json::{Value, json};
 
 const FIXTURE_SCHEMA_VERSION: &str = "1.0.0";
 
@@ -169,21 +170,39 @@ fn remote_error() -> ErrorEnvelope {
 
 #[test]
 fn schema_identifiers_are_repository_relative_and_stable() {
-    assert_eq!(schema::EVENT_ENVELOPE, "interfaces/transport/event-envelope.schema.json");
-    assert_eq!(schema::ERROR_ENVELOPE, "interfaces/transport/error-envelope.schema.json");
-    assert_eq!(schema::IDEMPOTENCY, "interfaces/transport/idempotency.schema.json");
+    assert_eq!(
+        schema::EVENT_ENVELOPE,
+        "interfaces/transport/event-envelope.schema.json"
+    );
+    assert_eq!(
+        schema::ERROR_ENVELOPE,
+        "interfaces/transport/error-envelope.schema.json"
+    );
+    assert_eq!(
+        schema::IDEMPOTENCY,
+        "interfaces/transport/idempotency.schema.json"
+    );
     assert_eq!(
         schema::VERSION_NEGOTIATION,
         "interfaces/transport/version-negotiation.schema.json"
     );
-    assert_eq!(schema::HEALTH_STATUS, "interfaces/health/health-status.schema.json");
+    assert_eq!(
+        schema::HEALTH_STATUS,
+        "interfaces/health/health-status.schema.json"
+    );
     assert_eq!(schema::READINESS, "interfaces/health/readiness.schema.json");
     assert_eq!(
         schema::RECEIPT_ENVELOPE,
         "interfaces/receipts/receipt-envelope.schema.json"
     );
-    assert_eq!(schema::CORRELATION, "interfaces/receipts/correlation.schema.json");
-    assert_eq!(schema::JOB_REQUEST, "interfaces/jobs/job-request.schema.json");
+    assert_eq!(
+        schema::CORRELATION,
+        "interfaces/receipts/correlation.schema.json"
+    );
+    assert_eq!(
+        schema::JOB_REQUEST,
+        "interfaces/jobs/job-request.schema.json"
+    );
     assert_eq!(schema::JOB_STATUS, "interfaces/jobs/job-status.schema.json");
     assert_eq!(
         schema::IDENTITY_CONTEXT,
@@ -331,7 +350,10 @@ fn health_preserves_liveness_and_readiness_separation() {
     let value = serde_json::to_value(status).expect("serialize health");
     assert_eq!(value["process_liveness"]["state"], "alive");
     assert_eq!(value["overall_state"], "healthy");
-    assert_eq!(value["readiness"][0]["readiness_class"], "readiness.local_read");
+    assert_eq!(
+        value["readiness"][0]["readiness_class"],
+        "readiness.local_read"
+    );
     assert_eq!(value["disclosure_class"], "machine_readable_local");
     assert!(value.get("capabilities").is_none());
 }
@@ -476,7 +498,10 @@ fn job_request_round_trips_with_stable_correlation_and_idempotency() {
         job_type: "example.deferred_work".to_owned(),
         owner_component_id: "owning_component".to_owned(),
         correlation: correlation(),
-        identity: Some(IdentityContext::new(FIXTURE_SCHEMA_VERSION, "identity:operator-1")),
+        identity: Some(IdentityContext::new(
+            FIXTURE_SCHEMA_VERSION,
+            "identity:operator-1",
+        )),
         idempotency: Some(IdempotencyContext {
             schema_version: FIXTURE_SCHEMA_VERSION.to_owned(),
             idempotency_key: "workspace-1:job-001".to_owned(),
@@ -584,7 +609,10 @@ fn capability_snapshot_preserves_three_independent_state_dimensions() {
     let value = serde_json::to_value(snapshot).expect("serialize snapshot");
     assert_eq!(value["capabilities"][0]["availability"], "blocked");
     assert_eq!(value["capabilities"][0]["execution_state"], "not_started");
-    assert_eq!(value["capabilities"][0]["authoritative_outcome"], "no_effect");
+    assert_eq!(
+        value["capabilities"][0]["authoritative_outcome"],
+        "no_effect"
+    );
 }
 
 #[test]

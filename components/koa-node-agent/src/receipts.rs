@@ -120,9 +120,7 @@ impl NodeOperationReceipt {
         validate_timestamp(&draft.completed_at, "completed_at")?;
         validate_identifier(&draft.correlation_id, "correlation_id")?;
         validate_optional_identifier(
-            draft
-                .recovery_or_rollback_token_when_applicable
-                .as_deref(),
+            draft.recovery_or_rollback_token_when_applicable.as_deref(),
             "recovery_or_rollback_token_when_applicable",
         )?;
         validate_state(&draft.before_state, "before_state")?;
@@ -167,9 +165,7 @@ impl NodeOperationReceipt {
             ));
         }
         if draft.result == ReceiptResult::RecoveryRequired
-            && draft
-                .recovery_or_rollback_token_when_applicable
-                .is_none()
+            && draft.recovery_or_rollback_token_when_applicable.is_none()
         {
             return Err(ReceiptError::new(
                 "recovery_required receipts require a recovery or rollback token",
@@ -216,7 +212,11 @@ impl NodeOperationReceipt {
             format!("\"after_state\":{}", map_json(&self.after_state)),
             format!(
                 "\"artifact_or_target_identities\":{}",
-                string_array(self.artifact_or_target_identities.iter().map(String::as_str))
+                string_array(
+                    self.artifact_or_target_identities
+                        .iter()
+                        .map(String::as_str)
+                )
             ),
             format!("\"result\":{}", quote(self.result.as_str())),
             format!(
@@ -235,10 +235,7 @@ impl NodeOperationReceipt {
             ));
             fields.push(format!(
                 "\"recovery_or_rollback_token_when_applicable\":{}",
-                optional_string(
-                    self.recovery_or_rollback_token_when_applicable
-                        .as_deref()
-                )
+                optional_string(self.recovery_or_rollback_token_when_applicable.as_deref())
             ));
         }
         format!("{{{}}}", fields.join(","))
@@ -323,7 +320,9 @@ fn validate_timestamp(value: &str, name: &str) -> Result<(), ReceiptError> {
     if value.len() < 20
         || !value.contains('T')
         || !(value.ends_with('Z')
-            || value.get(11..).is_some_and(|suffix| suffix.contains('+') || suffix.contains('-')))
+            || value
+                .get(11..)
+                .is_some_and(|suffix| suffix.contains('+') || suffix.contains('-')))
     {
         return Err(ReceiptError::new(format!(
             "{name} must be an explicit RFC 3339 timestamp"
@@ -335,9 +334,9 @@ fn validate_timestamp(value: &str, name: &str) -> Result<(), ReceiptError> {
 fn validate_reason_code(value: &str) -> Result<(), ReceiptError> {
     if value.is_empty()
         || value.len() > 128
-        || !value
-            .chars()
-            .all(|character| character.is_ascii_uppercase() || character.is_ascii_digit() || character == '_')
+        || !value.chars().all(|character| {
+            character.is_ascii_uppercase() || character.is_ascii_digit() || character == '_'
+        })
     {
         return Err(ReceiptError::new(
             "reason codes must be bounded upper-snake-case identifiers",
@@ -348,7 +347,9 @@ fn validate_reason_code(value: &str) -> Result<(), ReceiptError> {
 
 fn validate_state(state: &BTreeMap<String, String>, name: &str) -> Result<(), ReceiptError> {
     if state.len() > 128 {
-        return Err(ReceiptError::new(format!("{name} exceeds the bounded field limit")));
+        return Err(ReceiptError::new(format!(
+            "{name} exceeds the bounded field limit"
+        )));
     }
     for (key, value) in state {
         validate_identifier(key, &format!("{name} key"))?;
@@ -404,7 +405,7 @@ fn quote(value: &str) -> String {
             '\t' => output.push_str("\\t"),
             character if character.is_control() => {
                 output.push_str(&format!("\\u{:04x}", character as u32));
-            }
+            },
             character => output.push(character),
         }
     }
@@ -449,7 +450,10 @@ mod tests {
         let second = NodeOperationReceipt::from_draft(completed_draft(), StoreMode::Durable)
             .expect("valid receipt");
         assert_eq!(first.receipt_id, second.receipt_id);
-        assert_eq!(first.to_json(ReceiptView::Operational), second.to_json(ReceiptView::Operational));
+        assert_eq!(
+            first.to_json(ReceiptView::Operational),
+            second.to_json(ReceiptView::Operational)
+        );
     }
 
     #[test]

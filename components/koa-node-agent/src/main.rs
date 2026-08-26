@@ -13,7 +13,7 @@ fn main() -> ExitCode {
         Err(message) => {
             eprintln!("koa-node-agent: {message}");
             ExitCode::from(2)
-        }
+        },
     }
 }
 
@@ -34,12 +34,12 @@ fn run(arguments: Vec<String>) -> Result<ExitCode, String> {
                     return Err("--config requires an absolute path".to_owned());
                 }
                 config_path = Some(path);
-            }
+            },
             "--operational" => operational_view = true,
             "--help" | "-h" => {
                 print_help();
                 return Ok(ExitCode::SUCCESS);
-            }
+            },
             value if command.is_none() => command = Some(value.to_owned()),
             value => return Err(format!("unexpected argument: {value}")),
         }
@@ -50,14 +50,14 @@ fn run(arguments: Vec<String>) -> Result<ExitCode, String> {
         "describe" => {
             println!("{}", describe_json());
             Ok(ExitCode::SUCCESS)
-        }
+        },
         "check-config" => {
-            let config = NodeAgentConfig::load(config_path.as_deref())
-                .map_err(|error| error.to_string())?;
+            let config =
+                NodeAgentConfig::load(config_path.as_deref()).map_err(|error| error.to_string())?;
             config.validate().map_err(|error| error.to_string())?;
             println!("{{\"component_id\":\"koa_node_agent\",\"configuration\":\"valid\"}}");
             Ok(ExitCode::SUCCESS)
-        }
+        },
         "health" => {
             let runtime = bootstrap(config_path.as_deref(), RuntimeEvidence::default())
                 .map_err(|error| error.to_string())?;
@@ -69,10 +69,10 @@ fn run(arguments: Vec<String>) -> Result<ExitCode, String> {
             } else {
                 Ok(ExitCode::SUCCESS)
             }
-        }
+        },
         "readiness" => {
-            let config = NodeAgentConfig::load(config_path.as_deref())
-                .map_err(|error| error.to_string())?;
+            let config =
+                NodeAgentConfig::load(config_path.as_deref()).map_err(|error| error.to_string())?;
             let status = evaluate_health(&config, &RuntimeEvidence::default());
             println!("{}", status.to_json(operational_view));
             if status.readiness == "ready" {
@@ -80,7 +80,7 @@ fn run(arguments: Vec<String>) -> Result<ExitCode, String> {
             } else {
                 Ok(ExitCode::from(3))
             }
-        }
+        },
         other => Err(format!(
             "unknown command {other}; expected describe, check-config, health, or readiness"
         )),

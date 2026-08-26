@@ -1,5 +1,5 @@
-use crate::{error::ErrorEnvelope, ClientError, EventEnvelope};
-use serde::{de::DeserializeOwned, Deserialize, Serialize};
+use crate::{ClientError, EventEnvelope, error::ErrorEnvelope};
+use serde::{Deserialize, Serialize, de::DeserializeOwned};
 
 /// Delivery mechanism only. Implementations must not infer authorization or
 /// business acceptance from successful byte delivery.
@@ -36,8 +36,7 @@ pub struct ResponseEnvelope<T> {
 impl<T> ResponseEnvelope<T> {
     fn validate_shape(&self) -> Result<(), ClientError> {
         match self.disposition {
-            ResponseDisposition::Completed
-            | ResponseDisposition::AcceptedForDeferredWork => {
+            ResponseDisposition::Completed | ResponseDisposition::AcceptedForDeferredWork => {
                 if self.payload.is_some() && self.error.is_none() {
                     Ok(())
                 } else {
@@ -46,7 +45,7 @@ impl<T> ResponseEnvelope<T> {
                             .to_owned(),
                     ))
                 }
-            }
+            },
             ResponseDisposition::Rejected
             | ResponseDisposition::Blocked
             | ResponseDisposition::Expired
@@ -57,11 +56,10 @@ impl<T> ResponseEnvelope<T> {
                     Ok(())
                 } else {
                     Err(ClientError::InvalidResponse(
-                        "non-completed response must contain one error and no payload"
-                            .to_owned(),
+                        "non-completed response must contain one error and no payload".to_owned(),
                     ))
                 }
-            }
+            },
         }
     }
 }
@@ -85,10 +83,7 @@ where
         &self.transport
     }
 
-    pub fn send<P, R>(
-        &self,
-        request: &EventEnvelope<P>,
-    ) -> Result<ResponseEnvelope<R>, ClientError>
+    pub fn send<P, R>(&self, request: &EventEnvelope<P>) -> Result<ResponseEnvelope<R>, ClientError>
     where
         P: Serialize,
         R: DeserializeOwned,
@@ -111,9 +106,12 @@ where
         response.validate_shape()?;
         if let Some(error) = &response.error {
             error.validate()?;
-            if error.correlation.request_id != request.correlation.request_id
-                || error.correlation.correlation_id
-                    != request.correlation.correlation_id
+            if error.correlation.correlation_id != request.correlation.correlation_id
+                || error
+                    .correlation
+                    .request_id
+                    .as_deref()
+                    .is_some_and(|request_id| request_id != request.correlation.request_id.as_str())
             {
                 return Err(ClientError::InvalidResponse(
                     "remote error correlation does not match request".to_owned(),
@@ -135,12 +133,9 @@ where
                     "completed response is missing its validated payload".to_owned(),
                 )
             }),
-            ResponseDisposition::AcceptedForDeferredWork => {
-                Err(ClientError::InvalidResponse(
-                    "deferred response must be resolved through the job status interface"
-                        .to_owned(),
-                ))
-            }
+            ResponseDisposition::AcceptedForDeferredWork => Err(ClientError::InvalidResponse(
+                "deferred response must be resolved through the job status interface".to_owned(),
+            )),
             ResponseDisposition::Rejected
             | ResponseDisposition::Blocked
             | ResponseDisposition::Expired
@@ -153,7 +148,7 @@ where
                     )
                 })?;
                 Err(ClientError::Remote(error))
-            }
+            },
         }
     }
 }

@@ -79,14 +79,12 @@ impl<M> MountBackendAdapter<M> {
     }
 
     fn volume_for(&self, request: &VolumeRequest) -> Result<&DeclaredVolume, BackendError> {
-        self.volumes
-            .get(request.volume_id.as_str())
-            .ok_or_else(|| {
-                BackendError::new(
-                    BackendErrorCode::NotAllowlisted,
-                    "volume is not declared by the active profile",
-                )
-            })
+        self.volumes.get(request.volume_id.as_str()).ok_or_else(|| {
+            BackendError::new(
+                BackendErrorCode::NotAllowlisted,
+                "volume is not declared by the active profile",
+            )
+        })
     }
 }
 
@@ -135,7 +133,7 @@ impl<M: MountManager> MountBackend for MountBackendAdapter<M> {
                     BackendErrorCode::UnsupportedOperation,
                     "mount backend supports only mount and unmount actions",
                 ))
-            }
+            },
         }
         let after = mount_state(&self.manager, volume)?;
         let expected_mounted = request.action == EncryptedVolumeAction::Mount;
@@ -193,15 +191,15 @@ fn verify_no_symlink_components(path: &Path) -> Result<(), BackendError> {
                     BackendErrorCode::UnsafePath,
                     format!("path component is a symlink: {}", current.display()),
                 ));
-            }
-            Ok(_) => {}
+            },
+            Ok(_) => {},
             Err(error) if error.kind() == std::io::ErrorKind::NotFound => break,
             Err(error) => {
                 return Err(BackendError::new(
                     BackendErrorCode::DependencyUnavailable,
                     format!("cannot inspect path component: {error}"),
                 ));
-            }
+            },
         }
     }
     Ok(())

@@ -1,6 +1,6 @@
 use crate::{
-    require_non_empty, schema, validate_non_empty_values, BindingValidationError,
-    CapabilityAvailability,
+    BindingValidationError, CapabilityAvailability, require_non_empty, schema,
+    validate_non_empty_values,
 };
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -173,14 +173,8 @@ impl CapabilityReadiness {
         if let Some(version) = &self.active_schema_version {
             require_non_empty("active_schema_version", version)?;
         }
-        validate_non_empty_values(
-            "usable_operation_classes",
-            &self.usable_operation_classes,
-        )?;
-        validate_non_empty_values(
-            "denied_operation_classes",
-            &self.denied_operation_classes,
-        )?;
+        validate_non_empty_values("usable_operation_classes", &self.usable_operation_classes)?;
+        validate_non_empty_values("denied_operation_classes", &self.denied_operation_classes)?;
         validate_non_empty_values("active_artifact_refs", &self.active_artifact_refs)?;
         validate_non_empty_values("reason_codes", &self.reason_codes)?;
         validate_non_empty_values("recovery_conditions", &self.recovery_conditions)?;
@@ -216,8 +210,10 @@ impl HealthLiveness {
     pub fn validate(&self) -> Result<(), BindingValidationError> {
         require_non_empty("process_liveness.observed_at", &self.observed_at)?;
         validate_non_empty_values("process_liveness.reason_codes", &self.reason_codes)?;
-        if matches!(self.state, HealthLivenessState::Stopping | HealthLivenessState::Failed)
-            && self.reason_codes.is_empty()
+        if matches!(
+            self.state,
+            HealthLivenessState::Stopping | HealthLivenessState::Failed
+        ) && self.reason_codes.is_empty()
         {
             return Err(BindingValidationError::new(
                 "process_liveness.reason_codes",
@@ -315,7 +311,10 @@ impl HealthFreshness {
                 "must be direct, derived, reported, or unknown",
             ));
         }
-        if !matches!(self.staleness_state.as_str(), "current" | "stale" | "unknown") {
+        if !matches!(
+            self.staleness_state.as_str(),
+            "current" | "stale" | "unknown"
+        ) {
             return Err(BindingValidationError::new(
                 "freshness.staleness_state",
                 "must be current, stale, or unknown",
@@ -405,14 +404,14 @@ impl HealthStatus {
                     "overall_state",
                     "failed liveness requires failed aggregate state",
                 ));
-            }
+            },
             HealthLivenessState::Stopping if self.overall_state != OperationalState::Stopping => {
                 return Err(BindingValidationError::new(
                     "overall_state",
                     "stopping liveness requires stopping aggregate state",
                 ));
-            }
-            _ => {}
+            },
+            _ => {},
         }
         if self.overall_state != OperationalState::Healthy && self.reason_codes.is_empty() {
             return Err(BindingValidationError::new(
@@ -443,4 +442,3 @@ impl HealthStatus {
         Ok(())
     }
 }
-

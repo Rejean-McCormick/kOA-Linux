@@ -53,10 +53,7 @@ pub enum ReceiptWriteDisposition {
 }
 
 pub trait ReceiptStore: Send + Sync {
-    fn append(
-        &self,
-        record: &ReceiptRecord,
-    ) -> Result<ReceiptWriteDisposition, ReceiptStoreError>;
+    fn append(&self, record: &ReceiptRecord) -> Result<ReceiptWriteDisposition, ReceiptStoreError>;
 
     fn read(&self, receipt_id: &str) -> Result<Option<ReceiptRecord>, ReceiptStoreError>;
 }
@@ -117,18 +114,16 @@ impl fmt::Display for ReceiptStoreError {
 
 impl std::error::Error for ReceiptStoreError {}
 
-pub(crate) fn validate_identifier(
-    name: &str,
-    value: &str,
-) -> Result<(), ReceiptStoreError> {
+pub(crate) fn validate_identifier(name: &str, value: &str) -> Result<(), ReceiptStoreError> {
     if value.is_empty() || value.len() > 256 {
         return Err(ReceiptStoreError::invalid(format!(
             "{name} must be a non-empty identifier no longer than 256 bytes"
         )));
     }
-    if !value.bytes().all(|byte| {
-        byte.is_ascii_alphanumeric() || matches!(byte, b'-' | b'_' | b'.' | b':')
-    }) {
+    if !value
+        .bytes()
+        .all(|byte| byte.is_ascii_alphanumeric() || matches!(byte, b'-' | b'_' | b'.' | b':'))
+    {
         return Err(ReceiptStoreError::invalid(format!(
             "{name} contains a character outside the closed identifier alphabet"
         )));

@@ -7,11 +7,15 @@
 //! arbitrary command execution, service-manager control, path operations, or
 //! private-key access.
 
+pub mod application;
 pub mod config;
+pub mod domain;
 pub mod health;
 pub mod receipts;
 
-use config::{ConfigurationError, NodeAgentConfig, OperationClass, COMPONENT_ID, COMPONENT_VERSION};
+use config::{
+    ConfigurationError, NodeAgentConfig, OperationClass, COMPONENT_ID, COMPONENT_VERSION,
+};
 use health::{evaluate_health, HealthSnapshot, RuntimeEvidence};
 use std::error::Error;
 use std::fmt;
@@ -78,7 +82,11 @@ impl NodeAgentRuntime {
     }
 
     pub fn enabled_operation_classes(&self) -> Vec<OperationClass> {
-        self.config.enabled_operation_classes.iter().copied().collect()
+        self.config
+            .enabled_operation_classes
+            .iter()
+            .copied()
+            .collect()
     }
 
     pub fn refresh_evidence(&mut self, evidence: RuntimeEvidence) {

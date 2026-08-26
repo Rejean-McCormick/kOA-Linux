@@ -98,7 +98,9 @@ impl PolicyDecisionRecord {
         request.validate()?;
         validate_reference("decision_ref", &self.decision_ref)?;
         if self.request_id != request.request_id {
-            return Err(PolicyClientError::invalid("policy request identity mismatch"));
+            return Err(PolicyClientError::invalid(
+                "policy request identity mismatch",
+            ));
         }
         if self.operation != request.operation {
             return Err(PolicyClientError::invalid("policy operation mismatch"));

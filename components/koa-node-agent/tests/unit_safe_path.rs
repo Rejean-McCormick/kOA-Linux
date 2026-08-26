@@ -65,3 +65,24 @@ fn roots_are_compared_by_identity_and_path() {
     assert!(safe.belongs_to(&same));
     assert!(!safe.belongs_to(&different_path));
 }
+
+#[test]
+fn rejects_windows_style_paths_independently_of_host_path_syntax() {
+    let root = AllowedRoot::new("staging", "/var/lib/koa/staging").unwrap();
+
+    for candidate in [
+        r"C:\Windows\System32",
+        "C:/Windows/System32",
+        r"\\server\share\artifact.raw",
+        r"safe\..\secret",
+    ] {
+        let error = SafePath::new(&root, candidate).unwrap_err();
+        assert!(
+            matches!(
+                error.code(),
+                SafePathErrorCode::PathMustBeRelative | SafePathErrorCode::PathContainsTraversal
+            ),
+            "Windows-style escape was accepted: {candidate:?}"
+        );
+    }
+}

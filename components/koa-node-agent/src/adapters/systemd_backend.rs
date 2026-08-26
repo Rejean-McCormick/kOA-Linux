@@ -1,9 +1,11 @@
 //! Allowlisted systemd service-group adapter.
 //!
-//! The adapter delegates to a typed manager API.  It never constructs or runs a
-//! command line and never accepts a caller-supplied unit name.
+//! The adapter delegates to a typed manager API and never accepts a
+//! caller-supplied unit name. The concrete systemctl manager invokes only the
+//! fixed systemctl executable with a bounded argument vector and never a shell.
 
 use std::collections::{BTreeMap, BTreeSet};
+use std::process::Command;
 
 use crate::ports::{
     BackendError, BackendErrorCode, BackendOperationResult, ServiceGroupRequest, SystemdBackend,
@@ -58,6 +60,69 @@ impl std::fmt::Display for SystemdManagerError {
 
 impl std::error::Error for SystemdManagerError {}
 
+const SYSTEMCTL: &str = "/usr/bin/systemctl";
+
+/// Concrete systemd manager using only a fixed systemctl executable.
+///
+/// Unit names are validated before invocation. Commands are passed as a
+/// bounded argument vector; no shell interpreter is involved.
+#[derive(Clone, Copy, Debug, Default)]
+pub struct SystemctlManager;
+
+impl SystemdManager for SystemctlManager {
+    fn unit_state(&self, unit: &str) -> Result<UnitState, SystemdManagerError> {
+        validate_unit_name(unit).map_err(|error| SystemdManagerError::new(error.to_string()))?;
+
+        let output = Command::new(SYSTEMCTL)
+            .args(["show", "--property=ActiveState", "--value", "--", unit])
+            .output()
+            .map_err(|error| {
+                SystemdManagerError::new(format!(
+                    "cannot execute fixed systemctl state query: {error}"
+                ))
+            })?;
+
+        if !output.status.success() {
+            return Err(SystemdManagerError::new(format!(
+                "systemctl state query failed with status {}",
+                output.status
+            )));
+        }
+
+        let state = String::from_utf8(output.stdout).map_err(|_| {
+            SystemdManagerError::new("systemctl ActiveState output is not valid UTF-8")
+        })?;
+
+        Ok(match state.trim() {
+            "active" => UnitState::Active,
+            "inactive" => UnitState::Inactive,
+            "failed" => UnitState::Failed,
+            "activating" => UnitState::Activating,
+            "deactivating" => UnitState::Deactivating,
+            _ => UnitState::Unknown,
+        })
+    }
+
+    fn restart_unit(&self, unit: &str) -> Result<(), SystemdManagerError> {
+        validate_unit_name(unit).map_err(|error| SystemdManagerError::new(error.to_string()))?;
+
+        let status = Command::new(SYSTEMCTL)
+            .args(["restart", "--", unit])
+            .status()
+            .map_err(|error| {
+                SystemdManagerError::new(format!("cannot execute fixed systemctl restart: {error}"))
+            })?;
+
+        if !status.success() {
+            return Err(SystemdManagerError::new(format!(
+                "systemctl restart failed with status {status}"
+            )));
+        }
+
+        Ok(())
+    }
+}
+
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ServiceGroupBinding {
     group_id: String,
@@ -106,9 +171,7 @@ impl<M> SystemdBackendAdapter<M> {
                 .insert(binding.group_id.clone(), binding.units)
                 .is_some()
             {
-                return Err(BackendError::invalid(
-                    "duplicate service-group binding",
-                ));
+                return Err(BackendError::invalid("duplicate service-group binding"));
             }
         }
         if groups.is_empty() {
@@ -182,7 +245,10 @@ impl<M: SystemdManager> SystemdBackend for SystemdBackendAdapter<M> {
             restarted.insert(unit.clone());
         }
         let after = self.read_states(units)?;
-        if after.values().any(|state| state != UnitState::Active.as_str()) {
+        if after
+            .values()
+            .any(|state| state != UnitState::Active.as_str())
+        {
             return Err(BackendError::new(
                 BackendErrorCode::VerificationFailed,
                 "one or more allowlisted units are not active after restart",

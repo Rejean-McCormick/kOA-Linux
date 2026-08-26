@@ -232,10 +232,7 @@ fn validate_reason_code(value: &str) -> Result<(), BackendError> {
     Ok(())
 }
 
-fn validate_state_map(
-    name: &str,
-    values: &BTreeMap<String, String>,
-) -> Result<(), BackendError> {
+fn validate_state_map(name: &str, values: &BTreeMap<String, String>) -> Result<(), BackendError> {
     if values.len() > 64 {
         return Err(BackendError::invalid(format!(
             "{name} exceeds the bounded state-entry limit"

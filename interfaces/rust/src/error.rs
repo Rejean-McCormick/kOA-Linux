@@ -1,7 +1,7 @@
 use crate::{
-    require_non_empty, validate_non_empty_values, BindingValidationError, ContentDigest,
-    DisclosureClass, EventInterfaceReference, EventPayloadRepresentation, EventPublisher,
-    EventReceiverSelector,
+    BindingValidationError, ContentDigest, DisclosureClass, EventInterfaceReference,
+    EventPayloadRepresentation, EventPublisher, EventReceiverSelector, require_non_empty,
+    validate_non_empty_values,
 };
 use serde::{Deserialize, Serialize};
 
@@ -230,7 +230,10 @@ impl ErrorEnvelope {
             "intended_receiver.identifier",
             &self.intended_receiver.identifier,
         )?;
-        require_non_empty("correlation.correlation_id", &self.correlation.correlation_id)?;
+        require_non_empty(
+            "correlation.correlation_id",
+            &self.correlation.correlation_id,
+        )?;
         require_non_empty("occurred_at", &self.occurred_at)?;
         validate_non_empty_values("reason_codes", &self.reason_codes)?;
 

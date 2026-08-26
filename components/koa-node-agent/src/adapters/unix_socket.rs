@@ -25,10 +25,8 @@ pub struct PeerCredentials {
 /// dependency explicitly instead of silently treating a connected socket as
 /// authenticated.
 pub trait PeerCredentialSource: Send + Sync {
-    fn peer_credentials(
-        &self,
-        stream: &UnixStream,
-    ) -> Result<PeerCredentials, SocketProtocolError>;
+    fn peer_credentials(&self, stream: &UnixStream)
+        -> Result<PeerCredentials, SocketProtocolError>;
 }
 
 #[derive(Clone, Debug)]
@@ -57,17 +55,11 @@ impl<S> ExactUidAuthenticator<S> {
 }
 
 pub trait PeerAuthenticator: Send + Sync {
-    fn authenticate(
-        &self,
-        stream: &UnixStream,
-    ) -> Result<PeerCredentials, SocketProtocolError>;
+    fn authenticate(&self, stream: &UnixStream) -> Result<PeerCredentials, SocketProtocolError>;
 }
 
 impl<S: PeerCredentialSource> PeerAuthenticator for ExactUidAuthenticator<S> {
-    fn authenticate(
-        &self,
-        stream: &UnixStream,
-    ) -> Result<PeerCredentials, SocketProtocolError> {
+    fn authenticate(&self, stream: &UnixStream) -> Result<PeerCredentials, SocketProtocolError> {
         let peer = self.source.peer_credentials(stream)?;
         if self.allowed_uids.contains(&peer.user_id) {
             Ok(peer)
@@ -81,11 +73,8 @@ impl<S: PeerCredentialSource> PeerAuthenticator for ExactUidAuthenticator<S> {
 }
 
 pub trait SocketRequestHandler: Send + Sync {
-    fn handle(
-        &self,
-        peer: PeerCredentials,
-        request: &[u8],
-    ) -> Result<Vec<u8>, SocketProtocolError>;
+    fn handle(&self, peer: PeerCredentials, request: &[u8])
+        -> Result<Vec<u8>, SocketProtocolError>;
 }
 
 impl<F> SocketRequestHandler for F
@@ -299,10 +288,7 @@ fn validate_frame_limit(maximum: usize) -> Result<(), SocketProtocolError> {
     Ok(())
 }
 
-fn validate_bounded_absolute_path(
-    name: &str,
-    path: &Path,
-) -> Result<(), SocketProtocolError> {
+fn validate_bounded_absolute_path(name: &str, path: &Path) -> Result<(), SocketProtocolError> {
     if !path.is_absolute() || path == Path::new("/") {
         return Err(SocketProtocolError::new(
             SocketProtocolErrorCode::UnsafePath,

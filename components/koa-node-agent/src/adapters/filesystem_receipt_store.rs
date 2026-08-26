@@ -6,8 +6,8 @@ use std::path::{Path, PathBuf};
 
 use crate::ports::receipt_store::validate_identifier;
 use crate::ports::{
-    ReceiptRecord, ReceiptStore, ReceiptStoreError, ReceiptStoreErrorCode,
-    ReceiptWriteDisposition, MAX_RECEIPT_BYTES,
+    ReceiptRecord, ReceiptStore, ReceiptStoreError, ReceiptStoreErrorCode, ReceiptWriteDisposition,
+    MAX_RECEIPT_BYTES,
 };
 
 #[derive(Clone, Debug)]
@@ -38,10 +38,7 @@ impl FilesystemReceiptStore {
 }
 
 impl ReceiptStore for FilesystemReceiptStore {
-    fn append(
-        &self,
-        record: &ReceiptRecord,
-    ) -> Result<ReceiptWriteDisposition, ReceiptStoreError> {
+    fn append(&self, record: &ReceiptRecord) -> Result<ReceiptWriteDisposition, ReceiptStoreError> {
         record.validate()?;
         validate_root(&self.root)?;
         let final_path = self.final_path(&record.receipt_id)?;
@@ -146,7 +143,7 @@ fn read_record_bytes(path: &Path) -> Result<(String, Vec<u8>), ReceiptStoreError
     let mut file = File::open(path).map_err(unavailable)?;
     let maximum = MAX_RECEIPT_BYTES + 257;
     let mut bytes = Vec::new();
-    file.by_ref()
+    Read::by_ref(&mut file)
         .take(maximum as u64 + 1)
         .read_to_end(&mut bytes)
         .map_err(unavailable)?;
@@ -156,12 +153,15 @@ fn read_record_bytes(path: &Path) -> Result<(String, Vec<u8>), ReceiptStoreError
             "stored receipt exceeds the bounded record size",
         ));
     }
-    let separator = bytes.iter().position(|byte| *byte == b'\n').ok_or_else(|| {
-        ReceiptStoreError::new(
-            ReceiptStoreErrorCode::CorruptRecord,
-            "stored receipt is missing its request identity header",
-        )
-    })?;
+    let separator = bytes
+        .iter()
+        .position(|byte| *byte == b'\n')
+        .ok_or_else(|| {
+            ReceiptStoreError::new(
+                ReceiptStoreErrorCode::CorruptRecord,
+                "stored receipt is missing its request identity header",
+            )
+        })?;
     let request_id = std::str::from_utf8(&bytes[..separator])
         .map_err(|_| {
             ReceiptStoreError::new(

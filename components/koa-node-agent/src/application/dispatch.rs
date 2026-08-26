@@ -38,9 +38,7 @@ impl DispatchRoute {
             Operation::RotateNodeScopedKey => Self::RotateNodeScopedKey,
             Operation::ExportNodeEvidence => Self::ExportNodeEvidence,
             Operation::EnterRecoveryTarget => Self::EnterRecoveryTarget,
-            Operation::ExecuteRollbackOrForwardRepair => {
-                Self::ExecuteRollbackOrForwardRepair
-            }
+            Operation::ExecuteRollbackOrForwardRepair => Self::ExecuteRollbackOrForwardRepair,
         }
     }
 

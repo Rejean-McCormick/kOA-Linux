@@ -330,7 +330,9 @@ pub fn evaluate_health(config: &NodeAgentConfig, evidence: &RuntimeEvidence) -> 
         ComponentState::Uninitialized
     } else if blocked.is_empty() && critical_transitions_ready {
         ComponentState::Ready
-    } else if inspection_enabled && !operation_is_blocked(OperationClass::InspectNodeState, config, evidence) {
+    } else if inspection_enabled
+        && !operation_is_blocked(OperationClass::InspectNodeState, config, evidence)
+    {
         ComponentState::InspectionOnly
     } else {
         ComponentState::Degraded
@@ -339,7 +341,10 @@ pub fn evaluate_health(config: &NodeAgentConfig, evidence: &RuntimeEvidence) -> 
     let health = if core_failed {
         "failed"
     } else if checks.values().any(|check| {
-        matches!(check.state, CheckState::Degraded | CheckState::Fail | CheckState::Unknown)
+        matches!(
+            check.state,
+            CheckState::Degraded | CheckState::Fail | CheckState::Unknown
+        )
     }) || config.resource_pressure_state != ResourcePressureState::Normal
     {
         "degraded"
@@ -367,26 +372,26 @@ pub fn evaluate_health(config: &NodeAgentConfig, evidence: &RuntimeEvidence) -> 
     match config.staging_capacity_state {
         StagingCapacityState::Pressure => {
             reason_codes.insert("STAGING_CAPACITY_PRESSURE".to_owned());
-        }
+        },
         StagingCapacityState::Exhausted => {
             reason_codes.insert("STAGING_CAPACITY_EXHAUSTED".to_owned());
-        }
+        },
         StagingCapacityState::Unknown => {
             reason_codes.insert("STAGING_CAPACITY_UNKNOWN".to_owned());
-        }
-        StagingCapacityState::Available => {}
+        },
+        StagingCapacityState::Available => {},
     }
     match config.resource_pressure_state {
         ResourcePressureState::Constrained => {
             reason_codes.insert("RESOURCE_PRESSURE_CONSTRAINED".to_owned());
-        }
+        },
         ResourcePressureState::Critical => {
             reason_codes.insert("RESOURCE_PRESSURE_CRITICAL".to_owned());
-        }
+        },
         ResourcePressureState::Unknown => {
             reason_codes.insert("RESOURCE_PRESSURE_UNKNOWN".to_owned());
-        }
-        ResourcePressureState::Normal => {}
+        },
+        ResourcePressureState::Normal => {},
     }
 
     HealthSnapshot {
@@ -450,8 +455,7 @@ fn operation_is_blocked(
     {
         return true;
     }
-    operation.requires_recovery_path()
-        && config.recovery_path_state != RecoveryPathState::Verified
+    operation.requires_recovery_path() && config.recovery_path_state != RecoveryPathState::Verified
 }
 
 fn insert_boolean_check(
@@ -512,12 +516,11 @@ fn insert_store_check(
     checks.insert(check_id.to_owned(), result);
 }
 
-fn insert_recovery_check(
-    checks: &mut BTreeMap<String, CheckResult>,
-    state: RecoveryPathState,
-) {
+fn insert_recovery_check(checks: &mut BTreeMap<String, CheckResult>, state: RecoveryPathState) {
     let result = match state {
-        RecoveryPathState::Verified => CheckResult::pass("recovery_path_ready_for_mutating_operations"),
+        RecoveryPathState::Verified => {
+            CheckResult::pass("recovery_path_ready_for_mutating_operations")
+        },
         RecoveryPathState::Degraded => CheckResult::non_passing(
             "recovery_path_ready_for_mutating_operations",
             CheckState::Degraded,
@@ -544,7 +547,7 @@ fn quote(value: &str) -> String {
             '\t' => output.push_str("\\t"),
             character if character.is_control() => {
                 output.push_str(&format!("\\u{:04x}", character as u32));
-            }
+            },
             character => output.push(character),
         }
     }

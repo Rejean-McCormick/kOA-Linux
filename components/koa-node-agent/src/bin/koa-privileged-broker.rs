@@ -19,11 +19,11 @@ fn main() -> ExitCode {
             Ok(()) => {
                 println!("{{\"status\":\"ok\",\"broker\":\"koa_privileged_broker\"}}");
                 ExitCode::SUCCESS
-            }
+            },
             Err(error) => {
                 eprintln!("broker self-check failed: {error}");
                 ExitCode::from(70)
-            }
+            },
         },
         Some("catalog") if arguments.next().is_none() => {
             for spec in broker::operations() {
@@ -36,20 +36,20 @@ fn main() -> ExitCode {
                 );
             }
             ExitCode::SUCCESS
-        }
+        },
         Some("validate") => validate_cli_request(arguments.collect()),
         Some("serve") if arguments.next().is_none() => {
             eprintln!(
                 "refusing to start: peer-authenticated local transport, durable ledger, and fixed adapters are not configured"
             );
             ExitCode::from(78)
-        }
+        },
         _ => {
             eprintln!(
                 "usage: koa-privileged-broker <self-check|catalog|validate OPERATION REQUEST_ID CALLER PROFILE_REF [TARGET_REF]|serve>"
             );
             ExitCode::from(64)
-        }
+        },
     }
 }
 
@@ -66,17 +66,17 @@ fn validate_cli_request(arguments: Vec<String>) -> ExitCode {
     match operation.as_str() {
         "manage_knowledge_artifact" => {
             parameters.insert("action".to_owned(), "quarantine".to_owned());
-        }
+        },
         "import_offline_bundle" => {
             parameters.insert("target_state".to_owned(), "quarantine".to_owned());
-        }
+        },
         "manage_declared_encrypted_volume" => {
             parameters.insert("action".to_owned(), "mount".to_owned());
-        }
+        },
         "restart_allowlisted_service_group" => {
             parameters.insert("critical".to_owned(), "true".to_owned());
-        }
-        _ => {}
+        },
+        _ => {},
     }
     let now = now_millis();
     let request = broker::BrokerRequest {
@@ -103,11 +103,11 @@ fn validate_cli_request(arguments: Vec<String>) -> ExitCode {
                 validated.operation, validated.canonical_fingerprint
             );
             ExitCode::SUCCESS
-        }
+        },
         Err(error) => {
             eprintln!("{}", error);
             ExitCode::from(65)
-        }
+        },
     }
 }
 

@@ -14,11 +14,12 @@ pub use network_backend::{
     NetworkBackendAdapter, NetworkManager, NetworkManagerError, NetworkPolicyBinding,
 };
 pub use systemd_backend::{
-    ServiceGroupBinding, SystemdBackendAdapter, SystemdManager, SystemdManagerError, UnitState,
+    ServiceGroupBinding, SystemctlManager, SystemdBackendAdapter, SystemdManager,
+    SystemdManagerError, UnitState,
 };
 pub use unix_socket::{
     exchange, read_frame, write_frame, ExactUidAuthenticator, PeerAuthenticator,
     PeerCredentialSource, PeerCredentials, SocketProtocolError, SocketProtocolErrorCode,
-    SocketRequestHandler, UnixSocketConfig,
-    UnixSocketServer, DEFAULT_MAX_FRAME_BYTES, SOCKET_PROTOCOL_VERSION,
+    SocketRequestHandler, UnixSocketConfig, UnixSocketServer, DEFAULT_MAX_FRAME_BYTES,
+    SOCKET_PROTOCOL_VERSION,
 };

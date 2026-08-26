@@ -7,8 +7,7 @@
 use std::collections::BTreeMap;
 
 use crate::ports::{
-    BackendError, BackendErrorCode, BackendOperationResult, NetworkBackend,
-    NetworkPolicyRequest,
+    BackendError, BackendErrorCode, BackendOperationResult, NetworkBackend, NetworkPolicyRequest,
 };
 
 pub trait NetworkManager: Send + Sync {

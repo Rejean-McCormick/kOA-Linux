@@ -6,9 +6,9 @@ use koa_node_agent::application::{
 };
 use koa_node_agent::domain::{
     AllowedRoot, AuthorizationDecision, AuthorizationDecisionParts, AuthorizationStatus,
-    CanonicalReference, ExpectedState, Identifier, NodeOperationRequest,
-    NodeOperationRequestParts, Operation, OperationParameters, ReplayDisposition,
-    RequestDeadline, RequestIdentityBinding, SafePath,
+    CanonicalReference, ExpectedState, Identifier, NodeOperationRequest, NodeOperationRequestParts,
+    Operation, OperationParameters, ReplayDisposition, RequestDeadline, RequestIdentityBinding,
+    SafePath,
 };
 
 fn identifier(value: &str) -> Identifier {
@@ -67,7 +67,10 @@ fn validation_context(now: u64) -> ValidationContext {
 
 #[test]
 fn operation_catalog_is_closed_and_complete() {
-    let identifiers: Vec<_> = Operation::ALL.iter().map(|operation| operation.as_str()).collect();
+    let identifiers: Vec<_> = Operation::ALL
+        .iter()
+        .map(|operation| operation.as_str())
+        .collect();
     assert_eq!(identifiers.len(), 13);
     assert_eq!(identifiers[0], "inspect_node_state");
     assert_eq!(identifiers[12], "execute_rollback_or_forward_repair");

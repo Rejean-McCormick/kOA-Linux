@@ -100,34 +100,30 @@ impl IdempotencyRule {
             Self::RequestAndArtifactIdentity => "request_id_and_artifact_identity",
             Self::RequestExpectedStateAndArtifactIdentity => {
                 "request_id_expected_state_and_artifact_identity"
-            }
+            },
             Self::RequestExpectedStateAndBundleIdentity => {
                 "request_id_expected_state_and_bundle_identity"
-            }
+            },
             Self::RequestExpectedStateArtifactIdentityAndAction => {
                 "request_id_expected_state_artifact_identity_and_action"
-            }
+            },
             Self::RequestBundleIdentityAndTargetState => {
                 "request_id_bundle_identity_and_target_state"
-            }
+            },
             Self::RequestVolumeIdentityExpectedStateAndAction => {
                 "request_id_volume_identity_expected_state_and_action"
-            }
-            Self::RequestServiceGroupExpectedState => {
-                "request_id_service_group_expected_state"
-            }
-            Self::RequestKeyIdentityExpectedVersion => {
-                "request_id_key_identity_expected_version"
-            }
+            },
+            Self::RequestServiceGroupExpectedState => "request_id_service_group_expected_state",
+            Self::RequestKeyIdentityExpectedVersion => "request_id_key_identity_expected_version",
             Self::RequestEvidenceScopeAndPolicyDecision => {
                 "request_id_evidence_scope_and_policy_decision"
-            }
+            },
             Self::RequestExpectedStateAndRecoveryTarget => {
                 "request_id_expected_state_and_recovery_target"
-            }
+            },
             Self::RequestFailedTransitionAndRecoveryPlan => {
                 "request_id_failed_transition_and_recovery_plan"
-            }
+            },
         }
     }
 }
@@ -148,7 +144,7 @@ impl ReceiptPolicy {
             Self::Required => "required",
             Self::RequiredForActivationQuarantineOrRevert => {
                 "required_for_activation_quarantine_or_revert"
-            }
+            },
             Self::RequiredWhenCritical => "required_when_critical",
         }
     }
@@ -199,10 +195,13 @@ impl ParameterPolicy {
             ),
             (Self::OfflineTargetState, "target_state") => {
                 matches!(value, "quarantine" | "staging")
-            }
+            },
             (Self::EncryptedVolumeAction, "action") => {
-                matches!(value, "create" | "unlock" | "mount" | "unmount" | "rotate" | "retire")
-            }
+                matches!(
+                    value,
+                    "create" | "unlock" | "mount" | "unmount" | "rotate" | "retire"
+                )
+            },
             (Self::ServiceGroupCriticality, "critical") => matches!(value, "true" | "false"),
             (Self::None, _) => false,
             _ => false,
@@ -431,7 +430,7 @@ impl fmt::Display for CatalogError {
         match self {
             Self::UnknownOperation(value) => {
                 write!(formatter, "unknown privileged operation: {value}")
-            }
+            },
             Self::InvariantViolation(message) => formatter.write_str(message),
         }
     }

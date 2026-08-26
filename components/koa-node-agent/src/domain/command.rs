@@ -79,7 +79,7 @@ impl Operation {
             Self::ExportNodeEvidence => AuthorizationClass::NodeEvidenceExport,
             Self::EnterRecoveryTarget | Self::ExecuteRollbackOrForwardRepair => {
                 AuthorizationClass::NodeRecovery
-            }
+            },
         }
     }
 
@@ -93,37 +93,27 @@ impl Operation {
             Self::StageSystemArtifact => IdempotencyRule::RequestIdAndArtifactIdentity,
             Self::ActivateSystemArtifact => {
                 IdempotencyRule::RequestIdExpectedStateAndArtifactIdentity
-            }
-            Self::ActivateServiceBundle => {
-                IdempotencyRule::RequestIdExpectedStateAndBundleIdentity
-            }
+            },
+            Self::ActivateServiceBundle => IdempotencyRule::RequestIdExpectedStateAndBundleIdentity,
             Self::ActivateGovernanceBundle => {
                 IdempotencyRule::RequestIdExpectedStateAndBundleIdentity
-            }
+            },
             Self::ManageKnowledgeArtifact => {
                 IdempotencyRule::RequestIdExpectedStateArtifactIdentityAndAction
-            }
-            Self::ImportOfflineBundle => {
-                IdempotencyRule::RequestIdBundleIdentityAndTargetState
-            }
+            },
+            Self::ImportOfflineBundle => IdempotencyRule::RequestIdBundleIdentityAndTargetState,
             Self::ManageDeclaredEncryptedVolume => {
                 IdempotencyRule::RequestIdVolumeIdentityExpectedStateAndAction
-            }
+            },
             Self::RestartAllowlistedServiceGroup => {
                 IdempotencyRule::RequestIdServiceGroupExpectedState
-            }
-            Self::RotateNodeScopedKey => {
-                IdempotencyRule::RequestIdKeyIdentityExpectedVersion
-            }
-            Self::ExportNodeEvidence => {
-                IdempotencyRule::RequestIdEvidenceScopeAndPolicyDecision
-            }
-            Self::EnterRecoveryTarget => {
-                IdempotencyRule::RequestIdExpectedStateAndRecoveryTarget
-            }
+            },
+            Self::RotateNodeScopedKey => IdempotencyRule::RequestIdKeyIdentityExpectedVersion,
+            Self::ExportNodeEvidence => IdempotencyRule::RequestIdEvidenceScopeAndPolicyDecision,
+            Self::EnterRecoveryTarget => IdempotencyRule::RequestIdExpectedStateAndRecoveryTarget,
             Self::ExecuteRollbackOrForwardRepair => {
                 IdempotencyRule::RequestIdFailedTransitionAndRecoveryPlan
-            }
+            },
         }
     }
 
@@ -165,9 +155,7 @@ impl FromStr for Operation {
             "rotate_node_scoped_key" => Ok(Self::RotateNodeScopedKey),
             "export_node_evidence" => Ok(Self::ExportNodeEvidence),
             "enter_recovery_target" => Ok(Self::EnterRecoveryTarget),
-            "execute_rollback_or_forward_repair" => {
-                Ok(Self::ExecuteRollbackOrForwardRepair)
-            }
+            "execute_rollback_or_forward_repair" => Ok(Self::ExecuteRollbackOrForwardRepair),
             _ => Err(UnknownOperation::new(value)),
         }
     }
@@ -266,34 +254,30 @@ impl IdempotencyRule {
             Self::RequestIdAndArtifactIdentity => "request_id_and_artifact_identity",
             Self::RequestIdExpectedStateAndArtifactIdentity => {
                 "request_id_expected_state_and_artifact_identity"
-            }
+            },
             Self::RequestIdExpectedStateAndBundleIdentity => {
                 "request_id_expected_state_and_bundle_identity"
-            }
+            },
             Self::RequestIdExpectedStateArtifactIdentityAndAction => {
                 "request_id_expected_state_artifact_identity_and_action"
-            }
+            },
             Self::RequestIdBundleIdentityAndTargetState => {
                 "request_id_bundle_identity_and_target_state"
-            }
+            },
             Self::RequestIdVolumeIdentityExpectedStateAndAction => {
                 "request_id_volume_identity_expected_state_and_action"
-            }
-            Self::RequestIdServiceGroupExpectedState => {
-                "request_id_service_group_expected_state"
-            }
-            Self::RequestIdKeyIdentityExpectedVersion => {
-                "request_id_key_identity_expected_version"
-            }
+            },
+            Self::RequestIdServiceGroupExpectedState => "request_id_service_group_expected_state",
+            Self::RequestIdKeyIdentityExpectedVersion => "request_id_key_identity_expected_version",
             Self::RequestIdEvidenceScopeAndPolicyDecision => {
                 "request_id_evidence_scope_and_policy_decision"
-            }
+            },
             Self::RequestIdExpectedStateAndRecoveryTarget => {
                 "request_id_expected_state_and_recovery_target"
-            }
+            },
             Self::RequestIdFailedTransitionAndRecoveryPlan => {
                 "request_id_failed_transition_and_recovery_plan"
-            }
+            },
         }
     }
 }
@@ -309,13 +293,9 @@ pub enum ReceiptPolicy {
 impl ReceiptPolicy {
     pub const fn as_str(self) -> &'static str {
         match self {
-            Self::OptionalUnlessRequired => {
-                "optional_unless_profile_or_security_policy_requires"
-            }
+            Self::OptionalUnlessRequired => "optional_unless_profile_or_security_policy_requires",
             Self::Required => "required",
-            Self::KnowledgeLifecycleConditional => {
-                "required_for_activation_quarantine_or_revert"
-            }
+            Self::KnowledgeLifecycleConditional => "required_for_activation_quarantine_or_revert",
             Self::CriticalOperationConditional => "required_when_critical",
         }
     }

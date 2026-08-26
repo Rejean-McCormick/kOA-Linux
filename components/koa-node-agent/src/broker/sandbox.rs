@@ -54,7 +54,11 @@ impl SandboxPolicy {
             return Err(SandboxError::new("empty_field", field, "value is required"));
         }
         if value.len() > self.bounds.maximum_token_bytes {
-            return Err(SandboxError::new("field_too_large", field, "token exceeds limit"));
+            return Err(SandboxError::new(
+                "field_too_large",
+                field,
+                "token exceeds limit",
+            ));
         }
         if value
             .bytes()
@@ -78,7 +82,11 @@ impl SandboxPolicy {
         value: &str,
     ) -> Result<(), SandboxError> {
         if value.is_empty() {
-            return Err(SandboxError::new("empty_reference", field, "reference is required"));
+            return Err(SandboxError::new(
+                "empty_reference",
+                field,
+                "reference is required",
+            ));
         }
         if value.len() > self.bounds.maximum_reference_bytes {
             return Err(SandboxError::new(
@@ -238,7 +246,7 @@ impl SafePathRoot {
                         "target_path",
                         "target path contains a non-normal component",
                     ));
-                }
+                },
             }
         }
         if normalized.as_os_str().is_empty() {
@@ -273,9 +281,12 @@ impl SafePathRoot {
 }
 
 fn contains_shell_metacharacter(value: &str) -> bool {
-    value
-        .chars()
-        .any(|character| matches!(character, ';' | '|' | '&' | '`' | '$' | '<' | '>' | '\n' | '\r'))
+    value.chars().any(|character| {
+        matches!(
+            character,
+            ';' | '|' | '&' | '`' | '$' | '<' | '>' | '\n' | '\r'
+        )
+    })
 }
 
 fn is_secret_bearing_name(value: &str) -> bool {
@@ -315,7 +326,11 @@ impl SandboxError {
 
 impl fmt::Display for SandboxError {
     fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(formatter, "{} ({}): {}", self.code, self.field, self.message)
+        write!(
+            formatter,
+            "{} ({}): {}",
+            self.code, self.field, self.message
+        )
     }
 }
 

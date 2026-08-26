@@ -1,6 +1,6 @@
 use crate::{
-    require_non_empty, schema, validate_non_empty_values, BindingValidationError,
-    CorrelationContext, ExecutionState,
+    BindingValidationError, CorrelationContext, ExecutionState, require_non_empty, schema,
+    validate_non_empty_values,
 };
 use serde::{Deserialize, Serialize};
 
@@ -149,10 +149,7 @@ impl ReceiptEnvelope {
         validate_non_empty_values("target_refs", &self.target_refs)?;
         validate_non_empty_values("authority_refs", &self.authority_refs)?;
         validate_non_empty_values("profile_refs", &self.profile_refs)?;
-        validate_non_empty_values(
-            "component_contract_refs",
-            &self.component_contract_refs,
-        )?;
+        validate_non_empty_values("component_contract_refs", &self.component_contract_refs)?;
         validate_non_empty_values("artifact_refs", &self.artifact_refs)?;
         validate_non_empty_values("release_refs", &self.release_refs)?;
         validate_non_empty_values("exception_refs", &self.exception_refs)?;
@@ -173,16 +170,17 @@ impl ReceiptEnvelope {
                 ));
             }
         }
-        if self.commit_state == CommitState::Committed
-            && self.outcome != ReceiptOutcome::Committed
+        if self.commit_state == CommitState::Committed && self.outcome != ReceiptOutcome::Committed
         {
             return Err(BindingValidationError::new(
                 "outcome",
                 "must be committed when commit_state is committed",
             ));
         }
-        if matches!(self.decision, DecisionState::Authorized | DecisionState::Denied)
-            && self.decided_at.is_none()
+        if matches!(
+            self.decision,
+            DecisionState::Authorized | DecisionState::Denied
+        ) && self.decided_at.is_none()
         {
             return Err(BindingValidationError::new(
                 "decided_at",

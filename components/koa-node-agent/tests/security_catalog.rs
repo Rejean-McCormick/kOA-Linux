@@ -90,8 +90,8 @@ fn json_string_values_for_key(document: &str, key: &str) -> Vec<String> {
                 b'"' => {
                     end = index;
                     break;
-                }
-                _ => {}
+                },
+                _ => {},
             }
         }
         assert!(end > 0, "unterminated JSON string for {key}");
@@ -144,16 +144,21 @@ fn canonical_contract_defines_exact_closed_operation_set() {
 fn broker_catalog_contains_every_canonical_operation() {
     let catalog = read_component("src/broker/catalog.rs");
 
+    // Security assertions apply to the production catalog. The source also
+    // contains #[cfg(test)] negative tests with prohibited operation literals
+    // such as "run_command" to verify that the parser rejects them.
+    let production_catalog = catalog.split("#[cfg(test)]").next().unwrap_or(&catalog);
+
     for operation in EXPECTED_OPERATIONS {
         assert!(
-            count_quoted_literal(&catalog, operation) >= 1,
+            count_quoted_literal(production_catalog, operation) >= 1,
             "catalog omits canonical operation {operation}"
         );
     }
 
     for prohibited in PROHIBITED_OPERATION_NAMES {
         assert_eq!(
-            count_quoted_literal(&catalog, prohibited),
+            count_quoted_literal(production_catalog, prohibited),
             0,
             "catalog exposes prohibited generic operation {prohibited}"
         );

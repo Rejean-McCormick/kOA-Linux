@@ -126,7 +126,10 @@ pub fn validate_request(
     if !context.enabled_operations.contains(&request.operation()) {
         return Err(RequestValidationError::new(
             RequestValidationErrorCode::OperationDisabled,
-            format!("operation {} is not enabled by the active profile", request.operation()),
+            format!(
+                "operation {} is not enabled by the active profile",
+                request.operation()
+            ),
         ));
     }
     if !context
@@ -144,10 +147,7 @@ pub fn validate_request(
             "the request deadline has expired",
         ));
     }
-    let horizon = request
-        .deadline()
-        .expires_at()
-        .saturating_sub(context.now);
+    let horizon = request.deadline().expires_at().saturating_sub(context.now);
     if horizon > context.maximum_deadline_horizon_seconds {
         return Err(RequestValidationError::new(
             RequestValidationErrorCode::DeadlineTooFar,
@@ -189,9 +189,9 @@ pub fn validate_request(
         )
         .map_err(RequestValidationError::authorization)?;
 
-    let receipt_required = request.parameters().requires_receipt(
-        context.receipt_required(request.operation()),
-    );
+    let receipt_required = request
+        .parameters()
+        .requires_receipt(context.receipt_required(request.operation()));
 
     Ok(ValidatedRequest {
         request,
@@ -222,7 +222,7 @@ fn validate_operation_parameters(
                     format!("service group {service_group} is not allowlisted"),
                 ));
             }
-        }
+        },
         OperationParameters::EnterRecoveryTarget { recovery_target } => {
             if !context
                 .allowlisted_recovery_targets
@@ -233,8 +233,8 @@ fn validate_operation_parameters(
                     format!("recovery target {recovery_target} is not allowlisted"),
                 ));
             }
-        }
-        _ => {}
+        },
+        _ => {},
     }
     Ok(())
 }
@@ -296,10 +296,10 @@ impl RequestValidationErrorCode {
             Self::AuthorizationExpectedStateMismatch => "authorization_expected_state_mismatch",
             Self::AuthorizationDecisionReferenceRequired => {
                 "authorization_decision_reference_required"
-            }
+            },
             Self::AuthorizationDecisionReferenceMismatch => {
                 "authorization_decision_reference_mismatch"
-            }
+            },
         }
     }
 }
@@ -322,37 +322,35 @@ impl RequestValidationError {
         let code = match error {
             AuthorizationError::Denied => RequestValidationErrorCode::AuthorizationDenied,
             AuthorizationError::Revoked => RequestValidationErrorCode::AuthorizationRevoked,
-            AuthorizationError::NotYetValid => {
-                RequestValidationErrorCode::AuthorizationNotYetValid
-            }
+            AuthorizationError::NotYetValid => RequestValidationErrorCode::AuthorizationNotYetValid,
             AuthorizationError::Expired => RequestValidationErrorCode::AuthorizationExpired,
             AuthorizationError::OperationMismatch => {
                 RequestValidationErrorCode::AuthorizationOperationMismatch
-            }
+            },
             AuthorizationError::ClassMismatch => {
                 RequestValidationErrorCode::AuthorizationClassMismatch
-            }
+            },
             AuthorizationError::CallerMismatch => {
                 RequestValidationErrorCode::AuthorizationCallerMismatch
-            }
+            },
             AuthorizationError::ServiceMismatch => {
                 RequestValidationErrorCode::AuthorizationServiceMismatch
-            }
+            },
             AuthorizationError::ProfileMismatch => {
                 RequestValidationErrorCode::AuthorizationProfileMismatch
-            }
+            },
             AuthorizationError::TargetScopeMismatch => {
                 RequestValidationErrorCode::AuthorizationTargetScopeMismatch
-            }
+            },
             AuthorizationError::ExpectedStateMismatch => {
                 RequestValidationErrorCode::AuthorizationExpectedStateMismatch
-            }
+            },
             AuthorizationError::DecisionReferenceRequired => {
                 RequestValidationErrorCode::AuthorizationDecisionReferenceRequired
-            }
+            },
             AuthorizationError::DecisionReferenceMismatch => {
                 RequestValidationErrorCode::AuthorizationDecisionReferenceMismatch
-            }
+            },
         };
         Self::new(code, error.code())
     }
