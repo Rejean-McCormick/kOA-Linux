@@ -5,7 +5,7 @@ from enum import StrEnum
 from typing import Any, Mapping, Sequence
 
 from .capabilities import CapabilityEntry, extract_capabilities, normalize_identifier
-from .membership import ComponentEntry, extract_components
+from .membership import ComponentEntry, SubsystemEntry, extract_components, extract_subsystems
 
 
 class ProfileKind(StrEnum):
@@ -32,6 +32,7 @@ class ProfileDescriptor:
     order_edges: tuple[tuple[str, str], ...]
     capabilities: tuple[CapabilityEntry, ...]
     components: tuple[ComponentEntry, ...]
+    subsystems: tuple[SubsystemEntry, ...]
 
     @property
     def active(self) -> bool:
@@ -219,6 +220,7 @@ def describe_profile(contract: Mapping[str, Any], source: str) -> ProfileDescrip
         order_edges=tuple(sorted(set(edges))),
         capabilities=extract_capabilities(contract, source),
         components=extract_components(contract, source),
+        subsystems=extract_subsystems(contract, source),
     )
 
 

@@ -12,7 +12,9 @@ source_lock = "source.lock.json"
 compatibility_manifest = "compatibility.json"
 
 [role]
-purpose = "Bridge a separately owned language build environment that produces verified compiled artifacts."
+purpose = "Bridge the separately owned planner-first multilingual generation system and its build/export capabilities without duplicating subsystem internals."
+planner_runtime_owned_by_subsystem = true
+renderer_backend_flexible = true
 build_runtime_separation_required = true
 runtime_compilation_allowed = false
 internal_behavior_duplication_allowed = false
@@ -20,9 +22,10 @@ internal_behavior_duplication_allowed = false
 [capabilities]
 provided = [
   "semantik_architect.status.read",
+  "semantik_architect.generate",
   "semantik_architect.compiler_job.submit",
   "semantik_architect.compiler_job.read",
-  "semantik_architect.runtime_pack.export"
+  "semantik_architect.language_pack.export"
 ]
 required = [
   "identity_and_trust.artifact.verify",
@@ -46,6 +49,13 @@ koa_owns = [
   "safe_degradation"
 ]
 subsystem_owns = [
+  "semantic_request_normalization",
+  "planner",
+  "planned_sentence",
+  "construction_plan",
+  "lexical_resolution",
+  "renderer_backend_selection",
+  "surface_result",
   "internal_domain_model",
   "internal_workflow",
   "internal_state_machine",
@@ -66,6 +76,20 @@ error_schema = "interfaces/transport/error-envelope.schema.json"
 receipt_schema = "interfaces/receipts/receipt-envelope.schema.json"
 version_negotiation_schema = "interfaces/transport/version-negotiation.schema.json"
 implicit_retry = false
+
+[generation]
+public_semantics = "semantic_input_to_surface_output"
+canonical_external_http_surface = "POST /api/v1/generate/{lang_code}"
+adapter_operation = "generate"
+planner_bypass_allowed = false
+renderer_specific_input_allowed = false
+
+[language_pack]
+artifact_class = "language_pack"
+release_channel = "knowledge"
+backend_assets_may_include_pgf = true
+pgf_required_for_all_packs = false
+activation_owned_by_adapter = false
 
 [admission]
 source_pin_required = true

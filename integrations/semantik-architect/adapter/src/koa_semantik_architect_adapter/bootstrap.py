@@ -10,10 +10,10 @@ from .capabilities import CapabilitySnapshot, default_snapshot
 from .client import SemantikArchitectClient, Transport
 from .compiler_jobs import CompilerJobCoordinator
 from .health import HealthService
-from .runtime_packs import KristalRuntimeValidationPort, RuntimePackBridge
+from .runtime_packs import LanguagePackBridge, LanguagePackValidationPort
 
 INTEGRATION_ID = "semantik_architect"
-SUBSYSTEM_CONTRACT_VERSION = "1.0.0"
+SUBSYSTEM_CONTRACT_VERSION = "1.1.0"
 ADAPTER_VERSION = "1.0.0"
 OFFICIAL_DOCUMENTATION_MOUNT = "subsystems/semantik-architect"
 
@@ -42,7 +42,7 @@ class SemantikArchitectAdapter:
     health: HealthService
     compiler_jobs: CompilerJobCoordinator
     artifact_bridge: ArtifactBridge
-    runtime_packs: RuntimePackBridge
+    language_packs: LanguagePackBridge
     capabilities: CapabilitySnapshot
 
 
@@ -50,7 +50,7 @@ def create_adapter(
     *,
     transport: Transport,
     artifact_admission_port: ArtifactAdmissionPort,
-    runtime_validation_port: KristalRuntimeValidationPort,
+    language_pack_validation_port: LanguagePackValidationPort,
     config: AdapterConfig | None = None,
     capabilities: CapabilitySnapshot | None = None,
 ) -> SemantikArchitectAdapter:
@@ -67,6 +67,6 @@ def create_adapter(
         health=HealthService(client, documentation_mounted=effective_config.documentation_mounted),
         compiler_jobs=CompilerJobCoordinator(client, effective_capabilities),
         artifact_bridge=ArtifactBridge(artifact_admission_port),
-        runtime_packs=RuntimePackBridge(runtime_validation_port),
+        language_packs=LanguagePackBridge(language_pack_validation_port),
         capabilities=effective_capabilities,
     )

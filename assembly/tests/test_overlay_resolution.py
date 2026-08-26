@@ -34,6 +34,7 @@ def profile(
         "composition": composition,
         "capabilities": {},
         "components": {},
+        "subsystems": {},
     }
 
 

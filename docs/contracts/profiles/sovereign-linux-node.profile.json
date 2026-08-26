@@ -355,29 +355,9 @@
         "role": "Selective receipts, evidence routing, and controlled audit disclosure."
       },
       {
-        "component_id": "ariane-runtime",
-        "activation": "always_on",
-        "role": "Deterministic local navigation and operator interaction."
-      },
-      {
-        "component_id": "konnaxion",
-        "activation": "always_on",
-        "role": "Konnaxion-owned authoritative capabilities."
-      },
-      {
-        "component_id": "orgo",
-        "activation": "always_on",
-        "role": "Orgo-owned workflow and orchestration."
-      },
-      {
         "component_id": "kristal-runtime",
         "activation": "always_on",
         "role": "Verification and consumption of active Kristal artifacts."
-      },
-      {
-        "component_id": "semantik-architect-runtime",
-        "activation": "always_on",
-        "role": "Runtime consumption of verified precompiled language artifacts."
       },
       {
         "component_id": "koa_mediatheque",
@@ -392,12 +372,6 @@
     ],
     "conditional": [
       {
-        "component_id": "sentient",
-        "condition": "Never permitted in this production profile.",
-        "activation": "excluded",
-        "default_included": false
-      },
-      {
         "component_id": "gf-wordbench",
         "condition": "Never permitted in this production profile.",
         "activation": "excluded",
@@ -405,10 +379,6 @@
       }
     ],
     "excluded": [
-      {
-        "component_id": "sentient",
-        "reason": "SenTient is a non-authoritative developer or build workbench."
-      },
       {
         "component_id": "gf-wordbench",
         "reason": "Grammar authoring and compilation belong to development and build profiles."
@@ -1189,6 +1159,36 @@
       "unprivileged_service",
       "profile_scoped_resources",
       "native_administration_and_recovery_fallback"
+    ]
+  },
+  "subsystem_membership": {
+    "required": [
+      {
+        "activation": "always_on",
+        "role": "Ariane-owned navigation and interaction subsystem integrated through the kOA-Linux platform boundary.",
+        "subsystem_id": "ariane"
+      },
+      {
+        "activation": "always_on",
+        "role": "Konnaxion-owned authoritative capabilities.",
+        "subsystem_id": "konnaxion"
+      },
+      {
+        "activation": "always_on",
+        "role": "Orgo-owned workflow and orchestration.",
+        "subsystem_id": "orgo"
+      },
+      {
+        "activation": "always_on",
+        "role": "SemantiK Architect-owned planner-first multilingual generation runtime; kOA-Linux owns only deployment, trust, resources, health, and artifact admission at the local boundary.",
+        "subsystem_id": "semantik_architect"
+      }
+    ],
+    "excluded": [
+      {
+        "reason": "SenTient is a non-authoritative developer or build workbench.",
+        "subsystem_id": "sentient"
+      }
     ]
   }
 }

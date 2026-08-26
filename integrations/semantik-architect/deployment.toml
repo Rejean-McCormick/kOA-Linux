@@ -2,11 +2,8 @@ schema_version = "1.0.0"
 status = "preparation_only"
 
 [profiles]
-admitted = [
-  "developer_linux_workstation",
-  "developer_windows_wsl",
-  "build_farm"
-]
+runtime_admitted = ["user_lightweight", "sovereign_linux_node", "developer_linux_workstation", "developer_windows_wsl"]
+build_admitted = ["developer_linux_workstation", "developer_windows_wsl", "build_farm"]
 default_for_other_profiles = "disabled"
 overlay_required_for_additional_profile = true
 
@@ -26,15 +23,13 @@ launch_authority = "profile_or_operator"
 endpoint_source = "profile_configuration"
 source_pin_required = true
 unresolved_endpoint_result = "blocked"
+planner_runtime_is_external = true
+renderer_backend_is_subsystem_owned = true
 
 [startup]
-after = [
-  "identity-and-trust",
-  "governance-policy-runtime",
-  "audit-broker",
-  "resource-governor"
-]
-readiness_required_before_jobs = true
+after = ["identity-and-trust", "governance-policy-runtime", "audit-broker", "resource-governor"]
+readiness_required_before_generation = true
+readiness_required_before_build_jobs = true
 activation_is_atomic = true
 
 [network]

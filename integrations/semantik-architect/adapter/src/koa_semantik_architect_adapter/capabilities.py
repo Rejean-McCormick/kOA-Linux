@@ -12,12 +12,14 @@ class CapabilityId(StrEnum):
     """Adapter capabilities; these do not describe subsystem internals."""
 
     HEALTH = "koa.integration.semantik_architect.health"
+    GENERATE = "koa.integration.semantik_architect.generate"
     COMPILER_JOB_SUBMIT = "koa.integration.semantik_architect.compiler_job.submit"
     COMPILER_JOB_STATUS = "koa.integration.semantik_architect.compiler_job.status"
     COMPILER_JOB_CANCEL = "koa.integration.semantik_architect.compiler_job.cancel"
     ARTIFACT_FETCH = "koa.integration.semantik_architect.artifact.fetch"
     ARTIFACT_BRIDGE = "koa.integration.semantik_architect.artifact.bridge"
-    RUNTIME_PACK_PREPARE = "koa.integration.semantik_architect.runtime_pack.prepare"
+    LANGUAGE_PACK_PREPARE = "koa.integration.semantik_architect.language_pack.prepare"
+    RUNTIME_PACK_PREPARE = "koa.integration.semantik_architect.language_pack.prepare"  # enum alias for the unchanged health module
 
 
 class CapabilityState(StrEnum):
@@ -57,7 +59,7 @@ class CapabilitySnapshot:
     def __post_init__(self) -> None:
         if self.subsystem_id != "semantik_architect":
             raise ValueError("unexpected subsystem_id")
-        if self.contract_version != "1.0.0":
+        if self.contract_version != "1.1.0":
             raise ValueError("unsupported subsystem contract version")
         identities = [item.capability_id for item in self.capabilities]
         if len(identities) != len(set(identities)):
@@ -106,7 +108,7 @@ def default_snapshot(*, documentation_mounted: bool) -> CapabilitySnapshot:
 
     return CapabilitySnapshot(
         subsystem_id="semantik_architect",
-        contract_version="1.0.0",
+        contract_version="1.1.0",
         alignment_state=AlignmentState.FINAL if documentation_mounted else AlignmentState.PREPARATION_ONLY,
         capabilities=tuple(
             CapabilityStatus(capability_id, CapabilityState.UNKNOWN, "external_state_unknown")
@@ -134,7 +136,7 @@ def snapshot_from_external(
             statuses.append(CapabilityStatus(capability_id, CapabilityState.UNAVAILABLE, "not_declared_by_provider"))
     return CapabilitySnapshot(
         subsystem_id="semantik_architect",
-        contract_version="1.0.0",
+        contract_version="1.1.0",
         alignment_state=AlignmentState.FINAL if documentation_mounted else AlignmentState.PREPARATION_ONLY,
         capabilities=tuple(statuses),
     )

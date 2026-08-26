@@ -10,7 +10,7 @@
       "all_other_versions": "rejected"
     },
     "subsystem_contract": {
-      "required_exact_version": "1.0.0"
+      "required_exact_version": "1.1.0"
     },
     "required_interface_schemas": [
       "interfaces/transport/event-envelope.schema.json",
@@ -31,10 +31,18 @@
   "runtime": {
     "python": ">=3.11,<4",
     "transport": "http_over_unix",
-    "serialization": "json"
+    "serialization": "json",
+    "generation_model": "planner_first_backend_flexible",
+    "language_pack_artifact_class": "language_pack"
   },
   "profile_applicability": {
-    "supported": [
+    "runtime_supported": [
+      "user_lightweight",
+      "sovereign_linux_node",
+      "developer_linux_workstation",
+      "developer_windows_wsl"
+    ],
+    "build_supported": [
       "developer_linux_workstation",
       "developer_windows_wsl",
       "build_farm"

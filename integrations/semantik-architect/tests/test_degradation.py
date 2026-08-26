@@ -6,12 +6,12 @@ from koa_semantik_architect_adapter import (
     ArtifactBridgeState,
     CompilerJobCoordinator,
     CompilerJobState,
-    RuntimePackBridge,
-    RuntimePackPreparationState,
-    RuntimePackValidationDecision,
+    LanguagePackBridge,
+    LanguagePackPreparationState,
+    LanguagePackValidationDecision,
     SemantikArchitectClient,
 )
-from ._support import FakeArtifactAdmission, FakeRuntimeValidation
+from ._support import FakeArtifactAdmission, FakeLanguagePackValidation
 
 
 def test_compiler_unavailable_returns_blocked_receipt(transport, all_capabilities, compiler_request):
@@ -73,14 +73,14 @@ def test_artifact_rejection_remains_non_committed(artifact_candidate):
     assert result.receipt.commit_state.value == "not_committed"
 
 
-def test_runtime_validation_unavailable_does_not_activate(language_pack_manifest):
-    from koa_semantik_architect_adapter import LanguageRuntimePackCandidate
+def test_language_pack_validation_unavailable_does_not_activate(language_pack_manifest):
+    from koa_semantik_architect_adapter import LanguagePackCandidate
 
     class BrokenValidation:
-        def validate_language_runtime_pack(self, payload):
+        def validate_language_pack(self, payload):
             raise RuntimeError("offline")
 
-    candidate = LanguageRuntimePackCandidate(
+    candidate = LanguagePackCandidate(
         "artifact:pack:1",
         "sha256:" + "e" * 64,
         language_pack_manifest,
@@ -89,19 +89,19 @@ def test_runtime_validation_unavailable_does_not_activate(language_pack_manifest
         "provenance:1",
         ("release-set:1",),
     )
-    result = RuntimePackBridge(BrokenValidation()).prepare(
+    result = LanguagePackBridge(BrokenValidation()).prepare(
         candidate, request_id="request:pack:1", correlation_id="correlation:pack:1"
     )
-    assert result.state is RuntimePackPreparationState.BLOCKED
+    assert result.state is LanguagePackPreparationState.BLOCKED
     assert result.receipt.commit_state.value == "not_committed"
     assert result.verification_ref is None
 
 
-def test_runtime_validation_rejection_is_explicit(language_pack_manifest):
-    from koa_semantik_architect_adapter import LanguageRuntimePackCandidate
+def test_language_pack_validation_rejection_is_explicit(language_pack_manifest):
+    from koa_semantik_architect_adapter import LanguagePackCandidate
 
-    port = FakeRuntimeValidation(RuntimePackValidationDecision(False, "runtime_incompatible"))
-    candidate = LanguageRuntimePackCandidate(
+    port = FakeLanguagePackValidation(LanguagePackValidationDecision(False, "language_pack_incompatible"))
+    candidate = LanguagePackCandidate(
         "artifact:pack:2",
         "sha256:" + "f" * 64,
         language_pack_manifest,
@@ -110,8 +110,8 @@ def test_runtime_validation_rejection_is_explicit(language_pack_manifest):
         "provenance:2",
         ("release-set:2",),
     )
-    result = RuntimePackBridge(port).prepare(
+    result = LanguagePackBridge(port).prepare(
         candidate, request_id="request:pack:2", correlation_id="correlation:pack:2"
     )
-    assert result.state is RuntimePackPreparationState.REJECTED
-    assert result.reason_code == "runtime_incompatible"
+    assert result.state is LanguagePackPreparationState.REJECTED
+    assert result.reason_code == "language_pack_incompatible"

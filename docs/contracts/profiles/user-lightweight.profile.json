@@ -279,29 +279,9 @@
         "role": "Resource limits, worker admission, queues, and background scheduling."
       },
       {
-        "component_id": "ariane-runtime",
-        "activation": "always_on",
-        "role": "Deterministic local navigation and interaction."
-      },
-      {
-        "component_id": "konnaxion",
-        "activation": "always_on",
-        "role": "Konnaxion-owned user and knowledge capabilities."
-      },
-      {
-        "component_id": "orgo",
-        "activation": "always_on",
-        "role": "Local workflow and orchestration within Orgo ownership."
-      },
-      {
         "component_id": "kristal-runtime",
         "activation": "always_on",
         "role": "Consumption and validation of active Kristal artifacts."
-      },
-      {
-        "component_id": "semantik-architect-runtime",
-        "activation": "always_on",
-        "role": "Runtime use of precompiled language artifacts."
       },
       {
         "component_id": "koa_mediatheque",
@@ -333,10 +313,6 @@
       }
     ],
     "excluded": [
-      {
-        "component_id": "sentient",
-        "reason": "SenTient is restricted to developer and build profiles and is non-authoritative."
-      },
       {
         "component_id": "gf-wordbench",
         "reason": "Grammar authoring and compilation are development functions. The user profile consumes precompiled language artifacts."
@@ -937,6 +913,36 @@
       "bounded_cache_and_preferences",
       "native_or_administrative_fallback",
       "one_last_known_good_space"
+    ]
+  },
+  "subsystem_membership": {
+    "required": [
+      {
+        "activation": "always_on",
+        "role": "Ariane-owned navigation and interaction subsystem integrated through the kOA-Linux platform boundary.",
+        "subsystem_id": "ariane"
+      },
+      {
+        "activation": "always_on",
+        "role": "Konnaxion-owned user and knowledge capabilities.",
+        "subsystem_id": "konnaxion"
+      },
+      {
+        "activation": "always_on",
+        "role": "Local workflow and orchestration within Orgo ownership.",
+        "subsystem_id": "orgo"
+      },
+      {
+        "activation": "always_on",
+        "role": "SemantiK Architect-owned planner-first multilingual generation runtime; kOA-Linux owns only deployment, trust, resources, health, and artifact admission at the local boundary.",
+        "subsystem_id": "semantik_architect"
+      }
+    ],
+    "excluded": [
+      {
+        "reason": "SenTient is restricted to developer and build profiles and is non-authoritative.",
+        "subsystem_id": "sentient"
+      }
     ]
   }
 }

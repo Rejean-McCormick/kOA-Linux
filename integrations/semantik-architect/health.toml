@@ -15,21 +15,18 @@ grants_authority = false
 
 [readiness]
 meaning = "adapter_can_accept_declared_operations"
-required_conditions = [
-  "source_is_pinned",
-  "compatibility_is_accepted",
-  "subsystem_endpoint_is_declared",
-  "identity_and_trust_is_available",
-  "governance_policy_runtime_is_available",
-  "audit_broker_is_available",
-  "resource_admission_is_available"
-]
+required_conditions = ["source_is_pinned", "compatibility_is_accepted", "subsystem_endpoint_is_declared", "identity_and_trust_is_available", "governance_policy_runtime_is_available", "audit_broker_is_available", "resource_admission_is_available"]
 missing_condition_result = "not_ready"
 grants_authority = false
 
+[capability_health]
+runtime_generation = "independent_from_build_jobs"
+build_jobs = "independent_from_runtime_generation"
+language_pack_preparation = "independent_from_activation"
+
 [dependency_states]
 subsystem_unavailable = "degraded"
-source_unpinned = "blocked"
+source_unpinned = "blocked_for_build"
 contract_incompatible = "blocked"
 authority_indeterminate = "blocked"
 resource_denied = "degraded"

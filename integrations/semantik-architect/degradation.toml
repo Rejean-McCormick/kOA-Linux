@@ -1,16 +1,27 @@
 schema_version = "1.0.0"
 
 [baseline]
-failure_scope = "semantik_architect_build_capability_only"
 unrelated_core_capabilities = "remain_operational"
 silent_substitution = false
-existing_verified_runtime_artifacts = "preserved"
+existing_verified_language_packs = "preserved"
+
+[runtime_generation_unavailable]
+state = "degraded"
+new_generation_requests = "rejected"
+existing_verified_language_packs = "preserved"
+fallback_implementation = "none_unless_explicitly_profiled"
+
+[build_capability_unavailable]
+state = "degraded"
+new_build_jobs = "rejected"
+active_runtime_generation = "continues_if_healthy"
+verified_outputs = "preserved"
 
 [source_missing]
-state = "blocked"
-new_jobs = "rejected"
+state = "blocked_for_build"
+new_build_jobs = "rejected"
 automatic_source_discovery = false
-fallback_implementation = "none"
+runtime_generation_with_admitted_material = "may_continue"
 
 [documentation_missing]
 state = "preparation_only"
@@ -24,23 +35,18 @@ automatic_schema_guessing = false
 
 [subsystem_unavailable]
 state = "degraded"
-new_jobs = "rejected"
-queued_jobs = "terminal_failure_receipt"
+generation_requests = "rejected"
+new_build_jobs = "rejected"
 automatic_retry = false
 
 [offline]
-state = "available_only_with_local_pinned_source_and_local_dependencies"
+state = "available_only_with_local_pinned_source_and_local_dependencies_for_build_or_local_admitted_runtime_for_generation"
 network_source_fetch = false
-missing_local_source_result = "unavailable"
 core_operation_continues = true
 
 [resource_pressure]
 state = "degraded"
-actions = [
-  "stop_accepting_new_jobs",
-  "reduce_concurrency",
-  "defer_queued_jobs"
-]
+actions = ["stop_accepting_new_build_jobs", "reduce_build_concurrency", "bound_generation_concurrency"]
 verified_outputs = "preserved"
 partial_outputs = "quarantined"
 

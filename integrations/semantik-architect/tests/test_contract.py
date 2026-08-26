@@ -14,7 +14,7 @@ from koa_semantik_architect_adapter import (
     CompilerJobRequest,
     Decision,
     ExecutionState,
-    LanguageRuntimePackCandidate,
+    LanguagePackCandidate,
     ReceiptOutcome,
     make_receipt,
 )
@@ -22,12 +22,12 @@ from koa_semantik_architect_adapter import (
 
 def test_canonical_identifiers_are_stable(all_capabilities):
     assert INTEGRATION_ID == "semantik_architect"
-    assert SUBSYSTEM_CONTRACT_VERSION == "1.0.0"
+    assert SUBSYSTEM_CONTRACT_VERSION == "1.1.0"
     assert ADAPTER_VERSION == "1.0.0"
     assert OFFICIAL_DOCUMENTATION_MOUNT == "subsystems/semantik-architect"
     assert LANGUAGE_PACK_SCHEMA.endswith("/language-pack.schema.json")
     assert all_capabilities.subsystem_id == "semantik_architect"
-    assert all_capabilities.contract_version == "1.0.0"
+    assert all_capabilities.contract_version == "1.1.0"
     assert all_capabilities.alignment_state is AlignmentState.PREPARATION_ONLY
     assert {item.capability_id for item in all_capabilities.capabilities} == set(CapabilityId)
 
@@ -68,8 +68,8 @@ def test_receipt_identity_is_deterministic():
     assert first.to_mapping()["outcome"] == "succeeded"
 
 
-def test_language_runtime_pack_requires_complete_manifest(language_pack_manifest):
-    candidate = LanguageRuntimePackCandidate(
+def test_language_pack_requires_complete_manifest(language_pack_manifest):
+    candidate = LanguagePackCandidate(
         artifact_ref="artifact:language-pack:fr-ca:1.0.0",
         artifact_digest="sha256:" + "c" * 64,
         manifest=language_pack_manifest,
@@ -83,17 +83,17 @@ def test_language_runtime_pack_requires_complete_manifest(language_pack_manifest
     assert payload["authority_effect"] == "candidate_validation_only"
 
 
-def test_language_runtime_pack_rejects_partial_or_wrong_channel(language_pack_manifest):
+def test_language_pack_rejects_partial_or_wrong_channel(language_pack_manifest):
     partial = dict(language_pack_manifest)
     partial.pop("validation")
     with pytest.raises(ValueError, match="missing fields"):
-        LanguageRuntimePackCandidate(
+        LanguagePackCandidate(
             "artifact:1", "sha256:" + "d" * 64, partial, "artifact-store:1", ("evidence:1",), "provenance:1", ("release-set:1",)
         )
     wrong = dict(language_pack_manifest)
     wrong["release_channel"] = "services"
     with pytest.raises(ValueError, match="knowledge"):
-        LanguageRuntimePackCandidate(
+        LanguagePackCandidate(
             "artifact:1", "sha256:" + "d" * 64, wrong, "artifact-store:1", ("evidence:1",), "provenance:1", ("release-set:1",)
         )
 
@@ -123,7 +123,7 @@ def test_compiler_job_success_paths(transport, all_capabilities, compiler_reques
         "payload": {
             "state": "succeeded",
             "job_ref": "compiler-job:1",
-            "artifact_refs": ["artifact:pgf:1", "artifact:language-pack:1"],
+            "artifact_refs": ["artifact:language-pack:1"],
         },
         "evidence_refs": ["evidence:compiler:1"],
     }
@@ -131,7 +131,7 @@ def test_compiler_job_success_paths(transport, all_capabilities, compiler_reques
         "compiler-job:1", request_id="request:status:1", correlation_id="correlation:status:1"
     )
     assert completed.state is CompilerJobState.SUCCEEDED
-    assert completed.artifact_refs == ("artifact:pgf:1", "artifact:language-pack:1")
+    assert completed.artifact_refs == ("artifact:language-pack:1",)
 
 
 def test_compiler_job_cancellation_success(transport, all_capabilities):
@@ -155,14 +155,14 @@ def test_compiler_job_cancellation_success(transport, all_capabilities):
     assert result.receipt.outcome.value == "cancelled"
 
 
-def test_artifact_and_runtime_pack_success_paths(artifact_candidate, language_pack_manifest):
-    from ._support import FakeArtifactAdmission, FakeRuntimeValidation
+def test_artifact_and_language_pack_success_paths(artifact_candidate, language_pack_manifest):
+    from ._support import FakeArtifactAdmission, FakeLanguagePackValidation
     from koa_semantik_architect_adapter import (
         ArtifactBridge,
         ArtifactBridgeState,
-        LanguageRuntimePackCandidate,
-        RuntimePackBridge,
-        RuntimePackPreparationState,
+        LanguagePackCandidate,
+        LanguagePackBridge,
+        LanguagePackPreparationState,
     )
 
     artifact_result = ArtifactBridge(FakeArtifactAdmission()).admit(
@@ -171,7 +171,7 @@ def test_artifact_and_runtime_pack_success_paths(artifact_candidate, language_pa
     assert artifact_result.state is ArtifactBridgeState.ADMITTED
     assert artifact_result.admission_ref == "admission:artifact:1"
 
-    candidate = LanguageRuntimePackCandidate(
+    candidate = LanguagePackCandidate(
         "artifact:pack:success",
         "sha256:" + "9" * 64,
         language_pack_manifest,
@@ -180,9 +180,33 @@ def test_artifact_and_runtime_pack_success_paths(artifact_candidate, language_pa
         "provenance:pack:success",
         ("release-set:success",),
     )
-    pack_result = RuntimePackBridge(FakeRuntimeValidation()).prepare(
+    pack_result = LanguagePackBridge(FakeLanguagePackValidation()).prepare(
         candidate, request_id="request:pack:success", correlation_id="correlation:pack:success"
     )
-    assert pack_result.state is RuntimePackPreparationState.PREPARED
-    assert pack_result.verification_ref == "verification:runtime-pack:1"
+    assert pack_result.state is LanguagePackPreparationState.PREPARED
+    assert pack_result.verification_ref == "verification:language-pack:1"
     assert pack_result.receipt.commit_state.value == "not_committed"
+
+
+def test_generation_uses_semantic_input_boundary(transport):
+    from koa_semantik_architect_adapter import SemantikArchitectClient
+
+    transport.responses["generate"] = {
+        "operation": "generate",
+        "request_id": "request:generate:1",
+        "correlation_id": "correlation:generate:1",
+        "outcome": "succeeded",
+        "payload": {"text": "Bonjour", "renderer_backend": "family", "fallback_used": False},
+        "evidence_refs": ["evidence:generation:1"],
+    }
+    response = SemantikArchitectClient(transport).generate(
+        "fr-CA",
+        {"intent": "greet", "arguments": {}},
+        request_id="request:generate:1",
+        correlation_id="correlation:generate:1",
+    )
+    assert response.payload["text"] == "Bonjour"
+    operation, payload, *_ = transport.calls[-1]
+    assert operation == "generate"
+    assert payload["lang_code"] == "fr-CA"
+    assert "renderer" not in payload["semantic_input"]

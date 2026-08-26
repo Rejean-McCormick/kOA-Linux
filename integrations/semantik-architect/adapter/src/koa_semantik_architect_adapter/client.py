@@ -111,6 +111,26 @@ class SemantikArchitectClient:
     def capabilities(self, *, request_id: str, correlation_id: str) -> ExternalResponse:
         return self.invoke("capabilities", {}, request_id=request_id, correlation_id=correlation_id)
 
+    def generate(
+        self,
+        lang_code: str,
+        semantic_input: Mapping[str, object],
+        *,
+        request_id: str,
+        correlation_id: str,
+        idempotency_key: str | None = None,
+    ) -> ExternalResponse:
+        language = lang_code.strip()
+        if not language or len(language) > 64:
+            raise ValueError("lang_code must be non-empty and bounded")
+        return self.invoke(
+            "generate",
+            {"lang_code": language, "semantic_input": dict(semantic_input)},
+            request_id=request_id,
+            correlation_id=correlation_id,
+            idempotency_key=idempotency_key,
+        )
+
     def submit_compiler_job(
         self,
         payload: Mapping[str, object],

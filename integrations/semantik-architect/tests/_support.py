@@ -5,7 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Mapping
 SRC = Path(__file__).parents[1] / 'adapter' / 'src'
-from koa_semantik_architect_adapter import ArtifactAdmissionDecision, CapabilityId, RuntimePackValidationDecision, snapshot_from_external
+from koa_semantik_architect_adapter import ArtifactAdmissionDecision, CapabilityId, LanguagePackValidationDecision, snapshot_from_external
 
 class FakeTransport:
 
@@ -35,12 +35,12 @@ class FakeArtifactAdmission:
         self.calls.append(payload)
         return self.decision
 
-class FakeRuntimeValidation:
+class FakeLanguagePackValidation:
 
-    def __init__(self, decision: RuntimePackValidationDecision | None=None) -> None:
-        self.decision = decision or RuntimePackValidationDecision(True, 'verified', 'verification:runtime-pack:1', ('evidence:runtime',))
+    def __init__(self, decision: LanguagePackValidationDecision | None=None) -> None:
+        self.decision = decision or LanguagePackValidationDecision(True, 'verified', 'verification:language-pack:1', ('evidence:runtime',))
         self.calls: list[Mapping[str, object]] = []
 
-    def validate_language_runtime_pack(self, payload: Mapping[str, object]) -> RuntimePackValidationDecision:
+    def validate_language_pack(self, payload: Mapping[str, object]) -> LanguagePackValidationDecision:
         self.calls.append(payload)
         return self.decision

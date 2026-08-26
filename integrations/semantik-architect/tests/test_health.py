@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from koa_semantik_architect_adapter import (
     CapabilityId,
+    CapabilityState,
     ExternalState,
     HealthService,
     Liveness,
@@ -32,6 +33,7 @@ def test_healthy_external_boundary_is_ready(transport):
     assert report.liveness is Liveness.HEALTHY
     assert report.readiness is Readiness.READY
     assert report.external_state is ExternalState.AVAILABLE
+    assert report.capability_snapshot.state_of(CapabilityId.GENERATE) is CapabilityState.AVAILABLE
     assert "official_documentation_not_mounted" in report.reason_codes
 
 

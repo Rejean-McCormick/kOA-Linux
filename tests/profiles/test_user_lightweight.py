@@ -104,6 +104,10 @@ def test_user_lightweight_resource_and_offline_claims() -> None:
 def test_user_lightweight_component_boundaries() -> None:
     required = {item["component_id"] for item in CONTRACT["component_membership"]["required"]}
     excluded = {item["component_id"] for item in CONTRACT["component_membership"]["excluded"]}
+    subsystems = {item["subsystem_id"] for item in CONTRACT["subsystem_membership"]["required"]}
+    subsystem_excluded = {item["subsystem_id"] for item in CONTRACT["subsystem_membership"]["excluded"]}
     assert {"identity-and-trust", "resource-governor", "koa_mediatheque", "koa-node-agent"} <= required
-    assert {"sentient", "gf-wordbench"} <= excluded
+    assert {"konnaxion", "orgo", "semantik_architect", "ariane"} <= subsystems
+    assert "gf-wordbench" in excluded
+    assert "sentient" in subsystem_excluded
     assert CONTRACT["security_and_privacy"]["direct_host_privilege_permitted"] is False

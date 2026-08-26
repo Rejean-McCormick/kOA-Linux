@@ -12,7 +12,7 @@ sys.path.insert(0, str(SRC))
 from koa_semantik_architect_adapter import (  # noqa: E402
     ArtifactAdmissionDecision,
     CapabilityId,
-    RuntimePackValidationDecision,
+    LanguagePackValidationDecision,
     snapshot_from_external,
 )
 
@@ -62,14 +62,14 @@ class FakeArtifactAdmission:
         return self.decision
 
 
-class FakeRuntimeValidation:
-    def __init__(self, decision: RuntimePackValidationDecision | None = None) -> None:
-        self.decision = decision or RuntimePackValidationDecision(
-            True, "verified", "verification:runtime-pack:1", ("evidence:runtime",)
+class FakeLanguagePackValidation:
+    def __init__(self, decision: LanguagePackValidationDecision | None = None) -> None:
+        self.decision = decision or LanguagePackValidationDecision(
+            True, "verified", "verification:language-pack:1", ("evidence:runtime",)
         )
         self.calls: list[Mapping[str, object]] = []
 
-    def validate_language_runtime_pack(self, payload: Mapping[str, object]) -> RuntimePackValidationDecision:
+    def validate_language_pack(self, payload: Mapping[str, object]) -> LanguagePackValidationDecision:
         self.calls.append(payload)
         return self.decision
 
@@ -117,7 +117,7 @@ def artifact_candidate():
 
     return CompiledArtifactCandidate(
         artifact_ref="artifact:language-pack:fr-ca:1.0.0",
-        artifact_class="language_runtime_pack",
+        artifact_class="language_pack",
         artifact_version="1.0.0",
         release_channel="knowledge",
         digest="sha256:" + "a" * 64,
@@ -136,7 +136,7 @@ def language_pack_manifest():
     return {
         "$schema": "https://schemas.koa.local/artifact-contracts/language-pack.schema.json",
         "artifact_id": "language-pack:fr-ca:1.0.0",
-        "artifact_class": "language_runtime_pack",
+        "artifact_class": "language_pack",
         "manifest_version": "1.0.0",
         "version": "1.0.0",
         "manifest_language": "en",
@@ -147,7 +147,7 @@ def language_pack_manifest():
         "release_channel": "knowledge",
         "source_project": {"project_ref": "language-project:fr-ca"},
         "language_identity": {"language_tag": "fr-CA"},
-        "build": {"toolchain_ref": "toolchain:gf:3.12"},
+        "build": {"toolchain_ref": "toolchain:architect:1"},
         "contents": {"artifacts": []},
         "integrity": {"digest": "sha256:" + "b" * 64},
         "runtime_compatibility": {"runtime_contract_refs": ["contract:semantik-runtime:1"]},

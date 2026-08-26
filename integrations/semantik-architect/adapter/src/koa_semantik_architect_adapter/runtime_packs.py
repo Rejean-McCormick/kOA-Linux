@@ -1,4 +1,4 @@
-"""Validation and admission preparation for compiled language runtime packs."""
+"""Validation and admission preparation for SemantiK Architect Language Packs."""
 
 from __future__ import annotations
 
@@ -8,61 +8,31 @@ from types import MappingProxyType
 from typing import Mapping, Protocol, runtime_checkable
 import re
 
-from .receipts import (
-    CommitState,
-    Decision,
-    ExecutionState,
-    IntegrationReceipt,
-    ReceiptOutcome,
-    make_receipt,
-)
+from .receipts import CommitState, Decision, ExecutionState, IntegrationReceipt, ReceiptOutcome, make_receipt
 
 LANGUAGE_PACK_SCHEMA = "https://schemas.koa.local/artifact-contracts/language-pack.schema.json"
+LANGUAGE_PACK_ARTIFACT_CLASS = "language_pack"
 KNOWLEDGE_RELEASE_CHANNEL = "knowledge"
-_REQUIRED_LANGUAGE_PACK_FIELDS = frozenset(
-    {
-        "$schema",
-        "artifact_id",
-        "artifact_class",
-        "manifest_version",
-        "version",
-        "manifest_language",
-        "created_at",
-        "owner",
-        "title",
-        "description",
-        "release_channel",
-        "source_project",
-        "language_identity",
-        "build",
-        "contents",
-        "integrity",
-        "runtime_compatibility",
-        "profile_compatibility",
-        "behavior",
-        "provenance",
-        "validation",
-        "lifecycle",
-        "activation_contract",
-        "retention",
-        "traceability",
-        "canonical_references",
-        "supersedes",
-        "replaced_by",
-    }
-)
+_REQUIRED_LANGUAGE_PACK_FIELDS = frozenset({
+    "$schema", "artifact_id", "artifact_class", "manifest_version", "version", "manifest_language",
+    "created_at", "owner", "title", "description", "release_channel", "source_project",
+    "language_identity", "build", "contents", "integrity", "runtime_compatibility",
+    "profile_compatibility", "behavior", "provenance", "validation", "lifecycle",
+    "activation_contract", "retention", "traceability", "canonical_references", "supersedes",
+    "replaced_by",
+})
 _DIGEST = re.compile(r"^sha256:[0-9a-f]{64}$")
 _SECRET_KEYS = frozenset({"authorization", "credential", "password", "private_key", "secret", "token"})
 
 
-class RuntimePackPreparationState(StrEnum):
+class LanguagePackPreparationState(StrEnum):
     PREPARED = "prepared"
     REJECTED = "rejected"
     BLOCKED = "blocked"
 
 
 @dataclass(frozen=True, slots=True)
-class LanguageRuntimePackCandidate:
+class LanguagePackCandidate:
     artifact_ref: str
     artifact_digest: str
     manifest: Mapping[str, object]
@@ -81,19 +51,19 @@ class LanguageRuntimePackCandidate:
         if not _DIGEST.fullmatch(self.artifact_digest):
             raise ValueError("artifact_digest must use sha256:<64 lowercase hex>")
         if self.content_ref.startswith(("data:", "inline:")):
-            raise ValueError("runtime pack content must be referenced, not embedded")
+            raise ValueError("language pack content must be referenced, not embedded")
         if self.authoritative:
-            raise ValueError("external runtime pack candidates are non-authoritative")
+            raise ValueError("external language pack candidates are non-authoritative before admission")
         manifest = dict(self.manifest)
         missing = sorted(_REQUIRED_LANGUAGE_PACK_FIELDS.difference(manifest))
         if missing:
-            raise ValueError(f"language runtime pack is missing fields: {', '.join(missing)}")
+            raise ValueError(f"language pack is missing fields: {', '.join(missing)}")
         if manifest.get("$schema") != LANGUAGE_PACK_SCHEMA:
             raise ValueError("unexpected language-pack schema identifier")
-        if manifest.get("artifact_class") != "language_runtime_pack":
-            raise ValueError("artifact_class must be language_runtime_pack")
+        if manifest.get("artifact_class") != LANGUAGE_PACK_ARTIFACT_CLASS:
+            raise ValueError(f"artifact_class must be {LANGUAGE_PACK_ARTIFACT_CLASS}")
         if manifest.get("release_channel") != KNOWLEDGE_RELEASE_CHANNEL:
-            raise ValueError("language runtime packs belong to the knowledge channel")
+            raise ValueError("language packs belong to the knowledge channel")
         if manifest.get("manifest_language") != "en":
             raise ValueError("manifest_language must be en")
         _reject_secret_keys(manifest)
@@ -108,24 +78,23 @@ class LanguageRuntimePackCandidate:
         object.__setattr__(self, "release_set_refs", releases)
 
     def to_validation_payload(self) -> Mapping[str, object]:
-        return MappingProxyType(
-            {
-                "artifact_ref": self.artifact_ref,
-                "artifact_digest": self.artifact_digest,
-                "content_ref": self.content_ref,
-                "manifest": dict(self.manifest),
-                "verification_evidence_refs": list(self.verification_evidence_refs),
-                "provenance_ref": self.provenance_ref,
-                "release_set_refs": list(self.release_set_refs),
-                "release_channel": KNOWLEDGE_RELEASE_CHANNEL,
-                "activation_requested": False,
-                "authority_effect": "candidate_validation_only",
-            }
-        )
+        return MappingProxyType({
+            "artifact_ref": self.artifact_ref,
+            "artifact_class": LANGUAGE_PACK_ARTIFACT_CLASS,
+            "artifact_digest": self.artifact_digest,
+            "content_ref": self.content_ref,
+            "manifest": dict(self.manifest),
+            "verification_evidence_refs": list(self.verification_evidence_refs),
+            "provenance_ref": self.provenance_ref,
+            "release_set_refs": list(self.release_set_refs),
+            "release_channel": KNOWLEDGE_RELEASE_CHANNEL,
+            "activation_requested": False,
+            "authority_effect": "candidate_validation_only",
+        })
 
 
 @dataclass(frozen=True, slots=True)
-class RuntimePackValidationDecision:
+class LanguagePackValidationDecision:
     accepted: bool
     reason_code: str
     verification_ref: str | None = None
@@ -133,92 +102,53 @@ class RuntimePackValidationDecision:
 
 
 @runtime_checkable
-class KristalRuntimeValidationPort(Protocol):
-    """Public validation boundary; activation is deliberately not part of this port."""
+class LanguagePackValidationPort(Protocol):
+    """Platform validation boundary; validation does not imply runtime activation."""
 
-    def validate_language_runtime_pack(self, payload: Mapping[str, object]) -> RuntimePackValidationDecision: ...
+    def validate_language_pack(self, payload: Mapping[str, object]) -> LanguagePackValidationDecision: ...
 
 
 @dataclass(frozen=True, slots=True)
-class RuntimePackPreparationResult:
-    state: RuntimePackPreparationState
+class LanguagePackPreparationResult:
+    state: LanguagePackPreparationState
     artifact_ref: str
     verification_ref: str | None
     receipt: IntegrationReceipt
     reason_code: str
 
 
-class RuntimePackBridge:
-    """Prepares and validates a candidate but never stages or activates it."""
+class LanguagePackBridge:
+    """Prepares and validates a Language Pack candidate but never activates it."""
 
-    def __init__(self, validation_port: KristalRuntimeValidationPort) -> None:
-        if not isinstance(validation_port, KristalRuntimeValidationPort):
-            raise TypeError("validation_port must implement KristalRuntimeValidationPort")
+    def __init__(self, validation_port: LanguagePackValidationPort) -> None:
+        if not isinstance(validation_port, LanguagePackValidationPort):
+            raise TypeError("validation_port must implement LanguagePackValidationPort")
         self._validation_port = validation_port
 
-    def prepare(
-        self,
-        candidate: LanguageRuntimePackCandidate,
-        *,
-        request_id: str,
-        correlation_id: str,
-    ) -> RuntimePackPreparationResult:
+    def prepare(self, candidate: LanguagePackCandidate, *, request_id: str, correlation_id: str) -> LanguagePackPreparationResult:
         try:
-            decision = self._validation_port.validate_language_runtime_pack(candidate.to_validation_payload())
+            decision = self._validation_port.validate_language_pack(candidate.to_validation_payload())
         except Exception:
-            return self._result(candidate, request_id, correlation_id, RuntimePackPreparationState.BLOCKED, "runtime_validation_unavailable")
-        if not isinstance(decision, RuntimePackValidationDecision):
-            return self._result(candidate, request_id, correlation_id, RuntimePackPreparationState.BLOCKED, "runtime_validation_response_invalid")
+            return self._result(candidate, request_id, correlation_id, LanguagePackPreparationState.BLOCKED, "language_pack_validation_unavailable")
+        if not isinstance(decision, LanguagePackValidationDecision):
+            return self._result(candidate, request_id, correlation_id, LanguagePackPreparationState.BLOCKED, "language_pack_validation_response_invalid")
         if not decision.accepted:
-            return self._result(
-                candidate,
-                request_id,
-                correlation_id,
-                RuntimePackPreparationState.REJECTED,
-                decision.reason_code,
-                decision,
-            )
+            return self._result(candidate, request_id, correlation_id, LanguagePackPreparationState.REJECTED, decision.reason_code, decision)
         if not decision.verification_ref:
-            return self._result(
-                candidate,
-                request_id,
-                correlation_id,
-                RuntimePackPreparationState.BLOCKED,
-                "verification_reference_missing",
-                decision,
-            )
-        return self._result(
-            candidate,
-            request_id,
-            correlation_id,
-            RuntimePackPreparationState.PREPARED,
-            "runtime_pack_prepared",
-            decision,
-        )
+            return self._result(candidate, request_id, correlation_id, LanguagePackPreparationState.BLOCKED, "verification_reference_missing", decision)
+        return self._result(candidate, request_id, correlation_id, LanguagePackPreparationState.PREPARED, "language_pack_prepared", decision)
 
     @staticmethod
-    def _result(
-        candidate: LanguageRuntimePackCandidate,
-        request_id: str,
-        correlation_id: str,
-        state: RuntimePackPreparationState,
-        reason_code: str,
-        decision: RuntimePackValidationDecision | None = None,
-    ) -> RuntimePackPreparationResult:
-        if state is RuntimePackPreparationState.PREPARED:
-            authority = Decision.AUTHORIZED
-            execution = ExecutionState.SUCCEEDED
-            outcome = ReceiptOutcome.SUCCEEDED
-        elif state is RuntimePackPreparationState.REJECTED:
-            authority = Decision.DENIED
-            execution = ExecutionState.NOT_STARTED
-            outcome = ReceiptOutcome.REJECTED
+    def _result(candidate: LanguagePackCandidate, request_id: str, correlation_id: str, state: LanguagePackPreparationState,
+                reason_code: str, decision: LanguagePackValidationDecision | None = None) -> LanguagePackPreparationResult:
+        if state is LanguagePackPreparationState.PREPARED:
+            authority, execution, outcome = Decision.AUTHORIZED, ExecutionState.SUCCEEDED, ReceiptOutcome.SUCCEEDED
+        elif state is LanguagePackPreparationState.REJECTED:
+            authority, execution, outcome = Decision.DENIED, ExecutionState.NOT_STARTED, ReceiptOutcome.REJECTED
         else:
-            authority = Decision.INDETERMINATE
-            execution = ExecutionState.NOT_STARTED
-            outcome = ReceiptOutcome.BLOCKED
+            authority, execution, outcome = Decision.INDETERMINATE, ExecutionState.NOT_STARTED, ReceiptOutcome.BLOCKED
         receipt = make_receipt(
-            receipt_type="language_runtime_pack_preparation",
+            receipt_type="language_pack_preparation",
             request_id=request_id,
             correlation_id=correlation_id,
             subject_ref=candidate.artifact_ref,
@@ -229,13 +159,7 @@ class RuntimePackBridge:
             reason_code=reason_code,
             evidence_refs=decision.evidence_refs if decision else (),
         )
-        return RuntimePackPreparationResult(
-            state=state,
-            artifact_ref=candidate.artifact_ref,
-            verification_ref=decision.verification_ref if decision else None,
-            receipt=receipt,
-            reason_code=reason_code,
-        )
+        return LanguagePackPreparationResult(state, candidate.artifact_ref, decision.verification_ref if decision else None, receipt, reason_code)
 
 
 def _unique_refs(values: tuple[str, ...], name: str) -> tuple[str, ...]:

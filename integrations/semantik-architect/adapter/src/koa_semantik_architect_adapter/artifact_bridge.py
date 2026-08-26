@@ -18,7 +18,7 @@ from .receipts import (
 )
 
 _DIGEST = re.compile(r"^sha256:[0-9a-f]{64}$")
-_ALLOWED_ARTIFACT_CLASSES = frozenset({"compiled_pgf", "language_runtime_pack"})
+_ALLOWED_ARTIFACT_CLASSES = frozenset({"language_pack"})
 
 
 class ArtifactBridgeState(StrEnum):
@@ -58,13 +58,13 @@ class CompiledArtifactCandidate:
                 raise ValueError(f"{name} must be non-empty and bounded")
             object.__setattr__(self, name, value)
         if self.artifact_class not in _ALLOWED_ARTIFACT_CLASSES:
-            raise ValueError("unsupported compiled artifact class")
+            raise ValueError("unsupported language artifact class")
         if self.release_channel != "knowledge":
-            raise ValueError("compiled language artifacts belong to the knowledge channel")
+            raise ValueError("language packs belong to the knowledge channel")
         if not _DIGEST.fullmatch(self.digest):
             raise ValueError("digest must use sha256:<64 lowercase hex>")
         if self.authoritative:
-            raise ValueError("external compiled material must remain non-authoritative before admission")
+            raise ValueError("external language material must remain non-authoritative before admission")
         if self.content_ref.startswith(("data:", "inline:")):
             raise ValueError("large artifact content must be referenced, not embedded")
         evidence = tuple(ref.strip() for ref in self.validation_evidence_refs if ref.strip())

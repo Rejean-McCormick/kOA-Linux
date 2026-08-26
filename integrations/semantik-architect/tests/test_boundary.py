@@ -6,12 +6,12 @@ from pathlib import Path
 from koa_semantik_architect_adapter import (
     ArtifactBridge,
     CompilerJobCoordinator,
-    LanguageRuntimePackCandidate,
-    RuntimePackBridge,
+    LanguagePackCandidate,
+    LanguagePackBridge,
     SemantikArchitectClient,
     create_adapter,
 )
-from ._support import FakeArtifactAdmission, FakeRuntimeValidation
+from ._support import FakeArtifactAdmission, FakeLanguagePackValidation
 
 PACKAGE = Path(__file__).parents[1] / "adapter" / "src" / "koa_semantik_architect_adapter"
 
@@ -45,13 +45,13 @@ def test_bootstrap_uses_only_public_ports(transport, all_capabilities):
     adapter = create_adapter(
         transport=transport,
         artifact_admission_port=FakeArtifactAdmission(),
-        runtime_validation_port=FakeRuntimeValidation(),
+        language_pack_validation_port=FakeLanguagePackValidation(),
         capabilities=all_capabilities,
     )
     assert isinstance(adapter.client, SemantikArchitectClient)
     assert isinstance(adapter.compiler_jobs, CompilerJobCoordinator)
     assert isinstance(adapter.artifact_bridge, ArtifactBridge)
-    assert isinstance(adapter.runtime_packs, RuntimePackBridge)
+    assert isinstance(adapter.language_packs, LanguagePackBridge)
     assert adapter.config.documentation_mounted is False
 
 
@@ -66,9 +66,9 @@ def test_artifact_bridge_moves_references_not_payload_bytes(artifact_candidate):
     assert payload["authority_effect"] == "candidate_only"
 
 
-def test_runtime_pack_bridge_never_requests_activation(language_pack_manifest):
-    port = FakeRuntimeValidation()
-    candidate = LanguageRuntimePackCandidate(
+def test_language_pack_bridge_never_requests_activation(language_pack_manifest):
+    port = FakeLanguagePackValidation()
+    candidate = LanguagePackCandidate(
         "artifact:pack:boundary",
         "sha256:" + "1" * 64,
         language_pack_manifest,
@@ -77,7 +77,7 @@ def test_runtime_pack_bridge_never_requests_activation(language_pack_manifest):
         "provenance:boundary",
         ("release-set:boundary",),
     )
-    RuntimePackBridge(port).prepare(
+    LanguagePackBridge(port).prepare(
         candidate, request_id="request:boundary", correlation_id="correlation:boundary"
     )
     assert port.calls[0]["activation_requested"] is False

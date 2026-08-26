@@ -206,7 +206,7 @@ class CompilerJobCoordinator:
             state = _state_from_response(response.payload, response.outcome)
             artifact_refs = _refs(response.payload.get("artifact_refs", ()), "artifact_refs")
             if state is CompilerJobState.SUCCEEDED and not artifact_refs:
-                raise ExternalProtocolError("successful compiler job is missing artifact references")
+                raise ExternalProtocolError("successful compiler job is missing declared artifact references")
             execution, outcome, reason = _terminal_projection(state)
             receipt = make_receipt(
                 receipt_type="compiler_job_status",

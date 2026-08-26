@@ -13,7 +13,14 @@ from .capabilities import (
     merge_capabilities,
     normalize_identifier,
 )
-from .membership import ComponentEntry, ComponentResolution, merge_components
+from .membership import (
+    ComponentEntry,
+    ComponentResolution,
+    SubsystemEntry,
+    SubsystemResolution,
+    merge_components,
+    merge_subsystems,
+)
 from .overlays import (
     ProfileDescriptor,
     ProfileKind,
@@ -47,6 +54,7 @@ class EffectiveProfile:
     contributing_profiles: tuple[tuple[str, str, str], ...]
     capabilities: tuple[CapabilityEntry, ...]
     components: tuple[ComponentEntry, ...]
+    subsystems: tuple[SubsystemEntry, ...]
 
     def to_dict(self) -> dict[str, object]:
         return {
@@ -65,6 +73,7 @@ class EffectiveProfile:
             ],
             "capabilities": [entry.to_dict() for entry in self.capabilities],
             "components": [entry.to_dict() for entry in self.components],
+            "subsystems": [entry.to_dict() for entry in self.subsystems],
         }
 
 
@@ -246,6 +255,9 @@ class ProfileResolver:
         component_resolution: ComponentResolution = merge_components(
             profile.components for profile in selected_profiles
         )
+        subsystem_resolution: SubsystemResolution = merge_subsystems(
+            profile.subsystems for profile in selected_profiles
+        )
         for conflict in capability_resolution.conflicts:
             issues.append(
                 ResolutionIssue(
@@ -270,6 +282,14 @@ class ProfileResolver:
                     f"{conflict.component_id}: {conflict.reason}",
                 )
             )
+        for conflict in subsystem_resolution.conflicts:
+            issues.append(
+                ResolutionIssue(
+                    "subsystem_conflict",
+                    conflict.sources,
+                    f"{conflict.subsystem_id}: {conflict.reason}",
+                )
+            )
 
         issues = sorted(issues, key=lambda issue: (issue.code, issue.profiles, issue.detail))
         ordered_ids = tuple(profile.profile_id for profile in selected_profiles)
@@ -283,6 +303,7 @@ class ProfileResolver:
             "profiles": contributing,
             "capabilities": [entry.to_dict() for entry in capability_resolution.entries],
             "components": [entry.to_dict() for entry in component_resolution.entries],
+            "subsystems": [entry.to_dict() for entry in subsystem_resolution.entries],
         }
         digest = hashlib.sha256(
             json.dumps(digest_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -295,5 +316,6 @@ class ProfileResolver:
             contributing_profiles=contributing,
             capabilities=capability_resolution.entries,
             components=component_resolution.entries,
+            subsystems=subsystem_resolution.entries,
         )
         return ResolutionResult(ResolutionOutcome.PASS, effective, (), ordered_ids)

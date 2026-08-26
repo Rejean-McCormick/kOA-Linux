@@ -86,10 +86,20 @@ def _assert_semantik_admitted(active_profile: dict[str, Any]) -> None:
     }:
         raise QemuBlockedError("SemantiK Architect compatibility is not admitted")
 
+    subsystems = active_profile.get("subsystems")
+    selected_subsystem = isinstance(subsystems, list) and any(
+        isinstance(item, dict)
+        and item.get("subsystem_id") == "semantik_architect"
+        and item.get("membership") in {"required", "optional", "conditional"}
+        for item in subsystems
+    )
+    if not selected_subsystem:
+        raise QemuBlockedError("SemantiK Architect is not selected in the effective profile subsystem membership")
+
     primary = active_profile.get("primary_profile")
     profile_id = primary.get("profile_id") if isinstance(primary, dict) else None
     applicability = compatibility.get("profile_applicability")
-    supported = applicability.get("supported") if isinstance(applicability, dict) else None
+    supported = applicability.get("runtime_supported") if isinstance(applicability, dict) else None
     overlays = active_profile.get("overlays")
     explicit_overlay = isinstance(overlays, list) and any(
         isinstance(item, dict) and item.get("profile_id") == "semantik_architect"

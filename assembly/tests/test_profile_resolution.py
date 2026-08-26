@@ -8,6 +8,7 @@ import pytest
 from koa_assembly.profiles import (
     CapabilityMembership,
     ComponentMembership,
+    SubsystemMembership,
     ProfileResolver,
     ResolutionOutcome,
     normalize_identifier,
@@ -31,6 +32,7 @@ def minimal_profile(
     kind: str = "primary_profile",
     capabilities: dict[str, object] | None = None,
     components: dict[str, object] | None = None,
+    subsystems: dict[str, object] | None = None,
     inheritance: dict[str, object] | None = None,
     status: str = "active",
     composition: dict[str, object] | None = None,
@@ -42,6 +44,7 @@ def minimal_profile(
         "status": status,
         "capabilities": capabilities or {},
         "components": components or {},
+        "subsystems": subsystems or {},
         "composition": composition or {},
     }
     if inheritance is not None:
@@ -286,3 +289,35 @@ def test_identifier_validation_rejects_path_like_values() -> None:
     assert normalize_identifier("identity-and-trust") == "identity_and_trust"
     with pytest.raises(ValueError, match="invalid identifier"):
         normalize_identifier("../identity")
+
+
+def test_subsystems_resolve_in_a_separate_namespace_from_components() -> None:
+    contracts = {
+        "primary.json": minimal_profile(
+            "base",
+            components={"required": ["identity-and-trust"]},
+            subsystems={"required": ["konnaxion", "orgo", "semantik_architect"]},
+        )
+    }
+    effective = ProfileResolver(contracts).resolve("base").require_effective()
+    assert {entry.component_id for entry in effective.components} == {"identity_and_trust"}
+    assert {entry.subsystem_id for entry in effective.subsystems} == {"konnaxion", "orgo", "semantik_architect"}
+    assert all(entry.membership is SubsystemMembership.REQUIRED for entry in effective.subsystems)
+
+
+def test_required_and_prohibited_subsystem_blocks_composition() -> None:
+    contracts = {
+        "primary.json": minimal_profile(
+            "base",
+            subsystems={"required": ["orgo"]},
+            composition={"overlay_compatibility": [{"overlay_id": "restricted", "compatibility": "compatible"}]},
+        ),
+        "overlay.json": minimal_profile(
+            "restricted",
+            kind="profile_overlay",
+            subsystems={"prohibited": ["orgo"]},
+            composition={"compatible_primary_profiles": ["base"]},
+        ),
+    }
+    result = ProfileResolver(contracts).resolve("base", ["restricted"])
+    assert any(issue.code == "subsystem_conflict" for issue in result.issues)
