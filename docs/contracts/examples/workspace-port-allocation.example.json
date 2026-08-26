@@ -70,7 +70,7 @@
       "allocation_id": "konnaxion-feature-voting-92cd-api-http",
       "state": "allocated",
       "service_id": "konnaxion-feature-voting-92cd-api",
-      "component_ref": "generated/component-catalog.json#/components/konnaxion",
+      "component_ref": "contracts/subsystems/konnaxion.subsystem.json",
       "purpose": "Local Konnaxion API and development UI",
       "protocol": "tcp",
       "host": {

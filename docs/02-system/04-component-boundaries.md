@@ -330,11 +330,11 @@ The UCKK Publication Bridge owns only outbound UCKK package, transfer, retry, an
 
 Ingestion does not imply publication. Publication does not imply ownership of kOA Mediatheque source media or dimensions.
 
-#### GF Wordbench and SemantiK Architect Runtime
+#### SemantiK Architect and language tooling
 
-GF Wordbench owns development-time grammar construction and compilation.
+SemantiK Architect is an independently owned ecosystem system. kOA-Linux represents it through a subsystem boundary and may host a local runtime deployment boundary.
 
-SemantiK Architect Runtime consumes compiled artifacts at runtime.
+GF Wordbench is optional GF-focused tooling inside Architect development workflows. It does not own the planner/construction runtime and is not required for non-GF backend profiles.
 
 The runtime does not silently compile or redefine grammar authority.
 

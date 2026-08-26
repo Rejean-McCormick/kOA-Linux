@@ -29,7 +29,7 @@
   "rgl_revision": "rgl:2026.07.0",
   "runtime_contract": "semantik.render.v1",
   "display_name": "kOA Core French (Canada) Language Pack",
-  "description": "Deterministic French (Canada) runtime language pack compiled by GF Wordbench for SemantiK Architect Runtime.",
+  "description": "Non-authoritative GF-backed French (Canada) language-pack example for the SemantiK Architect subsystem. It illustrates one supported backend profile and does not define the universal SemantiK Architect architecture.",
   "publisher": {
     "publisher_id": "publisher:koa-language-release",
     "publisher_type": "organization",

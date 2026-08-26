@@ -96,6 +96,8 @@ KOA:DOC-META:END -->
 
 # Kristal Runtime
 
+Kristal Runtime is a native kOA-Linux component. **Kristal is the broader ecosystem system**; its Specification and implementation remain the owner of Kristal epistemic/artifact semantics. This component owns only the local runtime boundary declared here.
+
 ## 1. Purpose
 
 Kristal Runtime is the transversal epistemic-artifact runtime of the kOA operating environment.

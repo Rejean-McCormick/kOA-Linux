@@ -13,8 +13,8 @@
     "generated/decision-index.json",
     "contracts/terminology.contract.json",
     "contracts/system.contract.json#/ai_boundary",
-    "generated/component-catalog.json#/components/ariane_runtime",
-    "generated/component-catalog.json#/components/sentient",
+    "contracts/subsystems/ariane.subsystem.json",
+    "contracts/subsystems/sentient.subsystem.json",
     "generated/component-catalog.json#/components/koa_mediatheque",
     "contracts/integration-types.contract.json",
     "contracts/artifact-classes.contract.json",
@@ -140,8 +140,8 @@ The canonical sources are:
 `text
 contracts/system.contract.json#/ai_boundary
 contracts/integration-types.contract.json
-generated/component-catalog.json#/components/ariane_runtime
-generated/component-catalog.json#/components/sentient
+contracts/subsystems/ariane.subsystem.json
+contracts/subsystems/sentient.subsystem.json
 generated/component-catalog.json#/components/koa_mediatheque
 contracts/artifact-classes.contract.json
 generated/requirements-index.json

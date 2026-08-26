@@ -15,7 +15,7 @@
     "contracts/system.contract.json#/ai_boundary",
     "contracts/system.contract.json#/release_and_artifact_identity",
     "contracts/system.contract.json#/receipts_and_critical_transitions",
-    "generated/component-catalog.json#/components/ariane_runtime",
+    "contracts/subsystems/ariane.subsystem.json",
     "contracts/subsystems/ariane.subsystem.json",
     "contracts/release-channels.contract.json",
     "contracts/artifact-classes.contract.json",
@@ -209,7 +209,7 @@ contracts/system.contract.json#/ariane
 contracts/system.contract.json#/ai_boundary
 contracts/system.contract.json#/release_and_artifact_identity
 contracts/system.contract.json#/receipts_and_critical_transitions
-generated/component-catalog.json#/components/ariane_runtime
+contracts/subsystems/ariane.subsystem.json
 contracts/components/ariane-runtime.component.json
 contracts/release-channels.contract.json
 contracts/artifact-classes.contract.json

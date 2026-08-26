@@ -28,28 +28,41 @@ KOA:DOC-META:END -->
 
 ## Purpose
 
-This page defines the kOA integration boundary for SemantiK Architect. It does not reproduce the subsystem's internal documentation.
+This page defines the **kOA-Linux host boundary** for SemantiK Architect. SemantiK Architect remains one independently owned planner-centered multilingual NLG ecosystem system.
 
-## Official Documentation Location
+## Official documentation
 
-The official documentation is expected at `subsystems/semantik-architect/`.
+The official documentation mount is `subsystems/semantik-architect/` and remains authoritative for Architect internals.
 
-This path is reserved for a directory junction or symbolic link. It can remain absent until the subsystem documentation is available. Windows `.lnk` shortcut files are not used.
+## Host role
 
-## Role in kOA
+Within kOA-Linux, SemantiK Architect is an **integrated subsystem**. kOA-Linux can own/mediate:
 
-Language subsystem whose build environment produces verified compiled artifacts.
+- deployment-profile membership;
+- process/service lifecycle;
+- resource envelope;
+- identity/trust boundary;
+- network and storage exposure;
+- artifact admission/verification;
+- local activation state when a declared artifact contract requires it;
+- health/readiness integration;
+- backup coordination;
+- safe degradation.
 
-## Boundary
+SemantiK Architect owns:
 
-The subsystem owns its internal domain model, workflow, state, complete API, product behavior, and user interface. kOA owns deployment, resources, trust, lifecycle, health, storage exposure, backup coordination, and declared cross-subsystem interactions.
+- request normalization;
+- planner behavior;
+- `PlannedSentence`;
+- `ConstructionPlan`;
+- lexical resolution;
+- renderer selection and backend behavior;
+- `SurfaceResult`;
+- the public generation contract.
 
-Direct writes to another subsystem's authoritative state are prohibited. Missing capability follows the declared capability state; no undeclared substitute is activated.
+GF/PGF is a supported backend/tooling family inside Architect, not a separate ecosystem system and not the architecture center.
 
-## Build and Runtime Separation
-
-The build environment owns language construction and compilation. Runtime surfaces consume verified compiled artifacts.
-
-## Validation
-
-The alignment check validates the reserved mount location and rejects duplicated internal catalogs. Use `--require-mounted` only when all subsystem documentation links have been installed.
+```text
+ecosystem scope: SemantiK Architect = ecosystem system
+host scope:      SemantiK Architect = integrated subsystem
+```

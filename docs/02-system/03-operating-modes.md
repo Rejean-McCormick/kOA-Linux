@@ -543,7 +543,7 @@ SenTient is an optional isolated workbench. It is not authoritative, is not star
 
 ### 8.4 Language runtime and GF Wordbench
 
-The user-facing language runtime consumes compiled PGF and related activated artifacts. GF Wordbench and compiler activity run in development-capable workspaces rather than ordinary interactive user mode.
+The user-facing language runtime consumes verified activated language packs and their declared backend assets. GF Wordbench and GF compiler activity, when that backend is used, run in development-capable workspaces rather than ordinary interactive user mode.
 
 ### 8.5 Resource Governor and Governance Policy Runtime
 

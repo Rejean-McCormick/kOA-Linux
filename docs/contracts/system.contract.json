@@ -1,6 +1,6 @@
 {
   "$schema": "../schemas/system.contract.schema.json",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "status": "active",
   "language": "en",
   "effective_at": "2026-08-05T19:14:00-04:00",
@@ -100,8 +100,10 @@
       "making kOA Spaces part of the privileged core",
       "treating menu visibility, route presence, or a top-bar widget as authorization",
       "requiring one user interface or one Space definition for every deployment",
-      "allowing a Space definition to own or mutate business authority"
-    ]
+      "allowing a Space definition to own or mutate business authority",
+      "treating integrated ecosystem systems as native kOA-Linux components"
+    ],
+    "ecosystem_scope": "koa_digital_ecosystem"
   },
   "architectural_layers": [
     {
@@ -663,21 +665,23 @@
     }
   },
   "language_runtime": {
-    "runtime_model": "compiled_artifact_consumption",
+    "runtime_model": "semantik_architect_subsystem_consumption",
     "user_runtime_builds_language_artifacts": false,
     "user_runtime_consumes": [
-      "pgf_artifacts",
-      "language_runtime_packs",
-      "approved_atlases"
+      "semantik_architect_runtime_assets",
+      "language_packs",
+      "optional_backend_assets"
     ],
     "build_workbenches": [
       {
-        "component_ref": "generated/component-catalog.json#/components/gf_wordbench",
-        "responsibility": "language_construction_and_compilation"
+        "subsystem_ref": "contracts/subsystems/semantik-architect.subsystem.json",
+        "boundary_id": "gf_wordbench",
+        "responsibility": "optional_gf_backend_and_language_build_tooling"
       },
       {
-        "component_ref": "generated/component-catalog.json#/components/semantik_architect_runtime",
-        "responsibility": "runtime_consumption_of_compiled_language_artifacts"
+        "subsystem_ref": "contracts/subsystems/semantik-architect.subsystem.json",
+        "boundary_id": "semantik_architect_runtime",
+        "responsibility": "local_runtime_deployment_boundary"
       }
     ],
     "kristal": {
@@ -691,6 +695,31 @@
       "prohibited_roles": [
         "universal_workflow_engine",
         "universal_operational_database"
+      ]
+    },
+    "semantik_architect_subsystem_ref": "contracts/subsystems/semantik-architect.subsystem.json",
+    "platform_boundary": {
+      "koa_linux_owns": [
+        "profile_membership",
+        "process_lifecycle",
+        "resource_envelope",
+        "network_and_storage_exposure",
+        "artifact_admission",
+        "local_activation_when_required",
+        "health_integration",
+        "backup_coordination",
+        "safe_degradation"
+      ],
+      "semantik_architect_owns": [
+        "request_normalization",
+        "planner",
+        "planned_sentence",
+        "construction_plan",
+        "lexical_resolution",
+        "renderer_selection",
+        "renderer_backends",
+        "surface_result",
+        "public_generation_contract"
       ]
     }
   },

@@ -827,7 +827,7 @@ An external integration does not become local authority by being cached.
 
 Ariane local navigation uses verified local artifacts and component contracts.
 
-SemantiK Architect Runtime uses compiled local PGF and language packs.
+SemantiK Architect uses verified local language packs and their declared backend assets; GF-backed deployments may use compiled local PGF.
 
 Kristal Runtime uses verified local Runtime Packs.
 
@@ -1391,7 +1391,7 @@ New packs arrive through artifact verification and activation.
 
 ### 8.10 SemantiK Architect Runtime
 
-The language runtime consumes compiled local PGF and language packs.
+The language runtime consumes verified local language packs and their declared backend assets, including compiled PGF only when the active backend is GF-backed.
 
 Offline operation does not depend on GF Wordbench or remote compilation.
 

@@ -282,6 +282,7 @@
 | DOC-RECIPE-USER-ZRAM-001 | 11-recipes/user-lightweight/zram-and-cgroup-limits.md | active | recipe |
 | DOC-AI-CONTEXT | AI_CONTEXT.md | active | explanatory_markdown |
 | DOC-ROOT-CHANGELOG-001 | CHANGELOG.md | active | explanatory_markdown |
+| DOC-ROOT-CODE-ALIGNMENT | CODE_ALIGNMENT_NOTES.md | active | explanatory_markdown |
 | DOC-ARTIFACT-EXAMPLES-README | contracts/examples/README.md | active | non_normative_readme |
 | DOC-CONTRIBUTING | CONTRIBUTING.md | active | explanatory_markdown |
 | DOC-ROOT-README | README.md | active | explanatory_markdown |

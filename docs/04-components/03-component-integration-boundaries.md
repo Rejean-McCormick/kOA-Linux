@@ -662,9 +662,9 @@ A consuming component references or queries Kristal through a declared interface
 
 ### 8.3 GF Wordbench and SemantiK Architect Runtime
 
-GF Wordbench owns grammar source projects and language build inputs.
+GF Wordbench is optional GF-focused tooling within SemantiK Architect development/build workflows and owns only the GF-specific workbench inputs assigned by that subsystem.
 
-SemantiK Architect Runtime consumes verified PGF artifacts and language manifests for deterministic rendering. Runtime use does not grant the runtime authority to edit grammar sources.
+The SemantiK Architect runtime boundary consumes verified language packs and their declared backend assets. GF-backed deployments may consume PGF artifacts; other renderer families use their own declared assets. Runtime use does not transfer source-authoring authority to the host runtime.
 
 ### 8.4 Ariane and applications
 

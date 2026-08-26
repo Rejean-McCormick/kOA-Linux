@@ -20,21 +20,21 @@
       "path": "contracts/subsystems/konnaxion.subsystem.json",
       "title": "Konnaxion",
       "status": "active",
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "id": "orgo",
       "path": "contracts/subsystems/orgo.subsystem.json",
       "title": "Orgo",
       "status": "active",
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "id": "semantik_architect",
       "path": "contracts/subsystems/semantik-architect.subsystem.json",
       "title": "SemantiK Architect",
       "status": "active",
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "id": "sentient",

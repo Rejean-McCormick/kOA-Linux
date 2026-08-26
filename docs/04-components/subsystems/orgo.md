@@ -28,24 +28,21 @@ KOA:DOC-META:END -->
 
 ## Purpose
 
-This page defines the kOA integration boundary for Orgo. It does not reproduce the subsystem's internal documentation.
+This page defines the **kOA-Linux host boundary** for Orgo. Orgo remains an independently owned ecosystem system. This page does not reproduce or redefine its Task/Case/workflow documentation.
 
-## Official Documentation Location
+## Official documentation
 
-The official documentation is expected at `subsystems/orgo/`.
+The official documentation mount is `subsystems/orgo/` and remains authoritative for Orgo internals.
 
-This path is reserved for a directory junction or symbolic link. It can remain absent until the subsystem documentation is available. Windows `.lnk` shortcut files are not used.
+## Host role
 
-## Role in kOA
+Within kOA-Linux, Orgo is an **integrated subsystem**. kOA-Linux can own/mediate deployment-profile membership, process lifecycle, resource envelope, trust boundary, network/storage exposure, artifact admission, health integration, backup coordination, safe degradation, and declared cross-system interactions.
 
-Independent task, organization, scheduling, and orchestration subsystem.
+Orgo itself owns Organizations, Cases, Tasks, workflow rules/state, routing/labels, domain extensions, its APIs, and operational audit semantics.
 
-## Boundary
+```text
+ecosystem scope: Orgo = ecosystem system
+host scope:      Orgo = integrated subsystem
+```
 
-The subsystem owns its internal domain model, workflow, state, complete API, product behavior, and user interface. kOA owns deployment, resources, trust, lifecycle, health, storage exposure, backup coordination, and declared cross-subsystem interactions.
-
-Direct writes to another subsystem's authoritative state are prohibited. Missing capability follows the declared capability state; no undeclared substitute is activated.
-
-## Validation
-
-The alignment check validates the reserved mount location and rejects duplicated internal catalogs. Use `--require-mounted` only when all subsystem documentation links have been installed.
+A kOA-Linux platform event or receipt does not become Orgo workflow state unless Orgo accepts it through its own contract.

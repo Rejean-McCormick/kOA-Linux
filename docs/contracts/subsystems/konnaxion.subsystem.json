@@ -3,9 +3,9 @@
   "subsystem_id": "konnaxion",
   "title": "Konnaxion",
   "status": "active",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "relationship_to_koa": "integrated_subsystem",
-  "koa_role": "Independent civic-participation subsystem integrated through declared kOA boundaries.",
+  "koa_role": "Independent Konnaxion ecosystem system integrated into kOA-Linux through a host-relative subsystem boundary.",
   "official_documentation": {
     "mount_path": "subsystems/konnaxion",
     "mount_kind": "directory_junction_or_symbolic_link",
@@ -36,7 +36,8 @@
     "direct_cross_subsystem_writes": "prohibited",
     "undeclared_substitution": "prohibited",
     "internal_behavior_duplication": "prohibited",
-    "official_documentation_mount": "subsystems/konnaxion"
+    "official_documentation_mount": "subsystems/konnaxion",
+    "host_relative_subsystem_classification_transfers_internal_authority": false
   },
   "documentation": {
     "koa_boundary_document": "04-components/subsystems/konnaxion.md"

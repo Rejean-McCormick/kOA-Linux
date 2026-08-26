@@ -125,7 +125,7 @@
   "services": [
     {
       "service_id": "konnaxion-feature-voting-92cd-api",
-      "component_ref": "generated/component-catalog.json#/components/konnaxion",
+      "component_ref": "contracts/subsystems/konnaxion.subsystem.json",
       "service_class": "application_api",
       "runtime": "container",
       "container_name": "konnaxion-feature-voting-92cd-api",
@@ -152,7 +152,7 @@
     },
     {
       "service_id": "konnaxion-feature-voting-92cd-worker",
-      "component_ref": "generated/component-catalog.json#/components/konnaxion",
+      "component_ref": "contracts/subsystems/konnaxion.subsystem.json",
       "service_class": "background_worker",
       "runtime": "container",
       "container_name": "konnaxion-feature-voting-92cd-worker",
@@ -348,7 +348,7 @@
       "database_process_service_id": "konnaxion-feature-voting-92cd-postgres",
       "database_name": "konnaxion_feature_voting_92cd",
       "database_user": "konnaxion_feature_voting_92cd",
-      "owner_component_ref": "generated/component-catalog.json#/components/konnaxion",
+      "owner_component_ref": "contracts/subsystems/konnaxion.subsystem.json",
       "migration_owner": "konnaxion",
       "authoritative_source_tables_owned_by": "konnaxion",
       "cross_component_writes_allowed": false,
@@ -503,7 +503,7 @@
       "contracts/profiles/developer-windows-wsl.profile.json",
       "contracts/toolchains/python-uv.toolchain.json",
       "contracts/toolchains/container-runtime.toolchain.json",
-      "generated/component-catalog.json#/components/konnaxion",
+      "contracts/subsystems/konnaxion.subsystem.json",
       "contracts/artifact-contracts/developer-workspace.schema.json"
     ]
   },

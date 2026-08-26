@@ -67,24 +67,93 @@
 }
 KOA:DOC-META:END -->
 
-# kOA Documentation
+# kOA-Linux Documentation
 
-This corpus documents kOA-Linux Operating System, its internal components, deployment profiles, lifecycle, security, operations, and integration boundaries.
+This corpus documents **kOA-Linux Operating System**: the sovereign local operating system and platform boundary used to run, isolate, govern, update, recover, and operate local kOA workloads.
 
-The kOA Mediatheque is the private local and offline authority. The online UCKK Mediatheque is a separate Moodle authority. Both implement the shared Mediatheque frame or compatible versions, while retaining separate storage, identities, access control, lifecycle, and authority. `publish_to_uckk` and `import_from_uckk` are explicit, separately governed operations; no implicit bidirectional synchronization exists.
+## Scope
 
-Integrated subsystems retain authority over their internal behavior. kOA uses stable local documentation mounts rather than duplicating subsystem documentation. kOA Spaces is an optional and replaceable experience subsystem: it renders the module selector, active-module sidebar, top-bar contributions, presentation routing, and shared page surface from validated presentation artifacts. It never grants authority and does not own authentication, authorization, workflows, business data, privileged host operations, resource admission, release activation, backup, or recovery.
+kOA-Linux is **not** the whole kOA Digital Ecosystem.
 
-Start with `AI_CONTEXT.md`. For the Mediatheque boundary, read `02-system/12-koa-mediatheque-system-boundary.md`, `04-components/koa-mediatheque.md`, `04-components/uckk-publication-bridge.md`, and `04-components/uckk-import-bridge.md`. For contextual navigation and interface composition, read `02-system/21-koa-spaces-experience-layer.md`, `02-system/22-koa-spaces-interface-composition.md`, `03-profiles/14-koa-spaces-deployment.md`, `04-components/subsystems/koa-spaces.md`, and `contracts/subsystems/koa-spaces.subsystem.json`.
+```text
+kOA
+└── kOA Digital Ecosystem        system of systems / operable digital ecosystem
+    ├── Konnaxion               independent ecosystem system
+    ├── Orgo                    independent ecosystem system
+    ├── Kristal                 independent ecosystem system
+    ├── SemantiK Architect      independent ecosystem system
+    ├── other applications / gateways / systems
+    └── kOA-Linux Operating System
+         ├── native platform components
+         ├── deployment profiles
+         ├── trust / resources / privilege / lifecycle
+         ├── local artifact admission / activation / recovery
+         └── host-relative subsystem boundaries for integrated systems
+```
 
-For security architecture and profile applicability, read `07-security/21-security-control-architecture.md` and `07-security/22-security-control-profile-matrix.md`, then follow each control to its canonical thematic security document. `contracts/security-controls.contract.json` owns control identifiers and applicability; `contracts/artifact-contracts/security-evidence.schema.json` owns control-specific evidence structure.
+The phrase **sociotechnical operating system** can describe the broader kOA Digital Ecosystem when software, governance, people, roles, and institutions are considered together. It is not a second technical operating-system product and is not a synonym for kOA-Linux.
 
-Generated files support discovery and have no independent authority.
+## Authority model
 
-## Architecture pattern policy
+Machine-readable contracts are canonical for the objects they own. Prose explains those contracts. Generated indexes are derived navigation and have no independent authority.
 
-The final policy for circuit breakers, dead-letter handling, distributed workflows, large payload references, experience view adapters, CQRS projections, and cache-aside is defined in `contracts/architecture-patterns.contract.json` and explained in `02-system/34-architecture-patterns.md`. Lifecycle, operations, and conformance are defined in documents `DOC-LIFE-020`, `DOC-OPS-020`, and `DOC-CONF-022`.
+Independently owned ecosystem systems retain authority over their internal behavior when integrated by kOA-Linux. In the kOA-Linux scope they can be called **integrated subsystems**; this is a host-relative deployment classification, not an ownership transfer.
 
-## Security control policy
+Native kOA-Linux components own only their declared platform state. A shared host, process supervisor, database server, container runtime, network, or filesystem does not transfer domain authority.
 
-Security-control orchestration is defined in `contracts/security-controls.contract.json` and explained in `07-security/21-security-control-architecture.md`. The profile matrix in `07-security/22-security-control-profile-matrix.md` is the human-readable projection. Existing thematic security documents remain authoritative for control meaning and required behavior.
+## Core local responsibilities
+
+kOA-Linux owns or mediates the platform concerns declared by its contracts, including:
+
+- deployment-profile composition;
+- component and subsystem process lifecycle;
+- identity and trust boundaries;
+- resource governance;
+- privilege mediation;
+- network and storage exposure;
+- artifact admission and verification;
+- local activation and rollback where the artifact contract assigns them to the platform;
+- safe degradation;
+- offline continuity;
+- backup, restore, portability, and recovery;
+- selective audit/evidence paths;
+- optional experience composition through kOA Spaces.
+
+It does not redefine Konnaxion, Orgo, Kristal, or SemantiK Architect internals.
+
+## Important boundaries
+
+### Kristal
+
+Kristal is one ecosystem system. Its Specification and implementation belong to the same Kristal system. kOA-Linux does not redefine Kristal schemas or epistemic semantics. The local `kristal_runtime` component owns only the kOA-Linux runtime boundary for verified Kristal artifacts and Runtime Packs.
+
+### SemantiK Architect
+
+SemantiK Architect is one planner-centered NLG ecosystem system. kOA-Linux governs its local deployment boundary, resources, artifact admission, health, storage/network exposure, and safe degradation. Architect itself owns request normalization, planning, `PlannedSentence`, `ConstructionPlan`, lexical resolution, renderer selection/backends, `SurfaceResult`, and its public generation contract. GF/PGF is a supported backend/tooling family, not the architecture itself.
+
+### Konnaxion and Orgo
+
+Konnaxion and Orgo are independent ecosystem systems. kOA-Linux integrates them through subsystem contracts and official documentation mounts. It does not duplicate their internal model, workflow, API, or UI documentation.
+
+### kOA Spaces
+
+kOA Spaces is optional and replaceable. It composes validated interface contributions but owns no business authority, workflow authority, host privilege, resource admission, release activation, backup, or recovery.
+
+## Where to start
+
+- `contracts/system.contract.json` — global kOA-Linux system contract.
+- `contracts/terminology.contract.json` — canonical vocabulary.
+- `01-constitution/13-glossary.md` — human-readable taxonomy.
+- `02-system/00-system-overview.md` — system model and boundaries.
+- `02-system/05-data-authority-and-ownership.md` — logical authority.
+- `02-system/07-cross-component-communication.md` — commands, queries, events, artifacts, receipts and gateways.
+- `04-components/` — native component boundaries.
+- `04-components/subsystems/` — host-side boundaries for independently owned integrated systems.
+- `03-profiles/` — deployment profiles and overlays.
+- `06-lifecycle/` — artifact/release/activation/recovery lifecycle.
+- `07-security/` — trust, security, privacy and privilege boundaries.
+- `08-operations/` — operating behavior.
+- `09-conformance/` — conformance model and validators.
+- `CODE_ALIGNMENT_NOTES.md` — implementation/contract areas that still need alignment.
+
+The documentation validators remain the executable consistency check for this corpus.

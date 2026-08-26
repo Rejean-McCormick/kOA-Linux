@@ -1,6 +1,6 @@
 {
   "$schema": "../schemas/terminology.contract.schema.json",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "status": "active",
   "language": "en",
   "effective_at": "2026-08-05T19:14:00-04:00",
@@ -728,9 +728,9 @@
       "term_id": "TERM-COMP-ARIANE-RUNTIME",
       "canonical_name": "Ariane Runtime",
       "canonical_identifier": "ariane_runtime",
-      "category": "component",
-      "definition": "The local deterministic navigation and accessibility runtime for Ariane capabilities.",
-      "semantic_owner_ref": "generated/component-catalog.json#/components/ariane_runtime",
+      "category": "runtime_boundary",
+      "definition": "The host-local runtime boundary used when the independently owned Ariane ecosystem system is integrated into kOA-Linux. Ariane remains an integrated subsystem; this label does not transfer its internal domain or workflow authority to kOA-Linux.",
+      "semantic_owner_ref": "contracts/subsystems/ariane.subsystem.json",
       "scope": [
         "global"
       ],
@@ -764,9 +764,9 @@
       "term_id": "TERM-COMP-GF-WORDBENCH",
       "canonical_name": "GF Wordbench",
       "canonical_identifier": "gf_wordbench",
-      "category": "component",
-      "definition": "The designated workbench for constructing and compiling language artifacts.",
-      "semantic_owner_ref": "generated/component-catalog.json#/components/gf_wordbench",
+      "category": "subsystem_tooling",
+      "definition": "Optional GF-focused language-development tooling used within SemantiK Architect workflows. GF is a renderer/backend and tooling source, not the architecture center of SemantiK Architect and not a separate ecosystem system.",
+      "semantic_owner_ref": "contracts/subsystems/semantik-architect.subsystem.json",
       "scope": [
         "global"
       ],
@@ -856,9 +856,9 @@
       "term_id": "TERM-COMP-KONNAXION",
       "canonical_name": "Konnaxion",
       "canonical_identifier": "konnaxion",
-      "category": "component",
-      "definition": "The first-class kOA domain responsible for its registered Konnaxion capabilities and authoritative data.",
-      "semantic_owner_ref": "generated/component-catalog.json#/components/konnaxion",
+      "category": "ecosystem_system",
+      "definition": "An independently owned ecosystem system for civic/public domain capabilities. kOA-Linux integrates it as a host-relative subsystem and does not own its internal model, workflow, API, or user interface.",
+      "semantic_owner_ref": "contracts/subsystems/konnaxion.subsystem.json",
       "scope": [
         "global"
       ],
@@ -890,9 +890,9 @@
       "term_id": "TERM-COMP-ORGO",
       "canonical_name": "Orgo",
       "canonical_identifier": "orgo",
-      "category": "component",
-      "definition": "The first-class kOA domain responsible for its registered Orgo capabilities and authoritative data.",
-      "semantic_owner_ref": "generated/component-catalog.json#/components/orgo",
+      "category": "ecosystem_system",
+      "definition": "An independently owned ecosystem system for workflow and operational coordination. kOA-Linux integrates it as a host-relative subsystem and does not own its Task/Case/workflow internals.",
+      "semantic_owner_ref": "contracts/subsystems/orgo.subsystem.json",
       "scope": [
         "global"
       ],
@@ -944,9 +944,9 @@
       "term_id": "TERM-COMP-SEMANTIK-ARCHITECT-RUNTIME",
       "canonical_name": "SemantiK Architect Runtime",
       "canonical_identifier": "semantik_architect_runtime",
-      "category": "component",
-      "definition": "The runtime that executes compiled language artifacts and does not perform language construction.",
-      "semantic_owner_ref": "generated/component-catalog.json#/components/semantik_architect_runtime",
+      "category": "runtime_boundary",
+      "definition": "The host-local runtime boundary used by kOA-Linux when SemantiK Architect is deployed. SemantiK Architect remains one independently owned planner-centered NLG ecosystem system; this runtime label does not redefine its internal planner, construction, lexicon, renderer, or API architecture.",
+      "semantic_owner_ref": "contracts/subsystems/semantik-architect.subsystem.json",
       "scope": [
         "global"
       ],
@@ -963,9 +963,9 @@
       "term_id": "TERM-COMP-SENTIENT",
       "canonical_name": "SenTient",
       "canonical_identifier": "sentient",
-      "category": "component",
-      "definition": "An optional isolated research and enrichment workbench whose outputs remain candidate inputs until explicitly reviewed and imported.",
-      "semantic_owner_ref": "generated/component-catalog.json#/components/sentient",
+      "category": "integrated_subsystem",
+      "definition": "An independently owned optional research and enrichment ecosystem subsystem whose output remains candidate data until explicitly reviewed and imported through a governed boundary.",
+      "semantic_owner_ref": "contracts/subsystems/sentient.subsystem.json",
       "scope": [
         "global"
       ],
@@ -1468,7 +1468,7 @@
       "canonical_name": "component",
       "canonical_identifier": "component",
       "category": "governance_concept",
-      "definition": "A first-class architectural responsibility with explicit boundaries, owned data, interfaces, and failure behavior.",
+      "definition": "A first-class kOA-Linux architectural responsibility with explicit boundaries, owned state, interfaces, and failure behavior. An independently owned ecosystem system integrated by kOA-Linux remains an ecosystem system globally even when represented by a host-side subsystem boundary.",
       "semantic_owner_ref": "generated/component-catalog.json#/components",
       "scope": [
         "global"
@@ -1959,7 +1959,7 @@
       "canonical_name": "kOA",
       "canonical_identifier": "koa",
       "category": "product_name",
-      "definition": "The exact product-family name used in prose for the kOA ecosystem.",
+      "definition": "The kOA product family and umbrella name. In architecture text, use kOA Digital Ecosystem for the full system-of-systems scope and kOA-Linux Operating System for the local operating-system product.",
       "semantic_owner_ref": "contracts/system.contract.json#/system/product_family",
       "scope": [
         "global"
@@ -1974,6 +1974,97 @@
       ],
       "status": "active",
       "first_use_rule": "use_exact_name"
+    },
+    {
+      "term_id": "TERM-ECOSYSTEM-KOA-DIGITAL",
+      "canonical_name": "kOA Digital Ecosystem",
+      "canonical_identifier": "koa_digital_ecosystem",
+      "category": "ecosystem_scope",
+      "definition": "The operable kOA system of systems: independently owned ecosystem systems, kOA-Linux platform capabilities, applications, gateways, artifacts, and explicit integration boundaries considered as one digital ecosystem.",
+      "semantic_owner_ref": "contracts/system.contract.json#/system",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": true,
+      "accepted_aliases": [
+        "the kOA ecosystem"
+      ],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [
+        "kOA-Linux Operating System"
+      ],
+      "status": "active",
+      "first_use_rule": "use_full_name_then_registered_alias"
+    },
+    {
+      "term_id": "TERM-ARCH-ECOSYSTEM-SYSTEM",
+      "canonical_name": "ecosystem system",
+      "canonical_identifier": "ecosystem_system",
+      "category": "architecture_concept",
+      "definition": "An independently owned system in the kOA Digital Ecosystem with significant domain authority and boundaries that remain its own when hosted or integrated by kOA-Linux.",
+      "semantic_owner_ref": "contracts/terminology.contract.json#/terms",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-ARCH-INTEGRATED-SUBSYSTEM",
+      "canonical_name": "integrated subsystem",
+      "canonical_identifier": "integrated_subsystem",
+      "category": "architecture_concept",
+      "definition": "A host-relative classification used by kOA-Linux for an independently owned ecosystem system mounted or operated through a declared subsystem boundary. The classification does not transfer internal authority to kOA-Linux.",
+      "semantic_owner_ref": "contracts/subsystems/konnaxion.subsystem.json",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-ARCH-APPLICATION",
+      "canonical_name": "application",
+      "canonical_identifier": "application",
+      "category": "architecture_concept",
+      "definition": "A bounded software or user-facing capability. An application can use or expose a domain without automatically becoming an independently owned ecosystem system.",
+      "semantic_owner_ref": "contracts/terminology.contract.json#/terms",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [
+        "app"
+      ],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
+    },
+    {
+      "term_id": "TERM-ARCH-MODULE",
+      "canonical_name": "module",
+      "canonical_identifier": "module",
+      "category": "architecture_concept",
+      "definition": "A context-dependent convenience term. It is not a sufficient ownership category; normative architecture text qualifies the object as an ecosystem system, subsystem, component, application, service, runtime, gateway, or interface module.",
+      "semantic_owner_ref": "contracts/terminology.contract.json#/terms",
+      "scope": [
+        "global"
+      ],
+      "case_sensitive": false,
+      "accepted_aliases": [],
+      "deprecated_aliases": [],
+      "forbidden_aliases": [],
+      "status": "active",
+      "first_use_rule": "canonical_name"
     },
     {
       "term_id": "TERM-PROD-KOA-LINUX-OPERATING-SYSTEM",

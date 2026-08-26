@@ -214,12 +214,12 @@
     ],
     "prohibited": [
       {
-        "component_ref": "generated/component-catalog.json#/components/sentient",
-        "reason": "SenTient is limited to approved development and build profiles and is not a control-plane service."
+        "component_ref": "contracts/subsystems/sentient.subsystem.json",
+        "reason": "SenTient is an integrated subsystem limited to approved development/build contexts and is not deployed as a control-plane service."
       },
       {
-        "component_ref": "generated/component-catalog.json#/components/gf_wordbench",
-        "reason": "Language construction and compilation belong to designated build workbenches."
+        "component_ref": "contracts/subsystems/semantik-architect.subsystem.json",
+        "reason": "SemantiK Architect language construction/build tooling, including GF-backed tooling when used, is not deployed as a control-plane service."
       }
     ],
     "direct_cross_component_authoritative_writes": "prohibited"

@@ -28,24 +28,21 @@ KOA:DOC-META:END -->
 
 ## Purpose
 
-This page defines the kOA integration boundary for Konnaxion. It does not reproduce the subsystem's internal documentation.
+This page defines the **kOA-Linux host boundary** for Konnaxion. Konnaxion remains an independently owned ecosystem system. This page does not reproduce or redefine its internal documentation.
 
-## Official Documentation Location
+## Official documentation
 
-The official documentation is expected at `subsystems/konnaxion/`.
+The official documentation mount is `subsystems/konnaxion/` and remains authoritative for Konnaxion internals.
 
-This path is reserved for a directory junction or symbolic link. It can remain absent until the subsystem documentation is available. Windows `.lnk` shortcut files are not used.
+## Host role
 
-## Role in kOA
+Within kOA-Linux, Konnaxion is an **integrated subsystem**. kOA-Linux can own/mediate deployment-profile membership, process lifecycle, resource envelope, trust boundary, network/storage exposure, artifact admission, health integration, backup coordination, safe degradation, and declared cross-system interactions.
 
-Independent civic-participation subsystem integrated through declared kOA boundaries.
+Konnaxion itself owns its civic/public domain model, internal workflows/state machines, API semantics, validation logic, application behavior, and user interfaces.
 
-## Boundary
+```text
+ecosystem scope: Konnaxion = ecosystem system
+host scope:      Konnaxion = integrated subsystem
+```
 
-The subsystem owns its internal domain model, workflow, state, complete API, product behavior, and user interface. kOA owns deployment, resources, trust, lifecycle, health, storage exposure, backup coordination, and declared cross-subsystem interactions.
-
-Direct writes to another subsystem's authoritative state are prohibited. Missing capability follows the declared capability state; no undeclared substitute is activated.
-
-## Validation
-
-The alignment check validates the reserved mount location and rejects duplicated internal catalogs. Use `--require-mounted` only when all subsystem documentation links have been installed.
+No direct cross-system authoritative writes are permitted.

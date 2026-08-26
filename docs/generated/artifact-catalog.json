@@ -88,7 +88,7 @@
     {
       "id": "https://schemas.koa.local/artifact-contracts/language-pack.schema.json",
       "path": "contracts/artifact-contracts/language-pack.schema.json",
-      "title": "kOA Language Runtime Pack Artifact Contract",
+      "title": "kOA SemantiK Architect Language Pack Artifact Contract",
       "status": null,
       "version": null
     },

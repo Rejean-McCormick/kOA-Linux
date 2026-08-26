@@ -1,6 +1,6 @@
 {
   "$schema": "../schemas/artifact-classes.contract.schema.json",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "status": "active",
   "language": "en",
   "effective_at": "2026-08-05T19:14:00-04:00",
@@ -1390,7 +1390,7 @@
       "artifact_class_id": "ART-CLASS-011",
       "canonical_name": "language pack",
       "terminology_ref": "contracts/terminology.contract.json#/terms/TERM-ART-LANGUAGE-PACK",
-      "description": "Versioned package of compiled language artifacts, including PGF outputs and runtime metadata, for consumption by SemantiK Architect Runtime.",
+      "description": "Versioned package of SemantiK Architect runtime language assets and metadata. A pack may contain GF/PGF assets, family-renderer resources, safe-mode resources, lexicon/runtime data, or a compatible combination declared by the SemantiK Architect contract.",
       "category": "deployable_package",
       "schema_ref": "contracts/artifact-contracts/language-pack.schema.json",
       "example_refs": [
@@ -1407,11 +1407,12 @@
         "component"
       ],
       "producer_roles": [
-        "gf_wordbench",
-        "language_release_authority"
+        "semantik_architect_build",
+        "language_release_authority",
+        "gf_wordbench_when_gf_backed"
       ],
       "consumer_roles": [
-        "semantik_architect_runtime",
+        "semantik_architect_runtime_boundary",
         "artifact_verifier"
       ],
       "verification": {
@@ -1424,10 +1425,10 @@
         "model": "runtime_load_with_atomic_pointer_switch",
         "partial_activation_allowed": false,
         "preconditions": [
-          "compiled_artifacts_only",
           "runtime_compatibility_passes",
           "language_identifier_unique",
-          "manifest_resolves"
+          "manifest_resolves",
+          "declared_backend_assets_verify"
         ]
       },
       "recovery": {

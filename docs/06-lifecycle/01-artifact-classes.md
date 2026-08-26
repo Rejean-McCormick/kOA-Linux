@@ -293,7 +293,7 @@ For example, an offline bundle is a transport envelope. Its contained service ar
 | `kristal_runtime_pack` | Loadable | `knowledge` | Supplies a verified runtime query package derived from declared Kristal sources and policies. |
 | `pgf_artifact` | Loadable | `knowledge` | Supplies a compiled GF grammar artifact to the language runtime. |
 | `atlas_artifact` | Loadable knowledge projection | `knowledge` | Supplies a versioned atlas or navigable knowledge projection with source lineage. |
-| `language_runtime_pack` | Loadable | `knowledge` | Groups compatible compiled language resources, metadata, and runtime requirements. |
+| `language_pack` | Loadable | `knowledge` | Groups compatible SemantiK Architect language assets, metadata, backend declarations, and runtime requirements. |
 | `ariane_artifact` | Loadable | `knowledge` | Supplies deterministic local navigation, action, accessibility, or interaction definitions without granting external voice authority. |
 | `approved_knowledge_package` | Loadable or importable | `knowledge` | Carries an approved knowledge package whose consumer and authority semantics are declared by contract. |
 | `migration_artifact` | Executable transition | Channel of the affected artifact or data owner | Transforms declared state between compatible versions with checkpoints and recovery behavior. |
@@ -318,7 +318,7 @@ The four canonical release channels are:
 
 Channel identity does not replace artifact-class identity.
 
-The `knowledge` channel includes Kristal artifacts, PGF artifacts, Atlases, language runtime packs, Ariane artifacts, and approved knowledge packages.
+The `knowledge` channel includes Kristal artifacts, PGF artifacts, Atlases, language packs, Ariane artifacts, and approved knowledge packages.
 
 A class that spans channels, such as `offline_bundle`, `release_set`, `sovereignty_bundle`, or a cross-channel evidence record, declares the included channel scopes explicitly.
 
@@ -557,9 +557,9 @@ A Runtime Pack is a derived loadable artifact with manifest, file inventory, sou
 
 #### PGF and language runtime artifacts
 
-GF Wordbench owns grammar authoring and compilation.
+GF Wordbench is optional GF-focused language authoring/compilation tooling within SemantiK Architect development workflows.
 
-The runtime consumes verified compiled PGF and language packs. The runtime does not rebuild grammar sources or accept an uncompiled development workspace as a runtime pack.
+The runtime consumes verified language packs and their declared backend assets. A GF-backed pack may include compiled PGF; non-GF packs may use other declared renderer/runtime assets. The runtime does not accept an unverified development workspace as an activated language pack.
 
 #### Ariane artifacts
 
@@ -899,9 +899,9 @@ It preserves Kristal content lineage and does not merge tenant workflow into cor
 
 ### 8.9 SemantiK Architect Runtime
 
-The language runtime loads compiled PGF and language packs.
+The language runtime loads verified language packs and, when the selected backend is GF-backed, the declared compiled PGF assets.
 
-GF Wordbench and the build farm remain responsible for development-time compilation and artifact creation.
+The applicable SemantiK Architect build tooling remains responsible for development-time language artifact creation; GF Wordbench performs that role only for GF-backed workflows.
 
 ### 8.10 Ariane Runtime
 
@@ -1068,9 +1068,9 @@ Its manifest records source lineage, file inventory, query contract, compatibili
 
 ### 11.5 Language pack
 
-GF Wordbench produces a compiled PGF and language runtime pack.
+A SemantiK Architect build produces a language pack. In a GF-backed workflow, GF Wordbench may produce the compiled PGF asset included by that pack.
 
-The user runtime verifies the artifact and loads it without grammar compilation. A corrupt pack is rejected, and the last verified compatible language pack remains available.
+The user runtime verifies the language pack and its declared backend assets before activation. A corrupt or incompatible pack is rejected, and the last verified compatible language pack remains available.
 
 ### 11.6 Ariane artifact
 

@@ -278,29 +278,29 @@ An operating mode describes system activity. A deployment profile describes the 
 
 Capability availability remains conditioned by the active profile and overlays. The global catalog establishes meaning, not universal component installation.
 
-### 4.5 System domains and component landscape
+### 4.5 Ecosystem systems, integrated subsystems, and native components
 
-The active component catalog is owned by `generated/component-catalog.json`. The system overview recognizes the following responsibility domains:
+kOA-Linux operates inside the wider **kOA Digital Ecosystem**. The host view distinguishes independently owned ecosystem systems from native kOA-Linux components.
 
-| Domain or component | System responsibility | Authority boundary |
-| --- | --- | --- |
-| Konnaxion | Governed domain collaboration and knowledge-facing functionality defined by its contract | Owns only Konnaxion authoritative state |
-| Orgo | Coordination, tasks, and orchestration defined by its contract | Does not become a universal workflow owner |
-| Kristal Runtime | Transversal consumption of canonical epistemic artifacts | Identity remains independent of tenant workflow and interface state |
-| Ariane Runtime | Local deterministic navigation and optional external voice admission | Local navigation remains independent of external voice |
-| kOA Mediatheque | Private local and offline media, instruction, manual, and learning-content management | Owns local copies and local lifecycle; does not own UCKK records |
-| UCKK online platform | Moodle courses, learning paths, activities, online dissemination, and UCKK Mediatheque | External authority; not required for local operation |
-| UCKK Publication Bridge | Outbound UCKK-specific packaging and transport after explicit publication authorization | Does not authorize disclosure, perform inbound acceptance, or own either Mediatheque |
-| Controlled UCKK import path | Inbound package retrieval, quarantine, source/license/integrity checks, and delivery to the kOA Mediatheque acceptance workflow | Does not overwrite local state or grant kOA authority over the UCKK source |
-| Publication Gateway | Controlled disclosure and publication authorization across domains or audiences | Governs outbound disclosure; does not authorize inbound local acceptance |
-| SemantiK Architect Runtime | Consumption and evaluation of compiled language artifacts | Does not compile or author runtime artifacts |
-| GF Wordbench | Language construction and compilation workbench | Not part of normal user runtime operation |
-| Resource Governor | CPU, memory, I/O, concurrency, queues, jobs, and process limits | Has no authorization, consent, disclosure, or privilege authority |
-| Governance Policy Runtime | Authorization, disclosure, consent, privilege decisions, and governed exceptions where required | Does not allocate or schedule resources |
-| Identity and Trust | Identity, trust, signature, and verification services defined by its contract | Does not absorb application data ownership |
-| Audit Broker | Selective collection and disclosure of evidence | Audit access does not grant operational authority |
-| kOA Node Agent | Node-local lifecycle and operational functions defined by its profile and contract | Cannot invent policy or component authority |
-| SenTient | Optional isolated research and enrichment workbench | Non-authoritative, task-activated, and absent from the default user baseline |
+| Entity | Global category | kOA-Linux view | Authority boundary |
+| --- | --- | --- | --- |
+| Konnaxion | ecosystem system | integrated subsystem | Konnaxion owns its internal civic/public domain, API, workflow, state, and UI |
+| Orgo | ecosystem system | integrated subsystem | Orgo owns its Organization/Case/Task/workflow internals |
+| Kristal | ecosystem system | external normative/artifact owner plus local `kristal_runtime` consumption boundary | Kristal owns epistemic semantics; kOA-Linux owns only local runtime/admission state assigned by its contracts |
+| SemantiK Architect | ecosystem system | integrated subsystem with a local runtime deployment boundary | Architect owns planner/construction/lexicon/renderer/public-generation semantics |
+| Ariane | independently documented system | integrated subsystem | Ariane owns its internal navigation/interaction behavior |
+| SenTient | independently documented optional system/workbench | integrated subsystem | Candidate/research output remains non-authoritative until accepted by an owner |
+| kOA Spaces | kOA-Linux subsystem | optional experience subsystem | Presentation composition only; no business authority |
+| kOA Mediatheque | native kOA-Linux component | native component | Owns local media records/lifecycle only |
+| Resource Governor | native kOA-Linux component | native component | Owns resource admission/limits, not policy authorization |
+| Governance Policy Runtime | native kOA-Linux component | native component | Owns scoped policy decisions, not resource scheduling |
+| Identity and Trust | native kOA-Linux component | native component | Owns registered trust/identity verification functions |
+| Audit Broker | native kOA-Linux component | native component | Preserves/selectively discloses evidence without owning observed domain state |
+| Publication Gateway | native kOA-Linux component | native component | Owns controlled disclosure/publication boundary |
+| kOA Node Agent | native kOA-Linux component | native component | Owns declared node-local lifecycle/operational functions |
+| UCKK | external platform | external integration | UCKK remains a separate Moodle authority |
+
+Calling Konnaxion, Orgo, or SemantiK Architect a `subsystem` in this corpus is host-relative. It does not reclassify those systems globally and does not transfer their internal authority to kOA-Linux.
 
 ### 4.6 Data and communication model
 
@@ -484,7 +484,7 @@ Safe degradation never authorizes a broader capability than the normal operating
 | --- | --- | --- | --- | --- |
 | Domain coordination | Orgo or another owning domain | Authorized component | API, command, or event | Consumer acts only within its own contract |
 | Knowledge consumption | Kristal Runtime or artifact repository | Konnaxion, Orgo, language, or user-facing components | Versioned knowledge artifact | Artifact identity remains independent of consumer workflow |
-| Language build and runtime | GF Wordbench | SemantiK Architect Runtime and user-facing components | Compiled PGF, language pack, or runtime pack | Runtime consumes; it does not compile |
+| Language generation deployment | SemantiK Architect subsystem | User-facing consumers | Semantic generation API/results plus declared runtime/backend assets | kOA-Linux governs deployment/artifact boundaries; Architect owns planner and realization semantics |
 | Local media management | kOA Mediatheque | kOA Mediatheque | Internal component contract | kOA Mediatheque owns local media state |
 | Cross-domain publication | Owning component | Publication Gateway | Publication request and receipt | Gateway controls disclosure without taking source ownership |
 | Resource control | Resource Governor | Components and task workers | Resource envelope and control interface | Resource limits do not grant policy authority |
@@ -528,7 +528,7 @@ Every interaction has one producer responsibility, one consumer responsibility, 
 - GNOME is prohibited globally.
 - Podman, Docker, systemd, Quadlet, Wayland, or Kubernetes is universally required.
 - A shared database process permits shared authoritative tables.
-- Konnaxion and Orgo are the only top-level system domains.
+- Konnaxion, Orgo, Kristal, or SemantiK Architect become native kOA-Linux components merely because they are hosted or integrated.
 - Kristal is a universal workflow engine or operational database.
 - Resource Governor may authorize disclosure or privilege.
 - Governance Policy Runtime may schedule CPU or memory.

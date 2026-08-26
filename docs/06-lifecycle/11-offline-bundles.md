@@ -1155,7 +1155,7 @@ Tenant workflow and distribution metadata remain separate from Kristal content i
 
 ### 8.10 SemantiK Architect Runtime
 
-The language runtime receives compiled PGF and language runtime packs.
+The language runtime receives verified language packs and their declared backend assets; GF-backed packs may include compiled PGF.
 
 It does not compile grammar sources during import or activation.
 

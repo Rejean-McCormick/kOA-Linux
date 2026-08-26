@@ -251,7 +251,7 @@ The publication and import bridges share a Mediatheque frame but never share aut
 
 ### 7.4 GF Wordbench and SemantiK Architect Runtime
 
-GF Wordbench creates and validates language artifacts during development and build activity.
+GF Wordbench creates and validates GF-specific language artifacts when SemantiK Architect uses a GF-backed development/build workflow.
 
 SemantiK Architect Runtime loads and uses verified compiled artifacts during runtime operation.
 

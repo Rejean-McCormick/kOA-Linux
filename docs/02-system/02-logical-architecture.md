@@ -289,12 +289,12 @@ The planes below organize responsibility. They do not imply a required process b
 | --- | --- | --- | --- |
 | Experience and interaction | Local user navigation, deterministic commands, accessibility, optional external voice | Ariane Runtime | Local navigation belongs to applicable user profiles; voice remains optional |
 | Product and workflow | Independent product-domain state and user-directed operations | Konnaxion, Orgo | First-level domains with separate authority |
-| Knowledge and language runtime | Epistemic identity, released language interpretation, compiled runtime artifacts | Kristal Runtime, SemantiK Architect Runtime | Runtime capabilities consume released artifacts |
+| Knowledge and language runtime | Local Kristal runtime state plus hosted SemantiK Architect generation capability | Kristal Runtime, SemantiK Architect integrated subsystem | Kristal and Architect retain their own semantics; kOA-Linux owns only declared local platform state |
 | Media and dimension | Deterministic media ingestion, processing, storage, routing, export, backup, restore, and controlled UCKK publication | kOA Mediatheque, UCKK Publication Bridge | Native media path remains local and deterministic |
 | Governance, identity, and accountability | Identity, trust, policy decisions, selective audit, controlled exceptions | Identity and Trust, Governance Policy Runtime, Audit Broker | Identity is global; policy runtime is profile-conditioned; audit is selective |
 | Resource and node operation | Deterministic resource control and profile-authorized node operations | Resource Governor, kOA Node Agent | Resource Governor is baseline; host mutation depends on profile and privilege contracts |
 | Publication and external boundary | Cross-domain disclosure, publication, external transfer, and integration mediation | Publication Gateway | Publication is explicit and governed |
-| Optional workbenches | Build, research, enrichment, analysis, and controlled production of candidate or released artifacts | GF Wordbench, SenTient | Not part of the default user runtime; availability is profile-conditioned |
+| Optional workbenches | Build, research, enrichment, analysis, and controlled production of candidate or released artifacts | SemantiK Architect build/tooling profiles (including GF tooling where used), SenTient | Not part of the default user runtime; availability is profile-conditioned |
 
 A component can interact with multiple planes while retaining one registered primary responsibility.
 

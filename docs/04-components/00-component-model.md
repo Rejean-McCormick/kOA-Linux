@@ -153,6 +153,18 @@ It does not:
 
 Markdown explains the model. It does not own canonical component values.
 
+## 3.1 Native components versus integrated ecosystem systems
+
+A native kOA-Linux `component` owns a platform responsibility defined by a component contract. An independently owned ecosystem system such as Konnaxion, Orgo, or SemantiK Architect is represented by a subsystem contract from the host scope.
+
+```text
+native component contract
+≠ integrated subsystem contract
+≠ authority transfer
+```
+
+A host may manage process lifecycle, resources, trust exposure, storage/network boundaries, artifact admission, health, backup coordination, and degradation for an integrated subsystem without owning the subsystem's internal domain model or workflow.
+
 ## 4. Model and Responsibilities
 
 ### 4.1 Component identity

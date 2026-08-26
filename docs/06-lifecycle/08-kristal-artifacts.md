@@ -155,7 +155,7 @@ KOA:DOC-META:END -->
 
 This document defines the lifecycle of Kristal epistemic artifacts from source intake through runtime use, revision, supersession, revocation, export, and recovery.
 
-Kristal is a transversal epistemic foundation. It provides portable identity, provenance, validation, recognition, distribution, offline query, and status across kOA products without becoming a workflow engine or universal operational database.
+Kristal is one independently owned epistemic ecosystem system. Its Specification and implementation define portable identity, provenance, validation, recognition, distribution, query, Runtime Pack, and related artifact semantics. kOA-Linux defines only the local platform lifecycle around artifacts it receives or runs; it does not become the Kristal specification owner.
 
 The lifecycle separates:
 
@@ -235,8 +235,8 @@ These details belong to component, profile, artifact, security, toolchain, and r
 | `contracts/components/koa-node-agent.component.json` | Narrow privileged atomic activation and rollback operations. |
 | `contracts/components/audit-broker.component.json` | Classified build, recognition, publication, activation, revocation, and recovery evidence. |
 | `contracts/components/resource-governor.component.json` | Query, index, verification, activation, queue, and resource limits. |
-| `contracts/components/orgo.component.json` | Accountable review, workflow, feedback, and remediation state that remains outside Kristal identity. |
-| `contracts/components/konnaxion.component.json` | Product-facing discovery and bounded consumption of verified Kristal knowledge. |
+| `contracts/subsystems/orgo.subsystem.json` | Accountable review, workflow, feedback, and remediation state that remains outside Kristal identity. |
+| `contracts/subsystems/konnaxion.subsystem.json` | Product-facing discovery and bounded consumption of verified Kristal knowledge. |
 | `contracts/components/sentient.component.json` | Optional isolated non-authoritative candidate research and reconciliation. |
 | `contracts/profiles/*.profile.json` | Runtime inclusion, topology, storage, resource, network, offline, mirror, and recovery envelopes. |
 | `generated/requirements-index.json` | Requirement statements displayed in section 5. |

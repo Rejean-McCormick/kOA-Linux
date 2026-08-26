@@ -3,9 +3,9 @@
   "subsystem_id": "semantik_architect",
   "title": "SemantiK Architect",
   "status": "active",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "relationship_to_koa": "integrated_subsystem",
-  "koa_role": "Language subsystem whose build environment produces verified compiled artifacts.",
+  "koa_role": "Independent planner-centered multilingual NLG ecosystem system integrated into kOA-Linux through a host-relative subsystem boundary.",
   "official_documentation": {
     "mount_path": "subsystems/semantik-architect",
     "mount_kind": "directory_junction_or_symbolic_link",
@@ -36,7 +36,8 @@
     "direct_cross_subsystem_writes": "prohibited",
     "undeclared_substitution": "prohibited",
     "internal_behavior_duplication": "prohibited",
-    "official_documentation_mount": "subsystems/semantik-architect"
+    "official_documentation_mount": "subsystems/semantik-architect",
+    "host_relative_subsystem_classification_transfers_internal_authority": false
   },
   "documentation": {
     "koa_boundary_document": "04-components/subsystems/semantik-architect.md"

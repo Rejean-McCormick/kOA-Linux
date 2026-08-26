@@ -300,8 +300,8 @@ A resource can be physically local while remaining outside the logical system bo
 | Component | Context role |
 | --- | --- |
 | Kristal Runtime | Verifies, stores, activates, queries, and exposes portable epistemic artifacts for predictable offline use. |
-| SemantiK Architect Runtime | Produces deterministic text from structured data and validated precompiled language artifacts. |
-| GF Wordbench | Develops, compiles, validates, and publishes deterministic language artifacts. |
+| SemantiK Architect | Independently owned planner-centered NLG system; kOA-Linux hosts/integrates its local runtime boundary and admitted assets. |
+| GF tooling / GF Wordbench | Optional Architect backend/tooling for GF-backed language assets; not the universal Architect architecture. |
 | SenTient | Performs optional isolated semantic research, reconciliation, and enrichment that produces non-authoritative candidates. |
 
 #### Governance, trust, and control plane
@@ -429,7 +429,7 @@ Artifact verification, identity, provenance, compatibility, activation, rollback
 - **REQ-SYS-CTX-007 — SHALL:** kOA Mediatheque own local multimedia identity, import acceptance, offline availability, and lifecycle; UCKK Publication Bridge owns only outbound package and transport state after authorization, and UCKK Import Bridge owns only inbound retrieval and quarantine-transport state.
 - **REQ-SYS-CTX-008 — SHALL:** Publication Gateway authorize cross-domain disclosure before UCKK Publication Bridge performs UCKK-specific packaging and transport.
 - **REQ-SYS-CTX-009 — SHALL:** Ariane Runtime owns deterministic application navigation, and external voice processing remains an optional non-authoritative input surface.
-- **REQ-SYS-CTX-010 — SHALL:** GF Wordbench owns language construction and compilation, while SemantiK Architect Runtime consumes validated precompiled language artifacts.
+- **REQ-SYS-CTX-010 — SHALL:** SemantiK Architect shall own its planner, construction, lexical, renderer, and language-build semantics, while kOA-Linux owns only the declared host/deployment and artifact-lifecycle boundary.
 - **REQ-SYS-CTX-011 — SHALL:** SenTient remains optional, isolated, task-activated, and non-authoritative, with candidate outputs requiring owning-component review before admission.
 - **REQ-SYS-CTX-012 — SHALL:** Governance Policy Runtime remains distinct from Resource Governor and from the kOA Node Agent.
 - **REQ-SYS-CTX-013 — SHALL:** Identity and Trust provides scoped identity and trust context without collapsing authentication, authorization, data ownership, and governance authority into one mechanism.
@@ -690,7 +690,7 @@ The owning components:
 | Orgo or Konnaxion | Kristal Runtime | Bounded query, artifact consumption, and status inspection | Kristal owns artifact identity and runtime state. |
 | UCKK Publication Bridge | Online UCKK Moodle platform | Authorized package, transport result, and destination receipt | Bridge owns outbound transport state; kOA Mediatheque retains local source authority; UCKK owns its accepted destination copy. |
 | UCKK Import Bridge | Online UCKK Moodle platform and kOA Mediatheque quarantine | Selected learning package, validation evidence, and import receipt | Bridge owns retrieval and quarantine transport state; UCKK remains source authority; kOA Mediatheque owns local acceptance and separate local identities. |
-| GF Wordbench | SemantiK Architect Runtime | Validated compiled language artifact | GF Wordbench owns source and build evidence; runtime owns activation state. |
+| GF Wordbench (when GF-backed) | SemantiK Architect runtime boundary | Validated GF-backed language artifact | Architect owns language/build semantics; kOA-Linux owns only local admission/activation state assigned by its contracts. |
 | External voice service | Ariane Runtime | Structured non-authoritative candidate command | Ariane owns navigation validation and execution. |
 | SenTient | Orgo or another review workflow | Candidate mapping, reconciliation, or enrichment artifact | Target owner decides admission. |
 | Identity and Trust | Consuming components | Scoped identity, delegation, key, trust, and revocation context | Consuming component retains domain enforcement responsibility. |
@@ -718,7 +718,7 @@ Direct writes to another component's authoritative store are not part of any per
 | `DEC-PRIV-001` | Normal host privilege is enforced through the narrow kOA Node Agent. |
 | `DEC-IDENT-001` | Identity, authentication, authorization, ownership, trust, and privilege remain distinct. |
 | `DEC-SENT-001` | SenTient is optional, isolated, task-activated, and non-authoritative. |
-| `DEC-LANG-001` | GF Wordbench owns build-time language construction; SemantiK Architect Runtime consumes compiled artifacts. |
+| `DEC-LANG-001` | SemantiK Architect owns language-generation architecture; kOA-Linux keeps build/runtime asset handling and host lifecycle explicit without redefining Architect internals. |
 | `DEC-UCKK-EXT-001` | Publication Gateway authorization precedes UCKK-specific packaging and transport. |
 | `DEC-LIFE-001` | System, services, governance, and knowledge are independent release channels. |
 

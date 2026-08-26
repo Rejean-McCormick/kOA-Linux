@@ -318,7 +318,7 @@ Examples of lifecycle roles include:
 | System | Operating-system image, node runtime, system-level shell or boot material |
 | Service | Component package, service bundle, container image, service migration package |
 | Governance | Governance policy bundle, consent or disclosure policy package |
-| Knowledge | Kristal artifact, PGF artifact, Atlas, language runtime pack, approved knowledge package |
+| Knowledge | Kristal artifact, PGF artifact, Atlas, language pack, approved knowledge package |
 | Lifecycle container | Release Set, offline bundle, recovery package |
 | Evidence | SBOM, provenance statement, verification receipt, publication receipt |
 

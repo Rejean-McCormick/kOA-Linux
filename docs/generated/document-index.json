@@ -15421,6 +15421,15 @@
       ]
     },
     {
+      "path": "CODE_ALIGNMENT_NOTES.md",
+      "doc_id": "DOC-ROOT-CODE-ALIGNMENT",
+      "document_class": "explanatory_markdown",
+      "status": "active",
+      "requirement_ids": [],
+      "assertion_ids": [],
+      "decision_ids": []
+    },
+    {
       "path": "contracts/examples/README.md",
       "doc_id": "DOC-ARTIFACT-EXAMPLES-README",
       "document_class": "non_normative_readme",
