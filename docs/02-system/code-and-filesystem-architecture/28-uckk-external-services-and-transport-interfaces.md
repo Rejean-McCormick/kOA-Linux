@@ -90,6 +90,7 @@ integrations/uckk/interface/module-interface.json
 integrations/uckk/interface/sidebar.json
 integrations/uckk/interface/widgets.json
 integrations/uckk/tests/conftest.py
+integrations/uckk/tests/_support.py
 integrations/uckk/tests/test_contract.py
 integrations/uckk/tests/test_health.py
 integrations/uckk/tests/test_degradation.py

@@ -1,0 +1,88 @@
+# Generated as source input for deterministic packaging; not a release lock.
+format = "koa.component-package"
+format_version = "1.0.0"
+status = "blocked_missing_upstream_bundle"
+package_id = "koa.services.component.kristal-runtime"
+component_id = "kristal_runtime"
+display_name = "Kristal Runtime"
+release_channel = "services"
+artifact_class_key = "component_runtime"
+source_bundle = "B-0048"
+source_contract = "docs/contracts/components/kristal-runtime.component.json"
+source_project = "components/kristal-runtime/pyproject.toml"
+source_payload_manifest = "components/kristal-runtime/packaging/payload.toml"
+runtime_path_registry = ".koa/runtime-paths.json"
+activation_ready = false
+
+[admission]
+requires_clean_source = true
+requires_immutable_revision = true
+requires_payload_digest = true
+requires_sbom = true
+requires_provenance = true
+requires_signature = true
+requires_release_set = true
+requires_component_contract_validation = true
+default_on_missing_evidence = "reject"
+
+[build]
+build_kind = "python_wheel"
+network = "denied_unless_package_sources_admit_exact_input"
+lock_state_required = true
+reproducible_output_required = true
+secret_material_allowed = false
+mutable_workspace_state_allowed = false
+output_identity_source = "signed_artifact_manifest"
+lock_ref = "uv.lock"
+
+[upstream_bundle]
+format = "koa.component-build-bundle"
+format_version = "1.0.0"
+builder = "build-component"
+output = "generated/component-bundles/kristal-runtime"
+activation_authority = false
+missing_bundle = "block_packaging"
+
+[payload]
+resolution = "source_payload_manifest"
+destination_authority = ".koa/runtime-paths.json#repository_payload_mappings"
+unknown_destination = "reject"
+secret_material = "prohibited"
+mutable_state = "prohibited"
+runtime_state_creation = "owning_service_only"
+configuration_seed_only = true
+
+[configuration]
+format = "koa.component-config-seed"
+format_version = "1.0.0"
+component_id = "kristal_runtime"
+enabled = false
+activation = "effective_profile_and_release_set_only"
+socket_path = "/run/koa/sockets/kristal-runtime.sock"
+state_root = "/var/lib/koa/kristal/"
+destination = "/etc/koa/components/kristal-runtime/config.toml"
+install_mode = "seed_if_absent"
+owner = "koa-kristal-runtime"
+group = "koa-kristal-runtime"
+mode = "0640"
+secret_material = "not_present"
+
+[activation]
+strategy = "atomic_service_artifact_activation"
+health_gate_required = true
+readiness_gate_required = true
+rollback_or_forward_repair_required = true
+component_data_rollback_implicit = false
+blocked_by = ["B-0092", "B-0048"]
+
+[validation]
+required = [
+  "source_bundle_present",
+  "payload_manifest_valid",
+  "all_destinations_declared",
+  "no_secret_payload",
+  "no_mutable_state_payload",
+  "sbom_complete",
+  "provenance_verifiable",
+  "release_set_compatible",
+]

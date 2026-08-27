@@ -196,6 +196,7 @@ components/kristal-runtime/migrations/README.md
 components/kristal-runtime/migrations/0001_initial.sql
 components/kristal-runtime/packaging/payload.toml
 components/kristal-runtime/tests/conftest.py
+components/kristal-runtime/tests/_support.py
 components/kristal-runtime/tests/unit/test_domain.py
 components/kristal-runtime/tests/unit/test_application.py
 components/kristal-runtime/tests/contract/test_contracts.py
@@ -250,6 +251,7 @@ components/koa-mediatheque/migrations/README.md
 components/koa-mediatheque/migrations/0001_initial.sql
 components/koa-mediatheque/packaging/payload.toml
 components/koa-mediatheque/tests/conftest.py
+components/koa-mediatheque/tests/_support.py
 components/koa-mediatheque/tests/unit/test_domain.py
 components/koa-mediatheque/tests/unit/test_application.py
 components/koa-mediatheque/tests/contract/test_contracts.py

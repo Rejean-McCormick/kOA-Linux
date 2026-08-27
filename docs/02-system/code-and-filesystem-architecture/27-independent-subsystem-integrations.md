@@ -89,6 +89,7 @@ integrations/ariane/interface/module-interface.json
 integrations/ariane/interface/sidebar.json
 integrations/ariane/interface/widgets.json
 integrations/ariane/tests/conftest.py
+integrations/ariane/tests/_support.py
 integrations/ariane/tests/test_contract.py
 integrations/ariane/tests/test_health.py
 integrations/ariane/tests/test_degradation.py
@@ -123,6 +124,7 @@ integrations/koa-spaces/interface/school-space.json
 integrations/koa-spaces/interface/community-space.json
 integrations/koa-spaces/interface/global-widgets.json
 integrations/koa-spaces/tests/conftest.py
+integrations/koa-spaces/tests/_support.py
 integrations/koa-spaces/tests/test_contract.py
 integrations/koa-spaces/tests/test_health.py
 integrations/koa-spaces/tests/test_degradation.py
@@ -155,6 +157,7 @@ integrations/konnaxion/interface/module-interface.json
 integrations/konnaxion/interface/sidebar.json
 integrations/konnaxion/interface/widgets.json
 integrations/konnaxion/tests/conftest.py
+integrations/konnaxion/tests/_support.py
 integrations/konnaxion/tests/test_contract.py
 integrations/konnaxion/tests/test_health.py
 integrations/konnaxion/tests/test_degradation.py
@@ -219,6 +222,7 @@ integrations/semantik-architect/interface/module-interface.json
 integrations/semantik-architect/interface/sidebar.json
 integrations/semantik-architect/interface/widgets.json
 integrations/semantik-architect/tests/conftest.py
+integrations/semantik-architect/tests/_support.py
 integrations/semantik-architect/tests/test_contract.py
 integrations/semantik-architect/tests/test_health.py
 integrations/semantik-architect/tests/test_degradation.py

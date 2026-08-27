@@ -1,0 +1,32 @@
+manifest_version = "1.0.0"
+component_id = "resource_governor"
+component_contract = "docs/contracts/components/resource-governor.component.json"
+component_contract_version = "1.0.0"
+artifact_class = "component_package"
+
+[entrypoint]
+module = "koa_resource_governor"
+transport = "http_over_unix"
+socket_path = "/run/koa/sockets/resource-governor.sock"
+
+[paths]
+configuration = "/etc/koa/components/resource-governor/config.toml"
+runtime_directory = "/run/koa/resource-governor"
+persistent_state = "/var/lib/koa/resource-governor"
+
+[[payload]]
+source = "src/koa_resource_governor"
+destination = "/usr/lib/koa/components/resource-governor/koa_resource_governor"
+class = "immutable_payload"
+
+[[payload]]
+source = "migrations"
+destination = "/usr/share/koa/components/resource-governor/migrations"
+class = "immutable_payload"
+
+[boundaries]
+direct_cross_component_database_writes = false
+workload_business_data_in_payload = false
+privileged_host_control_direct = false
+runtime_secrets_in_payload = false
+generated_content_is_authority = false

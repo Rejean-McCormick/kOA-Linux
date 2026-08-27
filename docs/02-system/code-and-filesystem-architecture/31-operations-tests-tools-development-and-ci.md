@@ -186,6 +186,16 @@ The following implementation files are registered after the frozen baseline inve
 - `tests/system/test_qemu_semantik_architect.py` — fail-closed QEMU validation for an independently sourced SemantiK Architect artifact, with unselected or unadmitted states never promoted to pass.
 - `tests/offline/test_qemu_offline_navigation.py` — QEMU validation with the VM network device disabled, preserving admitted local navigation and deterministic Mediatheque behavior when selected.
 
+- `tests/system/qemu-machine.toml` — deterministic QEMU machine configuration used by the system-validation harness.
+- `tests/system/qemu_harness.py` — shared bounded QEMU harness for boot, navigation, confinement, offline, and recovery validation.
+- `tests/system/test_qemu_boot.py` — QEMU boot validation for the built system image and declared boot evidence.
+- `tests/system/test_qemu_appliance_session.py` — QEMU validation of the appliance session boundary and observable local surface.
+- `tests/system/test_rootfs_materialization.py` — deterministic rootfs materialization validation before image assembly.
+- `tests/system/test_system_image_build.py` — system-image build-plan and artifact validation for the declared image pipeline.
+- `tests/security/test_qemu_appliance_confinement.py` — QEMU-observed confinement validation for the appliance session security boundary.
+- `tests/recovery/test_qemu_recovery_boot.py` — QEMU validation that the declared recovery target boots independently.
+- `tests/recovery/test_qemu_failed_candidate_rollback.py` — QEMU validation that a failed candidate returns to the retained valid state.
+
 ## 4. Repository Tooling
 
 ```text
@@ -200,6 +210,7 @@ tools/src/koa_tools/commands/validate.py
 tools/src/koa_tools/commands/generate.py
 tools/src/koa_tools/commands/assemble.py
 tools/src/koa_tools/commands/build_image.py
+tools/src/koa_tools/commands/build_component.py
 tools/src/koa_tools/commands/build_bundle.py
 tools/src/koa_tools/commands/verify.py
 tools/src/koa_tools/commands/test.py
@@ -220,6 +231,8 @@ tools/tests/test_cli.py
 tools/tests/test_file_architecture.py
 tools/tests/test_path_ownership.py
 tools/tests/test_source_pins.py
+tools/tests/test_build_component.py
+tools/tests/test_build_image.py
 ```
 ## 5. Development Environment
 

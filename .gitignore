@@ -54,8 +54,8 @@ node_modules/
 .yarn/cache/
 
 # Generic local build and temporary output.
-/build/
-/dist/
+build/
+dist/
 /.cache/
 /.uv-cache/
 *.log
@@ -82,4 +82,5 @@ Desktop.ini
 /_delivery/
 /evidence/
 /validation-support/
-GitSink.bat
+GitSink.bat
+

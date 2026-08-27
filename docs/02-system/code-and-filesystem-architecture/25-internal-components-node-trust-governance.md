@@ -152,6 +152,7 @@ components/identity-and-trust/migrations/README.md
 components/identity-and-trust/migrations/0001_initial.sql
 components/identity-and-trust/packaging/payload.toml
 components/identity-and-trust/tests/conftest.py
+components/identity-and-trust/tests/_support.py
 components/identity-and-trust/tests/unit/test_domain.py
 components/identity-and-trust/tests/unit/test_application.py
 components/identity-and-trust/tests/contract/test_contracts.py
@@ -200,6 +201,7 @@ components/resource-governor/src/koa_resource_governor/api/routes.py
 components/resource-governor/migrations/README.md
 components/resource-governor/packaging/payload.toml
 components/resource-governor/tests/conftest.py
+components/resource-governor/tests/_support.py
 components/resource-governor/tests/unit/test_domain.py
 components/resource-governor/tests/unit/test_application.py
 components/resource-governor/tests/contract/test_contracts.py

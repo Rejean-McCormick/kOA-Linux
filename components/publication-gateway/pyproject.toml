@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.13,<3.14"
 license = "LicenseRef-kOA-Linux"
 authors = [{ name = "kOA-Linux contributors" }]
-dependencies = ["koa-interfaces>=0.1.0,<0.2.0"]
+dependencies = ["koa-interfaces>=1.0,<2.0"]
 
 [project.scripts]
 koa-publication-gateway = "koa_publication_gateway.__main__:main"

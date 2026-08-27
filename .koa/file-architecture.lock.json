@@ -40,6 +40,13 @@
     },
     {
       "owner_id": "repository_governance",
+      "path": ".github/dependabot.yml",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "dd4fbda47e51f1e35defb9275a9cd9c212ecde0b870cba89ddaaae65c5f3cd28",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md"
+    },
+    {
+      "owner_id": "repository_governance",
       "path": ".github/ISSUE_TEMPLATE/architecture-change.yml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "f9e056ae816a8983ea2600714bcced70a47b965844e90ee7a9783dd072dee014",
@@ -57,13 +64,6 @@
       "path": ".github/ISSUE_TEMPLATE/documentation.yml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "2e008196bfac9fc9e304318a87047829d828073ddf26962d120005e7990a179b",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md"
-    },
-    {
-      "owner_id": "repository_governance",
-      "path": ".github/dependabot.yml",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "dd4fbda47e51f1e35defb9275a9cd9c212ecde0b870cba89ddaaae65c5f3cd28",
       "source_document": "docs/02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md"
     },
     {
@@ -207,87 +207,17 @@
       "source_document": "docs/02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md"
     },
     {
-      "owner_id": "repository_governance",
-      "path": "CHANGELOG.md",
+      "owner_id": "system_assembly",
+      "path": "assembly/pyproject.toml",
       "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "06572a96a58dc510037d5efa622f9bec8519bc1beab13c9f251e97e657a9d4ed",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md"
-    },
-    {
-      "owner_id": "repository_governance",
-      "path": "CONTRIBUTING.md",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "eca12c0a30e25b4b46522ebf89465a03ba72a03f540796c979137931d8f92055",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md"
-    },
-    {
-      "owner_id": "repository_tooling",
-      "path": "Cargo.lock",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "13ee4b2252c9e516a0547f2891aa2105c3ca71c6d7a1e682c69be97998dfc87e",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md"
-    },
-    {
-      "owner_id": "repository_tooling",
-      "path": "Cargo.toml",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "2e9d962a08321605940b5a657135052fbcef87b5e360662bb527c96d9a615542",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md"
-    },
-    {
-      "owner_id": "repository_legal",
-      "path": "LICENSES/README.md",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "24df346785b71b6cefa967cdf31c73a8e5bdf39a32689f63f2899711e5c61acd",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md"
-    },
-    {
-      "owner_id": "repository_legal",
-      "path": "LICENSES/THIRD_PARTY.md",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "fdab18236da1c4b39afd0b093205b11ce696648c0957ae0c5e73074d15141bc2",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md"
-    },
-    {
-      "owner_id": "repository_legal",
-      "path": "NOTICE.md",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "53337bf7ea91d782c573ac8653c18f95b7b23c38da9de08288639bcec9993406",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md"
-    },
-    {
-      "owner_id": "repository_governance",
-      "path": "README.md",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "b335630551682c19a781afebcf4d07bf978fb1f8ac04c6bf87428ed5106870f5",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md"
-    },
-    {
-      "owner_id": "repository_legal",
-      "path": "REUSE.toml",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "74bd2d6afd7a1f967679adae374ca38fd9745fe6129dc4717a1ab0e388590b08",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md"
-    },
-    {
-      "owner_id": "repository_governance",
-      "path": "SECURITY.md",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "f6ed156e4bf5c791680662464b94ea5d753f219ee816b385f67870e2c0d7d4c7",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md"
+      "path_identifier_sha256": "70dc82cede062095adcb6e35609cf99c93c3c7aaea104b6483ddd51a099ed81a",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/30-assembly-profiles-packaging-and-release.md"
     },
     {
       "owner_id": "system_assembly",
       "path": "assembly/README.md",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "23ec748e3354e7739d8effae4bd2caecca702cbe21a7b1f2dd67ee5981481855",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/30-assembly-profiles-packaging-and-release.md"
-    },
-    {
-      "owner_id": "system_assembly",
-      "path": "assembly/pyproject.toml",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "70dc82cede062095adcb6e35609cf99c93c3c7aaea104b6483ddd51a099ed81a",
       "source_document": "docs/02-system/code-and-filesystem-architecture/30-assembly-profiles-packaging-and-release.md"
     },
     {
@@ -557,11 +487,25 @@
       "source_document": "docs/02-system/code-and-filesystem-architecture/30-assembly-profiles-packaging-and-release.md"
     },
     {
-      "owner_id": "ci_orchestration",
-      "path": "ci/README.md",
+      "owner_id": "repository_tooling",
+      "path": "Cargo.lock",
       "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "794891fcb80950b0c81f330c416efdf5d35789fb56a91a18dcc25266d7cdccfd",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
+      "path_identifier_sha256": "13ee4b2252c9e516a0547f2891aa2105c3ca71c6d7a1e682c69be97998dfc87e",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md"
+    },
+    {
+      "owner_id": "repository_tooling",
+      "path": "Cargo.toml",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "2e9d962a08321605940b5a657135052fbcef87b5e360662bb527c96d9a615542",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md"
+    },
+    {
+      "owner_id": "repository_governance",
+      "path": "CHANGELOG.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "06572a96a58dc510037d5efa622f9bec8519bc1beab13c9f251e97e657a9d4ed",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md"
     },
     {
       "owner_id": "ci_orchestration",
@@ -596,6 +540,13 @@
       "path": "ci/policies/security-gates.json",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "94e61b86a4573dfa764a9ba7a2e9ed62c1c1edb444262890265f6b7ee47e2dac",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
+    },
+    {
+      "owner_id": "ci_orchestration",
+      "path": "ci/README.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "794891fcb80950b0c81f330c416efdf5d35789fb56a91a18dcc25266d7cdccfd",
       "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
     },
     {
@@ -670,13 +621,6 @@
     },
     {
       "owner_id": "audit_broker",
-      "path": "components/audit-broker/README.md",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "0e04e0ff641563342edfbe2d4fcf4fac89ac07ce51cc0a7f0d373b67a8bc2ad9",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/26-internal-components-data-publication-and-knowledge.md"
-    },
-    {
-      "owner_id": "audit_broker",
       "path": "components/audit-broker/component.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "2c6384851aabfb857c2f946abcfcc4f719e4209f4471ccc318d30476eabd237d",
@@ -708,6 +652,13 @@
       "path": "components/audit-broker/pyproject.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "18a60dabf025fd3842be115b482ffe2fdc2e8d5f90ab79793297c41c0f94c24e",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/26-internal-components-data-publication-and-knowledge.md"
+    },
+    {
+      "owner_id": "audit_broker",
+      "path": "components/audit-broker/README.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "0e04e0ff641563342edfbe2d4fcf4fac89ac07ce51cc0a7f0d373b67a8bc2ad9",
       "source_document": "docs/02-system/code-and-filesystem-architecture/26-internal-components-data-publication-and-knowledge.md"
     },
     {
@@ -971,13 +922,6 @@
     },
     {
       "owner_id": "governance_policy_runtime",
-      "path": "components/governance-policy-runtime/README.md",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "450af6903e22c58255e3de4fe1b4a9f05ce61eb04e942ec0e6df734e96804aa0",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/25-internal-components-node-trust-governance.md"
-    },
-    {
-      "owner_id": "governance_policy_runtime",
       "path": "components/governance-policy-runtime/component.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "dda41e0bf71441db809abbe65f4b61b2574bd82a12ee181fcc7a723b803fbb42",
@@ -1002,6 +946,13 @@
       "path": "components/governance-policy-runtime/pyproject.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "7c6d3fd22502f978758efe4427e030423c3f361ebb9cb367eb5c6a3505b6cd0c",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/25-internal-components-node-trust-governance.md"
+    },
+    {
+      "owner_id": "governance_policy_runtime",
+      "path": "components/governance-policy-runtime/README.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "450af6903e22c58255e3de4fe1b4a9f05ce61eb04e942ec0e6df734e96804aa0",
       "source_document": "docs/02-system/code-and-filesystem-architecture/25-internal-components-node-trust-governance.md"
     },
     {
@@ -1265,13 +1216,6 @@
     },
     {
       "owner_id": "identity_and_trust",
-      "path": "components/identity-and-trust/README.md",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "d976d75c16910beb1578e87247d244856b21e360a8d9dd698269e0d142075648",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/25-internal-components-node-trust-governance.md"
-    },
-    {
-      "owner_id": "identity_and_trust",
       "path": "components/identity-and-trust/component.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "5671a0f6bd3808afb1ac0f39e122d7af3be1b12815c2947ba03e288af685a106",
@@ -1303,6 +1247,13 @@
       "path": "components/identity-and-trust/pyproject.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "8b09224f9f6af6b686b5ce584b7b13030de35742c384d79c89908dc97156b5c0",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/25-internal-components-node-trust-governance.md"
+    },
+    {
+      "owner_id": "identity_and_trust",
+      "path": "components/identity-and-trust/README.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "d976d75c16910beb1578e87247d244856b21e360a8d9dd698269e0d142075648",
       "source_document": "docs/02-system/code-and-filesystem-architecture/25-internal-components-node-trust-governance.md"
     },
     {
@@ -1531,6 +1482,13 @@
     },
     {
       "owner_id": "identity_and_trust",
+      "path": "components/identity-and-trust/tests/_support.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "43c5b552270b422450b25eb2a93ba900cd3a2a31efe20f9e282809d0957ad601",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/25-internal-components-node-trust-governance.md"
+    },
+    {
+      "owner_id": "identity_and_trust",
       "path": "components/identity-and-trust/tests/conftest.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "27df68ad4f70e81699871e0745a7e49b5f0191478a872054b98a053ee60282f6",
@@ -1573,13 +1531,6 @@
     },
     {
       "owner_id": "koa_mediatheque",
-      "path": "components/koa-mediatheque/README.md",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "9178a8e262ed1741dc8db8e463f94c2d09f279706114192014b64653e5bf9052",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/26-internal-components-data-publication-and-knowledge.md"
-    },
-    {
-      "owner_id": "koa_mediatheque",
       "path": "components/koa-mediatheque/component.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "0cf23055c87111caf8dd09e55f2ec4a48e9817a365f04a78bd2f06cc3b815287",
@@ -1611,6 +1562,13 @@
       "path": "components/koa-mediatheque/pyproject.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "34406132ee6c79ec4bb682f46964da89119565e70cb1d3ba7fab4ac10dbfa59e",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/26-internal-components-data-publication-and-knowledge.md"
+    },
+    {
+      "owner_id": "koa_mediatheque",
+      "path": "components/koa-mediatheque/README.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "9178a8e262ed1741dc8db8e463f94c2d09f279706114192014b64653e5bf9052",
       "source_document": "docs/02-system/code-and-filesystem-architecture/26-internal-components-data-publication-and-knowledge.md"
     },
     {
@@ -1881,6 +1839,13 @@
     },
     {
       "owner_id": "koa_mediatheque",
+      "path": "components/koa-mediatheque/tests/_support.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "4b82956d6e176dc3ccfd6dfd95130bc2392ea52705ef316fab0c2f5ca94c8331",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/26-internal-components-data-publication-and-knowledge.md"
+    },
+    {
+      "owner_id": "koa_mediatheque",
       "path": "components/koa-mediatheque/tests/conftest.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "0e5fa766fab7c52dcb92519d4fb48955b9a62c30f7cbbe5b3d86f87bd7cd75d2",
@@ -1923,23 +1888,16 @@
     },
     {
       "owner_id": "koa_node_agent",
-      "path": "components/koa-node-agent/Cargo.toml",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "d11a0defebad6c0ca80d1cf5e287a8925ffbbd3904819584fcb6691fc978da7c",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/25-internal-components-node-trust-governance.md"
-    },
-    {
-      "owner_id": "koa_node_agent",
-      "path": "components/koa-node-agent/README.md",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "152c0e6adeb0fb2004c2f2ec7b0c541ea4919f06febee9a0d9a62c2a23743756",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/25-internal-components-node-trust-governance.md"
-    },
-    {
-      "owner_id": "koa_node_agent",
       "path": "components/koa-node-agent/build.rs",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "f9c938f64255e1af858c32662570f8ee6b51ff56b65fb199cbaf53da20e7ba4c",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/25-internal-components-node-trust-governance.md"
+    },
+    {
+      "owner_id": "koa_node_agent",
+      "path": "components/koa-node-agent/Cargo.toml",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "d11a0defebad6c0ca80d1cf5e287a8925ffbbd3904819584fcb6691fc978da7c",
       "source_document": "docs/02-system/code-and-filesystem-architecture/25-internal-components-node-trust-governance.md"
     },
     {
@@ -1954,6 +1912,13 @@
       "path": "components/koa-node-agent/packaging/payload.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "e7fdc97152db9515b3563bd597881f5eba29fcfd346219c91945481efeacf46d",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/25-internal-components-node-trust-governance.md"
+    },
+    {
+      "owner_id": "koa_node_agent",
+      "path": "components/koa-node-agent/README.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "152c0e6adeb0fb2004c2f2ec7b0c541ea4919f06febee9a0d9a62c2a23743756",
       "source_document": "docs/02-system/code-and-filesystem-architecture/25-internal-components-node-trust-governance.md"
     },
     {
@@ -2231,13 +2196,6 @@
     },
     {
       "owner_id": "kristal_runtime",
-      "path": "components/kristal-runtime/README.md",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "17e0c55d580aabe707e81de4fe832768fdfae5354f6e9dc05eda9e7d3d4d819d",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/26-internal-components-data-publication-and-knowledge.md"
-    },
-    {
-      "owner_id": "kristal_runtime",
       "path": "components/kristal-runtime/component.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "1827a401eea4c9758adfb1eacd3ff657e42e1a13df4ca9c589de4ce73eb1dd24",
@@ -2269,6 +2227,13 @@
       "path": "components/kristal-runtime/pyproject.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "1d40fad4a04640a38a94af4b02f225a8b407d4ea2958db562264189dfe2e95e3",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/26-internal-components-data-publication-and-knowledge.md"
+    },
+    {
+      "owner_id": "kristal_runtime",
+      "path": "components/kristal-runtime/README.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "17e0c55d580aabe707e81de4fe832768fdfae5354f6e9dc05eda9e7d3d4d819d",
       "source_document": "docs/02-system/code-and-filesystem-architecture/26-internal-components-data-publication-and-knowledge.md"
     },
     {
@@ -2497,6 +2462,13 @@
     },
     {
       "owner_id": "kristal_runtime",
+      "path": "components/kristal-runtime/tests/_support.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "d74b2269dd8b33ff97b8eb742783fcb1f0b8a82f6f33bfc774f3ed40a837f9ac",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/26-internal-components-data-publication-and-knowledge.md"
+    },
+    {
+      "owner_id": "kristal_runtime",
       "path": "components/kristal-runtime/tests/conftest.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "0525899e2dbf477086e3bac53a5287be4cb7c01fd532f1356e35865c8f45fa6d",
@@ -2539,13 +2511,6 @@
     },
     {
       "owner_id": "publication_gateway",
-      "path": "components/publication-gateway/README.md",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "740284c57cc6d64e099a16a23d84296f0aee4996491d7636a0ddc24c5761de33",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/26-internal-components-data-publication-and-knowledge.md"
-    },
-    {
-      "owner_id": "publication_gateway",
       "path": "components/publication-gateway/component.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "40753f7865945f2c2262751d10445dabe54a4229c63609bbe5cf68c6b038c3e7",
@@ -2577,6 +2542,13 @@
       "path": "components/publication-gateway/pyproject.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "4ea0cc8b1dc8e0489c78c3ae3e60735f9d82e1b81538593ccdd7daf8fb9c68f2",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/26-internal-components-data-publication-and-knowledge.md"
+    },
+    {
+      "owner_id": "publication_gateway",
+      "path": "components/publication-gateway/README.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "740284c57cc6d64e099a16a23d84296f0aee4996491d7636a0ddc24c5761de33",
       "source_document": "docs/02-system/code-and-filesystem-architecture/26-internal-components-data-publication-and-knowledge.md"
     },
     {
@@ -2847,13 +2819,6 @@
     },
     {
       "owner_id": "resource_governor",
-      "path": "components/resource-governor/README.md",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "af6085be06efb8c9022268b72fea9951d01619e0acf3a254e41017cbc32cfa55",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/25-internal-components-node-trust-governance.md"
-    },
-    {
-      "owner_id": "resource_governor",
       "path": "components/resource-governor/component.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "64a1091738ed059924e1628a63a0bb9059012b39438ee02b44ebbf0309c090f6",
@@ -2878,6 +2843,13 @@
       "path": "components/resource-governor/pyproject.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "e170283f7278d2e2e4a42c5ae23d65af1d0ff27fb272d016a868b0d4325f33cf",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/25-internal-components-node-trust-governance.md"
+    },
+    {
+      "owner_id": "resource_governor",
+      "path": "components/resource-governor/README.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "af6085be06efb8c9022268b72fea9951d01619e0acf3a254e41017cbc32cfa55",
       "source_document": "docs/02-system/code-and-filesystem-architecture/25-internal-components-node-trust-governance.md"
     },
     {
@@ -3113,6 +3085,13 @@
     },
     {
       "owner_id": "resource_governor",
+      "path": "components/resource-governor/tests/_support.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "2073a3d55846e9c46e6d50384af98d5b5a8abba4fffcfd69c3627c2b9d5390c6",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/25-internal-components-node-trust-governance.md"
+    },
+    {
+      "owner_id": "resource_governor",
       "path": "components/resource-governor/tests/conftest.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "611c547a075247655ed5170759eb8e064f93272ceab584e832b3fe1412e91e81",
@@ -3154,10 +3133,17 @@
       "source_document": "docs/02-system/code-and-filesystem-architecture/25-internal-components-node-trust-governance.md"
     },
     {
-      "owner_id": "local_development",
-      "path": "dev/README.md",
+      "owner_id": "repository_governance",
+      "path": "CONTRIBUTING.md",
       "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "e14025c0fa40d4857e4b40fc96ea5ee995afe300014626b68cb55a479fa5b8fc",
+      "path_identifier_sha256": "eca12c0a30e25b4b46522ebf89465a03ba72a03f540796c979137931d8f92055",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md"
+    },
+    {
+      "owner_id": "local_development",
+      "path": "dev/containers/compose.yaml",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "e6337536c522a58d96ad78e1cca8af186bf4784438298e75a02770d843d8154e",
       "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
     },
     {
@@ -3165,13 +3151,6 @@
       "path": "dev/containers/Containerfile",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "ad9a5fd055fa808505db42345a3d94423b7aa8b4651df7866ee6aa447db9d849",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
-    },
-    {
-      "owner_id": "local_development",
-      "path": "dev/containers/compose.yaml",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "e6337536c522a58d96ad78e1cca8af186bf4784438298e75a02770d843d8154e",
       "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
     },
     {
@@ -3256,6 +3235,13 @@
       "path": "dev/local-services/volumes.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "674d5a390306f9bfc1bb34844f7dd7577599f3f031ae8cb265f225fd63716a76",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
+    },
+    {
+      "owner_id": "local_development",
+      "path": "dev/README.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "e14025c0fa40d4857e4b40fc96ea5ee995afe300014626b68cb55a479fa5b8fc",
       "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
     },
     {
@@ -3393,20 +3379,6 @@
     },
     {
       "owner_id": "host_platform_integration",
-      "path": "host/README.md",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "32d4df76e6b1b8e427643dd7a217415c6003e7e2344f39a54ffc912b22776c95",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/29-host-platform-files.md"
-    },
-    {
-      "owner_id": "host_platform_integration",
-      "path": "host/adapters/README.md",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "8d3a1c7be9662e15b405a8776ed648a5499689549e4f7eee28a35cf2e050a121",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/29-host-platform-files.md"
-    },
-    {
-      "owner_id": "host_platform_integration",
       "path": "host/adapters/filesystem.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "c602d824fa78d8dbf12924aa8e426700d3b2c698add38410df0644fc6711b494",
@@ -3424,6 +3396,13 @@
       "path": "host/adapters/podman.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "669750f4274146d9adad88189750809be15ca3fa9c1baa92aa8fb9899e540dbe",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/29-host-platform-files.md"
+    },
+    {
+      "owner_id": "host_platform_integration",
+      "path": "host/adapters/README.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "8d3a1c7be9662e15b405a8776ed648a5499689549e4f7eee28a35cf2e050a121",
       "source_document": "docs/02-system/code-and-filesystem-architecture/29-host-platform-files.md"
     },
     {
@@ -3505,6 +3484,27 @@
     },
     {
       "owner_id": "host_platform_integration",
+      "path": "host/image/build-boot-artifact.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "a64e23ac6fb681906e771826d943dc285e1932fd9ef95aaf975332934c331b06",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/29-host-platform-files.md"
+    },
+    {
+      "owner_id": "host_platform_integration",
+      "path": "host/image/build-disk-image.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "fd48edb334ddd1ab493923a063070dfbf245cfae810bb41a7f5a1ac73e5f6cb5",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/29-host-platform-files.md"
+    },
+    {
+      "owner_id": "host_platform_integration",
+      "path": "host/image/build-recovery-artifact.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "ec6e022025b071dff0f6be6a5520acfa74cf8e266af70613d867549f5701aa8f",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/29-host-platform-files.md"
+    },
+    {
+      "owner_id": "host_platform_integration",
       "path": "host/image/build-rootfs.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "5d1ebec0f149c358cae31450c199580019b6a8bcd1599adda9ea51554f37495a",
@@ -3522,6 +3522,13 @@
       "path": "host/image/image-manifest.yaml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "03b210cb93e3e5c9802d349beea2e44ae115e0caf14128d43fc24dc05cb5e7a8",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/29-host-platform-files.md"
+    },
+    {
+      "owner_id": "host_platform_integration",
+      "path": "host/image/materialize-rootfs.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "6855489e2ec458c5faad7e9fdcc28dba710e57885450339754c4a0bbab2ae551",
       "source_document": "docs/02-system/code-and-filesystem-architecture/29-host-platform-files.md"
     },
     {
@@ -3585,6 +3592,13 @@
       "path": "host/networking/zones.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "8cbeba78c883a9411b101b0605ae17b9b719840f0d1fff877db82f6d4d4b118a",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/29-host-platform-files.md"
+    },
+    {
+      "owner_id": "host_platform_integration",
+      "path": "host/README.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "32d4df76e6b1b8e427643dd7a217415c6003e7e2344f39a54ffc912b22776c95",
       "source_document": "docs/02-system/code-and-filesystem-architecture/29-host-platform-files.md"
     },
     {
@@ -3722,6 +3736,27 @@
     },
     {
       "owner_id": "host_platform_integration",
+      "path": "host/sessions/koa-appliance-session.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "ae54b8439537e8cdd85e69719b82a85b141e6e22e8e37157e9cf892570dd743a",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/29-host-platform-files.md"
+    },
+    {
+      "owner_id": "host_platform_integration",
+      "path": "host/sessions/koa-maintenance-session.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "1418fe22a99e0e0288341ddaea3fc1dcbeca962fe367af2da1f400dc19b5f002",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/29-host-platform-files.md"
+    },
+    {
+      "owner_id": "host_platform_integration",
+      "path": "host/sessions/koa-recovery-session.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "80db540fe5d93ebe025950ad122d4e15121720a4637bb8637092be6afb8e78bd",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/29-host-platform-files.md"
+    },
+    {
+      "owner_id": "host_platform_integration",
       "path": "host/sessions/koa-session-launcher.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "3139ccd1531ff1a6e6bf3b342d8f7737bbb2389fe8b60849d4683a5379e779de",
@@ -3739,6 +3774,13 @@
       "path": "host/sessions/recovery-session.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "93ddc772b7c1d8b2da5e2c6c07d36ab651b88360f8fabe7db79dcc983fd535f2",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/29-host-platform-files.md"
+    },
+    {
+      "owner_id": "host_platform_integration",
+      "path": "host/sessions/session_runtime.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "d15f0ce00dfb9c5eca682b7803f5bcb481cff91a1c7706c2c1a88cd8b61808e5",
       "source_document": "docs/02-system/code-and-filesystem-architecture/29-host-platform-files.md"
     },
     {
@@ -3988,13 +4030,6 @@
     },
     {
       "owner_id": "ariane",
-      "path": "integrations/ariane/README.md",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "15a8e124dad5f9de91f4c018919b1795c8c30b74da003e3c7782061cdddb613b",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
-    },
-    {
-      "owner_id": "ariane",
       "path": "integrations/ariane/adapter/pyproject.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "4d11dafc233b0fb82a5ac4e905ec0efd9acc9d3a28bba62c912956df05a1e2ee",
@@ -4128,6 +4163,13 @@
     },
     {
       "owner_id": "ariane",
+      "path": "integrations/ariane/README.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "15a8e124dad5f9de91f4c018919b1795c8c30b74da003e3c7782061cdddb613b",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "ariane",
       "path": "integrations/ariane/resource-envelope.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "a30ae36d19c017085bebd0734cd17e231469a1eb084b3a6d1b1d396e6f25844d",
@@ -4145,6 +4187,13 @@
       "path": "integrations/ariane/storage.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "23f3592f1293d634c5487ba0bceba965b8ea3a5b643cd9c67dae4ea9a28e06cd",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "ariane",
+      "path": "integrations/ariane/tests/_support.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "cd45589d4f9c48c0266ad3cfe6057c98a33f2198da86ddfc8536c8456626ff76",
       "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
     },
     {
@@ -4184,13 +4233,6 @@
     },
     {
       "owner_id": "ariane-voice",
-      "path": "integrations/external-services/ariane-voice/README.md",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "c70f2f6db98266e503aae1b7d91589ce02937907e192328f9d1ff3280a2df675",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/28-uckk-external-services-and-transport-interfaces.md"
-    },
-    {
-      "owner_id": "ariane-voice",
       "path": "integrations/external-services/ariane-voice/health.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "9f63a7a509bd85ca64faa4336935a51e344e93a06b7a6cc9301f742eae517f6e",
@@ -4212,6 +4254,13 @@
     },
     {
       "owner_id": "ariane-voice",
+      "path": "integrations/external-services/ariane-voice/README.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "c70f2f6db98266e503aae1b7d91589ce02937907e192328f9d1ff3280a2df675",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/28-uckk-external-services-and-transport-interfaces.md"
+    },
+    {
+      "owner_id": "ariane-voice",
       "path": "integrations/external-services/ariane-voice/tests/test_boundary.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "f86953fb340147b753483d1e265a1fba0a3719ba4fd7e74828bfdbb0ee0c460a",
@@ -4222,13 +4271,6 @@
       "path": "integrations/external-services/ariane-voice/tests/test_failure.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "8742e84fab254ea82d718b92ef082d80504f008f752d0bbab9755ff36a446aa8",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/28-uckk-external-services-and-transport-interfaces.md"
-    },
-    {
-      "owner_id": "chatgpt",
-      "path": "integrations/external-services/chatgpt/README.md",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "499d467b03660696bec5b6f0d363150c293b89e4d9b99121bfdac8a4fc429655",
       "source_document": "docs/02-system/code-and-filesystem-architecture/28-uckk-external-services-and-transport-interfaces.md"
     },
     {
@@ -4254,6 +4296,13 @@
     },
     {
       "owner_id": "chatgpt",
+      "path": "integrations/external-services/chatgpt/README.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "499d467b03660696bec5b6f0d363150c293b89e4d9b99121bfdac8a4fc429655",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/28-uckk-external-services-and-transport-interfaces.md"
+    },
+    {
+      "owner_id": "chatgpt",
       "path": "integrations/external-services/chatgpt/tests/test_boundary.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "47c3ca297db674dad3ea3ab30da4a4855c2b263a2b4a270adc5bbd67d76f8f7b",
@@ -4264,13 +4313,6 @@
       "path": "integrations/external-services/chatgpt/tests/test_failure.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "b624610f1ee8c8e3a5f36901796305ab9b1b4f1a40002444987f8cb7c9dc37a8",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/28-uckk-external-services-and-transport-interfaces.md"
-    },
-    {
-      "owner_id": "gamma",
-      "path": "integrations/external-services/gamma/README.md",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "f4141fb644c07e134151fcb5f47bc219130d3d3dcdbace2bb2bc667bef8d2788",
       "source_document": "docs/02-system/code-and-filesystem-architecture/28-uckk-external-services-and-transport-interfaces.md"
     },
     {
@@ -4296,6 +4338,13 @@
     },
     {
       "owner_id": "gamma",
+      "path": "integrations/external-services/gamma/README.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "f4141fb644c07e134151fcb5f47bc219130d3d3dcdbace2bb2bc667bef8d2788",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/28-uckk-external-services-and-transport-interfaces.md"
+    },
+    {
+      "owner_id": "gamma",
       "path": "integrations/external-services/gamma/tests/test_boundary.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "b9e23f6b1c00cc055f22e75b4801de32c6bc9bbfe3348b83eb087d560eae863b",
@@ -4306,13 +4355,6 @@
       "path": "integrations/external-services/gamma/tests/test_failure.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "93ccb89052cf74b105c474ac6398a76fbbc1997718fe0c836e132c804b7c4d8c",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/28-uckk-external-services-and-transport-interfaces.md"
-    },
-    {
-      "owner_id": "suno",
-      "path": "integrations/external-services/suno/README.md",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "d305ac22a682a4c5031eb674a8d901fe27c7135e47e5c459750da42c958e3792",
       "source_document": "docs/02-system/code-and-filesystem-architecture/28-uckk-external-services-and-transport-interfaces.md"
     },
     {
@@ -4338,6 +4380,13 @@
     },
     {
       "owner_id": "suno",
+      "path": "integrations/external-services/suno/README.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "d305ac22a682a4c5031eb674a8d901fe27c7135e47e5c459750da42c958e3792",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/28-uckk-external-services-and-transport-interfaces.md"
+    },
+    {
+      "owner_id": "suno",
       "path": "integrations/external-services/suno/tests/test_boundary.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "4de3383c5ee1b1f9ca51a02dd41254298e3a86369d564e72361f5d185b480121",
@@ -4349,13 +4398,6 @@
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "dac751052f4c8cf86c5bbdf1951abe057bd50149008f5d11a64bbb24a861e080",
       "source_document": "docs/02-system/code-and-filesystem-architecture/28-uckk-external-services-and-transport-interfaces.md"
-    },
-    {
-      "owner_id": "koa_spaces",
-      "path": "integrations/koa-spaces/README.md",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "b24b35e045ff3a77ae4503709a2d0de9632146d9c255d29b1501f8d3afb6ae45",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
     },
     {
       "owner_id": "koa_spaces",
@@ -4506,6 +4548,13 @@
     },
     {
       "owner_id": "koa_spaces",
+      "path": "integrations/koa-spaces/README.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "b24b35e045ff3a77ae4503709a2d0de9632146d9c255d29b1501f8d3afb6ae45",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "koa_spaces",
       "path": "integrations/koa-spaces/resource-envelope.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "f908301352199818437c59dff474897c25710fff71e5aa9b6090672b6ab65bc4",
@@ -4523,6 +4572,13 @@
       "path": "integrations/koa-spaces/storage.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "35e2ed5e58d8d11947f893c3991509f140338f8bf12a84b40d12b6e404e677e3",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "koa_spaces",
+      "path": "integrations/koa-spaces/tests/_support.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "0713605f0dacfac9c3f78e6653cd76f97e87c9f4062ce61cc3176df1f7e2d70b",
       "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
     },
     {
@@ -4558,13 +4614,6 @@
       "path": "integrations/koa-spaces/tests/test_health.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "6508c861f81a74c9cf4aa5826b1df9e642f257ebd408ba4fceae57f0ee87168c",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
-    },
-    {
-      "owner_id": "konnaxion",
-      "path": "integrations/konnaxion/README.md",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "0718185074e522d0045b8b28ef37134513039f351045a81a37021a737b496eb5",
       "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
     },
     {
@@ -4702,6 +4751,13 @@
     },
     {
       "owner_id": "konnaxion",
+      "path": "integrations/konnaxion/README.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "0718185074e522d0045b8b28ef37134513039f351045a81a37021a737b496eb5",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "konnaxion",
       "path": "integrations/konnaxion/resource-envelope.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "90ce05ffa0ea4945cd69e25bc6d78b435a4be63bef746f5ff8a0c1ea61a4fb94",
@@ -4719,6 +4775,13 @@
       "path": "integrations/konnaxion/storage.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "fc022ff7007c40f27999d9d2d3f5498bbe78470c5a51d7c596499bda05233dd2",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "konnaxion",
+      "path": "integrations/konnaxion/tests/_support.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "ad35de2d1a47bda6dfa69ca1197a1dc3bf49986b1a0a5b7a1398f37973f8b590",
       "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
     },
     {
@@ -4754,13 +4817,6 @@
       "path": "integrations/konnaxion/tests/test_health.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "ac38dc11e8fbd7255ee4c8f9613b83b14d0830fc5b9683fe75938f39375ebcd5",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
-    },
-    {
-      "owner_id": "orgo",
-      "path": "integrations/orgo/README.md",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "80ddb084945887f0fee04384d0207ed1ee3d742c3558510ba688bda127e3314b",
       "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
     },
     {
@@ -4898,6 +4954,13 @@
     },
     {
       "owner_id": "orgo",
+      "path": "integrations/orgo/README.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "80ddb084945887f0fee04384d0207ed1ee3d742c3558510ba688bda127e3314b",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "orgo",
       "path": "integrations/orgo/resource-envelope.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "b97235859a388b8928fdc870411ee520b2ecd4ae7d96ee78338a161d91ffc526",
@@ -4950,13 +5013,6 @@
       "path": "integrations/orgo/tests/test_health.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "c732fe98265613567507051bebb0e2dade9428663ea79ee61b1f244103eed1b0",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
-    },
-    {
-      "owner_id": "semantik_architect",
-      "path": "integrations/semantik-architect/README.md",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "88e5e557d7a5d15bc38069fba5de18b38e939cbf4b30d7e727cc980322ccb5d8",
       "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
     },
     {
@@ -5094,6 +5150,13 @@
     },
     {
       "owner_id": "semantik_architect",
+      "path": "integrations/semantik-architect/README.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "88e5e557d7a5d15bc38069fba5de18b38e939cbf4b30d7e727cc980322ccb5d8",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "semantik_architect",
       "path": "integrations/semantik-architect/resource-envelope.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "e79c078ad00d9dc350a2f2d9f9895cdf10f054b06c24515433102ced933bc1f3",
@@ -5111,6 +5174,13 @@
       "path": "integrations/semantik-architect/storage.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "b696b1f939e1bf9c734d63df331d2f10c249c6a4c8a462fbef35cc6850a0800d",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "semantik_architect",
+      "path": "integrations/semantik-architect/tests/_support.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "e6141681b483bdec5a82e732f8d44098460c9e9552e77f63bc8627cfa8d4914c",
       "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
     },
     {
@@ -5146,13 +5216,6 @@
       "path": "integrations/semantik-architect/tests/test_health.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "f58365a61a4364daf8ba28b1301c61ce6a47f5c95c4364e2a9bb3ec435946566",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
-    },
-    {
-      "owner_id": "sentient",
-      "path": "integrations/sentient/README.md",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "914b7af204668a226522cec36f79f94d5799dfa3e62ef4f94d015f5832fb2ba6",
       "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
     },
     {
@@ -5290,6 +5353,13 @@
     },
     {
       "owner_id": "sentient",
+      "path": "integrations/sentient/README.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "914b7af204668a226522cec36f79f94d5799dfa3e62ef4f94d015f5832fb2ba6",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "sentient",
       "path": "integrations/sentient/resource-envelope.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "f6143147115e094cdbcde1cb96029d7c9013f113e44fe39f169af6c0a2f674cb",
@@ -5343,13 +5413,6 @@
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "3e5e052da3d06303270f87d34e3cf22bb86854ed8ab47406b683ed473a0125c9",
       "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
-    },
-    {
-      "owner_id": "uckk_integration_boundary",
-      "path": "integrations/uckk/README.md",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "d526c44dd84b8f7d4d249026dc933e820c81db5cb395cd07cbc68f613eb9724e",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/28-uckk-external-services-and-transport-interfaces.md"
     },
     {
       "owner_id": "uckk_integration_boundary",
@@ -5500,6 +5563,13 @@
     },
     {
       "owner_id": "uckk_integration_boundary",
+      "path": "integrations/uckk/README.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "d526c44dd84b8f7d4d249026dc933e820c81db5cb395cd07cbc68f613eb9724e",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/28-uckk-external-services-and-transport-interfaces.md"
+    },
+    {
+      "owner_id": "uckk_integration_boundary",
       "path": "integrations/uckk/resource-envelope.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "e0b20a6869522bb8069b78311f78c65024e7715ca59abf44a38705dda2567a97",
@@ -5517,6 +5587,13 @@
       "path": "integrations/uckk/storage.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "4855e56c4c7ab578c45cb14d60e78ec545b6882903c7a134592fd04bee146d07",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/28-uckk-external-services-and-transport-interfaces.md"
+    },
+    {
+      "owner_id": "uckk_integration_boundary",
+      "path": "integrations/uckk/tests/_support.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "305f96f45d491784cd465a3158780bdd7c6ccc11e20ca83e342c20bd5d47ae92",
       "source_document": "docs/02-system/code-and-filesystem-architecture/28-uckk-external-services-and-transport-interfaces.md"
     },
     {
@@ -5552,13 +5629,6 @@
       "path": "integrations/uckk/tests/test_health.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "fd91ca74327104a5fc7fb9fafeac6f5266f391062b225a9c92fb135883d0bb50",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/28-uckk-external-services-and-transport-interfaces.md"
-    },
-    {
-      "owner_id": "transport_and_binding_maintainers",
-      "path": "interfaces/README.md",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "4c4058085485d97315922bf546745f97f99f368ddb031eb39cf5119b16585d77",
       "source_document": "docs/02-system/code-and-filesystem-architecture/28-uckk-external-services-and-transport-interfaces.md"
     },
     {
@@ -5650,6 +5720,13 @@
       "path": "interfaces/python/tests/test_generated_bindings.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "be2a174d61d733178dbb5434a5d661c30c0398950bd66c588903483dd68f35aa",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/28-uckk-external-services-and-transport-interfaces.md"
+    },
+    {
+      "owner_id": "transport_and_binding_maintainers",
+      "path": "interfaces/README.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "4c4058085485d97315922bf546745f97f99f368ddb031eb39cf5119b16585d77",
       "source_document": "docs/02-system/code-and-filesystem-architecture/28-uckk-external-services-and-transport-interfaces.md"
     },
     {
@@ -5751,17 +5828,38 @@
       "source_document": "docs/02-system/code-and-filesystem-architecture/28-uckk-external-services-and-transport-interfaces.md"
     },
     {
-      "owner_id": "operations_implementation",
-      "path": "operations/README.md",
+      "owner_id": "repository_legal",
+      "path": "LICENSES/README.md",
       "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "dccaa7b45b0809105d5cb4f98e92579797ad1a23e39e4d181559c1e4a3ce9202",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
+      "path_identifier_sha256": "24df346785b71b6cefa967cdf31c73a8e5bdf39a32689f63f2899711e5c61acd",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md"
+    },
+    {
+      "owner_id": "repository_legal",
+      "path": "LICENSES/THIRD_PARTY.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "fdab18236da1c4b39afd0b093205b11ce696648c0957ae0c5e73074d15141bc2",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md"
+    },
+    {
+      "owner_id": "repository_legal",
+      "path": "NOTICE.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "53337bf7ea91d782c573ac8653c18f95b7b23c38da9de08288639bcec9993406",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md"
     },
     {
       "owner_id": "operations_implementation",
       "path": "operations/pyproject.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "4832df6a6cbf2af7c58e66a6007cf991e24f13e0b7e4c037d9a2d5ce6d0c81d7",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
+    },
+    {
+      "owner_id": "operations_implementation",
+      "path": "operations/README.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "dccaa7b45b0809105d5cb4f98e92579797ad1a23e39e4d181559c1e4a3ce9202",
       "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
     },
     {
@@ -6025,13 +6123,6 @@
     },
     {
       "owner_id": "packaging",
-      "path": "packaging/README.md",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "9c5cf52f29654a6beae1aa2cee50ec7ad4656b84cdf48109a5da8935777005a1",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/30-assembly-profiles-packaging-and-release.md"
-    },
-    {
-      "owner_id": "packaging",
       "path": "packaging/components/audit-broker.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "ac2073c2b53a2fe42761bc726f66c89c3c4cb8eb36df2f45cb61a715dd450bee",
@@ -6088,13 +6179,6 @@
     },
     {
       "owner_id": "packaging",
-      "path": "packaging/containers/audit-broker/Containerfile",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "370d0e54e2891d371b9305d73722b8778bf635e01235010ec02051ac33d13f6c",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/30-assembly-profiles-packaging-and-release.md"
-    },
-    {
-      "owner_id": "packaging",
       "path": "packaging/containers/audit-broker/container.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "8b05f089f47d1f0f5eec19da1095dd3de17e44573a5dc8beba6df5372e699f4e",
@@ -6102,9 +6186,9 @@
     },
     {
       "owner_id": "packaging",
-      "path": "packaging/containers/governance-policy-runtime/Containerfile",
+      "path": "packaging/containers/audit-broker/Containerfile",
       "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "a67e066503d295292bd10049b8faf96efe8a43022e73ed2f79447b168b79f22b",
+      "path_identifier_sha256": "370d0e54e2891d371b9305d73722b8778bf635e01235010ec02051ac33d13f6c",
       "source_document": "docs/02-system/code-and-filesystem-architecture/30-assembly-profiles-packaging-and-release.md"
     },
     {
@@ -6116,9 +6200,9 @@
     },
     {
       "owner_id": "packaging",
-      "path": "packaging/containers/identity-and-trust/Containerfile",
+      "path": "packaging/containers/governance-policy-runtime/Containerfile",
       "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "b1b7efd16fb0f1cd183c97c17d1da5eb166e6e29e144267ea4aadf4e01a9f716",
+      "path_identifier_sha256": "a67e066503d295292bd10049b8faf96efe8a43022e73ed2f79447b168b79f22b",
       "source_document": "docs/02-system/code-and-filesystem-architecture/30-assembly-profiles-packaging-and-release.md"
     },
     {
@@ -6130,9 +6214,9 @@
     },
     {
       "owner_id": "packaging",
-      "path": "packaging/containers/koa-mediatheque/Containerfile",
+      "path": "packaging/containers/identity-and-trust/Containerfile",
       "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "f5723d491d0d9743bedcf4f5f1b07c7d5319bbbb3c5c3bb826cd9e6cc3f3bc41",
+      "path_identifier_sha256": "b1b7efd16fb0f1cd183c97c17d1da5eb166e6e29e144267ea4aadf4e01a9f716",
       "source_document": "docs/02-system/code-and-filesystem-architecture/30-assembly-profiles-packaging-and-release.md"
     },
     {
@@ -6144,9 +6228,9 @@
     },
     {
       "owner_id": "packaging",
-      "path": "packaging/containers/kristal-runtime/Containerfile",
+      "path": "packaging/containers/koa-mediatheque/Containerfile",
       "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "c1c1fe93e68d7cd53fd496dce8636328fac9820d3e81eb60888ff00176fabcd1",
+      "path_identifier_sha256": "f5723d491d0d9743bedcf4f5f1b07c7d5319bbbb3c5c3bb826cd9e6cc3f3bc41",
       "source_document": "docs/02-system/code-and-filesystem-architecture/30-assembly-profiles-packaging-and-release.md"
     },
     {
@@ -6158,9 +6242,9 @@
     },
     {
       "owner_id": "packaging",
-      "path": "packaging/containers/publication-gateway/Containerfile",
+      "path": "packaging/containers/kristal-runtime/Containerfile",
       "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "efc9917ef1f6f9c111e358d6befc86daa71358149409171b6885c199125ec9c6",
+      "path_identifier_sha256": "c1c1fe93e68d7cd53fd496dce8636328fac9820d3e81eb60888ff00176fabcd1",
       "source_document": "docs/02-system/code-and-filesystem-architecture/30-assembly-profiles-packaging-and-release.md"
     },
     {
@@ -6172,9 +6256,9 @@
     },
     {
       "owner_id": "packaging",
-      "path": "packaging/containers/resource-governor/Containerfile",
+      "path": "packaging/containers/publication-gateway/Containerfile",
       "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "d0fd904f0a0ab6cf715d6b18f43b636eb712e83af2f3b619d68b8581694de245",
+      "path_identifier_sha256": "efc9917ef1f6f9c111e358d6befc86daa71358149409171b6885c199125ec9c6",
       "source_document": "docs/02-system/code-and-filesystem-architecture/30-assembly-profiles-packaging-and-release.md"
     },
     {
@@ -6182,6 +6266,13 @@
       "path": "packaging/containers/resource-governor/container.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "916c4d1976940d29a7370b52cb46102d09fb30870a613e70e9bc9903191bee47",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/30-assembly-profiles-packaging-and-release.md"
+    },
+    {
+      "owner_id": "packaging",
+      "path": "packaging/containers/resource-governor/Containerfile",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "d0fd904f0a0ab6cf715d6b18f43b636eb712e83af2f3b619d68b8581694de245",
       "source_document": "docs/02-system/code-and-filesystem-architecture/30-assembly-profiles-packaging-and-release.md"
     },
     {
@@ -6203,6 +6294,13 @@
       "path": "packaging/offline-bundles/verification-policy.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "ccf6cb9a19d7ae648afb474ed501291019f6587bc5b8f58ff8725ad0fc5f0aa4",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/30-assembly-profiles-packaging-and-release.md"
+    },
+    {
+      "owner_id": "packaging",
+      "path": "packaging/README.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "9c5cf52f29654a6beae1aa2cee50ec7ad4656b84cdf48109a5da8935777005a1",
       "source_document": "docs/02-system/code-and-filesystem-architecture/30-assembly-profiles-packaging-and-release.md"
     },
     {
@@ -6287,13 +6385,6 @@
       "path": "packaging/system/recovery-image.toml",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "e1e4e6b514e93f6f169474faad2f806281479b22a8c283051e7448f6f0d0a1c1",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/30-assembly-profiles-packaging-and-release.md"
-    },
-    {
-      "owner_id": "profile_implementation_settings",
-      "path": "profiles/README.md",
-      "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "9f59b386a0e72c6742a4da506a3f41ee129ac8f592296b3ae986f4babce419f4",
       "source_document": "docs/02-system/code-and-filesystem-architecture/30-assembly-profiles-packaging-and-release.md"
     },
     {
@@ -6389,6 +6480,13 @@
     },
     {
       "owner_id": "profile_implementation_settings",
+      "path": "profiles/README.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "9f59b386a0e72c6742a4da506a3f41ee129ac8f592296b3ae986f4babce419f4",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/30-assembly-profiles-packaging-and-release.md"
+    },
+    {
+      "owner_id": "profile_implementation_settings",
       "path": "profiles/test-fixtures/build-worker.json",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "3223e4c230570b2d06dd9bd89ac7d50756de9ee391861a228796c670ffaa6570",
@@ -6423,11 +6521,11 @@
       "source_document": "docs/02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md"
     },
     {
-      "owner_id": "release_engineering",
-      "path": "release/README.md",
+      "owner_id": "repository_governance",
+      "path": "README.md",
       "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "117e4d23e1c4e40eddf252278b9949f31efaf18ec19c9cc3354c0ecc94603e7a",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/30-assembly-profiles-packaging-and-release.md"
+      "path_identifier_sha256": "b335630551682c19a781afebcf4d07bf978fb1f8ac04c6bf87428ed5106870f5",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md"
     },
     {
       "owner_id": "release_engineering",
@@ -6515,6 +6613,13 @@
     },
     {
       "owner_id": "release_engineering",
+      "path": "release/README.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "117e4d23e1c4e40eddf252278b9949f31efaf18ec19c9cc3354c0ecc94603e7a",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/30-assembly-profiles-packaging-and-release.md"
+    },
+    {
+      "owner_id": "release_engineering",
       "path": "release/sbom/generate-sbom.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "c2e02a321866356e8ffd2810ecac394b4bd2333986231b7c9937b343901e7991",
@@ -6563,6 +6668,13 @@
       "source_document": "docs/02-system/code-and-filesystem-architecture/30-assembly-profiles-packaging-and-release.md"
     },
     {
+      "owner_id": "repository_legal",
+      "path": "REUSE.toml",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "74bd2d6afd7a1f967679adae374ca38fd9745fe6129dc4717a1ab0e388590b08",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md"
+    },
+    {
       "owner_id": "repository_tooling",
       "path": "rust-toolchain.toml",
       "path_class": "frozen_structural_file",
@@ -6570,11 +6682,11 @@
       "source_document": "docs/02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md"
     },
     {
-      "owner_id": "cross_system_conformance",
-      "path": "tests/README.md",
+      "owner_id": "repository_governance",
+      "path": "SECURITY.md",
       "path_class": "frozen_structural_file",
-      "path_identifier_sha256": "dacac2ebf9792f0d23c0f922a744486ded01901957d5281290925acd89cf83ac",
-      "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
+      "path_identifier_sha256": "f6ed156e4bf5c791680662464b94ea5d753f219ee816b385f67870e2c0d7d4c7",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md"
     },
     {
       "owner_id": "cross_system_conformance",
@@ -6823,6 +6935,13 @@
     },
     {
       "owner_id": "cross_system_conformance",
+      "path": "tests/offline/test_qemu_offline_navigation.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "3421d53aee4125b9d9e1e81e054be6bba254c1bae740a8ff5524002c1946ffe5",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
+    },
+    {
+      "owner_id": "cross_system_conformance",
       "path": "tests/profiles/test_appliance_shell.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "3d99ede9f50375473751eb07b43153bb24bfc6f6245c05d668eade1f27e21d17",
@@ -6893,6 +7012,13 @@
     },
     {
       "owner_id": "cross_system_conformance",
+      "path": "tests/README.md",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "dacac2ebf9792f0d23c0f922a744486ded01901957d5281290925acd89cf83ac",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
+    },
+    {
+      "owner_id": "cross_system_conformance",
       "path": "tests/recovery/test_failed_activation.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "93ceaabd8fd81ab314fb216ab49908e103b66fbe45801f246be2c0f671067b41",
@@ -6903,6 +7029,20 @@
       "path": "tests/recovery/test_forward_repair.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "9ae9fbdcda8cc02894bbf3b6d6ced1a2b9638f637caf68c62543d73ec4f2c503",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
+    },
+    {
+      "owner_id": "cross_system_conformance",
+      "path": "tests/recovery/test_qemu_failed_candidate_rollback.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "8128a8bdd2bffa867c96d9cd64f27a7c8cb37b38c68d5858349a4ac695b1de56",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
+    },
+    {
+      "owner_id": "cross_system_conformance",
+      "path": "tests/recovery/test_qemu_recovery_boot.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "4105f1e8fd7b7f2998e2074fcce9c61af3fbadd67c4e4bccfa50d00d55981301",
       "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
     },
     {
@@ -6938,6 +7078,13 @@
       "path": "tests/reproducibility/test_contract_generation.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "e49616c1f4081ec17ef113f8621310e7f60cfeb90e502a94afda81f2ea133f17",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
+    },
+    {
+      "owner_id": "cross_system_conformance",
+      "path": "tests/reproducibility/test_image_binary_determinism.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "eed4bff9a6ae5fba282911b55721e2e862d53d2ea7985062c09a0ceb679d12a0",
       "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
     },
     {
@@ -6998,6 +7145,13 @@
     },
     {
       "owner_id": "cross_system_conformance",
+      "path": "tests/security/test_qemu_appliance_confinement.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "d401b0dad7dab400da291808456ebc492f8f47e876f7b35bbd3ab34541244bf4",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
+    },
+    {
+      "owner_id": "cross_system_conformance",
       "path": "tests/security/test_seccomp_profiles.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "1a2e577ec1040702353cf507058c71186451ad8718b2d1d44dff4b5cbd0d98c7",
@@ -7015,6 +7169,20 @@
       "path": "tests/security/test_signature_failure.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "9130fb13770244670f0af6c7742d2924df8ea47221f531c990867b8cb9e33d83",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
+    },
+    {
+      "owner_id": "cross_system_conformance",
+      "path": "tests/system/qemu-machine.toml",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "f89f85a1c4306ea1d399c58722b1765622dc4524d1ce00d35ae661e58f7f553b",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
+    },
+    {
+      "owner_id": "cross_system_conformance",
+      "path": "tests/system/qemu_harness.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "07ece8b520d6ce10f3a56a7915f161d13f5a4a607c5b419a87c20242110139df",
       "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
     },
     {
@@ -7054,6 +7222,41 @@
     },
     {
       "owner_id": "cross_system_conformance",
+      "path": "tests/system/test_qemu_appliance_session.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "784afc786cd038d92935520fb39e732cd7277ef11c8dcaaa452bbe1b015e2870",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
+    },
+    {
+      "owner_id": "cross_system_conformance",
+      "path": "tests/system/test_qemu_boot.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "29dc4c4ef30fb84c7745cb6fe089d3120b166a06c5af77038d319b16da753620",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
+    },
+    {
+      "owner_id": "cross_system_conformance",
+      "path": "tests/system/test_qemu_mediatheque.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "89f1f323912bbeba151023f2e0167742daf86bb96f3003d923b75a32f98b6848",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
+    },
+    {
+      "owner_id": "cross_system_conformance",
+      "path": "tests/system/test_qemu_navigation.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "10505cc87f1ede5bb15fd0a6c1e7a6c0df68e441c63cea2475e95135d5ae5cea",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
+    },
+    {
+      "owner_id": "cross_system_conformance",
+      "path": "tests/system/test_qemu_semantik_architect.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "537e544b5a3176eac9c3d2da9b5ee31c33657ee5ad3bc892a3170d07194a4904",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
+    },
+    {
+      "owner_id": "cross_system_conformance",
       "path": "tests/system/test_release_activation.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "f594afb1185d6bbf3e7a22a626e09967d2f68ca1aa549523c066dbe09427aac2",
@@ -7068,9 +7271,23 @@
     },
     {
       "owner_id": "cross_system_conformance",
+      "path": "tests/system/test_rootfs_materialization.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "c8bb5dc5666913a612bd6d81c34387b7de0a6e15286ac53ad031ef04b0ea3f9e",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
+    },
+    {
+      "owner_id": "cross_system_conformance",
       "path": "tests/system/test_service_activation.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "46a5da009a4dab8c705de4b6730e6aca5cacb778e649df634197f88bb76122ad",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
+    },
+    {
+      "owner_id": "cross_system_conformance",
+      "path": "tests/system/test_system_image_build.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "557e5b5c7b8e7f3080925b67c778ef978198794c16af383ab1ae554e9857e9f2",
       "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
     },
     {
@@ -7194,6 +7411,13 @@
     },
     {
       "owner_id": "repository_tooling",
+      "path": "tools/src/koa_tools/commands/build_component.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "ff6547f128c67a008d9846cc8dd536aea081315a5e220479afc7aa947c217f84",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
+    },
+    {
+      "owner_id": "repository_tooling",
       "path": "tools/src/koa_tools/commands/build_image.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "28484eb9b86952448ef746b10ef202ab23d345186b7f1704ddcc7e6100ea45a4",
@@ -7260,6 +7484,20 @@
       "path": "tools/src/koa_tools/repository.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "6e504caf8c3ca56c9ff439fd89a2fc5c73ee981829f48a03ad4cdc3362ea9fbc",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
+    },
+    {
+      "owner_id": "repository_tooling",
+      "path": "tools/tests/test_build_component.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "b6d26e67f0b94a25500242eb7b943e6303539ee4f90c4fe3c0f9c47ee22a09e2",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
+    },
+    {
+      "owner_id": "repository_tooling",
+      "path": "tools/tests/test_build_image.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "30f001011e6d97cb7e61e61a2aafe72628f0929ea685cc16b8302a3beb4f2a93",
       "source_document": "docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md"
     },
     {

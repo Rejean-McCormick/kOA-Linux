@@ -1,0 +1,57 @@
+manifest_version = "1.0.0"
+component_id = "koa_mediatheque"
+component_contract = "docs/contracts/components/koa-mediatheque.component.json"
+component_contract_version = "1.0.0"
+artifact_class = "component_package"
+
+[entrypoint]
+module = "koa_mediatheque"
+transport = "http_over_unix"
+socket_path = "/run/koa/sockets/koa-mediatheque.sock"
+
+[paths]
+configuration = "/etc/koa/components/koa-mediatheque/config.toml"
+runtime_directory = "/run/koa/koa-mediatheque"
+persistent_state = "/var/lib/koa/koa-mediatheque"
+managed_content = "/var/lib/koa/koa-mediatheque/content"
+staging = "/var/lib/koa/koa-mediatheque/staging"
+quarantine = "/var/lib/koa/koa-mediatheque/quarantine"
+exchange = "/var/lib/koa/koa-mediatheque/exchange"
+
+[[payload]]
+source = "src/koa_mediatheque"
+destination = "/usr/lib/koa/components/koa-mediatheque/koa_mediatheque"
+class = "immutable_payload"
+
+[[payload]]
+source = "migrations"
+destination = "/usr/share/koa/components/koa-mediatheque/migrations"
+class = "immutable_payload"
+
+[[workers]]
+worker_id = "thumbnail"
+module = "koa_mediatheque.workers.thumbnail_worker"
+resource_governor_admission_required = true
+payload_mode = "verified_reference"
+
+[[workers]]
+worker_id = "preview"
+module = "koa_mediatheque.workers.preview_worker"
+resource_governor_admission_required = true
+payload_mode = "verified_reference"
+
+[[workers]]
+worker_id = "text_extraction"
+module = "koa_mediatheque.workers.text_extraction_worker"
+resource_governor_admission_required = true
+payload_mode = "verified_reference"
+
+[boundaries]
+direct_cross_component_database_writes = false
+direct_external_publication = false
+implicit_bidirectional_synchronization = false
+remote_identifier_replaces_local_identity = false
+runtime_secrets_in_payload = false
+media_content_in_diagnostics = false
+projections_are_authority = false
+worker_inline_large_payloads = false

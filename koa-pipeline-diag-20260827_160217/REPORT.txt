@@ -1,0 +1,457 @@
+
+==============================================================================
+kOA-Linux pipeline diagnostic
+==============================================================================
+timestamp: 2026-08-27T16:02:18.1096401-04:00
+repository_root: C:\mycode\kOA-Linux\koa-linux
+powershell: 7.6.5
+os: Microsoft Windows 10.0.26200
+
+==============================================================================
+Git identity
+==============================================================================
+308a1e87ed3cccc0fb21cc1c7844db6a1b97743b
+main
+ M .gitignore
+ M .koa/file-architecture.lock.json
+ D VALIDATION.md
+ M components/publication-gateway/pyproject.toml
+ M docs/02-system/code-and-filesystem-architecture/25-internal-components-node-trust-governance.md
+ M docs/02-system/code-and-filesystem-architecture/26-internal-components-data-publication-and-knowledge.md
+ M docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md
+ M docs/02-system/code-and-filesystem-architecture/28-uckk-external-services-and-transport-interfaces.md
+ M docs/02-system/code-and-filesystem-architecture/29-host-platform-files.md
+ M docs/02-system/code-and-filesystem-architecture/31-operations-tests-tools-development-and-ci.md
+?? koa-pipeline-diag-20260827_160217/
+
+==============================================================================
+Git remotes
+==============================================================================
+origin	https://github.com/Rejean-McCormick/kOA-Linux.git (fetch)
+origin	https://github.com/Rejean-McCormick/kOA-Linux.git (push)
+
+==============================================================================
+Tool versions
+==============================================================================
+--- git ---
+git version 2.53.0.windows.1
+--- python ---
+Python 3.14.3
+Python 3.14.3
+--- uv ---
+uv 0.10.9 (f675560f3 2026-03-06)
+--- cargo ---
+cargo: NOT FOUND
+--- rustc ---
+rustc: NOT FOUND
+--- qemu ---
+qemu-system-x86_64: NOT FOUND
+
+==============================================================================
+Requested files
+==============================================================================
+PRESENT  pyproject.toml
+SHA256   67FB405E7D6EE1D3C1A5ED6E5C4BF64A42E8CC1CF692236E73764B7417DC1B03
+PRESENT  uv.lock
+SHA256   5734D4EC5E733D9913500A07768726071CB9557B97B2A46F7CB274A36B535209
+PRESENT  Cargo.lock
+SHA256   8A9CAB19CB3A50E997CCD928C17017DAE80E3FD92A0048D4C0E5BADB16093BCA
+PRESENT  tools/src/koa_tools/cli.py
+SHA256   507EE5232974507F85EF3E81E707D67EAABF9095CAEC3AC2FC9C9A4646992142
+PRESENT  tools/src/koa_tools/commands/assemble.py
+SHA256   85C5D8143B0B1F3C635ECB46711E9FD92A31517145B4185084A0CA06E64F037E
+PRESENT  tools/src/koa_tools/commands/build_component.py
+SHA256   0473ADDE2CF1E328E5ABC893A07340B030D2BC035AA6736AE954FCCEA5E76CDF
+PRESENT  tools/src/koa_tools/commands/build_image.py
+SHA256   CD76A936CD37297DC877416F8E64E7AD23C554C12628C68663AA05F7E3F17385
+PRESENT  assembly/src/koa_assembly/cli.py
+SHA256   3191BE4985D711A2B0B52AD06A964046BF66E91364DBFD4F9793D73F34EA2522
+PRESENT  assembly/src/koa_assembly/renderers/image.py
+SHA256   C6CB66B06EC91C60A4A79B9F430DE8B77F0E1380A1753D773E3E975602F10E67
+PRESENT  packaging/system/image.toml
+SHA256   4F6AE2FB44858044AF4388248C874AAB355CFCE5F1A9DAC70B32EF5BF1851588
+PRESENT  packaging/system/package-sources.toml
+SHA256   998B5CAE53D7C94B5897CD75AB704544CA32FBB3A68D2714CBF41158F623CD1A
+PRESENT  host/image/build-disk-image.py
+SHA256   EF545A341231E6B68B989DEDACD3F55F486DE760B97CFD200BB0021898E84EFD
+PRESENT  docs/contracts/profiles/sovereign-linux-node.profile.json
+SHA256   A9B9D66D630E1083783A5E8DA33FDE2E96D2D9060C2256C2C26169F09D80AB9E
+PRESENT  packaging/components/audit-broker.toml
+SHA256   5DF957AA8462A0DE1B3A1146A2091FD6E264745078C50572D6280CB7F9269D3F
+PRESENT  packaging/components/governance-policy-runtime.toml
+SHA256   51EEAC1D56940D4F828DCA5D655418739B2583411EA71E4EF228FCFA17FDD60A
+PRESENT  packaging/components/identity-and-trust.toml
+SHA256   B730D9BD42D275452B393C5447B7D306A8013688B8F9C94E6B6ECD2C4FC93FF3
+PRESENT  packaging/components/koa-mediatheque.toml
+SHA256   8B3DE13AC8990CC9387F11DB24B9F2999F920DF41D5F6775F673C68C51211368
+PRESENT  packaging/components/koa-node-agent.toml
+SHA256   61548C5EE835DF1306CFA0EB32A94D16DE820704E9624F95EC0A37A503F4F769
+PRESENT  packaging/components/kristal-runtime.toml
+SHA256   03CE36F5A9941B026A53D291BA656568132988A4789B3924BAE0F327A36C6D0A
+PRESENT  packaging/components/publication-gateway.toml
+SHA256   C8FB6222A54776B8CB58D97F4389C7FF07451327B71D85AB3E03C73E448E2D46
+PRESENT  packaging/components/resource-governor.toml
+SHA256   D03C4CAE3A9C9C366B088DDB359F3BAD0143803B3ECD482931FA58BB870B54E9
+PRESENT  components/audit-broker/packaging/payload.toml
+SHA256   B3DB413E7986F1EAC8969FA8739604427DF77D75A1111A5AFD45B791C466B66E
+PRESENT  components/governance-policy-runtime/packaging/payload.toml
+SHA256   667F4DD80EBB4D1C6686347CF233AAC6317F3F09D333DECE8D19F36070124151
+PRESENT  components/identity-and-trust/packaging/payload.toml
+SHA256   30D989FCA9360D5E209C4F4BDC283B29B38E254E13574C902F0CEDE997F42D67
+PRESENT  components/koa-mediatheque/packaging/payload.toml
+SHA256   37B574FAC3E0CFE7F804D8747CDBEED44C4CF36E6B4275A0288300E2B0DD97C2
+PRESENT  components/koa-node-agent/packaging/payload.toml
+SHA256   AF866FAAD444EF0A30512FE90D8ECD0C9B069EE6A156775BEE9A0B816D63727B
+PRESENT  components/kristal-runtime/packaging/payload.toml
+SHA256   D3071314D2FDB5694B8B4A27A9A6ECA83AB9056FAFED7F52DFD13A6462D6E510
+PRESENT  components/publication-gateway/packaging/payload.toml
+SHA256   F4CD0D298AD9F2B7C4C22A5D9926F2D47B4B8A9DA7158F36958D067A8B032CFF
+PRESENT  components/resource-governor/packaging/payload.toml
+SHA256   26347E763C2412C8197CD5EB2B9DD172D0962E1C950BFE2F480887BEC7005785
+PRESENT  tools/tests/test_cli.py
+SHA256   4B4C11738413A34ACF37BF514792A8AC38D42E4EA2C4961CBA7FF36AE8D288FF
+PRESENT  tools/tests/test_build_component.py
+SHA256   59B5FF95589339B9986BB3413341BC6E7C23E3B860D9987E4BEA7A027AEB31FF
+PRESENT  tools/tests/test_build_image.py
+SHA256   4D6F3366106B8284F8C573570E1F2AC545FC83361B54C209424758C66201F01F
+PRESENT  tests/system/test_system_image_build.py
+SHA256   49B7E7A21D761FFC017063C267F095E69CCA80BF92C9E3A7DA93FE5DA80975B1
+
+==============================================================================
+Profile resolver candidates
+==============================================================================
+assembly\src\koa_assembly\profiles\__init__.py
+PRESENT  assembly\src\koa_assembly\profiles\__init__.py
+SHA256   69E73620BF8190690B9EFE1BAA2697E96B09BF6679FEF118344E805BE089E0AA
+assembly\src\koa_assembly\profiles\resolver.py
+PRESENT  assembly\src\koa_assembly\profiles\resolver.py
+SHA256   73A770A8286B7B1ED8E9D5ED16A874CB29E4D850EB41B97B7B49065A1BB9CFA4
+assembly\src\koa_assembly\renderers\__init__.py
+PRESENT  assembly\src\koa_assembly\renderers\__init__.py
+SHA256   03E8001A31438C668FB8E222CF76BBD7955057500D7FCD0620D0A52DF16FD8D0
+assembly\src\koa_assembly\model.py
+PRESENT  assembly\src\koa_assembly\model.py
+SHA256   99FD8CBA4F917869A49B7064A534439936B23E7F3240854597789A67245BE108
+assembly\tests\test_overlay_resolution.py
+PRESENT  assembly\tests\test_overlay_resolution.py
+SHA256   BC5DDC949B7EFA4E5FDEDE832A1CBC2BD4C00E19E30929DB354D0E3D1D01CBBA
+assembly\tests\test_profile_resolution.py
+PRESENT  assembly\tests\test_profile_resolution.py
+SHA256   A379FF9B29825775D569B6280E4DF96936AB84DF39E5B4A3FA7B391368E6F951
+components\resource-governor\build\lib\koa_resource_governor\adapters\profile_file_provider.py
+components\resource-governor\build\lib\koa_resource_governor\ports\profile_provider.py
+components\resource-governor\src\koa_resource_governor\adapters\profile_file_provider.py
+components\resource-governor\src\koa_resource_governor\ports\profile_provider.py
+docs\tools\check_profile_inheritance.py
+host\recovery\recovery-entry.py
+PRESENT  host\recovery\recovery-entry.py
+SHA256   105269F839B9A9D92F496219901C8B98B30F6A189471BC351E57E8E188054B40
+host\sessions\koa-session-launcher.py
+PRESENT  host\sessions\koa-session-launcher.py
+SHA256   A45328B093E13E3B6BBC9A43A4DBBAAF98D9B306F9FC039EADEC43410D3C75B1
+host\sessions\session_runtime.py
+PRESENT  host\sessions\session_runtime.py
+SHA256   CCFCADDB40B5DEAF6A2F1AD8F59B401D91AECA899CFCAE610E35DB6386CBE67E
+operations\src\koa_operations\restore\plan.py
+PRESENT  operations\src\koa_operations\restore\plan.py
+SHA256   3D8C055B4E8CA2267255BD90CAFD46AAB048795436E69012DFD47DD1CF56502B
+operations\tests\test_restore.py
+PRESENT  operations\tests\test_restore.py
+SHA256   9245AE08AFB4675D5BC76AB17F5E216B71FB836C08E557E1EE8B32F0CC119F72
+tests\conformance\test_profile_claims.py
+tests\contracts\test_profile_contracts.py
+tests\recovery\test_recovery_boot.py
+PRESENT  tests\recovery\test_recovery_boot.py
+SHA256   CCA67496B0DD2273DB8CE9BC66EB33AE9282B675E7FED2B6E097CB2AC473D917
+tests\reproducibility\test_profile_plan_determinism.py
+tests\security\test_seccomp_profiles.py
+tests\system\test_appliance_session.py
+PRESENT  tests\system\test_appliance_session.py
+SHA256   071F800A55CE36EBC8566A2B06D92AC74695E2C59C567CE20A6322B20F55533D
+tests\system\test_qemu_mediatheque.py
+PRESENT  tests\system\test_qemu_mediatheque.py
+SHA256   30907EAA68C5C92E528DD25266FE8816C67D5B6675FC06ECDD2B593FB4FEBDB5
+tests\system\test_qemu_navigation.py
+PRESENT  tests\system\test_qemu_navigation.py
+SHA256   597BAC1E1AE69D8C2B9ED353849578EA123958AB61FCF0671D647569271B8408
+tests\system\test_restore_coordination.py
+PRESENT  tests\system\test_restore_coordination.py
+SHA256   931D76710CB1D4F4F7266684E95E06206F3092EF98F6AC3AF45381DB67797643
+
+==============================================================================
+Lock files found anywhere
+==============================================================================
+Cargo.lock
+  SHA256=8A9CAB19CB3A50E997CCD928C17017DAE80E3FD92A0048D4C0E5BADB16093BCA
+uv.lock
+  SHA256=5734D4EC5E733D9913500A07768726071CB9557B97B2A46F7CB274A36B535209
+koa-pipeline-diag-20260827_160217\files\Cargo.lock
+  SHA256=8A9CAB19CB3A50E997CCD928C17017DAE80E3FD92A0048D4C0E5BADB16093BCA
+koa-pipeline-diag-20260827_160217\files\uv.lock
+  SHA256=5734D4EC5E733D9913500A07768726071CB9557B97B2A46F7CB274A36B535209
+
+==============================================================================
+koa-node-agent Rust manifests
+==============================================================================
+components\koa-node-agent\Cargo.toml
+PRESENT  components\koa-node-agent\Cargo.toml
+SHA256   7A2057752C4F7792EE9F949B5F21CC3D9FDD7726AFDC260A96ED46E5E16C3C98
+
+==============================================================================
+Generated pipeline artifacts
+==============================================================================
+ABSENT:  generated/assembly
+ABSENT:  generated/assembly/B-0092
+ABSENT:  generated/component-bundles
+ABSENT:  generated/effective-profile
+ABSENT:  generated/effective-profiles
+ABSENT:  generated/image
+ABSENT:  generated/images
+
+==============================================================================
+CLI wiring references
+==============================================================================
+
+--- tools/src/koa_tools/cli.py ---
+43: CommandSpec("assemble", "koa_tools.commands.assemble", "assemble a declared profile"),
+44: CommandSpec("build-image", "koa_tools.commands.build_image", "build a system image"),
+
+--- tools/src/koa_tools/commands/assemble.py ---
+10: ASSEMBLY_RENDERERS,
+36: parser.add_argument("--renderer", required=True, choices=ASSEMBLY_RENDERERS)
+45: help="Check that an existing render matches the deterministic plan.",
+62: "render",
+65: "--renderer",
+66: args.renderer,
+82: label=f"assemble {args.profile} as {args.renderer}",
+90: name="assemble",
+91: summary="Resolve a canonical profile and render one deterministic deployment plan.",
+
+--- tools/src/koa_tools/commands/build_image.py ---
+238: render_command: list[str] = [
+240: "render",
+243: "--renderer",
+252: render_command.extend(("--overlay", overlay))
+281: label="render deterministic image manifest",
+282: argv=tuple(render_command),
+408: name="build-image",
+
+--- assembly/src/koa_assembly/cli.py ---
+16: from .renderers import RenderError, write_rendered_files
+17: from .renderers.image import render_assembly_bundle
+28: prog="koa-assembly",
+76: "render-bundle",
+77: help="render one deterministic assembly bundle from an already resolved plan",
+107: if args.command == "render-bundle":
+108: return _render_bundle_command(args)
+120: return _render_outcomes(outcomes, args.format)
+122: return _render_outcomes(loader.scan(args.root), args.format)
+126: return _render_outcomes((outcome,), args.format)
+164: return _render_outcomes(outcomes, args.format)
+173: def _render_bundle_command(args: argparse.Namespace) -> int:
+180: raise _BundleBlockedError("render-bundle output must remain under generated/")
+199: files = render_assembly_bundle(
+215: mismatches = _render_mismatches(output_root, files)
+221: write_rendered_files(output_root, files)
+227: RenderError,
+236: f"rendered {len(files)} deterministic file(s) from {plan_ref} using {settings_ref}",
+309: def _render_mismatches(root: Path, files: Sequence[Any]) -> tuple[str, ...]:
+327: def _render_outcomes(outcomes: Iterable[LoadOutcome], output_format: str) -> int:
+357: print(bag.render_text())
+
+==============================================================================
+Installed koa CLI
+==============================================================================
+koa: NOT INSTALLED / NOT ON PATH
+
+==============================================================================
+Installed koa-assembly CLI
+==============================================================================
+koa-assembly: NOT INSTALLED / NOT ON PATH
+
+==============================================================================
+Python project scripts
+==============================================================================
+
+--- pyproject.toml ---
+> C:\mycode\kOA-Linux\koa-linux\pyproject.toml:13:[project.scripts]
+> C:\mycode\kOA-Linux\koa-linux\pyproject.toml:14:koa = "koa_tools.cli:main"
+  C:\mycode\kOA-Linux\koa-linux\pyproject.toml:15:
+  C:\mycode\kOA-Linux\koa-linux\pyproject.toml:16:[dependency-groups]
+  C:\mycode\kOA-Linux\koa-linux\pyproject.toml:17:runtime = []
+  C:\mycode\kOA-Linux\koa-linux\pyproject.toml:18:development = [
+  C:\mycode\kOA-Linux\koa-linux\pyproject.toml:19:  "pre-commit==4.3.0",
+  C:\mycode\kOA-Linux\koa-linux\pyproject.toml:20:]
+  C:\mycode\kOA-Linux\koa-linux\pyproject.toml:21:test = [
+  C:\mycode\kOA-Linux\koa-linux\pyproject.toml:22:  "jsonschema>=4.26,<5",
+  C:\mycode\kOA-Linux\koa-linux\pyproject.toml:23:  "koa-interfaces>=1.0,<2.0",
+  C:\mycode\kOA-Linux\koa-linux\pyproject.toml:24:  "koa-konnaxion-adapter==0.1.0",
+
+--- assembly\pyproject.toml ---
+> C:\mycode\kOA-Linux\koa-linux\assembly\pyproject.toml:22:[project.scripts]
+> C:\mycode\kOA-Linux\koa-linux\assembly\pyproject.toml:23:koa-assembly = "koa_assembly.cli:main"
+  C:\mycode\kOA-Linux\koa-linux\assembly\pyproject.toml:24:
+  C:\mycode\kOA-Linux\koa-linux\assembly\pyproject.toml:25:[tool.hatch.build.targets.wheel]
+  C:\mycode\kOA-Linux\koa-linux\assembly\pyproject.toml:26:packages = ["src/koa_assembly"]
+  C:\mycode\kOA-Linux\koa-linux\assembly\pyproject.toml:27:
+  C:\mycode\kOA-Linux\koa-linux\assembly\pyproject.toml:28:[tool.pytest.ini_options]
+  C:\mycode\kOA-Linux\koa-linux\assembly\pyproject.toml:29:addopts = "-ra --strict-config --strict-markers"
+  C:\mycode\kOA-Linux\koa-linux\assembly\pyproject.toml:30:testpaths = ["tests"]
+  C:\mycode\kOA-Linux\koa-linux\assembly\pyproject.toml:31:pythonpath = ["src"]
+  C:\mycode\kOA-Linux\koa-linux\assembly\pyproject.toml:32:
+  C:\mycode\kOA-Linux\koa-linux\assembly\pyproject.toml:33:[tool.ruff]
+
+--- components\audit-broker\pyproject.toml ---
+> C:\mycode\kOA-Linux\koa-linux\components\audit-broker\pyproject.toml:15:[project.scripts]
+  C:\mycode\kOA-Linux\koa-linux\components\audit-broker\pyproject.toml:16:koa-audit-broker = "koa_audit_broker.__main__:main"
+  C:\mycode\kOA-Linux\koa-linux\components\audit-broker\pyproject.toml:17:
+  C:\mycode\kOA-Linux\koa-linux\components\audit-broker\pyproject.toml:18:[dependency-groups]
+  C:\mycode\kOA-Linux\koa-linux\components\audit-broker\pyproject.toml:19:dev = [
+  C:\mycode\kOA-Linux\koa-linux\components\audit-broker\pyproject.toml:20:  "pytest>=9,<10",
+  C:\mycode\kOA-Linux\koa-linux\components\audit-broker\pyproject.toml:21:  "ruff>=0.12,<1",
+  C:\mycode\kOA-Linux\koa-linux\components\audit-broker\pyproject.toml:22:]
+  C:\mycode\kOA-Linux\koa-linux\components\audit-broker\pyproject.toml:23:
+  C:\mycode\kOA-Linux\koa-linux\components\audit-broker\pyproject.toml:24:[tool.setuptools.packages.find]
+  C:\mycode\kOA-Linux\koa-linux\components\audit-broker\pyproject.toml:25:where = ["src"]
+
+--- components\governance-policy-runtime\pyproject.toml ---
+> C:\mycode\kOA-Linux\koa-linux\components\governance-policy-runtime\pyproject.toml:19:[project.scripts]
+  C:\mycode\kOA-Linux\koa-linux\components\governance-policy-runtime\pyproject.toml:20:koa-governance-policy-runtime = "koa_governance_policy_runtime.__main__:main"
+  C:\mycode\kOA-Linux\koa-linux\components\governance-policy-runtime\pyproject.toml:21:
+  C:\mycode\kOA-Linux\koa-linux\components\governance-policy-runtime\pyproject.toml:22:[tool.setuptools]
+  C:\mycode\kOA-Linux\koa-linux\components\governance-policy-runtime\pyproject.toml:23:package-dir = { "" = "src" }
+  C:\mycode\kOA-Linux\koa-linux\components\governance-policy-runtime\pyproject.toml:24:
+  C:\mycode\kOA-Linux\koa-linux\components\governance-policy-runtime\pyproject.toml:25:[tool.setuptools.packages.find]
+  C:\mycode\kOA-Linux\koa-linux\components\governance-policy-runtime\pyproject.toml:26:where = ["src"]
+  C:\mycode\kOA-Linux\koa-linux\components\governance-policy-runtime\pyproject.toml:27:include = ["koa_governance_policy_runtime*"]
+  C:\mycode\kOA-Linux\koa-linux\components\governance-policy-runtime\pyproject.toml:28:
+  C:\mycode\kOA-Linux\koa-linux\components\governance-policy-runtime\pyproject.toml:29:[tool.pytest.ini_options]
+
+--- components\identity-and-trust\pyproject.toml ---
+> C:\mycode\kOA-Linux\koa-linux\components\identity-and-trust\pyproject.toml:15:[project.scripts]
+  C:\mycode\kOA-Linux\koa-linux\components\identity-and-trust\pyproject.toml:16:koa-identity-and-trust = "koa_identity_and_trust.__main__:main"
+  C:\mycode\kOA-Linux\koa-linux\components\identity-and-trust\pyproject.toml:17:
+  C:\mycode\kOA-Linux\koa-linux\components\identity-and-trust\pyproject.toml:18:[tool.setuptools.packages.find]
+  C:\mycode\kOA-Linux\koa-linux\components\identity-and-trust\pyproject.toml:19:where = ["src"]
+  C:\mycode\kOA-Linux\koa-linux\components\identity-and-trust\pyproject.toml:20:include = ["koa_identity_and_trust*"]
+  C:\mycode\kOA-Linux\koa-linux\components\identity-and-trust\pyproject.toml:21:
+  C:\mycode\kOA-Linux\koa-linux\components\identity-and-trust\pyproject.toml:22:[tool.pytest.ini_options]
+  C:\mycode\kOA-Linux\koa-linux\components\identity-and-trust\pyproject.toml:23:addopts = "--strict-config --strict-markers"
+  C:\mycode\kOA-Linux\koa-linux\components\identity-and-trust\pyproject.toml:24:testpaths = ["tests"]
+  C:\mycode\kOA-Linux\koa-linux\components\identity-and-trust\pyproject.toml:25:
+
+--- components\koa-mediatheque\pyproject.toml ---
+> C:\mycode\kOA-Linux\koa-linux\components\koa-mediatheque\pyproject.toml:15:[project.scripts]
+  C:\mycode\kOA-Linux\koa-linux\components\koa-mediatheque\pyproject.toml:16:koa-mediatheque = "koa_mediatheque.__main__:main"
+  C:\mycode\kOA-Linux\koa-linux\components\koa-mediatheque\pyproject.toml:17:
+  C:\mycode\kOA-Linux\koa-linux\components\koa-mediatheque\pyproject.toml:18:[tool.setuptools.packages.find]
+  C:\mycode\kOA-Linux\koa-linux\components\koa-mediatheque\pyproject.toml:19:where = ["src"]
+  C:\mycode\kOA-Linux\koa-linux\components\koa-mediatheque\pyproject.toml:20:include = ["koa_mediatheque*"]
+  C:\mycode\kOA-Linux\koa-linux\components\koa-mediatheque\pyproject.toml:21:
+  C:\mycode\kOA-Linux\koa-linux\components\koa-mediatheque\pyproject.toml:22:[tool.pytest.ini_options]
+  C:\mycode\kOA-Linux\koa-linux\components\koa-mediatheque\pyproject.toml:23:addopts = "--strict-config --strict-markers"
+  C:\mycode\kOA-Linux\koa-linux\components\koa-mediatheque\pyproject.toml:24:testpaths = ["tests"]
+  C:\mycode\kOA-Linux\koa-linux\components\koa-mediatheque\pyproject.toml:25:
+
+--- components\kristal-runtime\pyproject.toml ---
+> C:\mycode\kOA-Linux\koa-linux\components\kristal-runtime\pyproject.toml:19:[project.scripts]
+  C:\mycode\kOA-Linux\koa-linux\components\kristal-runtime\pyproject.toml:20:koa-kristal-runtime = "koa_kristal_runtime.__main__:main"
+  C:\mycode\kOA-Linux\koa-linux\components\kristal-runtime\pyproject.toml:21:
+  C:\mycode\kOA-Linux\koa-linux\components\kristal-runtime\pyproject.toml:22:[tool.setuptools]
+  C:\mycode\kOA-Linux\koa-linux\components\kristal-runtime\pyproject.toml:23:package-dir = { "" = "src" }
+  C:\mycode\kOA-Linux\koa-linux\components\kristal-runtime\pyproject.toml:24:
+  C:\mycode\kOA-Linux\koa-linux\components\kristal-runtime\pyproject.toml:25:[tool.setuptools.packages.find]
+  C:\mycode\kOA-Linux\koa-linux\components\kristal-runtime\pyproject.toml:26:where = ["src"]
+  C:\mycode\kOA-Linux\koa-linux\components\kristal-runtime\pyproject.toml:27:include = ["koa_kristal_runtime*"]
+  C:\mycode\kOA-Linux\koa-linux\components\kristal-runtime\pyproject.toml:28:
+  C:\mycode\kOA-Linux\koa-linux\components\kristal-runtime\pyproject.toml:29:[tool.pytest.ini_options]
+
+--- components\publication-gateway\pyproject.toml ---
+> C:\mycode\kOA-Linux\koa-linux\components\publication-gateway\pyproject.toml:15:[project.scripts]
+  C:\mycode\kOA-Linux\koa-linux\components\publication-gateway\pyproject.toml:16:koa-publication-gateway = "koa_publication_gateway.__main__:main"
+  C:\mycode\kOA-Linux\koa-linux\components\publication-gateway\pyproject.toml:17:
+  C:\mycode\kOA-Linux\koa-linux\components\publication-gateway\pyproject.toml:18:[dependency-groups]
+  C:\mycode\kOA-Linux\koa-linux\components\publication-gateway\pyproject.toml:19:dev = [
+  C:\mycode\kOA-Linux\koa-linux\components\publication-gateway\pyproject.toml:20:  "jsonschema>=4.23,<5",
+  C:\mycode\kOA-Linux\koa-linux\components\publication-gateway\pyproject.toml:21:  "pytest>=9,<10",
+  C:\mycode\kOA-Linux\koa-linux\components\publication-gateway\pyproject.toml:22:  "ruff>=0.12,<1",
+  C:\mycode\kOA-Linux\koa-linux\components\publication-gateway\pyproject.toml:23:]
+  C:\mycode\kOA-Linux\koa-linux\components\publication-gateway\pyproject.toml:24:
+  C:\mycode\kOA-Linux\koa-linux\components\publication-gateway\pyproject.toml:25:[tool.setuptools.packages.find]
+
+--- components\resource-governor\pyproject.toml ---
+> C:\mycode\kOA-Linux\koa-linux\components\resource-governor\pyproject.toml:15:[project.scripts]
+  C:\mycode\kOA-Linux\koa-linux\components\resource-governor\pyproject.toml:16:koa-resource-governor = "koa_resource_governor.__main__:main"
+  C:\mycode\kOA-Linux\koa-linux\components\resource-governor\pyproject.toml:17:
+  C:\mycode\kOA-Linux\koa-linux\components\resource-governor\pyproject.toml:18:[tool.setuptools.packages.find]
+  C:\mycode\kOA-Linux\koa-linux\components\resource-governor\pyproject.toml:19:where = ["src"]
+  C:\mycode\kOA-Linux\koa-linux\components\resource-governor\pyproject.toml:20:include = ["koa_resource_governor*"]
+  C:\mycode\kOA-Linux\koa-linux\components\resource-governor\pyproject.toml:21:
+  C:\mycode\kOA-Linux\koa-linux\components\resource-governor\pyproject.toml:22:[tool.pytest.ini_options]
+  C:\mycode\kOA-Linux\koa-linux\components\resource-governor\pyproject.toml:23:addopts = "--strict-config --strict-markers"
+  C:\mycode\kOA-Linux\koa-linux\components\resource-governor\pyproject.toml:24:testpaths = ["tests"]
+  C:\mycode\kOA-Linux\koa-linux\components\resource-governor\pyproject.toml:25:
+
+--- integrations\ariane\adapter\pyproject.toml ---
+
+--- integrations\koa-spaces\adapter\pyproject.toml ---
+
+--- integrations\konnaxion\adapter\pyproject.toml ---
+
+--- integrations\orgo\adapter\pyproject.toml ---
+
+--- integrations\semantik-architect\adapter\pyproject.toml ---
+
+--- integrations\sentient\adapter\pyproject.toml ---
+
+--- integrations\uckk\adapter\pyproject.toml ---
+
+--- interfaces\python\pyproject.toml ---
+
+--- koa-pipeline-diag-20260827_160217\files\pyproject.toml ---
+> C:\mycode\kOA-Linux\koa-linux\koa-pipeline-diag-20260827_160217\files\pyproject.toml:13:[project.scripts]
+> C:\mycode\kOA-Linux\koa-linux\koa-pipeline-diag-20260827_160217\files\pyproject.toml:14:koa = "koa_tools.cli:main"
+  C:\mycode\kOA-Linux\koa-linux\koa-pipeline-diag-20260827_160217\files\pyproject.toml:15:
+  C:\mycode\kOA-Linux\koa-linux\koa-pipeline-diag-20260827_160217\files\pyproject.toml:16:[dependency-groups]
+  C:\mycode\kOA-Linux\koa-linux\koa-pipeline-diag-20260827_160217\files\pyproject.toml:17:runtime = []
+  C:\mycode\kOA-Linux\koa-linux\koa-pipeline-diag-20260827_160217\files\pyproject.toml:18:development = [
+  C:\mycode\kOA-Linux\koa-linux\koa-pipeline-diag-20260827_160217\files\pyproject.toml:19:  "pre-commit==4.3.0",
+  C:\mycode\kOA-Linux\koa-linux\koa-pipeline-diag-20260827_160217\files\pyproject.toml:20:]
+  C:\mycode\kOA-Linux\koa-linux\koa-pipeline-diag-20260827_160217\files\pyproject.toml:21:test = [
+  C:\mycode\kOA-Linux\koa-linux\koa-pipeline-diag-20260827_160217\files\pyproject.toml:22:  "jsonschema>=4.26,<5",
+  C:\mycode\kOA-Linux\koa-linux\koa-pipeline-diag-20260827_160217\files\pyproject.toml:23:  "koa-interfaces>=1.0,<2.0",
+  C:\mycode\kOA-Linux\koa-linux\koa-pipeline-diag-20260827_160217\files\pyproject.toml:24:  "koa-konnaxion-adapter==0.1.0",
+
+--- operations\pyproject.toml ---
+> C:\mycode\kOA-Linux\koa-linux\operations\pyproject.toml:13:[project.scripts]
+  C:\mycode\kOA-Linux\koa-linux\operations\pyproject.toml:14:koa-operations = "koa_operations.cli:main"
+  C:\mycode\kOA-Linux\koa-linux\operations\pyproject.toml:15:
+  C:\mycode\kOA-Linux\koa-linux\operations\pyproject.toml:16:[tool.setuptools]
+  C:\mycode\kOA-Linux\koa-linux\operations\pyproject.toml:17:package-dir = {"" = "src"}
+  C:\mycode\kOA-Linux\koa-linux\operations\pyproject.toml:18:
+  C:\mycode\kOA-Linux\koa-linux\operations\pyproject.toml:19:[tool.setuptools.packages.find]
+  C:\mycode\kOA-Linux\koa-linux\operations\pyproject.toml:20:where = ["src"]
+  C:\mycode\kOA-Linux\koa-linux\operations\pyproject.toml:21:include = ["koa_operations*"]
+  C:\mycode\kOA-Linux\koa-linux\operations\pyproject.toml:22:
+  C:\mycode\kOA-Linux\koa-linux\operations\pyproject.toml:23:[tool.pytest.ini_options]
+
+==============================================================================
+Summary probes
+==============================================================================
+uv.lock                                                 PRESENT
+Cargo.lock                                              PRESENT
+generated/assembly/B-0092/bundle.json                   ABSENT
+generated/component-bundles/audit-broker/bundle.json    ABSENT
+generated/component-bundles/governance-policy-runtime/bundle.json ABSENT
+generated/component-bundles/identity-and-trust/bundle.json ABSENT
+generated/component-bundles/koa-mediatheque/bundle.json ABSENT
+generated/component-bundles/koa-node-agent/bundle.json  ABSENT
+generated/component-bundles/kristal-runtime/bundle.json ABSENT
+generated/component-bundles/publication-gateway/bundle.json ABSENT
+generated/component-bundles/resource-governor/bundle.json ABSENT
+
+==============================================================================
+Diagnostic complete
+==============================================================================
+Output directory: C:\mycode\kOA-Linux\koa-linux\koa-pipeline-diag-20260827_160217
+ZIP: C:\mycode\kOA-Linux\koa-linux\koa-pipeline-diag-20260827_160217.zip

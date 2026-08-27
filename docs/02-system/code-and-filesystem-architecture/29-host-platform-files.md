@@ -78,6 +78,10 @@ host/image/filesystem-layout.yaml
 host/image/partition-layout.yaml
 host/image/image-manifest.yaml
 host/image/build-rootfs.py
+host/image/materialize-rootfs.py
+host/image/build-boot-artifact.py
+host/image/build-recovery-artifact.py
+host/image/build-disk-image.py
 host/image/seal-image.py
 host/image/verify-image.py
 host/systemd/targets/koa-node.target

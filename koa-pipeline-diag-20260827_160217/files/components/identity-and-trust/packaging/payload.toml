@@ -1,0 +1,31 @@
+manifest_version = "1.0.0"
+component_id = "identity_and_trust"
+component_contract = "docs/contracts/components/identity-and-trust.component.json"
+component_contract_version = "1.0.0"
+artifact_class = "component_package"
+
+[entrypoint]
+module = "koa_identity_and_trust"
+transport = "http_over_unix"
+socket_path = "/run/koa/sockets/identity-and-trust.sock"
+
+[paths]
+configuration = "/etc/koa/components/identity-and-trust/config.toml"
+runtime_directory = "/run/koa/identity-and-trust"
+persistent_state = "/var/lib/koa/identity-and-trust"
+
+[[payload]]
+source = "src/koa_identity_and_trust"
+destination = "/usr/lib/koa/components/identity-and-trust/koa_identity_and_trust"
+class = "immutable_payload"
+
+[[payload]]
+source = "migrations"
+destination = "/usr/share/koa/components/identity-and-trust/migrations"
+class = "immutable_payload"
+
+[boundaries]
+direct_cross_component_database_writes = false
+private_key_material_in_payload = false
+runtime_secrets_in_payload = false
+generated_content_is_authority = false
