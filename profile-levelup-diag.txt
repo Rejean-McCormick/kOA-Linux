@@ -1,0 +1,2276 @@
+
+============================================================
+=== KOA DIAGNOSE ===
+============================================================
+{
+  "checks": [
+    {
+      "check_id": "file-architecture",
+      "counts": {
+        "errors": 179,
+        "findings": 179,
+        "warnings": 0
+      },
+      "findings": [
+        {
+          "code": "FILE_ROOT_ENTRY",
+          "message": "unknown file at repository root",
+          "path": "GitSink.bat",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "GitSink.bat",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: _delivery",
+          "path": "_delivery/MANIFEST.json",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "_delivery/MANIFEST.json",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: _delivery",
+          "path": "_delivery/VALIDATION.md",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "_delivery/VALIDATION.md",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: _delivery",
+          "path": "_delivery/logs/actual_proc.log",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "_delivery/logs/actual_proc.log",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: _delivery",
+          "path": "_delivery/logs/artifact_contracts.log",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "_delivery/logs/artifact_contracts.log",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: _delivery",
+          "path": "_delivery/logs/boundaries.log",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "_delivery/logs/boundaries.log",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: _delivery",
+          "path": "_delivery/logs/compileall.log",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "_delivery/logs/compileall.log",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: _delivery",
+          "path": "_delivery/logs/diff_check.log",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "_delivery/logs/diff_check.log",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: _delivery",
+          "path": "_delivery/logs/generated_content.log",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "_delivery/logs/generated_content.log",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: _delivery",
+          "path": "_delivery/logs/greenfield.log",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "_delivery/logs/greenfield.log",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: _delivery",
+          "path": "_delivery/logs/interfile_locks.log",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "_delivery/logs/interfile_locks.log",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: _delivery",
+          "path": "_delivery/logs/ownership.log",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "_delivery/logs/ownership.log",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: _delivery",
+          "path": "_delivery/logs/pytest.log",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "_delivery/logs/pytest.log",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: _delivery",
+          "path": "_delivery/logs/security.log",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "_delivery/logs/security.log",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: _delivery",
+          "path": "_delivery/logs/unresolved.log",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "_delivery/logs/unresolved.log",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: _delivery",
+          "path": "_delivery/logs/validate_docs.log",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "_delivery/logs/validate_docs.log",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: _delivery",
+          "path": "_delivery/test_b0032.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "_delivery/test_b0032.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/__init__.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/__main__.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/adapters/__init__.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/adapters/audit_client.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/adapters/node_agent_client.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/adapters/proc_usage_probe.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/adapters/profile_file_provider.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/adapters/system_clock.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/adapters/systemd_usage_probe.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/api/__init__.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/api/models.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/api/routes.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/application/__init__.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/application/admit_workload.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/application/apply_envelope.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/application/degrade_workload.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/application/reconcile_usage.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/application/restore_workload.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/bootstrap.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/config.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/domain/__init__.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/domain/admission_decision.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/domain/degradation_state.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/domain/resource_claim.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/domain/resource_envelope.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/health.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/ports/__init__.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/ports/audit_sink.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/ports/clock.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/ports/node_agent.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/ports/profile_provider.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/ports/usage_probe.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/build/lib/koa_resource_governor/receipts.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/src/koa_resource_governor.egg-info/PKG-INFO",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/src/koa_resource_governor.egg-info/SOURCES.txt",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/src/koa_resource_governor.egg-info/dependency_links.txt",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/src/koa_resource_governor.egg-info/entry_points.txt",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/src/koa_resource_governor.egg-info/requires.txt",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "components/resource-governor/src/koa_resource_governor.egg-info/top_level.txt",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_ROOT_ENTRY",
+          "message": "unknown file at repository root",
+          "path": "koa-pipeline-diag-20260827_160217.zip",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217.zip",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/REPORT.txt",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/REPORT.txt",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/Cargo.lock",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/Cargo.lock",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/cli.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/cli.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/model.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/model.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/profiles/__init__.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/profiles/__init__.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/profiles/resolver.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/profiles/resolver.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/renderers/__init__.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/renderers/__init__.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/renderers/image.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/renderers/image.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/assembly/tests/test_overlay_resolution.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/assembly/tests/test_overlay_resolution.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/assembly/tests/test_profile_resolution.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/assembly/tests/test_profile_resolution.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/components/audit-broker/packaging/payload.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/components/audit-broker/packaging/payload.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/components/governance-policy-runtime/packaging/payload.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/components/governance-policy-runtime/packaging/payload.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/components/identity-and-trust/packaging/payload.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/components/identity-and-trust/packaging/payload.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/components/koa-mediatheque/packaging/payload.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/components/koa-mediatheque/packaging/payload.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/components/koa-node-agent/Cargo.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/components/koa-node-agent/Cargo.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/components/koa-node-agent/packaging/payload.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/components/koa-node-agent/packaging/payload.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/components/kristal-runtime/packaging/payload.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/components/kristal-runtime/packaging/payload.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/components/publication-gateway/packaging/payload.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/components/publication-gateway/packaging/payload.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/components/resource-governor/packaging/payload.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/components/resource-governor/packaging/payload.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/docs/contracts/profiles/sovereign-linux-node.profile.json",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/docs/contracts/profiles/sovereign-linux-node.profile.json",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/host/image/build-disk-image.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/host/image/build-disk-image.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/host/recovery/recovery-entry.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/host/recovery/recovery-entry.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/host/sessions/koa-session-launcher.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/host/sessions/koa-session-launcher.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/host/sessions/session_runtime.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/host/sessions/session_runtime.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/operations/src/koa_operations/restore/plan.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/operations/src/koa_operations/restore/plan.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/operations/tests/test_restore.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/operations/tests/test_restore.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/packaging/components/audit-broker.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/packaging/components/audit-broker.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/packaging/components/governance-policy-runtime.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/packaging/components/governance-policy-runtime.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/packaging/components/identity-and-trust.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/packaging/components/identity-and-trust.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/packaging/components/koa-mediatheque.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/packaging/components/koa-mediatheque.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/packaging/components/koa-node-agent.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/packaging/components/koa-node-agent.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/packaging/components/kristal-runtime.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/packaging/components/kristal-runtime.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/packaging/components/publication-gateway.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/packaging/components/publication-gateway.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/packaging/components/resource-governor.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/packaging/components/resource-governor.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/packaging/system/image.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/packaging/system/image.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/packaging/system/package-sources.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/packaging/system/package-sources.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/pyproject.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/pyproject.toml",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/tests/recovery/test_recovery_boot.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/tests/recovery/test_recovery_boot.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/tests/system/test_appliance_session.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/tests/system/test_appliance_session.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/tests/system/test_qemu_mediatheque.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/tests/system/test_qemu_mediatheque.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/tests/system/test_qemu_navigation.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/tests/system/test_qemu_navigation.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/tests/system/test_restore_coordination.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/tests/system/test_restore_coordination.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/tests/system/test_system_image_build.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/tests/system/test_system_image_build.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/tools/src/koa_tools/cli.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/tools/src/koa_tools/cli.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/tools/src/koa_tools/commands/assemble.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/tools/src/koa_tools/commands/assemble.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/tools/src/koa_tools/commands/build_component.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/tools/src/koa_tools/commands/build_component.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/tools/src/koa_tools/commands/build_image.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/tools/src/koa_tools/commands/build_image.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/tools/tests/test_build_component.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/tools/tests/test_build_component.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/tools/tests/test_build_image.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/tools/tests/test_build_image.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/tools/tests/test_cli.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/tools/tests/test_cli.py",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_TOP_LEVEL_ROOT",
+          "message": "unknown top-level root: koa-pipeline-diag-20260827_160217",
+          "path": "koa-pipeline-diag-20260827_160217/files/uv.lock",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "koa-pipeline-diag-20260827_160217/files/uv.lock",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_ROOT_ENTRY",
+          "message": "unknown file at repository root",
+          "path": "profile-levelup-diag.txt",
+          "severity": "error"
+        },
+        {
+          "code": "FILE_UNKNOWN",
+          "message": "committed path is not present in the frozen architecture lock",
+          "path": "profile-levelup-diag.txt",
+          "severity": "error"
+        }
+      ],
+      "metadata": {
+        "actual_paths": 1183,
+        "expected_paths": 1074,
+        "related_checks": false
+      },
+      "status": "fail"
+    },
+    {
+      "check_id": "path-ownership",
+      "counts": {
+        "errors": 70,
+        "findings": 70,
+        "warnings": 0
+      },
+      "findings": [
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "GitSink.bat",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "_delivery/MANIFEST.json",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "_delivery/VALIDATION.md",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "_delivery/logs/actual_proc.log",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "_delivery/logs/artifact_contracts.log",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "_delivery/logs/boundaries.log",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "_delivery/logs/compileall.log",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "_delivery/logs/diff_check.log",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "_delivery/logs/generated_content.log",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "_delivery/logs/greenfield.log",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "_delivery/logs/interfile_locks.log",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "_delivery/logs/ownership.log",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "_delivery/logs/pytest.log",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "_delivery/logs/security.log",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "_delivery/logs/unresolved.log",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "_delivery/logs/validate_docs.log",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "_delivery/test_b0032.py",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217.zip",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/REPORT.txt",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/Cargo.lock",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/cli.py",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/model.py",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/profiles/__init__.py",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/profiles/resolver.py",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/renderers/__init__.py",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/renderers/image.py",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/assembly/tests/test_overlay_resolution.py",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/assembly/tests/test_profile_resolution.py",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/components/audit-broker/packaging/payload.toml",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/components/governance-policy-runtime/packaging/payload.toml",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/components/identity-and-trust/packaging/payload.toml",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/components/koa-mediatheque/packaging/payload.toml",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/components/koa-node-agent/Cargo.toml",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/components/koa-node-agent/packaging/payload.toml",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/components/kristal-runtime/packaging/payload.toml",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/components/publication-gateway/packaging/payload.toml",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/components/resource-governor/packaging/payload.toml",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/docs/contracts/profiles/sovereign-linux-node.profile.json",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/host/image/build-disk-image.py",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/host/recovery/recovery-entry.py",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/host/sessions/koa-session-launcher.py",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/host/sessions/session_runtime.py",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/operations/src/koa_operations/restore/plan.py",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/operations/tests/test_restore.py",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/packaging/components/audit-broker.toml",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/packaging/components/governance-policy-runtime.toml",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/packaging/components/identity-and-trust.toml",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/packaging/components/koa-mediatheque.toml",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/packaging/components/koa-node-agent.toml",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/packaging/components/kristal-runtime.toml",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/packaging/components/publication-gateway.toml",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/packaging/components/resource-governor.toml",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/packaging/system/image.toml",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/packaging/system/package-sources.toml",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/pyproject.toml",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/tests/recovery/test_recovery_boot.py",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/tests/system/test_appliance_session.py",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/tests/system/test_qemu_mediatheque.py",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/tests/system/test_qemu_navigation.py",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/tests/system/test_restore_coordination.py",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/tests/system/test_system_image_build.py",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/tools/src/koa_tools/cli.py",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/tools/src/koa_tools/commands/assemble.py",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/tools/src/koa_tools/commands/build_component.py",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/tools/src/koa_tools/commands/build_image.py",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/tools/tests/test_build_component.py",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/tools/tests/test_build_image.py",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/tools/tests/test_cli.py",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "koa-pipeline-diag-20260827_160217/files/uv.lock",
+          "severity": "error"
+        },
+        {
+          "code": "PATH_OWNER_MISSING",
+          "hint": "add one explicit ownership rule in .koa/path-ownership.json",
+          "message": "path has no declared canonical owner",
+          "path": "profile-levelup-diag.txt",
+          "severity": "error"
+        }
+      ],
+      "metadata": {
+        "checked_paths": 1640,
+        "owners": 35,
+        "rules": 60
+      },
+      "status": "fail"
+    },
+    {
+      "check_id": "dependencies",
+      "counts": {
+        "errors": 1,
+        "findings": 1,
+        "warnings": 0
+      },
+      "findings": [
+        {
+          "code": "DEPENDENCY_LOCAL_PROJECT_DUPLICATE",
+          "message": "local project name duplicates koa-pipeline-diag-20260827_160217/files/pyproject.toml",
+          "path": "pyproject.toml",
+          "severity": "error"
+        }
+      ],
+      "metadata": {
+        "checked_edges": 176,
+        "local_python_projects": 18,
+        "local_python_requirements": 14,
+        "python_packages": 18,
+        "rules": 0
+      },
+      "status": "fail"
+    },
+    {
+      "check_id": "generated-content",
+      "counts": {
+        "errors": 0,
+        "findings": 0,
+        "warnings": 0
+      },
+      "findings": [],
+      "metadata": {
+        "checked_paths": 1640,
+        "declared_matches": 40,
+        "rules": 2
+      },
+      "status": "pass"
+    }
+  ],
+  "command": "diagnose",
+  "readiness": "blocked",
+  "registries": {
+    ".koa/dependency-rules.json": true,
+    ".koa/file-architecture.lock.json": true,
+    ".koa/generated-paths.json": true,
+    ".koa/path-ownership.json": true,
+    ".koa/repository.json": true
+  },
+  "root": "C:/mycode/kOA-Linux/koa-linux"
+}
+EXIT=1
+
+============================================================
+=== KOA VALIDATE ===
+============================================================
+file-architecture: fail
+  ERROR FILE_ROOT_ENTRY: GitSink.bat: unknown file at repository root
+  ERROR FILE_UNKNOWN: GitSink.bat: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: _delivery/MANIFEST.json: unknown top-level root: _delivery
+  ERROR FILE_UNKNOWN: _delivery/MANIFEST.json: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: _delivery/VALIDATION.md: unknown top-level root: _delivery
+  ERROR FILE_UNKNOWN: _delivery/VALIDATION.md: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: _delivery/logs/actual_proc.log: unknown top-level root: _delivery
+  ERROR FILE_UNKNOWN: _delivery/logs/actual_proc.log: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: _delivery/logs/artifact_contracts.log: unknown top-level root: _delivery
+  ERROR FILE_UNKNOWN: _delivery/logs/artifact_contracts.log: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: _delivery/logs/boundaries.log: unknown top-level root: _delivery
+  ERROR FILE_UNKNOWN: _delivery/logs/boundaries.log: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: _delivery/logs/compileall.log: unknown top-level root: _delivery
+  ERROR FILE_UNKNOWN: _delivery/logs/compileall.log: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: _delivery/logs/diff_check.log: unknown top-level root: _delivery
+  ERROR FILE_UNKNOWN: _delivery/logs/diff_check.log: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: _delivery/logs/generated_content.log: unknown top-level root: _delivery
+  ERROR FILE_UNKNOWN: _delivery/logs/generated_content.log: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: _delivery/logs/greenfield.log: unknown top-level root: _delivery
+  ERROR FILE_UNKNOWN: _delivery/logs/greenfield.log: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: _delivery/logs/interfile_locks.log: unknown top-level root: _delivery
+  ERROR FILE_UNKNOWN: _delivery/logs/interfile_locks.log: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: _delivery/logs/ownership.log: unknown top-level root: _delivery
+  ERROR FILE_UNKNOWN: _delivery/logs/ownership.log: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: _delivery/logs/pytest.log: unknown top-level root: _delivery
+  ERROR FILE_UNKNOWN: _delivery/logs/pytest.log: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: _delivery/logs/security.log: unknown top-level root: _delivery
+  ERROR FILE_UNKNOWN: _delivery/logs/security.log: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: _delivery/logs/unresolved.log: unknown top-level root: _delivery
+  ERROR FILE_UNKNOWN: _delivery/logs/unresolved.log: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: _delivery/logs/validate_docs.log: unknown top-level root: _delivery
+  ERROR FILE_UNKNOWN: _delivery/logs/validate_docs.log: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: _delivery/test_b0032.py: unknown top-level root: _delivery
+  ERROR FILE_UNKNOWN: _delivery/test_b0032.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/__init__.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/__main__.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/adapters/__init__.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/adapters/audit_client.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/adapters/node_agent_client.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/adapters/proc_usage_probe.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/adapters/profile_file_provider.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/adapters/system_clock.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/adapters/systemd_usage_probe.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/api/__init__.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/api/models.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/api/routes.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/application/__init__.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/application/admit_workload.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/application/apply_envelope.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/application/degrade_workload.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/application/reconcile_usage.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/application/restore_workload.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/bootstrap.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/config.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/domain/__init__.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/domain/admission_decision.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/domain/degradation_state.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/domain/resource_claim.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/domain/resource_envelope.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/health.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/ports/__init__.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/ports/audit_sink.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/ports/clock.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/ports/node_agent.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/ports/profile_provider.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/ports/usage_probe.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/build/lib/koa_resource_governor/receipts.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/src/koa_resource_governor.egg-info/PKG-INFO: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/src/koa_resource_governor.egg-info/SOURCES.txt: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/src/koa_resource_governor.egg-info/dependency_links.txt: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/src/koa_resource_governor.egg-info/entry_points.txt: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/src/koa_resource_governor.egg-info/requires.txt: committed path is not present in the frozen architecture lock
+  ERROR FILE_UNKNOWN: components/resource-governor/src/koa_resource_governor.egg-info/top_level.txt: committed path is not present in the frozen architecture lock
+  ERROR FILE_ROOT_ENTRY: koa-pipeline-diag-20260827_160217.zip: unknown file at repository root
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217.zip: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/REPORT.txt: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/REPORT.txt: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/Cargo.lock: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/Cargo.lock: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/cli.py: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/cli.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/model.py: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/model.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/profiles/__init__.py: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/profiles/__init__.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/profiles/resolver.py: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/profiles/resolver.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/renderers/__init__.py: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/renderers/__init__.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/renderers/image.py: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/renderers/image.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/assembly/tests/test_overlay_resolution.py: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/assembly/tests/test_overlay_resolution.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/assembly/tests/test_profile_resolution.py: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/assembly/tests/test_profile_resolution.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/components/audit-broker/packaging/payload.toml: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/components/audit-broker/packaging/payload.toml: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/components/governance-policy-runtime/packaging/payload.toml: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/components/governance-policy-runtime/packaging/payload.toml: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/components/identity-and-trust/packaging/payload.toml: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/components/identity-and-trust/packaging/payload.toml: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/components/koa-mediatheque/packaging/payload.toml: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/components/koa-mediatheque/packaging/payload.toml: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/components/koa-node-agent/Cargo.toml: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/components/koa-node-agent/Cargo.toml: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/components/koa-node-agent/packaging/payload.toml: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/components/koa-node-agent/packaging/payload.toml: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/components/kristal-runtime/packaging/payload.toml: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/components/kristal-runtime/packaging/payload.toml: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/components/publication-gateway/packaging/payload.toml: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/components/publication-gateway/packaging/payload.toml: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/components/resource-governor/packaging/payload.toml: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/components/resource-governor/packaging/payload.toml: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/docs/contracts/profiles/sovereign-linux-node.profile.json: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/docs/contracts/profiles/sovereign-linux-node.profile.json: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/host/image/build-disk-image.py: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/host/image/build-disk-image.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/host/recovery/recovery-entry.py: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/host/recovery/recovery-entry.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/host/sessions/koa-session-launcher.py: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/host/sessions/koa-session-launcher.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/host/sessions/session_runtime.py: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/host/sessions/session_runtime.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/operations/src/koa_operations/restore/plan.py: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/operations/src/koa_operations/restore/plan.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/operations/tests/test_restore.py: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/operations/tests/test_restore.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/packaging/components/audit-broker.toml: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/packaging/components/audit-broker.toml: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/packaging/components/governance-policy-runtime.toml: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/packaging/components/governance-policy-runtime.toml: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/packaging/components/identity-and-trust.toml: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/packaging/components/identity-and-trust.toml: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/packaging/components/koa-mediatheque.toml: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/packaging/components/koa-mediatheque.toml: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/packaging/components/koa-node-agent.toml: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/packaging/components/koa-node-agent.toml: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/packaging/components/kristal-runtime.toml: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/packaging/components/kristal-runtime.toml: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/packaging/components/publication-gateway.toml: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/packaging/components/publication-gateway.toml: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/packaging/components/resource-governor.toml: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/packaging/components/resource-governor.toml: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/packaging/system/image.toml: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/packaging/system/image.toml: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/packaging/system/package-sources.toml: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/packaging/system/package-sources.toml: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/pyproject.toml: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/pyproject.toml: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/tests/recovery/test_recovery_boot.py: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/tests/recovery/test_recovery_boot.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/tests/system/test_appliance_session.py: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/tests/system/test_appliance_session.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/tests/system/test_qemu_mediatheque.py: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/tests/system/test_qemu_mediatheque.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/tests/system/test_qemu_navigation.py: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/tests/system/test_qemu_navigation.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/tests/system/test_restore_coordination.py: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/tests/system/test_restore_coordination.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/tests/system/test_system_image_build.py: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/tests/system/test_system_image_build.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/tools/src/koa_tools/cli.py: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/tools/src/koa_tools/cli.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/tools/src/koa_tools/commands/assemble.py: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/tools/src/koa_tools/commands/assemble.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/tools/src/koa_tools/commands/build_component.py: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/tools/src/koa_tools/commands/build_component.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/tools/src/koa_tools/commands/build_image.py: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/tools/src/koa_tools/commands/build_image.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/tools/tests/test_build_component.py: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/tools/tests/test_build_component.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/tools/tests/test_build_image.py: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/tools/tests/test_build_image.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/tools/tests/test_cli.py: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/tools/tests/test_cli.py: committed path is not present in the frozen architecture lock
+  ERROR FILE_TOP_LEVEL_ROOT: koa-pipeline-diag-20260827_160217/files/uv.lock: unknown top-level root: koa-pipeline-diag-20260827_160217
+  ERROR FILE_UNKNOWN: koa-pipeline-diag-20260827_160217/files/uv.lock: committed path is not present in the frozen architecture lock
+  ERROR FILE_ROOT_ENTRY: profile-levelup-diag.txt: unknown file at repository root
+  ERROR FILE_UNKNOWN: profile-levelup-diag.txt: committed path is not present in the frozen architecture lock
+path-ownership: fail
+  ERROR PATH_OWNER_MISSING: GitSink.bat: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: _delivery/MANIFEST.json: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: _delivery/VALIDATION.md: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: _delivery/logs/actual_proc.log: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: _delivery/logs/artifact_contracts.log: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: _delivery/logs/boundaries.log: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: _delivery/logs/compileall.log: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: _delivery/logs/diff_check.log: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: _delivery/logs/generated_content.log: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: _delivery/logs/greenfield.log: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: _delivery/logs/interfile_locks.log: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: _delivery/logs/ownership.log: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: _delivery/logs/pytest.log: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: _delivery/logs/security.log: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: _delivery/logs/unresolved.log: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: _delivery/logs/validate_docs.log: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: _delivery/test_b0032.py: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217.zip: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/REPORT.txt: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/Cargo.lock: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/cli.py: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/model.py: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/profiles/__init__.py: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/profiles/resolver.py: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/renderers/__init__.py: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/assembly/src/koa_assembly/renderers/image.py: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/assembly/tests/test_overlay_resolution.py: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/assembly/tests/test_profile_resolution.py: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/components/audit-broker/packaging/payload.toml: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/components/governance-policy-runtime/packaging/payload.toml: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/components/identity-and-trust/packaging/payload.toml: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/components/koa-mediatheque/packaging/payload.toml: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/components/koa-node-agent/Cargo.toml: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/components/koa-node-agent/packaging/payload.toml: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/components/kristal-runtime/packaging/payload.toml: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/components/publication-gateway/packaging/payload.toml: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/components/resource-governor/packaging/payload.toml: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/docs/contracts/profiles/sovereign-linux-node.profile.json: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/host/image/build-disk-image.py: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/host/recovery/recovery-entry.py: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/host/sessions/koa-session-launcher.py: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/host/sessions/session_runtime.py: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/operations/src/koa_operations/restore/plan.py: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/operations/tests/test_restore.py: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/packaging/components/audit-broker.toml: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/packaging/components/governance-policy-runtime.toml: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/packaging/components/identity-and-trust.toml: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/packaging/components/koa-mediatheque.toml: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/packaging/components/koa-node-agent.toml: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/packaging/components/kristal-runtime.toml: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/packaging/components/publication-gateway.toml: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/packaging/components/resource-governor.toml: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/packaging/system/image.toml: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/packaging/system/package-sources.toml: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/pyproject.toml: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/tests/recovery/test_recovery_boot.py: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/tests/system/test_appliance_session.py: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/tests/system/test_qemu_mediatheque.py: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/tests/system/test_qemu_navigation.py: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/tests/system/test_restore_coordination.py: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/tests/system/test_system_image_build.py: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/tools/src/koa_tools/cli.py: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/tools/src/koa_tools/commands/assemble.py: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/tools/src/koa_tools/commands/build_component.py: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/tools/src/koa_tools/commands/build_image.py: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/tools/tests/test_build_component.py: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/tools/tests/test_build_image.py: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/tools/tests/test_cli.py: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: koa-pipeline-diag-20260827_160217/files/uv.lock: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+  ERROR PATH_OWNER_MISSING: profile-levelup-diag.txt: path has no declared canonical owner
+    hint: add one explicit ownership rule in .koa/path-ownership.json
+dependencies: fail
+  ERROR DEPENDENCY_LOCAL_PROJECT_DUPLICATE: pyproject.toml: local project name duplicates koa-pipeline-diag-20260827_160217/files/pyproject.toml
+generated-content: pass
+architecture-checks: fail (250 error(s), 0 warning(s))
+EXIT=1
+
+============================================================
+=== DOC VALIDATION ===
+============================================================
+[check_ai_boundary.py] pass
+check_ai_boundary: pass
+[check_architecture_patterns.py] pass
+check_architecture_patterns: pass
+[check_artifact_contracts.py] pass
+check_artifact_contracts: pass; schemas=37
+[check_canonical_ownership.py] fail
+FAIL: C:\mycode\kOA-Linux\koa-linux\docs\status\2026-08-27-technical-maturity-assessment.md: metadata missing or invalid
+FAIL: C:\mycode\kOA-Linux\koa-linux\docs\status\README.md: metadata missing or invalid
+check_canonical_ownership: fail
+[check_component_boundaries.py] pass
+check_component_boundaries: pass
+[check_decision_closure.py] pass
+check_decision_closure: pass
+[check_document_graph.py] pass
+check_document_graph: pass; nodes=284
+[check_generated_blocks.py] fail
+FAIL: C:\mycode\kOA-Linux\koa-linux\docs\status\2026-08-27-technical-maturity-assessment.md: metadata block missing or invalid
+FAIL: C:\mycode\kOA-Linux\koa-linux\docs\status\README.md: metadata block missing or invalid
+check_generated_blocks: fail
+[check_generated_content.py] fail
+STALE: document-index.json
+STALE: document-index.md
+[check_greenfield_architecture.py] pass
+check_greenfield_architecture: pass
+[check_interfile_locks.py] pass
+check_interfile_locks: pass; referenced=165
+[check_language.py] pass
+check_language: pass
+[check_no_unresolved_state.py] pass
+check_no_unresolved_state: pass
+[check_normative_language.py] pass
+check_normative_language: pass; documents_with_normative_terms=180
+[check_profile_inheritance.py] pass
+check_profile_inheritance: pass
+[check_release_sets.py] pass
+check_release_sets: pass
+[check_security_architecture.py] pass
+check_security_architecture: pass; controls=48; profiles=10; invariants=8
+[check_subsystem_alignment.py] pass
+WARN: C:\mycode\kOA-Linux\koa-linux\docs\subsystems\ariane: reserved path is not mounted
+WARN: C:\mycode\kOA-Linux\koa-linux\docs\subsystems\konnaxion: reserved path is not mounted
+WARN: C:\mycode\kOA-Linux\koa-linux\docs\subsystems\orgo: reserved path is not mounted
+WARN: C:\mycode\kOA-Linux\koa-linux\docs\subsystems\sentient: reserved path is not mounted
+WARN: C:\mycode\kOA-Linux\koa-linux\docs\subsystems\semantik-architect: reserved path is not mounted
+WARN: C:\mycode\kOA-Linux\koa-linux\docs\subsystems\koa-spaces: reserved path is not mounted
+check_subsystem_alignment: pass
+[check_traceability.py] pass
+check_traceability: pass
+[check_uckk_external_boundary.py] pass
+check_uckk_external_boundary: pass; findings=0
+validate_docs: fail
+EXIT=1
+
+============================================================
+=== PROFILE INHERITANCE ===
+============================================================
+check_profile_inheritance: pass
+EXIT=0
+
+============================================================
+=== INTERFILE LOCKS ===
+============================================================
+check_interfile_locks: pass; referenced=165
+EXIT=0
+
+============================================================
+=== TRACEABILITY ===
+============================================================
+check_traceability: pass
+EXIT=0
+
+============================================================
+=== DECISION CLOSURE ===
+============================================================
+check_decision_closure: pass
+EXIT=0
+
+============================================================
+=== UNRESOLVED STATE ===
+============================================================
+check_no_unresolved_state: pass
+EXIT=0
+
+============================================================
+=== COMPONENT BOUNDARIES ===
+============================================================
+check_component_boundaries: pass
+EXIT=0
+
+============================================================
+=== AI BOUNDARY ===
+============================================================
+check_ai_boundary: pass
+EXIT=0
+
+============================================================
+=== ASSEMBLY DOCTOR ===
+============================================================
+LOADED docs/contracts/ai-navigation.contract.json [ai-navigation] 1073662d054ad513432d851fb0878a7ed5b5a13be1fcac0fe381b1b37f396aad
+LOADED docs/contracts/system.contract.json [system.registry] 818d702c14d3d1940dd326e7bcefa0e2b1579def3d7b2e81f06a5ce191b87e35
+LOADED docs/contracts/terminology.contract.json [terminology.registry] 6c5507b67057ab621564e25229c57d0abab2cdd47832ce12b8b2a4820f284579
+PASS: 3/3 authority document(s) loaded
+EXIT=0
+
+============================================================
+=== BUILD FARM PROFILE ===
+============================================================
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/build-farm.profile.json: Additional properties are not allowed ('external_integrations' was unexpected) [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /additionalProperties
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/build-farm.profile.json/composition: 'composition_priority' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /allOf/0/then/properties/composition/allOf/0/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/build-farm.profile.json/composition: 'composition_priority' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/composition/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/build-farm.profile.json/lifecycle/artifact_requirements/0: 'release_channel' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/lifecycle/properties/artifact_requirements/items/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/build-farm.profile.json/lifecycle/artifact_requirements/2: 'release_channel' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/lifecycle/properties/artifact_requirements/items/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/build-farm.profile.json/lifecycle/artifact_requirements/4: 'release_channel' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/lifecycle/properties/artifact_requirements/items/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/build-farm.profile.json/lifecycle/artifact_requirements/7: 'release_channel' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/lifecycle/properties/artifact_requirements/items/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/build-farm.profile.json/terminology_ref: 'contracts/terminology.contract.json#/terms/TERM-PROFILE-BUILD-FARM' does not match '^contracts/terminology\\.registry\\.json#/terms/TERM-PROFILE-[A-Z0-9-]+$' [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/terminology_ref/pattern
+BLOCKED: 8 error(s), 0 warning(s)
+EXIT=1
+
+============================================================
+=== SOVEREIGN PROFILE ===
+============================================================
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json: 'canonical_refs' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json: 'capabilities' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json: 'components' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json: 'display_name' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json: 'independently_deployable' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json: 'inheritance' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json: 'lifecycle' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json: 'offline_behavior' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json: 'operating_modes' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json: 'profile_kind' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json: 'security' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json: 'target_environment' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json: 'terminology_ref' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json: 'validation' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json: Additional properties are not allowed ('ariane_behavior', 'artifact_classes_ref', 'authority_ref', 'change_policy', 'component_membership', 'components_ref', 'decisions_ref', 'effective_at', 'evidence_and_audit', 'evidence_ref', 'exception_ids', 'excluded_software_and_services', 'external_integrations', 'failure_and_degradation', 'host_platform', 'integrations_ref', 'language_runtime', 'locks_ref', 'mediatheque_and_uckk_publication', 'network_and_integrations', 'offline_capability_envelope', 'operating_system', 'portability_restore_and_exit', 'privilege', 'profile_index_ref', 'profile_type', 'prohibited_assumptions', 'release_and_lifecycle', 'release_channels_ref', 'requirements_ref', 'resource_governance', 'scope', 'security_and_privacy', 'service_activation', 'subsystem_membership', 'summary', 'system_image', 'system_ref', 'test_catalog_ref', 'title' were unexpected) [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /additionalProperties
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/ai_boundary: 'authoritative_decisions_allowed' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/ai_boundary/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/ai_boundary: 'fallback_behavior' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/ai_boundary/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/ai_boundary: 'native_ai_dependency' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/ai_boundary/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/ai_boundary: 'optional_components' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/ai_boundary/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/ai_boundary: Additional properties are not allowed ('candidate_output_import', 'egress_controls_required', 'native_ai_capabilities', 'native_ai_runtime_present', 'prohibited_behavior' were unexpected) [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/ai_boundary/additionalProperties
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/ai_boundary/approved_external_surfaces/0: {'integration_id': 'chatgpt', 'activation': 'explicit_user_action_and_policy_approval', 'default_enabled': False} is not of type 'string' [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/ai_boundary/properties/approved_external_surfaces/items/type
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/ai_boundary/approved_external_surfaces/0: {'integration_id': 'chatgpt', 'activation': 'explicit_user_action_and_policy_approval', 'default_enabled': False} is not one of ['chatgpt', 'suno', 'gamma', 'ai_ariane_voice_path'] [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/ai_boundary/properties/approved_external_surfaces/items/enum
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/ai_boundary/approved_external_surfaces/1: {'integration_id': 'suno', 'activation': 'explicit_user_action_and_policy_approval', 'default_enabled': False} is not of type 'string' [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/ai_boundary/properties/approved_external_surfaces/items/type
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/ai_boundary/approved_external_surfaces/1: {'integration_id': 'suno', 'activation': 'explicit_user_action_and_policy_approval', 'default_enabled': False} is not one of ['chatgpt', 'suno', 'gamma', 'ai_ariane_voice_path'] [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/ai_boundary/properties/approved_external_surfaces/items/enum
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/ai_boundary/approved_external_surfaces/2: {'integration_id': 'gamma', 'activation': 'explicit_user_action_and_policy_approval', 'default_enabled': False} is not of type 'string' [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/ai_boundary/properties/approved_external_surfaces/items/type
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/ai_boundary/approved_external_surfaces/2: {'integration_id': 'gamma', 'activation': 'explicit_user_action_and_policy_approval', 'default_enabled': False} is not one of ['chatgpt', 'suno', 'gamma', 'ai_ariane_voice_path'] [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/ai_boundary/properties/approved_external_surfaces/items/enum
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/ai_boundary/approved_external_surfaces/3: {'integration_id': 'ariane-voice', 'activation': 'explicit_user_action_and_policy_approval', 'default_enabled': False} is not of type 'string' [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/ai_boundary/properties/approved_external_surfaces/items/type
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/ai_boundary/approved_external_surfaces/3: {'integration_id': 'ariane-voice', 'activation': 'explicit_user_action_and_policy_approval', 'default_enabled': False} is not one of ['chatgpt', 'suno', 'gamma', 'ai_ariane_voice_path'] [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/ai_boundary/properties/approved_external_surfaces/items/enum
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/composition: 'compatible_primary_profiles' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/composition/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/composition: 'composition_priority' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/composition/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/composition: 'conflict_policy' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/composition/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/composition: 'incompatible_profiles' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/composition/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/composition: 'optional_overlays' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/composition/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/composition: 'required_overlays' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/composition/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/composition: Additional properties are not allowed ('base_model', 'composition_rules', 'default_overlays', 'overlay_compatibility' were unexpected) [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/composition/additionalProperties
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/conformance: 'claim_level' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/conformance/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/conformance: 'claims' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/conformance/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/conformance: 'exceptions' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/conformance/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/conformance: 'partial_conformance_allowed' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/conformance/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/conformance: Additional properties are not allowed ('claim_id', 'claim_requires_all_required_tests', 'missing_required_evidence_result', 'missing_required_test_result', 'overlay_claims_are_separate', 'required_tests', 'result_values', 'test_intents' were unexpected) [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/conformance/additionalProperties
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/data_and_storage: 'backup_required' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/data_and_storage/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/data_and_storage: 'component_data_ownership_required' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/data_and_storage/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/data_and_storage: 'cross_component_direct_writes_allowed' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/data_and_storage/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/data_and_storage: 'encryption_at_rest' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/data_and_storage/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/data_and_storage: 'persistent_storage' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/data_and_storage/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/data_and_storage: 'portability_export_required' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/data_and_storage/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/data_and_storage: 'restore_required' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/data_and_storage/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/data_and_storage: Additional properties are not allowed ('backup_and_restore', 'encryption', 'integrity', 'logical_ownership', 'physical_isolation' were unexpected) [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/data_and_storage/additionalProperties
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/hardware_envelope: 'concurrency' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/hardware_envelope/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/hardware_envelope: 'enforcement' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/hardware_envelope/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/hardware_envelope: 'gpu' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/hardware_envelope/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/hardware_envelope: Additional properties are not allowed ('architecture', 'hardware_trust', 'network', 'power' were unexpected) [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/hardware_envelope/additionalProperties
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/hardware_envelope/cpu: 'minimum' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/hardware_envelope/properties/cpu/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/hardware_envelope/cpu: 'recommended' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/hardware_envelope/properties/cpu/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/hardware_envelope/cpu: 'unit' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/hardware_envelope/properties/cpu/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/hardware_envelope/cpu: Additional properties are not allowed ('cryptographic_acceleration_preferred', 'minimum_physical_cores', 'modern_64_bit_required', 'preferred_physical_cores', 'virtualization_extensions_required' were unexpected) [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/hardware_envelope/properties/cpu/additionalProperties
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/hardware_envelope/memory: 'minimum' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/hardware_envelope/properties/memory/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/hardware_envelope/memory: 'recommended' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/hardware_envelope/properties/memory/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/hardware_envelope/memory: 'unit' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/hardware_envelope/properties/memory/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/hardware_envelope/memory: Additional properties are not allowed ('ecc_preferred', 'ecc_required', 'minimum_gib', 'preferred_gib', 'swap' were unexpected) [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/hardware_envelope/properties/memory/additionalProperties
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/hardware_envelope/storage: 'minimum' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/hardware_envelope/properties/storage/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/hardware_envelope/storage: 'recommended' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/hardware_envelope/properties/storage/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/hardware_envelope/storage: 'unit' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/hardware_envelope/properties/storage/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/hardware_envelope/storage: Additional properties are not allowed ('free_space_floor_percent', 'minimum_ssd_gb', 'preferred_ssd_gb', 'separate_recovery_storage_required', 'ssd_required', 'storage_health_monitoring_required' were unexpected) [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/hardware_envelope/properties/storage/additionalProperties
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/operations: 'diagnostics' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/operations/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/operations: 'disaster_recovery' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/operations/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/operations: 'health_monitoring' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/operations/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/operations: 'maintenance' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/operations/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/operations: 'readiness_checks' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/operations/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/operations: 'receipts_for_critical_transitions' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/operations/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/operations: 'resource_governor' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/operations/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/operations: 'restore' is a required property [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/operations/required
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/operations: Additional properties are not allowed ('decommissioning', 'provisioning', 'startup', 'update' were unexpected) [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/operations/additionalProperties
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/operations/backup: ['Collect component-owned backup inputs.', 'Encrypt and isolate recovery material.', 'Record data, artifact, policy, and release identities.', 'Retain at least one offline recovery copy.', 'Run scheduled clean-environment restore tests.'] is not of type 'string' [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/operations/properties/backup/type
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/operations/backup: ['Collect component-owned backup inputs.', 'Encrypt and isolate recovery material.', 'Record data, artifact, policy, and release identities.', 'Retain at least one offline recovery copy.', 'Run scheduled clean-environment restore tests.'] is not one of ['required', 'optional', 'conditional', 'task_activated', 'excluded'] [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/operations/properties/backup/enum
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/operations/incident_response: ['Preserve current evidence and release identity.', 'Block affected capabilities.', 'Use the declared recovery or last-known-good path.', 'Avoid mutable in-place repair of the active system image.', 'Record emergency authority and post-event review.'] is not of type 'string' [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/operations/properties/incident_response/type
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/operations/incident_response: ['Preserve current evidence and release identity.', 'Block affected capabilities.', 'Use the declared recovery or last-known-good path.', 'Avoid mutable in-place repair of the active system image.', 'Record emergency authority and post-event review.'] is not one of ['required', 'optional', 'conditional', 'task_activated', 'excluded'] [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/operations/properties/incident_response/enum
+ERROR ASSEMBLY_CONTRACT_SCHEMA_VIOLATION docs/contracts/profiles/sovereign-linux-node.profile.json/purpose: {'primary_operator': 'An individual or organization operating one controlled Linux node as an authoritative production deployment.', 'operating_goal': 'Provide verifiable local authority, recoverable activation, explicit privilege boundaries, controlled external communication, and continued operation when remote services are unavailable.', 'design_priorities': ['verified host and release identity', 'immutable recoverable system activation', 'fail-closed authority', 'least privilege', 'single-owner data domains', 'closed-by-default network exposure', 'offline continuity', 'selective audit', 'machine-readable critical-transition receipts', 'tested backup, restore, portability, and exit', 'replaceable optional integrations'], 'non_goals': ['acting as a general developer workstation', 'running unreviewed development workbenches', 'hosting native AI models', 'providing cluster orchestration', 'using a shared mutable host as a build environment', 'requiring a minimal appliance shell', 'requiring measured boot or TPM without an overlay or hardware tier', 'granting application components unrestricted host privilege']} is not of type 'string' [authority: docs/schemas/deployment-profile.schema.json]
+  schema_pointer: /properties/purpose/type
+BLOCKED: 78 error(s), 0 warning(s)
+EXIT=1

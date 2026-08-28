@@ -48,7 +48,9 @@ def _args(root: Path) -> Namespace:
         profile="sovereign-linux-node",
         overlay=[],
         config="packaging/system/image.toml",
-        manifest="generated/image-manifest.json",
+        manifest="generated/image/image-manifest.json",
+        plan="generated/profiles/sovereign_linux_node/resolved-plan.json",
+        effective_profile_output="generated/profiles/sovereign_linux_node/effective-profile.json",
         rootfs="generated/rootfs.tar",
         kernel="generated/kernel",
         initramfs="generated/initramfs",
@@ -84,13 +86,17 @@ def test_build_image_plan_uses_python_argv_and_never_build_sh(
     assert build_image.execute(_args(root)) == 0
 
     assert [item.label for item in captured] == [
-        "render deterministic image manifest",
+        "resolve effective profile",
+        "render deterministic B-0092 image manifest",
         "build deterministic boot artifact",
         "build independent recovery artifact",
         "verify recovery artifact independently",
         "build inactive disk-image candidate",
     ]
     flattened = "\n".join(" ".join(item.argv) for item in captured)
+    assert "resolve-profile" in flattened
+    assert "render-bundle" in flattened
+    assert "generated/profiles/sovereign_linux_node/resolved-plan.json" in flattened
     assert "host/image/build.sh" not in flattened
     assert " shell=True" not in flattened
     assert "host/image/build-boot-artifact.py" in flattened
@@ -118,4 +124,12 @@ def test_build_image_rejects_output_outside_generated(tmp_path: Path) -> None:
     args = _args(root)
     args.output = "host/image/system.img"
     with pytest.raises(CommandError, match="generated"):
+        build_image.execute(args)
+
+
+def test_build_image_rejects_noncanonical_manifest_projection(tmp_path: Path) -> None:
+    root = _workspace(tmp_path)
+    args = _args(root)
+    args.manifest = "generated/image-manifest.json"
+    with pytest.raises(CommandError, match="B-0092 renderer"):
         build_image.execute(args)

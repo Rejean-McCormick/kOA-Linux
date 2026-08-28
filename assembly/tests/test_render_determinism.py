@@ -554,3 +554,27 @@ def test_existing_generated_root_admits_service_units_and_static_units_are_absen
     assert {item["path"] for item in generated["entries"]} == {"docs/generated", "generated"}
     assert not (root / "host/systemd/units/koa-wayland-compositor.service").exists()
     assert not (root / "host/systemd/units/koa-appliance-shell.service").exists()
+
+
+def test_image_bundle_projection_has_canonical_owned_paths() -> None:
+    from koa_assembly.renderers.image import render_assembly_bundle
+
+    files = render_assembly_bundle(
+        sample_plan(),
+        bundle_id="B-0092",
+        profile_contract_ref="docs/contracts/profiles/sovereign-linux-node.profile.json",
+        tool_versions={"koa_assembly": "test"},
+        entrypoint_delegates={
+            "koa-activation": ("/usr/bin/true",),
+            "koa-health-aggregate": ("/usr/bin/true",),
+            "koa-offline-import": ("/usr/bin/true",),
+        },
+    )
+    paths = {item.path for item in files}
+    assert "assembly/B-0092/bundle.json" in paths
+    assert "image/image-manifest.json" in paths
+    assert {
+        "assembly/B-0092/entrypoints/koa-activation",
+        "assembly/B-0092/entrypoints/koa-health-aggregate",
+        "assembly/B-0092/entrypoints/koa-offline-import",
+    } <= paths

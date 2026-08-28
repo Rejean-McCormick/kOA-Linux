@@ -35,6 +35,25 @@ def configure(parser: argparse.ArgumentParser) -> None:
     )
     parser.add_argument("--renderer", required=True, choices=ASSEMBLY_RENDERERS)
     parser.add_argument(
+        "--plan",
+        help=(
+            "Repository-relative resolved deployment plan. Defaults to "
+            "generated/profiles/<profile-id>/resolved-plan.json; assembly never invents it."
+        ),
+    )
+    parser.add_argument(
+        "--effective-profile-output",
+        help=(
+            "Repository-relative effective-profile projection. Defaults to "
+            "generated/profiles/<profile-id>/effective-profile.json."
+        ),
+    )
+    parser.add_argument(
+        "--settings",
+        default="packaging/system/image.toml",
+        help="System packaging settings used only for the image assembly bundle.",
+    )
+    parser.add_argument(
         "--output",
         required=True,
         help="Repository-relative generated output path.",
@@ -57,33 +76,83 @@ def execute(args: argparse.Namespace) -> int:
         generated_output=True,
     )
 
-    command: list[str] = [
+    profile_id = args.profile.replace("-", "_")
+    effective_profile = repository_path(
+        root,
+        args.effective_profile_output
+        or f"generated/profiles/{profile_id}/effective-profile.json",
+        label="effective profile output",
+        generated_output=True,
+    )
+    plan = repository_path(
+        root,
+        args.plan or f"generated/profiles/{profile_id}/resolved-plan.json",
+        label="resolved deployment plan",
+        generated_output=True,
+    )
+
+    resolve_command: list[str] = [
         *assembly_cli(
-            "render",
+            "resolve-profile",
             "--profile",
             args.profile,
-            "--renderer",
-            args.renderer,
             "--output",
-            output.as_posix(),
+            effective_profile.as_posix(),
         )
     ]
     for overlay in args.overlay:
-        command.extend(("--overlay", overlay))
+        resolve_command.extend(("--overlay", overlay))
     if args.check:
-        command.append("--check")
+        resolve_command.append("--check")
 
-    required = (
-        "assembly/pyproject.toml",
-        profile_path,
-        *overlay_paths,
+    if args.renderer == "image":
+        settings = repository_path(
+            root, args.settings, label="image packaging settings", must_exist=True, expected_kind="file"
+        )
+        render_command: list[str] = [
+            *assembly_cli(
+                "render-bundle",
+                "--plan",
+                plan.as_posix(),
+                "--settings",
+                settings.as_posix(),
+                "--output",
+                output.as_posix(),
+            )
+        ]
+        for overlay_path in overlay_paths:
+            render_command.extend(("--overlay", overlay_path))
+        render_required = ("assembly/pyproject.toml", plan.as_posix(), settings.as_posix())
+    else:
+        renderer_id = args.renderer.replace("-", "_")
+        render_command = [
+            *assembly_cli(
+                "render-plan",
+                "--plan",
+                plan.as_posix(),
+                "--renderer",
+                renderer_id,
+                "--output",
+                output.as_posix(),
+            )
+        ]
+        render_required = ("assembly/pyproject.toml", plan.as_posix())
+    if args.check:
+        render_command.append("--check")
+
+    invocations = (
+        Invocation(
+            label=f"resolve effective profile {args.profile}",
+            argv=tuple(resolve_command),
+            required_paths=("assembly/pyproject.toml", profile_path, *overlay_paths),
+        ),
+        Invocation(
+            label=f"render resolved plan as {args.renderer}",
+            argv=tuple(render_command),
+            required_paths=render_required,
+        ),
     )
-    invocation = Invocation(
-        label=f"assemble {args.profile} as {args.renderer}",
-        argv=tuple(command),
-        required_paths=required,
-    )
-    return run_plan(args, (invocation,))
+    return run_plan(args, invocations)
 
 
 COMMAND = CommandDefinition(

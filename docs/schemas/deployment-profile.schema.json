@@ -65,7 +65,7 @@
     },
     "terminology_ref": {
       "type": "string",
-      "pattern": "^contracts/terminology\\.registry\\.json#/terms/TERM-PROFILE-[A-Z0-9-]+$"
+      "pattern": "^contracts/terminology\\.contract\\.json#/terms/TERM-PROFILE-[A-Z0-9-]+$"
     },
     "canonical_refs": {
       "$ref": "#/$defs/canonicalRefArray"
@@ -147,6 +147,9 @@
     },
     "koa_spaces": {
       "$ref": "#/$defs/koaSpacesProfileBinding"
+    },
+    "external_integrations": {
+      "$ref": "#/$defs/externalIntegrations"
     }
   },
   "allOf": [
@@ -1124,7 +1127,8 @@
             {
               "type": "null"
             }
-          ]
+          ],
+          "description": "One profile-selected release channel when the artifact requirement is channel-specific; null when the artifact class is not release-channel-bound or spans multiple release channels."
         },
         "activation_policy": {
           "type": "string",
@@ -1494,6 +1498,67 @@
             "minLength": 1
           }
         }
+      }
+    },
+    "externalIntegrationBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "integration_id",
+        "contract_ref",
+        "availability",
+        "direction"
+      ],
+      "properties": {
+        "integration_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "contract_ref": {
+          "$ref": "#/$defs/repositoryPath"
+        },
+        "availability": {
+          "type": "string",
+          "enum": [
+            "required",
+            "optional",
+            "conditional",
+            "prohibited",
+            "not_applicable"
+          ]
+        },
+        "direction": {
+          "type": "string",
+          "enum": [
+            "inbound",
+            "outbound",
+            "bidirectional"
+          ]
+        },
+        "required_for_local_operation": {
+          "type": "boolean"
+        },
+        "required_for_offline_operation": {
+          "type": "boolean"
+        },
+        "offline_bundle_supported": {
+          "type": "boolean"
+        },
+        "accepted_content_available_offline": {
+          "type": "boolean"
+        },
+        "automatic_sync": {
+          "type": "boolean"
+        }
+      }
+    },
+    "externalIntegrations": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/externalIntegrationBinding"
+      },
+      "propertyNames": {
+        "pattern": "^[a-z0-9]+(?:_[a-z0-9]+)*$"
       }
     }
   }

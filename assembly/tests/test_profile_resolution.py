@@ -321,3 +321,27 @@ def test_required_and_prohibited_subsystem_blocks_composition() -> None:
     }
     result = ProfileResolver(contracts).resolve("base", ["restricted"])
     assert any(issue.code == "subsystem_conflict" for issue in result.issues)
+
+
+def test_effective_profile_declaration_is_deterministic_and_non_authoritative() -> None:
+    contracts = load_active_contracts()
+    effective = ProfileResolver(contracts).resolve("sovereign_linux_node").require_effective()
+    digests = {source: "sha256:" + ("a" * 64) for _, _, source in effective.contributing_profiles}
+    first = effective.to_declaration(source_digests=digests)
+    second = effective.to_declaration(source_digests=dict(reversed(list(digests.items()))))
+    assert first == second
+    assert first["format"] == "koa.effective-profile"
+    assert first["authority"] == "derived_projection"
+    assert first["manual_edits"] == "prohibited"
+    assert first["result"] == "pass"
+    assert first["validation"] == {"outcome": "pass", "composition_conflicts": 0}
+    assert first["unresolved_conflicts"] == []
+    assert str(first["generated_evidence_identity"]).startswith("sha256:")
+
+
+def test_effective_profile_declaration_rejects_unbound_source_digests() -> None:
+    effective = ProfileResolver({
+        "primary.json": minimal_profile("base"),
+    }).resolve("base").require_effective()
+    with pytest.raises(ValueError, match="source digests do not match"):
+        effective.to_declaration(source_digests={"other.json": "sha256:" + "a" * 64})

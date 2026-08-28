@@ -76,6 +76,57 @@ class EffectiveProfile:
             "subsystems": [entry.to_dict() for entry in self.subsystems],
         }
 
+    def to_declaration(
+        self,
+        *,
+        source_digests: Mapping[str, str] | None = None,
+    ) -> dict[str, object]:
+        """Return the non-authoritative effective-profile projection.
+
+        The declaration records composition inputs and validation state without
+        turning the derived result into a new semantic owner. Source digests are
+        supplied by the authority loader so the resolver never reads files or
+        invents immutable identities.
+        """
+
+        digests = dict(sorted((source_digests or {}).items()))
+        expected_sources = {source for _, _, source in self.contributing_profiles}
+        if digests and set(digests) != expected_sources:
+            missing = sorted(expected_sources - set(digests))
+            extra = sorted(set(digests) - expected_sources)
+            detail = []
+            if missing:
+                detail.append("missing=" + ",".join(missing))
+            if extra:
+                detail.append("extra=" + ",".join(extra))
+            raise ValueError("effective-profile source digests do not match contributing profiles: " + "; ".join(detail))
+
+        semantic = self.to_dict()
+        evidence_payload = {
+            "effective_profile_id": self.effective_profile_id,
+            "sources": digests,
+            "semantic": semantic,
+        }
+        evidence_identity = "sha256:" + hashlib.sha256(
+            json.dumps(evidence_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        ).hexdigest()
+        return {
+            "format": "koa.effective-profile",
+            "format_version": "1.0.0",
+            "authority": "derived_projection",
+            "manual_edits": "prohibited",
+            "result": "pass",
+            **semantic,
+            "active_exceptions": [],
+            "unresolved_conflicts": [],
+            "source_digests": digests,
+            "validation": {
+                "outcome": "pass",
+                "composition_conflicts": 0,
+            },
+            "generated_evidence_identity": evidence_identity,
+        }
+
 
 @dataclass(frozen=True, slots=True)
 class ResolutionResult:

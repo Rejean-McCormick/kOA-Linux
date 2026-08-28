@@ -107,6 +107,7 @@
     "incompatible_profiles": [
       "appliance_shell"
     ],
+    "composition_priority": null,
     "conflict_policy": "fail_closed"
   },
   "inheritance": {
@@ -653,6 +654,7 @@
       {
         "artifact_class_id": "ART-CLASS-003",
         "state": "required",
+        "release_channel": null,
         "activation_policy": "not_activated"
       },
       {
@@ -664,6 +666,7 @@
       {
         "artifact_class_id": "ART-CLASS-006",
         "state": "required",
+        "release_channel": null,
         "activation_policy": "admission_then_activation"
       },
       {
@@ -675,6 +678,7 @@
       {
         "artifact_class_id": "ART-CLASS-008",
         "state": "conditional",
+        "release_channel": null,
         "activation_policy": "atomic"
       },
       {
@@ -692,6 +696,7 @@
       {
         "artifact_class_id": "ART-CLASS-014",
         "state": "required",
+        "release_channel": null,
         "activation_policy": "not_activated"
       },
       {

@@ -13,7 +13,8 @@ from typing import Any, Iterable, Mapping, Sequence
 from . import __version__
 from .contract_loader import ContractLoader, LoadOutcome, LoadPolicy
 from .diagnostics import DiagnosticBag
-from .renderers import RenderError, write_rendered_files
+from .profiles import ProfileResolver, normalize_identifier
+from .renderers import RenderError, render, write_rendered_files
 from .renderers.image import render_assembly_bundle
 
 
@@ -72,6 +73,49 @@ def build_parser() -> argparse.ArgumentParser:
         help="override the authority paths checked by doctor; repeatable",
     )
 
+    resolve_profile = subparsers.add_parser(
+        "resolve-profile",
+        help="resolve canonical profile authorities into one deterministic effective-profile projection",
+    )
+    resolve_profile.add_argument("--profile", required=True, help="primary profile identifier")
+    resolve_profile.add_argument(
+        "--overlay",
+        action="append",
+        default=[],
+        help="explicit overlay identifier; repeatable",
+    )
+    resolve_profile.add_argument(
+        "--output",
+        required=True,
+        help="repository-relative generated effective-profile JSON path",
+    )
+    resolve_profile.add_argument(
+        "--check",
+        action="store_true",
+        help="compare the existing projection without writing",
+    )
+
+    render_plan = subparsers.add_parser(
+        "render-plan",
+        help="render one already-resolved deployment plan with a registered deterministic renderer",
+    )
+    render_plan.add_argument("--plan", required=True, help="repository-relative resolved plan JSON")
+    render_plan.add_argument(
+        "--renderer",
+        required=True,
+        choices=("systemd", "quadlet", "compose", "kubernetes", "image", "offline_bundle"),
+    )
+    render_plan.add_argument(
+        "--output",
+        required=True,
+        help="repository-relative generated output root",
+    )
+    render_plan.add_argument(
+        "--check",
+        action="store_true",
+        help="compare existing generated files without writing",
+    )
+
     bundle = subparsers.add_parser(
         "render-bundle",
         help="render one deterministic assembly bundle from an already resolved plan",
@@ -104,6 +148,10 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: Sequence[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
+    if args.command == "resolve-profile":
+        return _resolve_profile_command(args)
+    if args.command == "render-plan":
+        return _render_plan_command(args)
     if args.command == "render-bundle":
         return _render_bundle_command(args)
     try:
@@ -168,6 +216,85 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 class _BundleBlockedError(ValueError):
     """Raised when declared packaging inputs cannot produce a safe bundle."""
+
+
+def _profile_contract_ref(profile_id: str) -> str:
+    normalized = normalize_identifier(profile_id)
+    return f"docs/contracts/profiles/{normalized.replace('_', '-')}.profile.json"
+
+
+def _resolve_profile_command(args: argparse.Namespace) -> int:
+    try:
+        root = Path(args.repository_root).resolve(strict=True)
+        output_path, output_ref = _repository_path(root, args.output, must_exist=False)
+        if not output_ref.startswith("generated/"):
+            raise _BundleBlockedError("effective-profile output must remain under generated/")
+
+        profile_id = normalize_identifier(args.profile)
+        overlay_ids = tuple(normalize_identifier(value) for value in args.overlay)
+        if len(overlay_ids) != len(set(overlay_ids)):
+            raise _BundleBlockedError("duplicate overlay selection")
+
+        loader = ContractLoader(root, policy=LoadPolicy(max_bytes=args.max_bytes))
+        refs = (_profile_contract_ref(profile_id), *(_profile_contract_ref(value) for value in overlay_ids))
+        contracts: dict[str, Mapping[str, Any]] = {}
+        digests: dict[str, str] = {}
+        for ref in refs:
+            outcome = loader.try_load(ref)
+            if not outcome.passed or outcome.contract is None:
+                message = outcome.diagnostics[0].message if outcome.diagnostics else f"cannot load {ref}"
+                raise _BundleBlockedError(message)
+            contracts[ref] = outcome.contract.data
+            digests[ref] = "sha256:" + outcome.contract.source.sha256
+
+        result = ProfileResolver(contracts).resolve(profile_id, overlay_ids)
+        if not result.passed:
+            detail = "; ".join(f"{issue.code}: {issue.detail}" for issue in result.issues)
+            raise _BundleBlockedError("profile composition blocked: " + detail)
+        effective = result.require_effective()
+        declaration = effective.to_declaration(source_digests=digests)
+        payload = (json.dumps(declaration, ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode("utf-8")
+        if args.check:
+            if not output_path.is_file() or output_path.read_bytes() != payload:
+                raise _BundleBlockedError(f"generated effective-profile drift: {output_ref}")
+        else:
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+            output_path.write_bytes(payload)
+    except (OSError, UnicodeDecodeError, RenderError, _BundleBlockedError, ValueError) as exc:
+        _write_bundle_result("blocked", str(exc), args.format, stream=sys.stderr)
+        return EXIT_BLOCKED
+
+    _write_bundle_result("pass", f"resolved {profile_id} to {output_ref}", args.format)
+    return EXIT_OK
+
+
+def _render_plan_command(args: argparse.Namespace) -> int:
+    try:
+        root = Path(args.repository_root).resolve(strict=True)
+        plan_path, plan_ref = _repository_path(root, args.plan, must_exist=True)
+        output_root, output_ref = _repository_path(root, args.output, must_exist=False)
+        if not (output_ref == "generated" or output_ref.startswith("generated/")):
+            raise _BundleBlockedError("render-plan output must remain under generated/")
+        plan = json.loads(plan_path.read_text(encoding="utf-8"))
+        if not isinstance(plan, Mapping):
+            raise _BundleBlockedError("resolved plan JSON must be an object")
+        files = render(args.renderer, plan)
+        if args.check:
+            mismatches = _render_mismatches(output_root, files)
+            if mismatches:
+                raise _BundleBlockedError("generated render drift: " + ", ".join(mismatches))
+        else:
+            write_rendered_files(output_root, files)
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError, RenderError, _BundleBlockedError, ValueError) as exc:
+        _write_bundle_result("blocked", str(exc), args.format, stream=sys.stderr)
+        return EXIT_BLOCKED
+
+    _write_bundle_result(
+        "pass",
+        f"rendered {len(files)} deterministic file(s) from {plan_ref}",
+        args.format,
+    )
+    return EXIT_OK
 
 
 def _render_bundle_command(args: argparse.Namespace) -> int:

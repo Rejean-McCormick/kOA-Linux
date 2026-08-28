@@ -47,8 +47,22 @@ def configure(parser: argparse.ArgumentParser) -> None:
     )
     parser.add_argument(
         "--manifest",
-        required=True,
-        help="Repository-relative generated assembly image-manifest path.",
+        default="generated/image/image-manifest.json",
+        help="Canonical generated image-manifest projection owned by the B-0092 renderer.",
+    )
+    parser.add_argument(
+        "--plan",
+        help=(
+            "Repository-relative resolved deployment plan. Defaults to "
+            "generated/profiles/<profile-id>/resolved-plan.json; it must already be authority-derived."
+        ),
+    )
+    parser.add_argument(
+        "--effective-profile-output",
+        help=(
+            "Repository-relative effective-profile projection. Defaults to "
+            "generated/profiles/<profile-id>/effective-profile.json."
+        ),
     )
     parser.add_argument(
         "--rootfs",
@@ -203,6 +217,25 @@ def execute(args: argparse.Namespace) -> int:
         label="image manifest",
         generated_output=True,
     )
+    if manifest.as_posix() != "generated/image/image-manifest.json":
+        raise CommandError(
+            "image manifest path is owned by the B-0092 renderer and must be "
+            "generated/image/image-manifest.json"
+        )
+    profile_id = args.profile.replace("-", "_")
+    effective_profile = repository_path(
+        root,
+        args.effective_profile_output
+        or f"generated/profiles/{profile_id}/effective-profile.json",
+        label="effective profile output",
+        generated_output=True,
+    )
+    plan = repository_path(
+        root,
+        args.plan or f"generated/profiles/{profile_id}/resolved-plan.json",
+        label="resolved deployment plan",
+        generated_output=True,
+    )
     output = repository_path(
         root,
         args.output,
@@ -235,21 +268,31 @@ def execute(args: argparse.Namespace) -> int:
     for label, path in outputs.items():
         repository_path(root, path, label=label.replace("_", " "), generated_output=True)
 
-    render_command: list[str] = [
+    resolve_command: list[str] = [
         *assembly_cli(
-            "render",
+            "resolve-profile",
             "--profile",
             args.profile,
-            "--renderer",
-            "image",
-            "--settings",
-            config.as_posix(),
             "--output",
-            manifest.as_posix(),
+            effective_profile.as_posix(),
         )
     ]
     for overlay in args.overlay:
-        render_command.extend(("--overlay", overlay))
+        resolve_command.extend(("--overlay", overlay))
+
+    render_command: list[str] = [
+        *assembly_cli(
+            "render-bundle",
+            "--plan",
+            plan.as_posix(),
+            "--settings",
+            config.as_posix(),
+            "--output",
+            "generated",
+        )
+    ]
+    for overlay_path in overlay_paths:
+        render_command.extend(("--overlay", overlay_path))
 
     artifact_profile = args.profile.replace("-", "_")
     common_identity = (
@@ -278,9 +321,20 @@ def execute(args: argparse.Namespace) -> int:
     )
     invocations: list[Invocation] = [
         Invocation(
-            label="render deterministic image manifest",
+            label="resolve effective profile",
+            argv=tuple(resolve_command),
+            required_paths=("assembly/pyproject.toml", profile_path, *overlay_paths),
+            environment={
+                "SOURCE_DATE_EPOCH": epoch,
+                "UV_FROZEN": "1",
+                "UV_NO_PROGRESS": "1",
+                "UV_OFFLINE": "1",
+            },
+        ),
+        Invocation(
+            label="render deterministic B-0092 image manifest",
             argv=tuple(render_command),
-            required_paths=common_required,
+            required_paths=(*common_required, plan.as_posix()),
             environment={
                 "SOURCE_DATE_EPOCH": epoch,
                 "UV_FROZEN": "1",

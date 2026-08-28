@@ -14,13 +14,16 @@ The assembly engine follows this order:
 4. applicable component, artifact, toolchain, security, lifecycle, operations,
    and conformance contracts.
 
-This bundle implements only the core model, strict local loader, diagnostics,
-and command-line entry point.  Profile resolution, overlay ordering, membership,
-capability closure, plans, renderers, and release-set construction belong to
-later bundles.
+The assembly package now contains the strict loader, deterministic profile
+resolution, overlay ordering, membership/capability closure, plan models,
+renderers, and release-manifest primitives.  These remain derived machinery:
+canonical contracts own semantics, while generated effective profiles and
+deployment plans are reproducible projections.
 
 The model deliberately contains no hand-maintained component or service list.
-Those facts must be obtained from canonical contracts and generated plans.
+Those facts must be obtained from canonical contracts and authority-derived
+generated plans.  If a resolved deployment plan is absent, assembly stops; it
+does not synthesize runtime commands, package identities, digests, or membership.
 
 ## Strict loading
 
@@ -55,7 +58,21 @@ PYTHONPATH=assembly/src python -m koa_assembly validate \
 PYTHONPATH=assembly/src python -m koa_assembly inspect \
   docs/contracts/system.contract.json
 PYTHONPATH=assembly/src python -m koa_assembly --format json scan docs/contracts
+PYTHONPATH=assembly/src python -m koa_assembly resolve-profile \
+  --profile sovereign-linux-node \
+  --output generated/profiles/sovereign_linux_node/effective-profile.json
+PYTHONPATH=assembly/src python -m koa_assembly render-bundle \
+  --plan generated/profiles/sovereign_linux_node/resolved-plan.json \
+  --settings packaging/system/image.toml \
+  --output generated
 ```
+
+`resolve-profile` writes a non-authoritative effective-profile projection from
+validated profile contracts.  `render-plan` and `render-bundle` consume an
+already resolved deployment plan; they never fabricate one when the upstream
+materialization stage is missing.  The image bundle is therefore fail-closed at
+that boundary until the component/package evidence needed to produce the plan is
+available.
 
 Exit codes:
 
