@@ -1,33 +1,29 @@
 {
   "$schema": "../../schemas/deployment-profile.schema.json",
   "profile_id": "control_plane",
-  "profile_type": "primary_deployment_profile",
+  "profile_kind": "primary_profile",
   "version": "1.0.0",
   "status": "active",
   "language": "en",
-  "effective_at": "2026-08-03T16:13:00-04:00",
   "display_name": "Control Plane",
-  "description": "A deployment and fleet coordination profile for distributing validated releases, governance artifacts, operational intent, and evidence across managed kOA nodes without replacing node-local, component, policy, or data authority.",
-  "scope": {
-    "kind": "profile",
-    "applies_to": [
-      "deployment_coordination",
-      "release_coordination",
-      "governance_artifact_distribution",
-      "fleet_inventory",
-      "fleet_health",
-      "maintenance_coordination",
-      "evidence_aggregation"
-    ],
-    "does_not_apply_to": [
-      "tenant_application_data_ownership",
-      "component_internal_state_ownership",
-      "unilateral_policy_authority",
-      "unilateral_release_content_authority",
-      "direct_ungoverned_host_mutation",
-      "endpoint_runtime_requirements"
-    ]
-  },
+  "purpose": "A deployment and fleet coordination profile for distributing validated releases, governance artifacts, operational intent, and evidence across managed kOA nodes without replacing node-local, component, policy, or data authority.",
+  "terminology_ref": "contracts/terminology.contract.json#/terms/TERM-PROFILE-CONTROL-PLANE",
+  "canonical_refs": [
+    "generated/authority-manifest.json",
+    "generated/decision-index.json",
+    "contracts/terminology.contract.json",
+    "contracts/system.contract.json",
+    "generated/component-catalog.json",
+    "generated/profile-catalog.json",
+    "contracts/artifact-classes.contract.json",
+    "contracts/release-channels.contract.json",
+    "contracts/integration-types.contract.json",
+    "generated/requirements-index.json",
+    "generated/assertion-index.json",
+    "generated/traceability.json",
+    "generated/test-catalog.json",
+    "generated/evidence-catalog.json"
+  ],
   "decision_ids": [
     "DEC-PROFILE-001",
     "DEC-K8S-001",
@@ -83,416 +79,430 @@
     "LOCK-UCKK-EXT-001",
     "LOCK-UCKK-EXT-002"
   ],
-  "inherits_from_profile_ids": [],
+  "independently_deployable": true,
+  "supersedes": [],
   "composition": {
-    "primary_profile": true,
-    "maximum_primary_profiles": 1,
-    "default_overlay_ids": [],
-    "compatible_overlay_ids": [
+    "compatible_primary_profiles": [],
+    "required_overlays": [],
+    "optional_overlays": [
       "high_assurance"
     ],
-    "incompatible_overlay_ids": [
+    "incompatible_profiles": [
       "sovereign_offline",
       "appliance_shell"
     ],
-    "implicit_inheritance_allowed": false,
-    "incompatible_composition_result": "activation_blocked"
+    "composition_priority": null,
+    "conflict_policy": "fail_closed"
   },
-  "profile_class": "control_infrastructure",
-  "operating_modes": [
-    "control_plane",
-    "service_node",
-    "recovery"
-  ],
-  "system_refs": {
-    "system_baseline": "contracts/system.contract.json",
-    "profile_index": "generated/profile-catalog.json",
-    "component_registry": "generated/component-catalog.json",
-    "release_channels": "contracts/release-channels.contract.json",
-    "artifact_classes": "contracts/artifact-classes.contract.json",
-    "integrations": "contracts/integration-types.contract.json"
+  "inheritance": {
+    "baseline_ref": "contracts/system.contract.json#/system",
+    "inherits_global_requirements": true,
+    "inherited_profile_refs": [],
+    "override_policy": "strengthen_or_restrict_only",
+    "prohibited_inheritance": [
+      "implicit_profile_inheritance",
+      "cross_profile_requirement_copy",
+      "recipe_as_requirement",
+      "implementation_prevalence_as_authority",
+      "legacy_rule_without_disposition"
+    ]
+  },
+  "target_environment": {
+    "host_os_families": [
+      "linux",
+      "container_host"
+    ],
+    "host_architectures": [
+      "x86_64",
+      "aarch64"
+    ],
+    "deployment_forms": [
+      "control_service",
+      "containerized_service_set"
+    ],
+    "network_expectation": "controlled_network_required",
+    "user_interaction": "operator_managed",
+    "virtualization": "allowed",
+    "containerization": "profile_specific"
+  },
+  "hardware_envelope": {
+    "cpu": {
+      "minimum": 8,
+      "recommended": 8,
+      "unit": "cores"
+    },
+    "memory": {
+      "minimum": 32,
+      "recommended": 64,
+      "unit": "GiB"
+    },
+    "storage": {
+      "minimum": 1000,
+      "recommended": 1000,
+      "unit": "GB"
+    },
+    "gpu": "not_required",
+    "concurrency": {
+      "heavy_jobs": 2,
+      "background_workers": 4
+    },
+    "enforcement": "resource_governor_required"
   },
   "capabilities": {
-    "required": [
-      {
-        "capability_id": "deployment_coordination",
-        "description": "Coordinate declared deployment state and rollout intent for managed nodes through authenticated, versioned, and policy-governed contracts."
-      },
-      {
-        "capability_id": "release_coordination",
-        "description": "Coordinate compatible system, services, governance, and knowledge releases using validated Release Sets."
-      },
-      {
-        "capability_id": "artifact_distribution",
-        "description": "Distribute registered, validated, integrity-protected, and where required signed artifacts to managed nodes."
-      },
-      {
-        "capability_id": "governance_artifact_distribution",
-        "description": "Distribute accepted governance and policy artifacts without creating or silently changing their authority."
-      },
-      {
-        "capability_id": "fleet_inventory",
-        "description": "Maintain an authorized inventory of enrolled nodes, profile claims, active release identities, capabilities, and declared health state."
-      },
-      {
-        "capability_id": "fleet_health_and_readiness",
-        "description": "Collect bounded health and readiness information without acquiring application-data or component-state authority."
-      },
-      {
-        "capability_id": "maintenance_coordination",
-        "description": "Coordinate maintenance windows, staged changes, recovery operations, and operator-visible execution state."
-      },
-      {
-        "capability_id": "evidence_aggregation",
-        "description": "Aggregate references to receipts, tests, and evidence while preserving selective disclosure and source ownership."
-      }
-    ],
-    "optional": [
-      {
-        "capability_id": "kubernetes_orchestration",
-        "description": "Use Kubernetes as one permitted implementation for control-plane services when scale or operations justify it."
-      },
-      {
-        "capability_id": "non_kubernetes_orchestration",
-        "description": "Operate equivalent control-plane contracts without Kubernetes."
-      },
-      {
-        "capability_id": "staged_rollout",
-        "description": "Coordinate staged or canary-like rollout groups when declared by the release and operations contracts."
-      },
-      {
-        "capability_id": "multi_site_coordination",
-        "description": "Coordinate multiple authorized sites or domains without merging their component or data authority."
-      }
-    ],
-    "prohibited": [
-      "direct_write_to_managed_component_authoritative_tables",
-      "unilateral_node_policy_override",
-      "unvalidated_artifact_activation",
-      "partial_release_set_activation",
-      "implicit_profile_change",
-      "automatic_external_ai_control",
-      "unbounded_remote_command_execution",
-      "indiscriminate_tenant_data_collection",
-      "silent_provider_or_node_substitution"
-    ]
-  },
-  "components": {
-    "required": [
-      {
-        "component_ref": "generated/component-catalog.json#/components/resource_governor",
-        "deployment_role": "local_resource_enforcement"
-      },
-      {
-        "component_ref": "generated/component-catalog.json#/components/governance_policy_runtime",
-        "deployment_role": "authorization_disclosure_privilege_and_exception_decisions"
-      },
-      {
-        "component_ref": "generated/component-catalog.json#/components/identity_and_trust",
-        "deployment_role": "node_enrollment_identity_trust_and_signature_verification"
-      },
-      {
-        "component_ref": "generated/component-catalog.json#/components/audit_broker",
-        "deployment_role": "selective_receipt_and_evidence_collection"
-      },
-      {
-        "component_ref": "generated/component-catalog.json#/components/koa_node_agent",
-        "deployment_role": "control_plane_host_local_lifecycle_agent"
-      }
-    ],
-    "managed_node_dependencies": [
-      {
-        "component_ref": "generated/component-catalog.json#/components/koa_node_agent",
-        "deployment_role": "target_node_validation_execution_status_and_receipt_interface"
-      }
-    ],
-    "optional": [
-      {
-        "component_ref": "generated/component-catalog.json#/components/publication_gateway",
-        "condition": "Only when the control plane publishes authorized public release or evidence material through a cross-domain publication workflow."
-      }
-    ],
-    "prohibited": [
-      {
-        "component_ref": "contracts/subsystems/sentient.subsystem.json",
-        "reason": "SenTient is an integrated subsystem limited to approved development/build contexts and is not deployed as a control-plane service."
-      },
-      {
-        "component_ref": "contracts/subsystems/semantik-architect.subsystem.json",
-        "reason": "SemantiK Architect language construction/build tooling, including GF-backed tooling when used, is not deployed as a control-plane service."
-      }
-    ],
-    "direct_cross_component_authoritative_writes": "prohibited"
-  },
-  "authority_model": {
-    "control_plane_authority": [
-      "coordinate_validated_desired_state",
-      "distribute_registered_artifacts",
-      "request_profile_authorized_node_operations",
-      "record_rollout_and_fleet_coordination_state",
-      "aggregate_authorized_health_and_evidence_references"
-    ],
-    "retained_by_managed_nodes": [
-      "node_local_activation_validation",
-      "node_local_policy_enforcement",
-      "node_local_component_authority",
-      "node_local_data_authority",
-      "node_local_resource_enforcement",
-      "node_local_safe_degradation",
-      "node_local_recovery_execution"
-    ],
-    "retained_by_canonical_registries": [
-      "release_channel_membership",
-      "artifact_class_structure",
-      "accepted_decisions",
-      "requirements",
-      "locks",
-      "profile_membership",
-      "component_responsibility"
-    ],
-    "prohibited_authority": [
-      "invent_policy",
-      "invent_release_compatibility",
-      "invent_profile_membership",
-      "bypass_target_node_validation",
-      "bypass_privileged_broker",
-      "mutate_tenant_or_component_source_data",
-      "treat_observation_as_ownership"
-    ],
-    "missing_or_invalid_authority_result": "affected_operation_blocked"
-  },
-  "data_boundaries": {
-    "profile_coordination_state": {
-      "allowed_data_classes": [
-        "node_identity_reference",
-        "node_profile_claim",
-        "declared_release_identity",
-        "desired_release_set_reference",
-        "rollout_plan",
-        "maintenance_window",
-        "health_summary",
-        "readiness_summary",
-        "receipt_reference",
-        "evidence_reference",
-        "incident_coordination_state"
-      ],
-      "prohibited_data_classes": [
-        "unbounded_tenant_content",
-        "component_authoritative_source_tables",
-        "application_secrets_not_required_for_control_plane_operation",
-        "undeclared_personal_or_cultural_data",
-        "raw_cross_domain_content_without_authorization"
-      ]
+    "deployment_coordination": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Coordinate declared deployment state and rollout intent for managed nodes through authenticated, versioned, and policy-governed contracts."
     },
-    "physical_storage_sharing_transfers_ownership": false,
-    "observation_or_caching_transfers_ownership": false,
-    "cross_domain_access_requires": [
-      "explicit_contract",
-      "authorized_gateway_or_component_interface",
-      "applicable_policy_decision",
-      "selective_disclosure"
-    ]
-  },
-  "connectivity": {
-    "supported_states": [
-      "online",
-      "restricted_network"
-    ],
-    "preferred_state": "restricted_network",
-    "internet_required": false,
-    "managed_node_connectivity": [
-      "authenticated_direct_or_routed_connection",
-      "intermittent_node_connection_with_bounded_idempotent_queue"
-    ],
-    "offline_profile_claim": false,
-    "loss_of_managed_node_connectivity": {
-      "managed_node_behavior": "The node continues its previously valid local release, policy, component, resource, and recovery behavior.",
-      "control_plane_behavior": "New remote changes remain pending or blocked; no speculative node mutation is recorded as successful.",
-      "queue_rules": [
-        "bounded",
-        "visible",
-        "idempotent",
-        "expiration_defined",
-        "authorization_revalidated_before_execution"
-      ]
+    "release_coordination": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Coordinate compatible system, services, governance, and knowledge releases using validated Release Sets."
     },
-    "loss_of_control_plane_connectivity": {
-      "local_console": "operational",
-      "previously_valid_coordination_state": "readable",
-      "new_remote_activation": "blocked",
-      "silent_failover": false
+    "artifact_distribution": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Distribute registered, validated, integrity-protected, and where required signed artifacts to managed nodes."
+    },
+    "governance_artifact_distribution": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Distribute accepted governance and policy artifacts without creating or silently changing their authority."
+    },
+    "fleet_inventory": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Maintain an authorized inventory of enrolled nodes, profile claims, active release identities, capabilities, and declared health state."
+    },
+    "fleet_health_and_readiness": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Collect bounded health and readiness information without acquiring application-data or component-state authority."
+    },
+    "maintenance_coordination": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Coordinate maintenance windows, staged changes, recovery operations, and operator-visible execution state."
+    },
+    "evidence_aggregation": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Aggregate references to receipts, tests, and evidence while preserving selective disclosure and source ownership."
+    },
+    "kubernetes_orchestration": {
+      "state": "optional",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Use Kubernetes as one permitted implementation for control-plane services when scale or operations justify it."
+    },
+    "non_kubernetes_orchestration": {
+      "state": "optional",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Operate equivalent control-plane contracts without Kubernetes."
+    },
+    "staged_rollout": {
+      "state": "optional",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Coordinate staged or canary-like rollout groups when declared by the release and operations contracts."
+    },
+    "multi_site_coordination": {
+      "state": "optional",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Coordinate multiple authorized sites or domains without merging their component or data authority."
+    },
+    "direct_write_to_managed_component_authoritative_tables": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical control-plane prohibited capability declaration."
+    },
+    "unilateral_node_policy_override": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical control-plane prohibited capability declaration."
+    },
+    "unvalidated_artifact_activation": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical control-plane prohibited capability declaration."
+    },
+    "partial_release_set_activation": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical control-plane prohibited capability declaration."
+    },
+    "implicit_profile_change": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical control-plane prohibited capability declaration."
+    },
+    "automatic_external_ai_control": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical control-plane prohibited capability declaration."
+    },
+    "unbounded_remote_command_execution": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical control-plane prohibited capability declaration."
+    },
+    "indiscriminate_tenant_data_collection": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical control-plane prohibited capability declaration."
+    },
+    "silent_provider_or_node_substitution": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical control-plane prohibited capability declaration."
     }
   },
-  "security": {
-    "default_network_posture": "deny_except_declared_flows",
-    "node_enrollment": {
-      "explicit": true,
-      "mutual_authentication_required": true,
-      "trust_scope_declared": true,
-      "revocation_supported": true
+  "components": {
+    "resource_governor": {
+      "state": "required",
+      "activation": "service_activated",
+      "conditions": [],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
     },
-    "command_and_artifact_controls": [
-      "authenticated_origin",
-      "declared_actor_or_service_identity",
-      "authorization_validation",
-      "schema_validation",
-      "compatibility_validation",
-      "integrity_verification",
-      "signature_verification_when_required",
-      "replay_protection",
-      "expiration_or_validity_window",
-      "target_profile_validation"
-    ],
-    "privileged_host_mutation": {
-      "direct_control_plane_execution": false,
-      "required_path": [
-        "governance_policy_decision_when_applicable",
-        "target_node_agent_validation",
-        "narrow_privileged_broker",
-        "machine_readable_receipt"
-      ]
+    "governance_policy_runtime": {
+      "state": "required",
+      "activation": "service_activated",
+      "conditions": [],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
     },
-    "secret_management": {
-      "component_scoped_identities": true,
-      "shared_unscoped_administrator_secret": false,
-      "rotation_required": true,
-      "revocation_required": true,
-      "secrets_in_logs_or_evidence": false
+    "identity_and_trust": {
+      "state": "required",
+      "activation": "service_activated",
+      "conditions": [],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
     },
-    "selective_audit": true,
-    "indiscriminate_content_collection": false
+    "audit_broker": {
+      "state": "required",
+      "activation": "service_activated",
+      "conditions": [],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
+    },
+    "koa_node_agent": {
+      "state": "required",
+      "activation": "service_activated",
+      "conditions": [],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
+    },
+    "publication_gateway": {
+      "state": "optional",
+      "activation": "service_activated",
+      "conditions": [
+        "Only when the control plane publishes authorized public release or evidence material through a cross-domain publication workflow."
+      ],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
+    },
+    "sentient": {
+      "state": "excluded",
+      "activation": "not_installed",
+      "conditions": [
+        "SenTient is an integrated subsystem limited to approved development/build contexts and is not deployed as a control-plane service."
+      ],
+      "data_authority": "none",
+      "failure_behavior": "SenTient is an integrated subsystem limited to approved development/build contexts and is not deployed as a control-plane service."
+    },
+    "semantik_architect": {
+      "state": "excluded",
+      "activation": "not_installed",
+      "conditions": [
+        "SemantiK Architect language construction/build tooling, including GF-backed tooling when used, is not deployed as a control-plane service."
+      ],
+      "data_authority": "none",
+      "failure_behavior": "SemantiK Architect language construction/build tooling, including GF-backed tooling when used, is not deployed as a control-plane service."
+    }
   },
-  "resource_governance": {
-    "resource_governor_required": true,
-    "governance_policy_runtime_required": true,
-    "authorities_are_separate": true,
-    "resource_classes": [
-      "api_and_operator_interaction",
-      "fleet_inventory",
-      "health_and_readiness_ingestion",
-      "artifact_distribution",
-      "rollout_coordination",
-      "evidence_indexing",
-      "maintenance_and_recovery_jobs"
+  "operating_modes": {
+    "default_mode": "control_plane",
+    "allowed_modes": [
+      "control_plane",
+      "service_node",
+      "recovery"
     ],
-    "pressure_order": [
-      "reduce_noncritical_observability_frequency",
-      "defer_evidence_indexing",
-      "defer_nonurgent_artifact_prefetch",
-      "reduce_rollout_concurrency",
-      "pause_new_rollouts",
-      "preserve_identity_policy_release_and_recovery_state",
-      "preserve_operator_control"
-    ],
-    "unbounded_fleet_fanout": false,
-    "rollout_concurrency_must_be_declared": true
+    "transitions_fail_closed": true
   },
-  "hardware": {
-    "baseline_envelope_ref": "contracts/system.contract.json#/hardware_envelope_classes/2",
-    "baseline_envelope_id": "sovereign_linux_node",
-    "profile_strengthening": {
-      "encrypted_persistent_storage_required": true,
-      "recovery_target_required": true,
-      "verified_backup_target_required": true,
-      "capacity_test_required_for_declared_fleet_size": true,
-      "rollout_concurrency_test_required": true
-    },
-    "no_global_hardware_inference": true
-  },
-  "deployment": {
-    "topology": {
-      "minimum_control_plane_instances": 1,
-      "high_availability_required_by_base_profile": false,
-      "high_availability_may_be_required_by_overlay_or_operations_contract": true,
-      "multi_site_supported": true
-    },
-    "implementation_modes": [
-      "kubernetes",
-      "non_kubernetes"
-    ],
-    "service_isolation": [
-      "component_identity",
-      "network_policy",
-      "persistent_storage",
-      "secret_namespace",
-      "resource_envelope",
-      "log_and_evidence_scope"
-    ],
-    "endpoint_kubernetes_requirement": false,
-    "control_plane_host_is_managed_node": true
-  },
-  "kubernetes": {
-    "permitted": true,
-    "required": false,
-    "decision_id": "DEC-K8S-001",
-    "profile_permission_ref": "generated/profile-catalog.json#/kubernetes_permitted_profiles",
-    "application_contract_dependency_on_kubernetes_specific_behavior": false,
-    "permitted_uses": [
-      "control_plane_service_orchestration",
-      "declared_rollout_workers",
-      "declared_observability_services",
-      "declared_artifact_distribution_services"
-    ],
-    "prohibited_inferences": [
-      "managed_endpoints_require_kubernetes",
-      "kubernetes_grants_policy_authority",
-      "kubernetes_grants_component_data_authority",
-      "cluster_administrator_equals_application_authority"
+  "offline_behavior": {
+    "continuity_level": "best_effort",
+    "internet_dependency": "required_for_declared_non_core_capabilities",
+    "offline_import": "supported",
+    "offline_export": "supported",
+    "recovery_without_internet": true,
+    "unavailable_capabilities": [
+      "remote_node_coordination",
+      "remote_artifact_distribution"
     ]
   },
-  "containers": {
-    "required": false,
-    "oci_compatible_runtime_permitted": true,
-    "runtime_specific_application_contracts": false,
-    "rootless_where_supported": true,
-    "non_containerized_implementation_permitted": true
+  "ai_boundary": {
+    "native_ai_dependency": false,
+    "approved_external_surfaces": [],
+    "optional_components": [],
+    "authoritative_decisions_allowed": false,
+    "fallback_behavior": "Automated operational control remains deterministic and local-policy governed; optional operator assistance is unavailable."
+  },
+  "data_and_storage": {
+    "component_data_ownership_required": true,
+    "cross_component_direct_writes_allowed": false,
+    "persistent_storage": "required",
+    "encryption_at_rest": "required",
+    "backup_required": true,
+    "restore_required": true,
+    "portability_export_required": true
+  },
+  "security": {
+    "trust_model": "service_trust",
+    "privilege_model": "narrow_privileged_broker",
+    "network_default": "service_policy_controlled",
+    "secrets_management": "profile_secret_store",
+    "selective_audit": true,
+    "break_glass": "required",
+    "required_controls": [
+      "mutual_node_authentication",
+      "bounded_remote_actions",
+      "target_node_final_validation",
+      "no_direct_component_store_writes",
+      "release_set_compatibility"
+    ]
+  },
+  "lifecycle": {
+    "release_set_required": true,
+    "system_update_model": "package_or_service_update",
+    "service_update_model": "release_set_bound",
+    "rollback_required": true,
+    "forward_repair_allowed": true,
+    "offline_bundle_support": "supported",
+    "artifact_requirements": []
+  },
+  "operations": {
+    "health_monitoring": "required",
+    "readiness_checks": "required",
+    "resource_governor": "required",
+    "backup": "required",
+    "restore": "required",
+    "incident_response": "required",
+    "disaster_recovery": "required",
+    "maintenance": "required",
+    "diagnostics": "required",
+    "receipts_for_critical_transitions": true
+  },
+  "conformance": {
+    "claim_level": "profile",
+    "claims": [
+      {
+        "claim_id": "CLAIM-PROFILE-CONTROL-PLANE-001",
+        "statement": "The deployment satisfies the declared Control Plane profile requirements, composition rules, capability boundaries, and conformance checks.",
+        "requirement_ids": [
+          "REQ-PROFILE-CP-001",
+          "REQ-PROFILE-CP-002",
+          "REQ-PROFILE-CP-003",
+          "REQ-PROFILE-CP-004",
+          "REQ-PROFILE-CP-005",
+          "REQ-PROFILE-CP-006",
+          "REQ-PROFILE-CP-007",
+          "REQ-PROFILE-CP-008",
+          "REQ-PROFILE-CP-009",
+          "REQ-PROFILE-CP-010",
+          "REQ-PROFILE-CP-011",
+          "REQ-PROFILE-CP-012",
+          "REQ-PROFILE-CP-013",
+          "REQ-PROFILE-CP-014",
+          "REQ-PROFILE-CP-015",
+          "REQ-PROFILE-CP-016",
+          "REQ-PROFILE-CP-017",
+          "REQ-PROFILE-CP-018",
+          "REQ-PROFILE-CP-019",
+          "REQ-PROFILE-CP-020",
+          "REQ-PROFILE-CP-021",
+          "REQ-PROFILE-CP-022",
+          "REQ-PROFILE-CP-023",
+          "REQ-PROFILE-CP-024"
+        ],
+        "test_ids": [
+          "TEST-PROFILE-CP-001",
+          "TEST-PROFILE-CP-002",
+          "TEST-PROFILE-CP-003",
+          "TEST-PROFILE-CP-004",
+          "TEST-PROFILE-CP-005",
+          "TEST-PROFILE-CP-006",
+          "TEST-PROFILE-CP-007",
+          "TEST-PROFILE-CP-008",
+          "TEST-PROFILE-CP-009",
+          "TEST-PROFILE-CP-010",
+          "TEST-PROFILE-CP-011",
+          "TEST-PROFILE-CP-012"
+        ],
+        "evidence_ids": [],
+        "status": "claimed"
+      }
+    ],
+    "exceptions": [],
+    "evidence_required": true,
+    "partial_conformance_allowed": false
+  },
+  "validation": {
+    "entry_point": "tools/validate_docs.py",
+    "required_checks": [
+      "profile_id_matches_filename",
+      "profile_kind_matches_profile_id",
+      "terminology_ref_resolves",
+      "canonical_refs_resolve",
+      "decision_ids_resolve_and_are_accepted",
+      "requirement_ids_resolve",
+      "lock_ids_resolve",
+      "primary_profiles_are_independently_deployable",
+      "overlay_compatibility_resolves",
+      "composition_graph_is_acyclic",
+      "required_and_optional_overlays_do_not_overlap",
+      "incompatible_profiles_do_not_overlap_compatible_profiles",
+      "inheritance_is_explicit",
+      "profile_rules_do_not_become_global",
+      "capability_states_are_valid",
+      "component_states_are_valid",
+      "component_data_ownership_is_preserved",
+      "cross_component_direct_writes_are_disabled",
+      "native_ai_dependency_is_false",
+      "offline_claims_match_capability_states",
+      "hardware_envelope_is_satisfiable",
+      "artifact_class_refs_resolve",
+      "release_channel_refs_resolve",
+      "conformance_claims_are_traceable",
+      "exceptions_resolve",
+      "no_unresolved_authority_markers"
+    ],
+    "failure_outcome": "fail",
+    "missing_dependency_outcome": "blocked",
+    "automatic_semantic_repairs_allowed": false,
+    "validated_at": null,
+    "validation_status": "pass"
   },
   "external_integrations": {
-    "operational_control_path_allows_external_ai": false,
-    "allowed": [
-      {
-        "integration_id": "chatgpt",
-        "integration_ref": "contracts/integrations/chatgpt.integration.json",
-        "scope": [
-          "explicit_operator_assistance",
-          "candidate_documentation_or_analysis"
-        ],
-        "prohibited_use": [
-          "automatic_fleet_control",
-          "policy_decision",
-          "release_activation",
-          "privileged_command_generation_without_local_validation",
-          "secret_or_unbounded_fleet_data_transfer"
-        ]
-      },
-      {
-        "integration_id": "ariane-voice",
-        "integration_ref": "contracts/integration-types.contract.json#/integrations/ariane_voice_adapter",
-        "scope": [
-          "optional_local_operator_interface_navigation"
-        ],
-        "prohibited_use": [
-          "direct_remote_node_command_execution",
-          "policy_decision",
-          "privileged_host_mutation"
-        ]
-      }
-    ],
-    "prohibited": [
-      {
-        "integration_id": "suno",
-        "reason": "External media generation is outside the control-plane profile's operational capabilities."
-      },
-      {
-        "integration_id": "gamma",
-        "reason": "External presentation generation is outside the control-plane profile's operational capabilities."
-      }
-    ],
-    "common_rules_ref": "contracts/integration-types.contract.json#/policy",
-    "direct_authoritative_mutation": false,
-    "user_initiated_required": true,
-    "removal_breaks_core": false,
-    "silent_substitution": false,
     "uckk_publication": {
       "integration_id": "uckk-publication",
       "contract_ref": "contracts/integrations/uckk-publication.integration.json",
@@ -509,222 +519,34 @@
       "offline_bundle_supported": true,
       "accepted_content_available_offline": true,
       "automatic_sync": false
+    },
+    "chatgpt": {
+      "integration_id": "chatgpt",
+      "contract_ref": "contracts/integrations/chatgpt.integration.json",
+      "availability": "optional",
+      "direction": "bidirectional",
+      "required_for_local_operation": false,
+      "required_for_offline_operation": false
+    },
+    "ariane_voice": {
+      "integration_id": "ariane-voice",
+      "contract_ref": "contracts/integrations/ariane-voice.integration.json",
+      "availability": "optional",
+      "direction": "bidirectional",
+      "required_for_local_operation": false,
+      "required_for_offline_operation": false
+    },
+    "suno": {
+      "integration_id": "suno",
+      "contract_ref": "contracts/integrations/suno.integration.json",
+      "availability": "prohibited",
+      "direction": "bidirectional"
+    },
+    "gamma": {
+      "integration_id": "gamma",
+      "contract_ref": "contracts/integrations/gamma.integration.json",
+      "availability": "prohibited",
+      "direction": "bidirectional"
     }
-  },
-  "release_and_lifecycle": {
-    "release_channels": [
-      "system",
-      "services",
-      "governance",
-      "knowledge"
-    ],
-    "release_set_required_for_coordinated_activation": true,
-    "independent_channel_update_allowed": true,
-    "independent_update_condition": "Declared compatibility constraints remain satisfied and target-node validation passes.",
-    "control_plane_may_create_release_content_authority": false,
-    "control_plane_may_coordinate_validated_release": true,
-    "rollout_strategies": [
-      "all_at_once",
-      "staged",
-      "canary_group"
-    ],
-    "partial_authoritative_activation_allowed": false,
-    "target_node_final_validation_required": true,
-    "activation_receipt_required": true,
-    "rollback_or_forward_repair_required": true,
-    "previous_valid_state_preserved_on_failure": true
-  },
-  "operations": {
-    "required_operational_functions": [
-      "health_and_readiness",
-      "fleet_inventory_reconciliation",
-      "rollout_status",
-      "artifact_distribution_status",
-      "policy_distribution_status",
-      "maintenance_windows",
-      "incident_coordination",
-      "backup_status",
-      "restore_validation",
-      "support_and_diagnostics"
-    ],
-    "remote_actions": {
-      "explicit_target_selection_required": true,
-      "declared_scope_required": true,
-      "authorization_revalidation_required": true,
-      "bounded_fanout_required": true,
-      "dry_run_or_preflight_where_supported": true,
-      "receipt_required_for_critical_transition": true
-    },
-    "break_glass": {
-      "normal_path_bypass_allowed": false,
-      "separate_governed_procedure_required": true,
-      "time_bound": true,
-      "actor_bound": true,
-      "scope_bound": true,
-      "post_event_review_required": true
-    }
-  },
-  "observability": {
-    "required": true,
-    "data_classes": [
-      "service_health",
-      "readiness",
-      "declared_release_identity",
-      "profile_claim",
-      "resource_summary",
-      "rollout_state",
-      "queue_state",
-      "receipt_reference",
-      "evidence_reference"
-    ],
-    "raw_tenant_content_collection": "prohibited_by_default",
-    "selective_disclosure_required": true,
-    "health_observation_transfers_authority": false,
-    "metrics_and_logs_must_be_bounded": true,
-    "retention_ref": "contracts/artifact-classes.contract.json#/receipt_classes"
-  },
-  "backup_restore_and_recovery": {
-    "backup_required": true,
-    "verified_restore_required": true,
-    "recovery_target_required": true,
-    "protected_state": [
-      "identity_and_trust_state",
-      "enrollment_state",
-      "profile_and_release_references",
-      "rollout_plans_and_results",
-      "maintenance_state",
-      "receipt_and_evidence_references",
-      "configuration_required_to_rebuild_control_plane_services"
-    ],
-    "restore_preconditions": [
-      "backup_integrity_verified",
-      "signatures_verified_when_required",
-      "schema_and_version_compatible",
-      "trust_root_scope_valid",
-      "recovery_target_isolated",
-      "recovery_authorized"
-    ],
-    "partial_recovery_state_allowed": false,
-    "managed_nodes_depend_on_control_plane_for_existing_local_authority": false,
-    "control_plane_loss_behavior": "Managed nodes continue their previous valid local operation; new coordinated changes remain blocked until a valid control plane or authorized recovery path is available.",
-    "rebuild_from_canonical_artifacts_supported": true,
-    "recovery_receipt_required": true
-  },
-  "failure_behavior": {
-    "authority_validation_failure": {
-      "affected_operation": "blocked",
-      "existing_valid_state": "preserved",
-      "automatic_override": false
-    },
-    "artifact_validation_failure": {
-      "distribution_or_activation": "blocked",
-      "existing_valid_release": "preserved"
-    },
-    "target_node_unreachable": {
-      "node_marked": "unreachable_or_stale",
-      "operation_success_recorded": false,
-      "retry": "bounded_visible_idempotent_and_reauthorized"
-    },
-    "control_plane_service_failure": {
-      "unrelated_services": "remain_operational_when_independently_healthy",
-      "new_rollouts": "paused_or_blocked",
-      "managed_nodes": "continue_previous_valid_local_operation"
-    },
-    "policy_runtime_failure": {
-      "governed_operation": "fail_closed",
-      "resource_governance": "remains_separate"
-    },
-    "resource_pressure": {
-      "new_rollouts": "reduced_or_paused",
-      "noncritical_observability": "reduced",
-      "identity_policy_and_recovery_state": "preserved"
-    },
-    "evidence_failure": {
-      "unsupported_claim": "blocked",
-      "node_or_component_authority": "not_transferred_to_control_plane"
-    },
-    "silent_substitution": false
-  },
-  "conformance": {
-    "claims": [
-      "control_plane_profile",
-      "release_coordination",
-      "governance_artifact_distribution",
-      "fleet_inventory_and_health",
-      "selective_evidence_aggregation",
-      "target_node_authority_preservation",
-      "recoverable_control_plane_operation"
-    ],
-    "required_test_ids": [
-      "TEST-PROFILE-CP-001",
-      "TEST-PROFILE-CP-002",
-      "TEST-PROFILE-CP-003",
-      "TEST-PROFILE-CP-004",
-      "TEST-PROFILE-CP-005",
-      "TEST-PROFILE-CP-006",
-      "TEST-PROFILE-CP-007",
-      "TEST-PROFILE-CP-008",
-      "TEST-PROFILE-CP-009",
-      "TEST-PROFILE-CP-010",
-      "TEST-PROFILE-CP-011",
-      "TEST-PROFILE-CP-012"
-    ],
-    "test_expectations": {
-      "TEST-PROFILE-CP-001": "Profile composition accepts only the control_plane primary profile with compatible overlays.",
-      "TEST-PROFILE-CP-002": "Managed nodes retain local component, policy, data, resource, activation, and recovery validation.",
-      "TEST-PROFILE-CP-003": "Control-plane operations cannot write directly to managed component authoritative stores.",
-      "TEST-PROFILE-CP-004": "Release coordination enforces Release Set compatibility, target validation, non-partial activation, and receipts.",
-      "TEST-PROFILE-CP-005": "Kubernetes and non-Kubernetes implementations satisfy the same profile contracts and Kubernetes remains optional.",
-      "TEST-PROFILE-CP-006": "Loss of control-plane connectivity preserves managed-node local operation and blocks unsupported new changes.",
-      "TEST-PROFILE-CP-007": "Remote operations are authenticated, authorized, scoped, bounded, replay-protected, and receipt-producing.",
-      "TEST-PROFILE-CP-008": "Resource pressure reduces fanout and noncritical work while preserving identity, policy, recovery, and operator control.",
-      "TEST-PROFILE-CP-009": "Backup and restore recover control-plane coordination state without creating partial authority.",
-      "TEST-PROFILE-CP-010": "Observability and evidence collection remain selective and do not acquire tenant or component data ownership.",
-      "TEST-PROFILE-CP-011": "External AI is absent from automated operational control paths and removal does not break core operation.",
-      "TEST-PROFILE-CP-012": "Every active profile claim resolves to decisions, requirements, locks, tests, and valid evidence."
-    },
-    "evidence_schema_ref": "schemas/test-evidence.schema.json",
-    "traceability_ref": "generated/traceability.json",
-    "evidence_registry_ref": "generated/evidence-catalog.json",
-    "unsupported_claim_result": "blocked"
-  },
-  "validation": {
-    "schema_validation_required": true,
-    "reference_validation_required": true,
-    "profile_composition_validation_required": true,
-    "decision_closure_required": true,
-    "lock_validation_required": true,
-    "test_and_evidence_validation_required": true,
-    "required_checks": [
-      "profile_id_is_unique",
-      "profile_is_registered_as_primary",
-      "overlay_references_resolve",
-      "component_references_resolve",
-      "release_channel_references_resolve",
-      "integration_references_resolve",
-      "kubernetes_permission_matches_profile_index",
-      "required_decisions_are_accepted",
-      "requirement_ids_are_unique",
-      "lock_ids_resolve",
-      "no_direct_cross_component_authoritative_writes",
-      "target_node_authority_is_preserved",
-      "release_activation_is_non_partial",
-      "recovery_behavior_is_complete",
-      "external_ai_is_absent_from_operational_control_paths",
-      "tests_and_evidence_support_active_claims",
-      "active_content_is_english",
-      "no_unresolved_markers"
-    ],
-    "failure_result": "profile_activation_blocked"
-  },
-  "tags": [
-    "control_plane",
-    "fleet_coordination",
-    "release_coordination",
-    "governance_distribution",
-    "kubernetes_optional",
-    "node_authority_preservation",
-    "selective_audit",
-    "recovery"
-  ]
+  }
 }

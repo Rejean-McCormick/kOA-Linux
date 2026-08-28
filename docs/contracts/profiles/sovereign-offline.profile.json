@@ -1,906 +1,14 @@
 {
   "$schema": "../../schemas/deployment-profile.schema.json",
   "profile_id": "sovereign_offline",
-  "profile_type": "deployment_profile_overlay",
+  "profile_kind": "profile_overlay",
   "version": "1.0.0",
   "status": "active",
   "language": "en",
-  "effective_at": "2026-08-03T16:13:00-04:00",
-  "owner": "deployment-architecture",
-  "title": "Sovereign Offline Overlay",
-  "description": "Adds a complete offline-sovereignty envelope to compatible sovereign base profiles. The overlay requires local authority, local policy evaluation, local trust, local audit, signed offline release import, atomic activation, local recovery, and operation without Internet or external AI dependencies.",
-  "scope": {
-    "kind": "profile_overlay",
-    "applies_to": [
-      "runtime",
-      "governance",
-      "identity",
-      "audit",
-      "release",
-      "artifact_activation",
-      "backup",
-      "restore",
-      "external_integrations",
-      "network",
-      "storage"
-    ],
-    "does_not_redefine": [
-      "global_component_responsibilities",
-      "global_data_ownership",
-      "global_ai_boundary",
-      "component_internal_interfaces",
-      "artifact_serialization",
-      "release_channel_identity"
-    ]
-  },
-  "composition": {
-    "overlay": true,
-    "inheritance_is_explicit": true,
-    "allowed_base_profiles": [
-      "sovereign_linux_node",
-      "sovereign_hub"
-    ],
-    "prohibited_base_profiles": [
-      "user_lightweight",
-      "developer_linux_workstation",
-      "developer_windows_wsl",
-      "build_farm",
-      "control_plane"
-    ],
-    "compatible_overlays": [
-      "high_assurance",
-      "appliance_shell"
-    ],
-    "incompatible_overlays": [],
-    "application_order": [
-      "base_profile",
-      "high_assurance_when_selected",
-      "sovereign_offline",
-      "appliance_shell_when_selected"
-    ],
-    "conflict_policy": {
-      "strategy": "deny_ambiguous_composition",
-      "overlay_may_only_restrict_or_add_within_declared_scope": true,
-      "global_authority_cannot_be_overridden": true,
-      "component_authority_cannot_be_merged": true,
-      "unresolved_conflict_result": "blocked"
-    }
-  },
-  "profile_claims": [
-    {
-      "claim_id": "CLAIM-PROFILE-SOV-OFF-001",
-      "title": "Internet-independent core operation",
-      "statement": "All capabilities required by the composed profile operate without Internet access.",
-      "validation_test_ids": [
-        "TEST-PROFILE-SOV-OFF-001"
-      ],
-      "evidence_ids": [
-        "EVID-PROFILE-SOV-OFF-001"
-      ]
-    },
-    {
-      "claim_id": "CLAIM-PROFILE-SOV-OFF-002",
-      "title": "Local authority",
-      "statement": "Identity, policy, release, component, and data authority required for operation are locally resolvable.",
-      "validation_test_ids": [
-        "TEST-PROFILE-SOV-OFF-002"
-      ],
-      "evidence_ids": [
-        "EVID-PROFILE-SOV-OFF-002"
-      ]
-    },
-    {
-      "claim_id": "CLAIM-PROFILE-SOV-OFF-003",
-      "title": "Signed offline updates",
-      "statement": "Updates enter through verified offline bundles and activate only as compatible release sets.",
-      "validation_test_ids": [
-        "TEST-PROFILE-SOV-OFF-003"
-      ],
-      "evidence_ids": [
-        "EVID-PROFILE-SOV-OFF-003"
-      ]
-    },
-    {
-      "claim_id": "CLAIM-PROFILE-SOV-OFF-004",
-      "title": "Local governed decisions",
-      "statement": "Governed authorization, disclosure, consent, privilege, and exception decisions required by the profile are evaluated locally.",
-      "validation_test_ids": [
-        "TEST-PROFILE-SOV-OFF-004"
-      ],
-      "evidence_ids": [
-        "EVID-PROFILE-SOV-OFF-004"
-      ]
-    },
-    {
-      "claim_id": "CLAIM-PROFILE-SOV-OFF-005",
-      "title": "No external AI dependency",
-      "statement": "The composed profile remains operational without ChatGPT, Suno, Gamma, external Ariane voice, or any other external AI service.",
-      "validation_test_ids": [
-        "TEST-PROFILE-SOV-OFF-005"
-      ],
-      "evidence_ids": [
-        "EVID-PROFILE-SOV-OFF-005"
-      ]
-    },
-    {
-      "claim_id": "CLAIM-PROFILE-SOV-OFF-006",
-      "title": "Local recovery and exit",
-      "statement": "Backup, restore, rollback, forward repair, evidence export, and data export are executable from locally held artifacts and keys.",
-      "validation_test_ids": [
-        "TEST-PROFILE-SOV-OFF-006"
-      ],
-      "evidence_ids": [
-        "EVID-PROFILE-SOV-OFF-006"
-      ]
-    }
-  ],
-  "capability_policy": {
-    "required_capability_ids": [
-      "local_operation",
-      "local_identity_verification",
-      "local_policy_evaluation",
-      "local_audit_recording",
-      "offline_bundle_import",
-      "offline_release_verification",
-      "atomic_release_activation",
-      "local_backup",
-      "local_restore",
-      "local_rollback_or_forward_repair",
-      "local_ariane_navigation",
-      "deterministic_koa_mediatheque_operation",
-      "local_evidence_export",
-      "portable_data_export"
-    ],
-    "inherited_capability_ids": [
-      "base_profile_runtime",
-      "base_profile_storage",
-      "base_profile_recovery",
-      "base_profile_resource_governance"
-    ],
-    "disabled_capability_ids": [
-      "ariane_external_voice",
-      "chatgpt_external_operation",
-      "suno_external_operation",
-      "gamma_external_operation",
-      "remote_policy_evaluation",
-      "remote_identity_dependency",
-      "internet_required_publication",
-      "automatic_external_synchronization",
-      "external_telemetry_export",
-      "external_license_check"
-    ],
-    "prohibited_capability_ids": [
-      "external_ai_authority",
-      "autonomous_external_routing",
-      "direct_external_authoritative_write",
-      "unverified_offline_import",
-      "partial_release_activation",
-      "remote_break_glass_dependency"
-    ],
-    "offline_required": true,
-    "internet_dependency": "none",
-    "external_ai_dependency": "none",
-    "failure_is_capability_scoped": true
-  },
-  "component_policy": {
-    "required_component_ids": [
-      "identity_and_trust",
-      "governance_policy_runtime",
-      "audit_broker",
-      "resource_governor",
-      "koa_node_agent"
-    ],
-    "inherited_required_components": "from_base_profile",
-    "optional_component_ids": [],
-    "prohibited_component_ids": [
-      "sentient"
-    ],
-    "component_overrides": [
-      {
-        "component_id": "identity_and_trust",
-        "activation": "always_available",
-        "required_local_behavior": [
-          "local_identity_resolution",
-          "local_signature_verification",
-          "local_trust_root_resolution",
-          "offline_revocation_state_resolution"
-        ],
-        "external_dependency_allowed": false
-      },
-      {
-        "component_id": "governance_policy_runtime",
-        "activation": "always_available",
-        "required_local_behavior": [
-          "local_policy_bundle_resolution",
-          "local_authorization_evaluation",
-          "local_disclosure_evaluation",
-          "local_consent_evaluation",
-          "local_privilege_evaluation",
-          "local_exception_evaluation",
-          "local_decision_receipt_generation"
-        ],
-        "external_dependency_allowed": false
-      },
-      {
-        "component_id": "audit_broker",
-        "activation": "always_available",
-        "required_local_behavior": [
-          "local_selective_audit",
-          "local_evidence_retention",
-          "controlled_offline_evidence_export"
-        ],
-        "external_dependency_allowed": false
-      },
-      {
-        "component_id": "resource_governor",
-        "activation": "always_available",
-        "required_local_behavior": [
-          "local_resource_enforcement",
-          "local_queue_management",
-          "local_concurrency_control",
-          "local_degradation_control"
-        ],
-        "external_dependency_allowed": false
-      },
-      {
-        "component_id": "koa_node_agent",
-        "activation": "always_available",
-        "required_local_behavior": [
-          "offline_bundle_staging",
-          "local_release_verification",
-          "atomic_activation_coordination",
-          "local_health_reporting",
-          "local_recovery_coordination"
-        ],
-        "external_dependency_allowed": false
-      },
-      {
-        "component_id": "ariane_runtime",
-        "activation": "inherit_from_base_profile",
-        "required_local_behavior": [
-          "keyboard_navigation",
-          "pointer_navigation",
-          "touch_navigation_when_supported",
-          "local_shortcuts",
-          "deterministic_commands",
-          "accessibility_controls"
-        ],
-        "disabled_behavior": [
-          "ariane_external_voice"
-        ],
-        "external_dependency_allowed": false
-      },
-      {
-        "component_id": "koa_mediatheque",
-        "activation": "inherit_from_base_profile",
-        "required_local_behavior": [
-          "deterministic_ingestion",
-          "integrity_verification",
-          "user_metadata_capture",
-          "thumbnail_generation",
-          "preview_generation",
-          "deterministic_text_extraction",
-          "local_storage",
-          "local_export",
-          "local_backup",
-          "local_restore"
-        ],
-        "disabled_behavior": [
-          "suno_external_operation",
-          "gamma_external_operation",
-          "external_ai_routing"
-        ],
-        "external_dependency_allowed": false
-      },
-      {
-        "component_id": "publication_gateway",
-        "activation": "inherit_from_base_profile",
-        "required_local_behavior": [
-          "offline_export_package_creation",
-          "offline_publication_receipt_generation"
-        ],
-        "disabled_behavior": [
-          "direct_internet_publication",
-          "automatic_remote_delivery"
-        ],
-        "external_dependency_allowed": false
-      }
-    ],
-    "authority_rules": {
-      "single_authoritative_owner_per_data_domain": true,
-      "direct_cross_component_source_writes_allowed": false,
-      "shared_component_authority_allowed": false,
-      "component_contracts_required": true,
-      "unregistered_component_interaction_result": "blocked"
-    }
-  },
-  "connectivity": {
-    "operating_state": "offline",
-    "internet_access": "prohibited_during_conformant_operation",
-    "default_egress_policy": "deny",
-    "default_external_ingress_policy": "deny",
-    "local_network_policy": "inherit_restricted_local_network_from_base_profile",
-    "external_dns_dependency": "none",
-    "external_time_dependency": "none",
-    "external_identity_dependency": "none",
-    "external_policy_dependency": "none",
-    "external_storage_dependency": "none",
-    "external_observability_dependency": "none",
-    "external_license_dependency": "none",
-    "permitted_transfer_boundaries": [
-      "verified_removable_media",
-      "approved_offline_transfer_station",
-      "signed_offline_bundle",
-      "signed_export_bundle"
-    ],
-    "prohibited_transfer_boundaries": [
-      "unregistered_usb_import",
-      "unverified_removable_media",
-      "automatic_cloud_sync",
-      "automatic_external_telemetry",
-      "automatic_external_ai_call",
-      "direct_remote_authoritative_write"
-    ],
-    "network_state_validation": {
-      "internet_route_absent_or_blocked": true,
-      "external_service_calls_fail_without_core_failure": true,
-      "local_service_resolution_required": true,
-      "local_health_and_readiness_required": true
-    }
-  },
-  "external_integrations": {
-    "default_policy": "disabled",
-    "approved_but_disabled_in_overlay": [
-      "chatgpt",
-      "suno",
-      "gamma",
-      "ariane_external_voice",
-      "uckk-publication"
-    ],
-    "automatically_enabled_integrations": [],
-    "runtime_external_calls_allowed": false,
-    "background_external_calls_allowed": false,
-    "automatic_external_substitution_allowed": false,
-    "external_output_authority": "none",
-    "reenablement_requires": [
-      "overlay_deactivation",
-      "compatible_online_profile_state",
-      "explicit_user_or_operator_action",
-      "active_integration_contract",
-      "successful_validation"
-    ],
-    "uckk_publication": {
-      "integration_id": "uckk-publication",
-      "contract_ref": "contracts/integrations/uckk-publication.integration.json",
-      "availability": "optional",
-      "direction": "outbound",
-      "required_for_local_operation": false,
-      "required_for_offline_operation": false
-    },
-    "uckk_import": {
-      "integration_id": "uckk-import",
-      "contract_ref": "contracts/integrations/uckk-import.integration.json",
-      "availability": "optional",
-      "direction": "inbound",
-      "offline_bundle_supported": true,
-      "accepted_content_available_offline": true,
-      "automatic_sync": false
-    }
-  },
-  "governance": {
-    "governance_policy_runtime_required": true,
-    "policy_source": "local_active_policy_bundles",
-    "policy_bundle_ref": "contracts/artifact-contracts/policy-bundle.schema.json",
-    "decision_classes": [
-      "authorization",
-      "disclosure",
-      "consent",
-      "privilege",
-      "exception"
-    ],
-    "local_evaluation_required": true,
-    "remote_evaluation_allowed": false,
-    "indeterminate_decision_result": "blocked",
-    "stale_policy_result": "blocked",
-    "missing_policy_result": "blocked",
-    "policy_activation": {
-      "mode": "atomic",
-      "previous_valid_policy_retained_until_success": true,
-      "partial_policy_activation_allowed": false,
-      "rollback_or_forward_repair_required": true,
-      "activation_receipt_required": true
-    },
-    "exception_policy": {
-      "registered_exceptions_only": true,
-      "scope_and_expiration_validation_required": true,
-      "compensating_controls_required": true,
-      "evidence_required": true,
-      "silent_requirement_rewrite_allowed": false
-    }
-  },
-  "identity_and_trust": {
-    "trust_model": "local_profile_scoped_trust",
-    "local_trust_roots_required": true,
-    "local_signature_verification_required": true,
-    "offline_revocation_state_required": true,
-    "remote_identity_provider_required": false,
-    "remote_certificate_status_required": false,
-    "trusted_time_source": {
-      "mode": "local",
-      "external_time_service_required": false,
-      "monotonic_time_required_for_local_ordering": true,
-      "clock_state_recorded_in_critical_receipts": true,
-      "invalid_time_state_result": "block_time_sensitive_transition"
-    },
-    "key_material": {
-      "local_storage_required": true,
-      "hardware_protection": "inherit_from_base_or_high_assurance_overlay",
-      "offline_recovery_material_required": true,
-      "key_export_policy": "explicit_governed_backup_only",
-      "unattended_remote_key_retrieval_allowed": false
-    }
-  },
-  "data_and_storage": {
-    "logical_data_ownership_required": true,
-    "separate_storage_identities_required": true,
-    "separate_database_instances_preferred": true,
-    "separate_database_instances_required": false,
-    "cross_domain_access": "active_contract_or_gateway_only",
-    "direct_cross_component_source_writes_allowed": false,
-    "external_replication_allowed": false,
-    "automatic_remote_backup_allowed": false,
-    "encryption_at_rest_required": true,
-    "local_backup_required": true,
-    "backup_requirements": {
-      "encrypted": true,
-      "integrity_verified": true,
-      "component_ownership_preserved": true,
-      "release_compatibility_recorded": true,
-      "local_restore_test_required": true,
-      "offline_copy_supported": true
-    },
-    "restore_requirements": {
-      "complete_compatible_set_required": true,
-      "mixed_version_authority_allowed": false,
-      "ordering_constraints_verified": true,
-      "rollback_or_forward_repair_required": true,
-      "restore_evidence_required": true
-    },
-    "export_requirements": {
-      "explicit_authority_required": true,
-      "signed_export_bundle_required": true,
-      "provenance_required": true,
-      "data_minimization_required": true,
-      "portable_open_formats_required_when_defined_by_artifact_contract": true,
-      "export_receipt_required": true
-    }
-  },
-  "offline_artifact_flow": {
-    "accepted_import_artifact_classes": [
-      "offline_bundle",
-      "release_set",
-      "system_image",
-      "service_artifact",
-      "policy_bundle",
-      "runtime_pack",
-      "language_pack",
-      "knowledge_package",
-      "sovereignty_bundle",
-      "provenance_receipt"
-    ],
-    "release_channels": [
-      "system",
-      "services",
-      "governance",
-      "knowledge"
-    ],
-    "import_sequence": [
-      "receive_into_quarantine",
-      "identify_bundle",
-      "verify_transfer_authority",
-      "verify_signatures",
-      "verify_provenance",
-      "verify_artifact_contracts",
-      "verify_release_set",
-      "verify_channel_compatibility",
-      "scan_and_validate_contents",
-      "stage_without_activation",
-      "run_profile_tests",
-      "produce_import_evidence",
-      "activate_atomically",
-      "produce_activation_receipt",
-      "retain_previous_valid_release"
-    ],
-    "import_policy": {
-      "unsigned_artifacts_allowed": false,
-      "unknown_signer_allowed": false,
-      "partial_bundle_import_allowed": false,
-      "partial_release_activation_allowed": false,
-      "automatic_activation_allowed": false,
-      "operator_authorization_required": true,
-      "quarantine_required": true
-    },
-    "activation_policy": {
-      "release_set_required": true,
-      "all_four_channels_may_be_versioned_independently": true,
-      "independent_channel_activation_requires_compatibility": true,
-      "atomic_authority_state_required": true,
-      "previous_valid_release_retained": true,
-      "rollback_required_when_safe": true,
-      "forward_repair_required_when_rollback_is_unsafe": true
-    },
-    "export_sequence": [
-      "resolve_export_authority",
-      "select_minimized_content",
-      "create_versioned_artifact",
-      "attach_provenance",
-      "sign_artifact",
-      "verify_export_bundle",
-      "produce_export_receipt",
-      "transfer_through_approved_offline_boundary"
-    ]
-  },
-  "offline_operation": {
-    "required_local_services": [
-      "identity_verification",
-      "policy_evaluation",
-      "audit_recording",
-      "resource_governance",
-      "health_and_readiness",
-      "backup",
-      "restore",
-      "release_verification",
-      "evidence_storage"
-    ],
-    "required_local_content": [
-      "active_authority_set",
-      "active_component_contracts",
-      "active_profile_contracts",
-      "active_policy_bundles",
-      "active_release_set",
-      "required_runtime_artifacts",
-      "required_language_artifacts",
-      "required_knowledge_artifacts",
-      "required_trust_material",
-      "required_recovery_material",
-      "local_operator_documentation"
-    ],
-    "deferred_operations": [
-      "external_publication",
-      "external_support_upload",
-      "external_evidence_submission",
-      "external_update_discovery",
-      "external_ai_operation"
-    ],
-    "unavailable_operations": [
-      "ariane_external_voice",
-      "chatgpt_external_operation",
-      "suno_external_operation",
-      "gamma_external_operation",
-      "automatic_cloud_synchronization"
-    ],
-    "operator_visibility": {
-      "offline_state_visible": true,
-      "deferred_operations_visible": true,
-      "last_successful_import_visible": true,
-      "active_release_set_visible": true,
-      "active_policy_set_visible": true,
-      "backup_and_restore_readiness_visible": true
-    }
-  },
-  "security": {
-    "security_posture": "deny_external_dependency",
-    "privilege_model": "inherit_narrow_profile_privilege_boundary",
-    "standing_remote_administration_allowed": false,
-    "remote_break_glass_allowed": false,
-    "local_break_glass": {
-      "allowed": true,
-      "explicit_profile_contract_required": true,
-      "bounded_operation_required": true,
-      "local_authorization_required": true,
-      "receipt_required": true,
-      "post_action_review_required": true
-    },
-    "removable_media_security": {
-      "default_policy": "deny_unverified_media",
-      "quarantine_required": true,
-      "content_validation_required": true,
-      "signature_verification_required": true,
-      "provenance_verification_required": true,
-      "autorun_allowed": false,
-      "direct_execution_from_media_allowed": false
-    },
-    "secrets": {
-      "local_secret_store_required": true,
-      "remote_secret_manager_required": false,
-      "profile_scoped_secret_identity_required": true,
-      "plaintext_export_allowed": false,
-      "offline_recovery_procedure_required": true
-    }
-  },
-  "audit_and_evidence": {
-    "audit_model": "selective_local_audit",
-    "local_audit_broker_required": true,
-    "external_audit_sink_required": false,
-    "automatic_external_evidence_export_allowed": false,
-    "required_event_classes": [
-      "offline_bundle_import",
-      "signature_verification",
-      "release_set_validation",
-      "policy_bundle_activation",
-      "release_activation",
-      "rollback",
-      "forward_repair",
-      "restore",
-      "break_glass",
-      "governed_exception_use",
-      "data_export"
-    ],
-    "evidence_storage": {
-      "local": true,
-      "integrity_protected": true,
-      "component_and_subject_scoped": true,
-      "exportable_through_signed_bundle": true,
-      "retention_policy_ref": "generated/evidence-catalog.json",
-      "failed_evidence_preserved": true
-    },
-    "decision_and_execution_evidence_are_distinct": true
-  },
-  "resource_governance": {
-    "resource_governor_required": true,
-    "local_enforcement_required": true,
-    "remote_scheduler_required": false,
-    "resource_envelope_source": "base_profile_and_local_artifacts",
-    "offline_job_queue_required": true,
-    "heavy_job_policy": "profile_resource_envelope",
-    "external_resource_scaling_allowed": false,
-    "failure_behavior": {
-      "uncontrolled_new_work_result": "blocked",
-      "existing_safe_local_capabilities_preserved": true,
-      "resource_sensitive_jobs_deferred_or_rejected": true
-    }
-  },
-  "degradation": {
-    "rules": [
-      {
-        "degradation_id": "DEGRADE-PROFILE-SOV-OFF-001",
-        "trigger": "external_network_unavailable",
-        "result": "normal_offline_operation",
-        "affected_capability_ids": [],
-        "preserved_capability_ids": [
-          "local_operation",
-          "local_policy_evaluation",
-          "local_identity_verification",
-          "local_ariane_navigation",
-          "deterministic_koa_mediatheque_operation"
-        ],
-        "blocked_capability_ids": [
-          "external_publication",
-          "external_ai_operation"
-        ]
-      },
-      {
-        "degradation_id": "DEGRADE-PROFILE-SOV-OFF-002",
-        "trigger": "governance_policy_runtime_unavailable",
-        "result": "governed_transitions_blocked",
-        "affected_capability_ids": [
-          "governed_authorization",
-          "governed_disclosure",
-          "governed_consent",
-          "governed_privilege",
-          "governed_exception"
-        ],
-        "preserved_capability_ids": [
-          "unaffected_local_non_governed_capabilities"
-        ],
-        "blocked_capability_ids": [
-          "new_governed_transition"
-        ]
-      },
-      {
-        "degradation_id": "DEGRADE-PROFILE-SOV-OFF-003",
-        "trigger": "local_trust_verification_unavailable",
-        "result": "trust_dependent_transitions_blocked",
-        "affected_capability_ids": [
-          "offline_bundle_import",
-          "release_activation",
-          "policy_activation",
-          "signed_export"
-        ],
-        "preserved_capability_ids": [
-          "last_valid_active_release_read_and_runtime"
-        ],
-        "blocked_capability_ids": [
-          "new_trust_dependent_transition"
-        ]
-      },
-      {
-        "degradation_id": "DEGRADE-PROFILE-SOV-OFF-004",
-        "trigger": "audit_evidence_storage_unavailable",
-        "result": "receipt_required_transitions_blocked",
-        "affected_capability_ids": [
-          "release_activation",
-          "restore",
-          "break_glass",
-          "governed_exception_use",
-          "data_export"
-        ],
-        "preserved_capability_ids": [
-          "unaffected_local_runtime"
-        ],
-        "blocked_capability_ids": [
-          "unreceipted_critical_transition"
-        ]
-      },
-      {
-        "degradation_id": "DEGRADE-PROFILE-SOV-OFF-005",
-        "trigger": "resource_governor_unavailable",
-        "result": "resource_sensitive_new_work_blocked",
-        "affected_capability_ids": [
-          "heavy_media_job",
-          "bulk_import",
-          "bulk_export",
-          "large_restore"
-        ],
-        "preserved_capability_ids": [
-          "lightweight_local_runtime",
-          "local_navigation",
-          "local_read_access_when_authorized"
-        ],
-        "blocked_capability_ids": [
-          "uncontrolled_resource_sensitive_job"
-        ]
-      }
-    ],
-    "partial_authority_allowed": false,
-    "silent_fallback_allowed": false,
-    "external_substitution_allowed": false,
-    "read_only_fallback_requires_explicit_base_contract": true
-  },
-  "operations": {
-    "health_and_readiness": {
-      "local_only": true,
-      "external_monitor_required": false,
-      "component_health_required": true,
-      "policy_health_required": true,
-      "trust_health_required": true,
-      "backup_readiness_required": true,
-      "restore_readiness_required": true,
-      "release_readiness_required": true
-    },
-    "maintenance": {
-      "update_discovery": "offline_operator_supplied",
-      "maintenance_window": "base_profile_defined",
-      "premaintenance_backup_required": true,
-      "rollback_target_required": true,
-      "operator_receipt_required": true
-    },
-    "incident_response": {
-      "local_runbooks_required": true,
-      "external_support_dependency": "none",
-      "local_diagnostics_required": true,
-      "signed_diagnostic_export_supported": true,
-      "evidence_preservation_required": true
-    },
-    "disaster_recovery": {
-      "local_recovery_media_required": true,
-      "offline_restore_required": true,
-      "authority_and_release_compatibility_required": true,
-      "recovery_test_required": true,
-      "forward_repair_plan_required_when_rollback_is_unsafe": true
-    }
-  },
-  "conformance": {
-    "claim_level": "profile_overlay",
-    "conformance_requires_compatible_base_profile": true,
-    "conformance_requires_all_overlay_claims": true,
-    "partial_conformance_claim_allowed": false,
-    "active_exception_disclosure_required": true,
-    "required_test_ids": [
-      "TEST-PROFILE-SOV-OFF-001",
-      "TEST-PROFILE-SOV-OFF-002",
-      "TEST-PROFILE-SOV-OFF-003",
-      "TEST-PROFILE-SOV-OFF-004",
-      "TEST-PROFILE-SOV-OFF-005",
-      "TEST-PROFILE-SOV-OFF-006",
-      "TEST-PROFILE-SOV-OFF-007",
-      "TEST-PROFILE-SOV-OFF-008",
-      "TEST-PROFILE-SOV-OFF-009",
-      "TEST-PROFILE-SOV-OFF-010",
-      "TEST-PROFILE-SOV-OFF-011",
-      "TEST-PROFILE-SOV-OFF-012"
-    ],
-    "required_evidence_ids": [
-      "EVID-PROFILE-SOV-OFF-001",
-      "EVID-PROFILE-SOV-OFF-002",
-      "EVID-PROFILE-SOV-OFF-003",
-      "EVID-PROFILE-SOV-OFF-004",
-      "EVID-PROFILE-SOV-OFF-005",
-      "EVID-PROFILE-SOV-OFF-006",
-      "EVID-PROFILE-SOV-OFF-007",
-      "EVID-PROFILE-SOV-OFF-008",
-      "EVID-PROFILE-SOV-OFF-009",
-      "EVID-PROFILE-SOV-OFF-010",
-      "EVID-PROFILE-SOV-OFF-011",
-      "EVID-PROFILE-SOV-OFF-012"
-    ],
-    "validation_matrix": [
-      {
-        "test_id": "TEST-PROFILE-SOV-OFF-001",
-        "subject": "internet_independent_core_operation",
-        "expected_result": "pass"
-      },
-      {
-        "test_id": "TEST-PROFILE-SOV-OFF-002",
-        "subject": "local_authority_resolution",
-        "expected_result": "pass"
-      },
-      {
-        "test_id": "TEST-PROFILE-SOV-OFF-003",
-        "subject": "signed_offline_bundle_import",
-        "expected_result": "pass"
-      },
-      {
-        "test_id": "TEST-PROFILE-SOV-OFF-004",
-        "subject": "local_governance_policy_evaluation",
-        "expected_result": "pass"
-      },
-      {
-        "test_id": "TEST-PROFILE-SOV-OFF-005",
-        "subject": "external_ai_and_external_service_absence",
-        "expected_result": "pass"
-      },
-      {
-        "test_id": "TEST-PROFILE-SOV-OFF-006",
-        "subject": "local_backup_restore_and_exit",
-        "expected_result": "pass"
-      },
-      {
-        "test_id": "TEST-PROFILE-SOV-OFF-007",
-        "subject": "atomic_release_activation",
-        "expected_result": "pass"
-      },
-      {
-        "test_id": "TEST-PROFILE-SOV-OFF-008",
-        "subject": "profile_composition_compatibility",
-        "expected_result": "pass"
-      },
-      {
-        "test_id": "TEST-PROFILE-SOV-OFF-009",
-        "subject": "data_authority_and_storage_identity",
-        "expected_result": "pass"
-      },
-      {
-        "test_id": "TEST-PROFILE-SOV-OFF-010",
-        "subject": "removable_media_quarantine_and_verification",
-        "expected_result": "pass"
-      },
-      {
-        "test_id": "TEST-PROFILE-SOV-OFF-011",
-        "subject": "capability_scoped_degradation",
-        "expected_result": "pass"
-      },
-      {
-        "test_id": "TEST-PROFILE-SOV-OFF-012",
-        "subject": "selective_local_audit_and_signed_evidence_export",
-        "expected_result": "pass"
-      }
-    ],
-    "activation_gate": {
-      "schema_validation_required": true,
-      "base_profile_resolution_required": true,
-      "overlay_compatibility_required": true,
-      "component_contract_resolution_required": true,
-      "artifact_contract_resolution_required": true,
-      "release_set_compatibility_required": true,
-      "lock_validation_required": true,
-      "test_execution_required": true,
-      "evidence_validation_required": true,
-      "no_unresolved_state_required": true,
-      "activation_result_on_failure": "blocked"
-    }
-  },
-  "canonical_references": [
+  "display_name": "Sovereign Offline Overlay",
+  "purpose": "Adds a complete offline-sovereignty envelope to compatible sovereign base profiles. The overlay requires local authority, local policy evaluation, local trust, local audit, signed offline release import, atomic activation, local recovery, and operation without Internet or external AI dependencies.",
+  "terminology_ref": "contracts/terminology.contract.json#/terms/TERM-PROFILE-SOVEREIGN-OFFLINE",
+  "canonical_refs": [
     "contracts/system.contract.json",
     "generated/component-catalog.json",
     "generated/profile-catalog.json",
@@ -921,7 +29,10 @@
     "contracts/subsystems/koa-spaces.subsystem.json",
     "02-system/21-koa-spaces-experience-layer.md",
     "02-system/22-koa-spaces-interface-composition.md",
-    "03-profiles/14-koa-spaces-deployment.md"
+    "03-profiles/14-koa-spaces-deployment.md",
+    "generated/authority-manifest.json",
+    "generated/decision-index.json",
+    "contracts/terminology.contract.json"
   ],
   "decision_ids": [
     "DEC-PROFILE-001",
@@ -965,22 +76,570 @@
     "LOCK-UCKK-EXT-002",
     "LOCK-SPACES-001"
   ],
-  "exception_ids": [],
-  "documentation": {
-    "doc_id": "DOC-PROFILE-012",
-    "path": "03-profiles/12-sovereign-offline.md",
-    "generated_catalog_path": "generated/profile-catalog.md"
-  },
-  "change_policy": {
-    "semantic_class_for_scope_or_claim_change": "major",
-    "accepted_owner_decision_required": true,
-    "adr_required_for_architecture_change": true,
-    "impact_report_required": true,
-    "migration_or_compatibility_plan_required": true,
-    "complete_validation_required": true,
-    "authority_registry_updated_last": true
-  },
+  "independently_deployable": false,
   "supersedes": [],
+  "composition": {
+    "compatible_primary_profiles": [
+      "sovereign_linux_node",
+      "sovereign_hub"
+    ],
+    "required_overlays": [],
+    "optional_overlays": [
+      "high_assurance",
+      "appliance_shell"
+    ],
+    "incompatible_profiles": [
+      "user_lightweight",
+      "developer_linux_workstation",
+      "developer_windows_wsl",
+      "build_farm",
+      "control_plane"
+    ],
+    "composition_priority": 200,
+    "conflict_policy": "strongest_restriction_wins"
+  },
+  "inheritance": {
+    "baseline_ref": "contracts/system.contract.json#/system",
+    "inherits_global_requirements": true,
+    "inherited_profile_refs": [],
+    "override_policy": "strengthen_or_restrict_only",
+    "prohibited_inheritance": [
+      "implicit_profile_inheritance",
+      "cross_profile_requirement_copy",
+      "recipe_as_requirement",
+      "implementation_prevalence_as_authority",
+      "legacy_rule_without_disposition"
+    ]
+  },
+  "target_environment": {
+    "host_os_families": [
+      "linux"
+    ],
+    "host_architectures": [
+      "x86_64",
+      "aarch64"
+    ],
+    "deployment_forms": [
+      "node",
+      "hub"
+    ],
+    "network_expectation": "disconnected_required",
+    "user_interaction": "operator_managed",
+    "virtualization": "allowed",
+    "containerization": "profile_specific"
+  },
+  "hardware_envelope": {
+    "cpu": {
+      "minimum": 0,
+      "recommended": 0,
+      "unit": "cores"
+    },
+    "memory": {
+      "minimum": 0,
+      "recommended": 0,
+      "unit": "GiB"
+    },
+    "storage": {
+      "minimum": 0,
+      "recommended": 0,
+      "unit": "GB"
+    },
+    "gpu": "not_required",
+    "concurrency": {
+      "heavy_jobs": 0,
+      "background_workers": 0
+    },
+    "enforcement": "deployment_specific"
+  },
+  "capabilities": {
+    "local_operation": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from sovereign-offline required_capability_ids."
+    },
+    "local_identity_verification": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from sovereign-offline required_capability_ids."
+    },
+    "local_policy_evaluation": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from sovereign-offline required_capability_ids."
+    },
+    "local_audit_recording": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from sovereign-offline required_capability_ids."
+    },
+    "offline_bundle_import": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from sovereign-offline required_capability_ids."
+    },
+    "offline_release_verification": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from sovereign-offline required_capability_ids."
+    },
+    "atomic_release_activation": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from sovereign-offline required_capability_ids."
+    },
+    "local_backup": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from sovereign-offline required_capability_ids."
+    },
+    "local_restore": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from sovereign-offline required_capability_ids."
+    },
+    "local_rollback_or_forward_repair": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from sovereign-offline required_capability_ids."
+    },
+    "local_ariane_navigation": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from sovereign-offline required_capability_ids."
+    },
+    "deterministic_koa_mediatheque_operation": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from sovereign-offline required_capability_ids."
+    },
+    "local_evidence_export": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from sovereign-offline required_capability_ids."
+    },
+    "portable_data_export": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from sovereign-offline required_capability_ids."
+    },
+    "ariane_external_voice": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from sovereign-offline disabled_capability_ids."
+    },
+    "chatgpt_external_operation": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from sovereign-offline disabled_capability_ids."
+    },
+    "suno_external_operation": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from sovereign-offline disabled_capability_ids."
+    },
+    "gamma_external_operation": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from sovereign-offline disabled_capability_ids."
+    },
+    "remote_policy_evaluation": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from sovereign-offline disabled_capability_ids."
+    },
+    "remote_identity_dependency": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from sovereign-offline disabled_capability_ids."
+    },
+    "internet_required_publication": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from sovereign-offline disabled_capability_ids."
+    },
+    "automatic_external_synchronization": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from sovereign-offline disabled_capability_ids."
+    },
+    "external_telemetry_export": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from sovereign-offline disabled_capability_ids."
+    },
+    "external_license_check": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from sovereign-offline disabled_capability_ids."
+    },
+    "external_ai_authority": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from sovereign-offline prohibited_capability_ids."
+    },
+    "autonomous_external_routing": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from sovereign-offline prohibited_capability_ids."
+    },
+    "direct_external_authoritative_write": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from sovereign-offline prohibited_capability_ids."
+    },
+    "unverified_offline_import": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from sovereign-offline prohibited_capability_ids."
+    },
+    "partial_release_activation": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from sovereign-offline prohibited_capability_ids."
+    },
+    "remote_break_glass_dependency": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from sovereign-offline prohibited_capability_ids."
+    },
+    "internet_independent_core_operation": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Core operation remains Internet-independent."
+    },
+    "verified_offline_bundle_import": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Updates and imported artifacts are admitted through verified offline bundles."
+    },
+    "local_backup_restore_and_exit": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Backup, restore, recovery, and exit remain locally executable."
+    }
+  },
+  "components": {
+    "identity_and_trust": {
+      "state": "required",
+      "activation": "always_on",
+      "conditions": [],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
+    },
+    "governance_policy_runtime": {
+      "state": "required",
+      "activation": "always_on",
+      "conditions": [],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
+    },
+    "audit_broker": {
+      "state": "required",
+      "activation": "always_on",
+      "conditions": [],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
+    },
+    "resource_governor": {
+      "state": "required",
+      "activation": "always_on",
+      "conditions": [],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
+    },
+    "koa_node_agent": {
+      "state": "required",
+      "activation": "always_on",
+      "conditions": [],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
+    },
+    "sentient": {
+      "state": "excluded",
+      "activation": "not_installed",
+      "conditions": [],
+      "data_authority": "none",
+      "failure_behavior": "The component remains unavailable and is not silently substituted."
+    },
+    "ariane_runtime": {
+      "state": "conditional",
+      "activation": "service_activated",
+      "conditions": [
+        "keyboard_navigation; pointer_navigation"
+      ],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
+    },
+    "koa_mediatheque": {
+      "state": "conditional",
+      "activation": "service_activated",
+      "conditions": [
+        "deterministic_ingestion; integrity_verification"
+      ],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
+    },
+    "publication_gateway": {
+      "state": "conditional",
+      "activation": "service_activated",
+      "conditions": [
+        "offline_export_package_creation; offline_publication_receipt_generation"
+      ],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
+    }
+  },
+  "operating_modes": {
+    "default_mode": "offline_operation",
+    "allowed_modes": [
+      "offline_operation",
+      "maintenance",
+      "recovery"
+    ],
+    "transitions_fail_closed": true
+  },
+  "offline_behavior": {
+    "continuity_level": "core_required",
+    "internet_dependency": "none_for_core",
+    "offline_import": "required",
+    "offline_export": "required",
+    "recovery_without_internet": true,
+    "unavailable_capabilities": [
+      "chatgpt",
+      "suno",
+      "gamma",
+      "ariane_external_voice",
+      "automatic_cloud_synchronization",
+      "direct_internet_publication"
+    ]
+  },
+  "ai_boundary": {
+    "native_ai_dependency": false,
+    "approved_external_surfaces": [],
+    "optional_components": [],
+    "authoritative_decisions_allowed": false,
+    "fallback_behavior": "All external AI surfaces remain unavailable by design; core operation continues entirely from local approved artifacts."
+  },
+  "data_and_storage": {
+    "component_data_ownership_required": true,
+    "cross_component_direct_writes_allowed": false,
+    "persistent_storage": "deployment_specific",
+    "encryption_at_rest": "required",
+    "backup_required": true,
+    "restore_required": true,
+    "portability_export_required": true
+  },
+  "security": {
+    "trust_model": "sovereign_trust",
+    "privilege_model": "narrow_privileged_broker",
+    "network_default": "closed_by_default",
+    "secrets_management": "profile_secret_store",
+    "selective_audit": true,
+    "break_glass": "supported",
+    "required_controls": [
+      "deny_external_dependency",
+      "verified_removable_media",
+      "offline_signature_and_provenance_verification",
+      "local_authority_resolution",
+      "no_automatic_external_calls"
+    ]
+  },
+  "lifecycle": {
+    "release_set_required": true,
+    "system_update_model": "not_applicable",
+    "service_update_model": "not_applicable",
+    "rollback_required": true,
+    "forward_repair_allowed": true,
+    "offline_bundle_support": "required",
+    "artifact_requirements": []
+  },
+  "operations": {
+    "health_monitoring": "required",
+    "readiness_checks": "required",
+    "resource_governor": "required",
+    "backup": "required",
+    "restore": "required",
+    "incident_response": "required",
+    "disaster_recovery": "required",
+    "maintenance": "required",
+    "diagnostics": "required",
+    "receipts_for_critical_transitions": true
+  },
+  "conformance": {
+    "claim_level": "profile_with_overlays",
+    "claims": [
+      {
+        "claim_id": "CLAIM-PROFILE-SOVEREIGN-OFFLINE-001",
+        "statement": "All capabilities required by the composed profile operate without Internet access. Identity, policy, release, component, and data authority required for operation are locally resolvable. Updates enter through verified offline bundles and activate only as compatible release sets. Governed authorization, disclosure, consent, privilege, and exception decisions required by the profile are evaluated locally. The composed profile remains operational without ChatGPT, Suno, Gamma, external Ariane voice, or any other external AI service. Backup, restore, rollback, forward repair, evidence export, and data export are executable from locally held artifacts and keys.",
+        "requirement_ids": [
+          "REQ-DOC-AUTH-006",
+          "REQ-DOC-CONTRACT-025",
+          "REQ-DOC-CONTRACT-026",
+          "REQ-DOC-NORM-013",
+          "REQ-DOC-OWN-007",
+          "REQ-DOC-VAL-010",
+          "REQ-DOC-VAL-013",
+          "REQ-DOC-EXC-003",
+          "REQ-DOC-EXC-019",
+          "REQ-AI-DOC-007",
+          "REQ-AI-DOC-008",
+          "REQ-MEDIATHEQUE-001",
+          "REQ-UCKK-PUB-001"
+        ],
+        "test_ids": [
+          "TEST-PROFILE-SOV-OFF-001",
+          "TEST-PROFILE-SOV-OFF-002",
+          "TEST-PROFILE-SOV-OFF-003",
+          "TEST-PROFILE-SOV-OFF-004",
+          "TEST-PROFILE-SOV-OFF-005",
+          "TEST-PROFILE-SOV-OFF-006",
+          "TEST-PROFILE-SOV-OFF-007",
+          "TEST-PROFILE-SOV-OFF-008",
+          "TEST-PROFILE-SOV-OFF-009",
+          "TEST-PROFILE-SOV-OFF-010",
+          "TEST-PROFILE-SOV-OFF-011",
+          "TEST-PROFILE-SOV-OFF-012"
+        ],
+        "evidence_ids": [
+          "EVID-PROFILE-SOV-OFF-001",
+          "EVID-PROFILE-SOV-OFF-002",
+          "EVID-PROFILE-SOV-OFF-003",
+          "EVID-PROFILE-SOV-OFF-004",
+          "EVID-PROFILE-SOV-OFF-005",
+          "EVID-PROFILE-SOV-OFF-006",
+          "EVID-PROFILE-SOV-OFF-007",
+          "EVID-PROFILE-SOV-OFF-008",
+          "EVID-PROFILE-SOV-OFF-009",
+          "EVID-PROFILE-SOV-OFF-010",
+          "EVID-PROFILE-SOV-OFF-011",
+          "EVID-PROFILE-SOV-OFF-012"
+        ],
+        "status": "claimed"
+      }
+    ],
+    "exceptions": [],
+    "evidence_required": true,
+    "partial_conformance_allowed": false
+  },
+  "validation": {
+    "entry_point": "tools/validate_docs.py",
+    "required_checks": [
+      "profile_id_matches_filename",
+      "profile_kind_matches_profile_id",
+      "terminology_ref_resolves",
+      "canonical_refs_resolve",
+      "decision_ids_resolve_and_are_accepted",
+      "requirement_ids_resolve",
+      "lock_ids_resolve",
+      "overlays_are_not_independently_deployable",
+      "overlay_compatibility_resolves",
+      "composition_graph_is_acyclic",
+      "required_and_optional_overlays_do_not_overlap",
+      "incompatible_profiles_do_not_overlap_compatible_profiles",
+      "inheritance_is_explicit",
+      "profile_rules_do_not_become_global",
+      "capability_states_are_valid",
+      "component_states_are_valid",
+      "component_data_ownership_is_preserved",
+      "cross_component_direct_writes_are_disabled",
+      "native_ai_dependency_is_false",
+      "offline_claims_match_capability_states",
+      "hardware_envelope_is_satisfiable",
+      "artifact_class_refs_resolve",
+      "release_channel_refs_resolve",
+      "conformance_claims_are_traceable",
+      "exceptions_resolve",
+      "no_unresolved_authority_markers"
+    ],
+    "failure_outcome": "fail",
+    "missing_dependency_outcome": "blocked",
+    "automatic_semantic_repairs_allowed": false,
+    "validated_at": null,
+    "validation_status": "pass"
+  },
+  "external_integrations": {
+    "uckk_publication": {
+      "integration_id": "uckk-publication",
+      "contract_ref": "contracts/integrations/uckk-publication.integration.json",
+      "availability": "prohibited",
+      "direction": "outbound",
+      "required_for_local_operation": false,
+      "required_for_offline_operation": false
+    },
+    "uckk_import": {
+      "integration_id": "uckk-import",
+      "contract_ref": "contracts/integrations/uckk-import.integration.json",
+      "availability": "prohibited",
+      "direction": "inbound",
+      "required_for_local_operation": false,
+      "required_for_offline_operation": false
+    },
+    "chatgpt": {
+      "integration_id": "chatgpt",
+      "contract_ref": "contracts/integrations/chatgpt.integration.json",
+      "availability": "prohibited",
+      "direction": "bidirectional",
+      "required_for_local_operation": false,
+      "required_for_offline_operation": false
+    },
+    "suno": {
+      "integration_id": "suno",
+      "contract_ref": "contracts/integrations/suno.integration.json",
+      "availability": "prohibited",
+      "direction": "bidirectional",
+      "required_for_local_operation": false,
+      "required_for_offline_operation": false
+    },
+    "gamma": {
+      "integration_id": "gamma",
+      "contract_ref": "contracts/integrations/gamma.integration.json",
+      "availability": "prohibited",
+      "direction": "bidirectional",
+      "required_for_local_operation": false,
+      "required_for_offline_operation": false
+    },
+    "ariane_voice": {
+      "integration_id": "ariane-voice",
+      "contract_ref": "contracts/integrations/ariane-voice.integration.json",
+      "availability": "prohibited",
+      "direction": "bidirectional",
+      "required_for_local_operation": false,
+      "required_for_offline_operation": false
+    }
+  },
   "koa_spaces": {
     "subsystem_id": "koa_spaces",
     "contract_ref": "contracts/subsystems/koa-spaces.subsystem.json",

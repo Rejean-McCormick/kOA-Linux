@@ -1,0 +1,103 @@
+# Generated as source input for deterministic packaging; not a release lock.
+format = "koa.component-package"
+format_version = "1.0.0"
+status = "blocked_missing_upstream_bundle"
+package_id = "koa.system.component.koa-node-agent"
+component_id = "koa_node_agent"
+display_name = "kOA Node Agent"
+release_channel = "system"
+artifact_class_key = "system_image"
+source_bundle = "B-0043"
+source_contract = "docs/contracts/components/koa-node-agent.component.json"
+source_project = "components/koa-node-agent/Cargo.toml"
+source_payload_manifest = "components/koa-node-agent/packaging/payload.toml"
+runtime_path_registry = ".koa/runtime-paths.json"
+activation_ready = false
+
+[admission]
+requires_clean_source = true
+requires_immutable_revision = true
+requires_payload_digest = true
+requires_sbom = true
+requires_provenance = true
+requires_signature = true
+requires_release_set = true
+requires_component_contract_validation = true
+default_on_missing_evidence = "reject"
+
+[build]
+build_kind = "rust_binaries"
+network = "denied_unless_package_sources_admit_exact_input"
+lock_state_required = true
+reproducible_output_required = true
+secret_material_allowed = false
+mutable_workspace_state_allowed = false
+output_identity_source = "signed_artifact_manifest"
+lock_ref = "Cargo.lock"
+
+[upstream_bundle]
+format = "koa.component-build-bundle"
+format_version = "1.0.0"
+builder = "build-component"
+output = "generated/component-bundles/koa-node-agent"
+activation_authority = false
+missing_bundle = "block_packaging"
+
+[payload]
+resolution = "source_payload_manifest"
+destination_authority = ".koa/runtime-paths.json#repository_payload_mappings"
+unknown_destination = "reject"
+secret_material = "prohibited"
+mutable_state = "prohibited"
+runtime_state_creation = "owning_service_only"
+configuration_seed_only = true
+
+[[payload.fixed_destination]]
+source = "components/koa-node-agent/src/bin/koa-node-agentctl.rs"
+destination = "/usr/bin/koa-node-agentctl"
+install_mode = "compiled_binary"
+
+[[payload.fixed_destination]]
+source = "components/koa-node-agent/src/bin/koa-node-agent.rs"
+destination = "/usr/libexec/koa/koa-node-agent"
+install_mode = "compiled_binary"
+
+[[payload.fixed_destination]]
+source = "components/koa-node-agent/src/bin/koa-privileged-broker.rs"
+destination = "/usr/libexec/koa/koa-privileged-broker"
+install_mode = "compiled_binary"
+
+[configuration]
+format = "koa.component-config-seed"
+format_version = "1.0.0"
+component_id = "koa_node_agent"
+enabled = false
+activation = "effective_profile_and_release_set_only"
+socket_path = "/run/koa/sockets/koa-node-agent.sock"
+state_root = "/var/lib/koa/node/"
+destination = "/etc/koa/components/koa-node-agent/config.toml"
+install_mode = "seed_if_absent"
+owner = "koa-node-agent"
+group = "koa-node-agent"
+mode = "0640"
+secret_material = "not_present"
+
+[activation]
+strategy = "atomic_system_image_activation"
+health_gate_required = true
+readiness_gate_required = true
+rollback_or_forward_repair_required = true
+component_data_rollback_implicit = false
+blocked_by = ["B-0092", "B-0043"]
+
+[validation]
+required = [
+  "source_bundle_present",
+  "payload_manifest_valid",
+  "all_destinations_declared",
+  "no_secret_payload",
+  "no_mutable_state_payload",
+  "sbom_complete",
+  "provenance_verifiable",
+  "release_set_compatible",
+]

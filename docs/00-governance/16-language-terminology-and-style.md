@@ -455,7 +455,7 @@ Examples:
 ```text
 contracts/system.contract.json#/ai_boundary
 generated/component-catalog.json#/components/resource_governor
-contracts/profiles/developer-linux-workstation.profile.json#/workspace_isolation
+contracts/profiles/developer-linux-workstation.profile.json#/capabilities/workspace_isolation
 ```
 
 A JSON Pointer begins with `/` when it selects content below the root.
@@ -1163,7 +1163,7 @@ The project keeps its services separate.
 Preferred:
 
 ```text
-contracts/profiles/developer-linux-workstation.profile.json#/workspace_isolation
+contracts/profiles/developer-linux-workstation.profile.json#/capabilities/workspace_isolation
 ```
 
 Non-canonical:

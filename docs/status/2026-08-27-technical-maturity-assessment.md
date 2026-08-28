@@ -1,3 +1,32 @@
+<!-- KOA:DOC-META:BEGIN GENERATED
+{
+  "doc_id": "DOC-STATUS-001",
+  "document_class": "explanatory_markdown",
+  "status": "active",
+  "authority_participation": "non_authoritative",
+  "language": "en",
+  "layer": "governance",
+  "scope": [
+    "global"
+  ],
+  "canonical_refs": [],
+  "decision_ids": [],
+  "requirement_ids": [],
+  "lock_ids": [],
+  "exception_ids": [],
+  "depends_on": [
+    "DOC-STATUS-000"
+  ],
+  "tags": [
+    "status",
+    "technical-maturity",
+    "release-readiness",
+    "assessment"
+  ],
+  "edit_policy": "manual"
+}
+KOA:DOC-META:END -->
+
 # Koali Technical Maturity Assessment
 
 **Assessment date:** 2026-08-27  

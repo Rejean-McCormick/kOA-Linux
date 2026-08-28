@@ -1,0 +1,784 @@
+{
+  "$schema": "../../schemas/deployment-profile.schema.json",
+  "profile_id": "build_farm",
+  "profile_kind": "primary_profile",
+  "version": "1.0.0",
+  "status": "active",
+  "language": "en",
+  "display_name": "Build Farm",
+  "purpose": "Provide an independently deployable, reproducible, isolated, and resource-governed environment for clean builds, validation, packaging, Software Bill of Materials generation, provenance capture, signing workflows, and production of release candidates for the system, services, governance, and knowledge channels.",
+  "terminology_ref": "contracts/terminology.contract.json#/terms/TERM-PROFILE-BUILD-FARM",
+  "canonical_refs": [
+    "generated/authority-manifest.json",
+    "generated/decision-index.json",
+    "contracts/terminology.contract.json",
+    "contracts/system.contract.json",
+    "generated/component-catalog.json",
+    "generated/profile-catalog.json",
+    "contracts/artifact-classes.contract.json",
+    "contracts/release-channels.contract.json",
+    "contracts/integration-types.contract.json",
+    "generated/requirements-index.json",
+    "generated/assertion-index.json",
+    "generated/traceability.json",
+    "generated/test-catalog.json",
+    "generated/evidence-catalog.json",
+    "generated/toolchain-catalog.json"
+  ],
+  "decision_ids": [
+    "DEC-AI-001",
+    "DEC-CONTAINER-001",
+    "DEC-DATA-001",
+    "DEC-DEV-001",
+    "DEC-DEV-002",
+    "DEC-GOV-001",
+    "DEC-HW-001",
+    "DEC-K8S-001",
+    "DEC-PROFILE-001",
+    "DEC-REL-001",
+    "DEC-SENT-001",
+    "DEC-UCKK-EXT-001",
+    "DEC-MEDIATHEQUE-001"
+  ],
+  "requirement_ids": [
+    "REQ-PROFILE-BUILD-001",
+    "REQ-PROFILE-BUILD-002",
+    "REQ-PROFILE-BUILD-003",
+    "REQ-PROFILE-BUILD-004",
+    "REQ-PROFILE-BUILD-005",
+    "REQ-PROFILE-BUILD-006",
+    "REQ-PROFILE-BUILD-007",
+    "REQ-PROFILE-BUILD-008",
+    "REQ-PROFILE-BUILD-009",
+    "REQ-PROFILE-BUILD-010",
+    "REQ-PROFILE-BUILD-011",
+    "REQ-PROFILE-BUILD-012",
+    "REQ-PROFILE-BUILD-013",
+    "REQ-PROFILE-BUILD-014",
+    "REQ-PROFILE-BUILD-015",
+    "REQ-PROFILE-BUILD-016",
+    "REQ-PROFILE-BUILD-017",
+    "REQ-PROFILE-BUILD-018",
+    "REQ-PROFILE-BUILD-019",
+    "REQ-PROFILE-BUILD-020",
+    "REQ-PROFILE-BUILD-021",
+    "REQ-PROFILE-BUILD-022",
+    "REQ-PROFILE-BUILD-023",
+    "REQ-PROFILE-BUILD-024",
+    "REQ-PROFILE-BUILD-025",
+    "REQ-PROFILE-BUILD-026",
+    "REQ-PROFILE-BUILD-027",
+    "REQ-PROFILE-BUILD-028",
+    "REQ-PROFILE-BUILD-029",
+    "REQ-PROFILE-BUILD-030"
+  ],
+  "lock_ids": [
+    "LOCK-AI-001",
+    "LOCK-AI-002",
+    "LOCK-COMP-001",
+    "LOCK-COMP-002",
+    "LOCK-DATA-001",
+    "LOCK-DEV-001",
+    "LOCK-DEV-002",
+    "LOCK-DEV-003",
+    "LOCK-DEV-004",
+    "LOCK-DEV-005",
+    "LOCK-GOV-001",
+    "LOCK-LIFE-001",
+    "LOCK-LIFE-002",
+    "LOCK-LIFE-003",
+    "LOCK-LIFE-004",
+    "LOCK-PROFILE-001",
+    "LOCK-PROFILE-002",
+    "LOCK-SENT-001",
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-002"
+  ],
+  "independently_deployable": true,
+  "supersedes": [],
+  "composition": {
+    "compatible_primary_profiles": [],
+    "required_overlays": [],
+    "optional_overlays": [
+      "high_assurance",
+      "sovereign_offline"
+    ],
+    "incompatible_profiles": [
+      "appliance_shell"
+    ],
+    "composition_priority": null,
+    "conflict_policy": "fail_closed"
+  },
+  "inheritance": {
+    "baseline_ref": "contracts/system.contract.json#/system",
+    "inherits_global_requirements": true,
+    "inherited_profile_refs": [],
+    "override_policy": "strengthen_or_restrict_only",
+    "prohibited_inheritance": [
+      "implicit_profile_inheritance",
+      "cross_profile_requirement_copy",
+      "recipe_as_requirement",
+      "implementation_prevalence_as_authority",
+      "legacy_rule_without_disposition"
+    ]
+  },
+  "target_environment": {
+    "host_os_families": [
+      "linux",
+      "container_host"
+    ],
+    "host_architectures": [
+      "x86_64",
+      "aarch64"
+    ],
+    "deployment_forms": [
+      "build_cluster",
+      "containerized_service_set"
+    ],
+    "network_expectation": "controlled_network_required",
+    "user_interaction": "service_only",
+    "virtualization": "allowed",
+    "containerization": "required"
+  },
+  "hardware_envelope": {
+    "cpu": {
+      "minimum": 16,
+      "recommended": 16,
+      "unit": "cores"
+    },
+    "memory": {
+      "minimum": 64,
+      "recommended": 64,
+      "unit": "GiB"
+    },
+    "storage": {
+      "minimum": 2000,
+      "recommended": 2000,
+      "unit": "GB"
+    },
+    "gpu": "not_required",
+    "concurrency": {
+      "heavy_jobs": 2,
+      "background_workers": 4
+    },
+    "enforcement": "resource_governor_required"
+  },
+  "capabilities": {
+    "reproducible_clean_builds": {
+      "state": "required",
+      "conditions": [
+        "Every release-candidate build starts from a clean worker state.",
+        "All source, dependency, toolchain, and configuration inputs are pinned or content-identified.",
+        "The build can be repeated from retained inputs and toolchain declarations."
+      ],
+      "degraded_behavior": "New release-candidate builds are blocked when clean-worker or reproducibility guarantees cannot be established.",
+      "rationale": "The profile exists to produce repeatable artifacts whose inputs and execution environment can be reconstructed.",
+      "requirement_ids": [
+        "REQ-PROFILE-BUILD-001",
+        "REQ-PROFILE-BUILD-002",
+        "REQ-PROFILE-BUILD-003",
+        "REQ-PROFILE-BUILD-004"
+      ],
+      "lock_ids": [
+        "LOCK-DEV-001",
+        "LOCK-DEV-002",
+        "LOCK-LIFE-002"
+      ]
+    },
+    "isolated_parallel_build_workers": {
+      "state": "required",
+      "conditions": [
+        "Each worker has a unique workspace identity.",
+        "Mutable dependencies, services, ports, data, secrets, temporary files, and process namespaces are isolated.",
+        "Concurrent builds cannot modify one another's mutable state."
+      ],
+      "degraded_behavior": "Concurrency is reduced or new workers are queued; isolation is never weakened.",
+      "rationale": "Parallel builds must not create cross-workspace drift or non-reproducible outputs.",
+      "requirement_ids": [
+        "REQ-PROFILE-BUILD-005",
+        "REQ-PROFILE-BUILD-006",
+        "REQ-PROFILE-BUILD-007"
+      ],
+      "lock_ids": [
+        "LOCK-DEV-001",
+        "LOCK-DEV-002",
+        "LOCK-DEV-003",
+        "LOCK-DEV-004",
+        "LOCK-DEV-005"
+      ]
+    },
+    "oci_build_execution": {
+      "state": "required",
+      "conditions": [
+        "An OCI-compatible runtime is available.",
+        "Runtime-specific behavior is used only when explicitly adopted by a toolchain or artifact contract.",
+        "Build workers use least privilege and profile-scoped isolation."
+      ],
+      "degraded_behavior": "Builds requiring the unavailable runtime are blocked; non-container validation tasks may continue when independently safe.",
+      "rationale": "The build farm requires a portable container execution boundary without making one vendor-specific runtime globally authoritative.",
+      "requirement_ids": [
+        "REQ-PROFILE-BUILD-008",
+        "REQ-PROFILE-BUILD-009"
+      ],
+      "lock_ids": [
+        "LOCK-PROFILE-001",
+        "LOCK-PROFILE-002"
+      ]
+    },
+    "kubernetes_orchestration": {
+      "state": "optional",
+      "conditions": [
+        "Kubernetes is deployed only when measured scale or scheduling requirements justify it.",
+        "The profile remains conformant without Kubernetes.",
+        "Application contracts do not depend on Kubernetes-specific behavior unless explicitly declared."
+      ],
+      "degraded_behavior": "Workers use the active non-Kubernetes orchestration path or the affected cluster capability is blocked.",
+      "rationale": "Kubernetes is permitted for the build farm but is not an endpoint or profile baseline requirement.",
+      "requirement_ids": [
+        "REQ-PROFILE-BUILD-010"
+      ],
+      "lock_ids": [
+        "LOCK-PROFILE-001"
+      ]
+    },
+    "source_and_dependency_admission": {
+      "state": "required",
+      "conditions": [
+        "Source revisions and dependency lock data are identified before execution.",
+        "Untrusted inputs are admitted through declared validation and quarantine controls.",
+        "Network retrieval is limited to approved sources or controlled mirrors."
+      ],
+      "degraded_behavior": "The farm uses already admitted inputs or blocks builds that require unresolved external inputs.",
+      "rationale": "Reproducibility and supply-chain control require explicit input identity and admission.",
+      "requirement_ids": [
+        "REQ-PROFILE-BUILD-011",
+        "REQ-PROFILE-BUILD-012"
+      ],
+      "lock_ids": [
+        "LOCK-LIFE-001",
+        "LOCK-LIFE-002"
+      ]
+    },
+    "artifact_cache": {
+      "state": "required",
+      "conditions": [
+        "The cache is content-addressed or equivalently integrity-bound.",
+        "Cached objects are verified before reuse.",
+        "Cache contents do not become authoritative merely because they are available."
+      ],
+      "degraded_behavior": "Builds continue without cache acceleration when capacity permits; otherwise new work is queued or blocked.",
+      "rationale": "The required artifact cache reduces repeated work while preserving input and output integrity.",
+      "requirement_ids": [
+        "REQ-PROFILE-BUILD-013",
+        "REQ-PROFILE-BUILD-014"
+      ],
+      "lock_ids": [
+        "LOCK-LIFE-002"
+      ]
+    },
+    "automated_test_execution": {
+      "state": "required",
+      "conditions": [
+        "Applicable unit, integration, contract, security, reproducibility, and conformance tests run in isolated workers.",
+        "Test results are linked to the exact source, toolchain, and candidate artifact identities."
+      ],
+      "degraded_behavior": "The candidate remains non-releasable when required tests cannot run or do not pass.",
+      "rationale": "A build artifact cannot become a release candidate without applicable validation.",
+      "requirement_ids": [
+        "REQ-PROFILE-BUILD-015"
+      ],
+      "lock_ids": [
+        "LOCK-LIFE-001",
+        "LOCK-LIFE-002"
+      ]
+    },
+    "software_bill_of_materials_generation": {
+      "state": "required",
+      "conditions": [
+        "Every software artifact class that requires a Software Bill of Materials receives one.",
+        "The inventory is bound to the candidate artifact identity and retained with build evidence."
+      ],
+      "degraded_behavior": "The affected software artifact remains non-publishable until its Software Bill of Materials is generated and validated.",
+      "rationale": "Release evidence requires an explicit inventory of software components and dependencies.",
+      "requirement_ids": [
+        "REQ-PROFILE-BUILD-016"
+      ],
+      "lock_ids": [
+        "LOCK-LIFE-002"
+      ]
+    },
+    "provenance_and_attestation": {
+      "state": "required",
+      "conditions": [
+        "Build provenance identifies source, dependencies, toolchain, worker environment, tests, transformations, and output identities.",
+        "A provenance receipt is produced for every published or transferred candidate requiring one."
+      ],
+      "degraded_behavior": "The candidate may be retained for diagnosis but cannot be published or included in a Release Set.",
+      "rationale": "Reproducible builds require machine-readable evidence of how each artifact was produced.",
+      "requirement_ids": [
+        "REQ-PROFILE-BUILD-017",
+        "REQ-PROFILE-BUILD-018"
+      ],
+      "lock_ids": [
+        "LOCK-LIFE-001",
+        "LOCK-LIFE-002"
+      ]
+    },
+    "artifact_signing": {
+      "state": "conditional",
+      "conditions": [
+        "Signing is required when the artifact class or release policy requires a signature.",
+        "Signing keys are isolated from ordinary build workers.",
+        "A successful build does not automatically authorize signing."
+      ],
+      "degraded_behavior": "Unsigned candidates remain staged and non-activatable when a signature is required.",
+      "rationale": "Signing is a governed release action separate from compilation and testing.",
+      "requirement_ids": [
+        "REQ-PROFILE-BUILD-019",
+        "REQ-PROFILE-BUILD-020"
+      ],
+      "lock_ids": [
+        "LOCK-LIFE-001",
+        "LOCK-LIFE-002"
+      ]
+    },
+    "release_channel_packaging": {
+      "state": "required",
+      "conditions": [
+        "Every candidate is classified into the system, services, governance, or knowledge release channel.",
+        "Channel metadata and compatibility declarations are produced with the candidate."
+      ],
+      "degraded_behavior": "Unclassified or incompatible candidates remain non-releasable.",
+      "rationale": "The release model requires explicit channel identity and compatibility.",
+      "requirement_ids": [
+        "REQ-PROFILE-BUILD-021"
+      ],
+      "lock_ids": [
+        "LOCK-LIFE-003",
+        "LOCK-LIFE-004"
+      ]
+    },
+    "release_set_assembly": {
+      "state": "conditional",
+      "conditions": [
+        "Exact candidate versions exist for all required channels.",
+        "Cross-channel compatibility tests pass.",
+        "The build farm assembles a candidate Release Set but does not activate it in production."
+      ],
+      "degraded_behavior": "Individual verified candidates remain available, but no Release Set is emitted.",
+      "rationale": "Release Set assembly binds tested compatible versions without transferring deployment authority to the build farm.",
+      "requirement_ids": [
+        "REQ-PROFILE-BUILD-022",
+        "REQ-PROFILE-BUILD-023"
+      ],
+      "lock_ids": [
+        "LOCK-LIFE-003",
+        "LOCK-LIFE-004"
+      ]
+    },
+    "offline_build_execution": {
+      "state": "conditional",
+      "conditions": [
+        "All required source, dependency, toolchain, trust, and policy inputs are admitted through verified offline bundles or local mirrors.",
+        "The sovereign_offline overlay may strengthen this capability."
+      ],
+      "degraded_behavior": "Builds requiring unavailable external inputs are blocked; builds with complete admitted inputs continue.",
+      "rationale": "The build farm supports disconnected operation without pretending that missing inputs exist.",
+      "requirement_ids": [
+        "REQ-PROFILE-BUILD-024"
+      ],
+      "lock_ids": [
+        "LOCK-PROFILE-001",
+        "LOCK-LIFE-001",
+        "LOCK-LIFE-002"
+      ]
+    },
+    "multi_architecture_builds": {
+      "state": "conditional",
+      "conditions": [
+        "The target architecture is declared by the artifact or release contract.",
+        "The selected toolchain and worker support the target architecture.",
+        "Architecture-specific tests and evidence are produced."
+      ],
+      "degraded_behavior": "Unsupported target architectures are blocked without affecting supported architecture builds.",
+      "rationale": "The profile supports x86_64 and aarch64 hosts while keeping target-specific behavior explicit.",
+      "requirement_ids": [
+        "REQ-PROFILE-BUILD-025"
+      ],
+      "lock_ids": [
+        "LOCK-PROFILE-001"
+      ]
+    },
+    "knowledge_artifact_builds": {
+      "state": "conditional",
+      "conditions": [
+        "The applicable knowledge artifact contract and toolchain are active.",
+        "Language packs contain compiled runtime artifacts rather than authoring workspaces.",
+        "Runtime packs validate against the target runtime compatibility rules."
+      ],
+      "degraded_behavior": "Affected knowledge-channel builds are blocked; system, services, and governance builds may continue.",
+      "rationale": "The build farm can produce language and runtime packs without merging authoring and runtime responsibilities.",
+      "requirement_ids": [
+        "REQ-PROFILE-BUILD-026"
+      ],
+      "lock_ids": [
+        "LOCK-COMP-002",
+        "LOCK-LIFE-004"
+      ]
+    },
+    "sentient_research_tasks": {
+      "state": "optional",
+      "conditions": [
+        "SenTient is installed separately from required build services.",
+        "Each task is explicitly started and resource-bounded.",
+        "Outputs remain candidate inputs and cannot modify release artifacts without normal review and import."
+      ],
+      "degraded_behavior": "SenTient tasks are unavailable while required build and validation capabilities continue.",
+      "rationale": "SenTient may support isolated research but is not part of reproducible build authority.",
+      "requirement_ids": [
+        "REQ-PROFILE-BUILD-027"
+      ],
+      "lock_ids": [
+        "LOCK-AI-001",
+        "LOCK-AI-002",
+        "LOCK-SENT-001"
+      ]
+    },
+    "external_ai_assistance": {
+      "state": "excluded",
+      "conditions": [
+        "No external AI surface participates in required build, test, provenance, signing, packaging, or release-set decisions."
+      ],
+      "degraded_behavior": "No degradation occurs because external AI is not a profile dependency.",
+      "rationale": "Release candidates must be reproducible and authoritative without an external AI service.",
+      "requirement_ids": [
+        "REQ-PROFILE-BUILD-028"
+      ],
+      "lock_ids": [
+        "LOCK-AI-001",
+        "LOCK-AI-002"
+      ]
+    },
+    "artifact_export_and_transfer": {
+      "state": "required",
+      "conditions": [
+        "Only validated candidates and their required evidence are exported.",
+        "Transfer preserves artifact identity, provenance, signatures, and release-channel classification."
+      ],
+      "degraded_behavior": "Candidates remain locally staged until an approved transfer path becomes available.",
+      "rationale": "Build outputs must move to release and deployment authorities without losing integrity or provenance.",
+      "requirement_ids": [
+        "REQ-PROFILE-BUILD-029"
+      ],
+      "lock_ids": [
+        "LOCK-LIFE-001",
+        "LOCK-LIFE-002"
+      ]
+    },
+    "rebuild_and_recovery": {
+      "state": "required",
+      "conditions": [
+        "Worker definitions, toolchain locks, admitted inputs, provenance, and retained evidence are sufficient to repeat a build.",
+        "Artifact cache loss does not destroy the only copy of authoritative source or release evidence."
+      ],
+      "degraded_behavior": "New work is blocked when required recovery inputs are unavailable; verified released artifacts remain unaffected.",
+      "rationale": "The build farm must recover by reconstruction rather than relying on mutable worker state.",
+      "requirement_ids": [
+        "REQ-PROFILE-BUILD-030"
+      ],
+      "lock_ids": [
+        "LOCK-LIFE-001",
+        "LOCK-LIFE-002"
+      ]
+    }
+  },
+  "components": {
+    "resource_governor": {
+      "state": "required",
+      "activation": "always_on",
+      "conditions": [
+        "Resource envelopes exist for workers, caches, tests, packaging, signing, and optional heavy tasks."
+      ],
+      "data_authority": "component_owned",
+      "failure_behavior": "New heavy or unconstrained work is blocked; bounded inspection and recovery operations may continue."
+    },
+    "orgo": {
+      "state": "required",
+      "activation": "service_activated",
+      "conditions": [
+        "Build workflows use declared task identities and dependency graphs.",
+        "Workflow state does not replace artifact provenance or release authority."
+      ],
+      "data_authority": "component_owned",
+      "failure_behavior": "New workflow scheduling stops; active workers drain or stop according to their task contract."
+    },
+    "koa_node_agent": {
+      "state": "required",
+      "activation": "always_on",
+      "conditions": [
+        "The agent coordinates profile state, worker registration, health, and local artifact admission."
+      ],
+      "data_authority": "component_owned",
+      "failure_behavior": "Existing safe workers may drain; new node-level activation, registration, or recovery is blocked."
+    },
+    "identity_and_trust": {
+      "state": "required",
+      "activation": "service_activated",
+      "conditions": [
+        "Worker, source, signer, artifact, and release identities resolve before governed actions."
+      ],
+      "data_authority": "component_owned",
+      "failure_behavior": "Identity-dependent admission, signing, publication, and release-set assembly are blocked."
+    },
+    "audit_broker": {
+      "state": "required",
+      "activation": "service_activated",
+      "conditions": [
+        "Critical build, signing, transfer, and release-candidate transitions emit required receipts."
+      ],
+      "data_authority": "component_owned",
+      "failure_behavior": "Transitions requiring durable receipts remain uncommitted; noncritical local diagnostics may continue."
+    },
+    "governance_policy_runtime": {
+      "state": "conditional",
+      "activation": "service_activated",
+      "conditions": [
+        "Required when an active overlay or release policy requires governed authorization, disclosure, consent, exception, or privilege decisions."
+      ],
+      "data_authority": "component_owned",
+      "failure_behavior": "Governed actions are blocked; Resource Governor does not substitute a policy decision."
+    },
+    "gf_wordbench": {
+      "state": "conditional",
+      "activation": "task_activated",
+      "conditions": [
+        "Activated only for language-pack authoring and compilation tasks."
+      ],
+      "data_authority": "component_owned",
+      "failure_behavior": "Language-pack builds are blocked; unrelated build channels continue."
+    },
+    "semantik_architect_runtime": {
+      "state": "conditional",
+      "activation": "task_activated",
+      "conditions": [
+        "Activated for compatibility and runtime validation of compiled language artifacts."
+      ],
+      "data_authority": "component_owned",
+      "failure_behavior": "Language-runtime validation is blocked; the candidate language pack remains non-releasable."
+    },
+    "sentient": {
+      "state": "optional",
+      "activation": "task_activated",
+      "conditions": [
+        "Isolated research tasks only.",
+        "No direct write access to build, source, signing, release, or component-authoritative stores."
+      ],
+      "data_authority": "component_owned",
+      "failure_behavior": "Only the SenTient task fails or stops; required build capabilities continue."
+    }
+  },
+  "operating_modes": {
+    "default_mode": "build_ready",
+    "allowed_modes": [
+      "build_ready",
+      "draining",
+      "maintenance",
+      "degraded_cache_bypass",
+      "degraded_offline_inputs_only",
+      "restoring"
+    ],
+    "transitions_fail_closed": true
+  },
+  "offline_behavior": {
+    "continuity_level": "declared_capabilities_only",
+    "internet_dependency": "none_for_core",
+    "offline_import": "required",
+    "offline_export": "required",
+    "recovery_without_internet": true,
+    "unavailable_capabilities": [
+      "remote_source_fetch",
+      "remote_dependency_fetch",
+      "remote_registry_push",
+      "external_timestamp_service",
+      "sentient_external_research"
+    ]
+  },
+  "ai_boundary": {
+    "native_ai_dependency": false,
+    "approved_external_surfaces": [],
+    "optional_components": [
+      "sentient"
+    ],
+    "authoritative_decisions_allowed": false,
+    "fallback_behavior": "Required build, test, provenance, packaging, signing, and recovery workflows remain deterministic; optional AI-assisted research is unavailable."
+  },
+  "data_and_storage": {
+    "component_data_ownership_required": true,
+    "cross_component_direct_writes_allowed": false,
+    "persistent_storage": "required",
+    "encryption_at_rest": "required_for_sensitive_data",
+    "backup_required": true,
+    "restore_required": true,
+    "portability_export_required": true
+  },
+  "security": {
+    "trust_model": "service_trust",
+    "privilege_model": "least_privilege",
+    "network_default": "controlled_egress",
+    "secrets_management": "profile_secret_store",
+    "selective_audit": true,
+    "break_glass": "supported",
+    "required_controls": [
+      "clean_worker_recreation",
+      "controlled_source_and_dependency_ingress",
+      "isolated_build_credentials",
+      "isolated_signing_credentials",
+      "artifact_integrity_verification",
+      "provenance_capture",
+      "software_bill_of_materials_generation",
+      "least_privilege_workers",
+      "network_egress_allowlisting",
+      "immutable_published_artifacts",
+      "critical_transition_receipts"
+    ]
+  },
+  "lifecycle": {
+    "release_set_required": true,
+    "system_update_model": "package_or_service_update",
+    "service_update_model": "independent_with_compatibility",
+    "rollback_required": true,
+    "forward_repair_allowed": true,
+    "offline_bundle_support": "required",
+    "artifact_requirements": [
+      {
+        "artifact_class_id": "ART-CLASS-003",
+        "state": "required",
+        "release_channel": null,
+        "activation_policy": "not_activated"
+      },
+      {
+        "artifact_class_id": "ART-CLASS-004",
+        "state": "required",
+        "release_channel": "governance",
+        "activation_policy": "staged_atomic"
+      },
+      {
+        "artifact_class_id": "ART-CLASS-006",
+        "state": "required",
+        "release_channel": null,
+        "activation_policy": "admission_then_activation"
+      },
+      {
+        "artifact_class_id": "ART-CLASS-007",
+        "state": "conditional",
+        "release_channel": "governance",
+        "activation_policy": "staged_atomic"
+      },
+      {
+        "artifact_class_id": "ART-CLASS-008",
+        "state": "conditional",
+        "release_channel": null,
+        "activation_policy": "atomic"
+      },
+      {
+        "artifact_class_id": "ART-CLASS-010",
+        "state": "conditional",
+        "release_channel": "knowledge",
+        "activation_policy": "staged_atomic"
+      },
+      {
+        "artifact_class_id": "ART-CLASS-011",
+        "state": "conditional",
+        "release_channel": "knowledge",
+        "activation_policy": "staged_atomic"
+      },
+      {
+        "artifact_class_id": "ART-CLASS-014",
+        "state": "required",
+        "release_channel": null,
+        "activation_policy": "not_activated"
+      },
+      {
+        "artifact_class_id": "ART-CLASS-015",
+        "state": "required",
+        "release_channel": "governance",
+        "activation_policy": "staged_atomic"
+      }
+    ]
+  },
+  "operations": {
+    "health_monitoring": "required",
+    "readiness_checks": "required",
+    "resource_governor": "required",
+    "backup": "required",
+    "restore": "required",
+    "incident_response": "required",
+    "disaster_recovery": "required",
+    "maintenance": "required",
+    "diagnostics": "required",
+    "receipts_for_critical_transitions": true
+  },
+  "conformance": {
+    "claim_level": "profile",
+    "claims": [],
+    "exceptions": [],
+    "evidence_required": true,
+    "partial_conformance_allowed": false
+  },
+  "validation": {
+    "entry_point": "tools/validate_docs.py",
+    "required_checks": [
+      "profile_id_matches_filename",
+      "profile_kind_matches_profile_id",
+      "terminology_ref_resolves",
+      "canonical_refs_resolve",
+      "decision_ids_resolve_and_are_accepted",
+      "requirement_ids_resolve",
+      "lock_ids_resolve",
+      "primary_profiles_are_independently_deployable",
+      "overlay_compatibility_resolves",
+      "composition_graph_is_acyclic",
+      "required_and_optional_overlays_do_not_overlap",
+      "incompatible_profiles_do_not_overlap_compatible_profiles",
+      "inheritance_is_explicit",
+      "profile_rules_do_not_become_global",
+      "capability_states_are_valid",
+      "component_states_are_valid",
+      "component_data_ownership_is_preserved",
+      "cross_component_direct_writes_are_disabled",
+      "native_ai_dependency_is_false",
+      "offline_claims_match_capability_states",
+      "hardware_envelope_is_satisfiable",
+      "artifact_class_refs_resolve",
+      "release_channel_refs_resolve",
+      "conformance_claims_are_traceable",
+      "exceptions_resolve",
+      "no_unresolved_authority_markers"
+    ],
+    "failure_outcome": "fail",
+    "missing_dependency_outcome": "blocked",
+    "automatic_semantic_repairs_allowed": false,
+    "validated_at": "2026-08-03T16:13:00-04:00",
+    "validation_status": "pass"
+  },
+  "external_integrations": {
+    "uckk_publication": {
+      "integration_id": "uckk-publication",
+      "contract_ref": "contracts/integrations/uckk-publication.integration.json",
+      "availability": "optional",
+      "direction": "outbound",
+      "required_for_local_operation": false,
+      "required_for_offline_operation": false
+    },
+    "uckk_import": {
+      "integration_id": "uckk-import",
+      "contract_ref": "contracts/integrations/uckk-import.integration.json",
+      "availability": "optional",
+      "direction": "inbound",
+      "offline_bundle_supported": true,
+      "accepted_content_available_offline": true,
+      "automatic_sync": false
+    }
+  }
+}

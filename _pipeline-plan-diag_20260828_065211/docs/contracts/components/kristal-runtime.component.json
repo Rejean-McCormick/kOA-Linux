@@ -1,0 +1,609 @@
+{
+  "$schema": "../../schemas/component-contract.schema.json",
+  "contract_id": "component.kristal_runtime",
+  "contract_type": "component_contract",
+  "component_id": "kristal_runtime",
+  "display_name": "Kristal Runtime",
+  "version": "1.0.0",
+  "status": "active",
+  "language": "en",
+  "effective_at": "2026-08-03T16:27:00-04:00",
+  "canonical_owner": "contracts/components/kristal-runtime.component.json",
+  "component_registry_ref": "generated/component-catalog.json#/components/kristal_runtime",
+  "documentation_ref": "04-components/kristal-runtime.md",
+  "classification": {
+    "component_kind": "transversal_runtime",
+    "system_role": "epistemic_artifact_runtime",
+    "profile_membership_authority": "contracts/profiles/*.profile.json",
+    "profile_membership_resolution": "active_profile_contracts",
+    "standalone_profile": false
+  },
+  "decision_refs": [
+    "DEC-SYS-KRISTAL-001",
+    "DEC-DATA-001",
+    "DEC-AI-001",
+    "DEC-REL-001"
+  ],
+  "adr_refs": [],
+  "requirement_refs": [
+    "REQ-COMP-KRISTAL-001",
+    "REQ-COMP-KRISTAL-002",
+    "REQ-COMP-KRISTAL-003",
+    "REQ-COMP-KRISTAL-004",
+    "REQ-COMP-KRISTAL-005",
+    "REQ-COMP-KRISTAL-006",
+    "REQ-COMP-KRISTAL-007",
+    "REQ-COMP-KRISTAL-008",
+    "REQ-COMP-KRISTAL-009",
+    "REQ-COMP-KRISTAL-010",
+    "REQ-COMP-KRISTAL-011",
+    "REQ-COMP-KRISTAL-012",
+    "REQ-CONST-COMP-009",
+    "REQ-SYS-DATA-017"
+  ],
+  "lock_refs": [
+    "LOCK-COMP-001",
+    "LOCK-DATA-001",
+    "LOCK-AI-001",
+    "LOCK-LIFE-001",
+    "LOCK-LIFE-002",
+    "LOCK-LIFE-003",
+    "LOCK-LIFE-004"
+  ],
+  "purpose": "Provide a transversal runtime for verified Kristal epistemic artifacts while preserving content-derived identity independently from tenant workflow, interface state, and component operational state.",
+  "responsibility_boundary": {
+    "owns": [
+      "kristal_content_identity_resolution",
+      "runtime_pack_verification_state",
+      "runtime_pack_compatibility_evaluation",
+      "active_runtime_pack_selection",
+      "runtime_pack_activation_state",
+      "runtime_pack_activation_receipts",
+      "kristal_runtime_health_state"
+    ],
+    "does_not_own": [
+      "tenant_workflow_state",
+      "orgo_workflow_state",
+      "konnaxion_domain_state",
+      "koa_mediatheque_record_state",
+      "ariane_interface_state",
+      "component_business_state",
+      "universal_operational_storage",
+      "universal_workflow_execution",
+      "governance_policy",
+      "resource_scheduling",
+      "host_privilege",
+      "external_ai_processing",
+      "release_channel_identity"
+    ]
+  },
+  "authority_model": {
+    "identity_rule": {
+      "canonical_basis": "canonical_epistemic_content",
+      "independent_from": [
+        "tenant_workflow_state",
+        "interface_state",
+        "deployment_topology",
+        "runtime_cache_state"
+      ]
+    },
+    "mutation_authority": {
+      "authoritative_scope": [
+        "active_runtime_pack_record",
+        "runtime_pack_verification_record",
+        "runtime_pack_activation_record"
+      ],
+      "cross_component_direct_writes_allowed": false,
+      "external_component_mutation": "Only through the target component's active import or command contract."
+    },
+    "workflow_authority": {
+      "owns_workflow_execution": false,
+      "owns_orchestration_state": false
+    },
+    "policy_authority": {
+      "owns_authorization_policy": false,
+      "policy_source": "Governance Policy Runtime when the active profile requires policy evaluation."
+    },
+    "resource_authority": {
+      "owns_resource_scheduling": false,
+      "resource_source": "resource_governor"
+    },
+    "privilege_authority": {
+      "owns_host_privilege": false,
+      "privileged_operations": []
+    }
+  },
+  "profile_applicability": {
+    "authority": "contracts/profiles/*.profile.json",
+    "resolution": "The component is available only when the selected effective profile declares kristal_runtime as required or optional and all declared prerequisites resolve.",
+    "implicit_profile_membership_allowed": false
+  },
+  "artifact_contracts": {
+    "accepted_artifact_classes": [
+      {
+        "artifact_class": "runtime_pack",
+        "schema_ref": "contracts/artifact-contracts/runtime-pack.schema.json",
+        "release_channel": "knowledge",
+        "required_claims": [
+          "artifact_identity",
+          "artifact_version",
+          "artifact_digest",
+          "compatibility_constraints",
+          "release_channel",
+          "provenance"
+        ],
+        "verification": [
+          "schema_validation",
+          "identity_validation",
+          "digest_validation",
+          "trust_validation_when_required",
+          "compatibility_validation",
+          "release_channel_validation",
+          "downgrade_and_substitution_policy_validation"
+        ]
+      },
+      {
+        "artifact_class": "kristal_artifact",
+        "schema_ref": "contracts/artifact-contracts/kristal-artifact.schema.json",
+        "release_channel": "knowledge",
+        "required_claims": [
+          "content_identity",
+          "artifact_version",
+          "content_digest",
+          "provenance"
+        ],
+        "verification": [
+          "schema_validation",
+          "content_identity_validation",
+          "digest_validation",
+          "provenance_validation"
+        ]
+      }
+    ],
+    "rejected_conditions": [
+      "unknown_artifact_identity",
+      "invalid_artifact_digest",
+      "untrusted_artifact_when_trust_is_required",
+      "incompatible_runtime_pack",
+      "wrong_release_channel",
+      "unauthorized_downgrade",
+      "unauthorized_substitution",
+      "missing_provenance"
+    ]
+  },
+  "data_ownership": {
+    "authoritative_data": [
+      {
+        "data_id": "active_runtime_pack_record",
+        "description": "The identity and version of the currently active verified Runtime Pack.",
+        "mutation_interfaces": [
+          "runtime_pack_activation",
+          "runtime_pack_rollback"
+        ]
+      },
+      {
+        "data_id": "runtime_pack_verification_record",
+        "description": "The result of identity, integrity, compatibility, channel, and trust validation.",
+        "mutation_interfaces": [
+          "runtime_pack_validation"
+        ]
+      },
+      {
+        "data_id": "runtime_pack_activation_record",
+        "description": "The atomic activation, rollback, or blocked outcome and its receipt reference.",
+        "mutation_interfaces": [
+          "runtime_pack_activation",
+          "runtime_pack_rollback"
+        ]
+      }
+    ],
+    "derived_data": [
+      {
+        "data_id": "loaded_runtime_cache",
+        "source": "active_runtime_pack_record",
+        "authority": "derived",
+        "rebuildable": true,
+        "may_be_mutation_source": false
+      },
+      {
+        "data_id": "kristal_runtime_read_model",
+        "source": [
+          "active_runtime_pack_record",
+          "runtime_pack_verification_record",
+          "kristal_runtime_health_state"
+        ],
+        "authority": "derived",
+        "rebuildable": true,
+        "may_be_mutation_source": false
+      }
+    ],
+    "prohibited_direct_write_targets": [
+      "ariane_runtime",
+      "audit_broker",
+      "governance_policy_runtime",
+      "identity_and_trust",
+      "koa_mediatheque",
+      "koa_node_agent",
+      "konnaxion",
+      "orgo",
+      "publication_gateway",
+      "resource_governor",
+      "semantik_architect_runtime",
+      "sentient",
+      "uckk_publication_bridge"
+    ]
+  },
+  "interfaces": [
+    {
+      "interface_id": "kristal_identity_resolution",
+      "direction": "inbound",
+      "interaction_type": "query",
+      "purpose": "Resolve or verify Kristal identity from canonical epistemic content.",
+      "accepted_input": {
+        "content_identity_claim": true,
+        "canonical_content_reference": true,
+        "content_digest": true
+      },
+      "produced_output": {
+        "resolved_kristal_identity": true,
+        "verification_outcome": true
+      },
+      "authoritative_effect": "none",
+      "failure_outcomes": [
+        "identity_unresolved",
+        "content_digest_invalid",
+        "canonical_content_unavailable"
+      ]
+    },
+    {
+      "interface_id": "runtime_pack_validation",
+      "direction": "inbound",
+      "interaction_type": "command",
+      "purpose": "Validate a candidate Runtime Pack before activation.",
+      "accepted_input": {
+        "artifact_contract": "contracts/artifact-contracts/runtime-pack.schema.json",
+        "release_channel": "knowledge"
+      },
+      "produced_output": {
+        "verification_record": true,
+        "activation_eligibility": true
+      },
+      "authoritative_effect": "Updates only runtime_pack_verification_record.",
+      "idempotency_key": [
+        "artifact_identity",
+        "artifact_version",
+        "artifact_digest"
+      ],
+      "failure_outcomes": [
+        "artifact_invalid",
+        "artifact_untrusted",
+        "artifact_incompatible",
+        "release_channel_invalid",
+        "downgrade_or_substitution_denied"
+      ]
+    },
+    {
+      "interface_id": "runtime_pack_activation",
+      "direction": "inbound",
+      "interaction_type": "command",
+      "purpose": "Atomically activate a verified compatible Runtime Pack.",
+      "accepted_input": {
+        "verified_runtime_pack_ref": true,
+        "authorization_ref": true,
+        "resource_grant_ref": true
+      },
+      "produced_output": {
+        "activation_receipt": true,
+        "active_runtime_identity": true
+      },
+      "authoritative_effect": "Atomically replaces active_runtime_pack_record after all preconditions pass.",
+      "idempotency_key": [
+        "verified_runtime_pack_ref",
+        "activation_request_id"
+      ],
+      "failure_outcomes": [
+        "verification_missing",
+        "authorization_unavailable",
+        "resource_grant_unavailable",
+        "activation_failed",
+        "last_valid_state_restored"
+      ]
+    },
+    {
+      "interface_id": "runtime_pack_rollback",
+      "direction": "inbound",
+      "interaction_type": "command",
+      "purpose": "Restore the last valid compatible Runtime Pack after an activation or runtime failure.",
+      "accepted_input": {
+        "rollback_request_id": true,
+        "target_last_valid_runtime_ref": true,
+        "authorization_ref": true
+      },
+      "produced_output": {
+        "rollback_receipt": true,
+        "active_runtime_identity": true
+      },
+      "authoritative_effect": "Atomically restores the declared last valid runtime state.",
+      "failure_outcomes": [
+        "rollback_target_unavailable",
+        "rollback_target_invalid",
+        "rollback_blocked",
+        "forward_repair_required"
+      ]
+    },
+    {
+      "interface_id": "runtime_status_query",
+      "direction": "inbound",
+      "interaction_type": "query",
+      "purpose": "Return active Runtime Pack identity, verification state, activation state, and health.",
+      "accepted_input": {
+        "authorized_status_scope": true
+      },
+      "produced_output": {
+        "active_runtime_identity": true,
+        "verification_state": true,
+        "activation_state": true,
+        "health_state": true
+      },
+      "authoritative_effect": "none",
+      "failure_outcomes": [
+        "status_scope_denied",
+        "runtime_state_unavailable"
+      ]
+    }
+  ],
+  "activation_contract": {
+    "preconditions": [
+      "runtime_pack_schema_valid",
+      "runtime_pack_identity_valid",
+      "runtime_pack_digest_valid",
+      "runtime_pack_trust_valid_when_required",
+      "runtime_pack_compatible",
+      "runtime_pack_release_channel_is_knowledge",
+      "downgrade_and_substitution_policy_passed",
+      "required_authorization_valid",
+      "required_resource_grant_valid"
+    ],
+    "atomicity": {
+      "partial_authoritative_activation_allowed": false,
+      "active_pointer_switch": "atomic",
+      "last_valid_state_retained_until_success": true
+    },
+    "success_effects": [
+      "active_runtime_pack_record_updated",
+      "loaded_runtime_cache_rebuilt_or_reused_when_compatible",
+      "activation_receipt_emitted",
+      "active_runtime_identity_exposed"
+    ],
+    "failure_effects": [
+      "candidate_not_activated",
+      "last_valid_state_preserved_or_restored",
+      "failure_receipt_emitted",
+      "affected_capability_marked_blocked_or_degraded"
+    ],
+    "downgrade_policy": {
+      "implicit_downgrade_allowed": false,
+      "implicit_substitution_allowed": false,
+      "authorization_required": true,
+      "compatibility_validation_required": true
+    }
+  },
+  "failure_behavior": [
+    {
+      "condition": "required_verification_unavailable",
+      "result": "blocked",
+      "preserved_state": "last_valid_active_runtime_pack"
+    },
+    {
+      "condition": "candidate_runtime_pack_incompatible",
+      "result": "blocked",
+      "preserved_state": "last_valid_active_runtime_pack"
+    },
+    {
+      "condition": "candidate_runtime_pack_wrong_channel",
+      "result": "blocked",
+      "preserved_state": "last_valid_active_runtime_pack"
+    },
+    {
+      "condition": "activation_fails_before_atomic_switch",
+      "result": "failed",
+      "preserved_state": "last_valid_active_runtime_pack"
+    },
+    {
+      "condition": "runtime_failure_after_activation",
+      "result": "rollback_or_forward_repair",
+      "preserved_state": "last_valid_runtime_pack_when_rollback_is_valid"
+    },
+    {
+      "condition": "resource_governor_unavailable",
+      "result": "block_new_resource_unresolved_activation",
+      "preserved_state": "current_active_runtime_pack"
+    },
+    {
+      "condition": "governance_policy_runtime_unavailable_when_required",
+      "result": "block_policy_gated_activation",
+      "preserved_state": "current_active_runtime_pack"
+    },
+    {
+      "condition": "audit_broker_unavailable",
+      "result": "follow_active_evidence_contract_sync_fail_or_bounded_queue",
+      "preserved_state": "source_activation_authority"
+    }
+  ],
+  "ai_boundary": {
+    "native_ai_capabilities": [],
+    "external_ai_integrations": [],
+    "ai_required_for_identity_resolution": false,
+    "ai_required_for_runtime_pack_activation": false,
+    "ai_output_direct_mutation_allowed": false
+  },
+  "security_boundary": {
+    "cross_component_direct_writes_allowed": false,
+    "host_privilege_required": false,
+    "secrets_in_runtime_pack_allowed": false,
+    "unverified_artifact_execution_allowed": false,
+    "authorization_scope": [
+      "runtime_pack_activation",
+      "runtime_pack_rollback",
+      "restricted_status_query"
+    ]
+  },
+  "observability": {
+    "exposed_states": [
+      "inactive",
+      "verification_pending",
+      "verified",
+      "active",
+      "blocked",
+      "degraded",
+      "rollback_in_progress",
+      "failed"
+    ],
+    "metrics": [
+      "active_runtime_pack_identity",
+      "verification_outcome",
+      "activation_outcome",
+      "rollback_outcome",
+      "runtime_health"
+    ],
+    "critical_receipts": [
+      "runtime_pack_verification_receipt",
+      "runtime_pack_activation_receipt",
+      "runtime_pack_rollback_receipt",
+      "runtime_pack_failure_receipt"
+    ],
+    "receipt_owner": "kristal_runtime",
+    "evidence_custody": "Audit Broker or the active evidence authority without transfer of Kristal Runtime state ownership."
+  },
+  "dependencies": [
+    {
+      "dependency_id": "identity_and_trust",
+      "dependency_kind": "component",
+      "required_for": [
+        "artifact_trust_validation_when_required"
+      ],
+      "authority_retained_by_dependency": [
+        "identity_verification",
+        "credential_verification",
+        "signature_trust_verification"
+      ]
+    },
+    {
+      "dependency_id": "resource_governor",
+      "dependency_kind": "component",
+      "required_for": [
+        "resource_admission",
+        "activation_resource_grant",
+        "runtime_resource_limits"
+      ],
+      "authority_retained_by_dependency": [
+        "resource_budget_interpretation",
+        "resource_admission",
+        "resource_scheduling"
+      ]
+    },
+    {
+      "dependency_id": "governance_policy_runtime",
+      "dependency_kind": "component",
+      "required_for": [
+        "policy_gated_activation_when_required_by_effective_profile",
+        "policy_gated_rollback_when_required_by_effective_profile"
+      ],
+      "authority_retained_by_dependency": [
+        "authorization",
+        "consent",
+        "privilege_policy",
+        "governed_exceptions"
+      ]
+    },
+    {
+      "dependency_id": "audit_broker",
+      "dependency_kind": "component",
+      "required_for": [
+        "critical_receipt_custody_when_required"
+      ],
+      "authority_retained_by_dependency": [
+        "evidence_custody",
+        "authorized_audit_views"
+      ]
+    },
+    {
+      "dependency_id": "knowledge_release_channel",
+      "dependency_kind": "canonical_registry",
+      "canonical_ref": "contracts/release-channels.contract.json#/channels/knowledge",
+      "required_for": [
+        "runtime_pack_release_channel_validation",
+        "release_set_compatibility"
+      ],
+      "authority_retained_by_dependency": [
+        "release_channel_identity",
+        "release_channel_membership"
+      ]
+    }
+  ],
+  "change_policy": {
+    "responsibility_or_authority_change": "major",
+    "interface_breaking_change": "major",
+    "compatible_interface_addition": "minor",
+    "clarification_without_semantic_change": "patch",
+    "requires_accepted_decision_for_semantic_change": true,
+    "requires_adr_for_major_change": false,
+    "requires_impact_report_for_major_change": true,
+    "requires_full_validation_before_activation": true
+  },
+  "validation_policy": {
+    "entry_point": "tools/validate_docs.py",
+    "outcomes": [
+      "pass",
+      "fail",
+      "blocked"
+    ],
+    "required_checks": [
+      "component_contract_schema_validation",
+      "component_registry_reference_resolution",
+      "canonical_reference_resolution",
+      "decision_reference_resolution",
+      "requirement_reference_resolution",
+      "lock_reference_resolution",
+      "profile_membership_resolution",
+      "kristal_identity_independent_from_workflow_and_interface_state",
+      "no_universal_operational_database_ownership",
+      "no_universal_workflow_ownership",
+      "no_cross_component_direct_writes",
+      "runtime_pack_identity_validation",
+      "runtime_pack_digest_validation",
+      "runtime_pack_compatibility_validation",
+      "runtime_pack_knowledge_channel_validation",
+      "atomic_runtime_pack_activation",
+      "last_valid_runtime_state_preservation",
+      "unauthorized_downgrade_and_substitution_rejection",
+      "no_native_ai_capability",
+      "critical_receipt_traceability",
+      "no_unresolved_authority_markers",
+      "english_active_content"
+    ],
+    "test_refs": [
+      "TEST-COMP-KRISTAL-001",
+      "TEST-COMP-KRISTAL-002",
+      "TEST-COMP-KRISTAL-003",
+      "TEST-COMP-KRISTAL-004",
+      "TEST-COMP-KRISTAL-005",
+      "TEST-COMP-KRISTAL-006",
+      "TEST-COMP-KRISTAL-007",
+      "TEST-COMP-KRISTAL-008"
+    ],
+    "evidence_refs": [
+      "EVID-COMP-KRISTAL-001",
+      "EVID-COMP-KRISTAL-002",
+      "EVID-COMP-KRISTAL-003",
+      "EVID-COMP-KRISTAL-004",
+      "EVID-COMP-KRISTAL-005",
+      "EVID-COMP-KRISTAL-006",
+      "EVID-COMP-KRISTAL-007",
+      "EVID-COMP-KRISTAL-008"
+    ],
+    "missing_required_authority_result": "blocked",
+    "invalid_artifact_result": "fail",
+    "automatic_semantic_fixes_allowed": false
+  }
+}

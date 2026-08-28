@@ -240,8 +240,8 @@ A compatible overlay requires its own procedure and additional evidence.
 | --- | --- | --- |
 | Linux host | version selected by the active profile and system Release Set | `contracts/profiles/user-lightweight.profile.json` |
 | systemd | version supplied by the active system release | active system-channel artifact |
-| cgroup | unified cgroup v2 hierarchy | `contracts/profiles/user-lightweight.profile.json#/resources` |
-| OCI runtime | rootless runtime accepted by the profile | `contracts/profiles/user-lightweight.profile.json#/runtime` |
+| cgroup | unified cgroup v2 hierarchy | `contracts/profiles/user-lightweight.profile.json#/hardware_envelope/enforcement` |
+| OCI runtime | rootless runtime accepted by the profile | `contracts/profiles/user-lightweight.profile.json#/capabilities/rootless_container_runtime` |
 | PostgreSQL | version selected by the services Release Set | active services-channel artifacts |
 | browser or product shell | version selected by the system or services Release Set | active system and services artifacts |
 

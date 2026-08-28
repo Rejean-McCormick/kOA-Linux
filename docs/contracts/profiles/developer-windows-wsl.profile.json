@@ -1,18 +1,36 @@
 {
   "$schema": "../../schemas/deployment-profile.schema.json",
   "profile_id": "developer_windows_wsl",
-  "profile_type": "primary_profile",
+  "profile_kind": "primary_profile",
   "version": "1.0.0",
   "status": "active",
   "language": "en",
-  "effective_at": "2026-08-03T16:13:00-04:00",
-  "title": "Developer Windows WSL",
-  "description": "A component-selective kOA development workstation hosted on Windows 11 with WSL2. The profile supports isolated workspaces, reproducible Python development through UV, selective OCI containers, local runtime testing, and optional non-authoritative workbenches. It does not establish sovereign Linux, production, high-assurance, release-signing, or control-plane conformance.",
-  "authority_ref": "generated/authority-manifest.json#/canonical_ownership",
-  "canonical_owner_ref": "contracts/profiles/developer-windows-wsl.profile.json",
-  "documentation_ref": "03-profiles/06-developer-windows-wsl.md",
-  "decision_refs": [
-    "DEC-PROFILE-WINWSL-001",
+  "display_name": "Developer Windows WSL",
+  "purpose": "A component-selective kOA development workstation hosted on Windows 11 with WSL2. The profile supports isolated workspaces, reproducible Python development through UV, selective OCI containers, local runtime testing, and optional non-authoritative workbenches. It does not establish sovereign Linux, production, high-assurance, release-signing, or control-plane conformance.",
+  "terminology_ref": "contracts/terminology.contract.json#/terms/TERM-PROFILE-DEVELOPER-WINDOWS-WSL",
+  "canonical_refs": [
+    "generated/authority-manifest.json#/canonical_ownership",
+    "contracts/profiles/developer-windows-wsl.profile.json",
+    "03-profiles/06-developer-windows-wsl.md",
+    "generated/authority-manifest.json",
+    "generated/decision-index.json",
+    "contracts/terminology.contract.json",
+    "contracts/system.contract.json",
+    "generated/component-catalog.json",
+    "generated/profile-catalog.json",
+    "contracts/artifact-classes.contract.json",
+    "contracts/release-channels.contract.json",
+    "contracts/integration-types.contract.json",
+    "generated/requirements-index.json",
+    "generated/assertion-index.json",
+    "generated/traceability.json",
+    "generated/test-catalog.json",
+    "generated/evidence-catalog.json"
+  ],
+  "decision_ids": [
+    "DEC-UCKK-EXT-001",
+    "DEC-MEDIATHEQUE-001",
+    "DEC-PROFILE-001",
     "DEC-DEV-001",
     "DEC-SYS-AI-001",
     "DEC-SYS-OFFLINE-001",
@@ -20,7 +38,7 @@
     "DEC-INT-001",
     "DEC-SENT-001"
   ],
-  "requirement_refs": [
+  "requirement_ids": [
     "REQ-PROFILE-WINWSL-001",
     "REQ-PROFILE-WINWSL-002",
     "REQ-PROFILE-WINWSL-003",
@@ -50,7 +68,11 @@
     "REQ-PROFILE-WINWSL-027",
     "REQ-PROFILE-WINWSL-028"
   ],
-  "lock_refs": [
+  "lock_ids": [
+    "LOCK-MEDIATHEQUE-001",
+    "LOCK-UCKK-EXT-001",
+    "LOCK-UCKK-EXT-002",
+    "LOCK-SPACES-001",
     "LOCK-PROFILE-001",
     "LOCK-PROFILE-002",
     "LOCK-DEV-001",
@@ -67,613 +89,503 @@
     "LOCK-GOV-001",
     "LOCK-GATE-001"
   ],
-  "scope": {
-    "kind": "profile",
-    "profile": "developer_windows_wsl",
-    "applies_to": [
-      "developer_workstation",
-      "component_development",
-      "local_integration_testing",
-      "documentation_validation",
-      "candidate_artifact_builds"
-    ],
-    "does_not_apply_to": [
-      "production_deployment",
-      "sovereign_linux_node_conformance",
-      "high_assurance_conformance",
-      "sovereign_offline_conformance",
-      "release_signing_authority",
-      "fleet_control",
-      "production_control_plane"
-    ]
-  },
-  "inheritance": {
-    "inherits_profiles": [],
-    "inherits_global_system_baseline": true,
-    "implicit_profile_inheritance_allowed": false,
-    "compatible_overlays": [],
-    "incompatible_overlays": [
+  "independently_deployable": true,
+  "supersedes": [],
+  "composition": {
+    "compatible_primary_profiles": [],
+    "required_overlays": [],
+    "optional_overlays": [],
+    "incompatible_profiles": [
       "high_assurance",
       "sovereign_offline",
       "appliance_shell"
     ],
-    "sibling_profiles": [
-      "developer_linux_workstation"
-    ],
-    "sibling_profile_rules_inherited": false
+    "composition_priority": null,
+    "conflict_policy": "fail_closed"
   },
-  "conformance": {
-    "claim_id": "CLAIM-PROFILE-WINWSL-001",
-    "claim_type": "development_profile",
-    "qualifier": "development_convenience_profile",
-    "deployable": true,
-    "production_conformant": false,
-    "sovereign_linux_conformant": false,
-    "high_assurance_conformant": false,
-    "sovereign_offline_conformant": false,
-    "release_signing_conformant": false,
-    "control_plane_conformant": false,
-    "build_farm_conformant": false,
-    "offline_development_claim": "qualified",
-    "claim_requires_current_tests_and_evidence": true,
-    "claim_requires_profile_id_in_receipts": true
-  },
-  "host_environment": {
-    "host_os": "windows_11",
-    "virtualization_layer": "wsl2",
-    "guest_distribution": {
-      "distribution": "ubuntu",
-      "release": "24.04-lts",
-      "architecture": [
-        "x86_64",
-        "arm64"
-      ],
-      "systemd_required": true,
-      "distribution_substitution_allowed": false
-    },
-    "wsl_configuration": {
-      "version": 2,
-      "default_user_must_be_unprivileged": true,
-      "interop_enabled": true,
-      "localhost_forwarding_enabled": true,
-      "gui_support_required": false,
-      "nested_virtualization_required": false,
-      "windows_path_import_allowed": true,
-      "windows_path_execution_for_workspace_tools_allowed": false
-    },
-    "host_administrator_use": {
-      "ordinary_development_required": false,
-      "permitted_for": [
-        "enable_wsl2",
-        "install_or_update_wsl",
-        "configure_virtualization",
-        "install_approved_container_backend",
-        "configure_host_firewall"
-      ],
-      "prohibited_for": [
-        "ordinary_component_execution",
-        "ordinary_test_execution",
-        "ordinary_dependency_installation",
-        "routine_workspace_mutation"
-      ]
-    }
-  },
-  "hardware_envelope": {
-    "minimum": {
-      "cpu_logical_cores": 4,
-      "memory_gib": 16,
-      "available_storage_gib": 180,
-      "system_storage_type": "ssd",
-      "gpu": "integrated_or_none"
-    },
-    "recommended": {
-      "cpu_logical_cores": 8,
-      "memory_gib": 32,
-      "available_storage_gib": 500,
-      "system_storage_type": "nvme_ssd",
-      "gpu": "integrated_or_discrete_optional"
-    },
-    "maximum_tested": {
-      "cpu_logical_cores": 32,
-      "memory_gib": 128,
-      "available_storage_gib": 4000
-    },
-    "wsl_resource_envelope": {
-      "minimum_memory_gib": 8,
-      "recommended_memory_gib": 16,
-      "minimum_processors": 4,
-      "recommended_processors": 8,
-      "minimum_swap_gib": 4,
-      "recommended_swap_gib": 8,
-      "memory_reclaim": "gradual",
-      "sparse_virtual_disk_enabled": true
-    },
-    "hardware_values_are_profile_specific": true
-  },
-  "workspace_model": {
-    "workspace_identity": "one_repository_checkout_or_explicit_multi-repository_workspace",
-    "workspace_root_policy": "inside_wsl_linux_filesystem",
-    "workspace_root_example": "~/workspaces/<workspace-id>",
-    "windows_mounted_filesystem_role": "controlled_import_export_only",
-    "mutable_runtime_state_on_windows_mount_allowed": false,
-    "one_mutable_dependency_environment_per_workspace": true,
-    "shared_mutable_dependency_environment_allowed": false,
-    "parallel_workspaces_allowed": true,
-    "workspace_identity_required_in": [
-      "container_names",
-      "network_names",
-      "volume_names",
-      "database_names",
-      "ports",
-      "logs",
-      "test_evidence"
-    ],
-    "workspace_cleanup_required": true,
-    "workspace_cleanup_must_not_delete_other_workspaces": true
-  },
-  "python_toolchain": {
-    "toolchain_ref": "contracts/toolchains/python-uv.toolchain.json",
-    "package_manager": "uv",
-    "virtual_environment_path": ".venv",
-    "lock_file": "uv.lock",
-    "project_file": "pyproject.toml",
-    "lock_file_required": true,
-    "per_workspace_virtual_environment_required": true,
-    "system_python_package_installation_allowed": false,
-    "global_mutable_python_environment_allowed": false,
-    "pip_direct_installation_allowed": false,
-    "dependency_sync_command": "uv sync --frozen",
-    "command_execution_prefix": "uv run",
-    "lock_update_command": "uv lock",
-    "lock_updates_require_explicit_change": true,
-    "frozen_sync_required_for": [
-      "normal_development_setup",
-      "continuous_integration",
-      "test_evidence",
-      "candidate_artifact_build"
-    ],
-    "python_version_source": "pyproject_and_uv_lock",
-    "uv_version_source": "contracts/toolchains/python-uv.toolchain.json"
-  },
-  "container_model": {
-    "containers_permitted": true,
-    "containers_required_for_every_workspace": false,
-    "selection_mode": "workspace_declared",
-    "allowed_backends": [
-      "podman_rootless_in_wsl",
-      "docker_desktop_wsl_backend"
-    ],
-    "backend_selection_required_per_workspace": true,
-    "mixed_backends_in_one_workspace_allowed": false,
-    "rootless_workloads_required": true,
-    "privileged_containers_allowed": false,
-    "host_network_mode_allowed": false,
-    "workspace_network_required": true,
-    "workspace_named_volumes_required": true,
-    "mutable_data_in_container_image_allowed": false,
-    "image_tags_without_digest_or_immutable_version_allowed": false,
-    "automatic_start_of_all_component_containers_allowed": false,
-    "service_activation_modes": [
-      "manual",
-      "task_activated",
-      "test_activated"
-    ],
-    "production_orchestration_conformance_claimed": false
-  },
-  "components": {
-    "required": [
-      "koa_node_agent",
-      "identity_and_trust",
-      "resource_governor",
-      "audit_broker"
-    ],
-    "available_on_demand": [
-      "ariane_runtime",
-      "konnaxion",
-      "orgo",
-      "kristal_runtime",
-      "semantik_architect_runtime",
-      "koa_mediatheque",
-      "governance_policy_runtime",
-      "publication_gateway"
-    ],
-    "optional_isolated_workbenches": [
-      "sentient"
-    ],
-    "excluded_roles": [
-      "production_release_signer",
-      "production_control_plane",
-      "sovereign_host_mutation_broker"
-    ],
-    "component_contract_index_ref": "generated/component-catalog.json"
-  },
-  "component_activation": {
-    "always_on": [
-      "koa_node_agent",
-      "resource_governor"
-    ],
-    "session_activated": [
-      "identity_and_trust",
-      "audit_broker"
-    ],
-    "manual_or_task_activated": [
-      "ariane_runtime",
-      "konnaxion",
-      "orgo",
-      "kristal_runtime",
-      "semantik_architect_runtime",
-      "koa_mediatheque",
-      "governance_policy_runtime",
-      "publication_gateway"
-    ],
-    "manual_isolated_only": [
-      "sentient"
-    ],
-    "prohibited_always_on": [
-      "sentient",
-      "solr",
-      "elasticsearch",
-      "openrefine",
-      "sbert_models",
-      "local_ai_runtime"
-    ],
-    "all_workbenches_running_simultaneously_required": false
-  },
-  "capability_envelope": {
-    "required": [
-      "workspace_isolation",
-      "python_uv_dependency_management",
-      "frozen_dependency_sync",
-      "component_selective_execution",
-      "local_unit_testing",
-      "local_integration_testing",
-      "documentation_validation",
-      "candidate_artifact_build",
-      "local_non_voice_ariane_navigation",
-      "deterministic_native_uckk_processing",
-      "offline_source_editing",
-      "offline_cached_test_execution"
-    ],
-    "optional": [
-      "gf_wordbench_development",
-      "semantik_architect_development",
-      "sentient_isolated_analysis",
-      "external_chatgpt_adapter",
-      "external_suno_adapter",
-      "external_gamma_adapter",
-      "external_ariane_voice",
-      "local_component_database",
-      "local_message_broker",
-      "local_media_processing"
-    ],
-    "conditional": [
-      {
-        "capability": "containerized_service_execution",
-        "condition": "The workspace declares one approved container backend."
-      },
-      {
-        "capability": "external_provider_processing",
-        "condition": "The user explicitly invokes an approved registered integration."
-      },
-      {
-        "capability": "sentient_isolated_analysis",
-        "condition": "The workspace explicitly enables SenTient and satisfies the isolated-workbench resource envelope."
-      },
-      {
-        "capability": "local_release_candidate_assembly",
-        "condition": "The artifact remains unsigned or development-signed and is not represented as a production release."
-      }
-    ],
-    "excluded": [
-      "production_release_signing",
-      "production_fleet_governance",
-      "sovereign_boot_attestation",
-      "production_node_immutability_enforcement",
-      "high_assurance_conformance_attestation",
-      "native_ai_processing",
-      "automatic_external_ai_processing"
-    ],
-    "capability_model_ref": "contracts/system.contract.json#/capability_model"
-  },
-  "resource_envelope": {
-    "governor_required": true,
-    "default_concurrency": {
-      "heavy_cpu_jobs": 1,
-      "media_processing_jobs": 1,
-      "large_index_builds": 1,
-      "sentient_workbenches": 1,
-      "component_integration_stacks": 2
-    },
-    "memory_policy": {
-      "core_development_reserve_gib": 4,
-      "container_and_service_budget_gib": 8,
-      "optional_workbench_budget_gib": 8,
-      "host_reserve_gib": 6,
-      "overcommit_allowed": false
-    },
-    "cpu_policy": {
-      "optional_workbench_priority": "low",
-      "background_indexing_priority": "low",
-      "interactive_test_priority": "normal",
-      "build_priority": "normal"
-    },
-    "storage_policy": {
-      "workspace_quota_gib": 120,
-      "container_cache_quota_gib": 80,
-      "artifact_cache_quota_gib": 80,
-      "log_retention_days": 14,
-      "automatic_cache_pruning_required": true
-    },
-    "pressure_response_order": [
-      "pause_optional_indexing",
-      "stop_idle_workbenches",
-      "stop_idle_component_stacks",
-      "reduce_background_concurrency",
-      "reject_new_heavy_jobs"
-    ],
-    "governance_policy_decisions_by_resource_governor_allowed": false
-  },
-  "offline_envelope": {
-    "claim": "qualified_development_offline",
-    "continuous": [
-      "source_editing",
-      "documentation_reading",
-      "documentation_validation_with_local_sources",
-      "local_non_voice_ariane_navigation",
-      "deterministic_native_uckk_processing",
-      "cached_dependency_test_execution",
-      "local_git_operations",
-      "local_component_execution_with_available_dependencies"
-    ],
-    "degraded": [
-      "dependency_resolution_using_local_uv_cache",
-      "container_execution_using_local_images",
-      "integration_testing_without_external_providers"
-    ],
-    "deferred": [
-      "remote_repository_push",
-      "remote_artifact_publication",
-      "remote_evidence_upload"
-    ],
-    "unavailable": [
-      "new_remote_dependency_download",
-      "uncached_container_image_pull",
-      "external_chatgpt_adapter",
-      "external_suno_adapter",
-      "external_gamma_adapter",
-      "external_ariane_voice",
-      "live_federation_testing"
-    ],
-    "offline_transfer": [
-      "signed_dependency_cache_bundle",
-      "validated_container_image_bundle",
-      "candidate_artifact_export",
-      "test_evidence_export"
-    ],
-    "internet_required_for_profile_boot": false,
-    "external_provider_required_for_core_development": false,
-    "offline_tests_required": [
-      "TEST-PROFILE-WINWSL-OFFLINE-001",
-      "TEST-PROFILE-WINWSL-OFFLINE-002",
-      "TEST-PROFILE-WINWSL-OFFLINE-003"
+  "inheritance": {
+    "baseline_ref": "contracts/system.contract.json#/system",
+    "inherits_global_requirements": true,
+    "inherited_profile_refs": [],
+    "override_policy": "strengthen_or_restrict_only",
+    "prohibited_inheritance": [
+      "implicit_profile_inheritance",
+      "cross_profile_requirement_copy",
+      "recipe_as_requirement",
+      "implementation_prevalence_as_authority",
+      "legacy_rule_without_disposition"
     ]
   },
-  "ai_and_external_services": {
-    "native_ai_allowed": false,
+  "target_environment": {
+    "host_os_families": [
+      "windows",
+      "wsl2"
+    ],
+    "host_architectures": [
+      "x86_64"
+    ],
+    "deployment_forms": [
+      "workstation",
+      "virtualized_environment"
+    ],
+    "network_expectation": "internet_expected_but_not_authoritative",
+    "user_interaction": "interactive_developer",
+    "virtualization": "required",
+    "containerization": "optional"
+  },
+  "hardware_envelope": {
+    "cpu": {
+      "minimum": 4,
+      "recommended": 8,
+      "unit": "cores"
+    },
+    "memory": {
+      "minimum": 16,
+      "recommended": 32,
+      "unit": "GiB"
+    },
+    "storage": {
+      "minimum": 180,
+      "recommended": 180,
+      "unit": "GB"
+    },
+    "gpu": "integrated_sufficient",
+    "concurrency": {
+      "heavy_jobs": 1,
+      "background_workers": 2
+    },
+    "enforcement": "resource_governor_required"
+  },
+  "capabilities": {
+    "workspace_isolation": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical Windows/WSL required capability declaration."
+    },
+    "python_uv_dependency_management": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical Windows/WSL required capability declaration."
+    },
+    "frozen_dependency_sync": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical Windows/WSL required capability declaration."
+    },
+    "component_selective_execution": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical Windows/WSL required capability declaration."
+    },
+    "local_unit_testing": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical Windows/WSL required capability declaration."
+    },
+    "local_integration_testing": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical Windows/WSL required capability declaration."
+    },
+    "documentation_validation": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical Windows/WSL required capability declaration."
+    },
+    "candidate_artifact_build": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical Windows/WSL required capability declaration."
+    },
+    "local_non_voice_ariane_navigation": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical Windows/WSL required capability declaration."
+    },
+    "deterministic_native_uckk_processing": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical Windows/WSL required capability declaration."
+    },
+    "offline_source_editing": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical Windows/WSL required capability declaration."
+    },
+    "offline_cached_test_execution": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical Windows/WSL required capability declaration."
+    },
+    "gf_wordbench_development": {
+      "state": "optional",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical Windows/WSL optional capability declaration."
+    },
+    "semantik_architect_development": {
+      "state": "optional",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical Windows/WSL optional capability declaration."
+    },
+    "sentient_isolated_analysis": {
+      "state": "optional",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical Windows/WSL optional capability declaration."
+    },
+    "external_chatgpt_adapter": {
+      "state": "optional",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical Windows/WSL optional capability declaration."
+    },
+    "external_suno_adapter": {
+      "state": "optional",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical Windows/WSL optional capability declaration."
+    },
+    "external_gamma_adapter": {
+      "state": "optional",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical Windows/WSL optional capability declaration."
+    },
+    "external_ariane_voice": {
+      "state": "optional",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical Windows/WSL optional capability declaration."
+    },
+    "local_component_database": {
+      "state": "optional",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical Windows/WSL optional capability declaration."
+    },
+    "local_message_broker": {
+      "state": "optional",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical Windows/WSL optional capability declaration."
+    },
+    "local_media_processing": {
+      "state": "optional",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical Windows/WSL optional capability declaration."
+    },
+    "production_release_signing": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical Windows/WSL excluded capability declaration."
+    },
+    "production_fleet_governance": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical Windows/WSL excluded capability declaration."
+    },
+    "sovereign_boot_attestation": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical Windows/WSL excluded capability declaration."
+    },
+    "production_node_immutability_enforcement": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical Windows/WSL excluded capability declaration."
+    },
+    "high_assurance_conformance_attestation": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical Windows/WSL excluded capability declaration."
+    },
+    "native_ai_processing": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical Windows/WSL excluded capability declaration."
+    },
+    "automatic_external_ai_processing": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical Windows/WSL excluded capability declaration."
+    }
+  },
+  "components": {
+    "koa_node_agent": {
+      "state": "required",
+      "activation": "service_activated",
+      "conditions": [],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
+    },
+    "identity_and_trust": {
+      "state": "required",
+      "activation": "service_activated",
+      "conditions": [],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
+    },
+    "resource_governor": {
+      "state": "required",
+      "activation": "service_activated",
+      "conditions": [],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
+    },
+    "audit_broker": {
+      "state": "required",
+      "activation": "service_activated",
+      "conditions": [],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
+    },
+    "ariane_runtime": {
+      "state": "optional",
+      "activation": "task_activated",
+      "conditions": [],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
+    },
+    "konnaxion": {
+      "state": "optional",
+      "activation": "task_activated",
+      "conditions": [],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
+    },
+    "orgo": {
+      "state": "optional",
+      "activation": "task_activated",
+      "conditions": [],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
+    },
+    "kristal_runtime": {
+      "state": "optional",
+      "activation": "task_activated",
+      "conditions": [],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
+    },
+    "semantik_architect_runtime": {
+      "state": "optional",
+      "activation": "task_activated",
+      "conditions": [],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
+    },
+    "koa_mediatheque": {
+      "state": "optional",
+      "activation": "task_activated",
+      "conditions": [],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
+    },
+    "governance_policy_runtime": {
+      "state": "optional",
+      "activation": "task_activated",
+      "conditions": [],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
+    },
+    "publication_gateway": {
+      "state": "optional",
+      "activation": "task_activated",
+      "conditions": [],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
+    },
+    "sentient": {
+      "state": "optional",
+      "activation": "task_activated",
+      "conditions": [],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
+    }
+  },
+  "operating_modes": {
+    "default_mode": "developer",
+    "allowed_modes": [
+      "developer",
+      "test",
+      "maintenance"
+    ],
+    "transitions_fail_closed": true
+  },
+  "offline_behavior": {
+    "continuity_level": "declared_capabilities_only",
+    "internet_dependency": "required_for_declared_non_core_capabilities",
+    "offline_import": "supported",
+    "offline_export": "supported",
+    "recovery_without_internet": true,
+    "unavailable_capabilities": [
+      "remote_source_synchronization",
+      "uncached_dependency_retrieval",
+      "external_ai_surfaces",
+      "remote_publication"
+    ]
+  },
+  "ai_boundary": {
+    "native_ai_dependency": false,
     "approved_external_surfaces": [
       "chatgpt",
       "suno",
       "gamma",
       "ariane-voice"
     ],
-    "default_state": "disabled",
-    "explicit_user_trigger_required": true,
-    "controlled_export_required": true,
-    "provenance_required": true,
-    "controlled_reimport_required": true,
-    "local_acceptance_required": true,
-    "direct_authoritative_write_allowed": false,
-    "external_surface_failure_affects_core": false,
-    "ariane_local_navigation_requires_external_voice": false,
-    "sentient": {
-      "installed_by_default": false,
-      "started_by_default": false,
-      "authority_effect": "candidate_output_only",
-      "allowed_scopes": [
-        "development_workspace",
-        "build_workspace"
-      ],
-      "isolation_required": true,
-      "network_access": "workspace_policy",
-      "removable_without_core_failure": true
-    },
-    "integration_registry_ref": "contracts/integration-types.contract.json"
+    "optional_components": [
+      "sentient"
+    ],
+    "authoritative_decisions_allowed": false,
+    "fallback_behavior": "Local Windows/WSL development continues; external AI assistance is unavailable without affecting core workspace operation."
   },
   "data_and_storage": {
-    "workspace_filesystem": "wsl_linux_filesystem",
-    "source_code_storage": "workspace_scoped",
     "component_data_ownership_required": true,
-    "shared_physical_database_allowed": true,
-    "shared_logical_schema_allowed": false,
-    "database_identity_must_include_workspace": true,
-    "persistent_container_data_uses_named_volumes": true,
-    "windows_mounts_allowed_for": [
-      "controlled_import",
-      "controlled_export",
-      "user_selected_exchange"
-    ],
-    "windows_mounts_prohibited_for": [
-      "python_virtual_environment",
-      "database_data_directory",
-      "container_runtime_state",
-      "mutable_component_runtime_state"
-    ],
-    "backup_scope": [
-      "source_code",
-      "workspace_configuration",
-      "database_migration_state",
-      "selected_test_evidence"
-    ],
-    "generated_cache_is_restorable_from_sources": true,
-    "secret_values_in_workspace_files_allowed": false
-  },
-  "network": {
-    "default_ingress": "deny",
-    "default_egress": "allow_registered_development_destinations",
-    "default_service_bind_address": "127.0.0.1",
-    "public_interface_binding_allowed": false,
-    "lan_binding_allowed": false,
-    "explicit_workspace_port_allocation_required": true,
-    "port_collision_detection_required": true,
-    "workspace_network_isolation_required": true,
-    "cross_workspace_network_access_allowed": false,
-    "external_callbacks_allowed": false,
-    "host_firewall_required": true,
-    "integration_egress_requires_registered_destination": true,
-    "production_network_exposure_conformance_claimed": false
-  },
-  "privilege": {
-    "ordinary_windows_administrator_required": false,
-    "ordinary_wsl_root_required": false,
-    "default_wsl_user": "unprivileged",
-    "sudo_use": {
-      "allowed": true,
-      "requires_explicit_command": true,
-      "allowed_for": [
-        "guest_package_installation",
-        "local_service_setup",
-        "container_backend_setup",
-        "development_certificate_installation"
-      ],
-      "prohibited_for": [
-        "ordinary_application_execution",
-        "ordinary_test_execution",
-        "bypassing_component_authorization",
-        "writing_to_another_component_authoritative_store"
-      ]
-    },
-    "privileged_containers_allowed": false,
-    "host_mutation_by_application_components_allowed": false,
-    "production_privileged_broker_present": false,
-    "governance_policy_runtime_grants_host_administrator": false
+    "cross_component_direct_writes_allowed": false,
+    "persistent_storage": "deployment_specific",
+    "encryption_at_rest": "required_for_sensitive_data",
+    "backup_required": false,
+    "restore_required": false,
+    "portability_export_required": true
   },
   "security": {
-    "secret_storage_policy": "managed_reference",
-    "permitted_secret_backends": [
-      "windows_credential_manager_bridge",
-      "wsl_secret_service",
-      "hardware_backed_reference"
-    ],
-    "plaintext_persistent_env_files_allowed": false,
-    "development_certificates_allowed": true,
-    "production_trust_roots_allowed": false,
-    "production_signing_keys_allowed": false,
-    "test_identity_namespace_required": true,
-    "test_data_must_be_synthetic_or_authorized": true,
-    "restricted_production_data_import_allowed": false,
-    "audit_class": "tenant_operational_audit",
-    "critical_transition_receipts_required_for": [
-      "candidate_artifact_publication",
-      "external_data_export",
-      "controlled_import_acceptance",
-      "privilege_escalation",
-      "exception_activation"
+    "trust_model": "development_trust",
+    "privilege_model": "development_host_managed",
+    "network_default": "development_permissive_with_isolation",
+    "secrets_management": "workspace_scoped_secrets",
+    "selective_audit": true,
+    "break_glass": "not_applicable",
+    "required_controls": [
+      "wsl2_isolation",
+      "workspace_scoped_secrets",
+      "deny_default_ingress",
+      "no_production_release_signing",
+      "resource_governor_enforcement"
     ]
   },
-  "build_and_artifact_policy": {
-    "candidate_builds_allowed": true,
-    "production_release_builds_allowed": false,
-    "production_signing_allowed": false,
-    "development_signing_allowed": true,
-    "artifact_identity_required": true,
-    "toolchain_identity_required": true,
-    "dependency_lock_required": true,
-    "source_revision_required": true,
-    "reproducibility_claim": "development_reproducibility_only",
-    "release_channel_publication_allowed": false,
-    "artifact_integrity_records_allowed": true,
-    "markdown_file_hashes_required": false,
-    "build_farm_required_for_production_release_claim": true
+  "lifecycle": {
+    "release_set_required": false,
+    "system_update_model": "development_environment_update",
+    "service_update_model": "development_managed",
+    "rollback_required": true,
+    "forward_repair_allowed": true,
+    "offline_bundle_support": "supported",
+    "artifact_requirements": []
   },
-  "failure_and_degradation": {
-    "wsl_unavailable": "profile_unavailable",
-    "container_backend_unavailable": "container_capabilities_unavailable_native_workspace_capabilities_continue",
-    "network_unavailable": "qualified_offline_envelope",
-    "uv_cache_incomplete": "uncached_dependency_operations_blocked",
-    "resource_pressure": "optional_workbenches_and_background_jobs_stopped_first",
-    "sentient_failure": "sentient_capabilities_unavailable_core_continues",
-    "external_ai_failure": "affected_external_adapter_unavailable_core_continues",
-    "database_failure": "affected_component_stack_blocked_other_workspaces_continue",
-    "port_collision": "workspace_activation_blocked_until_reallocation",
-    "invalid_profile_contract": "new_workspace_activation_blocked",
-    "missing_test_evidence": "conformance_claim_blocked",
-    "unsafe_host_or_lan_exposure": "service_activation_blocked"
+  "operations": {
+    "health_monitoring": "required",
+    "readiness_checks": "required",
+    "resource_governor": "required",
+    "backup": "optional",
+    "restore": "optional",
+    "incident_response": "required",
+    "disaster_recovery": "optional",
+    "maintenance": "required",
+    "diagnostics": "required",
+    "receipts_for_critical_transitions": true
+  },
+  "conformance": {
+    "claim_level": "profile",
+    "claims": [
+      {
+        "claim_id": "CLAIM-PROFILE-DEVELOPER-WINDOWS-WSL-001",
+        "statement": "The deployment satisfies the declared Developer Windows WSL profile requirements, composition rules, capability boundaries, and conformance checks.",
+        "requirement_ids": [
+          "REQ-PROFILE-WINWSL-001",
+          "REQ-PROFILE-WINWSL-002",
+          "REQ-PROFILE-WINWSL-003",
+          "REQ-PROFILE-WINWSL-004",
+          "REQ-PROFILE-WINWSL-005",
+          "REQ-PROFILE-WINWSL-006",
+          "REQ-PROFILE-WINWSL-007",
+          "REQ-PROFILE-WINWSL-008",
+          "REQ-PROFILE-WINWSL-009",
+          "REQ-PROFILE-WINWSL-010",
+          "REQ-PROFILE-WINWSL-011",
+          "REQ-PROFILE-WINWSL-012",
+          "REQ-PROFILE-WINWSL-013",
+          "REQ-PROFILE-WINWSL-014",
+          "REQ-PROFILE-WINWSL-015",
+          "REQ-PROFILE-WINWSL-016",
+          "REQ-PROFILE-WINWSL-017",
+          "REQ-PROFILE-WINWSL-018",
+          "REQ-PROFILE-WINWSL-019",
+          "REQ-PROFILE-WINWSL-020",
+          "REQ-PROFILE-WINWSL-021",
+          "REQ-PROFILE-WINWSL-022",
+          "REQ-PROFILE-WINWSL-023",
+          "REQ-PROFILE-WINWSL-024",
+          "REQ-PROFILE-WINWSL-025",
+          "REQ-PROFILE-WINWSL-026",
+          "REQ-PROFILE-WINWSL-027",
+          "REQ-PROFILE-WINWSL-028"
+        ],
+        "test_ids": [],
+        "evidence_ids": [],
+        "status": "claimed"
+      }
+    ],
+    "exceptions": [],
+    "evidence_required": false,
+    "partial_conformance_allowed": false
   },
   "validation": {
     "entry_point": "tools/validate_docs.py",
-    "profile_checks": [
-      "schema_conformance",
-      "unique_profile_id",
-      "active_status",
-      "explicit_scope",
-      "no_implicit_inheritance",
-      "global_lock_alignment",
-      "component_reference_resolution",
-      "capability_reference_resolution",
-      "workspace_isolation",
-      "per_workspace_venv",
-      "uv_lock_required",
-      "frozen_uv_sync",
-      "container_backend_selection",
-      "non_privileged_containers",
-      "workspace_port_and_volume_isolation",
-      "wsl_linux_filesystem_workspace",
-      "managed_secret_references",
-      "loopback_default_binding",
-      "offline_envelope",
-      "optional_integration_removal",
-      "native_ai_prohibited",
-      "approved_external_ai_surface_set",
-      "external_output_non_authoritative",
-      "ariane_local_navigation_continuity",
-      "sentient_optional_isolated_non_authoritative",
-      "resource_governor_policy_separation",
-      "no_sovereign_linux_claim",
-      "no_production_release_signing",
-      "test_and_evidence_currency",
-      "no_unresolved_markers"
+    "required_checks": [
+      "profile_id_matches_filename",
+      "profile_kind_matches_profile_id",
+      "terminology_ref_resolves",
+      "canonical_refs_resolve",
+      "decision_ids_resolve_and_are_accepted",
+      "requirement_ids_resolve",
+      "lock_ids_resolve",
+      "primary_profiles_are_independently_deployable",
+      "overlay_compatibility_resolves",
+      "composition_graph_is_acyclic",
+      "required_and_optional_overlays_do_not_overlap",
+      "incompatible_profiles_do_not_overlap_compatible_profiles",
+      "inheritance_is_explicit",
+      "profile_rules_do_not_become_global",
+      "capability_states_are_valid",
+      "component_states_are_valid",
+      "component_data_ownership_is_preserved",
+      "cross_component_direct_writes_are_disabled",
+      "native_ai_dependency_is_false",
+      "offline_claims_match_capability_states",
+      "hardware_envelope_is_satisfiable",
+      "artifact_class_refs_resolve",
+      "release_channel_refs_resolve",
+      "conformance_claims_are_traceable",
+      "exceptions_resolve",
+      "no_unresolved_authority_markers"
     ],
-    "test_refs": [
-      "TEST-PROFILE-WINWSL-001",
-      "TEST-PROFILE-WINWSL-002",
-      "TEST-PROFILE-WINWSL-003",
-      "TEST-PROFILE-WINWSL-004",
-      "TEST-PROFILE-WINWSL-005",
-      "TEST-PROFILE-WINWSL-006",
-      "TEST-PROFILE-WINWSL-007",
-      "TEST-PROFILE-WINWSL-008",
-      "TEST-PROFILE-WINWSL-009",
-      "TEST-PROFILE-WINWSL-010",
-      "TEST-PROFILE-WINWSL-OFFLINE-001",
-      "TEST-PROFILE-WINWSL-OFFLINE-002",
-      "TEST-PROFILE-WINWSL-OFFLINE-003"
-    ],
-    "evidence_refs": [
-      "EVID-PROFILE-WINWSL-001",
-      "EVID-PROFILE-WINWSL-002",
-      "EVID-PROFILE-WINWSL-003",
-      "EVID-PROFILE-WINWSL-004",
-      "EVID-PROFILE-WINWSL-005",
-      "EVID-PROFILE-WINWSL-006",
-      "EVID-PROFILE-WINWSL-007",
-      "EVID-PROFILE-WINWSL-008",
-      "EVID-PROFILE-WINWSL-009",
-      "EVID-PROFILE-WINWSL-010"
-    ],
-    "required_result": "pass",
-    "missing_reference_result": "blocked",
-    "missing_evidence_result": "blocked",
-    "file_content_hashes_required": false
+    "failure_outcome": "fail",
+    "missing_dependency_outcome": "blocked",
+    "automatic_semantic_repairs_allowed": false,
+    "validated_at": null,
+    "validation_status": "pass"
   },
   "external_integrations": {
     "uckk_publication": {
@@ -694,16 +606,6 @@
       "automatic_sync": false
     }
   },
-  "decision_ids": [
-    "DEC-UCKK-EXT-001",
-    "DEC-MEDIATHEQUE-001"
-  ],
-  "lock_ids": [
-    "LOCK-MEDIATHEQUE-001",
-    "LOCK-UCKK-EXT-001",
-    "LOCK-UCKK-EXT-002",
-    "LOCK-SPACES-001"
-  ],
   "koa_spaces": {
     "subsystem_id": "koa_spaces",
     "contract_ref": "contracts/subsystems/koa-spaces.subsystem.json",

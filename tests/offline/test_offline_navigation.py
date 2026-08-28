@@ -15,12 +15,17 @@ def _load(path: str) -> dict:
 def test_ariane_local_navigation_remains_available_without_voice_or_external_ai() -> None:
     user = _load("docs/contracts/profiles/user-lightweight.profile.json")
     node = _load("docs/contracts/profiles/sovereign-linux-node.profile.json")
-    user_available = " ".join(user["offline_capability_envelope"]["available_without_internet"]).lower()
-    user_unavailable = " ".join(user["offline_capability_envelope"]["unavailable_without_internet"]).lower()
-    node_available = " ".join(node["offline_capability_envelope"]["available_without_internet"]).lower()
-    assert "ariane non-voice navigation" in user_available
-    assert "external ariane voice" in user_unavailable
-    assert "ariane non-voice navigation" in node_available
+
+    assert user["capabilities"]["ariane_local_navigation"]["state"] == "required"
+    assert user["offline_behavior"]["continuity_level"] == "core_required"
+    assert node["offline_behavior"]["continuity_level"] == "core_required"
+
+    for profile in (user, node):
+        assert profile["ai_boundary"]["native_ai_dependency"] is False
+        assert profile["ai_boundary"]["authoritative_decisions_allowed"] is False
+        assert "ariane_external_voice" in profile["offline_behavior"]["unavailable_capabilities"]
+        assert "ariane-voice" in profile["ai_boundary"]["approved_external_surfaces"]
+        assert "local" in profile["ai_boundary"]["fallback_behavior"].lower()
 
 
 def test_koa_spaces_offline_routes_are_declared_and_non_authoritative() -> None:

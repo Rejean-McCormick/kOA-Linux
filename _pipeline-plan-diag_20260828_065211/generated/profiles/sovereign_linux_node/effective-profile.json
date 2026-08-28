@@ -1,0 +1,215 @@
+{
+  "active_exceptions": [],
+  "authority": "derived_projection",
+  "capabilities": [
+    {
+      "capability_id": "development_tooling",
+      "conditions": [],
+      "membership": "prohibited",
+      "sources": [
+        "docs/contracts/profiles/sovereign-linux-node.profile.json"
+      ]
+    },
+    {
+      "capability_id": "external_ai_assistance",
+      "conditions": [],
+      "membership": "optional",
+      "sources": [
+        "docs/contracts/profiles/sovereign-linux-node.profile.json"
+      ]
+    },
+    {
+      "capability_id": "governed_publication",
+      "conditions": [],
+      "membership": "required",
+      "sources": [
+        "docs/contracts/profiles/sovereign-linux-node.profile.json"
+      ]
+    },
+    {
+      "capability_id": "immutable_signed_system_image",
+      "conditions": [],
+      "membership": "required",
+      "sources": [
+        "docs/contracts/profiles/sovereign-linux-node.profile.json"
+      ]
+    },
+    {
+      "capability_id": "local_governance",
+      "conditions": [],
+      "membership": "required",
+      "sources": [
+        "docs/contracts/profiles/sovereign-linux-node.profile.json"
+      ]
+    },
+    {
+      "capability_id": "local_identity_and_trust",
+      "conditions": [],
+      "membership": "required",
+      "sources": [
+        "docs/contracts/profiles/sovereign-linux-node.profile.json"
+      ]
+    },
+    {
+      "capability_id": "offline_continuity",
+      "conditions": [],
+      "membership": "required",
+      "sources": [
+        "docs/contracts/profiles/sovereign-linux-node.profile.json"
+      ]
+    },
+    {
+      "capability_id": "selective_audit",
+      "conditions": [],
+      "membership": "required",
+      "sources": [
+        "docs/contracts/profiles/sovereign-linux-node.profile.json"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "component_id": "ariane",
+      "conditions": [],
+      "membership": "required",
+      "sources": [
+        "docs/contracts/profiles/sovereign-linux-node.profile.json"
+      ]
+    },
+    {
+      "component_id": "audit_broker",
+      "conditions": [],
+      "membership": "required",
+      "sources": [
+        "docs/contracts/profiles/sovereign-linux-node.profile.json"
+      ]
+    },
+    {
+      "component_id": "gf_wordbench",
+      "conditions": [
+        "Never permitted in this production profile."
+      ],
+      "membership": "conditional",
+      "sources": [
+        "docs/contracts/profiles/sovereign-linux-node.profile.json"
+      ]
+    },
+    {
+      "component_id": "governance_policy_runtime",
+      "conditions": [],
+      "membership": "required",
+      "sources": [
+        "docs/contracts/profiles/sovereign-linux-node.profile.json"
+      ]
+    },
+    {
+      "component_id": "identity_and_trust",
+      "conditions": [],
+      "membership": "required",
+      "sources": [
+        "docs/contracts/profiles/sovereign-linux-node.profile.json"
+      ]
+    },
+    {
+      "component_id": "koa_mediatheque",
+      "conditions": [],
+      "membership": "required",
+      "sources": [
+        "docs/contracts/profiles/sovereign-linux-node.profile.json"
+      ]
+    },
+    {
+      "component_id": "koa_node_agent",
+      "conditions": [],
+      "membership": "required",
+      "sources": [
+        "docs/contracts/profiles/sovereign-linux-node.profile.json"
+      ]
+    },
+    {
+      "component_id": "konnaxion",
+      "conditions": [],
+      "membership": "required",
+      "sources": [
+        "docs/contracts/profiles/sovereign-linux-node.profile.json"
+      ]
+    },
+    {
+      "component_id": "kristal_runtime",
+      "conditions": [],
+      "membership": "required",
+      "sources": [
+        "docs/contracts/profiles/sovereign-linux-node.profile.json"
+      ]
+    },
+    {
+      "component_id": "orgo",
+      "conditions": [],
+      "membership": "required",
+      "sources": [
+        "docs/contracts/profiles/sovereign-linux-node.profile.json"
+      ]
+    },
+    {
+      "component_id": "publication_gateway",
+      "conditions": [],
+      "membership": "required",
+      "sources": [
+        "docs/contracts/profiles/sovereign-linux-node.profile.json"
+      ]
+    },
+    {
+      "component_id": "resource_governor",
+      "conditions": [],
+      "membership": "required",
+      "sources": [
+        "docs/contracts/profiles/sovereign-linux-node.profile.json"
+      ]
+    },
+    {
+      "component_id": "semantik_architect",
+      "conditions": [],
+      "membership": "required",
+      "sources": [
+        "docs/contracts/profiles/sovereign-linux-node.profile.json"
+      ]
+    },
+    {
+      "component_id": "sentient",
+      "conditions": [
+        "SenTient is a non-authoritative developer or build workbench."
+      ],
+      "membership": "prohibited",
+      "sources": [
+        "docs/contracts/profiles/sovereign-linux-node.profile.json"
+      ]
+    }
+  ],
+  "contributing_profiles": [
+    {
+      "profile_id": "sovereign_linux_node",
+      "source": "docs/contracts/profiles/sovereign-linux-node.profile.json",
+      "version": "1.0.0"
+    }
+  ],
+  "effective_profile_id": "effective:sovereign_linux_node:cafb169c3bbeb4d38394612f86af29efc7e612804da3dc62afb6d9b3fc7360fd",
+  "format": "koa.effective-profile",
+  "format_version": "1.0.0",
+  "generated_evidence_identity": "sha256:782c047b64e5cbe77805172afe733e342781fb84b99711ad8b0209c26c46ea9f",
+  "manual_edits": "prohibited",
+  "overlays": [],
+  "primary_profile": {
+    "profile_id": "sovereign_linux_node",
+    "version": "1.0.0"
+  },
+  "result": "pass",
+  "source_digests": {
+    "docs/contracts/profiles/sovereign-linux-node.profile.json": "sha256:d38428b22e5c91c91eb0e3f605075f53a4ec7fa394b6fad2e8b5963a38c13c71"
+  },
+  "subsystems": [],
+  "unresolved_conflicts": [],
+  "validation": {
+    "composition_conflicts": 0,
+    "outcome": "pass"
+  }
+}

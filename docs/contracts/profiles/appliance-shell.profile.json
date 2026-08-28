@@ -1,20 +1,13 @@
 {
   "$schema": "../../schemas/deployment-profile.schema.json",
   "profile_id": "appliance_shell",
-  "profile_type": "overlay",
+  "profile_kind": "profile_overlay",
   "version": "1.0.0",
   "status": "active",
   "language": "en",
-  "title": "Appliance Shell Overlay",
-  "description": "A composable Linux graphical-shell overlay that replaces a general-purpose desktop session with a constrained local kOA experience based on a minimal Wayland compositor, Ariane local navigation, and an optional embedded web interface.",
-  "scope": {
-    "kind": "profile_overlay",
-    "overlays": [
-      "appliance_shell"
-    ]
-  },
-  "owner": "system-architecture",
-  "effective_at": "2026-08-03T16:13:00-04:00",
+  "display_name": "Appliance Shell Overlay",
+  "purpose": "A composable Linux graphical-shell overlay that replaces a general-purpose desktop session with a constrained local kOA experience based on a minimal Wayland compositor, Ariane local navigation, and an optional embedded web interface.",
+  "terminology_ref": "contracts/terminology.contract.json#/terms/TERM-PROFILE-APPLIANCE-SHELL",
   "canonical_refs": [
     "generated/decision-index.json",
     "contracts/system.contract.json#/profile_model",
@@ -30,7 +23,15 @@
     "contracts/subsystems/koa-spaces.subsystem.json",
     "02-system/21-koa-spaces-experience-layer.md",
     "02-system/22-koa-spaces-interface-composition.md",
-    "03-profiles/14-koa-spaces-deployment.md"
+    "03-profiles/14-koa-spaces-deployment.md",
+    "generated/authority-manifest.json",
+    "contracts/terminology.contract.json",
+    "contracts/system.contract.json",
+    "contracts/artifact-classes.contract.json",
+    "contracts/release-channels.contract.json",
+    "contracts/integration-types.contract.json",
+    "generated/test-catalog.json",
+    "generated/evidence-catalog.json"
   ],
   "decision_ids": [
     "DEC-PROFILE-001",
@@ -39,10 +40,6 @@
     "DEC-AI-001",
     "DEC-UCKK-EXT-001",
     "DEC-MEDIATHEQUE-001"
-  ],
-  "adr_ids": [
-    "ADR-003",
-    "ADR-021"
   ],
   "requirement_ids": [
     "REQ-PROFILE-APP-001",
@@ -81,391 +78,423 @@
     "LOCK-UCKK-EXT-002",
     "LOCK-SPACES-001"
   ],
-  "exception_ids": [],
+  "independently_deployable": false,
+  "supersedes": [],
   "composition": {
-    "composable": true,
-    "composition_role": "graphical_shell_overlay",
-    "compatible_base_profiles": [
+    "compatible_primary_profiles": [
       "user_lightweight",
       "sovereign_linux_node"
     ],
-    "incompatible_base_profiles": [
+    "required_overlays": [],
+    "optional_overlays": [],
+    "incompatible_profiles": [
       "developer_linux_workstation",
       "developer_windows_wsl",
       "sovereign_hub",
       "build_farm",
       "control_plane"
     ],
-    "required_host_properties": {
-      "operating_system_family": "linux",
-      "local_graphical_seat": true,
-      "wayland_capable": true,
-      "local_input_available": true
-    },
-    "required_base_capabilities": [
-      "interactive_user",
-      "ariane_local_navigation"
-    ],
-    "inheritance": {
-      "inherits_base_profile_components": true,
-      "inherits_base_profile_resources": true,
-      "inherits_base_profile_security": true,
-      "inherits_base_profile_offline_envelope": true,
-      "overlay_can_broaden_authority": false,
-      "overlay_can_broaden_data_ownership": false,
-      "overlay_can_broaden_external_integrations": false,
-      "overlay_precedence": [
-        "explicit_overlay_restriction",
-        "compatible_base_profile_rule",
-        "global_system_rule"
-      ]
-    },
-    "conflicts": [
-      {
-        "conflict_id": "PROFILE-CONFLICT-APP-001",
-        "selector": "desktop.full_general_purpose_environment",
-        "result": "composition_rejected"
-      },
-      {
-        "conflict_id": "PROFILE-CONFLICT-APP-002",
-        "selector": "operating_modes.development_workspace",
-        "result": "composition_rejected"
-      },
-      {
-        "conflict_id": "PROFILE-CONFLICT-APP-003",
-        "selector": "interface.unrestricted_external_navigation",
-        "result": "composition_rejected"
-      }
+    "composition_priority": 300,
+    "conflict_policy": "fail_closed"
+  },
+  "inheritance": {
+    "baseline_ref": "contracts/system.contract.json#/system",
+    "inherits_global_requirements": true,
+    "inherited_profile_refs": [],
+    "override_policy": "strengthen_or_restrict_only",
+    "prohibited_inheritance": [
+      "implicit_profile_inheritance",
+      "cross_profile_requirement_copy",
+      "recipe_as_requirement",
+      "implementation_prevalence_as_authority",
+      "legacy_rule_without_disposition"
     ]
   },
+  "target_environment": {
+    "host_os_families": [
+      "linux"
+    ],
+    "host_architectures": [
+      "x86_64",
+      "aarch64"
+    ],
+    "deployment_forms": [
+      "appliance"
+    ],
+    "network_expectation": "internet_optional",
+    "user_interaction": "interactive_end_user",
+    "virtualization": "allowed",
+    "containerization": "profile_specific"
+  },
+  "hardware_envelope": {
+    "cpu": {
+      "minimum": 0,
+      "recommended": 0,
+      "unit": "cores"
+    },
+    "memory": {
+      "minimum": 0,
+      "recommended": 0,
+      "unit": "GiB"
+    },
+    "storage": {
+      "minimum": 0,
+      "recommended": 0,
+      "unit": "GB"
+    },
+    "gpu": "integrated_sufficient",
+    "concurrency": {
+      "heavy_jobs": 0,
+      "background_workers": 0
+    },
+    "enforcement": "deployment_specific"
+  },
+  "capabilities": {
+    "ariane_local_navigation": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical appliance-shell required capability declaration."
+    },
+    "deterministic_local_commands": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical appliance-shell required capability declaration."
+    },
+    "session_lock": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical appliance-shell required capability declaration."
+    },
+    "truthful_capability_status": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical appliance-shell required capability declaration."
+    },
+    "accessible_input": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical appliance-shell required capability declaration."
+    },
+    "safe_degradation": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical appliance-shell required capability declaration."
+    },
+    "authorized_maintenance_entry": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical appliance-shell required capability declaration."
+    },
+    "authorized_recovery_entry": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical appliance-shell required capability declaration."
+    },
+    "ariane_external_voice": {
+      "state": "optional",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical appliance-shell optional capability declaration."
+    },
+    "embedded_local_web_interface": {
+      "state": "optional",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical appliance-shell optional capability declaration."
+    },
+    "controlled_external_link_handoff": {
+      "state": "optional",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical appliance-shell optional capability declaration."
+    },
+    "unrestricted_general_purpose_desktop": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical appliance-shell prohibited capability declaration."
+    },
+    "unrestricted_application_launch": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical appliance-shell prohibited capability declaration."
+    },
+    "unrestricted_terminal_access": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical appliance-shell prohibited capability declaration."
+    },
+    "automatic_external_ai_invocation": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical appliance-shell prohibited capability declaration."
+    },
+    "silent_external_voice_substitution": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical appliance-shell prohibited capability declaration."
+    },
+    "ordinary_session_host_mutation": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical appliance-shell prohibited capability declaration."
+    },
+    "ordinary_session_development_workspace": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical appliance-shell prohibited capability declaration."
+    },
+    "ordinary_session_package_installation": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Preserved from the canonical appliance-shell prohibited capability declaration."
+    }
+  },
+  "components": {
+    "ariane_runtime": {
+      "state": "required",
+      "activation": "service_activated",
+      "conditions": [],
+      "data_authority": "component_owned",
+      "failure_behavior": "local_navigation_and_shell_orchestration"
+    },
+    "identity_and_trust": {
+      "state": "required",
+      "activation": "service_activated",
+      "conditions": [],
+      "data_authority": "component_owned",
+      "failure_behavior": "session_and_service_identity"
+    },
+    "resource_governor": {
+      "state": "required",
+      "activation": "service_activated",
+      "conditions": [],
+      "data_authority": "component_owned",
+      "failure_behavior": "interactive_resource_protection"
+    },
+    "governance_policy_runtime": {
+      "state": "conditional",
+      "activation": "service_activated",
+      "conditions": [
+        "required_by_composed_base_profile_or_active_policy"
+      ],
+      "data_authority": "component_owned",
+      "failure_behavior": "governance_authorization"
+    },
+    "audit_broker": {
+      "state": "conditional",
+      "activation": "service_activated",
+      "conditions": [
+        "required_by_composed_base_profile_or_receipt_policy"
+      ],
+      "data_authority": "component_owned",
+      "failure_behavior": "receipt_and_evidence_services"
+    },
+    "koa_node_agent": {
+      "state": "conditional",
+      "activation": "service_activated",
+      "conditions": [
+        "required_by_composed_base_profile"
+      ],
+      "data_authority": "component_owned",
+      "failure_behavior": "node_lifecycle_and_status"
+    },
+    "gf_wordbench": {
+      "state": "excluded",
+      "activation": "not_installed",
+      "conditions": [
+        "Excluded from the ordinary appliance session."
+      ],
+      "data_authority": "none",
+      "failure_behavior": "The component remains unavailable and is not silently substituted."
+    },
+    "sentient": {
+      "state": "excluded",
+      "activation": "not_installed",
+      "conditions": [
+        "Excluded from the ordinary appliance session."
+      ],
+      "data_authority": "none",
+      "failure_behavior": "The component remains unavailable and is not silently substituted."
+    }
+  },
   "operating_modes": {
-    "permitted_primary_modes": [
+    "default_mode": "interactive_user",
+    "allowed_modes": [
       "interactive_user",
       "unattended_service",
       "maintenance",
       "recovery"
     ],
-    "prohibited_primary_modes": [
-      "development_workspace"
-    ],
-    "connectivity_states": [
-      "connected",
-      "offline",
-      "restricted_connectivity"
-    ],
-    "capability_health_states": [
-      "nominal",
-      "degraded",
-      "suspended"
-    ],
-    "authority_contexts": [
-      "ordinary",
-      "break_glass",
-      "authority_blocked"
-    ],
-    "ordinary_session_mode": "interactive_user",
-    "maintenance_entry": "explicit_authorized_transition",
-    "recovery_entry": "explicit_authorized_transition",
-    "break_glass_changes_primary_mode": false
-  },
-  "shell": {
-    "session_type": "dedicated_appliance_session",
-    "display_protocol": "wayland",
-    "compositor": {
-      "class": "minimal_wayland_compositor",
-      "full_desktop_environment": false,
-      "desktop_environment_packages_required": false,
-      "gnome_allowed_in_overlay_session": false,
-      "kde_plasma_allowed_in_overlay_session": false,
-      "window_management": "application_allowlist"
-    },
-    "interface": {
-      "primary_experience": "ariane_local_navigation",
-      "embedded_web_interface": {
-        "permitted": true,
-        "required": false,
-        "content_origin_policy": "declared_local_or_explicitly_approved_origins",
-        "unrestricted_browser_chrome": false,
-        "unrestricted_external_navigation": false
-      },
-      "supported_input_methods": [
-        "keyboard",
-        "pointer",
-        "touch",
-        "accessibility_controls",
-        "local_deterministic_commands"
-      ],
-      "external_voice": {
-        "available": "optional",
-        "authority": "approved_external_ariane_voice",
-        "failure_effect": "voice_capability_unavailable_only",
-        "silent_substitution": false
-      },
-      "local_navigation_requires_external_ai": false,
-      "general_purpose_desktop_behavior": "restricted"
-    },
-    "application_surface": {
-      "launch_policy": "explicit_allowlist",
-      "arbitrary_application_launcher": false,
-      "unrestricted_terminal_in_ordinary_session": false,
-      "package_manager_ui_in_ordinary_session": false,
-      "host_administration_ui_in_ordinary_session": false,
-      "development_tools_in_ordinary_session": false,
-      "external_url_handoff": "explicit_controlled_action",
-      "file_selection": "capability_scoped",
-      "clipboard": "capability_scoped",
-      "drag_and_drop": "capability_scoped"
-    },
-    "session_controls": {
-      "user_visible_actions": [
-        "navigate",
-        "open_allowed_capability",
-        "return_home",
-        "lock_session",
-        "end_session",
-        "request_restart",
-        "request_shutdown",
-        "open_accessibility_controls",
-        "view_system_status"
-      ],
-      "privileged_actions_require_separate_authority": true,
-      "maintenance_controls_hidden_during_ordinary_session": true,
-      "recovery_controls_hidden_during_ordinary_session": true
-    }
-  },
-  "components": {
-    "required": [
-      {
-        "component_id": "ariane-runtime",
-        "role": "local_navigation_and_shell_orchestration",
-        "always_available_in_ordinary_session": true
-      },
-      {
-        "component_id": "identity-and-trust",
-        "role": "session_and_service_identity",
-        "always_available_in_ordinary_session": true
-      },
-      {
-        "component_id": "resource-governor",
-        "role": "interactive_resource_protection",
-        "always_available_in_ordinary_session": true
-      }
-    ],
-    "conditional": [
-      {
-        "component_id": "governance-policy-runtime",
-        "condition": "required_by_composed_base_profile_or_active_policy",
-        "role": "governance_authorization"
-      },
-      {
-        "component_id": "audit-broker",
-        "condition": "required_by_composed_base_profile_or_receipt_policy",
-        "role": "receipt_and_evidence_services"
-      },
-      {
-        "component_id": "koa-node-agent",
-        "condition": "required_by_composed_base_profile",
-        "role": "node_lifecycle_and_status"
-      }
-    ],
-    "ordinary_session_exclusions": [
-      "gf-wordbench",
-      "sentient",
-      "development-containers",
-      "compiler-toolchains",
-      "unrestricted-host-shell"
-    ],
-    "base_profile_component_ownership_preserved": true
-  },
-  "capabilities": {
-    "required": [
-      "ariane_local_navigation",
-      "deterministic_local_commands",
-      "session_lock",
-      "truthful_capability_status",
-      "accessible_input",
-      "safe_degradation",
-      "authorized_maintenance_entry",
-      "authorized_recovery_entry"
-    ],
-    "optional": [
-      "ariane_external_voice",
-      "embedded_local_web_interface",
-      "controlled_external_link_handoff"
-    ],
-    "prohibited": [
-      "unrestricted_general_purpose_desktop",
-      "unrestricted_application_launch",
-      "unrestricted_terminal_access",
-      "automatic_external_ai_invocation",
-      "silent_external_voice_substitution",
-      "ordinary_session_host_mutation",
-      "ordinary_session_development_workspace",
-      "ordinary_session_package_installation"
-    ],
-    "external_ai_baseline_dependency": false
-  },
-  "security": {
-    "ordinary_session": {
-      "least_privilege": true,
-      "privileged_processes_exposed_to_session": false,
-      "direct_host_mutation": false,
-      "direct_cross_component_data_writes": false,
-      "unrestricted_local_socket_access": false,
-      "unrestricted_device_access": false,
-      "secrets_exposed_to_interface": false
-    },
-    "maintenance_and_recovery": {
-      "separate_authority_required": true,
-      "separate_entry_flow_required": true,
-      "visible_mode_indicator_required": true,
-      "receipt_required_for_critical_transitions": true,
-      "automatic_return_to_ordinary_session": "after_validated_completion"
-    },
-    "network": {
-      "default_ui_origin": "local",
-      "external_origins": "explicit_allowlist",
-      "unrestricted_web_browsing": false,
-      "external_transfer_requires_declared_integration": true,
-      "external_ai_transfer_requires_explicit_user_initiation": true
-    },
-    "fail_closed": {
-      "unknown_application": "deny_launch",
-      "unknown_origin": "deny_navigation",
-      "missing_session_authority": "deny_session_activation",
-      "missing_privileged_authority": "deny_privileged_action",
-      "invalid_shell_artifact": "preserve_last_valid_shell_or_enter_recovery"
-    }
+    "transitions_fail_closed": true
   },
   "offline_behavior": {
-    "local_shell_available": true,
-    "ariane_local_navigation_available": true,
-    "external_voice_available": false,
-    "external_ai_available": false,
-    "external_navigation_available": false,
-    "base_profile_offline_capabilities_preserved": true,
-    "queued_external_actions": "explicit_only_and_reevaluated_before_execution",
-    "false_success_reporting": false
+    "continuity_level": "declared_capabilities_only",
+    "internet_dependency": "optional_external_surfaces_only",
+    "offline_import": "supported",
+    "offline_export": "supported",
+    "recovery_without_internet": true,
+    "unavailable_capabilities": [
+      "ariane_external_voice",
+      "external_ai",
+      "external_navigation"
+    ]
   },
-  "resource_policy": {
-    "inherits_base_profile_budget": true,
-    "interactive_priority": true,
-    "shell_process_class": "interactive_critical",
-    "background_workers": "base_profile_governed",
-    "heavy_jobs": "base_profile_governed",
-    "resource_pressure_response": [
-      "suspend_optional_background_work",
-      "preserve_ariane_local_navigation",
-      "preserve_session_status_and_exit_controls",
-      "degrade_optional_embedded_content",
-      "enter_declared_recovery_when_shell_integrity_is_lost"
-    ],
-    "resource_availability_creates_authority": false
+  "ai_boundary": {
+    "native_ai_dependency": false,
+    "approved_external_surfaces": [],
+    "optional_components": [],
+    "authoritative_decisions_allowed": false,
+    "fallback_behavior": "Local deterministic navigation and the restricted shell remain available; external AI and voice assistance are unavailable."
+  },
+  "data_and_storage": {
+    "component_data_ownership_required": true,
+    "cross_component_direct_writes_allowed": false,
+    "persistent_storage": "deployment_specific",
+    "encryption_at_rest": "deployment_specific",
+    "backup_required": true,
+    "restore_required": true,
+    "portability_export_required": true
+  },
+  "security": {
+    "trust_model": "local_user_trust",
+    "privilege_model": "least_privilege",
+    "network_default": "local_only",
+    "secrets_management": "profile_secret_store",
+    "selective_audit": true,
+    "break_glass": "supported",
+    "required_controls": [
+      "restricted_ordinary_session",
+      "no_direct_host_mutation",
+      "application_allowlist",
+      "explicit_maintenance_and_recovery_entry",
+      "fail_closed_unknown_origin"
+    ]
   },
   "lifecycle": {
-    "activation": {
-      "artifact_verification_required": true,
-      "compatibility_validation_required": true,
-      "atomic_activation_required": true,
-      "last_valid_shell_preserved_on_failure": true
-    },
-    "rollback": {
-      "required": true,
-      "target": "last_valid_shell_configuration"
-    },
-    "forward_repair": {
-      "permitted": true,
-      "requires_declared_repair_plan": true
-    },
-    "session_start": [
-      "verify_active_profile_composition",
-      "verify_shell_artifacts",
-      "verify_local_navigation",
-      "verify_input_and_accessibility",
-      "verify_status_and_exit_controls",
-      "activate_restricted_session"
-    ],
-    "session_failure": [
-      "preserve_authoritative_application_state",
-      "show_truthful_local_failure_surface_when_available",
-      "restart_bounded_shell_components",
-      "enter_recovery_when_integrity_or_repeated_startup_checks_fail"
-    ],
-    "fallback_to_unrestricted_desktop": false
+    "release_set_required": true,
+    "system_update_model": "not_applicable",
+    "service_update_model": "not_applicable",
+    "rollback_required": true,
+    "forward_repair_allowed": true,
+    "offline_bundle_support": "supported",
+    "artifact_requirements": []
+  },
+  "operations": {
+    "health_monitoring": "required",
+    "readiness_checks": "required",
+    "resource_governor": "required",
+    "backup": "conditional",
+    "restore": "required",
+    "incident_response": "required",
+    "disaster_recovery": "conditional",
+    "maintenance": "required",
+    "diagnostics": "required",
+    "receipts_for_critical_transitions": true
   },
   "conformance": {
-    "claim_id": "CLAIM-PROFILE-APPLIANCE-SHELL-001",
-    "claim_type": "profile_overlay",
-    "claim_statement": "The composed deployment provides a restricted appliance-style graphical session without converting appliance-specific shell choices into global Linux requirements.",
-    "required_tests": [
-      "TEST-PROFILE-APP-001",
-      "TEST-PROFILE-APP-002",
-      "TEST-PROFILE-APP-003",
-      "TEST-PROFILE-APP-004",
-      "TEST-PROFILE-APP-005",
-      "TEST-PROFILE-APP-006",
-      "TEST-PROFILE-APP-007",
-      "TEST-PROFILE-APP-008",
-      "TEST-PROFILE-APP-009",
-      "TEST-PROFILE-APP-010",
-      "TEST-PROFILE-APP-011",
-      "TEST-PROFILE-APP-012",
-      "TEST-PROFILE-APP-013",
-      "TEST-PROFILE-APP-014",
-      "TEST-PROFILE-APP-015"
+    "claim_level": "profile_with_overlays",
+    "claims": [
+      {
+        "claim_id": "CLAIM-PROFILE-APPLIANCE-SHELL-001",
+        "statement": "The composed deployment provides a restricted appliance-style graphical session without converting appliance-specific shell choices into global Linux requirements.",
+        "requirement_ids": [
+          "REQ-PROFILE-APP-001",
+          "REQ-PROFILE-APP-002",
+          "REQ-PROFILE-APP-003",
+          "REQ-PROFILE-APP-004",
+          "REQ-PROFILE-APP-005",
+          "REQ-PROFILE-APP-006",
+          "REQ-PROFILE-APP-007",
+          "REQ-PROFILE-APP-008",
+          "REQ-PROFILE-APP-009",
+          "REQ-PROFILE-APP-010",
+          "REQ-PROFILE-APP-011",
+          "REQ-PROFILE-APP-012",
+          "REQ-PROFILE-APP-013",
+          "REQ-PROFILE-APP-014",
+          "REQ-PROFILE-APP-015",
+          "REQ-PROFILE-APP-016",
+          "REQ-PROFILE-APP-017",
+          "REQ-PROFILE-APP-018",
+          "REQ-PROFILE-APP-019",
+          "REQ-PROFILE-APP-020"
+        ],
+        "test_ids": [
+          "TEST-PROFILE-APP-001",
+          "TEST-PROFILE-APP-002",
+          "TEST-PROFILE-APP-003",
+          "TEST-PROFILE-APP-004",
+          "TEST-PROFILE-APP-005",
+          "TEST-PROFILE-APP-006",
+          "TEST-PROFILE-APP-007",
+          "TEST-PROFILE-APP-008",
+          "TEST-PROFILE-APP-009",
+          "TEST-PROFILE-APP-010",
+          "TEST-PROFILE-APP-011",
+          "TEST-PROFILE-APP-012",
+          "TEST-PROFILE-APP-013",
+          "TEST-PROFILE-APP-014",
+          "TEST-PROFILE-APP-015"
+        ],
+        "evidence_ids": [],
+        "status": "claimed"
+      }
     ],
-    "required_evidence_classes": [
-      "profile_contract_validation",
-      "profile_composition_validation",
-      "shell_activation_test",
-      "application_allowlist_test",
-      "offline_navigation_test",
-      "external_ai_independence_test",
-      "maintenance_recovery_separation_test",
-      "rollback_test",
-      "accessibility_test",
-      "resource_pressure_test"
-    ],
-    "claim_blocking_conditions": [
-      "incompatible_base_profile",
-      "full_desktop_environment_active_in_overlay_session",
-      "development_workspace_available_in_ordinary_session",
-      "unrestricted_terminal_available_in_ordinary_session",
-      "unrestricted_external_navigation",
-      "ariane_local_navigation_requires_external_ai",
-      "shell_failure_opens_unrestricted_desktop",
-      "missing_atomic_activation_or_rollback",
-      "missing_required_test_or_evidence"
-    ]
+    "exceptions": [],
+    "evidence_required": true,
+    "partial_conformance_allowed": false
   },
   "validation": {
-    "schema_validation": true,
-    "canonical_reference_validation": true,
-    "decision_closure_validation": true,
-    "lock_validation": true,
-    "profile_composition_validation": true,
-    "component_boundary_validation": true,
-    "capability_membership_validation": true,
-    "offline_behavior_validation": true,
-    "resource_policy_validation": true,
-    "lifecycle_validation": true,
-    "test_and_evidence_validation": true,
-    "expected_failure_codes": [
-      "profile_overlay_base_incompatible",
-      "profile_overlay_inheritance_implicit",
-      "appliance_shell_full_desktop_enabled",
-      "appliance_shell_development_mode_enabled",
-      "appliance_shell_unrestricted_terminal_enabled",
-      "appliance_shell_unrestricted_navigation_enabled",
-      "appliance_shell_external_ai_baseline_dependency",
-      "appliance_shell_local_navigation_unavailable",
-      "appliance_shell_privilege_boundary_invalid",
-      "appliance_shell_offline_behavior_invalid",
-      "appliance_shell_resource_policy_invalid",
-      "appliance_shell_atomic_activation_not_proven",
-      "appliance_shell_unrestricted_desktop_fallback",
-      "profile_conformance_evidence_incomplete"
-    ]
+    "entry_point": "tools/validate_docs.py",
+    "required_checks": [
+      "profile_id_matches_filename",
+      "profile_kind_matches_profile_id",
+      "terminology_ref_resolves",
+      "canonical_refs_resolve",
+      "decision_ids_resolve_and_are_accepted",
+      "requirement_ids_resolve",
+      "lock_ids_resolve",
+      "overlays_are_not_independently_deployable",
+      "overlay_compatibility_resolves",
+      "composition_graph_is_acyclic",
+      "required_and_optional_overlays_do_not_overlap",
+      "incompatible_profiles_do_not_overlap_compatible_profiles",
+      "inheritance_is_explicit",
+      "profile_rules_do_not_become_global",
+      "capability_states_are_valid",
+      "component_states_are_valid",
+      "component_data_ownership_is_preserved",
+      "cross_component_direct_writes_are_disabled",
+      "native_ai_dependency_is_false",
+      "offline_claims_match_capability_states",
+      "hardware_envelope_is_satisfiable",
+      "artifact_class_refs_resolve",
+      "release_channel_refs_resolve",
+      "conformance_claims_are_traceable",
+      "exceptions_resolve",
+      "no_unresolved_authority_markers"
+    ],
+    "failure_outcome": "fail",
+    "missing_dependency_outcome": "blocked",
+    "automatic_semantic_repairs_allowed": false,
+    "validated_at": null,
+    "validation_status": "pass"
   },
   "external_integrations": {
     "uckk_publication": {

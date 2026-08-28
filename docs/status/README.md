@@ -1,3 +1,29 @@
+<!-- KOA:DOC-META:BEGIN GENERATED
+{
+  "doc_id": "DOC-STATUS-000",
+  "document_class": "explanatory_markdown",
+  "status": "active",
+  "authority_participation": "non_authoritative",
+  "language": "en",
+  "layer": "governance",
+  "scope": [
+    "global"
+  ],
+  "canonical_refs": [],
+  "decision_ids": [],
+  "requirement_ids": [],
+  "lock_ids": [],
+  "exception_ids": [],
+  "depends_on": [],
+  "tags": [
+    "status",
+    "maturity",
+    "release-readiness"
+  ],
+  "edit_policy": "manual"
+}
+KOA:DOC-META:END -->
+
 # Status
 
 This directory contains dated technical maturity assessments and release-readiness checkpoints for Koali.

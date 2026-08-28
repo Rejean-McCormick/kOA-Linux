@@ -1551,7 +1551,7 @@ A deterministic lock-validation report includes:
 Canonical source:
 
 `text
-contracts/profiles/user-lightweight.profile.json#/hardware/memory_min_gib
+contracts/profiles/user-lightweight.profile.json#/hardware_envelope/memory/minimum
 `
 
 Affected projections:

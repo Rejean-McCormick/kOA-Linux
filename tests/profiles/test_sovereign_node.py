@@ -3,8 +3,6 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import pytest
-
 
 def _root() -> Path:
     for candidate in Path(__file__).resolve().parents:
@@ -17,93 +15,55 @@ ROOT = _root()
 
 
 def _contract(filename: str) -> dict:
-    path = ROOT / "docs/contracts/profiles" / filename
-    return json.loads(path.read_text(encoding="utf-8"))
+    return json.loads((ROOT / "docs/contracts/profiles" / filename).read_text(encoding="utf-8"))
 
 
-def _required_tests(contract: dict) -> tuple[str, ...]:
-    conformance = contract["conformance"]
-    for key in ("required_tests", "required_test_ids", "test_ids"):
-        value = conformance.get(key)
-        if value is not None:
-            assert isinstance(value, list)
-            return tuple(value)
-    return ()
-
-
-def _assert_identity(contract: dict, profile_id: str) -> None:
+def _assert_identity(contract: dict, profile_id: str, profile_kind: str) -> None:
     assert contract["profile_id"] == profile_id
+    assert contract["profile_kind"] == profile_kind
+    assert contract["independently_deployable"] is (profile_kind == "primary_profile")
     assert contract["version"] == "1.0.0"
     assert contract["status"] == "active"
     assert contract["language"] == "en"
-    schema_ref = contract["$schema"]
-    assert schema_ref == "../../schemas/deployment-profile.schema.json"
-    assert (ROOT / "docs/schemas/deployment-profile.schema.json").is_file()
+    assert contract["$schema"] == "../../schemas/deployment-profile.schema.json"
+    assert contract["terminology_ref"].startswith("contracts/terminology.contract.json#/terms/TERM-PROFILE-")
 
 
-def _assert_test_ids(ids: tuple[str, ...], *, prefix: str, count: int | None = None) -> None:
-    assert ids, "a claimable profile must declare its tests explicitly"
-    assert len(ids) == len(set(ids)), "test identifiers must be unique"
-    assert all(test_id.startswith(prefix) for test_id in ids)
-    if count is not None:
-        assert len(ids) == count
-
-
-def _base_test_ids(profile_ids: list[str]) -> set[str]:
-    filenames = {
-        "user_lightweight": "user-lightweight.profile.json",
-        "developer_linux_workstation": "developer-linux-workstation.profile.json",
-        "developer_windows_wsl": "developer-windows-wsl.profile.json",
-        "sovereign_linux_node": "sovereign-linux-node.profile.json",
-        "sovereign_hub": "sovereign-hub.profile.json",
-        "build_farm": "build-farm.profile.json",
-        "control_plane": "control-plane.profile.json",
-    }
-    result: set[str] = set()
-    for profile_id in profile_ids:
-        result.update(_required_tests(_contract(filenames[profile_id])))
-    return result
+def _claim_tests(contract: dict) -> tuple[str, ...]:
+    claims = contract["conformance"]["claims"]
+    assert claims
+    return tuple(claims[0]["test_ids"])
 
 CONTRACT = _contract("sovereign-linux-node.profile.json")
 
 
-def test_sovereign_node_identity_and_claim_matrix() -> None:
-    _assert_identity(CONTRACT, "sovereign_linux_node")
-    assert CONTRACT["profile_type"] == "primary"
-    ids = _required_tests(CONTRACT)
-    _assert_test_ids(ids, prefix="TEST-PROFILE-SOV-", count=16)
-    assert {item["test_id"] for item in CONTRACT["conformance"]["test_intents"]} == set(ids)
-    assert CONTRACT["conformance"]["missing_required_test_result"] == "blocked"
-    assert CONTRACT["conformance"]["overlay_claims_are_separate"] is True
+def test_sovereign_node_identity_and_hardware() -> None:
+    _assert_identity(CONTRACT, "sovereign_linux_node", "primary_profile")
+    assert CONTRACT["hardware_envelope"]["cpu"]["minimum"] == 8
+    assert CONTRACT["hardware_envelope"]["memory"]["minimum"] == 32
+    assert CONTRACT["hardware_envelope"]["memory"]["recommended"] == 64
+    assert CONTRACT["hardware_envelope"]["storage"]["minimum"] == 1000
 
 
-def test_sovereign_node_release_and_privilege_claims() -> None:
-    lifecycle = CONTRACT["release_and_lifecycle"]
-    assert lifecycle["partial_activation_permitted"] is False
-    assert lifecycle["artifact_validation_before_activation"] is True
-    assert lifecycle["rollback_or_forward_repair_required"] is True
-    security = CONTRACT["security_and_privacy"]
-    assert security["least_privilege_required"] is True
-    assert "narrow privileged broker" in security["security_baseline"]
-    assert security["default_deny_network_required"] is True
+def test_sovereign_node_immutable_recoverable_lifecycle() -> None:
+    assert CONTRACT["capabilities"]["immutable_signed_system_image"]["state"] == "required"
+    assert CONTRACT["lifecycle"]["system_update_model"] == "atomic_image"
+    assert CONTRACT["lifecycle"]["rollback_required"] is True
+    assert CONTRACT["lifecycle"]["forward_repair_allowed"] is True
+    assert CONTRACT["lifecycle"]["offline_bundle_support"] == "required"
 
 
-def test_sovereign_node_offline_claim_is_local() -> None:
-    offline = CONTRACT["offline_capability_envelope"]
-    assert offline["claim"] == "sovereign_local_operation"
-    assert offline["validation_required"] is True
-    network = CONTRACT["network_and_integrations"]
-    assert network["inbound"]["public_inbound_service_permitted_by_default"] is False
-    assert network["inbound"]["default"] == "deny"
-    assert network["outbound"]["default"] == "deny"
-    assert "do not select an undeclared provider" in network["remote_dependency_failure"]
+def test_sovereign_node_security_and_offline_boundaries() -> None:
+    assert CONTRACT["security"]["trust_model"] == "sovereign_trust"
+    assert CONTRACT["security"]["privilege_model"] == "narrow_privileged_broker"
+    assert CONTRACT["security"]["network_default"] == "closed_by_default"
+    assert CONTRACT["offline_behavior"]["continuity_level"] == "core_required"
+    assert CONTRACT["offline_behavior"]["recovery_without_internet"] is True
+    assert set(CONTRACT["ai_boundary"]["approved_external_surfaces"]) == {"chatgpt", "suno", "gamma", "ariane-voice"}
 
 
-def test_sovereign_node_overlay_compatibility_is_explicit() -> None:
-    entries = {
-        item["overlay_id"]: item["compatibility"]
-        for item in CONTRACT["composition"]["overlay_compatibility"]
-    }
-    assert entries["high_assurance"] == "compatible"
-    assert entries["sovereign_offline"] == "compatible"
-    assert entries["appliance_shell"] == "compatible"
+def test_sovereign_node_overlay_compatibility_and_tests() -> None:
+    assert set(CONTRACT["composition"]["optional_overlays"]) == {"high_assurance", "sovereign_offline", "appliance_shell"}
+    ids = _claim_tests(CONTRACT)
+    assert len(ids) == 16
+    assert all(item.startswith("TEST-PROFILE-SOV-") for item in ids)

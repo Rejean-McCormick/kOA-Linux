@@ -1,0 +1,580 @@
+{
+  "$schema": "../../schemas/toolchain.schema.json",
+  "toolchain_id": "python_uv",
+  "toolchain_type": "language_package",
+  "version": "1.0.0",
+  "status": "active",
+  "language": "en",
+  "display_name": "Python with UV",
+  "description": "Canonical Python development, validation, test, build, and release-candidate toolchain for kOA workspaces. UV owns project-environment synchronization, dependency locking, command execution, and package builds. Every workspace uses its own mutable .venv, while only content-addressed non-authoritative download caches may be shared.",
+  "effective_at": "2026-08-03T16:52:00-04:00",
+  "canonical_owner": "contracts/toolchains/python-uv.toolchain.json",
+  "index_ref": "generated/toolchain-catalog.json",
+  "scope": {
+    "kind": "development_toolchain",
+    "profiles": [
+      "developer_linux_workstation",
+      "developer_windows_wsl",
+      "build_farm"
+    ],
+    "workspace_types": [
+      "python_application",
+      "python_library",
+      "python_service",
+      "python_tooling"
+    ]
+  },
+  "platform_support": [
+    {
+      "operating_system": "linux",
+      "execution_environment": "native",
+      "architectures": [
+        "x86_64",
+        "aarch64"
+      ],
+      "support_level": "required",
+      "profile_ids": [
+        "developer_linux_workstation",
+        "build_farm"
+      ],
+      "notes": "Canonical native platform for development and build-farm execution."
+    },
+    {
+      "operating_system": "linux",
+      "execution_environment": "container",
+      "architectures": [
+        "x86_64",
+        "aarch64"
+      ],
+      "support_level": "supported",
+      "profile_ids": [
+        "build_farm"
+      ],
+      "notes": "Permitted for clean build workers when the profile preserves workspace, identity, secret, network, storage, and resource isolation."
+    },
+    {
+      "operating_system": "windows",
+      "execution_environment": "wsl2",
+      "architectures": [
+        "x86_64"
+      ],
+      "support_level": "supported",
+      "profile_ids": [
+        "developer_windows_wsl"
+      ],
+      "notes": "Python and UV execute inside the declared WSL2 Linux environment, not through a shared mutable Windows Python installation."
+    }
+  ],
+  "tools": [
+    {
+      "tool_id": "python",
+      "name": "Python",
+      "role": "runtime",
+      "executable": "python",
+      "required": true,
+      "version_policy": {
+        "selection": "manifest",
+        "source_file": ".python-version",
+        "release_recording_required": true
+      },
+      "install_source": "profile",
+      "documentation_uri": "https://docs.python.org/3/"
+    },
+    {
+      "tool_id": "uv",
+      "name": "UV",
+      "role": "package_manager",
+      "executable": "uv",
+      "required": true,
+      "version_policy": {
+        "selection": "profile",
+        "source_ref": "generated/profile-catalog.json",
+        "release_recording_required": true
+      },
+      "install_source": "profile",
+      "documentation_uri": "https://docs.astral.sh/uv/"
+    },
+    {
+      "tool_id": "pytest",
+      "name": "pytest",
+      "role": "test_runner",
+      "executable": "pytest",
+      "required": false,
+      "version_policy": {
+        "selection": "manifest",
+        "source_file": "uv.lock",
+        "release_recording_required": true
+      },
+      "install_source": "workspace_bootstrap",
+      "documentation_uri": "https://docs.pytest.org/"
+    },
+    {
+      "tool_id": "ruff",
+      "name": "Ruff",
+      "role": "linter",
+      "executable": "ruff",
+      "required": false,
+      "version_policy": {
+        "selection": "manifest",
+        "source_file": "uv.lock",
+        "release_recording_required": true
+      },
+      "install_source": "workspace_bootstrap",
+      "documentation_uri": "https://docs.astral.sh/ruff/"
+    },
+    {
+      "tool_id": "mypy",
+      "name": "mypy",
+      "role": "type_checker",
+      "executable": "mypy",
+      "required": false,
+      "version_policy": {
+        "selection": "manifest",
+        "source_file": "uv.lock",
+        "release_recording_required": true
+      },
+      "install_source": "workspace_bootstrap",
+      "documentation_uri": "https://mypy.readthedocs.io/"
+    }
+  ],
+  "workspace": {
+    "identity_source": "workspace_contract",
+    "root_markers": [
+      "pyproject.toml",
+      "uv.lock",
+      ".python-version"
+    ],
+    "parallel_workspaces_allowed": true,
+    "path_dependencies": "declared_only",
+    "editable_installs": "workspace_only",
+    "workspace_contract_ref": "schemas/developer-workspace.schema.json"
+  },
+  "environment_isolation": {
+    "model": "per_workspace",
+    "environment_path": ".venv",
+    "shared_mutable_environment": "prohibited",
+    "global_installation": "read_only_tools_only",
+    "cache_policy": "shared_non_authoritative",
+    "environment_cleanup": "automatic_on_workspace_removal"
+  },
+  "dependency_management": {
+    "manifest_files": [
+      "pyproject.toml",
+      ".python-version"
+    ],
+    "lockfile_required": true,
+    "lock_files": [
+      "uv.lock"
+    ],
+    "resolution_mode": "frozen",
+    "undeclared_dependencies": "prohibited",
+    "dependency_groups": [
+      "runtime",
+      "development",
+      "test",
+      "quality",
+      "build"
+    ],
+    "sources": [
+      {
+        "source_id": "pypi",
+        "source_type": "package_index",
+        "uri": "https://pypi.org/simple",
+        "trust": "approved",
+        "credential_policy": "none"
+      },
+      {
+        "source_id": "profile_mirror",
+        "source_type": "package_index",
+        "trust": "profile_controlled",
+        "credential_policy": "injected"
+      },
+      {
+        "source_id": "offline_bundle",
+        "source_type": "offline_bundle",
+        "trust": "offline_verified",
+        "credential_policy": "none"
+      },
+      {
+        "source_id": "local_workspace",
+        "source_type": "local_workspace",
+        "trust": "profile_controlled",
+        "credential_policy": "none"
+      }
+    ],
+    "offline_resolution_supported": true
+  },
+  "commands": {
+    "verify_lock": {
+      "purpose": "verify",
+      "description": "Verify that uv.lock is present and consistent with pyproject.toml without updating the lockfile.",
+      "argv": [
+        "uv",
+        "lock",
+        "--check"
+      ],
+      "working_directory": "workspace_root",
+      "network_policy": "forbidden",
+      "secret_policy": "none",
+      "mutates_workspace": false,
+      "produces_artifacts": false,
+      "allowed_profiles": [
+        "developer_linux_workstation",
+        "developer_windows_wsl",
+        "build_farm"
+      ],
+      "environment_variables": {
+        "forbidden": [
+          "PIP_INDEX_URL",
+          "PIP_EXTRA_INDEX_URL",
+          "PYTHONPATH"
+        ]
+      }
+    },
+    "sync_frozen": {
+      "purpose": "synchronize",
+      "description": "Synchronize the workspace .venv from the existing lockfile with all declared dependency groups and without changing dependency resolution.",
+      "argv": [
+        "uv",
+        "sync",
+        "--frozen",
+        "--all-groups"
+      ],
+      "working_directory": "workspace_root",
+      "network_policy": "declared_sources_only",
+      "secret_policy": "injected_only",
+      "mutates_workspace": true,
+      "produces_artifacts": false,
+      "allowed_profiles": [
+        "developer_linux_workstation",
+        "developer_windows_wsl",
+        "build_farm"
+      ],
+      "environment_variables": {
+        "optional": [
+          "UV_CACHE_DIR",
+          "UV_INDEX_URL",
+          "UV_EXTRA_INDEX_URL",
+          "UV_OFFLINE"
+        ],
+        "forbidden": [
+          "PYTHONPATH"
+        ]
+      }
+    },
+    "run_python": {
+      "purpose": "run",
+      "description": "Run the workspace Python interpreter through UV without updating the lockfile.",
+      "argv": [
+        "uv",
+        "run",
+        "--frozen",
+        "python"
+      ],
+      "working_directory": "workspace_root",
+      "network_policy": "forbidden",
+      "secret_policy": "injected_only",
+      "mutates_workspace": false,
+      "produces_artifacts": false,
+      "allowed_profiles": [
+        "developer_linux_workstation",
+        "developer_windows_wsl"
+      ],
+      "environment_variables": {
+        "forbidden": [
+          "PYTHONPATH"
+        ]
+      }
+    },
+    "test": {
+      "purpose": "test",
+      "description": "Run the declared pytest suite in the synchronized workspace environment without updating dependency resolution.",
+      "argv": [
+        "uv",
+        "run",
+        "--frozen",
+        "pytest"
+      ],
+      "working_directory": "workspace_root",
+      "network_policy": "forbidden",
+      "secret_policy": "none",
+      "mutates_workspace": false,
+      "produces_artifacts": false,
+      "allowed_profiles": [
+        "developer_linux_workstation",
+        "developer_windows_wsl",
+        "build_farm"
+      ],
+      "environment_variables": {
+        "optional": [
+          "PYTEST_ADDOPTS"
+        ],
+        "forbidden": [
+          "PYTHONPATH"
+        ]
+      }
+    },
+    "lint": {
+      "purpose": "lint",
+      "description": "Run Ruff lint checks through the locked project environment.",
+      "argv": [
+        "uv",
+        "run",
+        "--frozen",
+        "ruff",
+        "check",
+        "."
+      ],
+      "working_directory": "workspace_root",
+      "network_policy": "forbidden",
+      "secret_policy": "none",
+      "mutates_workspace": false,
+      "produces_artifacts": false,
+      "allowed_profiles": [
+        "developer_linux_workstation",
+        "developer_windows_wsl",
+        "build_farm"
+      ],
+      "environment_variables": {
+        "forbidden": [
+          "PYTHONPATH"
+        ]
+      }
+    },
+    "format_check": {
+      "purpose": "format",
+      "description": "Check Ruff formatting without modifying source files.",
+      "argv": [
+        "uv",
+        "run",
+        "--frozen",
+        "ruff",
+        "format",
+        "--check",
+        "."
+      ],
+      "working_directory": "workspace_root",
+      "network_policy": "forbidden",
+      "secret_policy": "none",
+      "mutates_workspace": false,
+      "produces_artifacts": false,
+      "allowed_profiles": [
+        "developer_linux_workstation",
+        "developer_windows_wsl",
+        "build_farm"
+      ],
+      "environment_variables": {
+        "forbidden": [
+          "PYTHONPATH"
+        ]
+      }
+    },
+    "format_apply": {
+      "purpose": "format",
+      "description": "Apply Ruff formatting in an explicitly mutable development workspace.",
+      "argv": [
+        "uv",
+        "run",
+        "--frozen",
+        "ruff",
+        "format",
+        "."
+      ],
+      "working_directory": "workspace_root",
+      "network_policy": "forbidden",
+      "secret_policy": "none",
+      "mutates_workspace": true,
+      "produces_artifacts": false,
+      "allowed_profiles": [
+        "developer_linux_workstation",
+        "developer_windows_wsl"
+      ],
+      "environment_variables": {
+        "forbidden": [
+          "PYTHONPATH"
+        ]
+      }
+    },
+    "type_check": {
+      "purpose": "type_check",
+      "description": "Run mypy through the locked project environment.",
+      "argv": [
+        "uv",
+        "run",
+        "--frozen",
+        "mypy",
+        "."
+      ],
+      "working_directory": "workspace_root",
+      "network_policy": "forbidden",
+      "secret_policy": "none",
+      "mutates_workspace": false,
+      "produces_artifacts": false,
+      "allowed_profiles": [
+        "developer_linux_workstation",
+        "developer_windows_wsl",
+        "build_farm"
+      ],
+      "environment_variables": {
+        "forbidden": [
+          "PYTHONPATH"
+        ]
+      }
+    },
+    "build_distribution": {
+      "purpose": "build",
+      "description": "Build source and wheel distributions into dist after lock, sync, test, lint, formatting, and type-check gates have passed.",
+      "argv": [
+        "uv",
+        "build",
+        "--sdist",
+        "--wheel"
+      ],
+      "working_directory": "workspace_root",
+      "network_policy": "forbidden",
+      "secret_policy": "none",
+      "mutates_workspace": true,
+      "produces_artifacts": true,
+      "allowed_profiles": [
+        "developer_linux_workstation",
+        "developer_windows_wsl",
+        "build_farm"
+      ],
+      "environment_variables": {
+        "optional": [
+          "SOURCE_DATE_EPOCH",
+          "UV_CACHE_DIR"
+        ],
+        "forbidden": [
+          "PYTHONPATH",
+          "TWINE_PASSWORD",
+          "UV_PUBLISH_TOKEN"
+        ]
+      }
+    }
+  },
+  "reproducibility": {
+    "clean_workspace_required_for_release": true,
+    "frozen_resolution_required_for_release": true,
+    "exact_tool_versions_recorded": true,
+    "manifest_and_lockfile_recorded": true,
+    "build_network_policy": "forbidden",
+    "deterministic_output_expected": true,
+    "required_build_metadata": [
+      "toolchain_id",
+      "toolchain_version",
+      "runtime_versions",
+      "tool_versions",
+      "manifest_identity",
+      "lockfile_identity",
+      "source_revision",
+      "target_platform",
+      "build_command_id",
+      "artifact_class"
+    ]
+  },
+  "security": {
+    "secrets_in_manifests": "prohibited",
+    "credentials": "injected_only",
+    "arbitrary_remote_scripts": "prohibited",
+    "unapproved_dependency_sources": "prohibited",
+    "privileged_execution": "prohibited"
+  },
+  "artifacts": {
+    "outputs": [
+      {
+        "output_id": "python_distribution",
+        "artifact_class_ref": "contracts/artifact-classes.contract.json#/artifact_classes/python_distribution",
+        "output_directory": "dist",
+        "publication": "release_pipeline_only"
+      }
+    ],
+    "undeclared_outputs": "prohibited",
+    "release_outputs_require_provenance": true,
+    "release_outputs_require_sbom": true
+  },
+  "canonical_refs": [
+    "schemas/developer-workspace.schema.json",
+    "generated/profile-catalog.json",
+    "contracts/artifact-classes.contract.json#/artifact_classes/python_distribution",
+    "contracts/release-channels.contract.json#/channels/services",
+    "05-development/02-workspace-identity.md",
+    "05-development/03-workspace-isolation.md",
+    "05-development/04-dependency-isolation.md",
+    "05-development/05-python-uv.md",
+    "05-development/10-parallel-applications-and-branches.md",
+    "05-development/14-build-test-and-validation.md",
+    "05-development/15-artifact-publication.md",
+    "03-profiles/05-developer-linux-workstation.md",
+    "03-profiles/06-developer-windows-wsl.md",
+    "03-profiles/09-build-farm.md"
+  ],
+  "decision_ids": [
+    "DEC-DEV-001",
+    "DEC-DEV-002",
+    "DEC-PROFILE-BASELINE-001",
+    "DEC-REL-001"
+  ],
+  "requirement_ids": [
+    "REQ-DEV-UV-001",
+    "REQ-DEV-UV-002",
+    "REQ-DEV-UV-003",
+    "REQ-DEV-UV-004",
+    "REQ-DEV-UV-005",
+    "REQ-DEV-UV-006",
+    "REQ-DEV-UV-007",
+    "REQ-DEV-UV-008",
+    "REQ-DEV-UV-009",
+    "REQ-DEV-UV-010",
+    "REQ-DEV-UV-011",
+    "REQ-DEV-UV-012",
+    "REQ-DEV-UV-013",
+    "REQ-DEV-UV-014",
+    "REQ-DEV-UV-015"
+  ],
+  "lock_ids": [
+    "LOCK-DEV-001",
+    "LOCK-DEV-002",
+    "LOCK-DEV-003",
+    "LOCK-DEV-004",
+    "LOCK-DEV-005",
+    "LOCK-PROFILE-001",
+    "LOCK-LIFE-001",
+    "LOCK-LIFE-003"
+  ],
+  "adr_ids": [
+    "ADR-015"
+  ],
+  "tags": [
+    "python",
+    "uv",
+    "workspace-isolation",
+    "dependency-locking",
+    "parallel-workspaces",
+    "reproducibility",
+    "testing",
+    "package-build"
+  ],
+  "validation": {
+    "required_checks": [
+      "schema_validation",
+      "canonical_reference_resolution",
+      "accepted_decisions",
+      "scope_alignment",
+      "tool_versions_resolvable",
+      "manifest_files_present",
+      "lock_files_present",
+      "isolated_environment",
+      "command_catalog_complete",
+      "frozen_release_resolution",
+      "clean_release_workspace",
+      "security_policy",
+      "artifact_declarations",
+      "requirement_traceability",
+      "lock_conformance"
+    ],
+    "activation_requires": "pass",
+    "missing_required_check_result": "blocked",
+    "automatic_semantic_fixes_allowed": false
+  }
+}

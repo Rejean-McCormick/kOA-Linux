@@ -1,0 +1,2912 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.koa.local/artifact-contracts/cultural-rights-policy.schema.json",
+  "title": "kOA Cultural Rights Policy Artifact",
+  "description": "Validates a cultural-rights policy used by kOA components and governance policy bundles. The policy records cultural authority, rights holders, community protocols, audiences, consent, access, reuse, AI restrictions, distribution controls, withdrawal, dissent, review, recourse, enforcement points, provenance, governance approval, receipts, and validation. It is designed for object-, collection-, artifact-, media-, dataset-, and knowledge-level policy without transferring data ownership or granting machine privilege.",
+  "$comment": "Cross-object checks are performed by docs/tools/validate_docs.py: all authority, subject, community, audience, protocol, policy-bundle, component, artifact, consent-evidence, obligation, test, and evidence references must resolve; every authority and audience reference must be in scope; action rules must align with access, reuse, consent, AI, distribution, withdrawal, and dissent rules; approved-by identities must satisfy separation of duties; active policy must be registered by the artifact-contract index; and policy-bundle activation must remain atomic with rollback or forward repair.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schema_version",
+    "policy_id",
+    "version",
+    "status",
+    "language",
+    "title",
+    "description",
+    "policy_kind",
+    "effective_at",
+    "packaging",
+    "scope",
+    "subjects",
+    "authorities",
+    "cultural_context",
+    "access",
+    "reuse",
+    "consent",
+    "action_policies",
+    "ai_policy",
+    "distribution",
+    "withdrawal",
+    "dissent_and_dispute",
+    "review_and_recourse",
+    "enforcement",
+    "provenance",
+    "governance",
+    "decision_behavior",
+    "receipts",
+    "validation"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "const": "contracts/artifact-contracts/cultural-rights-policy.schema.json"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "policy_id": {
+      "$ref": "#/$defs/policyId"
+    },
+    "version": {
+      "$ref": "#/$defs/semanticVersion"
+    },
+    "status": {
+      "$ref": "#/$defs/lifecycleStatus"
+    },
+    "language": {
+      "type": "string",
+      "const": "en"
+    },
+    "title": {
+      "$ref": "#/$defs/title"
+    },
+    "description": {
+      "$ref": "#/$defs/nonEmptyText"
+    },
+    "policy_kind": {
+      "type": "string",
+      "const": "cultural_rights"
+    },
+    "effective_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "superseded_by": {
+      "$ref": "#/$defs/policyId"
+    },
+    "packaging": {
+      "$ref": "#/$defs/packaging"
+    },
+    "scope": {
+      "$ref": "#/$defs/scope"
+    },
+    "subjects": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/subject"
+      }
+    },
+    "authorities": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/authority"
+      }
+    },
+    "cultural_context": {
+      "$ref": "#/$defs/culturalContext"
+    },
+    "access": {
+      "$ref": "#/$defs/accessPolicy"
+    },
+    "reuse": {
+      "$ref": "#/$defs/reusePolicy"
+    },
+    "consent": {
+      "$ref": "#/$defs/consentPolicy"
+    },
+    "action_policies": {
+      "$ref": "#/$defs/actionPolicies"
+    },
+    "ai_policy": {
+      "$ref": "#/$defs/aiPolicy"
+    },
+    "distribution": {
+      "$ref": "#/$defs/distributionPolicy"
+    },
+    "withdrawal": {
+      "$ref": "#/$defs/withdrawalPolicy"
+    },
+    "dissent_and_dispute": {
+      "$ref": "#/$defs/dissentPolicy"
+    },
+    "review_and_recourse": {
+      "$ref": "#/$defs/reviewAndRecourse"
+    },
+    "enforcement": {
+      "$ref": "#/$defs/enforcementPolicy"
+    },
+    "provenance": {
+      "$ref": "#/$defs/provenance"
+    },
+    "governance": {
+      "$ref": "#/$defs/governance"
+    },
+    "decision_behavior": {
+      "$ref": "#/$defs/decisionBehavior"
+    },
+    "receipts": {
+      "$ref": "#/$defs/receiptPolicy"
+    },
+    "integrity": {
+      "$ref": "#/$defs/integrity"
+    },
+    "signatures": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/signature"
+      }
+    },
+    "canonical_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+      },
+      "uniqueItems": true
+    },
+    "decision_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "../../schemas/canonical-reference.schema.json#/$defs/decisionId"
+      },
+      "uniqueItems": true
+    },
+    "requirement_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "../../schemas/canonical-reference.schema.json#/$defs/requirementId"
+      },
+      "uniqueItems": true
+    },
+    "lock_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "../../schemas/canonical-reference.schema.json#/$defs/lockId"
+      },
+      "uniqueItems": true
+    },
+    "adr_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "../../schemas/canonical-reference.schema.json#/$defs/adrId"
+      },
+      "uniqueItems": true
+    },
+    "test_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "../../schemas/canonical-reference.schema.json#/$defs/testId"
+      },
+      "uniqueItems": true
+    },
+    "evidence_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "../../schemas/canonical-reference.schema.json#/$defs/evidenceId"
+      },
+      "uniqueItems": true
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/tag"
+      },
+      "uniqueItems": true
+    },
+    "validation": {
+      "$ref": "#/$defs/validationPolicy"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "superseded"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "required": [
+          "superseded_by"
+        ]
+      },
+      "else": {
+        "not": {
+          "required": [
+            "superseded_by"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "packaging": {
+            "properties": {
+              "mode": {
+                "const": "standalone_signed_policy"
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          }
+        },
+        "required": [
+          "packaging"
+        ]
+      },
+      "then": {
+        "required": [
+          "integrity",
+          "signatures"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "packaging": {
+            "properties": {
+              "mode": {
+                "const": "policy_bundle_module"
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          }
+        },
+        "required": [
+          "packaging"
+        ]
+      },
+      "then": {
+        "properties": {
+          "packaging": {
+            "required": [
+              "policy_bundle_ref",
+              "module_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "packaging": {
+            "properties": {
+              "mode": {
+                "const": "embedded_object_policy"
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          }
+        },
+        "required": [
+          "packaging"
+        ]
+      },
+      "then": {
+        "properties": {
+          "packaging": {
+            "required": [
+              "embedding_owner_component_id",
+              "embedding_field"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "semanticVersion": {
+      "title": "Semantic version",
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+    },
+    "lifecycleStatus": {
+      "type": "string",
+      "enum": [
+        "active",
+        "deprecated",
+        "superseded",
+        "retired"
+      ]
+    },
+    "nonEmptyText": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 8192,
+      "pattern": ".*\\S.*"
+    },
+    "shortText": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024,
+      "pattern": ".*\\S.*"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": ".*\\S.*"
+    },
+    "tag": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 96,
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "policyId": {
+      "type": "string",
+      "pattern": "^CRP-[A-Z0-9][A-Z0-9-]{2,95}$"
+    },
+    "localId": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 128,
+      "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"
+    },
+    "externalId": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/@+-]*$"
+    },
+    "componentId": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 96,
+      "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
+    },
+    "profileId": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 96,
+      "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
+    },
+    "languageTag": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 64,
+      "pattern": "^[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*$"
+    },
+    "uri": {
+      "type": "string",
+      "format": "uri",
+      "maxLength": 2048
+    },
+    "dateTime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "duration": {
+      "type": "string",
+      "pattern": "^P(?!$)(?:[0-9]+Y)?(?:[0-9]+M)?(?:[0-9]+W)?(?:[0-9]+D)?(?:T(?=[0-9])(?:[0-9]+H)?(?:[0-9]+M)?(?:[0-9]+(?:\\.[0-9]+)?S)?)?$"
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^(?:sha256:[0-9a-f]{64}|sha384:[0-9a-f]{96}|sha512:[0-9a-f]{128})$"
+    },
+    "packaging": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "governance_artifact_class",
+        "activation_owner_component_id"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "policy_bundle_module",
+            "standalone_signed_policy",
+            "embedded_object_policy"
+          ]
+        },
+        "governance_artifact_class": {
+          "type": "string",
+          "const": "governance_policy_bundle"
+        },
+        "module_domain": {
+          "type": "string",
+          "const": "rights"
+        },
+        "policy_bundle_ref": {
+          "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+        },
+        "module_id": {
+          "$ref": "#/$defs/localId"
+        },
+        "embedding_owner_component_id": {
+          "$ref": "#/$defs/componentId"
+        },
+        "embedding_field": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^(?:[A-Za-z0-9._-]+|/(?:[A-Za-z0-9._~-]|~0|~1)*)+$"
+        },
+        "activation_owner_component_id": {
+          "type": "string",
+          "const": "governance_policy_runtime"
+        },
+        "runtime_contract_ref": {
+          "allOf": [
+            {
+              "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+            },
+            {
+              "pattern": "^contracts/components/governance-policy-runtime\\.component\\.json(?:#.*)?$"
+            }
+          ]
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope_id",
+        "environments",
+        "communities",
+        "subject_match",
+        "owner_component_ids"
+      ],
+      "properties": {
+        "scope_id": {
+          "$ref": "#/$defs/localId"
+        },
+        "tenant_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/externalId"
+          },
+          "uniqueItems": true
+        },
+        "environments": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": [
+              "development",
+              "test",
+              "staging",
+              "production",
+              "preservation",
+              "exhibition",
+              "research",
+              "offline"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "profile_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/profileId"
+          },
+          "uniqueItems": true
+        },
+        "owner_component_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/componentId"
+          },
+          "uniqueItems": true
+        },
+        "communities": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/community"
+          }
+        },
+        "jurisdictions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/jurisdiction"
+          }
+        },
+        "subject_match": {
+          "type": "string",
+          "enum": [
+            "all_listed_subjects",
+            "any_listed_subject",
+            "selector_expression"
+          ]
+        },
+        "selector_expression": {
+          "$ref": "#/$defs/shortText"
+        },
+        "excluded_subject_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/externalId"
+          },
+          "uniqueItems": true
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "subject_match": {
+                "const": "selector_expression"
+              }
+            },
+            "required": [
+              "subject_match"
+            ]
+          },
+          "then": {
+            "required": [
+              "selector_expression"
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "selector_expression"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "community": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "community_id",
+        "name",
+        "authority_refs"
+      ],
+      "properties": {
+        "community_id": {
+          "$ref": "#/$defs/localId"
+        },
+        "name": {
+          "$ref": "#/$defs/title"
+        },
+        "self_description": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "authority_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "uniqueItems": true
+        },
+        "language_tags": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/languageTag"
+          },
+          "uniqueItems": true
+        },
+        "jurisdiction_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "uniqueItems": true
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "jurisdiction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "jurisdiction_id",
+        "name",
+        "basis"
+      ],
+      "properties": {
+        "jurisdiction_id": {
+          "$ref": "#/$defs/localId"
+        },
+        "name": {
+          "$ref": "#/$defs/title"
+        },
+        "basis": {
+          "type": "string",
+          "enum": [
+            "community_protocol",
+            "customary_law",
+            "statutory_law",
+            "contract",
+            "institutional_policy",
+            "multi_source"
+          ]
+        },
+        "reference_uris": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/uri"
+          },
+          "uniqueItems": true
+        },
+        "canonical_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subject_id",
+        "subject_type",
+        "owner_component_id",
+        "community_refs",
+        "data_classification"
+      ],
+      "properties": {
+        "subject_id": {
+          "$ref": "#/$defs/externalId"
+        },
+        "subject_type": {
+          "type": "string",
+          "enum": [
+            "object",
+            "collection",
+            "record",
+            "artifact",
+            "media",
+            "knowledge",
+            "cultural_expression",
+            "dataset",
+            "metadata",
+            "derived_representation"
+          ]
+        },
+        "canonical_ref": {
+          "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+        },
+        "title": {
+          "$ref": "#/$defs/title"
+        },
+        "owner_component_id": {
+          "$ref": "#/$defs/componentId"
+        },
+        "community_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "uniqueItems": true
+        },
+        "creator_authority_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "uniqueItems": true
+        },
+        "rights_holder_authority_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "uniqueItems": true
+        },
+        "steward_authority_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "uniqueItems": true
+        },
+        "data_classification": {
+          "type": "string",
+          "enum": [
+            "public",
+            "community",
+            "restricted",
+            "confidential",
+            "sealed",
+            "sacred_or_ceremonial"
+          ]
+        },
+        "source_provenance_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authority_id",
+        "name",
+        "authority_type",
+        "roles",
+        "decision_rights",
+        "scope_description",
+        "effective_from"
+      ],
+      "properties": {
+        "authority_id": {
+          "$ref": "#/$defs/localId"
+        },
+        "name": {
+          "$ref": "#/$defs/title"
+        },
+        "authority_type": {
+          "type": "string",
+          "enum": [
+            "creator",
+            "rights_holder",
+            "community",
+            "collective",
+            "indigenous_authority",
+            "steward",
+            "custodian",
+            "institution",
+            "legal_guardian",
+            "delegate",
+            "multi_party_body"
+          ]
+        },
+        "roles": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": [
+              "approve_access",
+              "approve_reuse",
+              "approve_ai_access",
+              "approve_export",
+              "approve_publication",
+              "approve_preservation",
+              "request_withdrawal",
+              "resolve_dispute",
+              "receive_notice",
+              "delegate",
+              "steward",
+              "audit_private_evidence"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "decision_rights": {
+          "type": "string",
+          "enum": [
+            "individual",
+            "joint",
+            "quorum",
+            "consultative",
+            "veto",
+            "delegated",
+            "notice_only"
+          ]
+        },
+        "scope_description": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "community_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "uniqueItems": true
+        },
+        "delegated_by_ref": {
+          "$ref": "#/$defs/localId"
+        },
+        "delegation_evidence_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+          },
+          "uniqueItems": true
+        },
+        "effective_from": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "effective_until": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "contact_uri": {
+          "$ref": "#/$defs/uri"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+          },
+          "uniqueItems": true
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "authority_type": {
+                "const": "delegate"
+              }
+            },
+            "required": [
+              "authority_type"
+            ]
+          },
+          "then": {
+            "required": [
+              "delegated_by_ref",
+              "delegation_evidence_refs"
+            ]
+          }
+        }
+      ]
+    },
+    "protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol_id",
+        "title",
+        "authority_refs",
+        "description",
+        "trigger_conditions",
+        "required_notices"
+      ],
+      "properties": {
+        "protocol_id": {
+          "$ref": "#/$defs/localId"
+        },
+        "title": {
+          "$ref": "#/$defs/title"
+        },
+        "authority_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "uniqueItems": true
+        },
+        "description": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "trigger_conditions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/shortText"
+          },
+          "uniqueItems": true
+        },
+        "required_notices": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/nonEmptyText"
+          },
+          "uniqueItems": true
+        },
+        "language_tags": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/languageTag"
+          },
+          "uniqueItems": true
+        },
+        "jurisdiction_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "uniqueItems": true
+        },
+        "canonical_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "culturalContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sensitivity",
+        "interpretation_requirement",
+        "protocols",
+        "context_notice",
+        "prohibited_inferences"
+      ],
+      "properties": {
+        "sensitivity": {
+          "type": "string",
+          "enum": [
+            "ordinary",
+            "sensitive",
+            "restricted",
+            "confidential",
+            "sealed",
+            "sacred_or_ceremonial"
+          ]
+        },
+        "interpretation_requirement": {
+          "type": "string",
+          "enum": [
+            "open",
+            "context_required",
+            "authority_review",
+            "restricted",
+            "prohibited"
+          ]
+        },
+        "protocols": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/protocol"
+          }
+        },
+        "context_notice": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "prohibited_inferences": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/nonEmptyText"
+          },
+          "uniqueItems": true
+        },
+        "permitted_context_fields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "uniqueItems": true
+        },
+        "local_names": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "language_tag",
+              "value"
+            ],
+            "properties": {
+              "language_tag": {
+                "$ref": "#/$defs/languageTag"
+              },
+              "value": {
+                "$ref": "#/$defs/title"
+              }
+            }
+          }
+        }
+      }
+    },
+    "audience": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "audience_id",
+        "kind",
+        "description",
+        "qualification",
+        "encryption_required",
+        "redistribution"
+      ],
+      "properties": {
+        "audience_id": {
+          "$ref": "#/$defs/localId"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "public",
+            "community",
+            "research",
+            "institution",
+            "exhibition",
+            "preservation",
+            "private",
+            "custom"
+          ]
+        },
+        "description": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "qualification": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "authority_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "uniqueItems": true
+        },
+        "encryption_required": {
+          "type": "boolean"
+        },
+        "redistribution": {
+          "type": "string",
+          "enum": [
+            "allowed",
+            "approval_required",
+            "prohibited"
+          ]
+        },
+        "export_allowed": {
+          "type": "boolean"
+        },
+        "membership_evidence_types": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "accessPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "default_decision",
+        "audiences",
+        "discovery",
+        "search_indexing",
+        "metadata_visibility",
+        "anonymous_access"
+      ],
+      "properties": {
+        "default_decision": {
+          "type": "string",
+          "enum": [
+            "deny",
+            "require_authority_review"
+          ]
+        },
+        "audiences": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/audience"
+          }
+        },
+        "discovery": {
+          "type": "string",
+          "enum": [
+            "public_metadata",
+            "audience_metadata",
+            "authority_only",
+            "hidden"
+          ]
+        },
+        "search_indexing": {
+          "type": "string",
+          "enum": [
+            "full",
+            "metadata_only",
+            "audience_scoped",
+            "prohibited"
+          ]
+        },
+        "metadata_visibility": {
+          "type": "string",
+          "enum": [
+            "full",
+            "redacted",
+            "minimal_notice",
+            "hidden"
+          ]
+        },
+        "anonymous_access": {
+          "type": "string",
+          "enum": [
+            "allowed_public_only",
+            "prohibited"
+          ]
+        },
+        "authentication_strength": {
+          "type": "string",
+          "enum": [
+            "none_for_public",
+            "single_factor",
+            "multi_factor",
+            "high_assurance",
+            "profile_defined"
+          ]
+        },
+        "access_duration": {
+          "$ref": "#/$defs/duration"
+        },
+        "session_export_prohibited": {
+          "type": "boolean"
+        }
+      }
+    },
+    "rightsTerm": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "decision",
+        "required_authority_roles",
+        "required_consent",
+        "conditions"
+      ],
+      "properties": {
+        "decision": {
+          "type": "string",
+          "enum": [
+            "allowed",
+            "allowed_with_obligations",
+            "approval_required",
+            "consent_required",
+            "prohibited",
+            "not_applicable"
+          ]
+        },
+        "required_authority_roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "uniqueItems": true
+        },
+        "required_consent": {
+          "type": "boolean"
+        },
+        "allowed_audience_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "uniqueItems": true
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/nonEmptyText"
+          },
+          "uniqueItems": true
+        },
+        "license_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/uri"
+          },
+          "uniqueItems": true
+        },
+        "attribution_obligation_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "reusePolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "display",
+        "download",
+        "reproduction",
+        "adaptation",
+        "translation",
+        "commercial_use",
+        "research_use",
+        "preservation_copy",
+        "attribution"
+      ],
+      "properties": {
+        "display": {
+          "$ref": "#/$defs/rightsTerm"
+        },
+        "download": {
+          "$ref": "#/$defs/rightsTerm"
+        },
+        "reproduction": {
+          "$ref": "#/$defs/rightsTerm"
+        },
+        "adaptation": {
+          "$ref": "#/$defs/rightsTerm"
+        },
+        "translation": {
+          "$ref": "#/$defs/rightsTerm"
+        },
+        "commercial_use": {
+          "$ref": "#/$defs/rightsTerm"
+        },
+        "research_use": {
+          "$ref": "#/$defs/rightsTerm"
+        },
+        "preservation_copy": {
+          "$ref": "#/$defs/rightsTerm"
+        },
+        "attribution": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "required",
+            "forms",
+            "placement"
+          ],
+          "properties": {
+            "required": {
+              "type": "boolean"
+            },
+            "forms": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/nonEmptyText"
+              },
+              "uniqueItems": true
+            },
+            "placement": {
+              "type": "string",
+              "enum": [
+                "with_object",
+                "with_metadata",
+                "with_publication",
+                "with_export",
+                "all_applicable_boundaries"
+              ]
+            },
+            "authority_approval_required": {
+              "type": "boolean"
+            }
+          }
+        },
+        "license_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/uri"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "consentPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "model",
+        "explicit",
+        "silence_is_consent",
+        "missing_consent_decision",
+        "required_authority_roles",
+        "required_evidence_types",
+        "withdrawal_supported",
+        "record_fields"
+      ],
+      "properties": {
+        "model": {
+          "type": "string",
+          "enum": [
+            "individual",
+            "collective",
+            "institutional",
+            "multi_party",
+            "delegated",
+            "jurisdictional",
+            "combined"
+          ]
+        },
+        "explicit": {
+          "type": "boolean",
+          "const": true
+        },
+        "silence_is_consent": {
+          "type": "boolean",
+          "const": false
+        },
+        "missing_consent_decision": {
+          "type": "string",
+          "enum": [
+            "deny",
+            "require_authority_review"
+          ]
+        },
+        "conflicting_consent_decision": {
+          "type": "string",
+          "enum": [
+            "deny",
+            "require_authority_review"
+          ]
+        },
+        "required_authority_roles": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "uniqueItems": true
+        },
+        "required_evidence_types": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "uniqueItems": true
+        },
+        "withdrawal_supported": {
+          "type": "boolean",
+          "const": true
+        },
+        "expiry": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode"
+          ],
+          "properties": {
+            "mode": {
+              "type": "string",
+              "enum": [
+                "never",
+                "fixed_duration",
+                "review_date",
+                "event_bound"
+              ]
+            },
+            "duration": {
+              "$ref": "#/$defs/duration"
+            },
+            "event_description": {
+              "$ref": "#/$defs/nonEmptyText"
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "mode": {
+                    "const": "fixed_duration"
+                  }
+                },
+                "required": [
+                  "mode"
+                ]
+              },
+              "then": {
+                "required": [
+                  "duration"
+                ]
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "mode": {
+                    "const": "event_bound"
+                  }
+                },
+                "required": [
+                  "mode"
+                ]
+              },
+              "then": {
+                "required": [
+                  "event_description"
+                ]
+              }
+            }
+          ]
+        },
+        "record_fields": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": [
+              "consent_id",
+              "subject_ref",
+              "authority_refs",
+              "action",
+              "purpose",
+              "audience_refs",
+              "scope",
+              "granted_at",
+              "effective_until",
+              "withdrawal_state",
+              "evidence_refs",
+              "receipt_ref"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "consent_receipt_schema_ref": {
+          "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+        }
+      }
+    },
+    "obligation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "obligation_id",
+        "kind",
+        "description",
+        "enforcement"
+      ],
+      "properties": {
+        "obligation_id": {
+          "$ref": "#/$defs/localId"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "attribution",
+            "redaction",
+            "encryption",
+            "notification",
+            "watermark",
+            "time_limit",
+            "audience_limit",
+            "no_ai",
+            "return_or_destroy",
+            "cache_purge",
+            "logging",
+            "private_evidence",
+            "review",
+            "custom"
+          ]
+        },
+        "description": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "enforcement": {
+          "type": "string",
+          "enum": [
+            "before_action",
+            "during_action",
+            "after_action",
+            "continuous",
+            "on_expiry",
+            "on_withdrawal"
+          ]
+        },
+        "authority_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "uniqueItems": true
+        },
+        "evidence_required": {
+          "type": "boolean"
+        }
+      }
+    },
+    "actionDecision": {
+      "type": "string",
+      "enum": [
+        "allow",
+        "allow_with_obligations",
+        "deny",
+        "require_consent",
+        "require_authority_review",
+        "not_applicable"
+      ]
+    },
+    "actionRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "decision",
+        "allowed_audience_ids",
+        "required_authority_roles",
+        "consent_requirement",
+        "purpose_limits",
+        "obligations",
+        "reason_codes",
+        "offline_behavior"
+      ],
+      "properties": {
+        "decision": {
+          "$ref": "#/$defs/actionDecision"
+        },
+        "allowed_audience_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "uniqueItems": true
+        },
+        "required_authority_roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "uniqueItems": true
+        },
+        "consent_requirement": {
+          "type": "string",
+          "enum": [
+            "none_with_declared_basis",
+            "explicit_individual",
+            "explicit_collective",
+            "explicit_multi_party",
+            "authority_review",
+            "not_applicable"
+          ]
+        },
+        "purpose_limits": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/nonEmptyText"
+          },
+          "uniqueItems": true
+        },
+        "obligations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/obligation"
+          }
+        },
+        "redacted_fields": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "uniqueItems": true
+        },
+        "reason_codes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "uniqueItems": true
+        },
+        "offline_behavior": {
+          "type": "string",
+          "enum": [
+            "evaluate_locally",
+            "deny_without_current_authority",
+            "use_last_verified_with_freshness",
+            "not_applicable"
+          ]
+        },
+        "review_after": {
+          "$ref": "#/$defs/duration"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "decision": {
+                "enum": [
+                  "allow",
+                  "allow_with_obligations"
+                ]
+              }
+            },
+            "required": [
+              "decision"
+            ]
+          },
+          "then": {
+            "properties": {
+              "allowed_audience_ids": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "decision": {
+                "const": "deny"
+              }
+            },
+            "required": [
+              "decision"
+            ]
+          },
+          "then": {
+            "properties": {
+              "allowed_audience_ids": {
+                "maxItems": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "decision": {
+                "const": "require_consent"
+              }
+            },
+            "required": [
+              "decision"
+            ]
+          },
+          "then": {
+            "properties": {
+              "consent_requirement": {
+                "enum": [
+                  "explicit_individual",
+                  "explicit_collective",
+                  "explicit_multi_party"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "decision": {
+                "const": "allow_with_obligations"
+              }
+            },
+            "required": [
+              "decision"
+            ]
+          },
+          "then": {
+            "properties": {
+              "obligations": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "actionPolicies": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ingestion",
+        "metadata_edit",
+        "discovery",
+        "read",
+        "query",
+        "render",
+        "display",
+        "download",
+        "reproduction",
+        "reuse",
+        "publication",
+        "synchronization",
+        "backup",
+        "export",
+        "ai_access",
+        "federation",
+        "withdrawal",
+        "purge"
+      ],
+      "properties": {
+        "ingestion": {
+          "$ref": "#/$defs/actionRule"
+        },
+        "metadata_edit": {
+          "$ref": "#/$defs/actionRule"
+        },
+        "discovery": {
+          "$ref": "#/$defs/actionRule"
+        },
+        "read": {
+          "$ref": "#/$defs/actionRule"
+        },
+        "query": {
+          "$ref": "#/$defs/actionRule"
+        },
+        "render": {
+          "$ref": "#/$defs/actionRule"
+        },
+        "display": {
+          "$ref": "#/$defs/actionRule"
+        },
+        "download": {
+          "$ref": "#/$defs/actionRule"
+        },
+        "reproduction": {
+          "$ref": "#/$defs/actionRule"
+        },
+        "reuse": {
+          "$ref": "#/$defs/actionRule"
+        },
+        "publication": {
+          "$ref": "#/$defs/actionRule"
+        },
+        "synchronization": {
+          "$ref": "#/$defs/actionRule"
+        },
+        "backup": {
+          "$ref": "#/$defs/actionRule"
+        },
+        "export": {
+          "$ref": "#/$defs/actionRule"
+        },
+        "ai_access": {
+          "$ref": "#/$defs/actionRule"
+        },
+        "federation": {
+          "$ref": "#/$defs/actionRule"
+        },
+        "withdrawal": {
+          "$ref": "#/$defs/actionRule"
+        },
+        "purge": {
+          "$ref": "#/$defs/actionRule"
+        }
+      }
+    },
+    "aiActionRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "decision",
+        "required_authority_roles",
+        "required_consent",
+        "purpose_limits",
+        "obligations"
+      ],
+      "properties": {
+        "decision": {
+          "type": "string",
+          "enum": [
+            "forbidden",
+            "approval_required_external_only",
+            "consent_and_authority_review_external_only",
+            "not_applicable"
+          ]
+        },
+        "required_authority_roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "uniqueItems": true
+        },
+        "required_consent": {
+          "type": "boolean"
+        },
+        "purpose_limits": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/nonEmptyText"
+          },
+          "uniqueItems": true
+        },
+        "obligations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/obligation"
+          }
+        },
+        "allowed_integration_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "aiPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "native_ai_authority",
+        "external_ai_output_authority",
+        "direct_mount_into_ai_domain",
+        "sacred_or_restricted_inference_without_review",
+        "actions",
+        "candidate_acceptance_owner_component_id"
+      ],
+      "properties": {
+        "native_ai_authority": {
+          "type": "boolean",
+          "const": false
+        },
+        "external_ai_output_authority": {
+          "type": "string",
+          "const": "candidate_only"
+        },
+        "direct_mount_into_ai_domain": {
+          "type": "string",
+          "const": "prohibited"
+        },
+        "sacred_or_restricted_inference_without_review": {
+          "type": "string",
+          "const": "prohibited"
+        },
+        "actions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "training",
+            "fine_tuning",
+            "embedding",
+            "indexing",
+            "inference",
+            "classification",
+            "summarization",
+            "translation",
+            "transcription",
+            "generation",
+            "semantic_enrichment"
+          ],
+          "properties": {
+            "training": {
+              "$ref": "#/$defs/aiActionRule"
+            },
+            "fine_tuning": {
+              "$ref": "#/$defs/aiActionRule"
+            },
+            "embedding": {
+              "$ref": "#/$defs/aiActionRule"
+            },
+            "indexing": {
+              "$ref": "#/$defs/aiActionRule"
+            },
+            "inference": {
+              "$ref": "#/$defs/aiActionRule"
+            },
+            "classification": {
+              "$ref": "#/$defs/aiActionRule"
+            },
+            "summarization": {
+              "$ref": "#/$defs/aiActionRule"
+            },
+            "translation": {
+              "$ref": "#/$defs/aiActionRule"
+            },
+            "transcription": {
+              "$ref": "#/$defs/aiActionRule"
+            },
+            "generation": {
+              "$ref": "#/$defs/aiActionRule"
+            },
+            "semantic_enrichment": {
+              "$ref": "#/$defs/aiActionRule"
+            }
+          }
+        },
+        "candidate_acceptance_owner_component_id": {
+          "$ref": "#/$defs/componentId"
+        },
+        "provenance_required": {
+          "type": "boolean",
+          "const": true
+        },
+        "human_or_authority_review_required": {
+          "type": "boolean",
+          "const": true
+        }
+      }
+    },
+    "distributionPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "audience_scoped_artifacts",
+        "universal_package_behavior",
+        "encryption",
+        "cache_behavior",
+        "publication_gateway_required",
+        "restricted_distribution"
+      ],
+      "properties": {
+        "audience_scoped_artifacts": {
+          "type": "string",
+          "enum": [
+            "required_for_restricted_content",
+            "permitted",
+            "not_required_for_public_content"
+          ]
+        },
+        "universal_package_behavior": {
+          "type": "string",
+          "enum": [
+            "prohibited_for_restricted_content",
+            "allowed_only_for_public_content",
+            "authority_review_required"
+          ]
+        },
+        "encryption": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "required_for_restricted_content",
+            "recipient_scope_required",
+            "unencrypted_fallback"
+          ],
+          "properties": {
+            "required_for_restricted_content": {
+              "type": "boolean"
+            },
+            "recipient_scope_required": {
+              "type": "boolean",
+              "const": true
+            },
+            "unencrypted_fallback": {
+              "type": "string",
+              "const": "prohibited"
+            },
+            "encryption_policy_ref": {
+              "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+            }
+          }
+        },
+        "cache_behavior": {
+          "type": "string",
+          "enum": [
+            "audience_scoped",
+            "encrypted_and_audience_scoped",
+            "no_cache",
+            "public_cache_only"
+          ]
+        },
+        "publication_gateway_required": {
+          "type": "boolean",
+          "const": true
+        },
+        "restricted_distribution": {
+          "type": "string",
+          "enum": [
+            "encrypted_artifact",
+            "audience_limited_artifact",
+            "separate_shard",
+            "not_applicable"
+          ]
+        },
+        "watermarking": {
+          "type": "string",
+          "enum": [
+            "required",
+            "permitted",
+            "prohibited",
+            "not_applicable"
+          ]
+        },
+        "download_expiry": {
+          "$ref": "#/$defs/duration"
+        }
+      }
+    },
+    "withdrawalPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sensitive",
+        "authorized_requester_authority_refs",
+        "propagation_required",
+        "stop_new_distribution",
+        "update_indexes",
+        "publication_withdrawal",
+        "cache_purge",
+        "retained_proof",
+        "target_completion_duration",
+        "decision_receipt_required"
+      ],
+      "properties": {
+        "sensitive": {
+          "type": "boolean"
+        },
+        "authorized_requester_authority_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "uniqueItems": true
+        },
+        "propagation_required": {
+          "type": "boolean"
+        },
+        "stop_new_distribution": {
+          "type": "boolean",
+          "const": true
+        },
+        "update_indexes": {
+          "type": "boolean",
+          "const": true
+        },
+        "publication_withdrawal": {
+          "type": "string",
+          "enum": [
+            "required",
+            "authority_review",
+            "not_applicable"
+          ]
+        },
+        "cache_purge": {
+          "type": "string",
+          "enum": [
+            "required_where_authorized",
+            "required_all_controlled_caches",
+            "best_effort_with_evidence",
+            "not_applicable"
+          ]
+        },
+        "derived_artifact_action": {
+          "type": "string",
+          "enum": [
+            "withdraw",
+            "rebuild_without_subject",
+            "restrict",
+            "review",
+            "not_applicable"
+          ]
+        },
+        "retained_proof": {
+          "type": "string",
+          "enum": [
+            "minimal_lawful_audit_proof",
+            "private_evidence_only",
+            "none_when_lawfully_required"
+          ]
+        },
+        "target_completion_duration": {
+          "$ref": "#/$defs/duration"
+        },
+        "decision_receipt_required": {
+          "type": "boolean",
+          "const": true
+        },
+        "notification_authority_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "uniqueItems": true
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "sensitive": {
+                "const": true
+              }
+            },
+            "required": [
+              "sensitive"
+            ]
+          },
+          "then": {
+            "properties": {
+              "authorized_requester_authority_refs": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "propagation_required": {
+                "const": true
+              }
+            },
+            "required": [
+              "propagation_required"
+            ]
+          },
+          "then": {
+            "required": [
+              "derived_artifact_action"
+            ]
+          }
+        }
+      ]
+    },
+    "dissentPosition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "position_id",
+        "authority_refs",
+        "position",
+        "evidence_refs"
+      ],
+      "properties": {
+        "position_id": {
+          "$ref": "#/$defs/localId"
+        },
+        "authority_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "uniqueItems": true
+        },
+        "position": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+          },
+          "uniqueItems": true
+        },
+        "recorded_at": {
+          "$ref": "#/$defs/dateTime"
+        }
+      }
+    },
+    "dissentPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "positions",
+        "effect_on_decisions",
+        "dissent_notice",
+        "resolution_authority_refs"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "none",
+            "declared",
+            "active",
+            "resolved"
+          ]
+        },
+        "positions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/dissentPosition"
+          }
+        },
+        "effect_on_decisions": {
+          "type": "string",
+          "enum": [
+            "deny",
+            "require_authority_review",
+            "allow_with_dissent_notice",
+            "not_applicable"
+          ]
+        },
+        "dissent_notice": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "resolution_authority_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "uniqueItems": true
+        },
+        "resolution_receipt_ref": {
+          "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "declared",
+                  "active"
+                ]
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "positions": {
+                "minItems": 1
+              },
+              "resolution_authority_refs": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "none"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "positions": {
+                "maxItems": 0
+              },
+              "effect_on_decisions": {
+                "const": "not_applicable"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "resolved"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "required": [
+              "resolution_receipt_ref"
+            ]
+          }
+        }
+      ]
+    },
+    "reviewAndRecourse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "effective_from",
+        "review_at",
+        "review_authority_refs",
+        "appeal_uri",
+        "complaint_channels",
+        "reversal_supported",
+        "automated_suggestions_reviewable",
+        "decision_receipt_required"
+      ],
+      "properties": {
+        "effective_from": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "review_at": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "expires_at": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "review_authority_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "uniqueItems": true
+        },
+        "appeal_uri": {
+          "$ref": "#/$defs/uri"
+        },
+        "complaint_channels": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/uri"
+          },
+          "uniqueItems": true
+        },
+        "reversal_supported": {
+          "type": "boolean",
+          "const": true
+        },
+        "automated_suggestions_reviewable": {
+          "type": "boolean",
+          "const": true
+        },
+        "decision_receipt_required": {
+          "type": "boolean",
+          "const": true
+        },
+        "review_triggers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "scheduled",
+              "authority_change",
+              "community_request",
+              "dissent",
+              "security_event",
+              "distribution_change",
+              "new_ai_capability",
+              "jurisdiction_change",
+              "withdrawal_request",
+              "policy_supersession"
+            ]
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "enforcementPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "points",
+        "default_failure_behavior",
+        "local_evaluation_required_when_offline",
+        "public_audit_private_evidence_separation",
+        "direct_cross_component_write",
+        "machine_privilege_effect"
+      ],
+      "properties": {
+        "points": {
+          "type": "array",
+          "minItems": 18,
+          "maxItems": 18,
+          "items": {
+            "type": "string",
+            "enum": [
+              "ingestion",
+              "metadata_edit",
+              "discovery",
+              "read",
+              "query",
+              "render",
+              "display",
+              "download",
+              "reproduction",
+              "reuse",
+              "publication",
+              "synchronization",
+              "backup",
+              "export",
+              "ai_access",
+              "federation",
+              "withdrawal",
+              "purge"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "default_failure_behavior": {
+          "type": "string",
+          "enum": [
+            "deny",
+            "require_authority_review"
+          ]
+        },
+        "local_evaluation_required_when_offline": {
+          "type": "boolean"
+        },
+        "public_audit_private_evidence_separation": {
+          "type": "boolean",
+          "const": true
+        },
+        "direct_cross_component_write": {
+          "type": "string",
+          "const": "prohibited"
+        },
+        "machine_privilege_effect": {
+          "type": "string",
+          "const": "none"
+        },
+        "enforcement_component_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/componentId"
+          },
+          "uniqueItems": true
+        },
+        "manual_control_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "created_by_authority_refs",
+        "created_at",
+        "source_refs",
+        "change_reason",
+        "lineage"
+      ],
+      "properties": {
+        "created_by_authority_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "uniqueItems": true
+        },
+        "created_at": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "source_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+          },
+          "uniqueItems": true
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+          },
+          "uniqueItems": true
+        },
+        "change_reason": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "supersedes_policy_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/policyId"
+          },
+          "uniqueItems": true
+        },
+        "lineage": {
+          "type": "string",
+          "enum": [
+            "created",
+            "adapted",
+            "community_revised",
+            "authority_revised",
+            "migrated",
+            "superseding"
+          ]
+        }
+      }
+    },
+    "governance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "proposed_by_authority_refs",
+        "approved_by_authority_refs",
+        "community_authority_approval",
+        "separation_of_duties",
+        "activation_mode",
+        "rollback_or_forward_repair",
+        "decision_receipt_required"
+      ],
+      "properties": {
+        "proposed_by_authority_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "uniqueItems": true
+        },
+        "approved_by_authority_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "uniqueItems": true
+        },
+        "community_authority_approval": {
+          "type": "string",
+          "enum": [
+            "required",
+            "multi_party_required",
+            "jurisdiction_defined"
+          ]
+        },
+        "separation_of_duties": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/nonEmptyText"
+          },
+          "uniqueItems": true
+        },
+        "activation_mode": {
+          "type": "string",
+          "const": "atomic"
+        },
+        "rollback_or_forward_repair": {
+          "type": "string",
+          "enum": [
+            "rollback",
+            "forward_repair",
+            "rollback_then_forward_repair"
+          ]
+        },
+        "decision_receipt_required": {
+          "type": "boolean",
+          "const": true
+        },
+        "recourse_uri": {
+          "$ref": "#/$defs/uri"
+        },
+        "policy_bundle_ref": {
+          "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+        },
+        "approval_evidence_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "decisionBehavior": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "default_decision",
+        "missing_authority",
+        "missing_consent",
+        "conflicting_authority",
+        "active_dissent",
+        "stale_policy",
+        "missing_required_evidence",
+        "reason_codes_required",
+        "obligations_enforced"
+      ],
+      "properties": {
+        "default_decision": {
+          "type": "string",
+          "enum": [
+            "deny",
+            "require_authority_review"
+          ]
+        },
+        "missing_authority": {
+          "type": "string",
+          "const": "deny"
+        },
+        "missing_consent": {
+          "type": "string",
+          "enum": [
+            "deny",
+            "require_authority_review"
+          ]
+        },
+        "conflicting_authority": {
+          "type": "string",
+          "enum": [
+            "deny",
+            "require_authority_review"
+          ]
+        },
+        "active_dissent": {
+          "type": "string",
+          "enum": [
+            "deny",
+            "require_authority_review",
+            "allow_with_dissent_notice"
+          ]
+        },
+        "stale_policy": {
+          "type": "string",
+          "enum": [
+            "deny",
+            "use_last_verified_with_freshness",
+            "require_authority_review"
+          ]
+        },
+        "missing_required_evidence": {
+          "type": "string",
+          "const": "deny"
+        },
+        "reason_codes_required": {
+          "type": "boolean",
+          "const": true
+        },
+        "obligations_enforced": {
+          "type": "boolean",
+          "const": true
+        }
+      }
+    },
+    "receiptPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "decision_receipt_schema_ref",
+        "required_for_actions",
+        "public_receipt_content",
+        "private_evidence_content",
+        "correlation_required",
+        "secret_material_allowed"
+      ],
+      "properties": {
+        "decision_receipt_schema_ref": {
+          "allOf": [
+            {
+              "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+            },
+            {
+              "pattern": "^contracts/artifact-contracts/decision-receipt\\.schema\\.json$"
+            }
+          ]
+        },
+        "required_for_actions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": [
+              "ingestion",
+              "metadata_edit",
+              "discovery",
+              "read",
+              "query",
+              "render",
+              "display",
+              "download",
+              "reproduction",
+              "reuse",
+              "publication",
+              "synchronization",
+              "backup",
+              "export",
+              "ai_access",
+              "federation",
+              "withdrawal",
+              "purge",
+              "policy_activation",
+              "policy_rollback",
+              "policy_forward_repair",
+              "dispute_resolution"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "public_receipt_content": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "receipt_id",
+              "timestamp",
+              "decision",
+              "policy_id",
+              "policy_version",
+              "action",
+              "resource_reference",
+              "reason_codes",
+              "obligations",
+              "valid_until",
+              "correlation_id"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "private_evidence_content": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "authority_evidence",
+              "consent_evidence",
+              "community_protocol_evidence",
+              "dissent_positions",
+              "restricted_subject_details",
+              "identity_evidence",
+              "approval_evidence",
+              "withdrawal_evidence"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "correlation_required": {
+          "type": "boolean",
+          "const": true
+        },
+        "secret_material_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "retention_class": {
+          "$ref": "#/$defs/localId"
+        }
+      }
+    },
+    "integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "content_digest",
+        "manifest_digest"
+      ],
+      "properties": {
+        "content_digest": {
+          "$ref": "#/$defs/digest"
+        },
+        "manifest_digest": {
+          "$ref": "#/$defs/digest"
+        },
+        "canonicalization": {
+          "type": "string",
+          "enum": [
+            "jcs_rfc8785",
+            "artifact_contract_defined"
+          ]
+        }
+      }
+    },
+    "signature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key_id",
+        "algorithm",
+        "signature",
+        "scope"
+      ],
+      "properties": {
+        "key_id": {
+          "$ref": "#/$defs/externalId"
+        },
+        "algorithm": {
+          "$ref": "#/$defs/localId"
+        },
+        "signature": {
+          "type": "string",
+          "minLength": 16,
+          "maxLength": 16384,
+          "pattern": "^[A-Za-z0-9+/=_-]+$"
+        },
+        "scope": {
+          "type": "string",
+          "enum": [
+            "policy_content",
+            "policy_manifest",
+            "policy_bundle_module",
+            "standalone_artifact"
+          ]
+        },
+        "signed_at": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "certificate_chain_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "validationPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required_checks",
+        "test_ids",
+        "evidence_ids",
+        "activation_requires",
+        "missing_required_result",
+        "automatic_semantic_fixes_allowed"
+      ],
+      "properties": {
+        "required_checks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": [
+              "schema_validation",
+              "canonical_reference_resolution",
+              "authority_reference_resolution",
+              "subject_reference_resolution",
+              "community_reference_resolution",
+              "audience_reference_resolution",
+              "protocol_reference_resolution",
+              "consent_rule_alignment",
+              "access_action_alignment",
+              "reuse_action_alignment",
+              "ai_boundary_alignment",
+              "distribution_alignment",
+              "withdrawal_propagation",
+              "dissent_handling",
+              "recourse_availability",
+              "enforcement_point_coverage",
+              "component_data_ownership",
+              "publication_gateway_boundary",
+              "receipt_schema_alignment",
+              "profile_scope_alignment",
+              "policy_bundle_alignment",
+              "separation_of_duties",
+              "offline_decision_behavior",
+              "no_machine_privilege_effect",
+              "traceability_complete"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "test_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "../../schemas/canonical-reference.schema.json#/$defs/testId"
+          },
+          "uniqueItems": true
+        },
+        "evidence_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "../../schemas/canonical-reference.schema.json#/$defs/evidenceId"
+          },
+          "uniqueItems": true
+        },
+        "activation_requires": {
+          "type": "string",
+          "const": "pass"
+        },
+        "missing_required_result": {
+          "type": "string",
+          "const": "blocked"
+        },
+        "automatic_semantic_fixes_allowed": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    }
+  }
+}

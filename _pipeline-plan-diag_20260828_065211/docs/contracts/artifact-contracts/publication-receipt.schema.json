@@ -1,0 +1,1621 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.koa.local/artifact-contracts/publication-receipt.schema.json",
+  "title": "kOA Publication Receipt",
+  "description": "Contract for an immutable historical receipt produced by Publication Gateway after a bounded publication execution reaches a terminal outcome. The receipt binds the request, decision, source version, approved representation, destination, audience, authority, execution result, provenance, evidence, and any later withdrawal or remediation state without becoming a second authoritative copy of the source content.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_class",
+    "receipt_id",
+    "version",
+    "record_status",
+    "language",
+    "issued_at",
+    "issuer",
+    "request",
+    "decision",
+    "source",
+    "destination",
+    "audience",
+    "purpose",
+    "representation",
+    "authority",
+    "execution",
+    "publication_state",
+    "provenance",
+    "evidence"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "const": "publication-receipt.schema.json",
+      "description": "Optional local schema filename used by serialized instances."
+    },
+    "artifact_class": {
+      "type": "string",
+      "const": "publication_receipt"
+    },
+    "receipt_id": {
+      "$ref": "#/$defs/stableId",
+      "description": "Stable identity of this immutable publication receipt."
+    },
+    "version": {
+      "$ref": "#/$defs/semanticVersion",
+      "description": "Version of this receipt representation. A corrected receipt uses a new receipt identity or explicit lineage and does not mutate historical facts."
+    },
+    "record_status": {
+      "type": "string",
+      "enum": [
+        "issued",
+        "superseded"
+      ]
+    },
+    "language": {
+      "type": "string",
+      "const": "en"
+    },
+    "issued_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "issuer": {
+      "$ref": "#/$defs/issuer"
+    },
+    "request": {
+      "$ref": "#/$defs/requestBinding"
+    },
+    "decision": {
+      "$ref": "#/$defs/decisionBinding"
+    },
+    "source": {
+      "$ref": "#/$defs/sourceBinding"
+    },
+    "destination": {
+      "$ref": "#/$defs/destinationBinding"
+    },
+    "audience": {
+      "$ref": "#/$defs/audienceBinding"
+    },
+    "purpose": {
+      "$ref": "#/$defs/purposeBinding"
+    },
+    "representation": {
+      "$ref": "#/$defs/representationBinding"
+    },
+    "authority": {
+      "$ref": "#/$defs/authorityBinding"
+    },
+    "execution": {
+      "$ref": "#/$defs/executionRecord"
+    },
+    "publication_state": {
+      "$ref": "#/$defs/publicationState"
+    },
+    "provenance": {
+      "$ref": "#/$defs/provenance"
+    },
+    "evidence": {
+      "$ref": "#/$defs/evidence"
+    },
+    "lineage": {
+      "$ref": "#/$defs/receiptLineage"
+    },
+    "notes": {
+      "type": "array",
+      "maxItems": 32,
+      "items": {
+        "$ref": "#/$defs/boundedText"
+      },
+      "uniqueItems": true
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "record_status": {
+            "const": "superseded"
+          }
+        },
+        "required": [
+          "record_status"
+        ]
+      },
+      "then": {
+        "required": [
+          "lineage"
+        ],
+        "properties": {
+          "lineage": {
+            "required": [
+              "superseded_by_receipt_id",
+              "supersession_reason"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "execution": {
+            "properties": {
+              "result": {
+                "const": "published"
+              }
+            },
+            "required": [
+              "result"
+            ]
+          }
+        },
+        "required": [
+          "execution"
+        ]
+      },
+      "then": {
+        "properties": {
+          "execution": {
+            "required": [
+              "published_at",
+              "destination_acknowledgement"
+            ],
+            "properties": {
+              "destination_acknowledgement": {
+                "properties": {
+                  "status": {
+                    "const": "accepted"
+                  }
+                },
+                "required": [
+                  "status"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "execution": {
+            "properties": {
+              "result": {
+                "const": "partially_delivered"
+              }
+            },
+            "required": [
+              "result"
+            ]
+          }
+        },
+        "required": [
+          "execution"
+        ]
+      },
+      "then": {
+        "properties": {
+          "execution": {
+            "required": [
+              "partial_delivery",
+              "failure"
+            ]
+          },
+          "publication_state": {
+            "properties": {
+              "state": {
+                "enum": [
+                  "remediation_pending",
+                  "remediated",
+                  "external_limitation"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "execution": {
+            "properties": {
+              "result": {
+                "const": "failed"
+              }
+            },
+            "required": [
+              "result"
+            ]
+          }
+        },
+        "required": [
+          "execution"
+        ]
+      },
+      "then": {
+        "properties": {
+          "execution": {
+            "required": [
+              "failure"
+            ],
+            "not": {
+              "required": [
+                "published_at"
+              ]
+            }
+          },
+          "publication_state": {
+            "properties": {
+              "state": {
+                "const": "not_published"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "execution": {
+            "properties": {
+              "result": {
+                "const": "cancelled"
+              }
+            },
+            "required": [
+              "result"
+            ]
+          }
+        },
+        "required": [
+          "execution"
+        ]
+      },
+      "then": {
+        "properties": {
+          "execution": {
+            "required": [
+              "cancellation"
+            ],
+            "not": {
+              "required": [
+                "published_at"
+              ]
+            }
+          },
+          "publication_state": {
+            "properties": {
+              "state": {
+                "const": "not_published"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "publication_state": {
+            "properties": {
+              "state": {
+                "enum": [
+                  "withdrawal_pending",
+                  "withdrawn",
+                  "remediation_pending",
+                  "remediated",
+                  "external_limitation"
+                ]
+              }
+            },
+            "required": [
+              "state"
+            ]
+          }
+        },
+        "required": [
+          "publication_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "publication_state": {
+            "required": [
+              "change_record"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "destination": {
+            "properties": {
+              "destination_kind": {
+                "enum": [
+                  "configured_federation_peer",
+                  "approved_external_destination"
+                ]
+              }
+            },
+            "required": [
+              "destination_kind"
+            ]
+          }
+        },
+        "required": [
+          "destination"
+        ]
+      },
+      "then": {
+        "properties": {
+          "destination": {
+            "required": [
+              "integration_manifest_ref"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "stableId": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 200,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+    },
+    "semanticVersion": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"
+    },
+    "boundedText": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+    },
+    "shortText": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300
+    },
+    "nonEmptyRefs": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/stableId"
+      }
+    },
+    "optionalRefs": {
+      "type": "array",
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/stableId"
+      }
+    },
+    "issuer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "component_id",
+        "service_identity_ref",
+        "component_contract_ref",
+        "component_version"
+      ],
+      "properties": {
+        "component_id": {
+          "type": "string",
+          "const": "publication_gateway"
+        },
+        "service_identity_ref": {
+          "$ref": "#/$defs/stableId"
+        },
+        "component_contract_ref": {
+          "type": "string",
+          "const": "contracts/components/publication-gateway.component.json"
+        },
+        "component_version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "release_set_ref": {
+          "$ref": "#/$defs/stableId"
+        },
+        "profile_id": {
+          "$ref": "#/$defs/stableId"
+        },
+        "node_identity_ref": {
+          "$ref": "#/$defs/stableId"
+        }
+      }
+    },
+    "requestBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "request_id",
+        "request_version",
+        "request_artifact_ref",
+        "idempotency_key",
+        "requested_at",
+        "requester_identity_ref"
+      ],
+      "properties": {
+        "request_id": {
+          "$ref": "#/$defs/stableId"
+        },
+        "request_version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "request_artifact_ref": {
+          "$ref": "#/$defs/stableId"
+        },
+        "idempotency_key": {
+          "$ref": "#/$defs/stableId"
+        },
+        "requested_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "requester_identity_ref": {
+          "$ref": "#/$defs/stableId"
+        },
+        "requester_component_id": {
+          "$ref": "#/$defs/stableId"
+        },
+        "tenant_ref": {
+          "$ref": "#/$defs/stableId"
+        },
+        "authority_domain_ref": {
+          "$ref": "#/$defs/stableId"
+        },
+        "correlation_id": {
+          "$ref": "#/$defs/stableId"
+        }
+      }
+    },
+    "decisionBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "decision_id",
+        "decision_result",
+        "decided_at",
+        "governance_decision_ref",
+        "obligation_results"
+      ],
+      "properties": {
+        "decision_id": {
+          "$ref": "#/$defs/stableId"
+        },
+        "decision_result": {
+          "type": "string",
+          "const": "allow"
+        },
+        "decided_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "governance_decision_ref": {
+          "$ref": "#/$defs/stableId"
+        },
+        "decision_policy_refs": {
+          "$ref": "#/$defs/nonEmptyRefs"
+        },
+        "human_review_refs": {
+          "$ref": "#/$defs/optionalRefs"
+        },
+        "exception_refs": {
+          "$ref": "#/$defs/optionalRefs"
+        },
+        "obligation_results": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "items": {
+            "$ref": "#/$defs/obligationResult"
+          }
+        }
+      }
+    },
+    "obligationResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "obligation_id",
+        "result"
+      ],
+      "properties": {
+        "obligation_id": {
+          "$ref": "#/$defs/stableId"
+        },
+        "result": {
+          "type": "string",
+          "enum": [
+            "satisfied",
+            "not_applicable"
+          ]
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/optionalRefs"
+        },
+        "note": {
+          "$ref": "#/$defs/shortText"
+        }
+      }
+    },
+    "sourceBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_component_id",
+        "source_authority_domain_ref",
+        "source_object_ref",
+        "source_version",
+        "source_owner_identity_ref"
+      ],
+      "properties": {
+        "source_component_id": {
+          "$ref": "#/$defs/stableId"
+        },
+        "source_authority_domain_ref": {
+          "$ref": "#/$defs/stableId"
+        },
+        "source_object_ref": {
+          "$ref": "#/$defs/stableId"
+        },
+        "source_version": {
+          "$ref": "#/$defs/stableId"
+        },
+        "source_owner_identity_ref": {
+          "$ref": "#/$defs/stableId"
+        },
+        "source_collection_ref": {
+          "$ref": "#/$defs/stableId"
+        },
+        "source_snapshot_ref": {
+          "$ref": "#/$defs/stableId"
+        },
+        "source_provenance_refs": {
+          "$ref": "#/$defs/optionalRefs"
+        },
+        "source_content_embedded": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    },
+    "destinationBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "destination_id",
+        "destination_kind",
+        "destination_authority_domain_ref",
+        "destination_ref"
+      ],
+      "properties": {
+        "destination_id": {
+          "$ref": "#/$defs/stableId"
+        },
+        "destination_kind": {
+          "type": "string",
+          "enum": [
+            "local_domain",
+            "configured_hub",
+            "configured_federation_peer",
+            "approved_external_destination"
+          ]
+        },
+        "destination_authority_domain_ref": {
+          "$ref": "#/$defs/stableId"
+        },
+        "destination_ref": {
+          "$ref": "#/$defs/stableId"
+        },
+        "destination_component_id": {
+          "$ref": "#/$defs/stableId"
+        },
+        "integration_manifest_ref": {
+          "$ref": "#/$defs/stableId"
+        },
+        "delivery_endpoint_ref": {
+          "$ref": "#/$defs/stableId"
+        },
+        "provider_identity_ref": {
+          "$ref": "#/$defs/stableId"
+        },
+        "deletion_support": {
+          "type": "string",
+          "enum": [
+            "controlled_local_removal",
+            "supported_request",
+            "unsupported",
+            "not_applicable"
+          ]
+        }
+      }
+    },
+    "audienceBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "audience_id",
+        "audience_class",
+        "scope"
+      ],
+      "properties": {
+        "audience_id": {
+          "$ref": "#/$defs/stableId"
+        },
+        "audience_class": {
+          "type": "string",
+          "enum": [
+            "named_individuals",
+            "named_group",
+            "authenticated_tenant",
+            "authenticated_domain",
+            "restricted_public",
+            "public"
+          ]
+        },
+        "scope": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/stableId"
+          }
+        },
+        "geographic_scope_refs": {
+          "$ref": "#/$defs/optionalRefs"
+        },
+        "redistribution": {
+          "type": "string",
+          "enum": [
+            "prohibited",
+            "restricted",
+            "permitted"
+          ]
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "purposeBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "purpose_id",
+        "operation_class"
+      ],
+      "properties": {
+        "purpose_id": {
+          "$ref": "#/$defs/stableId"
+        },
+        "operation_class": {
+          "type": "string",
+          "enum": [
+            "publication",
+            "republication",
+            "distribution",
+            "controlled_external_delivery"
+          ]
+        },
+        "description": {
+          "$ref": "#/$defs/shortText"
+        },
+        "commercial_use": {
+          "type": "boolean"
+        },
+        "research_use": {
+          "type": "boolean"
+        },
+        "training_or_model_improvement": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    },
+    "representationBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "representation_id",
+        "artifact_ref",
+        "media_type",
+        "language",
+        "source_relation",
+        "minimum_necessary_confirmed",
+        "context_preserved",
+        "attribution",
+        "transformations"
+      ],
+      "properties": {
+        "representation_id": {
+          "$ref": "#/$defs/stableId"
+        },
+        "artifact_ref": {
+          "$ref": "#/$defs/stableId"
+        },
+        "media_type": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 200,
+          "pattern": "^[A-Za-z0-9!#$&^_.+-]+/[A-Za-z0-9!#$&^_.+-]+(?:;.*)?$"
+        },
+        "language": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 35
+        },
+        "source_relation": {
+          "type": "string",
+          "enum": [
+            "exact_bounded_copy",
+            "redacted_derivative",
+            "translated_derivative",
+            "transcoded_derivative",
+            "summarized_derivative",
+            "composite_derivative"
+          ]
+        },
+        "minimum_necessary_confirmed": {
+          "type": "boolean",
+          "const": true
+        },
+        "context_preserved": {
+          "type": "boolean",
+          "const": true
+        },
+        "attribution": {
+          "$ref": "#/$defs/attribution"
+        },
+        "transformations": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "$ref": "#/$defs/transformation"
+          }
+        },
+        "context_note_refs": {
+          "$ref": "#/$defs/optionalRefs"
+        },
+        "access_control_refs": {
+          "$ref": "#/$defs/optionalRefs"
+        },
+        "retention_policy_ref": {
+          "$ref": "#/$defs/stableId"
+        },
+        "representation_is_source_authority": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    },
+    "attribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "named",
+            "collective",
+            "anonymous",
+            "protected_identity",
+            "prohibited",
+            "not_required"
+          ]
+        },
+        "display_text": {
+          "$ref": "#/$defs/shortText"
+        },
+        "identity_refs": {
+          "$ref": "#/$defs/optionalRefs"
+        },
+        "attribution_policy_ref": {
+          "$ref": "#/$defs/stableId"
+        }
+      }
+    },
+    "transformation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "transformation_id",
+        "transformation_class",
+        "authority_ref",
+        "performed_by",
+        "result_ref"
+      ],
+      "properties": {
+        "transformation_id": {
+          "$ref": "#/$defs/stableId"
+        },
+        "transformation_class": {
+          "type": "string",
+          "enum": [
+            "redaction",
+            "pseudonymization",
+            "translation",
+            "transcoding",
+            "resizing",
+            "format_conversion",
+            "summarization",
+            "composition",
+            "context_attachment"
+          ]
+        },
+        "authority_ref": {
+          "$ref": "#/$defs/stableId"
+        },
+        "performed_by": {
+          "$ref": "#/$defs/stableId"
+        },
+        "result_ref": {
+          "$ref": "#/$defs/stableId"
+        },
+        "external_service_used": {
+          "type": "boolean"
+        },
+        "integration_manifest_ref": {
+          "$ref": "#/$defs/stableId"
+        },
+        "accepted_by_component_ref": {
+          "$ref": "#/$defs/stableId"
+        }
+      }
+    },
+    "authorityBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "identity_verification_ref",
+        "authorization_ref",
+        "consent_refs",
+        "cultural_rights_policy_refs",
+        "governance_policy_refs",
+        "trust_refs"
+      ],
+      "properties": {
+        "identity_verification_ref": {
+          "$ref": "#/$defs/stableId"
+        },
+        "authorization_ref": {
+          "$ref": "#/$defs/stableId"
+        },
+        "delegation_refs": {
+          "$ref": "#/$defs/optionalRefs"
+        },
+        "consent_refs": {
+          "$ref": "#/$defs/nonEmptyRefs"
+        },
+        "cultural_rights_policy_refs": {
+          "$ref": "#/$defs/nonEmptyRefs"
+        },
+        "governance_policy_refs": {
+          "$ref": "#/$defs/nonEmptyRefs"
+        },
+        "trust_refs": {
+          "$ref": "#/$defs/nonEmptyRefs"
+        },
+        "human_approval_refs": {
+          "$ref": "#/$defs/optionalRefs"
+        },
+        "exception_refs": {
+          "$ref": "#/$defs/optionalRefs"
+        },
+        "authority_validated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "executionRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "execution_id",
+        "result",
+        "started_at",
+        "completed_at",
+        "attempt_count",
+        "delivery_semantics",
+        "retry_revalidation_performed"
+      ],
+      "properties": {
+        "execution_id": {
+          "$ref": "#/$defs/stableId"
+        },
+        "result": {
+          "type": "string",
+          "enum": [
+            "published",
+            "partially_delivered",
+            "failed",
+            "cancelled"
+          ]
+        },
+        "started_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "completed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "published_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "attempt_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "delivery_semantics": {
+          "type": "string",
+          "enum": [
+            "single_local_commit",
+            "at_least_once_transport_exactly_once_effect",
+            "at_least_once_with_destination_deduplication"
+          ]
+        },
+        "retry_revalidation_performed": {
+          "type": "boolean"
+        },
+        "destination_acknowledgement": {
+          "$ref": "#/$defs/destinationAcknowledgement"
+        },
+        "partial_delivery": {
+          "$ref": "#/$defs/partialDelivery"
+        },
+        "failure": {
+          "$ref": "#/$defs/failure"
+        },
+        "cancellation": {
+          "$ref": "#/$defs/cancellation"
+        },
+        "delivery_receipt_refs": {
+          "$ref": "#/$defs/optionalRefs"
+        },
+        "network_state": {
+          "type": "string",
+          "enum": [
+            "local",
+            "online",
+            "reconnected_after_queue"
+          ]
+        }
+      }
+    },
+    "destinationAcknowledgement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "acknowledged_at",
+        "acknowledgement_ref"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "accepted",
+            "rejected",
+            "unknown"
+          ]
+        },
+        "acknowledged_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "acknowledgement_ref": {
+          "$ref": "#/$defs/stableId"
+        },
+        "destination_object_ref": {
+          "$ref": "#/$defs/stableId"
+        }
+      }
+    },
+    "partialDelivery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "delivered_unit_refs",
+        "undelivered_unit_refs",
+        "silent_retry_allowed"
+      ],
+      "properties": {
+        "delivered_unit_refs": {
+          "$ref": "#/$defs/nonEmptyRefs"
+        },
+        "undelivered_unit_refs": {
+          "$ref": "#/$defs/nonEmptyRefs"
+        },
+        "silent_retry_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "destination_state_ref": {
+          "$ref": "#/$defs/stableId"
+        }
+      }
+    },
+    "failure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "failure_code",
+        "failure_class",
+        "message",
+        "retryable"
+      ],
+      "properties": {
+        "failure_code": {
+          "$ref": "#/$defs/stableId"
+        },
+        "failure_class": {
+          "type": "string",
+          "enum": [
+            "validation",
+            "authority",
+            "consent",
+            "compatibility",
+            "destination",
+            "transport",
+            "resource",
+            "receipt_persistence",
+            "partial_delivery",
+            "internal"
+          ]
+        },
+        "message": {
+          "$ref": "#/$defs/shortText"
+        },
+        "retryable": {
+          "type": "boolean"
+        },
+        "failure_evidence_refs": {
+          "$ref": "#/$defs/optionalRefs"
+        }
+      }
+    },
+    "cancellation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cancelled_at",
+        "cancelled_by_identity_ref",
+        "reason"
+      ],
+      "properties": {
+        "cancelled_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "cancelled_by_identity_ref": {
+          "$ref": "#/$defs/stableId"
+        },
+        "reason": {
+          "$ref": "#/$defs/shortText"
+        },
+        "authority_ref": {
+          "$ref": "#/$defs/stableId"
+        }
+      }
+    },
+    "publicationState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "observed_at"
+      ],
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": [
+            "not_published",
+            "active",
+            "expired",
+            "withdrawal_pending",
+            "withdrawn",
+            "remediation_pending",
+            "remediated",
+            "external_limitation"
+          ]
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "change_record": {
+          "$ref": "#/$defs/publicationChange"
+        }
+      }
+    },
+    "publicationChange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "change_id",
+        "change_class",
+        "requested_at",
+        "authority_ref",
+        "affected_future_operations_stopped",
+        "historical_receipt_preserved"
+      ],
+      "properties": {
+        "change_id": {
+          "$ref": "#/$defs/stableId"
+        },
+        "change_class": {
+          "type": "string",
+          "enum": [
+            "consent_revocation",
+            "authority_revocation",
+            "withdrawal",
+            "expiry",
+            "correction",
+            "downstream_remediation",
+            "external_limitation"
+          ]
+        },
+        "requested_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "completed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "authority_ref": {
+          "$ref": "#/$defs/stableId"
+        },
+        "affected_future_operations_stopped": {
+          "type": "boolean",
+          "const": true
+        },
+        "historical_receipt_preserved": {
+          "type": "boolean",
+          "const": true
+        },
+        "local_removal_result": {
+          "type": "string",
+          "enum": [
+            "completed",
+            "partial",
+            "not_applicable",
+            "unsupported"
+          ]
+        },
+        "downstream_notice_refs": {
+          "$ref": "#/$defs/optionalRefs"
+        },
+        "remediation_evidence_refs": {
+          "$ref": "#/$defs/optionalRefs"
+        },
+        "limitations": {
+          "type": "array",
+          "maxItems": 32,
+          "items": {
+            "$ref": "#/$defs/boundedText"
+          }
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "provenance_receipt_ref",
+        "publication_gateway_contract_ref",
+        "publication_request_contract_ref",
+        "publication_receipt_contract_ref",
+        "source_provenance_refs",
+        "release_set_ref"
+      ],
+      "properties": {
+        "provenance_receipt_ref": {
+          "$ref": "#/$defs/stableId"
+        },
+        "publication_gateway_contract_ref": {
+          "type": "string",
+          "const": "contracts/components/publication-gateway.component.json"
+        },
+        "publication_request_contract_ref": {
+          "type": "string",
+          "const": "contracts/artifact-contracts/publication-request.schema.json"
+        },
+        "publication_receipt_contract_ref": {
+          "type": "string",
+          "const": "contracts/artifact-contracts/publication-receipt.schema.json"
+        },
+        "source_provenance_refs": {
+          "$ref": "#/$defs/nonEmptyRefs"
+        },
+        "release_set_ref": {
+          "$ref": "#/$defs/stableId"
+        },
+        "integration_manifest_ref": {
+          "$ref": "#/$defs/stableId"
+        },
+        "runtime_pack_refs": {
+          "$ref": "#/$defs/optionalRefs"
+        },
+        "generator_id": {
+          "$ref": "#/$defs/stableId"
+        },
+        "generator_version": {
+          "$ref": "#/$defs/semanticVersion"
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "audit_event_refs",
+        "decision_evidence_refs",
+        "execution_evidence_refs",
+        "public_disclosure"
+      ],
+      "properties": {
+        "audit_event_refs": {
+          "$ref": "#/$defs/nonEmptyRefs"
+        },
+        "decision_evidence_refs": {
+          "$ref": "#/$defs/nonEmptyRefs"
+        },
+        "execution_evidence_refs": {
+          "$ref": "#/$defs/nonEmptyRefs"
+        },
+        "restricted_evidence_refs": {
+          "$ref": "#/$defs/optionalRefs"
+        },
+        "public_evidence_refs": {
+          "$ref": "#/$defs/optionalRefs"
+        },
+        "public_disclosure": {
+          "type": "string",
+          "enum": [
+            "none",
+            "selective_summary",
+            "public_receipt"
+          ]
+        },
+        "source_content_in_public_evidence": {
+          "type": "boolean",
+          "const": false
+        },
+        "private_identity_in_public_evidence": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    },
+    "receiptLineage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "supersedes_receipt_id": {
+          "$ref": "#/$defs/stableId"
+        },
+        "superseded_by_receipt_id": {
+          "$ref": "#/$defs/stableId"
+        },
+        "supersession_reason": {
+          "type": "string",
+          "enum": [
+            "clerical_correction",
+            "evidence_reference_correction",
+            "destination_reference_correction",
+            "representation_reference_correction",
+            "other_bounded_correction"
+          ]
+        },
+        "correction_evidence_refs": {
+          "$ref": "#/$defs/optionalRefs"
+        }
+      },
+      "minProperties": 1
+    }
+  },
+  "examples": [
+    {
+      "$schema": "publication-receipt.schema.json",
+      "artifact_class": "publication_receipt",
+      "receipt_id": "publication-receipts/pub-2026-08-03-0001",
+      "version": "1.0.0",
+      "record_status": "issued",
+      "language": "en",
+      "issued_at": "2026-08-03T18:00:30-04:00",
+      "issuer": {
+        "component_id": "publication_gateway",
+        "service_identity_ref": "identities/publication-gateway/hub-01",
+        "component_contract_ref": "contracts/components/publication-gateway.component.json",
+        "component_version": "1.0.0",
+        "release_set_ref": "release-sets/2026.08.03.1",
+        "profile_id": "sovereign_hub",
+        "node_identity_ref": "nodes/hub-01"
+      },
+      "request": {
+        "request_id": "publication-requests/pub-2026-08-03-0001",
+        "request_version": "1.0.0",
+        "request_artifact_ref": "artifacts/publication-request/pub-2026-08-03-0001",
+        "idempotency_key": "idempotency/pub-2026-08-03-0001",
+        "requested_at": "2026-08-03T17:58:00-04:00",
+        "requester_identity_ref": "identities/user-001",
+        "requester_component_id": "orgo",
+        "tenant_ref": "tenants/community-a",
+        "authority_domain_ref": "authority-domains/orgo-private",
+        "correlation_id": "correlations/pub-2026-08-03-0001"
+      },
+      "decision": {
+        "decision_id": "publication-decisions/pub-2026-08-03-0001",
+        "decision_result": "allow",
+        "decided_at": "2026-08-03T17:59:10-04:00",
+        "governance_decision_ref": "governance-decisions/pub-2026-08-03-0001",
+        "decision_policy_refs": [
+          "policies/publication/community-a/1.0.0"
+        ],
+        "human_review_refs": [
+          "reviews/publication/pub-2026-08-03-0001"
+        ],
+        "exception_refs": [],
+        "obligation_results": [
+          {
+            "obligation_id": "obligations/required-attribution",
+            "result": "satisfied",
+            "evidence_refs": [
+              "evidence/attribution/pub-2026-08-03-0001"
+            ]
+          },
+          {
+            "obligation_id": "obligations/audience-limitation",
+            "result": "satisfied",
+            "evidence_refs": [
+              "evidence/audience/pub-2026-08-03-0001"
+            ]
+          }
+        ]
+      },
+      "source": {
+        "source_component_id": "orgo",
+        "source_authority_domain_ref": "authority-domains/orgo-private",
+        "source_object_ref": "orgo/cases/case-1001/public-summary",
+        "source_version": "versions/orgo/case-1001/7",
+        "source_owner_identity_ref": "component-identities/orgo",
+        "source_provenance_refs": [
+          "provenance/orgo/case-1001/7"
+        ],
+        "source_content_embedded": false
+      },
+      "destination": {
+        "destination_id": "destinations/konnaxion/community-a",
+        "destination_kind": "local_domain",
+        "destination_authority_domain_ref": "authority-domains/konnaxion-public",
+        "destination_ref": "konnaxion/domains/community-a",
+        "destination_component_id": "konnaxion",
+        "deletion_support": "controlled_local_removal"
+      },
+      "audience": {
+        "audience_id": "audiences/community-a-public",
+        "audience_class": "public",
+        "scope": [
+          "domains/community-a"
+        ],
+        "redistribution": "restricted"
+      },
+      "purpose": {
+        "purpose_id": "purposes/community-progress-summary",
+        "operation_class": "publication",
+        "description": "Publish the approved community progress summary.",
+        "commercial_use": false,
+        "research_use": false,
+        "training_or_model_improvement": false
+      },
+      "representation": {
+        "representation_id": "representations/pub-2026-08-03-0001",
+        "artifact_ref": "artifacts/publication-representation/pub-2026-08-03-0001",
+        "media_type": "text/html",
+        "language": "en",
+        "source_relation": "redacted_derivative",
+        "minimum_necessary_confirmed": true,
+        "context_preserved": true,
+        "attribution": {
+          "mode": "collective",
+          "display_text": "Community A",
+          "identity_refs": [
+            "collectives/community-a"
+          ],
+          "attribution_policy_ref": "policies/attribution/community-a/1.0.0"
+        },
+        "transformations": [
+          {
+            "transformation_id": "transformations/pub-2026-08-03-0001/redaction",
+            "transformation_class": "redaction",
+            "authority_ref": "authorities/redaction/pub-2026-08-03-0001",
+            "performed_by": "services/publication-gateway/redaction",
+            "result_ref": "artifacts/publication-representation/pub-2026-08-03-0001",
+            "external_service_used": false,
+            "accepted_by_component_ref": "acceptance/orgo/pub-2026-08-03-0001"
+          }
+        ],
+        "context_note_refs": [
+          "context-notes/community-a/progress-report"
+        ],
+        "access_control_refs": [],
+        "retention_policy_ref": "retention/publication/community-a",
+        "representation_is_source_authority": false
+      },
+      "authority": {
+        "identity_verification_ref": "identity-verifications/user-001/2026-08-03",
+        "authorization_ref": "authorizations/pub-2026-08-03-0001",
+        "delegation_refs": [],
+        "consent_refs": [
+          "consents/community-a/progress-summary/2026-08"
+        ],
+        "cultural_rights_policy_refs": [
+          "cultural-rights/community-a/publication/1.0.0"
+        ],
+        "governance_policy_refs": [
+          "policies/publication/community-a/1.0.0"
+        ],
+        "trust_refs": [
+          "trust/local-hub/community-a"
+        ],
+        "human_approval_refs": [
+          "reviews/publication/pub-2026-08-03-0001"
+        ],
+        "exception_refs": [],
+        "authority_validated_at": "2026-08-03T17:59:05-04:00"
+      },
+      "execution": {
+        "execution_id": "publication-executions/pub-2026-08-03-0001",
+        "result": "published",
+        "started_at": "2026-08-03T18:00:00-04:00",
+        "completed_at": "2026-08-03T18:00:20-04:00",
+        "published_at": "2026-08-03T18:00:18-04:00",
+        "attempt_count": 1,
+        "delivery_semantics": "single_local_commit",
+        "retry_revalidation_performed": false,
+        "destination_acknowledgement": {
+          "status": "accepted",
+          "acknowledged_at": "2026-08-03T18:00:19-04:00",
+          "acknowledgement_ref": "acknowledgements/konnaxion/pub-2026-08-03-0001",
+          "destination_object_ref": "konnaxion/publications/pub-2026-08-03-0001"
+        },
+        "delivery_receipt_refs": [
+          "delivery-receipts/konnaxion/pub-2026-08-03-0001"
+        ],
+        "network_state": "local"
+      },
+      "publication_state": {
+        "state": "active",
+        "observed_at": "2026-08-03T18:00:20-04:00"
+      },
+      "provenance": {
+        "provenance_receipt_ref": "provenance/publication/pub-2026-08-03-0001",
+        "publication_gateway_contract_ref": "contracts/components/publication-gateway.component.json",
+        "publication_request_contract_ref": "contracts/artifact-contracts/publication-request.schema.json",
+        "publication_receipt_contract_ref": "contracts/artifact-contracts/publication-receipt.schema.json",
+        "source_provenance_refs": [
+          "provenance/orgo/case-1001/7"
+        ],
+        "release_set_ref": "release-sets/2026.08.03.1",
+        "generator_id": "publication-gateway",
+        "generator_version": "1.0.0"
+      },
+      "evidence": {
+        "audit_event_refs": [
+          "audit/publication/pub-2026-08-03-0001"
+        ],
+        "decision_evidence_refs": [
+          "evidence/decision/pub-2026-08-03-0001"
+        ],
+        "execution_evidence_refs": [
+          "evidence/execution/pub-2026-08-03-0001"
+        ],
+        "restricted_evidence_refs": [
+          "evidence/restricted/pub-2026-08-03-0001"
+        ],
+        "public_evidence_refs": [
+          "evidence/public/pub-2026-08-03-0001"
+        ],
+        "public_disclosure": "selective_summary",
+        "source_content_in_public_evidence": false,
+        "private_identity_in_public_evidence": false
+      }
+    }
+  ],
+  "x-koa-contract": {
+    "document_id": "CONTRACT-ART-PUBLICATION-RECEIPT",
+    "document_class": "artifact_contract",
+    "status": "active",
+    "language": "en",
+    "layer": "canonical_contract",
+    "scope": [
+      "artifact_class:publication_receipt"
+    ],
+    "canonical_refs": [
+      "contracts/artifact-classes.contract.json"
+    ],
+    "decision_ids": [
+      "DEC-GATE-001",
+      "DEC-GOV-001",
+      "DEC-DATA-001",
+      "DEC-CULT-001",
+      "DEC-CULT-002",
+      "DEC-CULT-003",
+      "DEC-CULT-004",
+      "DEC-CULT-005",
+      "DEC-AUDIT-001",
+      "DEC-OFFLINE-001"
+    ],
+    "lock_ids": [
+      "LOCK-GATE-001",
+      "LOCK-GOV-001",
+      "LOCK-DATA-001",
+      "LOCK-CULT-001",
+      "LOCK-CULT-002",
+      "LOCK-CULT-003",
+      "LOCK-CULT-004",
+      "LOCK-CULT-005",
+      "LOCK-CULT-006",
+      "LOCK-CULT-007",
+      "LOCK-CULT-008",
+      "LOCK-CULT-009",
+      "LOCK-CULT-010",
+      "LOCK-AUDIT-001",
+      "LOCK-OFFLINE-001"
+    ],
+    "ordinary_file_hashes_required": false
+  },
+  "x-koa-semantic-checks": [
+    "The receipt_id is immutable and resolves to exactly one publication execution history.",
+    "The request binding resolves to one valid publication request and matching idempotency key.",
+    "The decision binding resolves to an allow decision whose obligations were satisfied or not applicable before execution.",
+    "The source component, source object, source version, and source authority domain match the publication request.",
+    "The receipt does not embed or become a second authoritative copy of the source content.",
+    "The destination, audience, purpose, and approved representation exactly match the allow decision.",
+    "Every transformation has explicit authority and is accepted by the owning component before publication.",
+    "External transformation output remains non-authoritative until component acceptance.",
+    "Consent, cultural-rights, governance, trust, delegation, human-review, and exception references were valid at execution time.",
+    "A published result includes an accepted destination acknowledgement and publication time.",
+    "A partially delivered result identifies delivered and undelivered units and enters remediation without silent retry.",
+    "A failed or cancelled result does not claim publication.",
+    "Duplicate requests return the existing compatible receipt rather than create duplicate publication effects.",
+    "A retry is preceded by revalidation when authority, connectivity, destination, source, or contract state changed.",
+    "When the destination is UCKK, Publication Gateway authorization precedes UCKK Publication Bridge packaging and transport, and the local source authority remains unchanged.",
+    "The receipt records historical truth even after consent revocation, withdrawal, expiry, correction, or downstream remediation.",
+    "Revocation stops future and reversible pending operations but does not erase the prior receipt.",
+    "External deletion is not reported as guaranteed when the destination does not provide that capability.",
+    "Public evidence excludes source content, private identities, and restricted cultural details unless separately authorized.",
+    "Restricted evidence references resolve through selective-audit policy.",
+    "The issuer is Publication Gateway running under an active compatible Release Set and profile.",
+    "Every receipt, decision, execution, delivery, provenance, audit, and remediation reference resolves.",
+    "A superseded receipt identifies the replacement and bounded correction reason.",
+    "Receipt correction does not alter the recorded source version, execution result, or historical publication fact without explicit contradictory evidence and a new receipt.",
+    "Ordinary documentation file hashes are not required by this artifact contract."
+  ]
+}

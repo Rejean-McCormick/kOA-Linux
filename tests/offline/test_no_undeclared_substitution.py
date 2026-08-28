@@ -68,9 +68,19 @@ def test_offline_bundle_projection_preserves_no_substitution_rule() -> None:
 def test_user_and_node_profiles_keep_external_providers_unavailable_not_replaced() -> None:
     user = _load("docs/contracts/profiles/user-lightweight.profile.json")
     node = _load("docs/contracts/profiles/sovereign-linux-node.profile.json")
-    user_rules = " ".join(user["offline_capability_envelope"]["degradation_rules"]).lower()
-    assert "no undeclared provider" in user_rules
-    unavailable = " ".join(user["offline_capability_envelope"]["unavailable_without_internet"]).lower()
-    assert all(provider.lower() in unavailable for provider in ("chatgpt", "suno", "gamma"))
-    node_offline = node["offline_capability_envelope"]
-    assert "remote artifact retrieval not present in verified bundles" in node_offline["unavailable_without_internet"]
+
+    assert user["offline_behavior"]["internet_dependency"] == "optional_external_surfaces_only"
+    assert node["offline_behavior"]["internet_dependency"] == "none_for_core"
+    assert user["ai_boundary"]["authoritative_decisions_allowed"] is False
+    assert node["ai_boundary"]["authoritative_decisions_allowed"] is False
+
+    user_unavailable = set(user["offline_behavior"]["unavailable_capabilities"])
+    assert {"chatgpt", "suno", "gamma", "ariane_external_voice"} <= user_unavailable
+
+    node_unavailable = set(node["offline_behavior"]["unavailable_capabilities"])
+    assert "uncached_remote_artifact_retrieval" in node_unavailable
+
+    for profile in (user, node):
+        for capability in profile["capabilities"].values():
+            degraded = capability["degraded_behavior"].lower()
+            assert "silent" in degraded and "substitution" in degraded

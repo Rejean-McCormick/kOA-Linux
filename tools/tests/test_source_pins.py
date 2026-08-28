@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import errno
 import json
 from pathlib import Path
 
@@ -22,6 +23,15 @@ from koa_tools.repository import Repository, RepositoryError
 
 SHA256 = "a" * 64
 COMMIT = "b" * 40
+
+
+def _symlink_or_skip(link: Path, target: Path, *, target_is_directory: bool) -> None:
+    try:
+        link.symlink_to(target, target_is_directory=target_is_directory)
+    except OSError as exc:
+        if getattr(exc, "winerror", None) == 1314 or exc.errno in {errno.EACCES, errno.EPERM}:
+            pytest.skip(f"symlink creation is not permitted in this test environment: {exc}")
+        raise
 
 
 def pin(**overrides: object) -> dict[str, object]:
@@ -145,7 +155,7 @@ def test_repository_resolution_rejects_symlink_escape(tmp_path: Path) -> None:
     repository_root.mkdir()
     outside = tmp_path / "outside"
     outside.mkdir()
-    (repository_root / "escape").symlink_to(outside, target_is_directory=True)
+    _symlink_or_skip(repository_root / "escape", outside, target_is_directory=True)
     repository = Repository(repository_root)
     with pytest.raises(RepositoryError, match="escapes"):
         repository.resolve("escape/config.json")
@@ -154,7 +164,9 @@ def test_repository_resolution_rejects_symlink_escape(tmp_path: Path) -> None:
 def test_repository_resolution_rejects_broken_symlink_escape(tmp_path: Path) -> None:
     repository_root = tmp_path / "repo"
     repository_root.mkdir()
-    (repository_root / "escape").symlink_to(tmp_path / "missing-outside", target_is_directory=True)
+    _symlink_or_skip(
+        repository_root / "escape", tmp_path / "missing-outside", target_is_directory=True
+    )
     repository = Repository(repository_root)
     with pytest.raises(RepositoryError, match="escapes"):
         repository.resolve("escape/config.json")

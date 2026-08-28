@@ -1,0 +1,3043 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.koa.local/artifact-contracts/resource-envelope.schema.json",
+  "title": "kOA Resource Envelope",
+  "description": "Validates a kOA resource envelope for a profile, node, workspace, component, service instance, job, worker, process group, capability, queue, or storage resource. The envelope declares reservations, limits, quotas, concurrency, queues, scheduling, activation, degradation, recovery, enforcement, observability, receipts, integrity, and validation. It is enforced by the Resource Governor or an equivalent declared backend and has no authorization, consent, disclosure, publication, or machine-privilege effect.",
+  "$comment": "Cross-object and arithmetic checks are performed by docs/tools/validate_docs.py. The validator resolves profile, component, workspace, node, job, parent-envelope, pool, backend, test, evidence, and receipt references; proves that reservations do not exceed limits; proves that soft limits do not exceed hard limits; validates percentage ordering; checks that child reservations fit parent or pool capacity; rejects cycles; validates unit consistency; verifies that enforcement backends support every declared resource; verifies task-activation and idle-shutdown behavior; ensures degradation never creates policy authority; and confirms that profile and component contracts remain the owners of resource values and capability requirements.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schema_version",
+    "envelope_id",
+    "version",
+    "status",
+    "language",
+    "title",
+    "description",
+    "envelope_kind",
+    "effective_at",
+    "scope",
+    "ownership",
+    "composition",
+    "resources",
+    "scheduling",
+    "activation",
+    "degradation",
+    "enforcement",
+    "observability",
+    "lifecycle",
+    "receipts",
+    "validation"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "const": "contracts/artifact-contracts/resource-envelope.schema.json"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "envelope_id": {
+      "$ref": "#/$defs/envelopeId"
+    },
+    "version": {
+      "$ref": "#/$defs/semanticVersion"
+    },
+    "status": {
+      "$ref": "#/$defs/lifecycleStatus"
+    },
+    "language": {
+      "type": "string",
+      "const": "en"
+    },
+    "title": {
+      "$ref": "#/$defs/title"
+    },
+    "description": {
+      "$ref": "#/$defs/nonEmptyText"
+    },
+    "envelope_kind": {
+      "type": "string",
+      "enum": [
+        "profile_baseline",
+        "profile_overlay",
+        "node_capacity_partition",
+        "workspace_budget",
+        "component_budget",
+        "service_instance_budget",
+        "job_budget",
+        "worker_budget",
+        "process_group_budget",
+        "capability_budget",
+        "queue_budget",
+        "storage_budget",
+        "shared_resource_pool"
+      ]
+    },
+    "effective_at": {
+      "$ref": "#/$defs/dateTime"
+    },
+    "expires_at": {
+      "$ref": "#/$defs/dateTime"
+    },
+    "superseded_by": {
+      "$ref": "#/$defs/envelopeId"
+    },
+    "scope": {
+      "$ref": "#/$defs/scope"
+    },
+    "ownership": {
+      "$ref": "#/$defs/ownership"
+    },
+    "composition": {
+      "$ref": "#/$defs/composition"
+    },
+    "capacity_basis": {
+      "$ref": "#/$defs/capacityBasis"
+    },
+    "resources": {
+      "$ref": "#/$defs/resources"
+    },
+    "scheduling": {
+      "$ref": "#/$defs/scheduling"
+    },
+    "activation": {
+      "$ref": "#/$defs/activation"
+    },
+    "degradation": {
+      "$ref": "#/$defs/degradation"
+    },
+    "enforcement": {
+      "$ref": "#/$defs/enforcement"
+    },
+    "observability": {
+      "$ref": "#/$defs/observability"
+    },
+    "lifecycle": {
+      "$ref": "#/$defs/envelopeLifecycle"
+    },
+    "receipts": {
+      "$ref": "#/$defs/receipts"
+    },
+    "integrity": {
+      "$ref": "#/$defs/integrity"
+    },
+    "signatures": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/signature"
+      }
+    },
+    "canonical_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+      },
+      "uniqueItems": true
+    },
+    "decision_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "../../schemas/canonical-reference.schema.json#/$defs/decisionId"
+      },
+      "uniqueItems": true
+    },
+    "requirement_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "../../schemas/canonical-reference.schema.json#/$defs/requirementId"
+      },
+      "uniqueItems": true
+    },
+    "lock_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "../../schemas/canonical-reference.schema.json#/$defs/lockId"
+      },
+      "uniqueItems": true
+    },
+    "adr_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "../../schemas/canonical-reference.schema.json#/$defs/adrId"
+      },
+      "uniqueItems": true
+    },
+    "test_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "../../schemas/canonical-reference.schema.json#/$defs/testId"
+      },
+      "uniqueItems": true
+    },
+    "evidence_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "../../schemas/canonical-reference.schema.json#/$defs/evidenceId"
+      },
+      "uniqueItems": true
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/tag"
+      },
+      "uniqueItems": true
+    },
+    "validation": {
+      "$ref": "#/$defs/validationPolicy"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "superseded"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "required": [
+          "superseded_by"
+        ]
+      },
+      "else": {
+        "not": {
+          "required": [
+            "superseded_by"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "enforcement": {
+            "properties": {
+              "artifact_mode": {
+                "const": "standalone_signed"
+              }
+            },
+            "required": [
+              "artifact_mode"
+            ]
+          }
+        },
+        "required": [
+          "enforcement"
+        ]
+      },
+      "then": {
+        "required": [
+          "integrity",
+          "signatures"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "envelope_kind": {
+            "const": "workspace_budget"
+          }
+        },
+        "required": [
+          "envelope_kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "scope": {
+            "required": [
+              "workspace_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "envelope_kind": {
+            "const": "job_budget"
+          }
+        },
+        "required": [
+          "envelope_kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "scope": {
+            "required": [
+              "job_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "envelope_kind": {
+            "const": "worker_budget"
+          }
+        },
+        "required": [
+          "envelope_kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "scope": {
+            "required": [
+              "worker_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "envelope_kind": {
+            "enum": [
+              "component_budget",
+              "service_instance_budget"
+            ]
+          }
+        },
+        "required": [
+          "envelope_kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "scope": {
+            "required": [
+              "component_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "envelope_kind": {
+            "const": "service_instance_budget"
+          }
+        },
+        "required": [
+          "envelope_kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "scope": {
+            "required": [
+              "service_instance_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "envelope_kind": {
+            "const": "node_capacity_partition"
+          }
+        },
+        "required": [
+          "envelope_kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "scope": {
+            "required": [
+              "node_id"
+            ]
+          },
+          "capacity_basis": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "capacity_basis"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "envelope_kind": {
+            "const": "shared_resource_pool"
+          }
+        },
+        "required": [
+          "envelope_kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "composition": {
+            "required": [
+              "pool_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "enforcement": {
+            "properties": {
+              "enforcement_level": {
+                "enum": [
+                  "hard",
+                  "soft_with_hard_ceiling"
+                ]
+              }
+            },
+            "required": [
+              "enforcement_level"
+            ]
+          }
+        },
+        "required": [
+          "enforcement"
+        ]
+      },
+      "then": {
+        "properties": {
+          "enforcement": {
+            "properties": {
+              "backends": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "semanticVersion": {
+      "title": "Semantic version",
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+    },
+    "lifecycleStatus": {
+      "type": "string",
+      "enum": [
+        "active",
+        "deprecated",
+        "superseded",
+        "retired"
+      ]
+    },
+    "nonEmptyText": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 8192,
+      "pattern": ".*\\S.*"
+    },
+    "shortText": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024,
+      "pattern": ".*\\S.*"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": ".*\\S.*"
+    },
+    "tag": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 96,
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "envelopeId": {
+      "type": "string",
+      "pattern": "^REN-[A-Z0-9][A-Z0-9-]{2,95}$"
+    },
+    "localId": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 128,
+      "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"
+    },
+    "externalId": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/@+-]*$"
+    },
+    "componentId": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 96,
+      "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
+    },
+    "profileId": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 96,
+      "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
+    },
+    "dateTime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "duration": {
+      "type": "string",
+      "pattern": "^P(?!$)(?:[0-9]+Y)?(?:[0-9]+M)?(?:[0-9]+W)?(?:[0-9]+D)?(?:T(?=[0-9])(?:[0-9]+H)?(?:[0-9]+M)?(?:[0-9]+(?:\\.[0-9]+)?S)?)?$"
+    },
+    "bytes": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9223372036854775807
+    },
+    "positiveBytes": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9223372036854775807
+    },
+    "nonNegativeInteger": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9223372036854775807
+    },
+    "positiveInteger": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9223372036854775807
+    },
+    "percentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "ratio": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1000
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^(?:sha256:[0-9a-f]{64}|sha384:[0-9a-f]{96}|sha512:[0-9a-f]{128})$"
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "target_type",
+        "target_id",
+        "profile_ids",
+        "environment"
+      ],
+      "properties": {
+        "target_type": {
+          "type": "string",
+          "enum": [
+            "profile",
+            "profile_overlay",
+            "node",
+            "workspace",
+            "component",
+            "service_instance",
+            "job",
+            "worker",
+            "process_group",
+            "capability",
+            "queue",
+            "storage_resource",
+            "shared_pool"
+          ]
+        },
+        "target_id": {
+          "$ref": "#/$defs/externalId"
+        },
+        "profile_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/profileId"
+          },
+          "uniqueItems": true
+        },
+        "environment": {
+          "type": "string",
+          "enum": [
+            "development",
+            "test",
+            "staging",
+            "production",
+            "recovery",
+            "offline"
+          ]
+        },
+        "node_id": {
+          "$ref": "#/$defs/externalId"
+        },
+        "workspace_id": {
+          "$ref": "#/$defs/externalId"
+        },
+        "component_id": {
+          "$ref": "#/$defs/componentId"
+        },
+        "service_instance_id": {
+          "$ref": "#/$defs/externalId"
+        },
+        "job_id": {
+          "$ref": "#/$defs/externalId"
+        },
+        "worker_id": {
+          "$ref": "#/$defs/externalId"
+        },
+        "process_group_id": {
+          "$ref": "#/$defs/externalId"
+        },
+        "capability_id": {
+          "$ref": "#/$defs/externalId"
+        },
+        "queue_id": {
+          "$ref": "#/$defs/externalId"
+        },
+        "storage_resource_id": {
+          "$ref": "#/$defs/externalId"
+        },
+        "labels": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^[a-z][a-z0-9_.-]{0,63}$"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "maxLength": 256
+          },
+          "maxProperties": 64
+        },
+        "selector_expression": {
+          "$ref": "#/$defs/shortText"
+        }
+      }
+    },
+    "ownership": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "declaring_owner",
+        "enforcement_owner_component_id",
+        "resource_authority",
+        "authorization_effect",
+        "consent_effect",
+        "disclosure_effect",
+        "machine_privilege_effect",
+        "cross_component_data_write"
+      ],
+      "properties": {
+        "declaring_owner": {
+          "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+        },
+        "enforcement_owner_component_id": {
+          "type": "string",
+          "const": "resource_governor"
+        },
+        "enforcement_contract_ref": {
+          "allOf": [
+            {
+              "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+            },
+            {
+              "pattern": "^contracts/components/resource-governor\\.component\\.json(?:#.*)?$"
+            }
+          ]
+        },
+        "resource_authority": {
+          "type": "string",
+          "const": "resource_limits_only"
+        },
+        "authorization_effect": {
+          "type": "string",
+          "const": "none"
+        },
+        "consent_effect": {
+          "type": "string",
+          "const": "none"
+        },
+        "disclosure_effect": {
+          "type": "string",
+          "const": "none"
+        },
+        "machine_privilege_effect": {
+          "type": "string",
+          "const": "none"
+        },
+        "cross_component_data_write": {
+          "type": "string",
+          "const": "prohibited"
+        },
+        "governance_policy_ref": {
+          "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+        },
+        "governance_policy_usage": {
+          "type": "string",
+          "enum": [
+            "not_required",
+            "activation_authorization_only",
+            "profile_defined"
+          ]
+        },
+        "operator_role_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "composition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "composition_mode",
+        "merge_strategy",
+        "implicit_inheritance",
+        "conflict_result",
+        "child_overcommit"
+      ],
+      "properties": {
+        "composition_mode": {
+          "type": "string",
+          "enum": [
+            "standalone",
+            "parent_child",
+            "shared_pool_member",
+            "profile_plus_overlay",
+            "runtime_allocation"
+          ]
+        },
+        "parent_envelope_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/envelopeId"
+          },
+          "uniqueItems": true
+        },
+        "pool_id": {
+          "$ref": "#/$defs/externalId"
+        },
+        "merge_strategy": {
+          "type": "string",
+          "enum": [
+            "replace",
+            "add_reservations_within_parent",
+            "narrow_limits",
+            "explicit_field_rules",
+            "runtime_allocation_within_pool"
+          ]
+        },
+        "implicit_inheritance": {
+          "type": "string",
+          "const": "prohibited"
+        },
+        "conflict_result": {
+          "type": "string",
+          "const": "blocked"
+        },
+        "child_overcommit": {
+          "type": "string",
+          "enum": [
+            "prohibited",
+            "bounded_by_pool_policy"
+          ]
+        },
+        "overcommit_policy_ref": {
+          "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+        },
+        "field_rules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "field",
+              "operation"
+            ],
+            "properties": {
+              "field": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "operation": {
+                "type": "string",
+                "enum": [
+                  "replace",
+                  "minimum",
+                  "maximum",
+                  "sum",
+                  "intersection",
+                  "union",
+                  "prohibited_override"
+                ]
+              },
+              "rationale": {
+                "$ref": "#/$defs/nonEmptyText"
+              }
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "composition_mode": {
+                "const": "parent_child"
+              }
+            },
+            "required": [
+              "composition_mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "parent_envelope_ids": {
+                "minItems": 1
+              }
+            },
+            "required": [
+              "parent_envelope_ids"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "composition_mode": {
+                "enum": [
+                  "shared_pool_member",
+                  "runtime_allocation"
+                ]
+              }
+            },
+            "required": [
+              "composition_mode"
+            ]
+          },
+          "then": {
+            "required": [
+              "pool_id"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "merge_strategy": {
+                "const": "explicit_field_rules"
+              }
+            },
+            "required": [
+              "merge_strategy"
+            ]
+          },
+          "then": {
+            "properties": {
+              "field_rules": {
+                "minItems": 1
+              }
+            },
+            "required": [
+              "field_rules"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "child_overcommit": {
+                "const": "bounded_by_pool_policy"
+              }
+            },
+            "required": [
+              "child_overcommit"
+            ]
+          },
+          "then": {
+            "required": [
+              "overcommit_policy_ref"
+            ]
+          }
+        }
+      ]
+    },
+    "capacityBasis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "capacity_source",
+        "measured_at",
+        "refresh_policy"
+      ],
+      "properties": {
+        "capacity_source": {
+          "type": "string",
+          "enum": [
+            "profile_contract",
+            "node_inventory",
+            "scheduler_pool",
+            "workspace_host",
+            "runtime_measurement",
+            "declared_static_capacity"
+          ]
+        },
+        "source_ref": {
+          "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+        },
+        "measured_at": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "refresh_policy": {
+          "type": "string",
+          "enum": [
+            "on_activation",
+            "on_node_change",
+            "periodic",
+            "per_job",
+            "profile_defined"
+          ]
+        },
+        "refresh_interval": {
+          "$ref": "#/$defs/duration"
+        },
+        "allow_overcommit": {
+          "type": "boolean"
+        },
+        "overcommit_ratio": {
+          "$ref": "#/$defs/ratio"
+        },
+        "reserved_for_system_percent": {
+          "$ref": "#/$defs/percentage"
+        },
+        "confidence": {
+          "type": "string",
+          "enum": [
+            "verified",
+            "measured",
+            "declared",
+            "stale"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "allow_overcommit": {
+                "const": true
+              }
+            },
+            "required": [
+              "allow_overcommit"
+            ]
+          },
+          "then": {
+            "required": [
+              "overcommit_ratio"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "refresh_policy": {
+                "const": "periodic"
+              }
+            },
+            "required": [
+              "refresh_policy"
+            ]
+          },
+          "then": {
+            "required": [
+              "refresh_interval"
+            ]
+          }
+        }
+      ]
+    },
+    "cpuBudget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reservation_millicores",
+        "limit_millicores",
+        "weight",
+        "throttling",
+        "accounting"
+      ],
+      "properties": {
+        "reservation_millicores": {
+          "$ref": "#/$defs/nonNegativeInteger"
+        },
+        "limit_millicores": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "weight": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10000
+        },
+        "burst_millicore_seconds": {
+          "$ref": "#/$defs/nonNegativeInteger"
+        },
+        "period_milliseconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10000
+        },
+        "cpu_set": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1048575
+          },
+          "uniqueItems": true
+        },
+        "exclusive_cpu_set": {
+          "type": "boolean"
+        },
+        "throttling": {
+          "type": "string",
+          "enum": [
+            "required_at_limit",
+            "scheduler_defined",
+            "terminate_on_sustained_excess"
+          ]
+        },
+        "accounting": {
+          "type": "string",
+          "const": "required"
+        }
+      }
+    },
+    "memoryBudget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reservation_bytes",
+        "soft_limit_bytes",
+        "hard_limit_bytes",
+        "swap_policy",
+        "oom_behavior",
+        "accounting"
+      ],
+      "properties": {
+        "reservation_bytes": {
+          "$ref": "#/$defs/bytes"
+        },
+        "soft_limit_bytes": {
+          "$ref": "#/$defs/positiveBytes"
+        },
+        "hard_limit_bytes": {
+          "$ref": "#/$defs/positiveBytes"
+        },
+        "swap_policy": {
+          "type": "string",
+          "enum": [
+            "prohibited",
+            "bounded",
+            "profile_defined"
+          ]
+        },
+        "swap_limit_bytes": {
+          "$ref": "#/$defs/bytes"
+        },
+        "zram_allowed": {
+          "type": "boolean"
+        },
+        "oom_behavior": {
+          "type": "string",
+          "enum": [
+            "stop_workload",
+            "fail_job",
+            "restart_with_backoff",
+            "signal_degraded_then_stop",
+            "profile_defined"
+          ]
+        },
+        "reclaim_policy": {
+          "type": "string",
+          "enum": [
+            "normal",
+            "prefer_cache_reclaim",
+            "aggressive_for_background",
+            "profile_defined"
+          ]
+        },
+        "accounting": {
+          "type": "string",
+          "const": "required"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "swap_policy": {
+                "const": "bounded"
+              }
+            },
+            "required": [
+              "swap_policy"
+            ]
+          },
+          "then": {
+            "required": [
+              "swap_limit_bytes"
+            ]
+          }
+        }
+      ]
+    },
+    "ioBudget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "weight",
+        "io_class",
+        "accounting"
+      ],
+      "properties": {
+        "weight": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10000
+        },
+        "read_bytes_per_second": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "write_bytes_per_second": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "read_iops": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "write_iops": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "burst_bytes": {
+          "$ref": "#/$defs/bytes"
+        },
+        "io_class": {
+          "type": "string",
+          "enum": [
+            "realtime",
+            "best_effort",
+            "idle",
+            "profile_defined"
+          ]
+        },
+        "io_priority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 7
+        },
+        "device_selectors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/externalId"
+          },
+          "uniqueItems": true
+        },
+        "accounting": {
+          "type": "string",
+          "const": "required"
+        }
+      }
+    },
+    "storageClassBudget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "class_id",
+        "limit_bytes",
+        "high_watermark_percent",
+        "critical_watermark_percent",
+        "cleanup_behavior"
+      ],
+      "properties": {
+        "class_id": {
+          "type": "string",
+          "enum": [
+            "persistent",
+            "ephemeral",
+            "cache",
+            "log",
+            "temporary",
+            "backup_staging",
+            "restore_staging",
+            "artifact_staging",
+            "quarantine"
+          ]
+        },
+        "reservation_bytes": {
+          "$ref": "#/$defs/bytes"
+        },
+        "limit_bytes": {
+          "$ref": "#/$defs/positiveBytes"
+        },
+        "inode_limit": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "object_limit": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "high_watermark_percent": {
+          "$ref": "#/$defs/percentage"
+        },
+        "critical_watermark_percent": {
+          "$ref": "#/$defs/percentage"
+        },
+        "cleanup_behavior": {
+          "type": "string",
+          "enum": [
+            "none_for_authoritative_data",
+            "evict_replaceable_cache",
+            "rotate_logs",
+            "delete_expired_temporary",
+            "stop_new_writes",
+            "profile_defined"
+          ]
+        },
+        "retention_ref": {
+          "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+        }
+      }
+    },
+    "storageBudget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "classes",
+        "ownership_verification",
+        "cross_workspace_mutable_sharing",
+        "cross_component_writes"
+      ],
+      "properties": {
+        "classes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/storageClassBudget"
+          }
+        },
+        "ownership_verification": {
+          "type": "string",
+          "const": "required_before_cleanup_or_reuse"
+        },
+        "cross_workspace_mutable_sharing": {
+          "type": "string",
+          "const": "prohibited"
+        },
+        "cross_component_writes": {
+          "type": "string",
+          "const": "prohibited"
+        },
+        "shared_cache_policy": {
+          "type": "string",
+          "enum": [
+            "prohibited",
+            "non_authoritative_integrity_verified_only"
+          ]
+        }
+      }
+    },
+    "processBudget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_processes",
+        "max_threads",
+        "max_open_files",
+        "max_sockets",
+        "child_process_policy",
+        "accounting"
+      ],
+      "properties": {
+        "max_processes": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "max_threads": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "max_open_files": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "max_sockets": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "max_memory_mappings": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "max_locked_memory_bytes": {
+          "$ref": "#/$defs/bytes"
+        },
+        "child_process_policy": {
+          "type": "string",
+          "enum": [
+            "declared_only",
+            "bounded",
+            "prohibited"
+          ]
+        },
+        "accounting": {
+          "type": "string",
+          "const": "required"
+        }
+      }
+    },
+    "namedConcurrencyLimit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "limit_id",
+        "workload_class",
+        "max_active",
+        "overflow_behavior"
+      ],
+      "properties": {
+        "limit_id": {
+          "$ref": "#/$defs/localId"
+        },
+        "workload_class": {
+          "type": "string",
+          "enum": [
+            "interactive",
+            "background",
+            "heavy",
+            "media",
+            "indexing",
+            "language_worker",
+            "build",
+            "test",
+            "backup",
+            "restore",
+            "synchronization",
+            "migration",
+            "custom"
+          ]
+        },
+        "custom_workload_class": {
+          "$ref": "#/$defs/localId"
+        },
+        "max_active": {
+          "$ref": "#/$defs/nonNegativeInteger"
+        },
+        "max_per_identity": {
+          "$ref": "#/$defs/nonNegativeInteger"
+        },
+        "max_per_component": {
+          "$ref": "#/$defs/nonNegativeInteger"
+        },
+        "max_per_workspace": {
+          "$ref": "#/$defs/nonNegativeInteger"
+        },
+        "overflow_behavior": {
+          "type": "string",
+          "enum": [
+            "queue",
+            "reject",
+            "replace_oldest_optional",
+            "coalesce",
+            "profile_defined"
+          ]
+        },
+        "fairness_key": {
+          "type": "string",
+          "enum": [
+            "none",
+            "identity",
+            "component",
+            "workspace",
+            "tenant",
+            "job_class"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "workload_class": {
+                "const": "custom"
+              }
+            },
+            "required": [
+              "workload_class"
+            ]
+          },
+          "then": {
+            "required": [
+              "custom_workload_class"
+            ]
+          }
+        }
+      ]
+    },
+    "concurrencyBudget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "limits",
+        "admission_accounting"
+      ],
+      "properties": {
+        "limits": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/namedConcurrencyLimit"
+          }
+        },
+        "global_max_active": {
+          "$ref": "#/$defs/nonNegativeInteger"
+        },
+        "admission_accounting": {
+          "type": "string",
+          "const": "required"
+        }
+      }
+    },
+    "retryPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_attempts",
+        "backoff",
+        "jitter",
+        "non_idempotent_retry"
+      ],
+      "properties": {
+        "max_attempts": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "backoff": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "strategy",
+            "initial_delay",
+            "max_delay"
+          ],
+          "properties": {
+            "strategy": {
+              "type": "string",
+              "enum": [
+                "fixed",
+                "linear",
+                "exponential"
+              ]
+            },
+            "initial_delay": {
+              "$ref": "#/$defs/duration"
+            },
+            "max_delay": {
+              "$ref": "#/$defs/duration"
+            },
+            "multiplier": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        },
+        "jitter": {
+          "type": "string",
+          "enum": [
+            "none",
+            "bounded",
+            "full"
+          ]
+        },
+        "non_idempotent_retry": {
+          "type": "string",
+          "const": "prohibited_without_receipt_and_reconciliation"
+        }
+      }
+    },
+    "queueBudget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "queue_id",
+        "max_items",
+        "max_bytes",
+        "max_age",
+        "overflow_behavior",
+        "retry_policy",
+        "dead_letter_behavior",
+        "accounting"
+      ],
+      "properties": {
+        "queue_id": {
+          "$ref": "#/$defs/externalId"
+        },
+        "max_items": {
+          "$ref": "#/$defs/nonNegativeInteger"
+        },
+        "max_bytes": {
+          "$ref": "#/$defs/bytes"
+        },
+        "max_age": {
+          "$ref": "#/$defs/duration"
+        },
+        "overflow_behavior": {
+          "type": "string",
+          "enum": [
+            "reject_new",
+            "drop_oldest_optional",
+            "coalesce",
+            "pause_producer",
+            "fail_job",
+            "profile_defined"
+          ]
+        },
+        "priority_levels": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 256
+        },
+        "retry_policy": {
+          "$ref": "#/$defs/retryPolicy"
+        },
+        "dead_letter_behavior": {
+          "type": "string",
+          "enum": [
+            "bounded_review_queue",
+            "fail_job",
+            "discard_only_if_explicitly_non_authoritative",
+            "profile_defined"
+          ]
+        },
+        "accounting": {
+          "type": "string",
+          "const": "required"
+        }
+      }
+    },
+    "queuesBudget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "queues"
+      ],
+      "properties": {
+        "queues": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/queueBudget"
+          }
+        }
+      }
+    },
+    "timeBudget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "startup_timeout",
+        "execution_timeout",
+        "graceful_stop_timeout",
+        "idle_timeout",
+        "deadline_behavior"
+      ],
+      "properties": {
+        "startup_timeout": {
+          "$ref": "#/$defs/duration"
+        },
+        "execution_timeout": {
+          "$ref": "#/$defs/duration"
+        },
+        "graceful_stop_timeout": {
+          "$ref": "#/$defs/duration"
+        },
+        "idle_timeout": {
+          "$ref": "#/$defs/duration"
+        },
+        "maximum_lifetime": {
+          "$ref": "#/$defs/duration"
+        },
+        "deadline": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "deadline_behavior": {
+          "type": "string",
+          "enum": [
+            "cancel_and_cleanup",
+            "fail_job",
+            "pause_for_operator",
+            "profile_defined"
+          ]
+        }
+      }
+    },
+    "networkBudget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_connections",
+        "authorization_effect",
+        "network_policy_effect",
+        "accounting"
+      ],
+      "properties": {
+        "max_connections": {
+          "$ref": "#/$defs/nonNegativeInteger"
+        },
+        "max_listeners": {
+          "$ref": "#/$defs/nonNegativeInteger"
+        },
+        "ingress_bytes_per_second": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "egress_bytes_per_second": {
+          "$ref": "#/$defs/positiveInteger"
+        },
+        "burst_bytes": {
+          "$ref": "#/$defs/bytes"
+        },
+        "dns_query_rate_per_second": {
+          "$ref": "#/$defs/nonNegativeInteger"
+        },
+        "authorization_effect": {
+          "type": "string",
+          "const": "none"
+        },
+        "network_policy_effect": {
+          "type": "string",
+          "const": "rate_and_capacity_only"
+        },
+        "accounting": {
+          "type": "string",
+          "const": "required"
+        }
+      }
+    },
+    "acceleratorBudget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "accelerator_id",
+        "kind",
+        "count",
+        "sharing_mode",
+        "optional"
+      ],
+      "properties": {
+        "accelerator_id": {
+          "$ref": "#/$defs/localId"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "gpu",
+            "npu",
+            "tpu",
+            "media_encoder",
+            "media_decoder",
+            "custom"
+          ]
+        },
+        "custom_kind": {
+          "$ref": "#/$defs/localId"
+        },
+        "count": {
+          "$ref": "#/$defs/nonNegativeInteger"
+        },
+        "memory_limit_bytes": {
+          "$ref": "#/$defs/bytes"
+        },
+        "sharing_mode": {
+          "type": "string",
+          "enum": [
+            "exclusive",
+            "time_sliced",
+            "profile_defined"
+          ]
+        },
+        "optional": {
+          "type": "boolean"
+        },
+        "fallback_behavior": {
+          "type": "string",
+          "enum": [
+            "software_path",
+            "queue",
+            "capability_unavailable",
+            "not_applicable"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "custom"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "custom_kind"
+            ]
+          }
+        }
+      ]
+    },
+    "resources": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "cpu": {
+          "$ref": "#/$defs/cpuBudget"
+        },
+        "memory": {
+          "$ref": "#/$defs/memoryBudget"
+        },
+        "io": {
+          "$ref": "#/$defs/ioBudget"
+        },
+        "storage": {
+          "$ref": "#/$defs/storageBudget"
+        },
+        "processes": {
+          "$ref": "#/$defs/processBudget"
+        },
+        "concurrency": {
+          "$ref": "#/$defs/concurrencyBudget"
+        },
+        "queues": {
+          "$ref": "#/$defs/queuesBudget"
+        },
+        "time": {
+          "$ref": "#/$defs/timeBudget"
+        },
+        "network": {
+          "$ref": "#/$defs/networkBudget"
+        },
+        "accelerators": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/acceleratorBudget"
+          }
+        }
+      },
+      "minProperties": 1,
+      "anyOf": [
+        {
+          "required": [
+            "cpu"
+          ]
+        },
+        {
+          "required": [
+            "memory"
+          ]
+        },
+        {
+          "required": [
+            "io"
+          ]
+        },
+        {
+          "required": [
+            "storage"
+          ]
+        },
+        {
+          "required": [
+            "processes"
+          ]
+        },
+        {
+          "required": [
+            "concurrency"
+          ]
+        },
+        {
+          "required": [
+            "queues"
+          ]
+        },
+        {
+          "required": [
+            "time"
+          ]
+        },
+        {
+          "required": [
+            "network"
+          ]
+        },
+        {
+          "required": [
+            "accelerators"
+          ]
+        }
+      ]
+    },
+    "scheduling": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "workload_class",
+        "priority",
+        "admission",
+        "preemption",
+        "fairness",
+        "resource_pressure_behavior",
+        "authorization_effect"
+      ],
+      "properties": {
+        "workload_class": {
+          "type": "string",
+          "enum": [
+            "interactive",
+            "background",
+            "batch",
+            "maintenance",
+            "recovery",
+            "build",
+            "test",
+            "media",
+            "indexing",
+            "backup",
+            "restore",
+            "synchronization",
+            "migration",
+            "custom"
+          ]
+        },
+        "custom_workload_class": {
+          "$ref": "#/$defs/localId"
+        },
+        "priority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Zero is lowest priority and one hundred is highest."
+        },
+        "nice": {
+          "type": "integer",
+          "minimum": -20,
+          "maximum": 19
+        },
+        "io_priority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 7
+        },
+        "admission": {
+          "type": "string",
+          "enum": [
+            "immediate_if_capacity",
+            "queue_if_capacity_unavailable",
+            "reject_if_capacity_unavailable",
+            "task_activated",
+            "socket_activated",
+            "profile_defined"
+          ]
+        },
+        "preemption": {
+          "type": "string",
+          "enum": [
+            "never",
+            "preemptible",
+            "preempt_lower_priority",
+            "emergency_only",
+            "profile_defined"
+          ]
+        },
+        "fairness": {
+          "type": "string",
+          "enum": [
+            "fifo",
+            "weighted_fair",
+            "round_robin",
+            "identity_fair",
+            "workspace_fair",
+            "component_fair",
+            "profile_defined"
+          ]
+        },
+        "resource_pressure_behavior": {
+          "type": "string",
+          "enum": [
+            "throttle",
+            "queue",
+            "pause",
+            "shed_optional_work",
+            "stop_workload",
+            "profile_defined"
+          ]
+        },
+        "scheduling_group": {
+          "$ref": "#/$defs/externalId"
+        },
+        "authorization_effect": {
+          "type": "string",
+          "const": "none"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "workload_class": {
+                "const": "custom"
+              }
+            },
+            "required": [
+              "workload_class"
+            ]
+          },
+          "then": {
+            "required": [
+              "custom_workload_class"
+            ]
+          }
+        }
+      ]
+    },
+    "activation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "always_on_allowed",
+        "start_condition",
+        "idle_shutdown",
+        "max_warm_instances",
+        "startup_failure_behavior"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "always_on",
+            "task_activated",
+            "socket_activated",
+            "scheduled",
+            "manual",
+            "job_scoped",
+            "profile_defined"
+          ]
+        },
+        "always_on_allowed": {
+          "type": "boolean"
+        },
+        "start_condition": {
+          "type": "string",
+          "enum": [
+            "profile_start",
+            "explicit_task",
+            "socket_request",
+            "schedule",
+            "job_admission",
+            "operator_request",
+            "capability_demand",
+            "profile_defined"
+          ]
+        },
+        "idle_shutdown": {
+          "type": "string",
+          "enum": [
+            "required",
+            "permitted",
+            "prohibited",
+            "profile_defined"
+          ]
+        },
+        "idle_shutdown_after": {
+          "$ref": "#/$defs/duration"
+        },
+        "max_warm_instances": {
+          "$ref": "#/$defs/nonNegativeInteger"
+        },
+        "startup_failure_behavior": {
+          "type": "string",
+          "enum": [
+            "capability_unavailable",
+            "queue_request",
+            "degraded_mode",
+            "fail_job",
+            "profile_defined"
+          ]
+        },
+        "shutdown_behavior": {
+          "type": "string",
+          "enum": [
+            "graceful_then_stop",
+            "checkpoint_then_stop",
+            "cancel_and_cleanup",
+            "profile_defined"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "idle_shutdown": {
+                "const": "required"
+              }
+            },
+            "required": [
+              "idle_shutdown"
+            ]
+          },
+          "then": {
+            "required": [
+              "idle_shutdown_after"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "always_on"
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "always_on_allowed": {
+                "const": true
+              }
+            }
+          }
+        }
+      ]
+    },
+    "pressureTrigger": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "metric",
+        "comparison",
+        "threshold",
+        "sustain_for"
+      ],
+      "properties": {
+        "metric": {
+          "type": "string",
+          "enum": [
+            "cpu_utilization_percent",
+            "cpu_throttled_percent",
+            "memory_working_set_percent",
+            "memory_pressure",
+            "io_utilization_percent",
+            "io_queue_depth",
+            "storage_used_percent",
+            "queue_items_percent",
+            "queue_oldest_age",
+            "active_concurrency_percent",
+            "process_count_percent",
+            "network_utilization_percent",
+            "accelerator_utilization_percent",
+            "deadline_remaining",
+            "custom"
+          ]
+        },
+        "custom_metric": {
+          "$ref": "#/$defs/localId"
+        },
+        "comparison": {
+          "type": "string",
+          "enum": [
+            "greater_than",
+            "greater_than_or_equal",
+            "less_than",
+            "less_than_or_equal",
+            "equals"
+          ]
+        },
+        "threshold": {
+          "oneOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/$defs/duration"
+            }
+          ]
+        },
+        "sustain_for": {
+          "$ref": "#/$defs/duration"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "metric": {
+                "const": "custom"
+              }
+            },
+            "required": [
+              "metric"
+            ]
+          },
+          "then": {
+            "required": [
+              "custom_metric"
+            ]
+          }
+        }
+      ]
+    },
+    "degradationStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "step_id",
+        "order",
+        "trigger",
+        "action",
+        "target",
+        "authority_effect",
+        "status_effect",
+        "recovery_condition"
+      ],
+      "properties": {
+        "step_id": {
+          "$ref": "#/$defs/localId"
+        },
+        "order": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "trigger": {
+          "$ref": "#/$defs/pressureTrigger"
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "lower_priority",
+            "throttle",
+            "queue_new_work",
+            "pause_optional_work",
+            "reject_new_optional_work",
+            "shed_optional_capability",
+            "checkpoint_and_pause",
+            "stop_background_work",
+            "stop_workload",
+            "fail_job",
+            "signal_read_only",
+            "request_operator_review",
+            "profile_defined"
+          ]
+        },
+        "target": {
+          "$ref": "#/$defs/externalId"
+        },
+        "authority_effect": {
+          "type": "string",
+          "const": "none"
+        },
+        "status_effect": {
+          "type": "string",
+          "enum": [
+            "constrained",
+            "degraded",
+            "paused",
+            "unavailable",
+            "failed"
+          ]
+        },
+        "preserved_capabilities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/externalId"
+          },
+          "uniqueItems": true
+        },
+        "denied_work": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/externalId"
+          },
+          "uniqueItems": true
+        },
+        "recovery_condition": {
+          "$ref": "#/$defs/nonEmptyText"
+        },
+        "receipt_required": {
+          "type": "boolean"
+        }
+      }
+    },
+    "degradation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "default_behavior",
+        "steps",
+        "automatic_recovery",
+        "revalidation_required",
+        "silent_limit_expansion",
+        "policy_authority"
+      ],
+      "properties": {
+        "default_behavior": {
+          "type": "string",
+          "enum": [
+            "throttle_then_queue",
+            "queue_then_reject",
+            "shed_optional_then_stop",
+            "fail_job",
+            "profile_defined"
+          ]
+        },
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/degradationStep"
+          }
+        },
+        "automatic_recovery": {
+          "type": "boolean"
+        },
+        "revalidation_required": {
+          "type": "boolean",
+          "const": true
+        },
+        "recovery_stability_duration": {
+          "$ref": "#/$defs/duration"
+        },
+        "silent_limit_expansion": {
+          "type": "string",
+          "const": "prohibited"
+        },
+        "policy_authority": {
+          "type": "string",
+          "const": "none"
+        },
+        "last_verified_envelope_behavior": {
+          "type": "string",
+          "enum": [
+            "continue_within_last_verified_limits",
+            "stop_new_work",
+            "profile_defined"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "automatic_recovery": {
+                "const": true
+              }
+            },
+            "required": [
+              "automatic_recovery"
+            ]
+          },
+          "then": {
+            "required": [
+              "recovery_stability_duration"
+            ]
+          }
+        }
+      ]
+    },
+    "backend": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "backend_id",
+        "backend_type",
+        "resources",
+        "support_level",
+        "privileged",
+        "failure_behavior"
+      ],
+      "properties": {
+        "backend_id": {
+          "$ref": "#/$defs/localId"
+        },
+        "backend_type": {
+          "type": "string",
+          "enum": [
+            "cgroup_v2",
+            "systemd",
+            "container_runtime",
+            "kubernetes",
+            "process_supervisor",
+            "application_runtime",
+            "storage_quota",
+            "traffic_control",
+            "scheduler",
+            "equivalent"
+          ]
+        },
+        "resources": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": [
+              "cpu",
+              "memory",
+              "io",
+              "storage",
+              "processes",
+              "concurrency",
+              "queues",
+              "time",
+              "network",
+              "accelerators"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "support_level": {
+          "type": "string",
+          "enum": [
+            "enforced",
+            "measured_with_external_enforcement",
+            "advisory_only"
+          ]
+        },
+        "privileged": {
+          "type": "boolean"
+        },
+        "privileged_broker_ref": {
+          "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+        },
+        "configuration_ref": {
+          "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+        },
+        "failure_behavior": {
+          "type": "string",
+          "enum": [
+            "deny_start",
+            "stop_new_work",
+            "continue_within_last_verified_limits",
+            "signal_degraded",
+            "fail_job",
+            "profile_defined"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "privileged": {
+                "const": true
+              }
+            },
+            "required": [
+              "privileged"
+            ]
+          },
+          "then": {
+            "required": [
+              "privileged_broker_ref"
+            ]
+          }
+        }
+      ]
+    },
+    "enforcement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifact_mode",
+        "enforcement_level",
+        "backends",
+        "verification_frequency",
+        "drift_behavior",
+        "missing_backend_behavior",
+        "policy_runtime_substitution",
+        "direct_host_privilege"
+      ],
+      "properties": {
+        "artifact_mode": {
+          "type": "string",
+          "enum": [
+            "embedded_contract",
+            "standalone_signed",
+            "runtime_allocation"
+          ]
+        },
+        "enforcement_level": {
+          "type": "string",
+          "enum": [
+            "hard",
+            "soft_with_hard_ceiling",
+            "advisory_measurement_only"
+          ]
+        },
+        "backends": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/backend"
+          }
+        },
+        "verification_frequency": {
+          "type": "string",
+          "enum": [
+            "on_activation",
+            "periodic",
+            "continuous",
+            "per_job",
+            "profile_defined"
+          ]
+        },
+        "verification_interval": {
+          "$ref": "#/$defs/duration"
+        },
+        "drift_behavior": {
+          "type": "string",
+          "enum": [
+            "reapply",
+            "signal_and_reapply",
+            "stop_new_work",
+            "fail_job",
+            "operator_review",
+            "profile_defined"
+          ]
+        },
+        "missing_backend_behavior": {
+          "type": "string",
+          "enum": [
+            "deny_start",
+            "continue_within_last_verified_limits",
+            "advisory_only_if_profile_allows",
+            "fail_job",
+            "profile_defined"
+          ]
+        },
+        "policy_runtime_substitution": {
+          "type": "string",
+          "const": "prohibited"
+        },
+        "direct_host_privilege": {
+          "type": "string",
+          "const": "prohibited_outside_declared_broker"
+        },
+        "enforcement_receipt_required": {
+          "type": "boolean"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "verification_frequency": {
+                "const": "periodic"
+              }
+            },
+            "required": [
+              "verification_frequency"
+            ]
+          },
+          "then": {
+            "required": [
+              "verification_interval"
+            ]
+          }
+        }
+      ]
+    },
+    "metric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "metric_id",
+        "resource",
+        "unit",
+        "required"
+      ],
+      "properties": {
+        "metric_id": {
+          "$ref": "#/$defs/localId"
+        },
+        "resource": {
+          "type": "string",
+          "enum": [
+            "cpu",
+            "memory",
+            "io",
+            "storage",
+            "processes",
+            "concurrency",
+            "queues",
+            "time",
+            "network",
+            "accelerators",
+            "health"
+          ]
+        },
+        "unit": {
+          "type": "string",
+          "enum": [
+            "count",
+            "bytes",
+            "bytes_per_second",
+            "operations_per_second",
+            "millicores",
+            "percent",
+            "seconds",
+            "duration",
+            "state",
+            "ratio"
+          ]
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "aggregation": {
+          "type": "string",
+          "enum": [
+            "gauge",
+            "counter",
+            "histogram",
+            "state"
+          ]
+        },
+        "labels": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "observability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "health_states",
+        "metrics",
+        "sampling",
+        "correlation_required",
+        "secret_material_allowed",
+        "status_accuracy"
+      ],
+      "properties": {
+        "health_states": {
+          "type": "array",
+          "minItems": 5,
+          "items": {
+            "type": "string",
+            "enum": [
+              "healthy",
+              "constrained",
+              "degraded",
+              "paused",
+              "unavailable",
+              "failed",
+              "recovering"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "metrics": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/metric"
+          }
+        },
+        "sampling": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode"
+          ],
+          "properties": {
+            "mode": {
+              "type": "string",
+              "enum": [
+                "continuous",
+                "interval",
+                "per_operation",
+                "profile_defined"
+              ]
+            },
+            "interval": {
+              "$ref": "#/$defs/duration"
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "mode": {
+                    "const": "interval"
+                  }
+                },
+                "required": [
+                  "mode"
+                ]
+              },
+              "then": {
+                "required": [
+                  "interval"
+                ]
+              }
+            }
+          ]
+        },
+        "alerts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "alert_id",
+              "trigger_ref",
+              "severity",
+              "delivery"
+            ],
+            "properties": {
+              "alert_id": {
+                "$ref": "#/$defs/localId"
+              },
+              "trigger_ref": {
+                "$ref": "#/$defs/localId"
+              },
+              "severity": {
+                "type": "string",
+                "enum": [
+                  "info",
+                  "warning",
+                  "critical"
+                ]
+              },
+              "delivery": {
+                "type": "string",
+                "enum": [
+                  "local_status",
+                  "audit_event",
+                  "operator_notification",
+                  "job_result",
+                  "profile_defined"
+                ]
+              }
+            }
+          }
+        },
+        "correlation_required": {
+          "type": "boolean",
+          "const": true
+        },
+        "secret_material_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "status_accuracy": {
+          "type": "string",
+          "const": "degraded_state_must_not_appear_healthy"
+        }
+      }
+    },
+    "envelopeLifecycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "activation_mode",
+        "partial_activation",
+        "rollback_or_forward_repair",
+        "previous_verified_envelope_retained",
+        "runtime_states",
+        "retention"
+      ],
+      "properties": {
+        "activation_mode": {
+          "type": "string",
+          "const": "atomic_or_equivalent"
+        },
+        "partial_activation": {
+          "type": "string",
+          "const": "prohibited"
+        },
+        "rollback_or_forward_repair": {
+          "type": "string",
+          "enum": [
+            "rollback",
+            "forward_repair",
+            "rollback_then_forward_repair"
+          ]
+        },
+        "previous_verified_envelope_retained": {
+          "type": "boolean"
+        },
+        "runtime_states": {
+          "type": "array",
+          "minItems": 5,
+          "items": {
+            "type": "string",
+            "enum": [
+              "verified",
+              "staged",
+              "active",
+              "constrained",
+              "superseded",
+              "rejected",
+              "retired",
+              "recovering"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "retention": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "active_envelope",
+            "previous_verified_envelope",
+            "allocation_receipts",
+            "enforcement_receipts",
+            "degradation_receipts",
+            "recovery_evidence"
+          ],
+          "properties": {
+            "active_envelope": {
+              "$ref": "#/$defs/duration"
+            },
+            "previous_verified_envelope": {
+              "$ref": "#/$defs/duration"
+            },
+            "allocation_receipts": {
+              "$ref": "#/$defs/duration"
+            },
+            "enforcement_receipts": {
+              "$ref": "#/$defs/duration"
+            },
+            "degradation_receipts": {
+              "$ref": "#/$defs/duration"
+            },
+            "recovery_evidence": {
+              "$ref": "#/$defs/duration"
+            }
+          }
+        }
+      }
+    },
+    "receipts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "receipt_schema_ref",
+        "required_transition_classes",
+        "required_fields",
+        "public_content",
+        "private_evidence_content",
+        "correlation_required",
+        "secret_material_allowed"
+      ],
+      "properties": {
+        "receipt_schema_ref": {
+          "allOf": [
+            {
+              "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+            },
+            {
+              "pattern": "^contracts/artifact-contracts/(?:decision-receipt|provenance-receipt)\\.schema\\.json$"
+            }
+          ]
+        },
+        "required_transition_classes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": [
+              "envelope_activation",
+              "envelope_rejection",
+              "allocation",
+              "admission",
+              "throttling",
+              "queueing",
+              "preemption",
+              "degradation",
+              "limit_violation",
+              "job_failure",
+              "recovery",
+              "rollback",
+              "forward_repair",
+              "envelope_supersession"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "required_fields": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": [
+              "receipt_id",
+              "envelope_id",
+              "envelope_version",
+              "target_type",
+              "target_id",
+              "profile_ids",
+              "transition_class",
+              "resource",
+              "requested",
+              "allocated",
+              "observed",
+              "prior_state",
+              "result_state",
+              "reason_codes",
+              "occurred_at",
+              "correlation_id",
+              "evidence_refs"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "public_content": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "receipt_id",
+              "envelope_id",
+              "envelope_version",
+              "target_type",
+              "transition_class",
+              "resource",
+              "result_state",
+              "reason_codes",
+              "occurred_at",
+              "correlation_id"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "private_evidence_content": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "target_identity",
+              "node_identity",
+              "workspace_identity",
+              "job_identity",
+              "requested_values",
+              "allocated_values",
+              "observed_values",
+              "backend_configuration",
+              "operator_identity",
+              "diagnostic_evidence"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "correlation_required": {
+          "type": "boolean",
+          "const": true
+        },
+        "secret_material_allowed": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    },
+    "integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "content_digest",
+        "manifest_digest"
+      ],
+      "properties": {
+        "content_digest": {
+          "$ref": "#/$defs/digest"
+        },
+        "manifest_digest": {
+          "$ref": "#/$defs/digest"
+        },
+        "canonicalization": {
+          "type": "string",
+          "enum": [
+            "jcs_rfc8785",
+            "artifact_contract_defined"
+          ]
+        }
+      }
+    },
+    "signature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key_id",
+        "algorithm",
+        "signature",
+        "scope"
+      ],
+      "properties": {
+        "key_id": {
+          "$ref": "#/$defs/externalId"
+        },
+        "algorithm": {
+          "$ref": "#/$defs/localId"
+        },
+        "signature": {
+          "type": "string",
+          "minLength": 16,
+          "maxLength": 16384,
+          "pattern": "^[A-Za-z0-9+/=_-]+$"
+        },
+        "scope": {
+          "type": "string",
+          "enum": [
+            "resource_envelope_content",
+            "resource_envelope_manifest",
+            "profile_resource_module",
+            "runtime_allocation"
+          ]
+        },
+        "signed_at": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "certificate_chain_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "../../schemas/canonical-reference.schema.json#/$defs/canonicalReference"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "validationPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required_checks",
+        "test_ids",
+        "evidence_ids",
+        "activation_requires",
+        "missing_required_result",
+        "automatic_semantic_fixes_allowed"
+      ],
+      "properties": {
+        "required_checks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": [
+              "schema_validation",
+              "canonical_reference_resolution",
+              "scope_resolution",
+              "owner_resolution",
+              "profile_scope_alignment",
+              "component_scope_alignment",
+              "workspace_scope_alignment",
+              "parent_envelope_resolution",
+              "composition_cycle_detection",
+              "composition_conflict_detection",
+              "reservation_limit_ordering",
+              "soft_hard_limit_ordering",
+              "watermark_ordering",
+              "parent_capacity_fit",
+              "shared_pool_capacity_fit",
+              "unit_consistency",
+              "backend_resource_coverage",
+              "backend_capability_validation",
+              "enforcement_drift_detection",
+              "activation_behavior_validation",
+              "idle_shutdown_validation",
+              "queue_bound_validation",
+              "retry_bound_validation",
+              "concurrency_bound_validation",
+              "storage_ownership_validation",
+              "no_cross_workspace_mutable_state",
+              "no_cross_component_write",
+              "resource_governor_boundary",
+              "governance_policy_separation",
+              "no_authorization_effect",
+              "no_machine_privilege_effect",
+              "degradation_order_validation",
+              "safe_recovery_validation",
+              "observability_coverage",
+              "receipt_schema_alignment",
+              "retention_validation",
+              "integrity_and_signature_validation",
+              "traceability_complete"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "test_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "../../schemas/canonical-reference.schema.json#/$defs/testId"
+          },
+          "uniqueItems": true
+        },
+        "evidence_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "../../schemas/canonical-reference.schema.json#/$defs/evidenceId"
+          },
+          "uniqueItems": true
+        },
+        "activation_requires": {
+          "type": "string",
+          "const": "pass"
+        },
+        "missing_required_result": {
+          "type": "string",
+          "const": "blocked"
+        },
+        "automatic_semantic_fixes_allowed": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    }
+  }
+}

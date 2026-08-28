@@ -1,17 +1,13 @@
 {
   "$schema": "../../schemas/deployment-profile.schema.json",
   "profile_id": "high_assurance",
-  "profile_type": "profile_overlay",
+  "profile_kind": "profile_overlay",
   "version": "1.0.0",
   "status": "active",
   "language": "en",
-  "effective_at": "2026-08-03T16:13:00-04:00",
   "display_name": "High Assurance",
-  "summary": "A composable security and governance overlay that strengthens boot identity, hardware-backed trust, key custody, separation of duties, privileged operations, artifact verification, audit, recovery, and conformance evidence without changing the global product model or becoming a primary deployment profile.",
-  "scope": {
-    "kind": "profile_overlay",
-    "overlay_id": "high_assurance"
-  },
+  "purpose": "A composable security and governance overlay that strengthens boot identity, hardware-backed trust, key custody, separation of duties, privileged operations, artifact verification, audit, recovery, and conformance evidence without changing the global product model or becoming a primary deployment profile.",
+  "terminology_ref": "contracts/terminology.contract.json#/terms/TERM-PROFILE-HIGH-ASSURANCE",
   "canonical_refs": [
     "generated/authority-manifest.json",
     "generated/decision-index.json",
@@ -31,7 +27,8 @@
     "contracts/subsystems/koa-spaces.subsystem.json",
     "02-system/21-koa-spaces-experience-layer.md",
     "02-system/22-koa-spaces-interface-composition.md",
-    "03-profiles/14-koa-spaces-deployment.md"
+    "03-profiles/14-koa-spaces-deployment.md",
+    "contracts/terminology.contract.json"
   ],
   "decision_ids": [
     "DEC-PROFILE-001",
@@ -111,37 +108,9 @@
     "LOCK-UCKK-EXT-002",
     "LOCK-SPACES-001"
   ],
-  "exception_ids": [],
-  "canonical_ownership": {
-    "owned_fields": [
-      "overlay_identity",
-      "compatible_primary_profiles",
-      "incompatible_primary_profiles",
-      "compatible_overlays",
-      "overlay_precedence",
-      "required_component_additions",
-      "profile_specific_component_constraints",
-      "assurance_control_set",
-      "profile_specific_hardware_requirements",
-      "profile_specific_network_requirements",
-      "profile_specific_resource_reservations",
-      "profile_specific_recovery_requirements",
-      "profile_specific_conformance_claims"
-    ],
-    "not_owned": {
-      "global_system_behavior": "contracts/system.contract.json",
-      "component_identity_and_global_responsibility": "generated/component-catalog.json",
-      "component_interface_details": "contracts/components/*.component.json",
-      "requirement_statements": "generated/requirements-index.json",
-      "test_definitions": "generated/test-catalog.json",
-      "test_results_and_evidence": "generated/evidence-catalog.json",
-      "release_channel_identity": "contracts/release-channels.contract.json",
-      "artifact_class_identity": "contracts/artifact-classes.contract.json",
-      "external_integration_identity": "contracts/integration-types.contract.json"
-    }
-  },
+  "independently_deployable": false,
+  "supersedes": [],
   "composition": {
-    "requires_exactly_one_primary_profile": true,
     "compatible_primary_profiles": [
       "user_lightweight",
       "developer_linux_workstation",
@@ -150,917 +119,424 @@
       "build_farm",
       "control_plane"
     ],
-    "incompatible_primary_profiles": [
-      {
-        "profile_id": "developer_windows_wsl",
-        "reason": "WSL cannot by itself establish the required measured host boot chain, hardware-rooted node identity, host privilege boundary, and recovery evidence."
-      }
-    ],
-    "compatible_overlays": [
+    "required_overlays": [],
+    "optional_overlays": [
       "sovereign_offline",
       "appliance_shell"
     ],
-    "incompatible_overlays": [],
-    "required_overlay_order": [
-      "primary_profile",
-      "high_assurance",
-      "sovereign_offline_when_selected",
-      "appliance_shell_when_selected"
+    "incompatible_profiles": [
+      "developer_windows_wsl"
     ],
-    "merge_semantics": {
-      "permissions": "intersection",
-      "obligations": "union",
-      "resource_minimums": "maximum",
-      "resource_maximums": "minimum",
-      "network_exposure": "most_restrictive",
-      "audit_and_evidence": "most_complete",
-      "retention": "most_restrictive_compatible_rule",
-      "conflict_outcome": "blocked"
-    },
-    "global_invariants_can_be_weakened": false,
-    "primary_profile_capabilities_can_be_expanded": false,
-    "overlay_can_add_required_control_components": true,
-    "unresolved_composition_allowed": false
+    "composition_priority": 100,
+    "conflict_policy": "strongest_restriction_wins"
   },
-  "assurance_claim": {
-    "claim_id": "CLAIM-PROFILE-HIGH-ASSURANCE",
-    "claim_level": "high_assurance",
-    "claim_scope": "composed_deployment",
-    "claim_effect": "The deployment demonstrates enhanced resistance to privileged abuse, key compromise, artifact substitution, recovery capture, unauthorized disclosure, audit tampering, and silent authority drift.",
-    "claim_requires_complete_evidence": true,
-    "partial_claim_allowed": false,
-    "self_attestation_alone_is_sufficient": false,
-    "claim_expiry_policy": "The claim expires when required evidence, authority, trust, or control state is no longer current.",
-    "claim_registry_ref": "generated/traceability.json",
-    "evidence_registry_ref": "generated/evidence-catalog.json"
-  },
-  "component_policy": {
-    "required_component_additions": [
-      {
-        "component_id": "identity_and_trust",
-        "activation": "required",
-        "purpose": "Provide hardware-bound node and workload identity, scoped trust roots, delegation, revocation, and strong authentication context."
-      },
-      {
-        "component_id": "governance_policy_runtime",
-        "activation": "required",
-        "purpose": "Evaluate authorization, disclosure, consent, privilege, activation, emergency, and exception policy deterministically."
-      },
-      {
-        "component_id": "audit_broker",
-        "activation": "required",
-        "purpose": "Preserve classified, tamper-evident, attributable, and reviewable evidence for critical transitions."
-      },
-      {
-        "component_id": "koa_node_agent",
-        "activation": "required",
-        "purpose": "Enforce the closed catalog of schema-bound privileged operations and reject arbitrary host control."
-      },
-      {
-        "component_id": "resource_governor",
-        "activation": "required",
-        "purpose": "Protect identity, policy, audit, recovery, verification, and integrity-critical operations during resource pressure."
-      }
-    ],
-    "conditionally_required_components": [
-      {
-        "component_id": "publication_gateway",
-        "condition": "The composed profile permits private-to-public or cross-domain disclosure.",
-        "purpose": "Enforce classification, consent, rights, redaction, approval, withdrawal, and publication evidence."
-      }
-    ],
-    "inherited_component_membership": "All other component inclusion and exclusion decisions remain owned by the selected primary profile.",
-    "component_constraints": [
-      {
-        "component_id": "identity_and_trust",
-        "constraints": [
-          "Node and workload identities use hardware-bound or equivalently protected keys.",
-          "Trust roots are scoped by tenant, environment, channel, artifact class, and authority domain.",
-          "Revocation state and trust-root changes produce protected evidence.",
-          "Authentication remains distinct from authorization."
-        ]
-      },
-      {
-        "component_id": "governance_policy_runtime",
-        "constraints": [
-          "Unknown required facts fail closed.",
-          "Critical decisions apply separation-of-duties and dual-control rules.",
-          "Policy bundles activate independently and atomically.",
-          "Emergency authority is explicit, bounded, expiring, and reviewable."
-        ]
-      },
-      {
-        "component_id": "audit_broker",
-        "constraints": [
-          "Critical evidence uses protected append-only or tamper-evident storage.",
-          "Audit classes remain separated by access, retention, encryption, disclosure, and deletion policy.",
-          "Access to protected evidence is itself audited.",
-          "Audit unavailability does not broaden authority."
-        ]
-      },
-      {
-        "component_id": "koa_node_agent",
-        "constraints": [
-          "Arbitrary shell, package-manager, file-copy, container, service-control, and key-export operations are rejected.",
-          "Every privileged operation is bound to an active policy decision and replay-protection value.",
-          "Before-and-after state is verified.",
-          "Break-glass operations use separate operation identities and stronger authorization."
-        ]
-      },
-      {
-        "component_id": "resource_governor",
-        "constraints": [
-          "Identity, policy, audit, recovery, verification, and active-user control retain protected resource reservations.",
-          "Optional heavy work is throttled or stopped before assurance-critical services.",
-          "Resource control remains deterministic and non-AI."
-        ]
-      },
-      {
-        "component_id": "sentient",
-        "constraints": [
-          "SenTient remains optional, isolated, task-activated, and non-authoritative.",
-          "Restricted data is unavailable unless an explicit policy, classification, and workspace contract permits it.",
-          "Candidate outputs require independent owning-component review.",
-          "SenTient has no direct access to production authoritative stores or privileged host interfaces."
-        ]
-      },
-      {
-        "component_id": "ariane_runtime",
-        "constraints": [
-          "External voice remains optional and non-authoritative.",
-          "Sensitive actions require action-specific confirmation.",
-          "Automation stops on stale observation, ambiguity, missing authority, or failed verification.",
-          "Diagnostic capture is bounded and classified."
-        ]
-      },
-      {
-        "component_id": "koa_mediatheque",
-        "constraints": [
-          "Restricted and no-AI content cannot be exported to external AI surfaces.",
-          "Original media and provenance are preserved.",
-          "Audience and rights restrictions apply to previews, search, exports, caches, and derivatives."
-        ]
-      }
+  "inheritance": {
+    "baseline_ref": "contracts/system.contract.json#/system",
+    "inherits_global_requirements": true,
+    "inherited_profile_refs": [],
+    "override_policy": "strengthen_or_restrict_only",
+    "prohibited_inheritance": [
+      "implicit_profile_inheritance",
+      "cross_profile_requirement_copy",
+      "recipe_as_requirement",
+      "implementation_prevalence_as_authority",
+      "legacy_rule_without_disposition"
     ]
   },
-  "hardware_assurance": {
-    "hardware_root_of_trust": {
-      "requirement": "required",
-      "accepted_realizations": [
-        "TPM 2.0 with measured boot and protected keys",
-        "platform security processor with equivalent measured-boot and key-protection guarantees",
-        "dedicated hardware security module for non-endpoint roles with an independently verified boot chain"
-      ],
-      "software_only_equivalent_allowed": false
+  "target_environment": {
+    "host_os_families": [
+      "platform_independent"
+    ],
+    "host_architectures": [
+      "platform_independent"
+    ],
+    "deployment_forms": [
+      "node",
+      "hub",
+      "build_cluster",
+      "control_service",
+      "appliance"
+    ],
+    "network_expectation": "controlled_network_required",
+    "user_interaction": "operator_managed",
+    "virtualization": "optional",
+    "containerization": "profile_specific"
+  },
+  "hardware_envelope": {
+    "cpu": {
+      "minimum": 0,
+      "recommended": 0,
+      "unit": "cores"
     },
-    "secure_boot_or_equivalent": {
-      "requirement": "required",
-      "failure_outcome": "conformance_claim_blocked"
+    "memory": {
+      "minimum": 0,
+      "recommended": 0,
+      "unit": "GiB"
+    },
+    "storage": {
+      "minimum": 0,
+      "recommended": 0,
+      "unit": "GB"
+    },
+    "gpu": "not_required",
+    "concurrency": {
+      "heavy_jobs": 0,
+      "background_workers": 0
+    },
+    "enforcement": "deployment_specific"
+  },
+  "capabilities": {
+    "hardware_rooted_trust": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Hardware-rooted or equivalently protected trust is required for the composed profile."
     },
     "measured_boot": {
-      "requirement": "required",
-      "evidence": [
-        "firmware and boot-policy identity",
-        "bootloader identity",
-        "kernel and initial system identity",
-        "active system release identity",
-        "measurement verification result"
-      ]
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "The composed profile records and verifies a measured boot chain."
     },
-    "attestation": {
-      "requirement": "required",
-      "modes": [
-        "local_verified_attestation",
-        "remote_attestation_when_the_composed_profile_uses_remote_management_or_fleet_claims"
-      ],
-      "stale_or_unverifiable_outcome": "restricted_or_blocked_by_capability"
+    "strong_identity_and_authentication": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Hardware-bound identities, scoped trust roots, revocation, and strong authentication are required."
     },
-    "node_keys": {
-      "hardware_bound": true,
-      "raw_private_key_export_allowed": false,
-      "rotation_and_reenrollment_required": true
-    },
-    "clock_and_monotonic_state": {
-      "trusted_time_required_for": [
-        "certificate validity",
-        "delegation expiry",
-        "break-glass expiry",
-        "artifact freshness",
-        "revocation freshness",
-        "evidence ordering"
-      ],
-      "rollback_resistant_state_required": true
-    },
-    "physical_protection": {
-      "build_and_signing_nodes": "controlled_access_required",
-      "recovery_media": "controlled_custody_required",
-      "removable_media": "controlled_transfer_required",
-      "tamper_response": "documented_and_tested"
-    }
-  },
-  "host_and_runtime_security": {
-    "base_system": {
-      "maintained_kernel_and_firmware": true,
-      "verified_system_release": true,
-      "immutable_or_policy_controlled_base": true,
-      "drift_detection": "required",
-      "unauthorized_drift_outcome": "claim_suspended_and_remediation_required",
-      "security_update_and_rollback": "required"
-    },
-    "mandatory_access_control": {
-      "requirement": "enforcing",
-      "accepted_realizations": [
-        "SELinux",
-        "AppArmor with equivalent enforced policy coverage",
-        "another maintained mandatory-access-control mechanism with validated equivalence"
-      ]
-    },
-    "service_isolation": {
-      "dedicated_service_identities": true,
-      "rootless_execution_preferred": true,
-      "privileged_containers_allowed": false,
-      "read_only_runtime_filesystems_preferred": true,
-      "linux_capabilities_minimized": true,
-      "no_new_privileges_required": true,
-      "seccomp_or_equivalent_required": true,
-      "explicit_writable_mounts_required": true
-    },
-    "endpoint_orchestrator": {
-      "kubernetes_required": false,
-      "profile_specific_orchestrator_use_only": true
-    }
-  },
-  "identity_and_access": {
-    "privileged_human_authentication": {
-      "phishing_resistant_multi_factor_required": true,
-      "offline_capable_factor_or_recovery_path_required": true,
-      "shared_privileged_accounts_allowed": false,
-      "session_reauthentication_for_critical_actions": true
-    },
-    "service_and_workload_identity": {
-      "unique_scoped_identity_required": true,
-      "credential_rotation_required": true,
-      "cross_environment_reuse_allowed": false
-    },
-    "delegation": {
-      "explicit_scope_required": true,
-      "expiry_required": true,
-      "revocation_required": true,
-      "further_delegation_default": "prohibited"
-    },
-    "least_privilege": {
-      "capability_scoped_authorization": true,
-      "unknown_fact_outcome": "blocked",
-      "network_location_is_authorization": false,
-      "operating_system_group_is_complete_authorization": false
+    "tamper_evident_audit": {
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Critical evidence is attributable, protected, and tamper-evident."
     },
     "separation_of_duties": {
-      "required_for": [
-        "trust-root creation and replacement",
-        "release signing",
-        "authority signing",
-        "destructive recovery",
-        "break-glass activation",
-        "high-impact governance changes",
-        "approval of exceptions affecting constitutional controls"
+      "state": "required",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Critical actions use explicit separation-of-duties or dual-control rules."
+    },
+    "external_ai_assistance": {
+      "state": "optional",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "Approved external AI remains optional, user-initiated, and non-authoritative."
+    },
+    "weakened_primary_controls": {
+      "state": "excluded",
+      "conditions": [],
+      "degraded_behavior": "The affected capability is reported unavailable or degraded; no silent authority or provider substitution is permitted.",
+      "rationale": "The overlay may strengthen or restrict but never weaken primary-profile controls."
+    }
+  },
+  "components": {
+    "identity_and_trust": {
+      "state": "required",
+      "activation": "always_on",
+      "conditions": [
+        "Node and workload identities use hardware-bound or equivalently protected keys.; Trust roots are scoped by tenant, environment, channel, artifact class, and authority domain."
       ],
-      "minimum_independent_actors": 2,
-      "self_approval_allowed": false
-    }
-  },
-  "key_and_secret_custody": {
-    "key_classes_are_separate": true,
-    "protected_key_classes": [
-      "system release signing",
-      "services release signing",
-      "governance policy signing",
-      "knowledge artifact signing",
-      "authority recognition",
-      "audit anchoring",
-      "node identity",
-      "recovery"
-    ],
-    "release_and_authority_private_keys": {
-      "available_to_application_nodes": false,
-      "available_to_ordinary_build_workers": false,
-      "required_custody": [
-        "hardware security module",
-        "hardware token with independent approval",
-        "threshold or split-custody signing system"
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
+    },
+    "governance_policy_runtime": {
+      "state": "required",
+      "activation": "always_on",
+      "conditions": [
+        "Unknown required facts fail closed.; Critical decisions apply separation-of-duties and dual-control rules."
       ],
-      "independent_review_or_threshold_approval": true
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
     },
-    "service_secrets": {
-      "least_secret_delivery": true,
-      "broad_environment_variable_distribution_allowed": false,
-      "logs_or_receipts_allowed": false,
-      "ordinary_exports_allowed": false
+    "audit_broker": {
+      "state": "required",
+      "activation": "always_on",
+      "conditions": [
+        "Critical evidence uses protected append-only or tamper-evident storage.; Audit classes remain separated by access, retention, encryption, disclosure, and deletion policy."
+      ],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
     },
-    "rotation": {
-      "issuance": "required",
-      "activation": "required",
-      "overlap": "bounded",
-      "revocation": "required",
-      "compromise_response": "required",
-      "archival_and_destruction": "required"
+    "koa_node_agent": {
+      "state": "required",
+      "activation": "always_on",
+      "conditions": [
+        "Arbitrary shell, package-manager, file-copy, container, service-control, and key-export operations are rejected.; Every privileged operation is bound to an active policy decision and replay-protection value."
+      ],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
     },
-    "recovery": {
-      "key_backup_separate_from_data_backup": true,
-      "encrypted_and_access_controlled": true,
-      "restore_test_required": true,
-      "restored_key_automatically_authorized": false
+    "resource_governor": {
+      "state": "required",
+      "activation": "always_on",
+      "conditions": [
+        "Identity, policy, audit, recovery, verification, and active-user control retain protected resource reservations.; Optional heavy work is throttled or stopped before assurance-critical services."
+      ],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
+    },
+    "publication_gateway": {
+      "state": "conditional",
+      "activation": "service_activated",
+      "conditions": [
+        "The composed profile permits private-to-public or cross-domain disclosure."
+      ],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
+    },
+    "sentient": {
+      "state": "optional",
+      "activation": "task_activated",
+      "conditions": [
+        "Optional, isolated, task-activated, and non-authoritative when permitted by the composed profile."
+      ],
+      "data_authority": "component_owned",
+      "failure_behavior": "None"
     }
   },
-  "data_and_storage_security": {
-    "durable_sensitive_state_encryption": "required",
-    "storage_keys_hardware_sealed_when_supported": true,
-    "tenant_and_component_partitioning": "required",
-    "authoritative_store_direct_cross_component_writes": "prohibited",
-    "removable_media": {
-      "automatic_execution": false,
-      "quarantine_required": true,
-      "bounded_parsing_required": true,
-      "inventory_and_identity_checks_required": true,
-      "authorization_before_admission": true
-    },
-    "backup": {
-      "encrypted": true,
-      "independent_copy_required": true,
-      "immutable_or_offline_copy_required": true,
-      "restore_test_required": true,
-      "key_custody_separated": true
-    },
-    "deletion_and_withdrawal": {
-      "policy_controlled": true,
-      "cache_and_index_propagation_required": true,
-      "evidence_required": true
-    }
-  },
-  "network_security": {
-    "default_posture": "default_deny",
-    "required_zones": [
-      "public_when_present",
-      "private_service",
-      "administrative",
+  "operating_modes": {
+    "default_mode": "assured_operation",
+    "allowed_modes": [
+      "assured_operation",
+      "maintenance",
       "recovery",
-      "artifact_or_update",
-      "external_integration_egress"
+      "break_glass"
     ],
-    "public_private_interface_separation": "required_when_both_are_present",
-    "service_to_service_authentication": "required",
-    "mutual_authentication_for_sensitive_remote_interfaces": true,
-    "administrative_exposure": {
-      "public_network_exposure_allowed": false,
-      "declared_high_assurance_remote_management_policy_required": true,
-      "strong_authentication_required": true,
-      "source_and_destination_scope_required": true,
-      "session_evidence_required": true
-    },
-    "egress": {
-      "default": "denied",
-      "explicit_destination_allowlist_required": true,
-      "external_ai_egress_separate": true,
-      "restricted_data_egress_requires_policy": true
-    },
-    "offline_operation": {
-      "core_operation_without_internet": true,
-      "local_identity_policy_audit_and_recovery_available": true,
-      "remote_loss_cannot_expand_authority": true
-    }
+    "transitions_fail_closed": true
   },
-  "governance_and_privilege": {
-    "policy_runtime_required": true,
-    "privileged_broker_required": true,
-    "privilege_flow": [
-      "schema-bound request",
-      "authenticated subject and target",
-      "active governance policy decision",
-      "required independent approval",
-      "operation and replay binding",
-      "allowlisted execution",
-      "before-and-after verification",
-      "protected receipt",
-      "post-action review when required"
+  "offline_behavior": {
+    "continuity_level": "declared_capabilities_only",
+    "internet_dependency": "optional_external_surfaces_only",
+    "offline_import": "supported",
+    "offline_export": "supported",
+    "recovery_without_internet": true,
+    "unavailable_capabilities": [
+      "external_ai_surfaces",
+      "remote_attestation_when_required"
+    ]
+  },
+  "ai_boundary": {
+    "native_ai_dependency": false,
+    "approved_external_surfaces": [
+      "chatgpt",
+      "suno",
+      "gamma",
+      "ariane-voice"
     ],
-    "arbitrary_host_command_surface": "prohibited",
-    "break_glass": {
-      "separate_operation_identities": true,
-      "stronger_authentication_than_ordinary_administration": true,
-      "dual_control": true,
-      "capability_and_target_scope": "required",
-      "maximum_duration": "policy_bounded",
-      "automatic_expiry": true,
-      "tamper_evident_receipt": true,
-      "post_event_review": true,
-      "operating_system_identity_alone_is_authorization": false
-    },
-    "exceptions": {
-      "registry_required": true,
-      "accepted_decision_required": true,
-      "compensating_controls_required": true,
-      "expiry_required": true,
-      "evidence_required": true,
-      "constitutional_control_waiver_allowed": false
-    }
-  },
-  "audit_and_evidence": {
-    "enhanced_audit_required": true,
-    "tamper_evident_anchoring": "required",
-    "protected_evidence_classes": [
-      "identity and trust changes",
-      "governance policy decisions",
-      "privileged operations",
-      "release publication and signing",
-      "artifact verification and activation",
-      "trust-root changes",
-      "break-glass and recovery",
-      "publication and withdrawal",
-      "exceptions and waivers",
-      "conformance claims"
+    "optional_components": [
+      "sentient"
     ],
-    "selective_audit": {
-      "unrestricted_collection_allowed": false,
-      "classification_and_minimization_required": true,
-      "public_and_restricted_evidence_separated": true,
-      "protected_evidence_access_audited": true
-    },
-    "availability": {
-      "local_durable_evidence_required": true,
-      "bounded_forwarding_queue": true,
-      "critical_transition_completion_requires_local_evidence": true
-    },
-    "external_anchor_or_independent_copy": {
-      "required": true,
-      "accepted_realizations": [
-        "independent audit node",
-        "hardware-backed monotonic anchor",
-        "offline signed evidence export",
-        "another independently verified tamper-evident store"
-      ]
-    },
-    "time_and_ordering": {
-      "trusted_time_required": true,
-      "sequence_or_monotonic_evidence_required": true
-    }
+    "authoritative_decisions_allowed": false,
+    "fallback_behavior": "Assurance-critical operation continues without external AI; no authority, privilege, or disclosure decision is delegated to AI."
   },
-  "artifact_and_release_security": {
-    "release_channels_independent": [
-      "system",
-      "services",
-      "governance",
-      "knowledge"
-    ],
-    "verification_before_activation": true,
-    "atomic_activation": true,
-    "last_known_good_retention": true,
-    "rollback_or_forward_repair_required": true,
-    "anti_downgrade_and_substitution": true,
-    "revocation_handling_required": true,
-    "supply_chain": {
-      "software_bill_of_materials_required": true,
-      "provenance_required": true,
-      "publisher_and_signer_identity_required": true,
-      "independent_verification_required": true,
-      "build_and_signing_separation_required": true,
-      "reproducible_build_evidence_required_for_build_outputs": true
-    },
-    "integrity": {
-      "release_artifacts_follow_artifact_contract": true,
-      "ordinary_markdown_hash_required": false,
-      "signed_or_content_addressed_artifacts_supported": true
-    },
-    "offline_bundles": {
-      "bounded_parsing": true,
-      "signature_and_inventory_verification": true,
-      "revocation_freshness_evaluation": true,
-      "controlled_staging": true,
-      "no_auto_activation": true
-    }
+  "data_and_storage": {
+    "component_data_ownership_required": true,
+    "cross_component_direct_writes_allowed": false,
+    "persistent_storage": "deployment_specific",
+    "encryption_at_rest": "required",
+    "backup_required": true,
+    "restore_required": true,
+    "portability_export_required": true
   },
-  "external_integrations_and_ai": {
-    "external_integrations_default": "disabled_until_explicitly_enabled",
-    "external_ai_surfaces": {
-      "default": "disabled",
-      "approved_surface_ids": [
-        "chatgpt_external",
-        "suno_external",
-        "gamma_external",
-        "ariane_external_voice"
-      ],
-      "explicit_user_initiation_required": true,
-      "policy_authorization_required_for_sensitive_data": true,
-      "restricted_or_no_ai_data_default": "prohibited",
-      "direct_authoritative_write_allowed": false,
-      "authority_or_privilege_decision_allowed": false,
-      "output_status": "non_authoritative_candidate"
-    },
-    "integration_removal_cannot_break_core": true,
-    "data_minimization_required": true,
-    "destination_allowlist_required": true,
-    "provenance_on_reimport_required": true
+  "security": {
+    "trust_model": "high_assurance_trust",
+    "privilege_model": "narrow_privileged_broker",
+    "network_default": "closed_by_default",
+    "secrets_management": "profile_secret_store",
+    "selective_audit": true,
+    "break_glass": "required",
+    "required_controls": [
+      "hardware_root_of_trust",
+      "secure_boot_or_equivalent",
+      "measured_boot",
+      "hardware_bound_node_keys",
+      "tamper_evident_critical_evidence",
+      "separation_of_duties",
+      "bounded_break_glass"
+    ]
   },
-  "recovery_and_resilience": {
-    "separate_recovery_environment": "required",
-    "recovery_service_set": "reduced_and_allowlisted",
-    "recovery_credentials": {
-      "separate_from_ordinary_administration": true,
-      "stronger_authentication": true,
-      "split_custody_or_dual_control": true
-    },
-    "trust_root_replacement": {
-      "dual_control": true,
-      "physical_or_out_of_band_evidence": true,
-      "continuity_statement": true,
-      "post_event_audit": true
-    },
-    "destructive_recovery": {
-      "explicit_data_handling": true,
-      "independent_approval": true,
-      "receipt_required": true
-    },
-    "backup_restore": {
-      "verified_backup_target_required": true,
-      "clean_restore_test_required": true,
-      "artifact_and_release_identity_preserved": true,
-      "authority_revalidation_before_reactivation": true
-    },
-    "recovery_time_and_recovery_point": {
-      "owned_by_primary_profile_or_operations_contract": true,
-      "high_assurance_overlay_requires_tested_targets": true
-    },
-    "continuity_without_control_plane": {
-      "required_for_endpoint_and_hub_profiles": true,
-      "cached_authority_validity_must_be_explicit": true
-    }
+  "lifecycle": {
+    "release_set_required": true,
+    "system_update_model": "not_applicable",
+    "service_update_model": "not_applicable",
+    "rollback_required": true,
+    "forward_repair_allowed": true,
+    "offline_bundle_support": "supported",
+    "artifact_requirements": []
   },
-  "resource_and_availability": {
-    "protected_services": [
-      "identity_and_trust",
-      "governance_policy_runtime",
-      "audit_broker",
-      "koa_node_agent",
-      "resource_governor",
-      "recovery_control",
-      "artifact_verification"
-    ],
-    "protected_capacity_required": true,
-    "bounded_queues_required": true,
-    "retry_and_timeout_budgets_required": true,
-    "optional_heavy_work_stopped_first": true,
-    "integrity_critical_writes_cannot_be_silently_killed": true,
-    "resource_exhaustion_outcome": "explicit_throttling_queueing_rejection_or_degradation"
+  "operations": {
+    "health_monitoring": "required",
+    "readiness_checks": "required",
+    "resource_governor": "required",
+    "backup": "required",
+    "restore": "required",
+    "incident_response": "required",
+    "disaster_recovery": "required",
+    "maintenance": "required",
+    "diagnostics": "required",
+    "receipts_for_critical_transitions": true
   },
-  "operations_and_incident_response": {
-    "inventory": {
-      "active_release_set": "required",
-      "component_and_artifact_identity": "required",
-      "trust_and_revocation_state": "required",
-      "configuration_drift_state": "required"
-    },
-    "vulnerability_response": {
-      "owner_and_supported_versions_required": true,
-      "severity_process_required": true,
-      "emergency_revocation_supported": true,
-      "channel_freeze_supported": true
-    },
-    "incident_response": {
-      "authority_boundaries_preserved": true,
-      "evidence_preservation_required": true,
-      "emergency_actions_expire": true,
-      "post_incident_review_required": true,
-      "support_bundles_sanitized": true
-    },
-    "remote_support": {
-      "disabled_by_default": true,
-      "explicit_session_authorization": true,
-      "time_bounded": true,
-      "recorded": true,
-      "unattended_persistent_access_allowed": false
-    }
-  },
-  "profile_specific_requirements": [
-    {
-      "requirement_id": "REQ-PROF-HA-001",
-      "control": "The overlay is composed with exactly one compatible primary profile."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-002",
-      "control": "The composed deployment establishes a verified boot chain and measured active system identity."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-003",
-      "control": "Node and workload identities use hardware-bound or equivalently protected keys."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-004",
-      "control": "Privileged human access uses phishing-resistant multi-factor authentication."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-005",
-      "control": "Trust-root, release-signing, destructive-recovery, and break-glass operations use independent approval."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-006",
-      "control": "Release and authority private keys remain outside application nodes and ordinary build workers."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-007",
-      "control": "Governance Policy Runtime, Audit Broker, kOA Node Agent, Identity and Trust, and Resource Governor are active."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-008",
-      "control": "Arbitrary privileged host operations are unavailable through normal kOA interfaces."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-009",
-      "control": "Every governed privileged operation is bound to a current policy decision and replay-protection value."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-010",
-      "control": "The host uses enforcing mandatory access control and least-privilege service isolation."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-011",
-      "control": "Durable sensitive state is encrypted and tenant and component data boundaries remain explicit."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-012",
-      "control": "Administrative and service networks follow default-deny and explicit allowlisting."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-013",
-      "control": "Remote administration uses a declared high-assurance policy, strong authentication, bounded scope, and evidence."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-014",
-      "control": "Removable media and offline bundles use quarantine, bounded parsing, verification, authorization, and controlled staging."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-015",
-      "control": "Release artifacts provide required provenance, signing, dependency, and software-bill-of-material evidence."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-016",
-      "control": "Artifact verification precedes atomic activation and preserves a last-known-good compatible state."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-017",
-      "control": "Downgrade, substitution, revoked-artifact, and incorrectly scoped activation attempts are rejected."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-018",
-      "control": "Critical security, authority, release, publication, recovery, and exception transitions produce protected evidence."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-019",
-      "control": "Protected evidence uses tamper-evident anchoring and access to protected evidence is audited."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-020",
-      "control": "Audit collection remains classified, minimized, and separated from unrestricted disclosure."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-021",
-      "control": "Break-glass authority is capability-scoped, time-bounded, attributable, expiring, and reviewed."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-022",
-      "control": "Recovery occurs in a separate reduced environment using stronger authentication and dual control."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-023",
-      "control": "Trust-root replacement requires independent approval, continuity evidence, and post-event audit."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-024",
-      "control": "Encrypted backups include an independent protected copy and pass controlled restore tests."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-025",
-      "control": "External integrations and AI surfaces are disabled by default and cannot directly mutate authority."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-026",
-      "control": "Restricted and no-AI data cannot be transferred to external AI surfaces without explicit compatible policy."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-027",
-      "control": "SenTient remains isolated, task-activated, non-authoritative, and disconnected from production authoritative stores."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-028",
-      "control": "Resource pressure preserves identity, policy, audit, verification, recovery, and interactive control before optional work."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-029",
-      "control": "Active release, artifact, component, trust, revocation, and drift identities remain inspectable."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-030",
-      "control": "Security and authority failures degrade only affected capabilities and never broaden authority."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-031",
-      "control": "Profile composition conflicts block activation rather than selecting a silent precedence."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-032",
-      "control": "The overlay does not generalize Linux-specific implementation choices into global system requirements."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-033",
-      "control": "The overlay does not require Kubernetes for endpoint profiles."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-034",
-      "control": "Public, private, administrative, recovery, artifact, and integration boundaries remain separated when present."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-035",
-      "control": "Service, node, workload, publisher, signer, artifact, tenant, and authority identities remain distinct."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-036",
-      "control": "Exceptions are registered, expiring, evidence-backed, and unable to waive constitutional controls."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-037",
-      "control": "The composed profile retains offline operation for every capability claimed as locally available."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-038",
-      "control": "Conformance evidence is current for the active authority release, target environment, profile composition, and artifact set."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-039",
-      "control": "A failed required control, test, or evidence check suspends the high-assurance claim."
-    },
-    {
-      "requirement_id": "REQ-PROF-HA-040",
-      "control": "The high-assurance claim has complete decision, requirement, lock, test, evidence, exception, component, profile, and release traceability."
-    }
-  ],
   "conformance": {
-    "required_test_ids": [
-      "TEST-PROF-001",
-      "TEST-PROF-002",
-      "TEST-PROF-003",
-      "TEST-PROF-004",
-      "TEST-PROF-005",
-      "TEST-PROF-006",
-      "TEST-PROF-007",
-      "TEST-PROF-008",
-      "TEST-PROF-009",
-      "TEST-PROF-013",
-      "TEST-PROF-014",
-      "TEST-SEC-001",
-      "TEST-SEC-002",
-      "TEST-SEC-003",
-      "TEST-SEC-004",
-      "TEST-SEC-005",
-      "TEST-SEC-006",
-      "TEST-SEC-007",
-      "TEST-SEC-008",
-      "TEST-SEC-009",
-      "TEST-SEC-010",
-      "TEST-SEC-011",
-      "TEST-SEC-012",
-      "TEST-SEC-013",
-      "TEST-SEC-014",
-      "TEST-SEC-015",
-      "TEST-LIFE-001",
-      "TEST-LIFE-002",
-      "TEST-LIFE-003",
-      "TEST-LIFE-004",
-      "TEST-LIFE-005",
-      "TEST-LIFE-006",
-      "TEST-LIFE-007",
-      "TEST-LIFE-008",
-      "TEST-LIFE-009",
-      "TEST-LIFE-010",
-      "TEST-LIFE-011",
-      "TEST-LIFE-015",
-      "TEST-OPS-001",
-      "TEST-OPS-002",
-      "TEST-OPS-003",
-      "TEST-OPS-004",
-      "TEST-OPS-005",
-      "TEST-OPS-006",
-      "TEST-OPS-007",
-      "TEST-OPS-008",
-      "TEST-OPS-009",
-      "TEST-OPS-010",
-      "TEST-SYS-001",
-      "TEST-SYS-004",
-      "TEST-SYS-005",
-      "TEST-SYS-011",
-      "TEST-SYS-012",
-      "TEST-SYS-013",
-      "TEST-CROSS-007",
-      "TEST-CROSS-008",
-      "TEST-CROSS-009",
-      "TEST-CROSS-013",
-      "TEST-CROSS-014",
-      "TEST-CROSS-015",
-      "TEST-EXIT-001",
-      "TEST-EXIT-002",
-      "TEST-EXIT-003",
-      "TEST-EXIT-004",
-      "TEST-EXIT-005",
-      "TEST-EXIT-006",
-      "TEST-EXIT-007",
-      "TEST-EXIT-008"
+    "claim_level": "profile_with_overlays",
+    "claims": [
+      {
+        "claim_id": "CLAIM-PROFILE-HIGH-ASSURANCE-001",
+        "statement": "The deployment satisfies the declared High Assurance profile requirements, composition rules, capability boundaries, and conformance checks.",
+        "requirement_ids": [
+          "REQ-PROF-HA-001",
+          "REQ-PROF-HA-002",
+          "REQ-PROF-HA-003",
+          "REQ-PROF-HA-004",
+          "REQ-PROF-HA-005",
+          "REQ-PROF-HA-006",
+          "REQ-PROF-HA-007",
+          "REQ-PROF-HA-008",
+          "REQ-PROF-HA-009",
+          "REQ-PROF-HA-010",
+          "REQ-PROF-HA-011",
+          "REQ-PROF-HA-012",
+          "REQ-PROF-HA-013",
+          "REQ-PROF-HA-014",
+          "REQ-PROF-HA-015",
+          "REQ-PROF-HA-016",
+          "REQ-PROF-HA-017",
+          "REQ-PROF-HA-018",
+          "REQ-PROF-HA-019",
+          "REQ-PROF-HA-020",
+          "REQ-PROF-HA-021",
+          "REQ-PROF-HA-022",
+          "REQ-PROF-HA-023",
+          "REQ-PROF-HA-024",
+          "REQ-PROF-HA-025",
+          "REQ-PROF-HA-026",
+          "REQ-PROF-HA-027",
+          "REQ-PROF-HA-028",
+          "REQ-PROF-HA-029",
+          "REQ-PROF-HA-030",
+          "REQ-PROF-HA-031",
+          "REQ-PROF-HA-032",
+          "REQ-PROF-HA-033",
+          "REQ-PROF-HA-034",
+          "REQ-PROF-HA-035",
+          "REQ-PROF-HA-036",
+          "REQ-PROF-HA-037",
+          "REQ-PROF-HA-038",
+          "REQ-PROF-HA-039",
+          "REQ-PROF-HA-040"
+        ],
+        "test_ids": [
+          "TEST-PROF-001",
+          "TEST-PROF-002",
+          "TEST-PROF-003",
+          "TEST-PROF-004",
+          "TEST-PROF-005",
+          "TEST-PROF-006",
+          "TEST-PROF-007",
+          "TEST-PROF-008",
+          "TEST-PROF-009",
+          "TEST-PROF-013",
+          "TEST-PROF-014",
+          "TEST-SEC-001",
+          "TEST-SEC-002",
+          "TEST-SEC-003",
+          "TEST-SEC-004",
+          "TEST-SEC-005",
+          "TEST-SEC-006",
+          "TEST-SEC-007",
+          "TEST-SEC-008",
+          "TEST-SEC-009",
+          "TEST-SEC-010",
+          "TEST-SEC-011",
+          "TEST-SEC-012",
+          "TEST-SEC-013",
+          "TEST-SEC-014",
+          "TEST-SEC-015",
+          "TEST-LIFE-001",
+          "TEST-LIFE-002",
+          "TEST-LIFE-003",
+          "TEST-LIFE-004",
+          "TEST-LIFE-005",
+          "TEST-LIFE-006",
+          "TEST-LIFE-007",
+          "TEST-LIFE-008",
+          "TEST-LIFE-009",
+          "TEST-LIFE-010",
+          "TEST-LIFE-011",
+          "TEST-LIFE-015",
+          "TEST-OPS-001",
+          "TEST-OPS-002",
+          "TEST-OPS-003",
+          "TEST-OPS-004",
+          "TEST-OPS-005",
+          "TEST-OPS-006",
+          "TEST-OPS-007",
+          "TEST-OPS-008",
+          "TEST-OPS-009",
+          "TEST-OPS-010",
+          "TEST-SYS-001",
+          "TEST-SYS-004",
+          "TEST-SYS-005",
+          "TEST-SYS-011",
+          "TEST-SYS-012",
+          "TEST-SYS-013",
+          "TEST-CROSS-007",
+          "TEST-CROSS-008",
+          "TEST-CROSS-009",
+          "TEST-CROSS-013",
+          "TEST-CROSS-014",
+          "TEST-CROSS-015",
+          "TEST-EXIT-001",
+          "TEST-EXIT-002",
+          "TEST-EXIT-003",
+          "TEST-EXIT-004",
+          "TEST-EXIT-005",
+          "TEST-EXIT-006",
+          "TEST-EXIT-007",
+          "TEST-EXIT-008"
+        ],
+        "evidence_ids": [],
+        "status": "claimed"
+      }
     ],
-    "required_evidence_types": [
-      "profile_composition_validation",
-      "measured_boot_evidence",
-      "attestation_result",
-      "hardware_bound_identity_evidence",
-      "mandatory_access_control_validation",
-      "privileged_operation_negative_test",
-      "policy_test_vector_result",
-      "separation_of_duties_evidence",
-      "key_custody_evidence",
-      "artifact_provenance_and_signing_evidence",
-      "software_bill_of_materials",
-      "release_set_compatibility_result",
-      "activation_and_rollback_result",
-      "revocation_test_result",
-      "tamper_evident_audit_validation",
-      "protected_evidence_access_test",
-      "network_boundary_validation",
-      "offline_operation_result",
-      "backup_result",
-      "restore_test_result",
-      "break_glass_expiry_result",
-      "recovery_exercise_result",
-      "external_integration_removal_result",
-      "resource_pressure_result",
-      "clean_export_and_restore_result"
-    ],
-    "claim_outcomes": [
-      "pass",
-      "fail",
-      "blocked",
-      "not_applicable"
-    ],
-    "activation_requires_outcome": "pass",
-    "missing_required_evidence_outcome": "blocked",
-    "expired_evidence_outcome": "blocked",
-    "failed_control_outcome": "fail",
-    "continuous_or_periodic_controls": [
-      "drift_detection",
-      "revocation_freshness",
-      "key_and_certificate_validity",
-      "backup_success",
-      "audit_anchor_health",
-      "resource_reservation_health",
-      "active_release_identity",
-      "vulnerability_status"
-    ],
-    "manual_controls_allowed": true,
-    "manual_controls_require_independent_evidence": true
+    "exceptions": [],
+    "evidence_required": true,
+    "partial_conformance_allowed": false
   },
   "validation": {
-    "tool_refs": [
-      "tools/validate_docs.py",
-      "tools/check_interfile_locks.py",
-      "tools/check_canonical_ownership.py",
-      "tools/check_traceability.py",
-      "tools/check_artifact_contracts.py"
-    ],
+    "entry_point": "tools/validate_docs.py",
     "required_checks": [
-      "profile_id_unique",
-      "profile_type_is_overlay",
-      "scope_matches_profile_id",
-      "compatible_primary_profiles_resolve",
-      "incompatible_primary_profiles_resolve",
-      "compatible_overlays_resolve",
-      "composition_has_no_conflicts",
-      "required_components_resolve",
-      "component_constraints_reference_registered_components",
-      "decision_refs_are_accepted",
-      "requirement_refs_are_active",
-      "lock_refs_are_active",
-      "exception_refs_are_active",
-      "test_refs_are_active",
-      "hardware_assurance_is_complete",
-      "identity_and_access_controls_are_complete",
-      "key_custody_controls_are_complete",
-      "host_and_runtime_controls_are_complete",
-      "network_controls_are_complete",
-      "governance_and_privilege_controls_are_complete",
-      "audit_and_evidence_controls_are_complete",
-      "artifact_and_release_controls_are_complete",
-      "recovery_controls_are_complete",
-      "external_ai_boundary_is_complete",
-      "offline_claims_are_tested",
-      "resource_reservations_are_declared",
-      "conformance_claim_has_complete_traceability",
+      "profile_id_matches_filename",
+      "profile_kind_matches_profile_id",
+      "terminology_ref_resolves",
+      "canonical_refs_resolve",
+      "decision_ids_resolve_and_are_accepted",
+      "requirement_ids_resolve",
+      "lock_ids_resolve",
+      "overlays_are_not_independently_deployable",
+      "overlay_compatibility_resolves",
+      "composition_graph_is_acyclic",
+      "required_and_optional_overlays_do_not_overlap",
+      "incompatible_profiles_do_not_overlap_compatible_profiles",
+      "inheritance_is_explicit",
+      "profile_rules_do_not_become_global",
+      "capability_states_are_valid",
+      "component_states_are_valid",
+      "component_data_ownership_is_preserved",
+      "cross_component_direct_writes_are_disabled",
+      "native_ai_dependency_is_false",
+      "offline_claims_match_capability_states",
+      "hardware_envelope_is_satisfiable",
+      "artifact_class_refs_resolve",
+      "release_channel_refs_resolve",
+      "conformance_claims_are_traceable",
+      "exceptions_resolve",
       "no_unresolved_authority_markers"
     ],
     "failure_outcome": "fail",
-    "missing_dependency_outcome": "blocked"
+    "missing_dependency_outcome": "blocked",
+    "automatic_semantic_repairs_allowed": false,
+    "validated_at": null,
+    "validation_status": "pass"
   },
   "external_integrations": {
     "uckk_publication": {

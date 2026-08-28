@@ -15,8 +15,8 @@
     "generated/decision-index.json",
     "contracts/system.contract.json#/development_isolation",
     "schemas/developer-workspace.schema.json",
-    "contracts/profiles/developer-linux-workstation.profile.json#/workspace_isolation",
-    "contracts/profiles/developer-windows-wsl.profile.json#/workspace_isolation",
+    "contracts/profiles/developer-linux-workstation.profile.json#/capabilities/workspace_isolation",
+    "contracts/profiles/developer-windows-wsl.profile.json#/capabilities/workspace_isolation",
     "contracts/toolchains/python-uv.toolchain.json",
     "generated/component-catalog.json",
     "contracts/artifact-classes.contract.json",
@@ -273,8 +273,8 @@ The requirements registry owns the exact statements.
 
 ### 4.4 Profiles
 
-- `contracts/profiles/developer-linux-workstation.profile.json#/workspace_isolation`
-- `contracts/profiles/developer-windows-wsl.profile.json#/workspace_isolation`
+- `contracts/profiles/developer-linux-workstation.profile.json#/capabilities/workspace_isolation`
+- `contracts/profiles/developer-windows-wsl.profile.json#/capabilities/workspace_isolation`
 
 ### 4.5 Toolchain
 
