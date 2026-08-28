@@ -329,3 +329,24 @@ def test_powershell_scripts_preserve_locked_command_contract() -> None:
     assert "UV_OFFLINE" in bootstrap
     assert "pre-commit', 'install'" in setup
     assert "python', '-m', 'koa_tools.cli', '--help'" in setup
+
+
+def test_diagnose_help_exposes_read_only_pipeline_options(
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    root = _workspace(tmp_path)
+
+    code, stdout, stderr = _invoke(
+        ["--repository-root", str(root), "diagnose", "--help"],
+        start_directory=root.parent,
+    )
+    captured = capsys.readouterr()
+
+    assert code == cli.ExitCode.OK
+    assert stdout == ""
+    assert stderr == ""
+    assert "--pipeline" in captured.out
+    assert "--profile" in captured.out
+    assert "inspect profile-to-release pipeline readiness" in captured.out
+    assert "artifacts" in captured.out

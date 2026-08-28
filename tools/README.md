@@ -141,3 +141,37 @@ python docs/tools/validate_docs.py
 ```
 
 Local success is workspace feedback, not release-authoritative evidence.
+
+## Read-only pipeline diagnosis
+
+`diagnose` can inspect the existing profile-to-release chain without generating,
+building, staging, signing, or activating anything:
+
+```console
+uv run --frozen python -m koa_tools.cli diagnose \
+  --pipeline \
+  --profile sovereign-linux-node \
+  --json
+```
+
+Pipeline diagnosis observes the canonical profile contract and the already
+materialized repository state in this order:
+
+1. canonical primary profile contract;
+2. generated effective-profile projection and its source digests;
+3. required native component build bundles;
+4. required independent-subsystem source locks;
+5. materialized package resolution under `generated/`;
+6. the authority-derived `generated/profiles/<profile-id>/resolved-plan.json`;
+7. the B-0092 assembly bundle declared by `packaging/system/image.toml`;
+8. system-image and complete-Release-Set prerequisites.
+
+The command does not infer missing compatibility, runtime commands, package
+identities, bundle identities, signatures, or release authority. Missing or
+unresolved authority returns `readiness: blocked` with stable `pipeline_*`
+reason codes. A blocked pipeline is an actionable diagnostic result and is not
+repaired by `diagnose`.
+
+`--profile` is required when `--pipeline` is selected. The ordinary
+architecture-only `koa diagnose` behavior remains unchanged when `--pipeline`
+is omitted.

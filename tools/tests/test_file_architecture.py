@@ -138,3 +138,163 @@ def test_validate_verify_and_diagnose_commands_expose_same_checks(tmp_path: Path
         "dependencies",
         "generated-content",
     ]
+
+
+def _pipeline_fixture(root: Path, *, ready: bool) -> None:
+    profile_ref = "docs/contracts/profiles/sovereign-linux-node.profile.json"
+    profile = {
+        "profile_id": "sovereign_linux_node",
+        "profile_kind": "primary_profile",
+        "components": {
+            "identity_and_trust": {"state": "required"},
+            "ariane": {"state": "required"},
+        },
+    }
+    write_json(root, profile_ref, profile)
+    write_json(
+        root,
+        "docs/generated/component-catalog.json",
+        {"generated": True, "records": [{"id": "identity_and_trust"}]},
+    )
+    touch(
+        root,
+        "packaging/components/identity-and-trust.toml",
+        "\n".join(
+            [
+                'source_bundle = "B-0023"',
+                "",
+                "[upstream_bundle]",
+                'output = "generated/component-bundles/identity-and-trust"',
+            ]
+        )
+        + "\n",
+    )
+    touch(
+        root,
+        "packaging/subsystems/ariane.toml",
+        "\n".join(
+            [
+                "[source]",
+                'lock_path = "integrations/ariane/source.lock.json"',
+            ]
+        )
+        + "\n",
+    )
+    write_json(
+        root,
+        "integrations/ariane/source.lock.json",
+        {"pin_state": "pinned" if ready else "unresolved", "activation": {"allowed": ready}},
+    )
+    touch(
+        root,
+        "packaging/system/image.toml",
+        "\n".join(
+            [
+                f'status = "{"ready" if ready else "blocked_missing_inputs"}"',
+                'assembly_plan_bundle_source = "generated/assembly/B-0092/bundle.json"',
+                "activation_ready = false",
+                "",
+                "[identity]",
+                "complete_release_set_required = true",
+            ]
+        )
+        + "\n",
+    )
+
+    if not ready:
+        touch(root, "generated/profiles/sovereign_linux_node/resolved-plan.json", "{}\n")
+        return
+
+    profile_digest = hashlib.sha256((root / profile_ref).read_bytes()).hexdigest()
+    write_json(
+        root,
+        "generated/profiles/sovereign_linux_node/effective-profile.json",
+        {
+            "format": "koa.effective-profile",
+            "authority": "derived_projection",
+            "manual_edits": "prohibited",
+            "primary_profile_id": "sovereign_linux_node",
+            "result": "pass",
+            "source_digests": {profile_ref: profile_digest},
+        },
+    )
+    write_json(root, "generated/component-bundles/identity-and-trust/bundle.json", {"bundle_id": "B-0023"})
+    write_json(
+        root,
+        "generated/rootfs/package-resolution.json",
+        {"package_set_id": "koa.host.base-packages", "profile_id": "sovereign_linux_node"},
+    )
+    write_json(
+        root,
+        "generated/profiles/sovereign_linux_node/resolved-plan.json",
+        {
+            "profile_id": "sovereign_linux_node",
+            "plan_id": "test-plan",
+            "source_digests": {profile_ref: profile_digest},
+            "services": [],
+            "networks": [],
+            "volumes": [],
+            "packages": [],
+            "files": [],
+            "offline": {},
+            "backup": {},
+        },
+    )
+    write_json(root, "generated/assembly/B-0092/bundle.json", {"bundle_id": "B-0092"})
+    write_json(
+        root,
+        "generated/release/candidates/test-release-set.json",
+        {
+            "artifact_class": "release_set",
+            "release_set_id": "test.release-set",
+            "channels": {
+                "system": {},
+                "services": {},
+                "governance": {},
+                "knowledge": {},
+            },
+            "compatibility": {"status": "compatible"},
+            "activation": {"eligibility": "eligible"},
+            "signature": {"verification_status": "verified"},
+        },
+    )
+
+
+def test_pipeline_diagnose_reports_authority_blockers_without_writing(tmp_path: Path) -> None:
+    _pipeline_fixture(tmp_path, ready=False)
+    before = {
+        path.relative_to(tmp_path).as_posix(): path.read_bytes()
+        for path in tmp_path.rglob("*")
+        if path.is_file()
+    }
+
+    payload = diagnose.collect_pipeline(tmp_path, "sovereign-linux-node")
+
+    after = {
+        path.relative_to(tmp_path).as_posix(): path.read_bytes()
+        for path in tmp_path.rglob("*")
+        if path.is_file()
+    }
+    codes = {item["code"] for item in payload["blockers"]}
+    assert payload["readiness"] == "blocked"
+    assert {
+        "pipeline_effective_profile_missing",
+        "pipeline_component_bundle_missing",
+        "pipeline_subsystem_source_unresolved",
+        "pipeline_package_resolution_missing",
+        "pipeline_resolved_plan_invalid",
+        "pipeline_b0092_not_renderable",
+        "pipeline_image_inputs_missing",
+        "pipeline_release_evidence_missing",
+    } <= codes
+    assert before == after
+
+
+def test_pipeline_diagnose_passes_only_when_observed_chain_is_closed(tmp_path: Path) -> None:
+    _pipeline_fixture(tmp_path, ready=True)
+
+    payload = diagnose.collect_pipeline(tmp_path, "sovereign-linux-node")
+
+    assert payload["readiness"] == "ready"
+    assert payload["blockers"] == []
+    assert all(stage["status"] == "pass" for stage in payload["stages"])
