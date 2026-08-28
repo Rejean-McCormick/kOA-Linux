@@ -12,6 +12,16 @@ assembly_plan_bundle = "B-0092"
 assembly_plan_bundle_source = "generated/assembly/B-0092/bundle.json"
 activation_ready = false
 
+[build_pipeline]
+disk_backend_protocol = "koa.disk-image-backend.v1"
+activation_side_effects = false
+all_outputs_staged_inactive = true
+
+[build_pipeline.reference_backend]
+id = "qemu-uefi-validation"
+scope = "test_only"
+product_requirement = false
+
 [identity]
 version_source = "signed_artifact_manifest"
 content_digest_required = true

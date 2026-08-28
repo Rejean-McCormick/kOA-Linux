@@ -336,6 +336,7 @@ def test_effective_profile_declaration_is_deterministic_and_non_authoritative() 
     assert first["result"] == "pass"
     assert first["validation"] == {"outcome": "pass", "composition_conflicts": 0}
     assert first["unresolved_conflicts"] == []
+    assert first["resolved_compatibility"] == {"primary_overlay_pairs": [], "overlay_pairs": []}
     assert str(first["generated_evidence_identity"]).startswith("sha256:")
 
 

@@ -1,10 +1,9 @@
-"""Determinism at the profile-plan boundary."""
+"""Determinism at the already-resolved deployment-plan boundary."""
 
 from __future__ import annotations
 
 from copy import deepcopy
 from pathlib import Path
-import json
 import sys
 
 import pytest
@@ -17,56 +16,71 @@ from koa_assembly.renderers import normalize_plan, plan_digest  # noqa: E402
 _SHA = "sha256:" + "c" * 64
 
 
-def _profile_derived_plan() -> dict:
-    profile = json.loads(
-        (REPO / "docs/contracts/profiles/sovereign-offline.profile.json").read_text(encoding="utf-8")
-    )
-    service_ids = [item.replace("_", "-") for item in profile["offline_operation"]["required_local_services"]]
-    services = [
-        {
-            "id": service_id,
-            "kind": "native",
-            "command": [f"/usr/libexec/koa/{service_id}"],
-            "dependencies": [],
-            "environment": {},
-            "ports": [],
-            "mounts": [],
-            "networks": [],
-            "resources": {},
-            "capabilities": [],
-            "user": service_id,
-            "criticality": "critical",
-        }
-        for service_id in service_ids
-    ]
+def _resolved_plan_fixture() -> dict:
+    """Return explicit test data; this fixture is not derived from a profile authority."""
+
     return {
-        "plan_id": "sovereign-offline-profile-plan",
-        "profile_id": profile["profile_id"],
+        "plan_id": "sovereign-offline-fixture-plan",
+        "profile_id": "sovereign_offline",
         "source_digests": {
-            "docs/contracts/profiles/sovereign-offline.profile.json": _SHA
+            "tests/reproducibility/resolved-plan-fixture": _SHA,
         },
-        "services": services,
+        "services": [
+            {
+                "id": "fixture-a",
+                "kind": "native",
+                "command": ["/usr/bin/true"],
+                "dependencies": [],
+                "environment": {},
+                "ports": [],
+                "mounts": [],
+                "networks": [],
+                "resources": {},
+                "capabilities": [],
+                "user": "nobody",
+                "criticality": "critical",
+            },
+            {
+                "id": "fixture-b",
+                "kind": "native",
+                "command": ["/usr/bin/true"],
+                "dependencies": ["fixture-a"],
+                "environment": {},
+                "ports": [],
+                "mounts": [],
+                "networks": [],
+                "resources": {},
+                "capabilities": [],
+                "user": "nobody",
+                "criticality": "important",
+            },
+        ],
         "networks": [],
         "volumes": [],
         "packages": [],
         "files": [],
-        "offline": {"enabled": True, "allow_network": False, "artifacts": []},
+        "offline": {
+            "enabled": True,
+            "allow_network": False,
+            "verification_policy": "verify-before-use",
+            "artifacts": [],
+        },
         "backup": {},
     }
 
 
-def test_public_profile_plan_normalization_is_order_independent() -> None:
-    first = _profile_derived_plan()
+def test_resolved_plan_normalization_is_order_independent() -> None:
+    first = _resolved_plan_fixture()
     second = deepcopy(first)
     second["services"].reverse()
     assert normalize_plan(first) == normalize_plan(second)
     assert plan_digest(normalize_plan(first)) == plan_digest(normalize_plan(second))
 
 
-def test_profile_source_change_changes_plan_digest() -> None:
-    first = normalize_plan(_profile_derived_plan())
-    changed_plan = _profile_derived_plan()
-    changed_plan["source_digests"]["docs/contracts/profiles/sovereign-offline.profile.json"] = "sha256:" + "d" * 64
+def test_resolved_plan_source_change_changes_plan_digest() -> None:
+    first = normalize_plan(_resolved_plan_fixture())
+    changed_plan = _resolved_plan_fixture()
+    changed_plan["source_digests"]["tests/reproducibility/resolved-plan-fixture"] = "sha256:" + "d" * 64
     changed = normalize_plan(changed_plan)
     assert plan_digest(first) != plan_digest(changed)
 
@@ -82,5 +96,5 @@ def test_real_plan_builder_dependency_gate() -> None:
     ]
     missing = [path.relative_to(REPO).as_posix() for path in expected if not path.is_file()]
     if missing:
-        pytest.skip("B-0092 absent: " + ", ".join(missing))
+        pytest.skip("resolved-plan builder dependencies absent: " + ", ".join(missing))
     assert all(path.stat().st_size > 0 for path in expected)

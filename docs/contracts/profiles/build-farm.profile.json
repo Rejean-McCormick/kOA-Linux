@@ -101,11 +101,11 @@
     "compatible_primary_profiles": [],
     "required_overlays": [],
     "optional_overlays": [
-      "high_assurance",
-      "sovereign_offline"
+      "high_assurance"
     ],
     "incompatible_profiles": [
-      "appliance_shell"
+      "appliance_shell",
+      "sovereign_offline"
     ],
     "composition_priority": null,
     "conflict_policy": "fail_closed"

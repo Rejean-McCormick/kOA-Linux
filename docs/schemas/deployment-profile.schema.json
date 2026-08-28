@@ -484,6 +484,45 @@
             "fail_closed",
             "strongest_restriction_wins"
           ]
+        },
+        "required_host_properties": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operating_system_family",
+            "local_graphical_seat",
+            "wayland_capable",
+            "local_input_available"
+          ],
+          "properties": {
+            "operating_system_family": {
+              "type": "string",
+              "enum": [
+                "linux",
+                "windows",
+                "wsl2",
+                "container_host",
+                "platform_independent"
+              ]
+            },
+            "local_graphical_seat": {
+              "type": "boolean"
+            },
+            "wayland_capable": {
+              "type": "boolean"
+            },
+            "local_input_available": {
+              "type": "boolean"
+            }
+          }
+        },
+        "required_base_capabilities": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
+          }
         }
       }
     },

@@ -25,6 +25,7 @@ def profile(
     composition: dict[str, object],
     *,
     status: str = "active",
+    capabilities: dict[str, object] | None = None,
 ) -> dict[str, object]:
     return {
         "profile_id": profile_id,
@@ -32,7 +33,7 @@ def profile(
         "version": "1.0.0",
         "status": status,
         "composition": composition,
-        "capabilities": {},
+        "capabilities": capabilities or {},
         "components": {},
         "subsystems": {},
     }
@@ -42,29 +43,41 @@ def issue_codes(result: object) -> set[str]:
     return {issue.code for issue in result.issues}
 
 
-def test_user_lightweight_with_appliance_shell_blocks_when_base_capabilities_are_absent() -> None:
-    result = ProfileResolver(contracts()).resolve("user_lightweight", ["appliance_shell"])
+def test_appliance_shell_requires_declared_base_capabilities() -> None:
+    appliance = contracts()["docs/contracts/profiles/appliance-shell.profile.json"]
+    source = {
+        "base.json": profile(
+            "base",
+            "primary_profile",
+            {"optional_overlays": ["appliance_shell"]},
+        ),
+        "appliance.json": {
+            **appliance,
+            "composition": {
+                **appliance["composition"],
+                "compatible_primary_profiles": ["base"],
+            },
+        },
+    }
+    result = ProfileResolver(source).resolve("base", ["appliance_shell"])
     assert result.outcome is ResolutionOutcome.BLOCKED
     assert "required_base_capability_unresolved" in issue_codes(result)
 
 
-def test_user_lightweight_with_appliance_shell_passes_with_explicit_base_capabilities() -> None:
-    result = ProfileResolver(contracts()).resolve(
-        "user_lightweight",
-        ["appliance_shell"],
-        explicit_base_capabilities=["interactive_user", "ariane_local_navigation"],
-    )
+def test_user_lightweight_with_appliance_shell_passes_from_profile_capabilities() -> None:
+    result = ProfileResolver(contracts()).resolve("user_lightweight", ["appliance_shell"])
     assert result.outcome is ResolutionOutcome.PASS
 
 
-def test_user_lightweight_with_high_assurance_is_blocked_by_primary() -> None:
+def test_user_lightweight_with_high_assurance_passes_reciprocal_matrix() -> None:
     result = ProfileResolver(contracts()).resolve("user_lightweight", ["high_assurance"])
-    assert "primary_overlay_prohibited" in issue_codes(result)
+    assert result.outcome is ResolutionOutcome.PASS
 
 
-def test_user_lightweight_with_sovereign_offline_is_blocked_by_overlay() -> None:
+def test_user_lightweight_with_sovereign_offline_is_blocked_bidirectionally() -> None:
     result = ProfileResolver(contracts()).resolve("user_lightweight", ["sovereign_offline"])
-    assert "overlay_primary_incompatible" in issue_codes(result)
+    assert result.outcome is ResolutionOutcome.BLOCKED
+    assert issue_codes(result) >= {"primary_overlay_prohibited", "overlay_primary_incompatible"}
 
 
 def test_windows_wsl_rejects_all_active_overlays() -> None:
@@ -85,13 +98,13 @@ def test_control_plane_high_assurance_passes() -> None:
     assert result.outcome is ResolutionOutcome.PASS
 
 
-def test_build_farm_sovereign_offline_conflict_is_not_guessed_away() -> None:
+def test_build_farm_sovereign_offline_conflict_is_declared_bidirectionally() -> None:
     result = ProfileResolver(contracts()).resolve("build_farm", ["sovereign_offline"])
     assert result.outcome is ResolutionOutcome.BLOCKED
-    assert "overlay_primary_incompatible" in issue_codes(result)
+    assert issue_codes(result) >= {"primary_overlay_prohibited", "overlay_primary_incompatible"}
 
 
-def test_sovereign_hub_with_two_declared_overlays_passes() -> None:
+def test_sovereign_hub_with_two_reciprocally_declared_overlays_passes() -> None:
     effective = ProfileResolver(contracts()).resolve(
         "sovereign_hub", ["sovereign_offline", "high_assurance"]
     ).require_effective()
@@ -101,7 +114,7 @@ def test_sovereign_hub_with_two_declared_overlays_passes() -> None:
     )
 
 
-def test_pairwise_compatibility_must_be_declared_by_at_least_one_owner() -> None:
+def test_pairwise_compatibility_requires_both_overlay_owners() -> None:
     source = {
         "base.json": profile(
             "base",
@@ -112,7 +125,9 @@ def test_pairwise_compatibility_must_be_declared_by_at_least_one_owner() -> None
             ]},
         ),
         "left.json": profile(
-            "left", "profile_overlay", {"compatible_primary_profiles": ["base"]}
+            "left",
+            "profile_overlay",
+            {"compatible_primary_profiles": ["base"], "compatible_overlays": ["right"]},
         ),
         "right.json": profile(
             "right", "profile_overlay", {"compatible_primary_profiles": ["base"]}
@@ -120,6 +135,30 @@ def test_pairwise_compatibility_must_be_declared_by_at_least_one_owner() -> None
     }
     result = ProfileResolver(source).resolve("base", ["left", "right"])
     assert "overlay_pair_not_declared_compatible" in issue_codes(result)
+
+
+def test_pairwise_reciprocal_compatibility_passes() -> None:
+    source = {
+        "base.json": profile(
+            "base",
+            "primary_profile",
+            {"overlay_compatibility": [
+                {"overlay_id": "left", "compatibility": "compatible"},
+                {"overlay_id": "right", "compatibility": "compatible"},
+            ]},
+        ),
+        "left.json": profile(
+            "left",
+            "profile_overlay",
+            {"compatible_primary_profiles": ["base"], "compatible_overlays": ["right"]},
+        ),
+        "right.json": profile(
+            "right",
+            "profile_overlay",
+            {"compatible_primary_profiles": ["base"], "compatible_overlays": ["left"]},
+        ),
+    }
+    assert ProfileResolver(source).resolve("base", ["left", "right"]).outcome is ResolutionOutcome.PASS
 
 
 def test_explicit_pairwise_prohibition_blocks_composition() -> None:

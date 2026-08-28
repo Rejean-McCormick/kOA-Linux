@@ -86,7 +86,10 @@
       "sovereign_linux_node"
     ],
     "required_overlays": [],
-    "optional_overlays": [],
+    "optional_overlays": [
+      "high_assurance",
+      "sovereign_offline"
+    ],
     "incompatible_profiles": [
       "developer_linux_workstation",
       "developer_windows_wsl",
@@ -95,7 +98,17 @@
       "control_plane"
     ],
     "composition_priority": 300,
-    "conflict_policy": "fail_closed"
+    "conflict_policy": "fail_closed",
+    "required_host_properties": {
+      "operating_system_family": "linux",
+      "local_graphical_seat": true,
+      "wayland_capable": true,
+      "local_input_available": true
+    },
+    "required_base_capabilities": [
+      "interactive_user",
+      "ariane_local_navigation"
+    ]
   },
   "inheritance": {
     "baseline_ref": "contracts/system.contract.json#/system",

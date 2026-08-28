@@ -41,6 +41,14 @@ def test_appliance_shell_identity_and_composition() -> None:
     _assert_identity(CONTRACT, "appliance_shell", "profile_overlay")
     composition = CONTRACT["composition"]
     assert set(composition["compatible_primary_profiles"]) == {"user_lightweight", "sovereign_linux_node"}
+    assert set(composition["optional_overlays"]) == {"high_assurance", "sovereign_offline"}
+    assert composition["required_base_capabilities"] == ["interactive_user", "ariane_local_navigation"]
+    assert composition["required_host_properties"] == {
+        "operating_system_family": "linux",
+        "local_graphical_seat": True,
+        "wayland_capable": True,
+        "local_input_available": True,
+    }
     assert composition["composition_priority"] == 300
     assert composition["conflict_policy"] == "fail_closed"
 

@@ -64,8 +64,8 @@ def test_user_lightweight_component_boundaries() -> None:
 
 
 def test_user_lightweight_composition_and_claim_tests() -> None:
-    assert set(CONTRACT["composition"]["optional_overlays"]) == {"appliance_shell", "sovereign_offline"}
-    assert "high_assurance" in CONTRACT["composition"]["incompatible_profiles"]
+    assert set(CONTRACT["composition"]["optional_overlays"]) == {"appliance_shell", "high_assurance"}
+    assert "sovereign_offline" in CONTRACT["composition"]["incompatible_profiles"]
     ids = _claim_tests(CONTRACT)
     assert len(ids) == 12
     assert all(item.startswith("TEST-PROFILE-USER-") for item in ids)

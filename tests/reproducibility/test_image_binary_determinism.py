@@ -4,10 +4,12 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
+import stat
 import subprocess
 import sys
 import tarfile
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 REPO = Path(__file__).resolve().parents[2]
 BUILDER = REPO / "host/image/build-rootfs.py"
@@ -31,22 +33,94 @@ def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def _write_package_resolution(path: Path) -> None:
+def _materialized_tree_digest(root: Path) -> str:
+    digest = hashlib.sha256()
+    for current, directories, files in os.walk(root, topdown=True, followlinks=False):
+        directories.sort()
+        files.sort()
+        current_path = Path(current)
+        entries: list[Path] = []
+        for directory in list(directories):
+            candidate = current_path / directory
+            if candidate.is_symlink():
+                directories.remove(directory)
+            entries.append(candidate)
+        entries.extend(current_path / filename for filename in files)
+        for candidate in entries:
+            relative = PurePosixPath(*candidate.relative_to(root).parts).as_posix()
+            metadata = candidate.lstat()
+            if stat.S_ISDIR(metadata.st_mode):
+                record = {
+                    "kind": "directory",
+                    "mode": f"{stat.S_IMODE(metadata.st_mode):04o}",
+                    "path": relative,
+                }
+            elif stat.S_ISREG(metadata.st_mode):
+                record = {
+                    "kind": "file",
+                    "mode": f"{stat.S_IMODE(metadata.st_mode):04o}",
+                    "path": relative,
+                    "sha256": _sha256(candidate),
+                    "size": metadata.st_size,
+                }
+            elif stat.S_ISLNK(metadata.st_mode):
+                record = {
+                    "kind": "symlink",
+                    "mode": "0777",
+                    "path": relative,
+                    "target": os.readlink(candidate),
+                }
+            else:
+                raise AssertionError(f"unsupported fixture entry: {relative}")
+            digest.update(json.dumps(record, sort_keys=True, separators=(",", ":")).encode("utf-8"))
+            digest.update(b"\n")
+    return digest.hexdigest()
+
+
+def _write_package_resolution(path: Path, source_root: Path) -> None:
     base = json.loads(BASE_PACKAGES.read_text(encoding="utf-8"))
     capabilities = base.get("required_capabilities")
     assert isinstance(capabilities, list) and capabilities
-    resolved: dict[str, dict[str, str]] = {}
+    resolved: dict[str, dict[str, object]] = {}
     for index, item in enumerate(capabilities):
         assert isinstance(item, dict) and isinstance(item.get("id"), str)
         capability = item["id"]
+        digest = hashlib.sha256(f"{index}:{capability}".encode("utf-8")).hexdigest()
+        source_ref = f"fixture:package-resolution:{capability}"
         resolved[capability] = {
-            "source_ref": f"fixture:package-resolution:{capability}",
-            "sha256": hashlib.sha256(f"{index}:{capability}".encode("utf-8")).hexdigest(),
+            "package_id": f"fixture-{capability}",
+            "version": "1.0.0",
+            "sha256": digest,
+            "source_id": "determinism-fixture",
+            "source_ref": source_ref,
+            "artifact_path": f"fixture/{capability}.pkg",
+            "source_kind": "test_fixture",
+            "owner": "reproducibility_test",
+            "immutable_identity": source_ref,
+            "content_digest": digest,
+            "trust_scope": "test_only",
+            "provenance_ref": f"fixture:provenance:{capability}",
+            "admission_checks": {
+                "trust_scope_verified": True,
+                "provenance_verified": True,
+                "revocation_checked": True,
+                "license_policy_checked": True,
+            },
+            "evidence_refs": [f"fixture:evidence:{capability}"],
         }
-    path.write_text(
-        json.dumps({"schema_version": 1, "capabilities": resolved}, sort_keys=True, indent=2) + "\n",
-        encoding="utf-8",
-    )
+    document = {
+        "schema_version": 1,
+        "package_set_id": base["package_set_id"],
+        "profile_id": base["profile_id"],
+        "capabilities": resolved,
+        "materialization": {
+            "status": "materialized",
+            "network_accessed": False,
+            "candidate_code_executed": False,
+            "rootfs_tree_sha256": _materialized_tree_digest(source_root),
+        },
+    }
+    path.write_text(json.dumps(document, sort_keys=True, indent=2) + "\n", encoding="utf-8")
 
 
 def _source_tree(root: Path) -> Path:
@@ -106,7 +180,7 @@ def test_identical_inputs_and_toolchain_produce_identical_rootfs_bytes(tmp_path:
     _declared_build_policy()
     source = _source_tree(tmp_path)
     resolution = tmp_path / "package-resolution.json"
-    _write_package_resolution(resolution)
+    _write_package_resolution(resolution, source)
 
     first = tmp_path / "first"
     second = tmp_path / "second"
@@ -125,7 +199,7 @@ def test_identical_inputs_and_toolchain_produce_identical_rootfs_bytes(tmp_path:
 def test_host_file_times_do_not_change_declared_reproducible_output(tmp_path: Path) -> None:
     source = _source_tree(tmp_path)
     resolution = tmp_path / "package-resolution.json"
-    _write_package_resolution(resolution)
+    _write_package_resolution(resolution, source)
 
     first = tmp_path / "first"
     assert _build(source, first, resolution).returncode == 0
@@ -140,7 +214,7 @@ def test_host_file_times_do_not_change_declared_reproducible_output(tmp_path: Pa
 def test_source_date_epoch_is_the_declared_variable_tar_metadata_input(tmp_path: Path) -> None:
     source = _source_tree(tmp_path)
     resolution = tmp_path / "package-resolution.json"
-    _write_package_resolution(resolution)
+    _write_package_resolution(resolution, source)
 
     first = tmp_path / "first"
     second = tmp_path / "second"

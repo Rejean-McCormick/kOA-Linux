@@ -101,10 +101,10 @@
     "required_overlays": [],
     "optional_overlays": [
       "appliance_shell",
-      "sovereign_offline"
+      "high_assurance"
     ],
     "incompatible_profiles": [
-      "high_assurance"
+      "sovereign_offline"
     ],
     "composition_priority": null,
     "conflict_policy": "fail_closed"

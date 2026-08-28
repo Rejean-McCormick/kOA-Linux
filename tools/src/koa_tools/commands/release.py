@@ -12,7 +12,6 @@ from . import (
     CommandError,
     Invocation,
     add_repository_options,
-    assembly_cli,
     python_script,
     repository_path,
     repository_root,
@@ -82,7 +81,7 @@ def _candidate(args: argparse.Namespace) -> int:
     root = repository_root(args.repository_root)
     release_id = validate_identifier(args.release_id, label="release-id")
     version = validate_identifier(args.version, label="version")
-    epoch = source_date_epoch(args.source_date_epoch)
+    source_date_epoch(args.source_date_epoch)
 
     profiles: list[str] = []
     for profile in args.profile:
@@ -90,53 +89,28 @@ def _candidate(args: argparse.Namespace) -> int:
             raise CommandError(f"duplicate profile: {profile!r}")
         profiles.append(profile)
 
-    channel_inputs: dict[str, str] = {}
     for channel in ("system", "services", "governance", "knowledge"):
-        value = repository_path(
+        repository_path(
             root,
             getattr(args, channel),
             label=f"{channel} artifact manifest",
             must_exist=True,
             expected_kind="file",
         )
-        channel_inputs[channel] = value.as_posix()
 
-    output = repository_path(
+    repository_path(
         root,
         args.output,
         label="Release Set candidate",
         generated_output=True,
     )
 
-    command: list[str] = [
-        *assembly_cli(
-            "release-set",
-            "--release-id",
-            release_id,
-            "--version",
-            version,
-            "--system",
-            channel_inputs["system"],
-            "--services",
-            channel_inputs["services"],
-            "--governance",
-            channel_inputs["governance"],
-            "--knowledge",
-            channel_inputs["knowledge"],
-            "--output",
-            output.as_posix(),
-        )
-    ]
-    for profile in profiles:
-        command.extend(("--profile", profile))
-
-    invocation = Invocation(
-        label=f"create Release Set candidate {release_id}@{version}",
-        argv=tuple(command),
-        required_paths=("assembly/pyproject.toml", *channel_inputs.values()),
-        environment={"SOURCE_DATE_EPOCH": epoch},
+    raise CommandError(
+        "release candidate construction is blocked: the current command does not receive "
+        "the canonical issuer, authority, compatibility, activation, signature, and provenance "
+        "inputs required by koa_assembly.releases.build_release_set; these values must not be "
+        f"invented for {release_id}@{version}"
     )
-    return run_plan(args, (invocation,))
 
 
 def _verify(args: argparse.Namespace) -> int:

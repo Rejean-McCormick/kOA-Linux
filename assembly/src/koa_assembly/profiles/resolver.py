@@ -71,6 +71,25 @@ class EffectiveProfile:
                 {"profile_id": profile_id, "version": version, "source": source}
                 for profile_id, version, source in self.contributing_profiles
             ],
+            "resolved_compatibility": {
+                "primary_overlay_pairs": [
+                    {
+                        "primary_profile_id": self.primary_profile_id,
+                        "overlay_id": overlay_id,
+                        "result": "compatible",
+                    }
+                    for overlay_id, _ in self.overlays
+                ],
+                "overlay_pairs": [
+                    {
+                        "left_overlay_id": left_id,
+                        "right_overlay_id": right_id,
+                        "result": "compatible",
+                    }
+                    for index, (left_id, _) in enumerate(self.overlays)
+                    for right_id, _ in self.overlays[index + 1 :]
+                ],
+            },
             "capabilities": [entry.to_dict() for entry in self.capabilities],
             "components": [entry.to_dict() for entry in self.components],
             "subsystems": [entry.to_dict() for entry in self.subsystems],

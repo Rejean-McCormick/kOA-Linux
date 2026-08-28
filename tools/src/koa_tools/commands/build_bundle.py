@@ -1,4 +1,4 @@
-"""Orchestrate deterministic offline-bundle construction."""
+"""Validate offline-bundle construction inputs and fail closed until a builder exists."""
 
 from __future__ import annotations
 
@@ -10,14 +10,12 @@ from . import (
     CANONICAL_OVERLAYS,
     CANONICAL_PROFILES,
     CommandDefinition,
-    Invocation,
+    CommandError,
     add_repository_options,
-    assembly_cli,
     overlay_settings_paths,
     profile_settings_path,
     repository_path,
     repository_root,
-    run_plan,
     source_date_epoch,
     standalone_main,
 )
@@ -31,6 +29,13 @@ def configure(parser: argparse.ArgumentParser) -> None:
         action="append",
         default=[],
         choices=CANONICAL_OVERLAYS,
+    )
+    parser.add_argument(
+        "--plan",
+        help=(
+            "Repository-relative resolved deployment plan. Defaults to "
+            "generated/profiles/<profile-id>/resolved-plan.json; this command never creates it."
+        ),
     )
     parser.add_argument(
         "--manifest",
@@ -60,10 +65,18 @@ def execute(args: argparse.Namespace) -> int:
     root = repository_root(args.repository_root)
     profile_path = profile_settings_path(args.profile)
     overlay_paths = overlay_settings_paths(args.overlay)
+    profile_id = args.profile.replace("-", "_")
+    plan = repository_path(
+        root,
+        args.plan or f"generated/profiles/{profile_id}/resolved-plan.json",
+        label="resolved deployment plan",
+        must_exist=True,
+        expected_kind="file",
+    )
     manifest = repository_path(
         root,
         args.manifest,
-        label="offline-bundle manifest",
+        label="offline-bundle manifest policy",
         must_exist=True,
         expected_kind="file",
     )
@@ -81,53 +94,42 @@ def execute(args: argparse.Namespace) -> int:
         must_exist=True,
         expected_kind="file",
     )
-    output = repository_path(
+    repository_path(
+        root,
+        profile_path,
+        label="profile implementation settings",
+        must_exist=True,
+        expected_kind="file",
+    )
+    for overlay_path in overlay_paths:
+        repository_path(
+            root,
+            overlay_path,
+            label="overlay implementation settings",
+            must_exist=True,
+            expected_kind="file",
+        )
+    repository_path(
         root,
         args.output,
         label="offline-bundle output",
         generated_output=True,
     )
-    epoch = source_date_epoch(args.source_date_epoch)
+    source_date_epoch(args.source_date_epoch)
 
-    command: list[str] = [
-        *assembly_cli(
-            "render",
-            "--profile",
-            args.profile,
-            "--renderer",
-            "offline-bundle",
-            "--settings",
-            manifest.as_posix(),
-            "--include-rules",
-            include_rules.as_posix(),
-            "--verification-policy",
-            verification_policy.as_posix(),
-            "--output",
-            output.as_posix(),
-        )
-    ]
-    for overlay in args.overlay:
-        command.extend(("--overlay", overlay))
-
-    invocation = Invocation(
-        label=f"build offline bundle for {args.profile}",
-        argv=tuple(command),
-        required_paths=(
-            "assembly/pyproject.toml",
-            profile_path,
-            *overlay_paths,
-            manifest.as_posix(),
-            include_rules.as_posix(),
-            verification_policy.as_posix(),
-        ),
-        environment={"SOURCE_DATE_EPOCH": epoch},
+    raise CommandError(
+        "offline-bundle construction is blocked: the repository currently provides only "
+        "the deterministic offline_bundle renderer, which emits a derived manifest and does "
+        "not construct, sign, seal, admit, or verify the offline_bundle envelope required by "
+        "docs/contracts/artifact-contracts/offline-bundle.schema.json; refusing to report a "
+        f"successful bundle build from {plan.as_posix()}, {manifest.as_posix()}, "
+        f"{include_rules.as_posix()}, and {verification_policy.as_posix()}"
     )
-    return run_plan(args, (invocation,))
 
 
 COMMAND = CommandDefinition(
     name="build-bundle",
-    summary="Build a deterministic verified offline bundle from canonical profile inputs.",
+    summary="Build a deterministic verified offline bundle when the canonical builder is available.",
     configure=configure,
     execute=execute,
 )

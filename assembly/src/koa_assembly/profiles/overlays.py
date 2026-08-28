@@ -331,17 +331,18 @@ def validate_overlay_compatibility(
                     )
                 )
                 continue
-            declarations = []
-            if left.compatible_overlays is not None:
-                declarations.append(right.profile_id in left.compatible_overlays)
-            if right.compatible_overlays is not None:
-                declarations.append(left.profile_id in right.compatible_overlays)
-            if not declarations or not any(declarations):
+            reciprocal = (
+                left.compatible_overlays is not None
+                and right.compatible_overlays is not None
+                and right.profile_id in left.compatible_overlays
+                and left.profile_id in right.compatible_overlays
+            )
+            if not reciprocal:
                 issues.append(
                     CompatibilityIssue(
                         "overlay_pair_not_declared_compatible",
                         tuple(sorted(pair)),
-                        "no active overlay contract declares this pair compatible",
+                        "both active overlay contracts must declare this pair compatible",
                     )
                 )
 

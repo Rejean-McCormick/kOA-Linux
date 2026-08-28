@@ -81,8 +81,8 @@ def test_build_farm_composition_is_fail_closed() -> None:
     composition = CONTRACT["composition"]
     assert composition["conflict_policy"] == "fail_closed"
     assert composition["required_overlays"] == []
-    assert set(composition["optional_overlays"]) == {"high_assurance", "sovereign_offline"}
-    assert "appliance_shell" in composition["incompatible_profiles"]
+    assert set(composition["optional_overlays"]) == {"high_assurance"}
+    assert {"appliance_shell", "sovereign_offline"}.issubset(composition["incompatible_profiles"])
     assert CONTRACT["inheritance"]["override_policy"] == "strengthen_or_restrict_only"
 
 
