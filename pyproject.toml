@@ -30,7 +30,10 @@ quality = [
   "mypy==1.17.1",
   "ruff==0.12.12",
 ]
-build = []
+build = [
+  "setuptools>=82,<83",
+  "wheel>=0.45,<1",
+]
 
 
 [tool.uv.sources]
