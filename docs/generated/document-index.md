@@ -287,4 +287,5 @@
 | DOC-CONTRIBUTING | CONTRIBUTING.md | active | explanatory_markdown |
 | DOC-ROOT-README | README.md | active | explanatory_markdown |
 | DOC-STATUS-001 | status/2026-08-27-technical-maturity-assessment.md | active | explanatory_markdown |
+| DOC-STATUS-002 | status/2026-08-28-technical-maturity-assessment(1).md | active | explanatory_markdown |
 | DOC-STATUS-000 | status/README.md | active | explanatory_markdown |

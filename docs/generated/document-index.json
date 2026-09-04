@@ -15484,6 +15484,15 @@
       "decision_ids": []
     },
     {
+      "path": "status/2026-08-28-technical-maturity-assessment(1).md",
+      "doc_id": "DOC-STATUS-002",
+      "document_class": "explanatory_markdown",
+      "status": "active",
+      "requirement_ids": [],
+      "assertion_ids": [],
+      "decision_ids": []
+    },
+    {
       "path": "status/README.md",
       "doc_id": "DOC-STATUS-000",
       "document_class": "explanatory_markdown",

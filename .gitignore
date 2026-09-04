@@ -20,6 +20,7 @@ id_rsa
 .koa/runtime/
 .workspace/run/
 .workspace/tmp/
+/.levelupdiag/
 *.pid
 *.sock
 *.sqlite
@@ -83,4 +84,3 @@ Desktop.ini
 /evidence/
 /validation-support/
 GitSink.bat
-
