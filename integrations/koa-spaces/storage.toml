@@ -26,8 +26,11 @@ validated_artifacts = [
   "navigation_labels",
   "accessibility_assets",
   "permitted_page_assets",
+  "interface_themes",
+  "interface_asset_manifests",
+  "shell_asset_manifest",
 ]
-reproducible = ["presentation_cache", "derived_asset_index"]
+reproducible = ["presentation_cache", "derived_asset_index", "verified_static_asset_cache"]
 
 [retention]
 previous_validated_space_count = 1

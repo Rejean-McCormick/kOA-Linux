@@ -2,7 +2,7 @@ schema_version = 1
 
 [service]
 service_id = "koa-spaces"
-process_model = "single_local_web_process"
+process_model = "single_unprivileged_process_dual_local_listener"
 default_state = "disabled_unless_selected"
 unprivileged = true
 user = "koa-spaces"
@@ -13,12 +13,17 @@ runtime_socket = "/run/koa/sockets/koa-spaces.sock"
 restart_policy = "on_failure_bounded"
 
 [network]
-listen_mode = "unix_socket_only"
+listen_mode = "loopback_presentation_plus_unix_control"
+presentation_bind = "127.0.0.1"
+presentation_port = 4173
+control_transport = "http_over_unix"
 public_tcp_listener = false
 internet_required = false
 public_dns_required = false
 direct_subsystem_database_access = false
 outbound_network_default = "deny"
+public_cdn_runtime_dependency = false
+remote_font_runtime_dependency = false
 
 [activation]
 mode = "staged_validated_atomic"
@@ -29,6 +34,9 @@ optional_manifest_failure = "disable_contribution_and_report"
 route_collision_action = "block_activation"
 default_module_failure = "rollback"
 readiness_failure = "rollback"
+required_theme_failure = "block_activation"
+required_shell_assets_failure = "block_activation"
+optional_module_assets_failure = "disable_contribution_and_report"
 
 [profiles.user_lightweight]
 membership = "optional"

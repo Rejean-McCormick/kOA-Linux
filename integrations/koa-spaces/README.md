@@ -1,67 +1,60 @@
-# kOA Spaces integration boundary
+# Koali Spaces integration boundary
 
-This directory contains only the kOA-Linux-owned boundary for the optional and
-replaceable `koa_spaces` subsystem. It does not contain the kOA Spaces internal
-implementation, business state, database migrations, or authoritative internal
-documentation.
+This directory is the kOA-Linux-owned boundary for the optional, replaceable
+`koa_spaces` experience subsystem.  The executable Koali Spaces implementation
+remains in its own source repository and is never vendored into this boundary.
 
-## Authority
+The boundary now closes the complete presentation path required by the current
+Koali Spaces contracts: Space definitions, module manifests, themes, local asset
+manifests, responsive shell state, health/readiness, HTTP-over-Unix transport,
+atomic activation, rollback, and evidence-bound receipts.
 
-The applicable kOA authorities are:
+## Authority boundary
 
-- `docs/contracts/subsystems/koa-spaces.subsystem.json`;
-- `docs/04-components/subsystems/koa-spaces.md`;
-- `docs/02-system/21-koa-spaces-experience-layer.md`;
-- `docs/02-system/22-koa-spaces-interface-composition.md`;
-- `docs/03-profiles/14-koa-spaces-deployment.md`.
+Koali Spaces owns presentation composition only: the global frame, module
+selector, shared top bar, active sidebar, route composition, local presentation
+preferences, admitted interface assets and activation receipts.  It does not
+own identity, authorization, policy, business workflows, learning progress,
+media authority, resource admission, release activation, or privileged host
+operations.
 
-The subsystem's future internal documentation is expected at
-`subsystems/koa-spaces/` as a mounted independent repository. That mount is not
-present in the supplied source corpus. Consequently, `source.lock.json` is
-fail-closed: it pins the available boundary artifacts and prohibits build or
-activation until an immutable upstream repository revision is recorded.
+Konnaxion remains an independent subsystem.  The reference shell implementation
+was structurally aligned with the existing Konnaxion frontend patterns
+(responsive fixed sider/drawer, module selector, shared header, Ant Design theme
+mapping and PageShell convention), but no Konnaxion business page, workflow,
+validation rule, service, database model, or authority is copied into kOA
+Spaces.
 
-## Boundary
+## Source admission
 
-kOA-Linux owns deployment membership, lifecycle activation, network and storage
-exposure, resource limits, health integration, backup coordination, admitted
-Space definitions, admitted module interface manifests, degradation behavior,
-and activation evidence.
+`source.lock.json` intentionally remains fail-closed.  This passive pack does
+not fabricate an upstream repository URI, immutable revision, source digest,
+license record or release identity.  Those fields are populated only after the
+new Koali Spaces repository is created and reviewed.
 
-kOA Spaces owns only its presentation implementation and validated local
-presentation state. It does not own authorization, identity, policy, resource
-admission, host privilege, release activation, business workflows, learning
-progress, media authority, or data owned by another subsystem.
+## Runtime boundary
 
-Space definitions and module manifests are declarative artifacts. They cannot
-contain executable extensions, grant capabilities, bypass authorization, or
-perform direct cross-subsystem writes.
+The reference implementation uses two local-only listeners in one unprivileged
+process:
 
-## Files
+- presentation HTTP on loopback only (`127.0.0.1:4173` by default);
+- control HTTP over `/run/koa/sockets/koa-spaces.sock`.
 
-- `source.lock.json` — source and local boundary pins with a fail-closed upstream gate;
-- `compatibility.json` — supported contract, profile, and artifact versions;
-- `integration.toml` — integration identity and authority boundary;
-- `deployment.toml` — profile-conditioned process and exposure model;
-- `resource-envelope.toml` — implementation defaults for bounded runtime use;
-- `health.toml` — health and readiness checks;
-- `storage.toml` — owned mutable paths and excluded authority;
-- `backup.toml` — presentation-state backup and restore scope;
-- `degradation.toml` — explicit failure and removal behavior;
-- `interface/*.json` — admitted declarative Space and interface artifacts;
-- `adapter/pyproject.toml` — adapter package metadata for the subsequent bundle.
+No public listener or public CDN is required.  The Python boundary adapter ships
+a concrete HTTP-over-Unix transport for the control channel.
 
-## Activation gate
+## Activation
 
-Activation requires all of the following:
+Activation requires a valid Space definition, a valid local interface theme,
+all required module manifests, all asset manifests referenced by admitted
+modules, the local Koali Spaces shell asset manifest, route/capability/offline
+closure, and a receipt binding all of those digests.  Missing optional module
+assets disable only that optional contribution.  Missing required assets block
+activation or preserve the previous validated Space.
+## Capability projection
 
-1. a verified immutable upstream source revision in `source.lock.json`;
-2. schema-valid Space definitions and module manifests;
-3. verified signatures or hashes required by the active profile;
-4. resolution of every required module, route, widget, icon, localization, and page reference;
-5. route-collision, capability, offline, accessibility, and readiness checks;
-6. an atomic activation receipt and a verified previous Space for rollback.
+Koali Spaces never derives or grants capabilities from module manifests. The active capability list is a presentation projection supplied by Koali, bound into activation evidence, and may be refreshed independently through the local control channel. Menu visibility remains presentation-only.
 
-Missing optional modules are omitted without substitution. A missing required
-module, invalid required manifest, unresolved default module, or unavailable
-receipt path blocks activation.
+## Interface-first baseline
+
+`community-space.json` and `school-space.json` retain future module slots as disabled templates. Only `space_home` is enabled by the passive interface baseline. Konnaxion, Ariane, Orgo and other independent subsystem contributions appear only after their own source and interface admission succeeds.

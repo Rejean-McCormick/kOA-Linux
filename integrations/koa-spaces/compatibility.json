@@ -31,6 +31,22 @@
       "supported_artifact_versions": [
         "1.0.0"
       ]
+    },
+    {
+      "artifact_class": "interface_theme",
+      "schema": "docs/contracts/artifact-contracts/interface-theme.schema.json",
+      "schema_version": "draft-2020-12",
+      "supported_artifact_versions": [
+        "1.0.0"
+      ]
+    },
+    {
+      "artifact_class": "interface_asset_manifest",
+      "schema": "docs/contracts/artifact-contracts/interface-asset-manifest.schema.json",
+      "schema_version": "draft-2020-12",
+      "supported_artifact_versions": [
+        "1.0.0"
+      ]
     }
   ],
   "common_interfaces": {
@@ -61,6 +77,11 @@
     "unknown_route_action": "reject",
     "missing_optional_module": "omit_without_substitution",
     "missing_required_module": "block_activation",
-    "source_pin_unresolved": "block_build_and_activation"
+    "source_pin_unresolved": "block_build_and_activation",
+    "theme_missing_or_invalid": "block_activation",
+    "required_asset_bundle_missing": "block_activation",
+    "optional_asset_bundle_missing": "disable_contribution_and_report",
+    "remote_runtime_asset_dependency": "reject",
+    "shell_asset_manifest_missing": "block_activation"
   }
 }

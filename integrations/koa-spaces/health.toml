@@ -21,6 +21,10 @@ route_collisions_absent = true
 required_contributions_available = true
 offline_states_declared = true
 presentation_surface_ready = true
+active_theme_valid = true
+shell_asset_manifest_valid = true
+required_local_assets_resolved = true
+public_cdn_dependency_absent = true
 activation_receipt_available = true
 
 [separation]
@@ -35,3 +39,6 @@ network_unavailable = "ready_offline_when_required_local_routes_resolve"
 required_manifest_invalid = "not_ready"
 default_module_unresolved = "not_ready"
 route_collision = "not_ready"
+active_theme_invalid = "not_ready"
+shell_assets_missing = "not_ready"
+optional_module_assets_missing = "ready_with_capability_degraded"

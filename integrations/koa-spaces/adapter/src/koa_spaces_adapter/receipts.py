@@ -14,7 +14,7 @@ class ReceiptValidationError(ValueError):
     """Raised when a Space activation receipt violates its artifact contract."""
 
 
-_ID_RE = re.compile(r"^[a-z][a-z0-9]*(?:[_-][a-z0-9]+)*$")
+_ID_RE = re.compile(r"^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$")
 _VERSION_RE = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+$")
 _DIGEST_RE = re.compile(r"^[0-9a-f]{64}$")
 _OPERATIONS = {"activate", "rollback", "deactivate"}
@@ -26,6 +26,8 @@ _VALIDATION_VALUES = {
     "capabilities": {"pass", "fail"},
     "offline": {"pass", "fail"},
     "accessibility": {"pass", "fail"},
+    "theme": {"pass", "fail"},
+    "assets": {"pass", "fail"},
 }
 _REQUIRED = {
     "receipt_id",
@@ -33,7 +35,11 @@ _REQUIRED = {
     "space_id",
     "space_version",
     "space_definition_digest",
+    "interface_theme_digest",
+    "shell_asset_manifest_digest",
+    "capability_snapshot_digest",
     "module_manifest_digests",
+    "module_asset_manifest_digests",
     "profile_id",
     "validation",
     "result",
@@ -75,6 +81,24 @@ def _string(value: Any, name: str, *, nullable: bool = False) -> str | None:
     return value
 
 
+def _validate_digest_inventory(value: Any, id_field: str) -> None:
+    if not isinstance(value, list):
+        raise ReceiptValidationError(f"{id_field} digest inventory must be an array")
+    seen: set[str] = set()
+    for item in value:
+        if not isinstance(item, Mapping) or set(item) != {id_field, "digest"}:
+            raise ReceiptValidationError("invalid digest inventory entry")
+        identity = item[id_field]
+        digest = item["digest"]
+        if not isinstance(identity, str) or not _ID_RE.fullmatch(identity):
+            raise ReceiptValidationError(f"invalid {id_field}")
+        if identity in seen:
+            raise ReceiptValidationError(f"duplicate {id_field}")
+        if not isinstance(digest, str) or not _DIGEST_RE.fullmatch(digest):
+            raise ReceiptValidationError("invalid artifact digest")
+        seen.add(identity)
+
+
 def validate_receipt(receipt: Mapping[str, Any]) -> Mapping[str, Any]:
     if not isinstance(receipt, Mapping):
         raise ReceiptValidationError("receipt must be a JSON object")
@@ -94,33 +118,23 @@ def validate_receipt(receipt: Mapping[str, Any]) -> Mapping[str, Any]:
         raise ReceiptValidationError("invalid receipt result")
     if result != "rejected" and result != _RESULT_BY_OPERATION[operation]:
         raise ReceiptValidationError("receipt result does not match operation")
-    if not _ID_RE.fullmatch(str(receipt["space_id"])):
+    if not isinstance(receipt["space_id"], str) or not _ID_RE.fullmatch(receipt["space_id"]):
         raise ReceiptValidationError("invalid space_id")
-    if not _VERSION_RE.fullmatch(str(receipt["space_version"])):
+    if not isinstance(receipt["space_version"], str) or not _VERSION_RE.fullmatch(receipt["space_version"]):
         raise ReceiptValidationError("invalid space_version")
-    if not _DIGEST_RE.fullmatch(str(receipt["space_definition_digest"])):
-        raise ReceiptValidationError("invalid space_definition_digest")
-    _string(receipt["receipt_id"], "receipt_id")
-    _string(receipt["profile_id"], "profile_id")
-    _string(receipt["recorded_at"], "recorded_at")
 
-    digests = receipt["module_manifest_digests"]
-    if not isinstance(digests, list):
-        raise ReceiptValidationError("module_manifest_digests must be an array")
-    modules: set[str] = set()
-    pairs: set[tuple[str, str]] = set()
-    for item in digests:
-        if not isinstance(item, Mapping) or set(item) != {"module_id", "digest"}:
-            raise ReceiptValidationError("invalid module manifest digest entry")
-        module_id, digest = item["module_id"], item["digest"]
-        if not isinstance(module_id, str) or not _ID_RE.fullmatch(module_id):
-            raise ReceiptValidationError("invalid module digest module_id")
-        if not isinstance(digest, str) or not _DIGEST_RE.fullmatch(digest):
-            raise ReceiptValidationError("invalid module digest")
-        if module_id in modules or (module_id, digest) in pairs:
-            raise ReceiptValidationError("duplicate module manifest digest")
-        modules.add(module_id)
-        pairs.add((module_id, digest))
+    for name in (
+        "space_definition_digest",
+        "interface_theme_digest",
+        "shell_asset_manifest_digest",
+        "capability_snapshot_digest",
+    ):
+        value = receipt[name]
+        if not isinstance(value, str) or not _DIGEST_RE.fullmatch(value):
+            raise ReceiptValidationError(f"invalid {name}")
+
+    _validate_digest_inventory(receipt["module_manifest_digests"], "module_id")
+    _validate_digest_inventory(receipt["module_asset_manifest_digests"], "bundle_id")
 
     validation = receipt["validation"]
     if not isinstance(validation, Mapping) or set(validation) != set(_VALIDATION_VALUES):
@@ -136,6 +150,12 @@ def validate_receipt(receipt: Mapping[str, Any]) -> Mapping[str, Any]:
     if result != "rejected" and receipt.get("failure_code") not in (None, ""):
         raise ReceiptValidationError("successful receipt cannot carry failure_code")
 
+    _string(receipt["receipt_id"], "receipt_id")
+    _string(receipt["profile_id"], "profile_id")
+    _string(receipt["recorded_at"], "recorded_at")
+    _string(receipt.get("actor_ref"), "actor_ref", nullable=True)
+    _string(receipt.get("previous_receipt_ref"), "previous_receipt_ref", nullable=True)
+
     evidence = receipt.get("evidence_refs", [])
     if not isinstance(evidence, list) or any(
         not isinstance(item, str) or not item for item in evidence
@@ -144,15 +164,18 @@ def validate_receipt(receipt: Mapping[str, Any]) -> Mapping[str, Any]:
     if len(evidence) != len(set(evidence)):
         raise ReceiptValidationError("evidence_refs must be unique")
 
-    frozen = deepcopy(dict(receipt))
-    return MappingProxyType(frozen)
+    return MappingProxyType(deepcopy(dict(receipt)))
 
 
 def build_receipt(
     *,
     operation: str,
     space_definition: Mapping[str, Any],
+    interface_theme: Mapping[str, Any],
+    shell_asset_manifest: Mapping[str, Any],
+    capability_snapshot: Mapping[str, Any],
     module_manifests: Sequence[Mapping[str, Any]],
+    module_asset_manifests: Sequence[Mapping[str, Any]] = (),
     profile_id: str,
     validation: Mapping[str, str],
     result: str,
@@ -172,16 +195,35 @@ def build_receipt(
         ),
         key=lambda item: item["module_id"],
     )
+    asset_digests = sorted(
+        (
+            {
+                "bundle_id": str(manifest["bundle_id"]),
+                "digest": artifact_digest(manifest),
+            }
+            for manifest in module_asset_manifests
+        ),
+        key=lambda item: item["bundle_id"],
+    )
+    validation_map = dict(validation)
+    if set(validation_map) != set(_VALIDATION_VALUES):
+        raise ReceiptValidationError(
+            "validation must bind schema, signatures, routes, capabilities, offline, accessibility, theme, and assets"
+        )
     core = {
         "operation": operation,
         "space_id": space_definition.get("space_id"),
         "space_version": space_definition.get("version"),
         "space_definition_digest": artifact_digest(space_definition),
+        "interface_theme_digest": artifact_digest(interface_theme),
+        "shell_asset_manifest_digest": artifact_digest(shell_asset_manifest),
+        "capability_snapshot_digest": artifact_digest(capability_snapshot),
         "module_manifest_digests": module_digests,
+        "module_asset_manifest_digests": asset_digests,
         "profile_id": profile_id,
         "actor_ref": actor_ref,
         "previous_receipt_ref": previous_receipt_ref,
-        "validation": dict(validation),
+        "validation": validation_map,
         "result": result,
         "failure_code": failure_code,
         "recorded_at": recorded_at,

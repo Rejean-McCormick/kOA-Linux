@@ -95,7 +95,7 @@ integrations/ariane/tests/test_health.py
 integrations/ariane/tests/test_degradation.py
 integrations/ariane/tests/test_boundary.py
 ```
-## 3. kOA Spaces Integration
+## 3. Koali Spaces Integration
 
 ```text
 integrations/koa-spaces/README.md
@@ -119,16 +119,39 @@ integrations/koa-spaces/adapter/src/koa_spaces_adapter/space_activation.py
 integrations/koa-spaces/adapter/src/koa_spaces_adapter/module_manifest.py
 integrations/koa-spaces/adapter/src/koa_spaces_adapter/host_bridge.py
 integrations/koa-spaces/adapter/src/koa_spaces_adapter/route_bridge.py
+integrations/koa-spaces/adapter/src/koa_spaces_adapter/interface_assets.py
+integrations/koa-spaces/adapter/src/koa_spaces_adapter/interface_theme.py
+integrations/koa-spaces/adapter/src/koa_spaces_adapter/shell_state.py
+integrations/koa-spaces/adapter/src/koa_spaces_adapter/unix_transport.py
 integrations/koa-spaces/interface/default-space.json
 integrations/koa-spaces/interface/school-space.json
 integrations/koa-spaces/interface/community-space.json
 integrations/koa-spaces/interface/global-widgets.json
+integrations/koa-spaces/interface/themes/default.json
+integrations/koa-spaces/interface/themes/school.json
+integrations/koa-spaces/interface/themes/community.json
+integrations/koa-spaces/interface/icons/home.svg
+integrations/koa-spaces/interface/icons/search.svg
+integrations/koa-spaces/interface/icons/network.svg
+integrations/koa-spaces/interface/icons/learn.svg
+integrations/koa-spaces/interface/icons/library.svg
+integrations/koa-spaces/interface/icons/assignments.svg
+integrations/koa-spaces/interface/icons/guidance.svg
+integrations/koa-spaces/interface/icons/community.svg
+integrations/koa-spaces/interface/icons/work.svg
+integrations/koa-spaces/interface/localization/koa-spaces.en.json
+integrations/koa-spaces/interface/localization/koa-spaces.fr-CA.json
 integrations/koa-spaces/tests/conftest.py
 integrations/koa-spaces/tests/_support.py
 integrations/koa-spaces/tests/test_contract.py
 integrations/koa-spaces/tests/test_health.py
 integrations/koa-spaces/tests/test_degradation.py
 integrations/koa-spaces/tests/test_boundary.py
+integrations/koa-spaces/tests/test_interface_assets.py
+integrations/koa-spaces/tests/test_interface_theme.py
+integrations/koa-spaces/tests/test_shell_state.py
+integrations/koa-spaces/tests/test_unix_transport.py
+integrations/koa-spaces/tests/test_capability_projection.py
 ```
 ## 4. Konnaxion Integration
 
@@ -267,10 +290,10 @@ integrations/sentient/tests/test_boundary.py
 - `compatibility.json` declares supported kOA contract versions and explicitly rejected versions.
 - `integration.toml` declares the integration identity, adapter entrypoint, required capabilities, and interface ownership.
 - deployment, resource, health, storage, backup, and degradation files describe kOA-owned operating boundaries only.
-- `interface/` contains presentation contributions consumed by kOA Spaces. Their visibility grants no authority.
+- `interface/` contains presentation contributions consumed by Koali Spaces. Their visibility grants no authority.
 - adapter code translates between declared interfaces. It does not reproduce subsystem business rules.
 - every integration test suite SHALL prove absence of direct database writes and safe behavior when the subsystem is missing, incompatible, or offline.
 
-## 9. kOA Spaces Restriction
+## 9. Koali Spaces Restriction
 
-The kOA Spaces integration may activate validated Space definitions, expose admitted module manifests, and bridge presentation routes. It may not perform host release activation, resource admission, identity issuance, policy evaluation, workflow mutation, course-state mutation, media ownership, or direct writes to another subsystem's data.
+The Koali Spaces integration may activate validated Space definitions, expose admitted module manifests, and bridge presentation routes. It may not perform host release activation, resource admission, identity issuance, policy evaluation, workflow mutation, course-state mutation, media ownership, or direct writes to another subsystem's data.

@@ -23,6 +23,68 @@ def fixed_clock():
 
 
 @pytest.fixture
+def interface_theme() -> dict[str, Any]:
+    return {
+        "theme_id": "koa_spaces.test",
+        "version": "1.0.0",
+        "design_system_id": "koali.ant5",
+        "tokens": {
+            "primary_accent": "#1e6864",
+            "density": "comfortable",
+            "radius_scale": "koali.radius.v1",
+            "spacing_scale": "koali.spacing.v1",
+            "typography_scale": "koali.type.v1",
+            "focus_style": "visible",
+        },
+        "icon_policy": {"style": "outline", "local_assets_required": True},
+        "motion_policy": {"reduced_motion_supported": True, "default_motion": "minimal"},
+        "framework_mapping": {"antd.colorPrimary": "#1e6864"},
+        "authority_boundary": {
+            "presentation_only": True,
+            "changes_authorization": False,
+            "changes_module_identity": False,
+        },
+    }
+
+
+@pytest.fixture
+def shell_asset_manifest() -> dict[str, Any]:
+    return {
+        "bundle_id": "koa_spaces.shell",
+        "version": "1.0.0",
+        "owner_kind": "koa_spaces_shell",
+        "owner_id": "koa_spaces",
+        "entrypoints": ["static/shell.js"],
+        "assets": [
+            {
+                "path": "static/shell.js",
+                "media_type": "text/javascript",
+                "sha256": "0" * 64,
+                "offline_required": True,
+                "cache_policy": "immutable",
+            }
+        ],
+        "remote_runtime_dependencies": [],
+        "offline_policy": {
+            "local_assets_complete": True,
+            "public_cdn_required": False,
+            "remote_fonts_required": False,
+            "internet_required_for_shell": False,
+        },
+        "compatibility": {
+            "shell_min_version": "1.0.0",
+            "design_system_id": "koali.ant5",
+            "module_manifest_version": "1.0.0",
+        },
+        "authority_boundary": {
+            "presentation_assets_only": True,
+            "contains_business_authority": False,
+            "contains_credentials": False,
+        },
+    }
+
+
+@pytest.fixture
 def module_manifest() -> dict[str, Any]:
     return {
         "$schema": "https://schemas.koa.local/artifact-contracts/module-interface-manifest.schema.json",
@@ -141,6 +203,10 @@ def module_manifest() -> dict[str, Any]:
             "direct_domain_writes": False,
             "menu_visibility_is_authorization": False,
         },
+        "shell_compatibility": {"min_shell_version": "1.0.0", "max_shell_version": None},
+        "design_system_compatibility": {"design_system_id": "koali.ant5", "min_version": "1.0.0"},
+        "asset_bundle_ref": None,
+        "surface_contract_version": "1.0.0",
     }
 
 
@@ -166,10 +232,7 @@ def optional_manifest() -> dict[str, Any]:
                 "deep_link_allowed": True,
                 "safe_fallback_route_id": None,
                 "aliases": [],
-                "capability_policy": {
-                    "required_capabilities": [],
-                    "denied_behavior": "disabled",
-                },
+                "capability_policy": {"required_capabilities": [], "denied_behavior": "disabled"},
             }
         ],
         "sidebar": {
@@ -195,16 +258,17 @@ def optional_manifest() -> dict[str, Any]:
             "screen_reader_labels": True,
             "reduced_motion": "not_applicable",
         },
-        "offline_behavior": {
-            "module_state": "available",
-            "fallback_route_id": "ariane.home",
-        },
+        "offline_behavior": {"module_state": "available", "fallback_route_id": "ariane.home"},
         "authority_boundary": {
             "presentation_only": True,
             "may_grant_capabilities": False,
             "direct_domain_writes": False,
             "menu_visibility_is_authorization": False,
         },
+        "shell_compatibility": {"min_shell_version": "1.0.0", "max_shell_version": None},
+        "design_system_compatibility": {"design_system_id": "koali.ant5", "min_version": "1.0.0"},
+        "asset_bundle_ref": None,
+        "surface_contract_version": "1.0.0",
     }
 
 
@@ -218,26 +282,8 @@ def space_definition() -> dict[str, Any]:
         "description": "A local-first presentation composition.",
         "default_module_id": "koa_mediatheque",
         "module_instances": [
-            {
-                "module_id": "koa_mediatheque",
-                "manifest_ref": "manifest:koa_mediatheque",
-                "enabled": True,
-                "required": True,
-                "order": 0,
-                "public_label": "Library",
-                "public_icon_ref": "asset:library",
-                "home_route_override": None,
-            },
-            {
-                "module_id": "ariane",
-                "manifest_ref": "manifest:ariane",
-                "enabled": True,
-                "required": False,
-                "order": 1,
-                "public_label": "Assist",
-                "public_icon_ref": None,
-                "home_route_override": None,
-            },
+            {"module_id": "koa_mediatheque", "manifest_ref": "manifest:koa_mediatheque", "enabled": True, "required": True, "order": 0, "public_label": "Library", "public_icon_ref": "asset:library", "home_route_override": None},
+            {"module_id": "ariane", "manifest_ref": "manifest:ariane", "enabled": True, "required": False, "order": 1, "public_label": "Assist", "public_icon_ref": None, "home_route_override": None},
         ],
         "global_topbar": [],
         "appearance": {
@@ -246,12 +292,16 @@ def space_definition() -> dict[str, Any]:
             "logo_ref": None,
             "accent_token": None,
             "allow_module_accent": True,
+            "design_system_id": "koali.ant5",
+            "theme_version": "1.0.0",
         },
         "offline_policy": {
             "shell_available": True,
             "retain_last_validated_definition": True,
             "unavailable_module_behavior": "show_unavailable",
             "network_state_indicator": True,
+            "public_cdn_required": False,
+            "remote_runtime_assets_required": False,
         },
         "assignment_scope": "installation",
         "authority_boundary": {
@@ -286,12 +336,20 @@ def transport_factory():
 
 
 @pytest.fixture
-def receipt_response(space_definition, module_manifest, optional_manifest):
+def receipt_response(space_definition, interface_theme, shell_asset_manifest, module_manifest, optional_manifest):
     return dict(
         build_receipt(
             operation="activate",
             space_definition=space_definition,
+            interface_theme=interface_theme,
+            shell_asset_manifest=shell_asset_manifest,
+            capability_snapshot={
+                "source": "koa",
+                "capabilities": ["koa_mediatheque.read", "publication.request"],
+                "may_grant_capabilities": False,
+            },
             module_manifests=[module_manifest, optional_manifest],
+            module_asset_manifests=[],
             profile_id="user_lightweight",
             actor_ref="identity:user-1",
             validation={
@@ -301,6 +359,8 @@ def receipt_response(space_definition, module_manifest, optional_manifest):
                 "capabilities": "pass",
                 "offline": "pass",
                 "accessibility": "pass",
+                "theme": "pass",
+                "assets": "pass",
             },
             result="activated",
             recorded_at="2026-08-06T15:00:00Z",

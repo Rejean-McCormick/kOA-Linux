@@ -4450,6 +4450,20 @@
     },
     {
       "owner_id": "koa_spaces",
+      "path": "integrations/koa-spaces/adapter/src/koa_spaces_adapter/interface_assets.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "3073487f64da77c208e5fd06b5a4b6481ebe583c76af738183cd3dfbaf29eb88",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "koa_spaces",
+      "path": "integrations/koa-spaces/adapter/src/koa_spaces_adapter/interface_theme.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "26c9454a274a3eb2a8194ca7194424c6c0dd30f5bc8985351d797ffcb8433102",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "koa_spaces",
       "path": "integrations/koa-spaces/adapter/src/koa_spaces_adapter/module_manifest.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "011d32349dac5afecc7019c56cf8b263fe61d6b299112b1fb6ec070a45f5e632",
@@ -4471,9 +4485,23 @@
     },
     {
       "owner_id": "koa_spaces",
+      "path": "integrations/koa-spaces/adapter/src/koa_spaces_adapter/shell_state.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "84c2cbf222684f1aebb143273b4b814e86cb3def77dd4c999097ecdc40a8d8cb",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "koa_spaces",
       "path": "integrations/koa-spaces/adapter/src/koa_spaces_adapter/space_activation.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "85c4f25813921929dec704a2ddc736c3f04a82614103a30b450bb3d481157107",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "koa_spaces",
+      "path": "integrations/koa-spaces/adapter/src/koa_spaces_adapter/unix_transport.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "3aa55778260e0f74ab29fb9313fe3a6848f65c9878f91ec05cb655e7b994976d",
       "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
     },
     {
@@ -4541,9 +4569,107 @@
     },
     {
       "owner_id": "koa_spaces",
+      "path": "integrations/koa-spaces/interface/icons/assignments.svg",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "bf63e7a0f386e039dc1254962917dd57b088c10768ce2326f4751cb6cbc27cce",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "koa_spaces",
+      "path": "integrations/koa-spaces/interface/icons/community.svg",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "ed5bd7dfac514d7cb7d76f857f02c5d5e93108a487dfb1424f91a4fa2407e0d9",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "koa_spaces",
+      "path": "integrations/koa-spaces/interface/icons/guidance.svg",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "0ab2e25eba6369656be8a91ecf7f470dbd00097ccff03cd5aced055910ee5bca",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "koa_spaces",
+      "path": "integrations/koa-spaces/interface/icons/home.svg",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "bfe6c26949716fbb81091dbce0d99ba8ed720e083566306eaa18ec86b2f980a6",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "koa_spaces",
+      "path": "integrations/koa-spaces/interface/icons/learn.svg",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "dec524be81f69f875c2a8efd5c7d1b3709f3aa3b96f79945619c6d43fa2bb813",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "koa_spaces",
+      "path": "integrations/koa-spaces/interface/icons/library.svg",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "e78eaf92f42e35ba9dbf73198df01d80fddae3faaa4ef36142abe75eaceb02fe",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "koa_spaces",
+      "path": "integrations/koa-spaces/interface/icons/network.svg",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "85ce644838266d0cfd1fe897d4958cc765ecf6b385c755e3821dc1569dc13422",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "koa_spaces",
+      "path": "integrations/koa-spaces/interface/icons/search.svg",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "28d5a50c44cacdbe0beb0db275403681672689c9b721eb09f606bd937630dcab",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "koa_spaces",
+      "path": "integrations/koa-spaces/interface/icons/work.svg",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "9eab748cadc8f10df4cd3290c579cc3f5bcd5ff5919c6edfd27958d96a9732cb",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "koa_spaces",
+      "path": "integrations/koa-spaces/interface/localization/koa-spaces.en.json",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "43b0dc68ae48682069b0bb94b3f0a07bc0e844f989d2d12154d7ff1b7eaabb9f",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "koa_spaces",
+      "path": "integrations/koa-spaces/interface/localization/koa-spaces.fr-CA.json",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "ec3ff38475196684f20d60829fa3de4d54fe820e83db76ee588f3dc8e1e4e7ec",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "koa_spaces",
       "path": "integrations/koa-spaces/interface/school-space.json",
       "path_class": "frozen_structural_file",
       "path_identifier_sha256": "e569f3b8c50fb44073d00c1a01bbc79c07e4a39830ea597d6ccee009734fdfe2",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "koa_spaces",
+      "path": "integrations/koa-spaces/interface/themes/community.json",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "e2caa4cd1542d46393d8485d86925452c3b3f21ec10a10605cf6ec0bf8e67145",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "koa_spaces",
+      "path": "integrations/koa-spaces/interface/themes/default.json",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "91d40fe2de84c87c0be269e6adcf8019d967a740c04ad766a0c37d23c791bf3c",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "koa_spaces",
+      "path": "integrations/koa-spaces/interface/themes/school.json",
+      "path_class": "frozen_structural_file",
+      "path_identifier_sha256": "f13c13d5e8bdef98c3ed66389f42771c5426d954264519b13f3fbfd83a8d1118",
       "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
     },
     {
@@ -4597,6 +4723,13 @@
     },
     {
       "owner_id": "koa_spaces",
+      "path": "integrations/koa-spaces/tests/test_capability_projection.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "e6365528f9ef8e492d1ad719d936d415e576628134f43bcb0a156f10d6939281",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "koa_spaces",
       "path": "integrations/koa-spaces/tests/test_contract.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "f89229fe9826e3a939ee643b5b82049d74562101efaca56db0da69086327e9d2",
@@ -4614,6 +4747,34 @@
       "path": "integrations/koa-spaces/tests/test_health.py",
       "path_class": "registered_implementation_file",
       "path_identifier_sha256": "6508c861f81a74c9cf4aa5826b1df9e642f257ebd408ba4fceae57f0ee87168c",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "koa_spaces",
+      "path": "integrations/koa-spaces/tests/test_interface_assets.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "405d68e14a307bd4bc82991175bd1f8b3cde897a2e7bcf9f4ed73c9e7d17e674",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "koa_spaces",
+      "path": "integrations/koa-spaces/tests/test_interface_theme.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "9c1b49adea45e1665019bbaa0c56e9a79f7c259f5e7b3d5f30798c018d01864a",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "koa_spaces",
+      "path": "integrations/koa-spaces/tests/test_shell_state.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "acbd609622f275e6d6c092a7cadf0fe271a04b87b38045453089ee3497a3cc0f",
+      "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
+    },
+    {
+      "owner_id": "koa_spaces",
+      "path": "integrations/koa-spaces/tests/test_unix_transport.py",
+      "path_class": "registered_implementation_file",
+      "path_identifier_sha256": "00e685cd31d00cfa8aeb2585406da04a1f696fcfe123c01520cd0ec51e147ef1",
       "source_document": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md"
     },
     {
@@ -7538,11 +7699,11 @@
   ],
   "inventory_summary": {
     "class_counts": {
-      "frozen_structural_file": 397,
-      "registered_implementation_file": 643
+      "frozen_structural_file": 412,
+      "registered_implementation_file": 685
     },
-    "file_count": 1040,
-    "inventory_sha256": "0eccc4fb8178a43ba0ae69d538e22f764fd0f1942211a4548487623ddd22717a",
+    "file_count": 1097,
+    "inventory_sha256": "84c6277d6161d94d2c12c7bf00d9273c5f33dd72895ff01d57b4ec4680f8f135",
     "owner_count": 35,
     "owner_registry_sha256": "6712abe85510eb1487035293001ddf2735ca72d0ff95f898011ac774a4b92e11"
   },
@@ -7567,7 +7728,7 @@
       "path_class": "registered_implementation_file"
     }
   ],
-  "projection_sha256": "24b48c08aa9b018748f0959ecc51996a8b1bb0871492fabd9b5e32af234f0cef",
+  "projection_sha256": "316a272713ab307c837675ca8fe7464fe9ce57041c225877eb55e8ef870ccf96",
   "projection_version": "1.0.0",
   "repository_id": "koa_linux_operating_system",
   "schema_version": "1.0.0",
@@ -7590,7 +7751,7 @@
     },
     {
       "path": "docs/02-system/code-and-filesystem-architecture/27-independent-subsystem-integrations.md",
-      "sha256": "a97ca7d70f6f04e09449d5a952e6630b6b036f381e1bd263982f8502bddd211d"
+      "sha256": "9430d3417f7f0cdb7fd492fe9e644f6aac5122db3c5431bf24fbd386fc7e7b6c"
     },
     {
       "path": "docs/02-system/code-and-filesystem-architecture/28-uckk-external-services-and-transport-interfaces.md",

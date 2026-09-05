@@ -5,7 +5,7 @@ build-backend = "uv_build"
 [project]
 name = "koa-spaces-adapter"
 version = "1.0.0"
-description = "kOA-Linux boundary adapter for the independently versioned kOA Spaces subsystem"
+description = "kOA-Linux boundary adapter for the independently versioned Koali Spaces subsystem"
 readme = "../README.md"
 requires-python = ">=3.13,<3.14"
 dependencies = []
@@ -22,3 +22,10 @@ interface_bindings_root = "../../../interfaces/python"
 interface_bindings_required = true
 upstream_source_required = true
 upstream_source_unresolved_action = "block_build"
+
+[tool.koa.runtime]
+control_transport = "http_over_unix"
+default_socket_path = "/run/koa/sockets/koa-spaces.sock"
+presentation_transport = "loopback_http"
+default_presentation_bind = "127.0.0.1"
+default_presentation_port = 4173

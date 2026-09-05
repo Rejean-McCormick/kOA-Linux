@@ -10,6 +10,7 @@ from koa_spaces_adapter import (
     HealthState,
     SpacesClient,
 )
+from ._support import ROOT
 
 
 def test_health_and_capabilities_report_optional_boundary_state(
@@ -53,3 +54,10 @@ def test_malformed_health_is_rejected(transport_factory, fixed_clock):
     )
     with pytest.raises(BoundaryResponseError):
         HealthChecker(client, fixed_clock).check()
+
+
+def test_health_manifest_closes_theme_and_assets():
+    text = (ROOT / "integrations/koa-spaces/health.toml").read_text(encoding="utf-8")
+    assert "active_theme_valid = true" in text
+    assert "shell_asset_manifest_valid = true" in text
+    assert "required_local_assets_resolved = true" in text

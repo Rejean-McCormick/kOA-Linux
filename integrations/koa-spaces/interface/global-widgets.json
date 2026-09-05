@@ -4,7 +4,7 @@
   "manifest_version": "1.0.0",
   "module_id": "space_home",
   "public_name": "Home",
-  "description": "Local non-authoritative home, search, and platform-status contribution for kOA Spaces.",
+  "description": "Local non-authoritative home, search, and platform-status contribution for Koali Spaces.",
   "icon_ref": "icons/home.svg",
   "home_route_id": "space_home.home",
   "required_capabilities": [],
@@ -42,6 +42,74 @@
         "required_capabilities": [],
         "denied_behavior": "access_denied"
       }
+    },
+    {
+      "route_id": "space_home.tasks",
+      "module_id": "space_home",
+      "path": "/tasks",
+      "page_ref": "koa-spaces://page/tasks",
+      "default_label": "Tasks",
+      "label_key": "space_home.tasks",
+      "availability": "always",
+      "offline_behavior": "cached_read_only",
+      "deep_link_allowed": true,
+      "safe_fallback_route_id": "space_home.home",
+      "aliases": [],
+      "capability_policy": {
+        "required_capabilities": [],
+        "denied_behavior": "access_denied"
+      }
+    },
+    {
+      "route_id": "space_home.offline",
+      "module_id": "space_home",
+      "path": "/offline",
+      "page_ref": "koa-spaces://page/offline",
+      "default_label": "Offline",
+      "label_key": "space_home.offline",
+      "availability": "always",
+      "offline_behavior": "available",
+      "deep_link_allowed": true,
+      "safe_fallback_route_id": "space_home.home",
+      "aliases": [],
+      "capability_policy": {
+        "required_capabilities": [],
+        "denied_behavior": "access_denied"
+      }
+    },
+    {
+      "route_id": "space_home.health",
+      "module_id": "space_home",
+      "path": "/health",
+      "page_ref": "koa-spaces://page/health",
+      "default_label": "Interface health",
+      "label_key": "space_home.health",
+      "availability": "always",
+      "offline_behavior": "available",
+      "deep_link_allowed": true,
+      "safe_fallback_route_id": "space_home.home",
+      "aliases": [],
+      "capability_policy": {
+        "required_capabilities": [],
+        "denied_behavior": "access_denied"
+      }
+    },
+    {
+      "route_id": "space_home.settings",
+      "module_id": "space_home",
+      "path": "/settings",
+      "page_ref": "koa-spaces://page/settings",
+      "default_label": "Settings",
+      "label_key": "space_home.settings",
+      "availability": "always",
+      "offline_behavior": "available",
+      "deep_link_allowed": true,
+      "safe_fallback_route_id": "space_home.home",
+      "aliases": [],
+      "capability_policy": {
+        "required_capabilities": [],
+        "denied_behavior": "access_denied"
+      }
     }
   ],
   "sidebar": {
@@ -69,6 +137,62 @@
         "availability": "always",
         "badge_provider_ref": null,
         "route_id": "space_home.search"
+      },
+      {
+        "item_id": "space_home.tasks",
+        "label": "Tasks",
+        "label_key": "space_home.tasks",
+        "icon_ref": "icons/assignments.svg",
+        "order": 20,
+        "required_capabilities": [],
+        "availability": "always",
+        "badge_provider_ref": null,
+        "route_id": "space_home.tasks"
+      },
+      {
+        "item_id": "space_home.system",
+        "label": "System",
+        "label_key": "space_home.system",
+        "icon_ref": "icons/network.svg",
+        "order": 30,
+        "required_capabilities": [],
+        "availability": "always",
+        "badge_provider_ref": null,
+        "children": [
+          {
+            "item_id": "space_home.offline",
+            "label": "Offline",
+            "label_key": "space_home.offline",
+            "icon_ref": "icons/network.svg",
+            "order": 0,
+            "required_capabilities": [],
+            "availability": "always",
+            "badge_provider_ref": null,
+            "route_id": "space_home.offline"
+          },
+          {
+            "item_id": "space_home.health",
+            "label": "Interface health",
+            "label_key": "space_home.health",
+            "icon_ref": "icons/network.svg",
+            "order": 10,
+            "required_capabilities": [],
+            "availability": "always",
+            "badge_provider_ref": null,
+            "route_id": "space_home.health"
+          },
+          {
+            "item_id": "space_home.settings",
+            "label": "Settings",
+            "label_key": "space_home.settings",
+            "icon_ref": null,
+            "order": 20,
+            "required_capabilities": [],
+            "availability": "always",
+            "badge_provider_ref": null,
+            "route_id": "space_home.settings"
+          }
+        ]
       }
     ]
   },
@@ -89,6 +213,26 @@
       "activation": {
         "kind": "route",
         "route_id": "space_home.search",
+        "command_ref": null,
+        "status_provider_ref": null
+      }
+    },
+    {
+      "widget_id": "global.tasks",
+      "module_id": null,
+      "scope": "global",
+      "slot": "secondary",
+      "kind": "action",
+      "label": "Tasks",
+      "label_key": "global.tasks",
+      "icon_ref": "icons/assignments.svg",
+      "priority": 15,
+      "required_capabilities": [],
+      "offline_behavior": "cached_read_only",
+      "compact_only": true,
+      "activation": {
+        "kind": "route",
+        "route_id": "space_home.tasks",
         "command_ref": null,
         "status_provider_ref": null
       }
@@ -115,7 +259,8 @@
     }
   ],
   "localization_refs": [
-    "localization/koa-spaces.en.json"
+    "localization/koa-spaces.en.json",
+    "localization/koa-spaces.fr-CA.json"
   ],
   "accessibility": {
     "keyboard_navigation": true,
@@ -131,5 +276,15 @@
     "may_grant_capabilities": false,
     "direct_domain_writes": false,
     "menu_visibility_is_authorization": false
-  }
+  },
+  "shell_compatibility": {
+    "min_shell_version": "1.0.0",
+    "max_shell_version": null
+  },
+  "design_system_compatibility": {
+    "design_system_id": "koali.ant5",
+    "min_version": "1.0.0"
+  },
+  "asset_bundle_ref": null,
+  "surface_contract_version": "1.0.0"
 }

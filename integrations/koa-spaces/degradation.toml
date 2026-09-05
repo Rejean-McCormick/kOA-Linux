@@ -48,3 +48,19 @@ core_conformance_lost = false
 presentation_unavailable = true
 component_and_subsystem_data_unchanged = true
 core_authority_unchanged = true
+
+[required_theme_invalid]
+action = "block_activation"
+rollback = "previous_validated_space"
+
+[optional_module_assets_missing]
+action = "disable_contribution_and_report"
+substitute_remote_assets = false
+
+[required_module_assets_missing]
+action = "block_activation_or_rollback"
+substitute_remote_assets = false
+
+[shell_assets_missing]
+action = "block_activation_or_preserve_previous_validated_space"
+public_cdn_fallback = false

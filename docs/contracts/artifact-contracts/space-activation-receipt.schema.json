@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.koa.local/artifact-contracts/space-activation-receipt.schema.json",
-  "title": "kOA Space Activation Receipt",
+  "title": "Koali Space Activation Receipt",
   "description": "Evidence that one validated Space definition was atomically activated or rolled back.",
   "type": "object",
   "additionalProperties": false,
@@ -12,6 +12,10 @@
     "space_version",
     "space_definition_digest",
     "module_manifest_digests",
+    "interface_theme_digest",
+    "shell_asset_manifest_digest",
+    "capability_snapshot_digest",
+    "module_asset_manifest_digests",
     "profile_id",
     "validation",
     "result",
@@ -91,7 +95,9 @@
         "routes",
         "capabilities",
         "offline",
-        "accessibility"
+        "accessibility",
+        "theme",
+        "assets"
       ],
       "properties": {
         "schema": {
@@ -130,6 +136,18 @@
             "pass",
             "fail"
           ]
+        },
+        "theme": {
+          "enum": [
+            "pass",
+            "fail"
+          ]
+        },
+        "assets": {
+          "enum": [
+            "pass",
+            "fail"
+          ]
         }
       }
     },
@@ -158,6 +176,40 @@
         "type": "string",
         "minLength": 1
       }
+    },
+    "interface_theme_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "shell_asset_manifest_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "module_asset_manifest_digests": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "bundle_id",
+          "digest"
+        ],
+        "properties": {
+          "bundle_id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"
+          },
+          "digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      }
+    },
+    "capability_snapshot_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
     }
   }
 }

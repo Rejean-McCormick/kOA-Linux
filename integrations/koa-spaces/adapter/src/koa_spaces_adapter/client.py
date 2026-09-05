@@ -1,9 +1,4 @@
-"""Public transport client for the optional kOA Spaces subsystem.
-
-The adapter intentionally knows no subsystem-internal endpoints or storage.  A
-transport supplied by the deployment maps the stable boundary operation names
-to the independently versioned subsystem implementation.
-"""
+"""Fail-closed public transport client for the optional Koali Spaces subsystem."""
 
 from __future__ import annotations
 
@@ -12,35 +7,34 @@ from typing import Any, Mapping, Protocol, runtime_checkable
 
 
 class SpacesClientError(RuntimeError):
-    """Base error for the kOA Spaces boundary client."""
+    """Base error for the Koali Spaces integration client."""
 
 
 class SubsystemUnavailable(SpacesClientError):
-    """Raised when the optional subsystem cannot be reached."""
+    """Raised when the optional Koali Spaces subsystem cannot be reached."""
 
 
 class BoundaryResponseError(SpacesClientError):
-    """Raised when a response violates the declared public boundary."""
+    """Raised when the Koali Spaces boundary returns invalid data."""
 
 
 @runtime_checkable
 class SpacesTransport(Protocol):
-    """Deployment-supplied transport for public kOA Spaces operations."""
-
     def request(
         self,
         operation: str,
         payload: Mapping[str, Any] | None,
         *,
         timeout_seconds: float,
-    ) -> Mapping[str, Any]:
-        """Execute one registered public operation and return a JSON object."""
+    ) -> Mapping[str, Any]: ...
 
 
 _ALLOWED_OPERATIONS = frozenset(
     {
         "health.read",
         "capabilities.read",
+        "capabilities.update",
+        "shell.state.read",
         "space.activate",
         "space.rollback",
         "space.deactivate",
@@ -59,57 +53,52 @@ def _json_object(value: Mapping[str, Any] | None, *, label: str) -> dict[str, An
 
 @dataclass(frozen=True, slots=True)
 class SpacesClient:
-    """Small fail-closed client for the public kOA Spaces boundary."""
-
     transport: SpacesTransport
     timeout_seconds: float = 5.0
 
     def __post_init__(self) -> None:
-        if not isinstance(self.timeout_seconds, (int, float)) or self.timeout_seconds <= 0:
-            raise ValueError("timeout_seconds must be positive")
-        if self.timeout_seconds > 60:
-            raise ValueError("timeout_seconds must not exceed 60 seconds")
-        if not isinstance(self.transport, SpacesTransport):
-            raise TypeError("transport must implement SpacesTransport")
+        if not isinstance(self.timeout_seconds, (int, float)) or not 0 < self.timeout_seconds <= 60:
+            raise ValueError("timeout_seconds must be in (0, 60]")
 
     def call(
-        self,
-        operation: str,
-        payload: Mapping[str, Any] | None = None,
-    ) -> dict[str, Any]:
+        self, operation: str, payload: Mapping[str, Any] | None = None
+    ) -> Mapping[str, Any]:
         if operation not in _ALLOWED_OPERATIONS:
-            raise ValueError(f"unregistered kOA Spaces operation: {operation}")
-        request_payload = _json_object(payload, label="payload")
+            raise ValueError(f"unsupported Koali Spaces operation: {operation}")
         try:
             response = self.transport.request(
                 operation,
-                request_payload,
+                _json_object(payload, label="request"),
                 timeout_seconds=float(self.timeout_seconds),
             )
-        except (TimeoutError, ConnectionError, OSError) as exc:
-            raise SubsystemUnavailable(f"kOA Spaces unavailable during {operation}") from exc
         except SpacesClientError:
             raise
-        except Exception as exc:  # transport boundary: convert unknown provider failures
-            raise SpacesClientError(f"kOA Spaces transport failed during {operation}") from exc
+        except (OSError, TimeoutError, ConnectionError) as exc:
+            raise SubsystemUnavailable(operation) from exc
+        if not isinstance(response, Mapping):
+            raise BoundaryResponseError("response must be a JSON object")
         return _json_object(response, label="response")
 
-    def read_health(self) -> dict[str, Any]:
+    def read_health(self) -> Mapping[str, Any]:
         return self.call("health.read")
 
-    def read_capabilities(self) -> dict[str, Any]:
+    def read_capabilities(self) -> Mapping[str, Any]:
         return self.call("capabilities.read")
 
-    def read_manifest(self, manifest_ref: str) -> dict[str, Any]:
-        if not manifest_ref or len(manifest_ref) > 512:
-            raise ValueError("manifest_ref must be between 1 and 512 characters")
+    def update_capabilities(self, capability_snapshot: Mapping[str, Any]) -> Mapping[str, Any]:
+        return self.call("capabilities.update", {"capability_snapshot": dict(capability_snapshot)})
+
+    def read_shell_state(self) -> Mapping[str, Any]:
+        return self.call("shell.state.read")
+
+    def read_manifest(self, manifest_ref: str) -> Mapping[str, Any]:
         return self.call("manifest.read", {"manifest_ref": manifest_ref})
 
-    def activate_space(self, request: Mapping[str, Any]) -> dict[str, Any]:
-        return self.call("space.activate", request)
+    def activate_space(self, payload: Mapping[str, Any]) -> Mapping[str, Any]:
+        return self.call("space.activate", payload)
 
-    def rollback_space(self, request: Mapping[str, Any]) -> dict[str, Any]:
-        return self.call("space.rollback", request)
+    def rollback_space(self, payload: Mapping[str, Any]) -> Mapping[str, Any]:
+        return self.call("space.rollback", payload)
 
-    def deactivate_space(self, request: Mapping[str, Any]) -> dict[str, Any]:
-        return self.call("space.deactivate", request)
+    def deactivate_space(self, payload: Mapping[str, Any]) -> Mapping[str, Any]:
+        return self.call("space.deactivate", payload)

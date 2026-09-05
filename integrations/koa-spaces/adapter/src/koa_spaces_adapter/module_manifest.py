@@ -1,4 +1,4 @@
-"""Semantic admission for kOA Spaces module interface manifests."""
+"""Semantic admission for Koali Spaces module interface manifests."""
 
 from __future__ import annotations
 
@@ -23,6 +23,8 @@ class ValidatedManifest:
     route_ids: tuple[str, ...]
     paths: tuple[str, ...]
     required_capabilities: tuple[str, ...]
+    asset_bundle_ref: str | None
+    design_system_id: str | None
 
 
 def _require_object(value: Any, label: str) -> Mapping[str, Any]:
@@ -182,6 +184,18 @@ def validate_manifest(
         (str(item) for item in _require_array(manifest.get("required_capabilities", []), "required_capabilities")),
         "manifest capability",
     )
+    shell = manifest.get("shell_compatibility", {})
+    if shell is not None and not isinstance(shell, Mapping):
+        raise ManifestValidationError("shell_compatibility must be an object")
+    design = manifest.get("design_system_compatibility", {})
+    if design is not None and not isinstance(design, Mapping):
+        raise ManifestValidationError("design_system_compatibility must be an object")
+    design_system_id = design.get("design_system_id") if isinstance(design, Mapping) else None
+    if design_system_id is not None and (not isinstance(design_system_id, str) or not design_system_id):
+        raise ManifestValidationError("design_system_id must be a non-empty string")
+    asset_bundle_ref = manifest.get("asset_bundle_ref")
+    if asset_bundle_ref is not None and (not isinstance(asset_bundle_ref, str) or not asset_bundle_ref or asset_bundle_ref.startswith(("http://", "https://", "//"))):
+        raise ManifestValidationError("asset_bundle_ref must be a local admitted reference")
     frozen = MappingProxyType(dict(manifest))
     return ValidatedManifest(
         module_id=str(module_id),
@@ -192,4 +206,6 @@ def validate_manifest(
         route_ids=tuple(sorted(routes)),
         paths=tuple(sorted(occupied_paths)),
         required_capabilities=tuple(sorted(required_capabilities)),
+        asset_bundle_ref=asset_bundle_ref,
+        design_system_id=design_system_id,
     )

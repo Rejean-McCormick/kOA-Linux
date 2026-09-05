@@ -12,6 +12,8 @@ receipt_required = true
 paths = [
   "/var/lib/koa/integrations/koa-spaces/active-space",
   "/var/lib/koa/integrations/koa-spaces/manifests",
+  "/var/lib/koa/integrations/koa-spaces/themes",
+  "/var/lib/koa/integrations/koa-spaces/assets",
   "/var/lib/koa/integrations/koa-spaces/preferences",
   "/var/lib/koa/integrations/koa-spaces/routes",
   "/var/lib/koa/integrations/koa-spaces/receipts",
@@ -20,6 +22,8 @@ paths = [
 classes = [
   "validated_space_definitions",
   "validated_module_manifests",
+  "validated_interface_themes",
+  "validated_interface_asset_manifests",
   "presentation_preferences",
   "last_permitted_route_state",
   "activation_receipts",

@@ -2,7 +2,7 @@ schema_version = "1.0.0"
 manifest_kind = "independent_subsystem_package"
 package_id = "koa-subsystem-koa-spaces"
 subsystem_id = "koa_spaces"
-display_name = "kOA Spaces"
+display_name = "Koali Spaces"
 relationship_to_koa = "integrated_optional_subsystem"
 status = "definition_active_admission_resolved_at_assembly"
 release_channel = "services"
@@ -51,12 +51,17 @@ build_from_verified_source_only = true
 network_access_during_package_assembly = false
 reproducible_build_required = true
 subsystem_source_build_is_out_of_scope = true
+shell_asset_manifest_required = true
+remote_runtime_asset_resolution = false
 
 [payload]
 include = [
   "built_adapter_wheel",
   "integration_boundary_manifests",
   "interface_contribution_manifests",
+  "interface_theme_manifests",
+  "interface_asset_manifests",
+  "verified_shell_asset_bundle",
   "license_and_provenance_metadata",
 ]
 exclude = [
@@ -75,6 +80,8 @@ undeclared_file_inclusion_result = "blocked"
 [installation]
 adapter_root = "/usr/lib/koa/integrations/koa-spaces"
 configuration_root = "/etc/koa/integrations/koa-spaces"
+presentation_assets_root = "/usr/lib/koa/integrations/koa-spaces/assets"
+interface_theme_root = "/usr/lib/koa/integrations/koa-spaces/themes"
 runtime_state_from_package_allowed = false
 credentials_from_package_allowed = false
 activation_after_install = false

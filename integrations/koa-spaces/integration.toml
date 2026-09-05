@@ -2,7 +2,7 @@ schema_version = 1
 
 [integration]
 integration_id = "koa_spaces"
-public_name = "kOA Spaces"
+public_name = "Koali Spaces"
 version = "1.0.0"
 class = "integrated_optional_subsystem"
 optional = true
@@ -14,7 +14,7 @@ source_lock = "source.lock.json"
 compatibility_manifest = "compatibility.json"
 
 [source]
-implementation_location = "subsystems/koa-spaces"
+implementation_location = "subsystems/koali-spaces"
 implementation_source_required_for_build = true
 implementation_source_required_for_activation = true
 unresolved_source_action = "block_build_and_activation"
@@ -34,6 +34,10 @@ capability_snapshot_contract = "interfaces/capabilities/capability-snapshot.sche
 space_definition_schema = "docs/contracts/artifact-contracts/space-definition.schema.json"
 module_manifest_schema = "docs/contracts/artifact-contracts/module-interface-manifest.schema.json"
 activation_receipt_schema = "docs/contracts/artifact-contracts/space-activation-receipt.schema.json"
+interface_theme_schema = "docs/contracts/artifact-contracts/interface-theme.schema.json"
+interface_asset_manifest_schema = "docs/contracts/artifact-contracts/interface-asset-manifest.schema.json"
+shell_asset_manifest_required = true
+remote_runtime_assets = false
 remote_executable_extensions = false
 unknown_widget_kinds = "reject"
 unknown_route_actions = "reject"
@@ -54,6 +58,8 @@ backup_authority_owned = false
 accepted_inputs = [
   "validated_space_definitions",
   "validated_module_interface_manifests",
+  "validated_interface_themes",
+  "validated_interface_asset_manifests",
   "identity_context_assertions",
   "capability_snapshots",
   "declared_health_and_readiness",
@@ -64,6 +70,8 @@ owned_state = [
   "navigation_preferences",
   "last_permitted_route",
   "presentation_asset_cache",
+  "active_interface_theme_identity",
+  "active_shell_asset_manifest_identity",
   "activation_receipts",
   "previous_validated_space",
 ]

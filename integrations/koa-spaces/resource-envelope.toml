@@ -23,12 +23,15 @@ swap_as_capacity = false
 max_tasks = 128
 max_open_files = 1024
 max_concurrent_requests = 32
+local_listener_count = 2
+node_runtime_processes = 1
 idle_worker_count = 0
 
 [storage]
 preference_store_mib = 64
 validated_artifact_store_mib = 256
 presentation_cache_mib = 256
+interface_asset_store_mib = 384
 cache_is_reproducible = true
 
 [pressure.memory]
@@ -39,7 +42,7 @@ critical_action = "retain_global_frame_and_required_local_routes"
 [pressure.storage]
 warning_action = "prune_expired_reproducible_assets"
 critical_action = "block_new_optional_asset_admission"
-protected = ["active_space", "required_manifests", "activation_receipts", "rollback_space"]
+protected = ["active_space", "required_manifests", "required_theme", "shell_asset_manifest", "activation_receipts", "rollback_space"]
 
 [pressure.network]
 offline_action = "retain_local_frame_and_declared_offline_routes"

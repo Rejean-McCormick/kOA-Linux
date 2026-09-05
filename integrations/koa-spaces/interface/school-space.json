@@ -3,7 +3,7 @@
   "space_id": "school_space",
   "title": "School Space",
   "version": "1.0.0",
-  "description": "Presentation composition for local learning, media, assignments, and guidance.",
+  "description": "Presentation composition for local learning, media, assignments, and guidance; deferred module contributions remain disabled until independently admitted.",
   "default_module_id": "space_home",
   "module_instances": [
     {
@@ -19,7 +19,7 @@
     {
       "module_id": "uckk_learning",
       "manifest_ref": "manifests/uckk-learning.module-interface.json",
-      "enabled": true,
+      "enabled": false,
       "required": false,
       "order": 10,
       "public_label": "Learn",
@@ -29,7 +29,7 @@
     {
       "module_id": "koa_mediatheque",
       "manifest_ref": "manifests/koa-mediatheque.module-interface.json",
-      "enabled": true,
+      "enabled": false,
       "required": false,
       "order": 20,
       "public_label": "Library",
@@ -39,7 +39,7 @@
     {
       "module_id": "orgo_schoolwork",
       "manifest_ref": "manifests/orgo-schoolwork.module-interface.json",
-      "enabled": true,
+      "enabled": false,
       "required": false,
       "order": 30,
       "public_label": "Assignments",
@@ -49,7 +49,7 @@
     {
       "module_id": "ariane",
       "manifest_ref": "manifests/ariane.module-interface.json",
-      "enabled": true,
+      "enabled": false,
       "required": false,
       "order": 40,
       "public_label": "Guidance",
@@ -63,13 +63,17 @@
     "density": "touch",
     "logo_ref": null,
     "accent_token": null,
-    "allow_module_accent": true
+    "allow_module_accent": true,
+    "design_system_id": "koali.ant5",
+    "theme_version": "1.0.0"
   },
   "offline_policy": {
     "shell_available": true,
     "retain_last_validated_definition": true,
     "unavailable_module_behavior": "show_declared_fallback",
-    "network_state_indicator": true
+    "network_state_indicator": true,
+    "public_cdn_required": false,
+    "remote_runtime_assets_required": false
   },
   "assignment_scope": "organization",
   "authority_boundary": {

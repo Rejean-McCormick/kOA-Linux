@@ -3,7 +3,7 @@
   "space_id": "default_space",
   "title": "Default Space",
   "version": "1.0.0",
-  "description": "Minimal local Space containing only the admitted kOA Spaces home contribution.",
+  "description": "Minimal local Space containing only the admitted Koali Spaces home contribution.",
   "default_module_id": "space_home",
   "module_instances": [
     {
@@ -23,13 +23,17 @@
     "density": "comfortable",
     "logo_ref": null,
     "accent_token": null,
-    "allow_module_accent": true
+    "allow_module_accent": true,
+    "design_system_id": "koali.ant5",
+    "theme_version": "1.0.0"
   },
   "offline_policy": {
     "shell_available": true,
     "retain_last_validated_definition": true,
     "unavailable_module_behavior": "show_declared_fallback",
-    "network_state_indicator": true
+    "network_state_indicator": true,
+    "public_cdn_required": false,
+    "remote_runtime_assets_required": false
   },
   "assignment_scope": "installation",
   "authority_boundary": {
