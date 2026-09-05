@@ -12,6 +12,8 @@
 | https://schemas.koa.local/artifact-contracts/experience-view-adapter.schema.json | contracts/artifact-contracts/experience-view-adapter.schema.json | None |  |
 | https://schemas.koa.local/artifact-contracts/integration-manifest.schema.json | contracts/artifact-contracts/integration-manifest.schema.json | None |  |
 | https://schemas.koa.local/artifact-contracts/integration-resilience-policy.schema.json | contracts/artifact-contracts/integration-resilience-policy.schema.json | None |  |
+| https://schemas.koa.local/artifact-contracts/interface-asset-manifest.schema.json | contracts/artifact-contracts/interface-asset-manifest.schema.json | None |  |
+| https://schemas.koa.local/artifact-contracts/interface-theme.schema.json | contracts/artifact-contracts/interface-theme.schema.json | None |  |
 | https://schemas.koa.local/artifact-contracts/koa-media-record.schema.json | contracts/artifact-contracts/koa-media-record.schema.json | None |  |
 | https://schemas.koa.local/artifact-contracts/kristal-artifact.schema.json | contracts/artifact-contracts/kristal-artifact.schema.json | None |  |
 | https://schemas.koa.local/artifact-contracts/language-pack.schema.json | contracts/artifact-contracts/language-pack.schema.json | None |  |

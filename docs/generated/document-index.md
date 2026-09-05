@@ -63,6 +63,7 @@
 | DOC-SYS-021 | 02-system/21-koa-spaces-experience-layer.md | active | normative_markdown |
 | DOC-SYS-022 | 02-system/22-koa-spaces-interface-composition.md | active | normative_markdown |
 | DOC-SYS-023 | 02-system/23-code-and-filesystem-architecture.md | active | normative_markdown |
+| DOC-SYS-035 | 02-system/24-koa-spaces-design-system.md | active | normative_markdown |
 | DOC-SYS-034 | 02-system/34-architecture-patterns.md | active | normative_markdown |
 | DOC-SYS-024 | 02-system/code-and-filesystem-architecture/24-repository-root-and-documentation.md | active | normative_markdown |
 | DOC-SYS-025 | 02-system/code-and-filesystem-architecture/25-internal-components-node-trust-governance.md | active | normative_markdown |
@@ -274,6 +275,7 @@
 | DOC-RECIPE-ULW-BAS-001 | 11-recipes/user-lightweight/browser-based-application-shell.md | active | implementation_recipe |
 | RECIPE-USER-LIGHT-MEDIATHEQUE-001 | 11-recipes/user-lightweight/koa-mediatheque-local.md | active | recipe |
 | DOC-REC-KOA-SPACES-001 | 11-recipes/user-lightweight/koa-spaces-activation.md | active | recipe |
+| DOC-REC-KOA-SPACES-003 | 11-recipes/user-lightweight/koa-spaces-reference-frontend.md | active | recipe |
 | DOC-REC-KOA-SPACES-002 | 11-recipes/user-lightweight/koa-spaces-school-example.md | active | non_normative_recipe |
 | RECIPE-USER-LIGHT-003 | 11-recipes/user-lightweight/media-job-scheduling.md | active | non_normative_recipe |
 | DOC-RECIPE-UL-001 | 11-recipes/user-lightweight/minimal-installation.md | active | recipe |
@@ -287,5 +289,6 @@
 | DOC-CONTRIBUTING | CONTRIBUTING.md | active | explanatory_markdown |
 | DOC-ROOT-README | README.md | active | explanatory_markdown |
 | DOC-STATUS-001 | status/2026-08-27-technical-maturity-assessment.md | active | explanatory_markdown |
-| DOC-STATUS-002 | status/2026-08-28-technical-maturity-assessment(1).md | active | explanatory_markdown |
+| DOC-STATUS-002 | status/2026-08-28-technical-maturity-assessment.md | active | explanatory_markdown |
+| DOC-STATUS-003 | status/2026-09-04-technical-progress-and-maturity-assessment.md | active | explanatory_markdown |
 | DOC-STATUS-000 | status/README.md | active | explanatory_markdown |

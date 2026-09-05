@@ -64,7 +64,8 @@
       "properties": {
         "theme_ref": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "description": "Reference to a locally admitted interface theme validated against interface-theme.schema.json."
         },
         "density": {
           "enum": [
@@ -88,6 +89,20 @@
         "allow_module_accent": {
           "type": "boolean",
           "default": true
+        },
+        "design_system_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"
+        },
+        "theme_version": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
         }
       }
     },
@@ -116,6 +131,16 @@
         },
         "network_state_indicator": {
           "const": true
+        },
+        "public_cdn_required": {
+          "type": "boolean",
+          "const": false,
+          "default": false
+        },
+        "remote_runtime_assets_required": {
+          "type": "boolean",
+          "const": false,
+          "default": false
         }
       }
     },

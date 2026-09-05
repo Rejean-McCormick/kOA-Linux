@@ -21,7 +21,9 @@
     "03-profiles/14-koa-spaces-deployment.md",
     "contracts/artifact-contracts/space-definition.schema.json",
     "contracts/artifact-contracts/module-interface-manifest.schema.json",
-    "contracts/artifact-contracts/space-activation-receipt.schema.json"
+    "contracts/artifact-contracts/space-activation-receipt.schema.json",
+    "contracts/artifact-contracts/interface-theme.schema.json",
+    "contracts/artifact-contracts/interface-asset-manifest.schema.json"
   ],
   "decision_ids": [
     "DEC-ART-001"
@@ -61,4 +63,4 @@ The directory contains non-authoritative examples for integration resilience, de
 
 ## kOA Spaces Examples
 
-Examples can illustrate Space definitions, module interface manifests, route contributions, sidebar trees, top-bar widgets, activation receipts, view adapters, projections, and cache policies. They remain non-authoritative and cannot be activated until validated, admitted, and bound to an applicable profile and release set.
+Examples can illustrate Space definitions, module interface manifests, route contributions, sidebar trees, top-bar widgets, activation receipts, interface themes, local interface asset manifests, view adapters, projections, and cache policies. They remain non-authoritative and cannot be activated until validated, admitted, and bound to an applicable profile and release set.

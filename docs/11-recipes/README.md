@@ -33,6 +33,7 @@
     "contracts/subsystems/koa-spaces.subsystem.json",
     "02-system/21-koa-spaces-experience-layer.md",
     "02-system/22-koa-spaces-interface-composition.md",
+    "02-system/24-koa-spaces-design-system.md",
     "03-profiles/14-koa-spaces-deployment.md"
   ],
   "decision_ids": [
@@ -86,6 +87,7 @@
     "DOC-ADR-003",
     "DOC-SYS-021",
     "DOC-SYS-022",
+    "DOC-SYS-035",
     "DOC-PROFILE-014"
   ],
   "tags": [
@@ -1475,4 +1477,4 @@ Recipes that implement remote calls, asynchronous workers, multi-owner workflows
 
 ## kOA Spaces Recipes
 
-Recipes under `11-recipes/user-lightweight/` illustrate activation and contextual Space composition. They remain non-authoritative implementation guidance. They cannot redefine profile membership, artifact schemas, authorization, subsystem ownership, or the canonical kOA Spaces boundary.
+Recipes under `11-recipes/user-lightweight/` illustrate activation, contextual Space composition, and the current reference frontend stack. `koa-spaces-reference-frontend.md` records the Next.js, React, TypeScript, Ant Design, Pro Components, and pnpm reference implementation while keeping those technologies non-authoritative at the global architecture level. They remain non-authoritative implementation guidance. They cannot redefine profile membership, artifact schemas, authorization, subsystem ownership, or the canonical kOA Spaces boundary.

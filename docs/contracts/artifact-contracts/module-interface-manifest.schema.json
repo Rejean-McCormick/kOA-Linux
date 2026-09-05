@@ -155,6 +155,52 @@
           "const": false
         }
       }
+    },
+    "shell_compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "min_shell_version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "max_shell_version": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        }
+      }
+    },
+    "design_system_compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "design_system_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "min_version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        }
+      }
+    },
+    "asset_bundle_ref": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1,
+      "description": "Optional reference to a locally admitted interface asset manifest for this module surface."
+    },
+    "surface_contract_version": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
     }
   }
 }

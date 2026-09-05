@@ -2867,6 +2867,17 @@
       "decision_ids": []
     },
     {
+      "path": "02-system/24-koa-spaces-design-system.md",
+      "doc_id": "DOC-SYS-035",
+      "document_class": "normative_markdown",
+      "status": "active",
+      "requirement_ids": [],
+      "assertion_ids": [
+        "LOCK-SPACES-001"
+      ],
+      "decision_ids": []
+    },
+    {
       "path": "02-system/34-architecture-patterns.md",
       "doc_id": "DOC-SYS-034",
       "document_class": "normative_markdown",
@@ -15111,6 +15122,17 @@
       "decision_ids": []
     },
     {
+      "path": "11-recipes/user-lightweight/koa-spaces-reference-frontend.md",
+      "doc_id": "DOC-REC-KOA-SPACES-003",
+      "document_class": "recipe",
+      "status": "active",
+      "requirement_ids": [],
+      "assertion_ids": [
+        "LOCK-SPACES-001"
+      ],
+      "decision_ids": []
+    },
+    {
       "path": "11-recipes/user-lightweight/koa-spaces-school-example.md",
       "doc_id": "DOC-REC-KOA-SPACES-002",
       "document_class": "non_normative_recipe",
@@ -15484,8 +15506,17 @@
       "decision_ids": []
     },
     {
-      "path": "status/2026-08-28-technical-maturity-assessment(1).md",
+      "path": "status/2026-08-28-technical-maturity-assessment.md",
       "doc_id": "DOC-STATUS-002",
+      "document_class": "explanatory_markdown",
+      "status": "active",
+      "requirement_ids": [],
+      "assertion_ids": [],
+      "decision_ids": []
+    },
+    {
+      "path": "status/2026-09-04-technical-progress-and-maturity-assessment.md",
+      "doc_id": "DOC-STATUS-003",
       "document_class": "explanatory_markdown",
       "status": "active",
       "requirement_ids": [],

@@ -14,6 +14,7 @@
     "contracts/subsystems/koa-spaces.subsystem.json",
     "02-system/21-koa-spaces-experience-layer.md",
     "02-system/22-koa-spaces-interface-composition.md",
+    "02-system/24-koa-spaces-design-system.md",
     "03-profiles/14-koa-spaces-deployment.md",
     "10-adrs/ADR-033-koa-spaces-as-optional-replaceable-experience-subsystem.md"
   ],
@@ -30,6 +31,7 @@
     "DOC-GOV-001",
     "DOC-SYS-021",
     "DOC-SYS-022",
+    "DOC-SYS-035",
     "DOC-PROFILE-014",
     "ADR-033"
   ],
@@ -44,6 +46,19 @@
 KOA:DOC-META:END -->
 
 # Documentation Changelog
+
+## 1.2.0 — 2026-09-05
+
+Closed the kOA Spaces interface-definition gap before frontend implementation:
+
+- defined explicit Koali/Konnaxion alignment without duplicating Konnaxion business functions or authority;
+- clarified that browser-rendered or web-technology interfaces can be locally installed and operate without public Internet connectivity;
+- expanded module-selector, sidebar, top-bar, PageShell, interface-state, route-surface, responsive, and offline composition behavior;
+- added the kOA Spaces design-system document and the reference Next.js/React/TypeScript/Ant Design/pnpm frontend recipe;
+- added interface-theme and local interface-asset schemas;
+- strengthened Space, module, and route schemas with design-system, local-asset, shell-compatibility, and surface metadata;
+- aligned ADR-004 terminology so web technology no longer implies Internet dependency;
+- strengthened ADR-033 and the kOA Spaces subsystem boundary around local-first rendering and non-duplication.
 
 ## 1.1.0 — 2026-08-06
 

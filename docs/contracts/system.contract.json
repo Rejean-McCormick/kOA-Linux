@@ -1009,7 +1009,9 @@
       "cross_subsystem_writes",
       "view_adapter_business_logic",
       "projection_authority",
-      "cache_authority"
+      "cache_authority",
+      "duplicate_module_business_functions",
+      "public_internet_dependency_for_local_offline_capabilities"
     ],
     "inputs": [
       "space_definition",
@@ -1020,7 +1022,9 @@
       "experience_view_adapter",
       "cqrs_projection",
       "cache_policy",
-      "integration_resilience_policy"
+      "integration_resilience_policy",
+      "interface_theme",
+      "interface_asset_manifest"
     ],
     "activation": {
       "model": "validate_stage_activate_atomically",
@@ -1031,7 +1035,9 @@
     "degradation": {
       "missing_or_failed_subsystem": "native_interfaces_or_administrative_fallback_remain_available",
       "invalid_space_definition": "reject_and_preserve_previous_valid_space",
-      "missing_module": "hide_or_mark_unavailable_without_reassigning_authority"
+      "missing_module": "hide_or_mark_unavailable_without_reassigning_authority",
+      "missing_remote_network": "preserve_local_frame_and_declared_local_module_capabilities",
+      "missing_remote_presentation_asset": "invalid_for_a_surface_claiming_local_offline_availability"
     },
     "lock_refs": [
       "LOCK-SPACES-001",

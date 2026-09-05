@@ -1929,6 +1929,9 @@
         "LOCK-SPACES-001",
         "LOCK-LIFE-001",
         "LOCK-LIFE-002"
+      ],
+      "supporting_schema_refs": [
+        "contracts/artifact-contracts/interface-theme.schema.json"
       ]
     },
     "module_interface_manifest": {
@@ -1940,7 +1943,9 @@
       "supporting_schema_refs": [
         "contracts/artifact-contracts/route-contribution.schema.json",
         "contracts/artifact-contracts/sidebar-navigation.schema.json",
-        "contracts/artifact-contracts/topbar-widget.schema.json"
+        "contracts/artifact-contracts/topbar-widget.schema.json",
+        "contracts/artifact-contracts/interface-asset-manifest.schema.json",
+        "contracts/artifact-contracts/interface-theme.schema.json"
       ],
       "example_refs": [],
       "lifecycle_profile": "versioned_configuration",

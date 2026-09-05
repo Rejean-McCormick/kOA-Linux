@@ -87,7 +87,7 @@ This decision applies to:
 - appliance-style local console sessions;
 - the compositor and display-session boundary;
 - the native session shell;
-- embedded presentation of approved local Konnaxion, Orgo, and other registered web-oriented workspaces;
+- embedded presentation of approved local Konnaxion, Orgo, and other registered web-technology workspaces;
 - native status, recovery, accessibility, session, and safe-degradation surfaces;
 - shell, compositor, and embedded-engine artifacts selected by a compatible Release Set;
 - profile-specific security, resource, observability, and recovery controls.
@@ -167,7 +167,9 @@ Not applicable.
 
 ### 4.1 Current state
 
-Konnaxion and Orgo are web-oriented product workspaces, while an appliance-style kOA node also needs trusted local surfaces for:
+Konnaxion and Orgo are web-technology product workspaces, while an appliance-style kOA node also needs trusted local surfaces for:
+
+In this ADR, **web-technology** describes browser or embedded-engine rendering technology. It does not mean that the application depends on the public Web or on Internet connectivity. Konnaxion, Orgo, and other approved surfaces can be packaged with local assets and local services and can operate without Internet access for the capabilities they declare as offline-capable.
 
 - session start and termination;
 - readiness and degradation status;
@@ -188,14 +190,14 @@ deprecated material sometimes described the absence of GNOME as a global kOA Lin
 
 A full desktop environment provides broad capability that an appliance session does not need, including general application launch, extension ecosystems, desktop configuration, unrestricted file browsing, broad session integration, and user-modifiable behavior.
 
-A fully native rewrite of Konnaxion and Orgo would duplicate their web-oriented user-interface investment and create additional implementation and accessibility obligations.
+A fully native rewrite of Konnaxion and Orgo would duplicate their web-technology user-interface investment and create additional implementation and accessibility obligations.
 
 A general-purpose browser in kiosk mode retains browser features and policy surfaces that exceed the required appliance interaction model.
 
 The architecture needs a focused solution that:
 
-- preserves existing web-oriented product surfaces;
-- keeps recovery and critical status independent from the web workspace;
+- preserves existing web-technology product surfaces;
+- keeps recovery and critical status independent from the web-technology application surface;
 - limits general desktop behavior;
 - remains maintainable and updateable;
 - operates offline;
@@ -243,7 +245,7 @@ The decision drivers, from highest to lowest priority, are:
 
 1. preserve profile scope and avoid a global Linux desktop mandate;
 2. preserve a trusted native recovery, status, session, and accessibility boundary;
-3. reuse approved web-oriented product workspaces without turning the appliance into a general browser;
+3. reuse approved web-technology product workspaces without turning the appliance into a general browser;
 4. reduce unnecessary general-purpose desktop and session attack surface;
 5. preserve offline operation and local navigation;
 6. keep component and data ownership outside the shell;
@@ -258,11 +260,11 @@ The decision drivers, from highest to lowest priority, are:
 
 **Description**
 
-Use a maintained minimal Wayland compositor, a focused native `koa-session-shell` or equivalent profile-owned shell, and a maintained embedded web engine. The native shell controls session lifecycle, workspace selection, status, recovery, and restricted presentation. Approved local web workspaces are hosted inside bounded embedded surfaces.
+Use a maintained minimal Wayland compositor, a focused native `koa-session-shell` or equivalent profile-owned shell, and a maintained embedded web engine. The native shell controls session lifecycle, workspace selection, status, recovery, and restricted presentation. Approved local web-technology application surfaces are hosted inside bounded embedded surfaces.
 
 **Advantages**
 
-- preserves web-oriented Konnaxion and Orgo investment;
+- preserves web-technology Konnaxion and Orgo investment;
 - keeps recovery independent from product rendering;
 - reduces general-purpose desktop behavior;
 - permits strong URL, origin, download, storage, and navigation restrictions;
@@ -313,7 +315,7 @@ This option is valid for standard user and developer profiles but does not satis
 
 **Description**
 
-Rewrite Konnaxion, Orgo, and other web-oriented product workspaces as native Wayland applications.
+Rewrite Konnaxion, Orgo, and other web-technology product workspaces as native Wayland applications.
 
 **Advantages**
 
@@ -395,7 +397,7 @@ The accepted decision constrains the `appliance_shell` overlay as follows:
 
 - the display session uses maintained Wayland-compatible components;
 - the shell is a focused profile-owned native boundary;
-- approved web-oriented product workspaces can be presented through a maintained embedded engine;
+- approved web-technology product workspaces can be presented through a maintained embedded engine;
 - general-purpose desktop behavior is restricted;
 - the overlay does not redefine standard user or developer desktops;
 - compositor and engine implementation remain replaceable profile-scoped choices;
@@ -992,7 +994,7 @@ Decision-specific validation includes:
 
 ### 17.1 Positive consequences
 
-- preserves existing web-oriented product work;
+- preserves existing web-technology product work;
 - narrows appliance-session behavior;
 - keeps standard desktop profiles flexible;
 - separates critical recovery from product rendering;

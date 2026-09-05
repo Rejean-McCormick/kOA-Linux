@@ -34,7 +34,9 @@
     "media authority",
     "authorization decisions",
     "module-specific page implementation",
-    "direct cross-subsystem writes"
+    "direct cross-subsystem writes",
+    "duplicate business functions of contributing systems",
+    "public Internet dependency for locally declared offline-capable presentation"
   ],
   "presentation_model": {
     "public_name": "kOA Spaces",
@@ -44,7 +46,10 @@
     "main_surface": "single_shared_page_surface",
     "sidebar_visible_depth": 2,
     "public_module_aliases_allowed": true,
-    "stable_module_ids_required": true
+    "stable_module_ids_required": true,
+    "technology_alignment": "shared_visual_and_interaction_patterns_allowed_without_business_function_duplication",
+    "web_technology_implies_internet_dependency": false,
+    "offline_local_assets": "required_for_declared_offline_capable_surfaces"
   },
   "artifact_contracts": [
     "contracts/artifact-contracts/space-definition.schema.json",
@@ -52,7 +57,9 @@
     "contracts/artifact-contracts/sidebar-navigation.schema.json",
     "contracts/artifact-contracts/topbar-widget.schema.json",
     "contracts/artifact-contracts/route-contribution.schema.json",
-    "contracts/artifact-contracts/space-activation-receipt.schema.json"
+    "contracts/artifact-contracts/space-activation-receipt.schema.json",
+    "contracts/artifact-contracts/interface-theme.schema.json",
+    "contracts/artifact-contracts/interface-asset-manifest.schema.json"
   ],
   "boundary_rules": {
     "direct_cross_subsystem_writes": "prohibited",
@@ -65,13 +72,18 @@
     "space_alias_changes_module_identity": false,
     "interface_manifest_may_bypass_module_authorization": false,
     "module_routes_are_contributions_not_authority": true,
-    "replacement_preserves_business_state": true
+    "replacement_preserves_business_state": true,
+    "frontend_alignment_transfers_business_authority": false,
+    "duplicate_subsystem_business_functions": "prohibited",
+    "public_internet_required_for_local_offline_surface": false
   },
   "documentation": {
     "koa_boundary_document": "04-components/subsystems/koa-spaces.md",
     "system_layer_document": "02-system/21-koa-spaces-experience-layer.md",
     "composition_document": "02-system/22-koa-spaces-interface-composition.md",
-    "activation_recipe": "11-recipes/user-lightweight/koa-spaces-activation.md"
+    "activation_recipe": "11-recipes/user-lightweight/koa-spaces-activation.md",
+    "design_system_document": "02-system/24-koa-spaces-design-system.md",
+    "reference_frontend_recipe": "11-recipes/user-lightweight/koa-spaces-reference-frontend.md"
   },
   "authority": "non_authoritative_presentation",
   "core_dependency": "declared_interfaces_only",

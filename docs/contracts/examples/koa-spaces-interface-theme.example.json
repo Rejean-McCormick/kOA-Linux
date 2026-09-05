@@ -1,0 +1,36 @@
+{
+  "$schema": "../artifact-contracts/interface-theme.schema.json",
+  "example": true,
+  "authority": "non_authoritative_example",
+  "theme_id": "koali_konnaxion_reference",
+  "version": "1.0.0",
+  "design_system_id": "koali_spaces",
+  "description": "Reference example showing the aligned Koali/Konnaxion visual language without creating business coupling.",
+  "tokens": {
+    "primary_accent": "#1e6864",
+    "density": "comfortable",
+    "radius_scale": "medium",
+    "spacing_scale": "koali-default",
+    "typography_scale": "koali-default",
+    "focus_style": "visible-ring",
+    "surface_family": "neutral",
+    "semantic_color_policy": "semantic-colors-remain-distinct"
+  },
+  "icon_policy": {
+    "style": "outline",
+    "local_assets_required": true
+  },
+  "motion_policy": {
+    "reduced_motion_supported": true,
+    "default_motion": "minimal"
+  },
+  "framework_mapping": {
+    "reference_library": "Ant Design 5",
+    "reference_pro_components": "@ant-design/pro-components"
+  },
+  "authority_boundary": {
+    "presentation_only": true,
+    "changes_authorization": false,
+    "changes_module_identity": false
+  }
+}

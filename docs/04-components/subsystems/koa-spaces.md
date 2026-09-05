@@ -12,8 +12,11 @@
     "contracts/subsystems/koa-spaces.subsystem.json",
     "02-system/21-koa-spaces-experience-layer.md",
     "02-system/22-koa-spaces-interface-composition.md",
+    "02-system/24-koa-spaces-design-system.md",
     "contracts/artifact-contracts/space-definition.schema.json",
     "contracts/artifact-contracts/module-interface-manifest.schema.json",
+    "contracts/artifact-contracts/interface-theme.schema.json",
+    "contracts/artifact-contracts/interface-asset-manifest.schema.json",
     "contracts/subsystems/koa-spaces.subsystem.json"
   ],
   "decision_ids": [],
@@ -24,7 +27,8 @@
   "exception_ids": [],
   "depends_on": [
     "DOC-SYS-021",
-    "DOC-SYS-022"
+    "DOC-SYS-022",
+    "DOC-SYS-035"
   ],
   "tags": [
     "subsystem",
@@ -94,6 +98,10 @@ kOA Spaces does not own:
 
 Konnaxion can contribute its modules and routes through one interface manifest or a set of namespaced manifests. Its existing module page shells remain inside the kOA Spaces main page surface. The outer frame is rendered once by kOA Spaces.
 
+Koali and Konnaxion can align on generic presentation conventions such as Ant Design patterns, visual tokens, PageShell structure, navigation behavior, density, iconography, responsive rules, and accessibility behavior. This alignment does not transfer Konnaxion business functions into Koali. Konnaxion remains the owner of its pages, commands, workflows, validation, services, APIs, and domain state.
+
+Konnaxion can be installed as a locally hosted browser-rendered surface. Web technology describes its rendering model and does not imply a dependency on the public Web. Locally declared offline-capable Konnaxion functions can operate through local assets and local services when the integration is admitted.
+
 ## Integration Contract
 
 The kOA boundary accepts only validated declarative artifacts:
@@ -103,7 +111,9 @@ The kOA boundary accepts only validated declarative artifacts:
 - route contributions;
 - sidebar definitions;
 - top-bar widget definitions;
-- activation receipts.
+- activation receipts;
+- interface themes;
+- interface asset manifests.
 
 Executable code follows the normal subsystem release and artifact admission lifecycle. A Space definition is not an executable plugin package.
 
@@ -112,7 +122,7 @@ Executable code follows the normal subsystem release and artifact admission life
 - Invalid optional contributions are disabled and reported.
 - Invalid required contributions block Space activation.
 - Removing kOA Spaces leaves subsystem data unchanged.
-- Loss of network access preserves the local frame and declared offline routes.
+- Loss of network access preserves the local frame, locally admitted presentation assets, and declared offline routes.
 - Loss of a module never activates an undeclared substitute.
 
 ## Validation

@@ -84,4 +84,4 @@ Validation also checks the canonical architecture-pattern contract, its seven re
 
 ## kOA Spaces Contract Validation
 
-Validation resolves the kOA Spaces subsystem contract and every applicable presentation schema: Space definition, module interface manifest, route contribution, sidebar navigation, top-bar widget, activation receipt, and any declared adapter, projection, cache, or resilience policy. Schema validity does not grant authority; the owning system still validates every protected action.
+Validation resolves the kOA Spaces subsystem contract and every applicable presentation schema, including local theme and interface-asset closure where declared: Space definition, module interface manifest, route contribution, sidebar navigation, top-bar widget, activation receipt, and any declared adapter, projection, cache, or resilience policy. Schema validity does not grant authority; the owning system still validates every protected action.

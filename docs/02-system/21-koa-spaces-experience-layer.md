@@ -13,6 +13,8 @@
     "contracts/artifact-contracts/space-definition.schema.json",
     "contracts/artifact-contracts/module-interface-manifest.schema.json",
     "contracts/artifact-contracts/space-activation-receipt.schema.json",
+    "contracts/artifact-contracts/interface-theme.schema.json",
+    "contracts/artifact-contracts/interface-asset-manifest.schema.json",
     "02-system/06-capability-model.md",
     "02-system/08-offline-behavior.md",
     "04-components/04-subsystem-documentation-boundaries.md",
@@ -69,6 +71,7 @@
     "contextual-interface",
     "optional-subsystem",
     "offline",
+    "local-first",
     "presentation",
     "architecture-patterns"
   ]
@@ -90,6 +93,8 @@ kOA Spaces is not part of the privileged core. It is an independently versioned 
 - A configured user environment is a **Space**.
 - The portable declarative package is a **Space definition**.
 - A business system or capability contributes an **interface module manifest**.
+- A validated visual token package is an **interface theme**.
+- A locally installable set of shell or module presentation assets is described by an **interface asset manifest**.
 
 A presentation module is not a new authority domain. It is a navigational contribution that represents a subsystem, component, integration, or locally available capability inside a Space.
 
@@ -116,7 +121,10 @@ kOA Spaces does not own:
 - authorization decisions;
 - governance policy;
 - direct writes into subsystem databases;
-- the internal interface architecture of contributing systems.
+- the internal interface architecture of contributing systems;
+- a duplicate implementation of a contributing system's business functions.
+
+The experience layer composes what an owner exposes. It does not recreate the owner's feature set in a second Koali implementation.
 
 ## 4. Composition Model
 
@@ -130,7 +138,8 @@ A Space definition selects a set of installed interface module manifests. Each m
 - optional top-bar widgets and shortcuts;
 - capability requirements;
 - offline behavior;
-- accessibility and localization metadata.
+- accessibility and localization metadata;
+- optional compatibility with a locally installed interface asset bundle and the active design system.
 
 The Space can reorder modules and assign context-specific public labels without changing their stable identifiers. For example, an interface contribution with `module_id: uckk_learning` can be displayed as **Learn**, while `module_id: orgo` can be displayed as **Produce**.
 
@@ -148,37 +157,60 @@ A Space definition cannot:
 - write directly across authority boundaries;
 - load executable code that was not admitted through the declared software and artifact lifecycle.
 
-## 6. Offline Behavior
+Visual or technical alignment between two interfaces does not merge their authority, release ownership, code ownership, storage, or business responsibility.
 
-The global frame, active Space definition, installed module manifests, navigation labels, accessibility resources, and permitted cached interface assets remain available offline.
+## 6. Local-First Web-Technology Model
+
+A browser-rendered or web-technology interface is a rendering choice, not an Internet dependency.
+
+kOA Spaces and locally admitted module surfaces can use HTML, CSS, JavaScript, React, or another maintained browser-rendered technology while remaining fully local to the node. Public Internet connectivity is not implied by the use of those technologies.
+
+For an offline-capable local surface:
+
+- required application assets are installable locally;
+- required fonts, icons, style sheets, scripts, and localization resources are locally available;
+- no public CDN is part of the runtime dependency path;
+- local APIs and local capability providers remain reachable through declared local transports;
+- network-only functions expose their declared unavailable or degraded state instead of blocking unrelated local functions.
+
+A module can contain both local and network-dependent capabilities. The offline claim applies only to the capabilities and routes that the owning module declares as locally available.
+
+## 7. Offline Behavior
+
+The global frame, active Space definition, installed module manifests, navigation labels, accessibility resources, interface theme, and permitted cached interface assets remain available offline.
 
 A module declares one of these offline behaviors for each route and widget:
 
-- `available` — complete local function remains available;
+- `available` — complete declared local function remains available;
 - `cached_read_only` — previously admitted content can be consulted;
 - `degraded` — a declared local fallback is used;
 - `unavailable` — the route remains identifiable but cannot execute.
 
 Network loss does not cause automatic module substitution. Online-only widgets disappear or enter a declared unavailable state without changing business authority.
 
-## 7. Relationship to Konnaxion
+## 8. Relationship to Konnaxion
 
-The composition model follows the established Konnaxion pattern of a global layout, centralized route contribution, shared navigation primitives, and module-specific page shells.
+The composition model deliberately aligns with the established Konnaxion interface pattern where that alignment improves coherence for users and reduces unnecessary divergence.
 
 Inside kOA Spaces:
 
 - kOA Spaces owns the outer frame;
-- Konnaxion contributes its public module entry, routes, sidebar, and widgets;
-- Konnaxion page shells can continue to structure content inside the main page surface;
-- Konnaxion does not recreate the global module selector, global top bar, or global sidebar container.
+- Konnaxion contributes its public module entry, routes, sidebar, and widgets when its integration is admitted;
+- Konnaxion page shells can continue to structure Konnaxion content inside the main page surface;
+- Konnaxion does not recreate the outer kOA Spaces module selector, shared top bar, or global sidebar container;
+- kOA Spaces does not reproduce Konnaxion business pages, workflows, validation, services, or domain state.
 
-The same contract applies to Orgo, Ariane, the kOA Mediatheque, UCKK learning surfaces, administration, and later systems.
+Shared visual language, interaction patterns, design tokens, frontend libraries, or PageShell conventions are compatible with this boundary. They are implementation alignment, not function duplication.
 
-## 8. Ariane Integration
+Konnaxion can be packaged as a locally hosted browser-rendered application surface. Its use of web technology does not make public Internet connectivity a prerequisite for capabilities that Konnaxion declares as local and offline-capable.
+
+The same ownership rule applies to Orgo, Ariane, the kOA Mediatheque, UCKK learning surfaces, administration, and later systems.
+
+## 9. Ariane Integration
 
 Ariane may interpret an intent and request navigation to a permitted route. kOA Spaces resolves the route, activates the relevant module, and presents the destination. Ariane does not bypass route capability checks or subsystem authorization.
 
-## 9. Replaceability
+## 10. Replaceability
 
 The core remains operable without kOA Spaces. A deployment may use:
 
@@ -187,9 +219,9 @@ The core remains operable without kOA Spaces. A deployment may use:
 - a restricted appliance interface;
 - command-line or administrative surfaces.
 
-Removing kOA Spaces cannot delete or reinterpret business data. Its local state is limited to presentation configuration, validated manifests, navigation state, preferences, and activation receipts.
+Removing kOA Spaces cannot delete or reinterpret business data. Its local state is limited to presentation configuration, validated manifests, navigation state, preferences, admitted presentation assets, and activation receipts.
 
-## 10. Validation Criteria
+## 11. Validation Criteria
 
 A conforming kOA Spaces installation demonstrates that:
 
@@ -199,7 +231,9 @@ A conforming kOA Spaces installation demonstrates that:
 - sidebar depth and top-bar slot limits are respected;
 - unavailable capabilities cannot be reached through deep links;
 - offline behavior is declared for every route and widget;
+- local offline surfaces resolve required presentation assets without a public Internet dependency;
 - no Space definition grants authority or embeds business state;
+- no presentation module duplicates another subsystem's authoritative business function;
 - activation is atomic and produces a receipt;
 - rollback restores the previous validated Space definition;
 - disabling kOA Spaces leaves the core and subsystem authorities intact.

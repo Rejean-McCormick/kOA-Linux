@@ -72,6 +72,20 @@
       "version": null
     },
     {
+      "id": "https://schemas.koa.local/artifact-contracts/interface-asset-manifest.schema.json",
+      "path": "contracts/artifact-contracts/interface-asset-manifest.schema.json",
+      "title": "kOA Spaces Interface Asset Manifest",
+      "status": null,
+      "version": null
+    },
+    {
+      "id": "https://schemas.koa.local/artifact-contracts/interface-theme.schema.json",
+      "path": "contracts/artifact-contracts/interface-theme.schema.json",
+      "title": "kOA Spaces Interface Theme",
+      "status": null,
+      "version": null
+    },
+    {
       "id": "https://schemas.koa.local/artifact-contracts/koa-media-record.schema.json",
       "path": "contracts/artifact-contracts/koa-media-record.schema.json",
       "title": "kOA Media Record",

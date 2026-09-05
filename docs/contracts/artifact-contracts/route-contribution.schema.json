@@ -32,7 +32,8 @@
     },
     "page_ref": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "description": "Stable logical page reference owned by the contributing module; it is not an arbitrary remote URL or authorization grant."
     },
     "default_label": {
       "type": "string",
@@ -100,6 +101,53 @@
             "disabled",
             "access_denied"
           ]
+        }
+      }
+    },
+    "surface": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "origin_policy"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "local_shell_page",
+            "local_module_surface",
+            "registered_component_surface"
+          ]
+        },
+        "asset_bundle_ref": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "entrypoint": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^(?!https?://)(?!//)[A-Za-z0-9._/@+-]+$"
+        },
+        "origin_policy": {
+          "enum": [
+            "same_origin",
+            "registered_local_origin"
+          ]
+        },
+        "offline_entrypoint": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^(?!https?://)(?!//)[A-Za-z0-9._/@+-]+$"
         }
       }
     }
